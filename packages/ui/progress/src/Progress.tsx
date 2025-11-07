@@ -1,7 +1,7 @@
 import React, { forwardRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { ProgressSizeEnum, ProgressTypeEnum, ProgressPlacementEnum } from './types'
 
 const PROGRESS_PREFIX = getPrefixCls('progress')
@@ -18,7 +18,7 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
       percent = 0,
       bufferPercent = 0,
       type = 'primary',
-      size = 'md',
+      size: sizeProp,
       active = false,
       indeterminate = false,
       showInfo: showInfoProp,
@@ -32,6 +32,9 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const [barElement, setBarElement] = useState<HTMLSpanElement | null>(null)
     const [contentElement, setContentElement] = useState<HTMLSpanElement | null>(null)
 

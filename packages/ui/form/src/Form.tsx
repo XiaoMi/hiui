@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { FormProvider } from './context'
 import { useForm, UseFormProps } from './use-form'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { FormRuleModel, FormHelpers } from './types'
 
 const _role = 'form'
@@ -30,11 +30,15 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       showRequiredOnValidateRequired = false,
       showColon,
       showValidateMessage = true,
+      size: sizeProp,
       ...rest
     },
     ref
   ) => {
-    const formContext = useForm(rest)
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize
+
+    const formContext = useForm({ ...rest, size })
 
     const { getRootProps } = formContext
 
@@ -126,6 +130,10 @@ export interface FormProps<Values = Record<string, any>>
    * @default true
    */
   showValidateMessage?: boolean
+  /**
+   * 设置表单尺寸
+   */
+  size?: 'sm' | 'md' | 'lg'
 }
 
 if (__DEV__) {

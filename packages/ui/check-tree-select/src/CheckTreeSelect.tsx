@@ -17,7 +17,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -93,7 +93,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       showCheckAll,
       showOnlyShowChecked = false,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       customRender,
       prefix,
       suffix,
@@ -104,6 +104,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)
