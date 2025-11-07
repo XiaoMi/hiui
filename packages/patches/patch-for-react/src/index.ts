@@ -17,6 +17,9 @@ setReactDomRender((node: any, container: ContainerType) => {
     new Promise<void>((resolve) => {
       setTimeout(() => {
         root.unmount()
+        // @ts-expect-error 移除 _reactRoot
+        // 防止多次调用时在已卸载的 root 上执行 unmount 方法
+        container._reactRoot = null
         resolve()
       }, 0)
     })
