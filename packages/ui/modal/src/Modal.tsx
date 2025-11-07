@@ -1,6 +1,12 @@
 import React, { useEffect, forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, usePortalContext } from '@hi-ui/core'
+import {
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  useLocaleContext,
+  usePortalContext,
+  useGlobalContext,
+} from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
@@ -36,7 +42,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       prefixCls = modalPrefix,
       className,
       children,
-      size = 'md',
+      size: sizeProp,
       disabledPortal = false,
       closeable = true,
       timeout = 300,
@@ -66,6 +72,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const globalContainer = usePortalContext()?.container

@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import {
   InfoCircleFilled,
@@ -30,7 +30,7 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
       role = 'result',
       className,
       image,
-      imageSize = 'md',
+      imageSize: sizeProp,
       type = 'info',
       title,
       content,
@@ -39,6 +39,9 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const imageSize = sizeProp ?? globalSize ?? 'md'
+
     const cls = cx(
       prefixCls,
       className,

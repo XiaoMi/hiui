@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { Tooltip, TooltipProps } from '@hi-ui/tooltip'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 
 const _role = 'tag'
 const _prefix = getPrefixCls(_role)
@@ -27,7 +27,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       background,
       type = 'default',
       appearance = 'filled',
-      size = 'md',
+      size: sizeProp,
       shape = 'square',
       closeable = false,
       editable = false,
@@ -41,6 +41,9 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const contentRef = useRef<HTMLDivElement | null>(null)
 
     const [isInEdit, setIsInEdit] = useState(false)

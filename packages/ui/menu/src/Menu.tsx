@@ -11,7 +11,13 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import {
+  HiBaseFieldNames,
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  useLocaleContext,
+  useGlobalContext,
+} from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
@@ -63,7 +69,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       render,
       extraHeader,
       onClick,
-      size = 'lg',
+      size: sizeProp,
       showTitleOnMini = false,
       ...rest
     },
@@ -72,6 +78,9 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const i18n = useLocaleContext()
 
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
+
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'lg'
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
 

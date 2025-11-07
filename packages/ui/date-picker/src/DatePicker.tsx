@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { useDate } from './hooks/useData'
@@ -72,7 +72,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       appearance = 'line',
-      size = 'md',
+      size: sizeProp,
       overlay,
       invalid = false,
       onOpen,
@@ -91,6 +91,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
     const locale = i18n.locale
 
