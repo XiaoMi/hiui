@@ -12,34 +12,17 @@ export const Group = () => {
       <h1>按钮组</h1>
       <div className="button-basic__wrap" style={{ marginBottom: 20 }}>
         <ButtonGroup style={{ marginRight: 20 }}>
-          <Button type="primary">主要按钮</Button>
-          <Button type="primary">主要按钮</Button>
-          <Button type="primary">主要按钮</Button>
-        </ButtonGroup>
-
-        <ButtonGroup style={{ marginRight: 20 }}>
-          <Button>中性按钮</Button>
-          <Button>中性按钮</Button>
-          <Button>中性按钮</Button>
-        </ButtonGroup>
-
-        <ButtonGroup>
-          <Button type="danger">危险按钮</Button>
-          <Button type="danger">危险按钮</Button>
-          <Button type="danger">危险按钮</Button>
+          <Button type="primary">按钮 1</Button>
+          <Button type="primary">按钮 2</Button>
+          <Button type="primary">按钮 3</Button>
         </ButtonGroup>
       </div>
+
       <div className="button-basic__wrap" style={{ marginBottom: 20 }}>
         <ButtonGroup style={{ marginRight: 20 }}>
           <Button type="primary" icon={<EditOutlined />} />
           <Button type="primary" icon={<EditOutlined />} />
           <Button type="primary" icon={<EditOutlined />} />
-        </ButtonGroup>
-
-        <ButtonGroup>
-          <Button icon={<EditOutlined />} />
-          <Button icon={<EditOutlined />} />
-          <Button icon={<EditOutlined />} />
         </ButtonGroup>
       </div>
 
@@ -47,11 +30,6 @@ export const Group = () => {
         <ButtonGroup style={{ marginRight: 20 }}>
           <Button type="primary">按钮</Button>
           <Button type="primary" icon={<EditOutlined />} />
-        </ButtonGroup>
-
-        <ButtonGroup>
-          <Button>按钮</Button>
-          <Button icon={<EditOutlined />} />
         </ButtonGroup>
       </div>
     </>

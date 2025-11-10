@@ -14,9 +14,6 @@ export const IconLink = () => {
         <Button type="primary" appearance="link" icon={<PlusOutlined />}>
           主要按钮
         </Button>
-        <Button type="secondary" appearance="link" icon={<PlusOutlined />}>
-          次要按钮
-        </Button>
         <Button type="default" appearance="link" icon={<PlusOutlined />}>
           中性按钮
         </Button>

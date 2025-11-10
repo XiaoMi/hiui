@@ -12,16 +12,19 @@ export const Disabled = () => {
       <h1>禁用</h1>
       <div className="button-basic__wrap">
         <Button type="primary" icon={<PlusOutlined />} disabled>
-          面性按钮
+          Solid
+        </Button>
+        <Button type="primary" icon={<PlusOutlined />} appearance="filled" disabled>
+          Filled
         </Button>
         <Button type="primary" icon={<PlusOutlined />} appearance="line" disabled>
-          线性按钮
-        </Button>
-        <Button type="primary" icon={<PlusOutlined />} appearance="link" disabled>
-          链接按钮
+          Line
         </Button>
         <Button type="primary" icon={<PlusOutlined />} appearance="text" disabled>
-          文本按钮
+          Text
+        </Button>
+        <Button type="primary" icon={<PlusOutlined />} appearance="link" disabled>
+          Link
         </Button>
       </div>
     </>

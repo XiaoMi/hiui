@@ -28,6 +28,25 @@ export const Size = () => {
         </div>
 
         <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
+          <Button type="primary" appearance="filled" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} size="xs" />
+          <Button type="primary" appearance="filled" size="sm">
+            小号按钮
+          </Button>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} size="sm" />
+          <Button type="primary" appearance="filled">
+            正常按钮
+          </Button>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} />
+          <Button type="primary" appearance="filled" size="lg">
+            大号按钮
+          </Button>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} size="lg" />
+        </div>
+
+        <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
           <Button type="primary" appearance="line" size="xs">
             超小号按钮
           </Button>
@@ -46,26 +65,7 @@ export const Size = () => {
           <Button type="primary" appearance="line" icon={<PlusOutlined />} size="lg" />
         </div>
 
-        <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
-          <Button type="primary" appearance="link" size="xs">
-            超小号按钮
-          </Button>
-          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="xs" />
-          <Button type="primary" appearance="link" size="sm">
-            小号按钮
-          </Button>
-          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="sm" />
-          <Button type="primary" appearance="link">
-            正常按钮
-          </Button>
-          <Button type="primary" appearance="link" icon={<PlusOutlined />} />
-          <Button type="primary" appearance="link" size="lg">
-            大号按钮
-          </Button>
-          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="lg" />
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
           <Button type="primary" appearance="text" size="xs">
             超小号按钮
           </Button>
@@ -82,6 +82,25 @@ export const Size = () => {
             大号按钮
           </Button>
           <Button type="primary" appearance="text" icon={<PlusOutlined />} size="lg" />
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Button type="primary" appearance="link" size="xs">
+            超小号按钮
+          </Button>
+          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="xs" />
+          <Button type="primary" appearance="link" size="sm">
+            小号按钮
+          </Button>
+          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="sm" />
+          <Button type="primary" appearance="link">
+            正常按钮
+          </Button>
+          <Button type="primary" appearance="link" icon={<PlusOutlined />} />
+          <Button type="primary" appearance="link" size="lg">
+            大号按钮
+          </Button>
+          <Button type="primary" appearance="link" icon={<PlusOutlined />} size="lg" />
         </div>
       </div>
     </>
