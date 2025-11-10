@@ -1,0 +1,175 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+// 默认态
+$solid-background-map: (
+  'primary': use-color-mode('primary'),
+  'default': use-color('gray', 700),
+  'success': use-color-mode('success'),
+  'danger': use-color-mode('danger'),
+) !default;
+
+$solid-color-map: (
+  'primary': use-color-static('white'),
+  'default': use-color-static('white'),
+  'success': use-color-static('white'),
+  'danger': use-color-static('white'),
+) !default;
+
+// hover 态
+$solid-hover-background-map: (
+  'primary': use-color-mode('primary', 400),
+  'default': use-color('gray', 600),
+  'success': use-color-mode('success', 400),
+  'danger': use-color-mode('danger', 400),
+) !default;
+
+$solid-hover-color-map: $solid-color-map !default;
+
+// active 态
+$solid-active-background-map: (
+  'primary': use-color-mode('primary', 600),
+  'default': use-color('gray', 800),
+  'success': use-color-mode('success', 600),
+  'danger': use-color-mode('danger', 600),
+) !default;
+
+$solid-active-color-map: $solid-color-map !default;
+
+// 加载态
+$solid-loading-background-map: (
+  'primary': use-color-mode('primary', 200),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
+) !default;
+
+$solid-loading-color-map: (
+  'primary': use-color-static('white'),
+  'default': use-color-static('white'),
+  'success': use-color-static('white'),
+  'danger': use-color-static('white'),
+) !default;
+
+// 禁用态
+$solid-disabled-background-map: (
+  'primary': use-color('gray', 400),
+  'default': use-color('gray', 400),
+  'success': use-color('gray', 400),
+  'danger': use-color('gray', 400),
+) !default;
+
+$solid-disabled-color-map: (
+  'primary': use-color-static('white'),
+  'default': use-color-static('white'),
+  'success': use-color-static('white'),
+  'danger': use-color-static('white'),
+) !default;
+
+// focus 态
+$solid-focus-shadow-map: (
+  'primary': use-color-mode('primary', 200),
+  'default': use-color('gray', 200),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 200),
+) !default;
+
+@mixin render-solid-button() {
+  & {
+
+    // 尺寸
+    &--appearance-solid#{&}--size-xs {
+      height: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('sm')} + #{1px * 2 + 1px * 2});
+      }
+    }
+
+    &--appearance-solid#{&}--size-sm {
+      height: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      font-size: use-text-size('sm');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(12);
+        padding: 0 use-spacing(4);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('sm')} + #{3px * 2 + 1px * 2});
+      }
+    }
+
+    &--appearance-solid#{&}--size-md {
+      height: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      font-size: use-text-size('normal');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(18);
+        padding: 0 use-spacing(6);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('normal')} + #{4px * 2 + 1px * 2});
+      }
+    }
+
+    &--appearance-solid#{&}--size-lg {
+      height: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+      font-size: use-text-size('lg');
+
+      &:not(.#{$prefix}--icon-only) {
+        min-width: use-height-size(22);
+        padding: 0 use-spacing(8);
+      }
+
+      &.#{$prefix}--icon-only {
+        width: calc(#{use-text-lineheight('lg')} + #{7px * 2 + 1px * 2});
+      }
+    }
+
+    $color-list: ('primary', 'default', 'success', 'danger');
+
+    @each $key in $color-list {
+      $prefix: & !default;
+      &--appearance-solid#{&}--type-#{$key} {
+        background-color: map-get($solid-background-map, $key);
+        border: use-border-size('normal') map-get($solid-background-map, $key);
+        color: map-get($solid-color-map, $key);
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
+          background-color: map-get($solid-hover-background-map, $key);
+          border: use-border-size('normal') map-get($solid-hover-background-map, $key);
+          color: map-get($solid-hover-color-map, $key);
+        }
+
+        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
+          background-color: map-get($solid-active-background-map, $key);
+          border: use-border-size('normal') map-get($solid-active-background-map, $key);
+          color: map-get($solid-active-color-map, $key);
+        }
+
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($solid-focus-shadow-map, $key);
+        // }
+
+        &.#{$prefix}--disabled {
+          background-color: map-get($solid-disabled-background-map, $key);
+          border: use-border-size('normal') map-get($solid-disabled-background-map, $key);
+          color: map-get($solid-disabled-color-map, $key);
+        }
+
+        &.#{$prefix}--loading {
+          background-color: map-get($solid-loading-background-map, $key);
+          border: use-border-size('normal') map-get($solid-loading-background-map, $key);
+          color: map-get($solid-loading-color-map, $key);
+        }
+      }
+    }
+  }
+}

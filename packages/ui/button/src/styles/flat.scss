@@ -2,16 +2,14 @@
 
 // 默认态
 $filled-background-map: (
-  'primary': use-color-mode('primary'),
-  'secondary': use-color-mode('primary', 50),
+  'primary': use-color-mode('primary', 50),
   'default': use-color('gray', 50),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-color-map: (
-  'primary': use-color-static('white'),
-  'secondary': use-color-mode('primary'),
+  'primary': use-color-mode('primary'),
   'default': use-color('gray', 600),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
@@ -19,8 +17,7 @@ $filled-color-map: (
 
 // hover 态
 $filled-hover-background-map: (
-  'primary': use-color-mode('primary', 400),
-  'secondary': use-color-mode('primary', 100),
+  'primary': use-color-mode('primary', 100),
   'default': use-color('gray', 100),
   'success': use-color-mode('success', 100),
   'danger': use-color-mode('danger', 100),
@@ -30,8 +27,7 @@ $filled-hover-color-map: $filled-color-map !default;
 
 // active 态
 $filled-active-background-map: (
-  'primary': use-color-mode('primary', 600),
-  'secondary': use-color-mode('primary', 200),
+  'primary': use-color-mode('primary', 200),
   'default': use-color('gray', 200),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
@@ -41,25 +37,22 @@ $filled-active-color-map: $filled-color-map !default;
 
 // 加载态
 $filled-loading-background-map: (
-  'primary': use-color-mode('primary', 300),
-  'secondary': use-color-mode('primary', 50),
+  'primary': use-color-mode('primary', 50),
   'default': use-color('gray', 50),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-loading-color-map: (
-  'primary': use-color-static('white'),
-  'secondary': use-color-mode('primary', 400),
+  'primary': use-color-mode('primary', 200),
   'default': use-color('gray', 400),
-  'success': use-color-mode('success', 400),
+  'success': use-color-mode('success', 300),
   'danger': use-color-mode('danger', 300),
 ) !default;
 
 // 禁用态
 $filled-disabled-background-map: (
   'primary': use-color('gray', 50),
-  'secondary': use-color('gray', 50),
   'default': use-color('gray', 50),
   'success': use-color('gray', 50),
   'danger': use-color('gray', 50),
@@ -67,7 +60,6 @@ $filled-disabled-background-map: (
 
 $filled-disabled-color-map: (
   'primary': use-color('gray', 400),
-  'secondary': use-color('gray', 400),
   'default': use-color('gray', 400),
   'success': use-color('gray', 400),
   'danger': use-color('gray', 400),
@@ -76,7 +68,6 @@ $filled-disabled-color-map: (
 // focus 态
 $filled-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
-  'secondary': use-color-mode('primary', 100),
   'default': use-color('gray', 200),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
@@ -142,24 +133,24 @@ $filled-focus-shadow-map: (
       }
     }
 
-    $color-list: ('primary', 'secondary', 'default', 'success', 'danger');
+    $color-list: ('primary', 'default', 'success', 'danger');
 
     @each $key in $color-list {
       $prefix: & !default;
       &--appearance-filled#{&}--type-#{$key} {
         background-color: map-get($filled-background-map, $key);
-        border: 1px solid map-get($filled-background-map, $key);
+        border: use-border-size('normal') map-get($filled-background-map, $key);
         color: map-get($filled-color-map, $key);
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):hover {
           background-color: map-get($filled-hover-background-map, $key);
-          border: 1px solid map-get($filled-hover-background-map, $key);
+          border: use-border-size('normal') map-get($filled-hover-background-map, $key);
           color: map-get($filled-hover-color-map, $key);
         }
 
         &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):active {
           background-color: map-get($filled-active-background-map, $key);
-          border: 1px solid map-get($filled-active-background-map, $key);
+          border: use-border-size('normal') map-get($filled-active-background-map, $key);
           color: map-get($filled-active-color-map, $key);
         }
 
@@ -169,13 +160,13 @@ $filled-focus-shadow-map: (
 
         &.#{$prefix}--disabled {
           background-color: map-get($filled-disabled-background-map, $key);
-          border: 1px solid map-get($filled-disabled-background-map, $key);
+          border: use-border-size('normal') map-get($filled-disabled-background-map, $key);
           color: map-get($filled-disabled-color-map, $key);
         }
 
         &.#{$prefix}--loading {
           background-color: map-get($filled-loading-background-map, $key);
-          border: 1px solid map-get($filled-loading-background-map, $key);
+          border: use-border-size('normal') map-get($filled-loading-background-map, $key);
           color: map-get($filled-loading-color-map, $key);
         }
       }

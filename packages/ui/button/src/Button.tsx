@@ -19,7 +19,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       children,
       type = 'default',
       size: sizeProp,
-      appearance = 'filled',
+      appearance = 'solid',
       disabled = false,
       loading = false,
       icon = null,
@@ -47,13 +47,16 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
+    // 兼容 V4 版本，当 type 是 secondary 类型时，自动转换为 primary 类型，appearance 自动转换为 filled 外观
+    const _type = type === 'secondary' ? 'primary' : type
+    const _appearance = type === 'secondary' ? 'filled' : appearance
 
     const cls = cx(
       prefixCls,
       className,
-      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--appearance-${_appearance}`,
       `${prefixCls}--size-${size}`,
-      `${prefixCls}--type-${type}`,
+      `${prefixCls}--type-${_type}`,
       `${prefixCls}--shape-${shape}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
@@ -95,7 +98,7 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮外观
    */
-  appearance?: 'filled' | 'link' | 'line' | 'text'
+  appearance?: 'solid' | 'filled' | 'link' | 'line' | 'text'
   /**
    * 设置按钮是否禁用
    */
