@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   stories: [
     "../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)",
@@ -22,5 +24,25 @@ module.exports = {
         return (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true)
       }
     },
+  },
+  webpackFinal: async (config) => {
+    const localeContextRoot = path.resolve(__dirname, '../packages/ui/locale-context')
+    const localeSrcDir = path.join(localeContextRoot, 'src/locale')
+    
+    const newAlias = {
+      '@hi-ui/locale-context/locale': localeSrcDir,
+      '@hi-ui/locale-context$': path.join(localeContextRoot, 'src/index.ts'),
+      '@hi-ui/locale-context': path.join(localeContextRoot, 'src'),
+    }
+    
+    config.resolve.alias = {
+      ...newAlias,
+      ...config.resolve.alias,
+    }
+    
+    const originalExtensions = config.resolve.extensions || []
+    config.resolve.extensions = ['.ts', '.tsx', ...originalExtensions.filter(ext => ext !== '.ts' && ext !== '.tsx')]
+    
+    return config
   },
 }

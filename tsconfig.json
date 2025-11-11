@@ -18,7 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "@hi-ui/locale-context/locale/*": ["packages/ui/locale-context/src/locale/*"]
+    }
   },
   "include": ["packages"],
   "exclude": ["node_modules", "lib"]

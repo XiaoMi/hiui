@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react'
 import { __DEV__ } from '@hi-ui/env'
+import { PortalProvider, PortalProviderProps } from '@hi-ui/core'
 import {
   LocaleProvider,
   LocaleProviderProps,
-  PortalProvider,
-  PortalProviderProps,
-} from '@hi-ui/core'
+  LocaleExtendsFunc,
+  LocaleMergeFunc,
+} from '@hi-ui/locale-context'
 import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
 import { createSystem, extendsTheme } from './theme'
 import { getAccentColorTheme } from './accent-color'
 
 const PREFIX = 'hi-v4'
 
-export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
-  children,
-  locale,
-  languages,
-  accentColor,
-  theme,
-  portal,
-}) => {
+export const Provider: React.FC<ProviderProps> & {
+  extends: ProviderExtendsFunc
+  merge: ProviderMergeFunc
+} = ({ children, locale, languages, accentColor, theme, portal }) => {
   /**
    * global css var config
    */
@@ -67,6 +64,11 @@ if (__DEV__) {
   Provider.displayName = 'Provider'
 }
 
+/**
+ * 从 LocaleProvider 导出的方法
+ */
 Provider.extends = LocaleProvider.extends
+Provider.merge = LocaleProvider.merge
 
-type ProviderExtendsFunc = typeof LocaleProvider.extends
+type ProviderExtendsFunc = LocaleExtendsFunc
+type ProviderMergeFunc = LocaleMergeFunc
