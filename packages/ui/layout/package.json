@@ -46,8 +46,11 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
+    "@hi-ui/icons": "^5.0.0-canary.4",
     "@hi-ui/menu": "^5.0.0-canary.11",
     "@hi-ui/popper": "^5.0.0-canary.7",
+    "@hi-ui/popover": "^5.0.0-canary.6",
+    "@hi-ui/use-toggle": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"
   },
   "peerDependencies": {

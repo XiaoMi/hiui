@@ -15,17 +15,12 @@ export const Nested = () => {
       <h1>Nested</h1>
       <div className="modal-nested__wrap">
         <Button onClick={() => setVisible(!visible)}>open</Button>
-        <Modal title="提示" visible={visible} closeable={false} onCancel={() => setVisible(false)}>
+        <Modal title="提示" visible={visible} onCancel={() => setVisible(false)}>
           <div>这里是弹窗内容</div>
           <Button style={{ marginTop: 20 }} onClick={() => setNestVisible(!nestVisible)}>
             Nested
           </Button>
-          <Modal
-            title="提示"
-            visible={nestVisible}
-            closeable={false}
-            onCancel={() => setNestVisible(false)}
-          >
+          <Modal title="提示" visible={nestVisible} onCancel={() => setNestVisible(false)}>
             Nest这里是弹窗内容
           </Modal>
         </Modal>

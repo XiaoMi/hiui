@@ -19,13 +19,14 @@ type MockReactDOM = typeof ReactDOM & {
 }
 
 // 引用原始 ReactDOM 对象，但不修改
-const cloneReactDOM = { ...ReactDOM } as MockReactDOM
+const clonedReactDOM = { ...ReactDOM } as MockReactDOM
 
-const { version, render: reactLegacyRender, unmountComponentAtNode } = cloneReactDOM
+const { version, render: reactLegacyRender, unmountComponentAtNode } = clonedReactDOM
 
 let createRoot: CreateRootFn | undefined
+let mainVersion = 0
 try {
-  const mainVersion = Number((version || '').split('.')[0])
+  mainVersion = Number((version || '').split('.')[0])
   if (mainVersion >= 18) {
     // React 18+ 中 createRoot 在 react-dom/client 中
     // const ReactDOMClient = require('react-dom/client')
@@ -35,8 +36,22 @@ try {
   // Do nothing;
 }
 
+function ignoreWarning(skip: boolean) {
+  // @ts-expect-error ReactDOM 的私有属性
+  const { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } = clonedReactDOM
+
+  if (
+    __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
+    typeof __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED === 'object'
+  ) {
+    __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.usingClientEntryPoint = skip
+  }
+}
+
 function modernRender(node: React.ReactElement, container: ContainerType) {
+  ignoreWarning(true)
   const root = container[MARK] || createRoot!(container)
+  ignoreWarning(false)
 
   root.render(node)
 
@@ -45,6 +60,13 @@ function modernRender(node: React.ReactElement, container: ContainerType) {
 
 function legacyRender(node: React.ReactElement, container: ContainerType) {
   reactLegacyRender?.(node, container)
+
+  if (mainVersion >= 19) {
+    console.error(
+      // TODO 增加在线文档地址
+      'React19 中无 ReactDOM.render 方法，部分静态API将无法使用，请参照 @hi-ui/patch-for-react 补丁包进行兼容处理！'
+    )
+  }
 }
 
 export function render(node: React.ReactElement, container: ContainerType) {

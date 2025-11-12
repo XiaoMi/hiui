@@ -10,7 +10,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 .#{$prefix} {
   position: relative;
   display: inline-block;
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   font-size: use-text-size('normal');
   z-index: use-zindex('normal');
   width: fit-content;
@@ -30,7 +30,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &--appearance-line {
     .#{$content-class} {
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
     }
 
     &#{$this}--focused {
@@ -67,31 +67,31 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$input-class} {
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
       border-top: none;
       border-bottom: none;
 
       &:disabled {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
     }
 
     .#{$minus-class},
     .#{$plus-class} {
       background-color: use-color-static('white');
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &:active {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
       }
 
       &.disabled {
-        background-color: use-color('gray', 50);
-        color: use-color('gray', 300);
+        background-color: use-color('gray', 100);
+        color: use-color('gray', 400);
       }
     }
   }
@@ -145,21 +145,21 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border: use-border-size('normal') use-color-static('white');
       border-top: none;
       border-bottom: none;
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
     }
 
     .#{$minus-class},
     .#{$plus-class} {
-      background-color: use-color('gray', 100);
-      color: use-color('gray', 700);
+      background-color: use-color('gray', 200);
+      color: use-color('gray', 900);
 
       &:hover {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
       }
 
       &.disabled {
-        background-color: use-color('gray', 100);
-        color: use-color('gray', 300);
+        background-color: use-color('gray', 200);
+        color: use-color('gray', 400);
       }
     }
   }
@@ -219,7 +219,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     transition-timing-function: use-motion-bezier('normal');
 
     &:disabled {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
   }
 

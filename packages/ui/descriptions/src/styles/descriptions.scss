@@ -50,13 +50,13 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     }
 
     &__label {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
       margin-inline-end: use-spacing(6);
       flex-shrink: 0;
     }
 
     &__content {
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
       overflow-x: auto;
     }
   }
@@ -91,7 +91,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
   &--appearance {
     &-table {
-      border: use-border-size('normal') use-color('gray', 200);
+      border: use-border-size('normal') use-color('gray', 300);
       background-color: use-color-static('white');
 
       &.#{$prefix}--size-md {
@@ -111,13 +111,13 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       > table {
         table-layout: auto;
         border-collapse: collapse;
-        border-color: use-color('gray', 200);
+        border-color: use-color('gray', 300);
       }
 
       .#{$prefix}-item__label,
       .#{$prefix}-item__content {
         padding: use-spacing(7);
-        border-right: use-border-size('normal') use-color('gray', 200);
+        border-right: use-border-size('normal') use-color('gray', 300);
 
         &:last-child {
           border-right: none;
@@ -125,14 +125,14 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       }
 
       .#{$prefix}-item__label {
-        color: use-color('gray', 700);
-        background-color: use-color('gray', 100);
+        color: use-color('gray', 900);
+        background-color: use-color('gray', 200);
         font-weight: use-text-weight('medium');
         text-align: left;
       }
 
       .#{$prefix}-row {
-        border-bottom: use-border-size('normal') use-color('gray', 200);
+        border-bottom: use-border-size('normal') use-color('gray', 300);
 
         &:last-child {
           border-bottom: none;

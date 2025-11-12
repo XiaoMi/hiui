@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import Spinner from '@hi-ui/spinner'
 
 const _role = 'button'
@@ -18,8 +18,8 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       className,
       children,
       type = 'default',
-      size = 'md',
-      appearance = 'filled',
+      size: sizeProp,
+      appearance,
       disabled = false,
       loading = false,
       icon = null,
@@ -45,12 +45,35 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         <span className={`${prefixCls}__icon ${prefixCls}__icon--suffix`}>{icon[1]}</span>
       ) : null
 
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
+    // 兼容 V4 版本，当 type 是 secondary 类型时，自动转换为 primary 类型，appearance 自动转换为 filled 外观
+    let _type = type
+    let _appearance = appearance
+    if (type === 'secondary') {
+      _type = 'primary'
+    }
+    if (type === 'secondary') {
+      _appearance = 'filled'
+    }
+
+    // 如果未设置外观，则根据 type 自动设置外观
+    if (!appearance) {
+      if (['primary', 'success', 'danger'].includes(type)) {
+        _appearance = 'solid'
+      } else if (['default'].includes(type)) {
+        // 默认使用灰色 line 外观
+        _appearance = 'line'
+      }
+    }
+
     const cls = cx(
       prefixCls,
       className,
-      `${prefixCls}--appearance-${appearance}`,
+      `${prefixCls}--appearance-${_appearance}`,
       `${prefixCls}--size-${size}`,
-      `${prefixCls}--type-${type}`,
+      `${prefixCls}--type-${_type}`,
       `${prefixCls}--shape-${shape}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
@@ -92,7 +115,7 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮外观
    */
-  appearance?: 'filled' | 'link' | 'line' | 'text'
+  appearance?: 'solid' | 'filled' | 'link' | 'line' | 'text'
   /**
    * 设置按钮是否禁用
    */

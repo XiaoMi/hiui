@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@hi-ui/array-utils": "^5.0.0-canary.2",
+    "@hi-ui/button": "^5.0.0-canary.10",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.3",

@@ -21,7 +21,6 @@ export const Size = () => {
         <Modal
           title="提示"
           visible={!!visibleModalSize}
-          closeable={false}
           size={visibleModalSize}
           onCancel={() => setVisibleModalSize(undefined)}
         >

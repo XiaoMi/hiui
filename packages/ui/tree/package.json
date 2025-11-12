@@ -51,6 +51,7 @@
     "@hi-ui/icons": "^5.0.0-canary.3",
     "@hi-ui/input": "^5.0.0-canary.10",
     "@hi-ui/popper": "^5.0.0-canary.6",
+    "@hi-ui/spinner": "^5.0.0-canary.4",
     "@hi-ui/times": "^5.0.0-canary.2",
     "@hi-ui/tree-utils": "^5.0.0-canary.2",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",

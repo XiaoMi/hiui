@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
@@ -32,7 +32,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       onClick,
       onButtonClick,
       overlayClassName,
-      size = 'md',
+      size: sizeProp,
       ...rest
     },
     ref
@@ -41,9 +41,18 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
     const { rootProps, ...providedValue } = useDropdown(rest)
 
-    const { getMenuProps, getTriggerProps, disabled, menuVisibleAction } = providedValue
+    const {
+      getMenuProps,
+      getTriggerProps,
+      disabled,
+      menuVisible,
+      menuVisibleAction,
+    } = providedValue
 
     const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
+
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
 
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
@@ -65,7 +74,8 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             target={item.target}
             value={item.id}
             menu={menu}
-            onClick={() => {
+            onClick={(evt) => {
+              evt.stopPropagation()
               if (item.disabled) return
               onClick?.(item.id)
               if (!isArray(item.children)) {
@@ -87,9 +97,14 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
       if (type === 'text' || type === 'button') {
         return (
-          <Button {...getTriggerProps()} appearance={type === 'button' ? 'filled' : 'link'}>
+          <Button {...getTriggerProps()} appearance={type === 'button' ? 'line' : 'link'}>
             {title}
-            <DownOutlined style={{ marginInlineStart: 2 }} />
+            <DownOutlined
+              style={{
+                marginInlineStart: 2,
+                transform: menuVisible ? 'rotate(180deg)' : 'rotate(0)',
+              }}
+            />
           </Button>
         )
       }
@@ -101,7 +116,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             <Button
               className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
               {...getTriggerProps()}
-              icon={<DownOutlined />}
+              icon={
+                <DownOutlined style={{ transform: menuVisible ? 'rotate(180deg)' : 'rotate(0)' }} />
+              }
             ></Button>
           </ButtonGroup>
         )

@@ -12,7 +12,7 @@ $pop-content-prefix: '#{$component-prefix}-time-picker__pop-content' !default;
 
   &__separator {
     width: 1px;
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 200);
     border-left: none;
     border-right: none;
   }

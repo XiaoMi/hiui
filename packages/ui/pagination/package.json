@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/button": "^5.0.0-canary.10",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/counter": "^5.0.0-canary.3",
     "@hi-ui/env": "^5.0.0-canary.2",

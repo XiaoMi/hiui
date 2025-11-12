@@ -31,7 +31,7 @@ import {
 import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -71,6 +71,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       searchable: searchableProp,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       overlayClassName,
       type = 'tree',
       flattedSearchResult = true,
@@ -79,7 +80,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onOpen,
       onClose,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       renderExtraFooter,
@@ -96,6 +97,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)
@@ -338,6 +342,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         header={renderExtraHeader?.()}
         trigger={
           customRender ? (

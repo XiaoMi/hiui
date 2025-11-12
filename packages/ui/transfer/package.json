@@ -48,6 +48,7 @@
     "@hi-ui/checkbox": "^5.0.0-canary.3",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
+    "@hi-ui/highlighter": "^5.0.0-canary.3",
     "@hi-ui/icons": "^5.0.0-canary.4",
     "@hi-ui/input": "^5.0.0-canary.10",
     "@hi-ui/pagination": "^5.0.0-canary.5",

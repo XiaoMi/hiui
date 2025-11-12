@@ -21,7 +21,7 @@ $prefix: '#{$component-prefix}-anchor' !default;
       display: block;
       width: 2px;
       height: 100%;
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 300);
     }
   }
 
@@ -58,7 +58,7 @@ $item-prefix: '#{$prefix}-item' !default;
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     background-color: use-color-static('transparent');
     // @animation
     transition-property: background-color;
@@ -67,13 +67,13 @@ $item-prefix: '#{$prefix}-item' !default;
     position: relative;
 
     &:hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
   }
 
   &--active {
     > .#{$item-prefix}__link {
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
       font-weight: use-text-weight('medium');
     }
   }

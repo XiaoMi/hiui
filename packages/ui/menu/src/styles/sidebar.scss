@@ -23,7 +23,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
   &--showMenu {
     .#{$sidebar-prefix}-menu-wrapper {
-      border-right: 1px solid use-color('gray', 300);
+      border-right: 1px solid use-color('gray', 400);
     }
 
     .#{$sidebar-prefix}-toggle {
@@ -55,7 +55,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   height: 100%;
   padding: use-spacing(4) 0;
   overflow: auto;
-  border-right: 1px solid use-color('gray', 300);
+  border-right: 1px solid use-color('gray', 400);
   background-color: #fff;
 
   &-list {
@@ -81,7 +81,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
     }
 
     &:not(.#{$sidebar-prefix}-item--active):hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
     }
 
     &--active {
@@ -94,7 +94,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
     &__icon {
       height: 20px;
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
 
       svg[class^=#{$component-prefix}-icon] {
         width: 20px;
@@ -105,7 +105,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
     &__title {
       font-size: use-text-size('sm');
       line-height: 20px;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 }
@@ -133,7 +133,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
       }
 
       &__icon {
-        color: use-color('gray', 600);
+        color: use-color('gray', 700);
         margin-inline-end: use-spacing(2);
       }
 
@@ -146,10 +146,10 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
       }
 
       &__inner--active-p {
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
 
         .#{$prefix}-item__icon {
-          color: use-color('gray', 600);
+          color: use-color('gray', 700);
         }
       }
     }
@@ -188,10 +188,10 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   transform: translateY(-50%);
   border-start-end-radius: 16px 8px;
   border-end-end-radius: 16px 8px;
-  border: 1px solid use-color('gray', 300);
+  border: 1px solid use-color('gray', 400);
   border-left: none;
   cursor: pointer;
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
   background-color: #fff;
 
   svg[class^=#{$component-prefix}-icon] {

@@ -16,7 +16,7 @@ export const MultiplyLine = () => {
         <EllipsisTooltip
           numberOfLines={3}
           tooltipProps={{
-            title: <div style={{ width: 400 }}>{textOverview}</div>,
+            title: <div style={{ width: 420 }}>{textOverview}</div>,
           }}
         >
           {textOverview}

@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
 import ResizeDetector from 'react-resize-detector'
 import { useTextarea, UseTextareaProps } from './use-textarea'
 
@@ -16,7 +16,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     {
       prefixCls = _prefix,
       className,
-      size = 'md',
+      size: sizeProp,
       appearance = 'line',
       header,
       invalid = false,
@@ -40,6 +40,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const { focused, autoSize, value, getTextareaProps, onResize } = useTextarea({
       name,
       autoFocus,
@@ -64,8 +67,17 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       const max = Number(maxLength)
       const valueLength = value.length
 
-      return `${valueLength}${max > 0 ? `/${max}` : ''}`
-    }, [showCount, maxLength, value])
+      return (
+        <>
+          {valueLength > 0 ? (
+            <span className={`${prefixCls}__count-value`}>{valueLength}</span>
+          ) : (
+            valueLength
+          )}
+          {max > 0 ? `/${max}` : ''}
+        </>
+      )
+    }, [showCount, maxLength, value.length, prefixCls])
 
     const cls = cx(
       prefixCls,
@@ -77,7 +89,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     )
 
     const textareaNode = (
-      <div className={cls} data-count={dataCount}>
+      <div className={cls}>
         <div
           className={cx(
             `${prefixCls}__inner`,
@@ -90,6 +102,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
           {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
           <textarea {...getTextareaProps(rest, ref)} className={`${prefixCls}__text`} />
         </div>
+        <div className={`${prefixCls}__count`}>{dataCount}</div>
       </div>
     )
 

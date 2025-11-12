@@ -174,6 +174,7 @@ export const FloatMenu = () => {
     selectId: selectMenuId,
     activeId: activeMenuId,
   })
+  console.log('submenuData', submenuData)
 
   // 浮动菜单是否显示
   const [floatContainerVisible, setFloatContainerVisible] = React.useState(submenuData.length > 0)
@@ -310,6 +311,13 @@ export const FloatMenu = () => {
                   setFloatContainerVisible(false)
                   setFloatContainerCollapsed(true)
                   setSelectMenuId(id)
+                } else {
+                  const submenuFirstItem = submenuData[0]?.children?.[0]
+                  if (submenuFirstItem) {
+                    setActiveMenuId(submenuFirstItem.id)
+                    setFloatContainerVisible(true)
+                    setFloatContainerCollapsed(false)
+                  }
                 }
               }}
               onMouseEnter={(event, id, item) => {
@@ -360,8 +368,7 @@ export const FloatMenu = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 18,
-                margin: '20px 16px',
+                margin: '12px 16px',
                 marginBlockStart: 'auto',
               }}
             >
@@ -370,7 +377,9 @@ export const FloatMenu = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 4,
+                  height: 40,
                   fontSize: 14,
+                  cursor: 'pointer',
                 }}
               >
                 <div
@@ -435,6 +444,7 @@ export const FloatMenu = () => {
                     alignItems: 'center',
                     gap: 4,
                     fontSize: 14,
+                    height: 40,
                     cursor: 'pointer',
                   }}
                   onClick={() => setProfileVisible(!profileVisible)}

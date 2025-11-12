@@ -52,6 +52,7 @@
     "@hi-ui/popper": "^5.0.0-canary.6",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
+    "@hi-ui/use-id": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-toggle": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"

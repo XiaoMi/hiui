@@ -9,11 +9,11 @@ export const Basic = () => {
     <>
       <h1>不同类型</h1>
       <div className="button-basic__wrap">
-        <Button type="primary">主要按钮</Button>
-        <Button type="secondary">次要按钮</Button>
-        <Button type="default">中性按钮</Button>
-        <Button type="danger">危险按钮</Button>
-        <Button type="success">成功按钮</Button>
+        <Button type="primary">Primary Button</Button>
+        <Button type="secondary">Secondary Button</Button>
+        <Button>Default Button</Button>
+        <Button type="danger">Danger Button</Button>
+        <Button type="success">Success Button</Button>
       </div>
     </>
   )

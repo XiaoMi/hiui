@@ -17,7 +17,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -74,6 +74,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // emptyContent,
       // ********* popper ********* //
       // optionWidth,
@@ -93,7 +94,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       showCheckAll,
       showOnlyShowChecked = false,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       customRender,
       prefix,
       suffix,
@@ -104,6 +105,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)
@@ -266,8 +270,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         const highlight =
           !!searchValue && (searchMode === 'highlight' || searchMode === 'filter' || dataSource)
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
-          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
         ) : (
           true
         )
@@ -392,6 +399,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
         header={renderExtraHeader?.()}

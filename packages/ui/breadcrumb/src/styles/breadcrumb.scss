@@ -25,7 +25,7 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
 
   &__content {
     transition: all 0.3s;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   a {
@@ -42,18 +42,18 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   &__separator {
     margin: 0 use-spacing(2);
     font-size: use-text-size('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__item {
     display: inline-block;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__item:last-child {
     .#{$prefix}__content {
       cursor: text;
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
     }
 
     .#{$prefix}__separator {

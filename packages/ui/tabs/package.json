@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/button": "^5.0.0-canary.10",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icon-button": "^5.0.0-canary.3",
@@ -53,6 +54,7 @@
     "@hi-ui/tooltip": "^5.0.0-canary.4",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
+    "@hi-ui/use-id": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2",
     "@hi-ui/use-unmount-effect": "^5.0.0-canary.2"
   },
