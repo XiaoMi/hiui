@@ -62,6 +62,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
@@ -281,6 +282,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         loading={rest.loading !== undefined ? rest.loading : loading}
         header={renderExtraHeader?.()}
         trigger={

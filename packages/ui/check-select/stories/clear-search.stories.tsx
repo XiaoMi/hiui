@@ -1,0 +1,43 @@
+import React from 'react'
+import CheckSelect from '../src'
+
+/**
+ * @title 清除搜索
+ * @desc 关闭弹窗时清除搜索，默认不开启
+ */
+export const ClearSearch = () => {
+  const [data] = React.useState([
+    {
+      id: 'up-1',
+      title: 'up',
+    },
+    {
+      id: '0',
+      title: '0',
+    },
+    {
+      id: '1',
+      title: '1',
+    },
+    {
+      id: '2',
+      title: '2',
+    },
+  ])
+
+  return (
+    <>
+      <h1>Clear Search</h1>
+      <div className="check-select-clear-search__wrap">
+        <CheckSelect
+          style={{ width: 240 }}
+          searchable
+          data={data}
+          placeholder="请选择品类"
+          searchPlaceholder="请输入搜索内容"
+          clearSearchOnClosed
+        />
+      </div>
+    </>
+  )
+}
