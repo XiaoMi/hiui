@@ -41,7 +41,13 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
     const { rootProps, ...providedValue } = useDropdown(rest)
 
-    const { getMenuProps, getTriggerProps, disabled, menuVisibleAction } = providedValue
+    const {
+      getMenuProps,
+      getTriggerProps,
+      disabled,
+      menuVisible,
+      menuVisibleAction,
+    } = providedValue
 
     const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
 
@@ -90,9 +96,14 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
       if (type === 'text' || type === 'button') {
         return (
-          <Button {...getTriggerProps()} appearance={type === 'button' ? 'filled' : 'link'}>
+          <Button {...getTriggerProps()} appearance={type === 'button' ? 'line' : 'link'}>
             {title}
-            <DownOutlined style={{ marginInlineStart: 2 }} />
+            <DownOutlined
+              style={{
+                marginInlineStart: 2,
+                transform: menuVisible ? 'rotate(180deg)' : 'rotate(0)',
+              }}
+            />
           </Button>
         )
       }
@@ -104,7 +115,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             <Button
               className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
               {...getTriggerProps()}
-              icon={<DownOutlined />}
+              icon={
+                <DownOutlined style={{ transform: menuVisible ? 'rotate(180deg)' : 'rotate(0)' }} />
+              }
             ></Button>
           </ButtonGroup>
         )

@@ -26,14 +26,6 @@ export const Content = () => {
       }}
     >
       <span>文字标题</span>
-      <IconButton
-        effect
-        icon={<CloseOutlined />}
-        onClick={() => {
-          setVisible(false)
-          popoverVisibleRef.current = false
-        }}
-      />
     </div>
   )
 
@@ -70,7 +62,6 @@ export const Content = () => {
       </div>
       <div style={{ textAlign: 'right' }}>
         <Button
-          size="sm"
           appearance="line"
           onClick={() => {
             setVisible(false)
@@ -80,7 +71,6 @@ export const Content = () => {
           取消
         </Button>
         <Button
-          size="sm"
           type="primary"
           loading={loading}
           onClick={() => {

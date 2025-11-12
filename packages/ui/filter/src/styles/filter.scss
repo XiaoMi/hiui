@@ -55,7 +55,9 @@ $prefix: '#{$component-prefix}-filter' !default;
     &--disabled {
       @include disabled;
 
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
+      cursor: not-allowed;
+      pointer-events: unset;
     }
   }
 
@@ -68,17 +70,17 @@ $prefix: '#{$component-prefix}-filter' !default;
         content: '';
         width: 1px;
         height: 14px;
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 400);
       }
 
       &-title {
-        color: use-color('gray', 600);
+        color: use-color('gray', 700);
       }
     }
 
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(20);
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
 
       &::after {
         content: '';
@@ -112,7 +114,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 
     .#{$prefix}-item__label {
       &-title {
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
         font-weight: use-text-weight('semibold');
       }
     }
@@ -120,15 +122,15 @@ $prefix: '#{$component-prefix}-filter' !default;
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(12);
       padding: 2px 0;
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
 
       &__text {
-        padding:  0 use-spacing(6);
+        padding: 0 use-spacing(6);
         line-height: use-height-size(8);
-        border-radius: use-border-radius('md');
+        border-radius: use-border-radius('normal');
 
         &:hover {
-          background-color:  use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 

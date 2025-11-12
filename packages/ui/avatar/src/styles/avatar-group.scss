@@ -14,8 +14,8 @@ $prefix: '#{$component-prefix}-avatar' !default;
 
   .#{$prefix}-group__more-button {
     cursor: pointer;
-    color: use-color('gray', 600);
-    background-color: use-color('gray', 200);
+    color: use-color('gray', 700);
+    background-color: use-color('gray', 300);
 
     .#{$prefix}__content {
       font-size: use-text-size('sm');
