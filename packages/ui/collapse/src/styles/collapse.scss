@@ -9,6 +9,6 @@ $prefix: '#{$component-prefix}-collapse' !default;
   border-radius: use-border-radius('lg');
 
   &--bordered {
-    border: use-border-size('normal') use-color('gray', 200);
+    border: use-border-size('normal') use-color('gray', 300);
   }
 }

@@ -89,7 +89,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     $unset: '#{&}--appearance-unset';
 
     &--appearance-line {
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
 
       &:hover {
         border-color: use-color-mode('primary');
@@ -97,17 +97,17 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--appearance-filled {
-      background: use-color('gray', 100);
+      background: use-color('gray', 200);
 
       &:hover {
-        background: use-color('gray', 200);
+        background: use-color('gray', 300);
       }
     }
 
     &--appearance-unset {
       &:hover,
       &.#{$prefix}__picker--focus {
-        background: use-color('gray', 100);
+        background: use-color('gray', 200);
       }
 
       .#{$prefix}__picker__input-container {
@@ -121,7 +121,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &.#{$prefix}__picker--appearance-contained {
       width: auto;
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
 
       &.#{$prefix}__picker--has-value,
       &:not(.#{$prefix}__picker--disabled):hover {
@@ -144,13 +144,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &.#{$prefix}__picker--disabled {
         .#{$prefix}__picker__label {
-          color: use-color('gray', 400);
+          color: use-color('gray', 500);
         }
       }
 
       .#{$prefix}__picker__label {
         white-space: nowrap;
-        color: use-color('gray', 600);
+        color: use-color('gray', 700);
       }
 
       .#{$prefix}__input-selector {
@@ -179,11 +179,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--disabled {
       cursor: not-allowed;
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
 
       &:hover {
-        background-color: use-color('gray', 50) !important;
-        border-color: use-color('gray', 300);
+        background-color: use-color('gray', 100) !important;
+        border-color: use-color('gray', 400);
       }
     }
 
@@ -227,14 +227,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       cursor: pointer;
       display: block;
       flex-shrink: 0;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
 
         &:hover {
-          color: use-color('gray', 400) !important;
+          color: use-color('gray', 500) !important;
         }
       }
 
@@ -246,7 +246,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     //.icon-close-circle {
-    //  color: use-color('gray', 300);
+    //  color: use-color('gray', 400);
     //}
     //
     //.icon-close-circle:hover {
@@ -287,16 +287,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       margin: 0;
 
       &::placeholder {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
 
         .#{$prefix}__picker--appearance-unset & {
-          color: use-color('gray', 400);
+          color: use-color('gray', 500);
         }
       }
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
   }
@@ -308,7 +308,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     border-radius: use-border-radius('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     // overflow: hidden;
   }
 
@@ -317,7 +317,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     margin-right: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: inherit;
     text-align: center;
   }
@@ -376,13 +376,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     //}
 
     &__time-container {
-      border-left: 1px solid use-color('gray', 200);
+      border-left: 1px solid use-color('gray', 300);
       display: flex;
       flex-direction: column;
     }
 
     &__time-header {
-      border-bottom: 1px solid use-color('gray', 200);
+      border-bottom: 1px solid use-color('gray', 300);
       line-height: 40px;
       text-align: center;
       font-size: use-text-size('normal');
@@ -401,7 +401,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 200);
+    border-bottom: 1px solid use-color('gray', 300);
     display: flex;
     justify-content: space-between;
     height: 40px;
@@ -414,7 +414,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       width: 50px;
       display: flex;
       justify-content: space-around;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       user-select: none;
     }
 
@@ -430,13 +430,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &:hover {
         color: use-color-mode('primary');
-        background: use-color('gray', 50);
+        background: use-color('gray', 100);
       }
     }
 
     &-text {
       cursor: pointer;
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
       font-size: use-text-size('normal');
     }
   }
@@ -507,7 +507,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--weekNum {
       width: 40px;
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
 
     &-text,
@@ -546,28 +546,20 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     // 周模式有特殊处理
     &:hover:not(#{&}--selected):not(#{&}--week-mode-select) {
       .#{$prefix}__cell-text {
-        background: use-color('gray', 50);
+        background: use-color('gray', 100);
       }
     }
 
     &--out {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       .#{$prefix}__lunar {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
 
     &--today {
-      &::after {
-        content: '';
-        background: use-color-mode('primary');
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        position: absolute;
+      .#{$prefix}__cell-text {
+        border: use-border-size('normal') use-color-mode('primary');
       }
     }
 
@@ -576,12 +568,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--disabled {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       cursor: not-allowed;
-      background: use-color('gray', 100);
+      background: use-color('gray', 200);
 
       .#{$prefix}__lunar {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
       //&::before {
       //  content: '';
@@ -700,7 +692,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &#{&}--week-mode-select {
       &:hover {
         .#{$cell-class}-week-indicator {
-          background: use-color('gray', 50);
+          background: use-color('gray', 100);
         }
       }
     }
@@ -783,7 +775,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__lunar {
     font-size: use-text-size('sm');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     transform: scale(0.8);
     line-height: 16px;
     margin-bottom: -8px;
@@ -807,7 +799,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__footer-old {
     height: 48px;
-    border-top: 1px solid use-color('gray', 100);
+    border-top: 1px solid use-color('gray', 200);
     box-sizing: border-box;
     line-height: 48px;
     text-align: center;
@@ -822,7 +814,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--disable {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -850,17 +842,17 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__time-period {
     //width: 144px;
-    border-left: 1px solid use-color('gray', 200);
+    border-left: 1px solid use-color('gray', 300);
     text-align: center;
     box-sizing: border-box;
     font-size: use-text-size('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
   }
 
   &__period-header {
     line-height: 40px;
     height: 40px;
-    border-bottom: 1px solid use-color('gray', 200);
+    border-bottom: 1px solid use-color('gray', 300);
     box-sizing: border-box;
   }
 
@@ -881,7 +873,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     border-radius: 16px;
 
     &:hover {
-      background: use-color('gray', 50);
+      background: use-color('gray', 100);
     }
 
     &--active {
@@ -892,7 +884,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__shortcuts {
     background: use-color-static('white');
-    border-right: 1px solid use-color('gray', 200);
+    border-right: 1px solid use-color('gray', 300);
     //width: 105px;
     box-sizing: border-box;
     overflow: hidden;
@@ -912,11 +904,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       padding: 0 16px;
       list-style: none;
       font-size: use-text-size('sm');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       border-radius: use-border-radius('normal');
 
       &:hover {
-        background: use-color('gray', 50);
+        background: use-color('gray', 100);
       }
     }
   }
@@ -967,7 +959,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     display: flex;
     justify-content: space-between;
     padding: 10px 8px;
-    border-top: 1px solid use-color('gray', 100);
+    border-top: 1px solid use-color('gray', 200);
     align-items: center;
     flex-wrap: wrap;
     flex-direction: row-reverse;

@@ -23,7 +23,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
       border-radius: use-border-radius('lg');
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
     }
 
     &:not(&--parent):not(&--disabled) {
@@ -31,7 +31,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
       &:hover {
         .#{$group-menu-prefix}-item__content {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 
@@ -52,7 +52,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
     &--disabled {
       > .#{$group-menu-prefix}-item__content {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
 
@@ -75,7 +75,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
     > .#{$group-menu-prefix}-item__content {
       height: use-height-size(7);
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
 
       .#{$group-menu-prefix}-item__title {
         font-size: use-text-size('sm');

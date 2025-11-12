@@ -49,7 +49,7 @@ $prefix: '#{$component-prefix}-notification' !default;
 
   &__content {
     word-break: break-word;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     .#{$prefix}--size-lg & {
       margin-top: use-spacing(4);
@@ -207,17 +207,17 @@ $prefix: '#{$component-prefix}-notification' !default;
     line-height: 0;
 
     .#{$prefix}--size-lg & {
-      top: use-spacing(10);
+      top: calc(#{use-spacing(12)} - 1px);
       right: use-spacing(10);
     }
 
     .#{$prefix}--size-md & {
-      top: use-spacing(8);
+      top: calc(#{use-spacing(10)} - 1px);
       right: use-spacing(8);
     }
 
     .#{$prefix}--size-sm & {
-      top: use-spacing(6);
+      top: calc(#{use-spacing(8)} - 1px);
       right: use-spacing(6);
     }
   }

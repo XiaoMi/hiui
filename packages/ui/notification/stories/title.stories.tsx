@@ -13,6 +13,7 @@ export const Title = () => {
         <Button
           onClick={() => {
             notification.open({
+              autoClose: false,
               title: '重要通知：重复三遍',
             })
             notification.open({

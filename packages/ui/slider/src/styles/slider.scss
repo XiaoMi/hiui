@@ -26,15 +26,15 @@ $prefix: '#{$component-prefix}-slider' !default;
     }
 
     .#{$prefix}__rail {
-      background: use-color('gray', 100);
+      background: use-color('gray', 200);
     }
 
     .#{$prefix}__track {
-      background: use-color('gray', 300);
+      background: use-color('gray', 400);
     }
 
     .#{$prefix}__handle {
-      border-color: use-color('gray', 300);
+      border-color: use-color('gray', 400);
 
       &:focus {
         box-shadow: none;
@@ -109,7 +109,7 @@ $prefix: '#{$component-prefix}-slider' !default;
     position: absolute;
     width: 100%;
     height: 4px;
-    background-color: use-color('gray', 200);
+    background-color: use-color('gray', 300);
     border-radius: use-border-radius('sm');
     cursor: pointer;
   }
@@ -132,7 +132,7 @@ $prefix: '#{$component-prefix}-slider' !default;
     height: use-height-size(2);
     margin-top: calc(#{use-spacing(1)} * -1);
     background-color: use-color-static('white');
-    border: use-border-size('semibold') use-color('gray', 200);
+    border: use-border-size('semibold') use-color('gray', 300);
     transition-property: background-color;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');

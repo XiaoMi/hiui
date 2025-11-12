@@ -27,6 +27,7 @@ export const WithAPI = () => {
         </Button>
         <Button
           type="default"
+          appearance="solid"
           onClick={() =>
             Modal.confirm({
               type: 'warning',
@@ -59,7 +60,7 @@ export const WithAPI = () => {
         </Button>
 
         <Button
-          type="secondary"
+          type="primary"
           onClick={() =>
             Modal.confirm({
               type: 'info',

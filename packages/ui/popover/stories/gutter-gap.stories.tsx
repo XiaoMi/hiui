@@ -19,7 +19,7 @@ export const GutterGap = () => {
     <>
       <h1>Gutter Gap</h1>
       <div className="popover-basic__wrap">
-        <Popover title={title} content={content} gutterGap={20} trigger="click">
+        <Popover title={title} content={content} gutterGap={6} trigger="click">
           <Button>trigger</Button>
         </Popover>
       </div>

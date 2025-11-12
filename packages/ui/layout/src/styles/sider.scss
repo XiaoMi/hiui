@@ -12,7 +12,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
   width: auto;
   height: 100%;
   overflow: hidden;
-  box-shadow: 1px 0 0 0 use-color('gray', 200);
+  box-shadow: 1px 0 0 0 use-color('gray', 300);
 
   &--collapsed {
     transition: width 0.4s;

@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/button": "^4.0.10",
     "@hi-ui/classname": "^4.0.5",
     "@hi-ui/counter": "^4.1.9",
     "@hi-ui/env": "^4.0.5",

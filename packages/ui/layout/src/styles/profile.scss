@@ -25,7 +25,7 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
       cursor: pointer;
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &__title {
@@ -37,12 +37,12 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
         font-weight: use-text-weight('medium');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
 
       &__arrow {
         font-size: use-text-size('lg');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
 
@@ -59,7 +59,7 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
       line-height: use-text-lineheight('normal');
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &--checked {
@@ -70,7 +70,7 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
 
   &__footer {
     padding: use-spacing(4);
-    border-top: use-border-size('normal') use-color('gray', 200);
+    border-top: use-border-size('normal') use-color('gray', 300);
 
     &__content {
       box-sizing: border-box;
@@ -84,7 +84,7 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
       line-height: use-text-lineheight('normal');
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
     }
   }

@@ -3,14 +3,14 @@
 // 默认态
 $filled-background-map: (
   'primary': use-color-mode('primary', 50),
-  'default': use-color('gray', 50),
+  'default': use-color('gray', 100),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-color-map: (
   'primary': use-color-mode('primary'),
-  'default': use-color('gray', 600),
+  'default': use-color('gray', 700),
   'success': use-color-mode('success'),
   'danger': use-color-mode('danger'),
 ) !default;
@@ -18,7 +18,7 @@ $filled-color-map: (
 // hover 态
 $filled-hover-background-map: (
   'primary': use-color-mode('primary', 100),
-  'default': use-color('gray', 100),
+  'default': use-color('gray', 200),
   'success': use-color-mode('success', 100),
   'danger': use-color-mode('danger', 100),
 ) !default;
@@ -28,7 +28,7 @@ $filled-hover-color-map: $filled-color-map !default;
 // active 态
 $filled-active-background-map: (
   'primary': use-color-mode('primary', 200),
-  'default': use-color('gray', 200),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;
@@ -38,37 +38,37 @@ $filled-active-color-map: $filled-color-map !default;
 // 加载态
 $filled-loading-background-map: (
   'primary': use-color-mode('primary', 50),
-  'default': use-color('gray', 50),
+  'default': use-color('gray', 100),
   'success': use-color-mode('success', 50),
   'danger': use-color-mode('danger', 50),
 ) !default;
 
 $filled-loading-color-map: (
   'primary': use-color-mode('primary', 200),
-  'default': use-color('gray', 400),
+  'default': use-color('gray', 500),
   'success': use-color-mode('success', 300),
   'danger': use-color-mode('danger', 300),
 ) !default;
 
 // 禁用态
 $filled-disabled-background-map: (
-  'primary': use-color('gray', 50),
-  'default': use-color('gray', 50),
-  'success': use-color('gray', 50),
-  'danger': use-color('gray', 50),
+  'primary': use-color('gray', 100),
+  'default': use-color('gray', 100),
+  'success': use-color('gray', 100),
+  'danger': use-color('gray', 100),
 ) !default;
 
 $filled-disabled-color-map: (
-  'primary': use-color('gray', 400),
-  'default': use-color('gray', 400),
-  'success': use-color('gray', 400),
-  'danger': use-color('gray', 400),
+  'primary': use-color('gray', 500),
+  'default': use-color('gray', 500),
+  'success': use-color('gray', 500),
+  'danger': use-color('gray', 500),
 ) !default;
 
 // focus 态
 $filled-focus-shadow-map: (
   'primary': use-color-mode('primary', 200),
-  'default': use-color('gray', 200),
+  'default': use-color('gray', 300),
   'success': use-color-mode('success', 200),
   'danger': use-color-mode('danger', 200),
 ) !default;

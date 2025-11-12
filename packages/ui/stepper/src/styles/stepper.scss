@@ -18,13 +18,13 @@ $prefix: '#{$component-prefix}-stepper' !default;
         text-align: center;
         line-height: use-height-size(7);
         border-radius: use-border-radius('full');
-        color: use-color('gray', 500);
-        background-color: use-color('gray', 100);
+        color: use-color('gray', 600);
+        background-color: use-color('gray', 200);
         flex-shrink: 0;
       }
 
       &__dot {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
         width: 8px;
         height: 8px;
         // 24 * 24 size
@@ -34,7 +34,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__icon {
-        color: use-color('gray', 200);
+        color: use-color('gray', 300);
         font-size: 24px;
         line-height: 24px;
       }
@@ -45,7 +45,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       &__title {
         margin-top: 3px;
         line-height: use-text-lineheight('normal');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
 
       &__content {
@@ -54,7 +54,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
         text-align: center;
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
         padding: 0;
       }
     }
@@ -78,7 +78,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         &-tip {
           &__title {
-            color: use-color('gray', 700);
+            color: use-color('gray', 900);
           }
         }
       }
@@ -104,7 +104,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         &-tip {
           &__title {
-            color: use-color('gray', 700);
+            color: use-color('gray', 900);
             font-weight: use-text-weight('medium');
           }
         }
@@ -133,7 +133,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           left: 13px;
           width: 1px;
           height: calc(100% - #{use-height-size(6)} - #{$line-spacing} * 2);
-          background-color: use-color('gray', 300);
+          background-color: use-color('gray', 400);
         }
 
         // 尾部无线
@@ -255,7 +255,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
           }
 
           .#{$prefix}-item-tip__title::after {
-            background-color: use-color('gray', 200);
+            background-color: use-color('gray', 300);
           }
 
           &.#{$prefix}-item--done {
@@ -303,7 +303,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
             top: use-spacing(6);
             width: calc(50% - #{use-spacing(4)} - #{use-height-size(6)} / 2);
             height: 1px;
-            background-color: use-color('gray', 200);
+            background-color: use-color('gray', 300);
           }
 
           &:not(:first-of-type)::before {

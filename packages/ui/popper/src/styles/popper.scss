@@ -9,97 +9,43 @@ $prefix: '#{$component-prefix}-popper' !default;
   &__arrow {
     z-index: 1;
     position: relative;
-
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-color: transparent;
-      border-width: 6px;
-    }
-
-    &::after {
-      z-index: -1;
-    }
+    display: inline-flex;
   }
 
   $arrow-color: use-color-static('white');
 
   &[data-popper-placement^=top] {
     .#{$prefix}__arrow {
-      bottom: 0;
-
-      &::before {
-        left: 0;
-        transform: translateX(-6px);
-        top: -1px;
-        border-top-color: $arrow-color;
-      }
-
-      &::after {
-        left: 0;
-        transform: translateX(-6px);
-        top: 0;
-        border-top-color: use-color('gray', 200);
-      }
+      bottom: -6px;
     }
   }
 
   &[data-popper-placement^=bottom] {
     .#{$prefix}__arrow {
-      &::before {
-        left: 0;
-        transform: translateX(-6px);
-        bottom: -1px;
-        border-bottom-color: $arrow-color;
-      }
+      top: -6px;
 
-      &::after {
-        left: 0;
-        transform: translateX(-6px);
-        bottom: 0;
-        border-bottom-color: use-color('gray', 200);
+      svg {
+        transform: rotate(180deg);
       }
     }
   }
 
   &[data-popper-placement^=left] {
     .#{$prefix}__arrow {
-      right: 0;
+      right: -10px;
 
-      &::before {
-        top: 0;
-        transform: translateY(-50%);
-        left: -1px;
-        border-left-color: $arrow-color;
-      }
-
-      &::after {
-        top: 0;
-        transform: translateY(-50%);
-        left: 0;
-        border-left-color: use-color('gray', 200);
+      svg {
+        transform: rotate(-90deg);
       }
     }
   }
 
   &[data-popper-placement^=right] {
     .#{$prefix}__arrow {
-      &::before {
-        top: 0;
-        transform: translateY(-50%);
-        right: -1px;
-        border-right-color: $arrow-color;
-      }
+      left: -10px;
 
-      &::after {
-        top: 0;
-        transform: translateY(-50%);
-        right: 0;
-        border-right-color: use-color('gray', 200);
+      svg {
+        transform: rotate(90deg);
       }
     }
   }

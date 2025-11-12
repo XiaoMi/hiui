@@ -6,7 +6,7 @@ import Button from '@hi-ui/button'
  * @title 带操作
  */
 export const Action = () => {
-  const notificationIdRef = React.useRef<React.ReactText>('')
+  const notificationIdRef = React.useRef<React.ReactText | undefined>(undefined)
 
   return (
     <>
@@ -23,6 +23,7 @@ export const Action = () => {
                 <>
                   <Button
                     type="default"
+                    size="sm"
                     appearance="line"
                     onClick={() => {
                       if (notificationIdRef.current) {
@@ -34,6 +35,7 @@ export const Action = () => {
                   </Button>
                   <Button
                     type="primary"
+                    size="sm"
                     onClick={() => {
                       if (notificationIdRef.current) {
                         notification.close(notificationIdRef.current)

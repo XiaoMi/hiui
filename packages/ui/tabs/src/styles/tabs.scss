@@ -24,7 +24,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
       display: flex;
       height: 16px;
       padding-left: use-spacing(4);
-      border-left: 1px solid use-color('gray', 200);
+      border-left: 1px solid use-color('gray', 300);
     }
   }
 
@@ -45,7 +45,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   &__close-btn {
     cursor: pointer;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     margin-left: use-spacing(2);
     transition: color 0.3s;
 
@@ -63,19 +63,19 @@ $prefix: '#{$component-prefix}-tabs' !default;
   &__list {
     position: relative;
     font-size: use-text-size('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     display: flex;
     overflow: hidden;
     align-items: center;
 
     &.#{$prefix}__list--editable {
       // width: fit-content;
-      border-bottom: 1px solid use-color('gray', 200);
+      border-bottom: 1px solid use-color('gray', 300);
     }
 
     &--type-card {
       .#{$prefix}__item {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
         margin: 0;
         padding: use-spacing(5) use-spacing(8);
         border-radius: 0;
@@ -101,8 +101,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
         &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)) {
           &:hover {
-            background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
+            background-color: use-color('gray', 300);
+            color: use-color('gray', 600);
 
             &::after {
               display: none;
@@ -118,7 +118,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
             position: absolute;
             width: 1px;
             height: use-height-size(4);
-            background-color: use-color('gray', 300);
+            background-color: use-color('gray', 400);
             left: 0;
             top: 50%;
             transform: translateY(-50%);
@@ -143,19 +143,19 @@ $prefix: '#{$component-prefix}-tabs' !default;
     &--type-desc {
       .#{$prefix}-item {
         &__title {
-          color: use-color('gray', 700);
+          color: use-color('gray', 900);
           line-height: use-text-lineheight('sm');
         }
 
         &__desc {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
           font-size: use-text-size('sm');
           line-height: use-text-lineheight('sm');
         }
       }
 
       .#{$prefix}__item {
-        background: use-color('gray', 50);
+        background: use-color('gray', 100);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -165,8 +165,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
         transition: all 0.3s;
 
         &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
-          background-color: use-color('gray', 200);
-          color: use-color('gray', 500);
+          background-color: use-color('gray', 300);
+          color: use-color('gray', 600);
         }
 
         &--active {
@@ -275,7 +275,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--placement-horizontal {
       &.#{$prefix}__list--show-divider {
-        border-bottom: 1px solid use-color('gray', 200);
+        border-bottom: 1px solid use-color('gray', 300);
       }
     }
   }
@@ -297,12 +297,12 @@ $prefix: '#{$component-prefix}-tabs' !default;
       &.#{$prefix}__list--type-desc {
         .#{$prefix}-item {
           &__title {
-            color: use-color('gray', 700);
+            color: use-color('gray', 900);
             line-height: use-text-lineheight('sm');
           }
 
           &__desc {
-            color: use-color('gray', 500);
+            color: use-color('gray', 600);
             font-size: use-text-size('sm');
             line-height: use-text-lineheight('sm');
           }
@@ -315,11 +315,11 @@ $prefix: '#{$component-prefix}-tabs' !default;
           padding: use-spacing(8);
           border-radius: use-border-radius('normal');
           transition: all 0.3s;
-          background: use-color('gray', 50);
+          background: use-color('gray', 100);
 
           &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
-            background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
+            background-color: use-color('gray', 300);
+            color: use-color('gray', 600);
           }
 
           &--active {
@@ -346,7 +346,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         .#{$prefix}__item {
           margin: 0;
           padding: use-spacing(5) use-spacing(8);
-          background-color: use-color('gray', 200);
+          background-color: use-color('gray', 300);
           border-radius: 0;
           transition: all 0.3s;
           line-height: use-text-lineheight('sm');
@@ -368,8 +368,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
           transition: all 0.3s;
 
           &:not(:where(.#{$prefix}__item--active, .#{$prefix}__item--disabled)):hover {
-            background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
+            background-color: use-color('gray', 300);
+            color: use-color('gray', 600);
           }
 
           &--active {
@@ -470,7 +470,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--disabled,
     &--disabled .#{$prefix}__close-btn {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
 

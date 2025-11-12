@@ -20,7 +20,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
   }
 
   &--bordered {
-    border: use-border-size('normal') use-color('gray', 100);
+    border: use-border-size('normal') use-color('gray', 200);
   }
 
   &__content {

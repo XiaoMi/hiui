@@ -11,7 +11,7 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
   height: 32px;
   margin: 0 8px 12px;
   font-size: 16px;
-  color: use-color('gray', 500);
+  color: use-color('gray', 600);
   background-color: rgba(#717ea3, 0.1);
   cursor: pointer;
   border-radius: 9999px;
@@ -34,6 +34,6 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
 
   &__popper-container {
     border-radius: use-border-radius('xl') !important;
-    border: use-border-size('normal') use-color('gray', 100);
+    border: use-border-size('normal') use-color('gray', 200);
   }
 }

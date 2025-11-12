@@ -68,7 +68,7 @@ $query-filter-form-gap: use-spacing(4) !default;
   &[class*='--appearance-filled'] {
     [class*='__inner'],
     [class*='__inner--focused'] {
-      background-color: use-color('gray', 50) !important;
+      background-color: use-color('gray', 100) !important;
     }
   }
 }

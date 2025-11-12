@@ -163,7 +163,9 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {showTotal ? (
-          <div className={`${prefixCls}__total`}>{renderTotal ? renderTotal(total) : `${totalText[0]} ${total} ${totalText[1]}`}</div>
+          <div className={`${prefixCls}__total`}>
+            {renderTotal ? renderTotal(total) : `${totalText[0]} ${total} ${totalText[1]}`}
+          </div>
         ) : null}
 
         {showPagers ? (
@@ -174,6 +176,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               disabled={disabled || current === 1}
               onChange={onClick}
               current={current}
+              size={size}
             />
             {renderPagers()}
             <PagerButton
@@ -181,6 +184,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               prefixCls={prefixCls}
               onChange={onClick}
               current={current}
+              size={size}
               disabled={disabled || current === maxPage}
             />
           </ul>

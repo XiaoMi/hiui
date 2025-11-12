@@ -31,6 +31,7 @@ export const Tip = () => {
                   checked={item.checked}
                   disabled={item.disabled}
                   style={{
+                    display: 'inline-block',
                     width: '100%',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',

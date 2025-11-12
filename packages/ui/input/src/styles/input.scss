@@ -34,16 +34,16 @@ $prefix: '#{$component-prefix}-input' !default;
     width: 100%;
     font-size: inherit;
     line-height: inherit;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     &::placeholder {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
 
@@ -83,7 +83,7 @@ $prefix: '#{$component-prefix}-input' !default;
     height: auto;
     text-align: center;
     font-size: use-text-size('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     flex-shrink: 0;
     cursor: pointer;
     transition-property: all;
@@ -112,7 +112,7 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: inherit;
     text-align: center;
   }
@@ -132,8 +132,8 @@ $prefix: '#{$component-prefix}-input' !default;
   &__prepend,
   &__append {
     position: relative;
-    color: use-color('gray', 700);
-    background-color: use-color('gray', 50);
+    color: use-color('gray', 900);
+    background-color: use-color('gray', 100);
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -270,7 +270,7 @@ $prefix: '#{$component-prefix}-input' !default;
   &--appearance {
     &-line {
       .#{$prefix}__inner {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
 
         &:not(.#{$prefix}__inner--disabled):hover {
           border-color: use-color-mode('primary');
@@ -295,7 +295,7 @@ $prefix: '#{$component-prefix}-input' !default;
 
       .#{$prefix}__prepend,
       .#{$prefix}__append {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
       }
     }
 
@@ -319,13 +319,13 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
 
     &-filled {
       .#{$prefix}__inner {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
 
         &:not(.#{$prefix}__inner--disabled):hover {
           background-color: use-color-static('white');
@@ -383,7 +383,7 @@ $prefix: '#{$component-prefix}-input' !default;
           // 两边透明边框各负 1px
           left: -1px;
           right: -1px;
-          border-bottom: 1px solid use-color('gray', 300);
+          border-bottom: 1px solid use-color('gray', 400);
           transition: all 0.3s;
         }
 
@@ -424,11 +424,11 @@ $prefix: '#{$component-prefix}-input' !default;
     &-filled {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color('gray', 400);
-          background-color: use-color('gray', 50);
+          color: use-color('gray', 500);
+          background-color: use-color('gray', 100);
 
           .#{$prefix}__text {
-            color: use-color('gray', 400);
+            color: use-color('gray', 500);
           }
         }
       }
@@ -438,11 +438,11 @@ $prefix: '#{$component-prefix}-input' !default;
     &-underline {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color('gray', 400);
+          color: use-color('gray', 500);
           background-color: transparent;
 
           .#{$prefix}__text {
-            color: use-color('gray', 400);
+            color: use-color('gray', 500);
           }
         }
       }

@@ -120,12 +120,13 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 18, margin: '20px 16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', margin: '12px 16px' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: 4,
+                  height: 40,
                   fontSize: 14,
                   cursor: 'pointer',
                 }}
@@ -191,6 +192,7 @@ export const WithMenu = () => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 4,
+                    height: 40,
                     fontSize: 14,
                     cursor: 'pointer',
                   }}

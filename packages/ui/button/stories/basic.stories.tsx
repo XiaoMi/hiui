@@ -10,7 +10,8 @@ export const Basic = () => {
       <h1>不同类型</h1>
       <div className="button-basic__wrap">
         <Button type="primary">Primary Button</Button>
-        <Button type="default">Default Button</Button>
+        <Button type="secondary">Secondary Button</Button>
+        <Button>Default Button</Button>
         <Button type="danger">Danger Button</Button>
         <Button type="success">Success Button</Button>
       </div>

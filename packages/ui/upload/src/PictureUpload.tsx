@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './types'
 import { FileSelect } from '@hi-ui/file-select'
-import { PlusOutlined, DeleteOutlined, SearchOutlined, InfoCircleFilled } from '@hi-ui/icons'
+import { PlusOutlined, DeleteOutlined, SearchOutlined, ExclamationCircleFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
@@ -218,7 +218,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     ) : (
                       <div className={`${prefixCls}__percent`}>
                         <span className={`${prefixCls}__error-btn`}>
-                          <InfoCircleFilled />
+                          <ExclamationCircleFilled />
                         </span>
                         <span
                           className={cx(`${prefixCls}__delete-btn`)}

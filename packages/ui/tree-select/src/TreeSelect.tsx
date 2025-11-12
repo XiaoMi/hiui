@@ -212,8 +212,11 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
-          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
         ) : (
           true
         )
@@ -308,7 +311,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
-            size={'md'}
             className={`${prefixCls}__tree`}
             selectable
             selectedId={value}

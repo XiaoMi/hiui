@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useState } from 'react'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UploadFileItem, UploadFileList } from './types'
 import {
@@ -129,7 +129,11 @@ const FileItem = ({
 
     return !disabled ? (
       action === true ? (
-        <span className={`${prefixCls}__del-btn`}>
+        <span
+          className={cx(`${prefixCls}__del-btn`, {
+            [`${prefixCls}__del-btn--show-success`]: showSuccess,
+          })}
+        >
           {file.uploadState === 'loading' ? (
             <CloseOutlined onClick={() => onDelete(file, index)} />
           ) : showSuccess ? (

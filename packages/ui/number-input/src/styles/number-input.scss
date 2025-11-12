@@ -15,7 +15,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   position: relative;
   display: inline-flex;
   width: 100%;
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   font-size: use-text-size('normal');
   z-index: use-zindex('normal');
   box-sizing: border-box;
@@ -39,7 +39,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     height: 50%;
     padding: 0 use-spacing(3);
     font-size: use-text-size('md');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
 
     // @animation
     transition-property: background-color, color, box-shadow;
@@ -47,16 +47,16 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     transition-timing-function: use-motion-bezier('normal');
 
     &:not(.disabled):hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &:not(.disabled):active {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
     }
 
     &.disabled {
       cursor: not-allowed;
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
   }
 
@@ -82,7 +82,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     white-space: nowrap;
 
     &::placeholder {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
   }
 
@@ -91,7 +91,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: inherit;
     text-align: center;
   }
@@ -107,12 +107,12 @@ $prefix:  '#{$component-prefix}-number-input' !default;
   &__handler {
     box-sizing: border-box;
     height: 100%;
-    border-left: use-border-size('normal') use-color('gray', 300);
+    border-left: use-border-size('normal') use-color('gray', 400);
 
     @include flex(center, center, column, inline-flex);
 
     .#{$prefix}__plus {
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+      border-bottom: use-border-size('normal') use-color('gray', 400);
     }
   }
 
@@ -148,17 +148,17 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
   &--appearance {
     &-line {
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
 
       &#{$this}--disabled {
-        color: use-color('gray', 400);
-        background-color: use-color('gray', 50);
+        color: use-color('gray', 500);
+        background-color: use-color('gray', 100);
       }
     }
 
     &-filled {
-      border: use-border-size('normal') use-color('gray', 100);
-      background-color: use-color('gray', 100);
+      border: use-border-size('normal') use-color('gray', 200);
+      background-color: use-color('gray', 200);
 
       &:not(#{$this}--disabled):hover {
         background-color: use-color-static('white');
@@ -169,8 +169,8 @@ $prefix:  '#{$component-prefix}-number-input' !default;
       }
 
       &#{$this}--disabled {
-        color: use-color('gray', 400);
-        background-color: use-color('gray', 200);
+        color: use-color('gray', 500);
+        background-color: use-color('gray', 300);
       }
     }
   }

@@ -27,7 +27,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   cursor: pointer;
   transition: all use-motion-bezier('normal');
   outline: none;
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
 
   svg {
     width: 1em;

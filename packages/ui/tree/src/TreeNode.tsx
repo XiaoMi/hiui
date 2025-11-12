@@ -3,12 +3,8 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/array-utils'
 import Checkbox from '@hi-ui/checkbox'
-import {
-  defaultLoadingIcon,
-  defaultCollapseIcon,
-  defaultExpandIcon,
-  defaultLeafIcon,
-} from './icons'
+import Spinner from '@hi-ui/spinner'
+import { defaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
 import { IconButton } from './IconButton'
 import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
@@ -455,7 +451,7 @@ const renderSwitcher = (
       <IconButton
         tabIndex={-1}
         className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
-        icon={defaultLoadingIcon}
+        icon={<Spinner size="sm" />}
       />
     )
   }

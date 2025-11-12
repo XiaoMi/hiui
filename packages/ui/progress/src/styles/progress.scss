@@ -36,7 +36,7 @@ $progress-color-map: (
     flex: 1;
     border-radius: use-border-radius('full');
     overflow: hidden;
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 200);
 
     &--active {
       .#{$prefix}__value {
@@ -75,7 +75,7 @@ $progress-color-map: (
       &--right {
         right: 0;
         transform: translateX(calc(100% + #{use-spacing(4)}));
-        color: use-color('gray', 600);
+        color: use-color('gray', 700);
       }
 
       color: use-color-static('white');
@@ -91,7 +91,7 @@ $progress-color-map: (
   &__content {
     font-size: use-text-size('sm');
     margin-left: use-spacing(6);
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     white-space: nowrap;
   }
 
@@ -171,7 +171,7 @@ $circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: use-text-size('sm');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
@@ -184,7 +184,7 @@ $circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
 
   &__background {
     fill: none;
-    stroke: use-color('gray', 100);
+    stroke: use-color('gray', 200);
   }
 
   &__circle {
@@ -222,7 +222,7 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: use-text-size('sm');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
@@ -235,7 +235,7 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
 
   &__background {
     fill: none;
-    stroke: use-color('gray', 100);
+    stroke: use-color('gray', 200);
   }
 
   &__circle {
@@ -275,7 +275,7 @@ $mini-progress-prefix: '#{$component-prefix}-mini-progress' !default;
 
   &__background {
     fill: none;
-    stroke: use-color('gray', 100);
+    stroke: use-color('gray', 200);
   }
 
   &__circle {
@@ -294,6 +294,6 @@ $mini-progress-prefix: '#{$component-prefix}-mini-progress' !default;
 
   &__text {
     margin-left: use-spacing(4);
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
   }
 }
