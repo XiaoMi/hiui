@@ -1,5 +1,18 @@
 # @hi-ui/core
 
+## 5.0.0-canary.5
+
+### Minor Changes
+
+- 922686dcc: feat(global-context): 增加 size api 全局配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/core-css@5.0.0-canary.9
+  - @hi-ui/global-context@5.0.0-canary.0
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

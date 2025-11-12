@@ -1,5 +1,17 @@
 # @hi-ui/page-header
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/breadcrumb@5.0.0-canary.6
+  - @hi-ui/icon-button@5.0.0-canary.4
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

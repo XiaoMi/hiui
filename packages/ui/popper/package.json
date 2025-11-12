@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/popper",
-  "version": "5.0.0-canary.7",
+  "version": "5.0.0-canary.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,7 +47,7 @@
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/portal": "^5.0.0-canary.3",
+    "@hi-ui/portal": "^5.0.0-canary.4",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-lazy-render": "^5.0.0-canary.2",
@@ -58,13 +58,13 @@
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.3",
+    "@hi-ui/core": ">=5.0.0-canary.5",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.3",
-    "@hi-ui/core-css": "^5.0.0-canary.7",
+    "@hi-ui/core": "^5.0.0-canary.5",
+    "@hi-ui/core-css": "^5.0.0-canary.9",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }

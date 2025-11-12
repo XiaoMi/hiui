@@ -1,5 +1,25 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.9
+
+### Minor Changes
+
+- 922686dcc: feat(global-context): 增加 size api 全局配置 (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+- Updated dependencies [8e969ad73]
+- Updated dependencies [2ae7dfdeb]
+  - @hi-ui/button@5.0.0-canary.11
+  - @hi-ui/icon-button@5.0.0-canary.4
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/react-compat@5.0.0-canary.2
+  - @hi-ui/icons@5.0.0-canary.5
+  - @hi-ui/portal@5.0.0-canary.4
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

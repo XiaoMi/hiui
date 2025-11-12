@@ -1,5 +1,25 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.22
+
+### Minor Changes
+
+- 922686dcc: feat(global-context): 增加 size api 全局配置 (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- 0de8163de: style(date-picker, time-picker): 修改禁用时的样式 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+- Updated dependencies [8e969ad73]
+- Updated dependencies [0de8163de]
+  - @hi-ui/button@5.0.0-canary.11
+  - @hi-ui/popper@5.0.0-canary.8
+  - @hi-ui/time-picker@5.0.0-canary.14
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.21
 
 ### Patch Changes

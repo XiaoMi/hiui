@@ -1,5 +1,14 @@
 # @hi-ui/toast
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- Updated dependencies [922686dcc]
+- Updated dependencies [2ae7dfdeb]
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/react-compat@5.0.0-canary.2
+
 ## 5.0.0-canary.4
 
 ### Minor Changes

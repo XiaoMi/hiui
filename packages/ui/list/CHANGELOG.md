@@ -1,5 +1,17 @@
 # @hi-ui/list
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/avatar@5.0.0-canary.5
+  - @hi-ui/empty-state@5.0.0-canary.5
+  - @hi-ui/pagination@5.0.0-canary.7
+  - @hi-ui/core@5.0.0-canary.5
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

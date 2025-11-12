@@ -1,5 +1,23 @@
 # @hi-ui/dropdown
 
+## 5.0.0-canary.8
+
+### Minor Changes
+
+- 922686dcc: feat(global-context): 增加 size api 全局配置 (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- 70f9e99a1: chore(dropdown): 点击选项时阻止 click 事件冒泡 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+- Updated dependencies [8e969ad73]
+  - @hi-ui/button@5.0.0-canary.11
+  - @hi-ui/popper@5.0.0-canary.8
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

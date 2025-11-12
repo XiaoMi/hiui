@@ -1,5 +1,15 @@
 # @hi-ui/message
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [922686dcc]
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+  - @hi-ui/toast@5.0.0-canary.5
+
 ## 5.0.0-canary.7
 
 ### Minor Changes

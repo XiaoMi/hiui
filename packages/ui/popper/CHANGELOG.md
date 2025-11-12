@@ -1,5 +1,14 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [922686dcc]
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/portal@5.0.0-canary.4
+
 ## 5.0.0-canary.7
 
 ### Minor Changes

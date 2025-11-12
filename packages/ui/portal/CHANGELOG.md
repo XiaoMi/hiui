@@ -1,5 +1,12 @@
 # @hi-ui/portal
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- Updated dependencies [922686dcc]
+  - @hi-ui/core@5.0.0-canary.5
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

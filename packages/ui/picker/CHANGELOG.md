@@ -1,5 +1,22 @@
 https://infra.mioffice.cn/hiui/# @hi-ui/picker
 
+## 5.0.0-canary.12
+
+### Minor Changes
+
+- 2b706fc6d: feat(picker): 增加 clearSearchOnClosed api 默认是 false (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/input@5.0.0-canary.14
+  - @hi-ui/loading@5.0.0-canary.6
+  - @hi-ui/popper@5.0.0-canary.8
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

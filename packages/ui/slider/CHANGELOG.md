@@ -1,5 +1,15 @@
 # @hi-ui/slider
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/tooltip@5.0.0-canary.5
+  - @hi-ui/core@5.0.0-canary.5
+
 ## 5.0.0-canary.5
 
 ### Minor Changes

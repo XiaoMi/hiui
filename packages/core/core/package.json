@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/core",
-  "version": "5.0.0-canary.4",
+  "version": "5.0.0-canary.5",
   "description": "A sub-package for @hi-ui/utils.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@hi-ui/core-css": "^5.0.0-canary.6",
+    "@hi-ui/core-css": "^5.0.0-canary.9",
     "@hi-ui/locale-context": "^5.0.0-canary.6",
     "@hi-ui/portal-context": "^5.0.0-canary.2",
     "@hi-ui/global-context": "^5.0.0-canary.0"

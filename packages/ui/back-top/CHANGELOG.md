@@ -1,5 +1,15 @@
 # @hi-ui/back-top
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/tooltip@5.0.0-canary.5
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

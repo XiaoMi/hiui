@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/global-context",
-  "version": "4.0.0",
+  "version": "5.0.0-canary.1",
   "description": "A sub-package for @hi-ui/global-context.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,7 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/env": "^4.0.9"
+    "@hi-ui/env": "^5.0.0-canary.2"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

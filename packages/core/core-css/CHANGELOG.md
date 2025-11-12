@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

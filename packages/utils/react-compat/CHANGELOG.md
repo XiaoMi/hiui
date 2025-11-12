@@ -1,5 +1,11 @@
 # @hi-ui/react-compat
 
+## 5.0.0-canary.2
+
+### Patch Changes
+
+- 2ae7dfdeb: fix(react-compat): 处理在 rspack 构建时引发的错误及 React18+ 运行时中的引用错误警告
+
 ## 5.0.0-canary.1
 
 ### Patch Changes

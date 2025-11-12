@@ -1,5 +1,27 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.16
+
+### Minor Changes
+
+- 2b706fc6d: feat(picker): 增加 clearSearchOnClosed api 默认是 false (5.0)
+- 922686dcc: feat(global-context): 增加 size api 全局配置 (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [2b706fc6d]
+- Updated dependencies [86877b241]
+- Updated dependencies [922686dcc]
+  - @hi-ui/picker@5.0.0-canary.12
+  - @hi-ui/checkbox@5.0.0-canary.5
+  - @hi-ui/highlighter@5.0.0-canary.4
+  - @hi-ui/popper@5.0.0-canary.8
+  - @hi-ui/tag-input@5.0.0-canary.17
+  - @hi-ui/tree@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/icons@5.0.0-canary.5
+
 ## 5.0.0-canary.15
 
 ### Patch Changes

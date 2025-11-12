@@ -28,9 +28,7 @@ let mainVersion = 0
 try {
   mainVersion = Number((version || '').split('.')[0])
   if (mainVersion >= 18) {
-    // React 18+ 中 createRoot 在 react-dom/client 中
-    // const ReactDOMClient = require('react-dom/client')
-    // createRoot = ReactDOMClient.createRoot
+    ;({ createRoot } = clonedReactDOM)
   }
 } catch (e) {
   // Do nothing;

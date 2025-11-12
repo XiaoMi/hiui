@@ -1,5 +1,18 @@
 # @hi-ui/button
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- 8e969ad73: feat(button): appearance 参数增加 solid 类型 (5.0)
+
+### Patch Changes
+
+- 86877b241: style: 修改样式问题 (5.0)
+- Updated dependencies [922686dcc]
+  - @hi-ui/core@5.0.0-canary.5
+  - @hi-ui/spinner@5.0.0-canary.5
+
 ## 5.0.0-canary.10
 
 ### Patch Changes
