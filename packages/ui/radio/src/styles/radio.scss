@@ -19,7 +19,7 @@ $label-class: '#{$prefix}__label' !default;
     height: use-height-size(8);
     padding: 0 use-spacing(6);
     border-radius: use-border-radius('md');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     cursor: pointer;
     transition: all use-motion-duration('normal');
 
@@ -47,8 +47,8 @@ $label-class: '#{$prefix}__label' !default;
 
     &[data-disabled] {
       cursor: not-allowed;
-      background: use-color('gray', 200);
-      color: use-color('gray', 400);
+      background: use-color('gray', 300);
+      color: use-color('gray', 500);
     }
 
     &[data-checked]#{&}[data-disabled] {
@@ -73,7 +73,7 @@ $label-class: '#{$prefix}__label' !default;
         box-sizing: border-box;
         width: 16px;
         height: 16px;
-        border: 1px solid use-color('gray', 300);
+        border: 1px solid use-color('gray', 400);
         border-radius: use-border-radius('full');
         transition: all use-motion-duration('normal');
         flex: none;
@@ -98,7 +98,7 @@ $label-class: '#{$prefix}__label' !default;
       &__label {
         box-sizing: border-box;
         margin-inline-start: use-spacing(4);
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
       }
     }
 
@@ -139,15 +139,15 @@ $label-class: '#{$prefix}__label' !default;
       cursor: not-allowed;
 
       .#{$controller-class} {
-        border-color: use-color('gray', 300);
-        background: use-color('gray', 50);
+        border-color: use-color('gray', 400);
+        background: use-color('gray', 100);
 
         &::after {
-          background: use-color('gray', 300);
+          background: use-color('gray', 400);
         }
       }
       .#{$label-class} {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -164,9 +164,9 @@ $label-class: '#{$prefix}__label' !default;
   &--type-button {
     padding: use-spacing(1);
     border-radius: use-border-radius('normal');
-    border: use-border-size('normal') use-color('gray', 200);
+    border: use-border-size('normal') use-color('gray', 300);
     overflow: hidden;
-    background-color: use-color('gray', 50);
+    background-color: use-color('gray', 100);
   }
 
   &--type-default {
@@ -192,7 +192,7 @@ $label-class: '#{$prefix}__label' !default;
     .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
       &::before {
         content: '';
-        background: use-color('gray', 200);
+        background: use-color('gray', 300);
         width: 1px;
         left: 0;
         top: 8px;
@@ -216,7 +216,7 @@ $label-class: '#{$prefix}__label' !default;
     .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
       &::before {
         content: '';
-        background: use-color('gray', 200);
+        background: use-color('gray', 300);
         height: 1px;
         left: 8px;
         right: 8px;

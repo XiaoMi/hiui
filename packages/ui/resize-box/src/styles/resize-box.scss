@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-resize-box' !default;
       box-sizing: border-box;
       width: 6px;
       height: 100%;
-      border-right: 2px solid use-color('gray', 300);
+      border-right: 2px solid use-color('gray', 400);
     }
 
     &:hover {
@@ -73,10 +73,10 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     transform: translateY(-50%);
     border-start-end-radius: 16px 8px;
     border-end-end-radius: 16px 8px;
-    border: 1px solid use-color('gray', 300);
+    border: 1px solid use-color('gray', 400);
     border-left: none;
     cursor: pointer;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     background-color: #fff;
 
     svg[class^=#{$component-prefix}-icon] {

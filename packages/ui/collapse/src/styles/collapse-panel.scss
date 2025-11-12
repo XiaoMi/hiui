@@ -50,7 +50,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     position: relative;
     display: flex;
     align-items: center;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     cursor: pointer;
 
     .#{$component-prefix}-collapse--size-sm & {
@@ -78,7 +78,7 @@ $icon-class: #{$panel-prefix}__icon !default;
       box-sizing: border-box;
       position: absolute;
       bottom: 0;
-      border-bottom: 1px solid use-color('gray', 200);
+      border-bottom: 1px solid use-color('gray', 300);
 
       .#{$component-prefix}-collapse--size-sm & {
         left: use-spacing(6);
@@ -121,7 +121,7 @@ $icon-class: #{$panel-prefix}__icon !default;
 
   .#{$icon-class} {
     font-size: use-text-size('lg');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     line-height: 1em;
 
     // @animation
@@ -136,7 +136,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__extra {
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
   }
 
   &__content-wrapper {
@@ -150,7 +150,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
 
     .#{$component-prefix}-collapse--size-sm & {
       padding: use-spacing(6);
@@ -167,7 +167,7 @@ $icon-class: #{$panel-prefix}__icon !default;
 
   &--show {
     &::after {
-      border-bottom: 1px solid use-color('gray', 200);
+      border-bottom: 1px solid use-color('gray', 300);
     }
 
     > .#{$panel-prefix}__head {
@@ -186,11 +186,11 @@ $icon-class: #{$panel-prefix}__icon !default;
   &--disabled {
     .#{$panel-prefix}__head {
       cursor: not-allowed;
-      color: use-color('gray', 300);
+      color: use-color('gray', 400);
     }
 
     .#{$icon-class} {
-      color: use-color('gray', 300);
+      color: use-color('gray', 400);
     }
   }
 }

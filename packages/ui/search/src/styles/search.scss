@@ -23,16 +23,16 @@ $prefix: '#{$component-prefix}-search' !default;
       align-items: center;
       padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(10);
       border-radius: use-border-radius('md');
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
       cursor: pointer;
       transition: all 0.3s;
 
       &--focus {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
 
       &:hover {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
 
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-search' !default;
       display: flex;
       align-items: center;
       padding: use-spacing(2) use-spacing(4);
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
 
     &-subgroup {
@@ -61,17 +61,17 @@ $prefix: '#{$component-prefix}-search' !default;
         align-items: center;
         padding: use-spacing(2) use-spacing(4);
         border-radius: use-border-radius('md');
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
         cursor: pointer;
         transition: all 0.3s;
 
         &:hover {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 
       &--focus {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }

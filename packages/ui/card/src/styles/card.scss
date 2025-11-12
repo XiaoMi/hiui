@@ -59,7 +59,7 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      border-bottom: use-border-size('normal') use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
       margin-bottom: use-spacing(8);
     }
   }
@@ -74,7 +74,7 @@ $prefix: '#{$component-prefix}-card' !default;
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     line-height: use-text-lineheight('sm');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
   }
 
   &__cover {
@@ -84,7 +84,7 @@ $prefix: '#{$component-prefix}-card' !default;
   &__body {
     padding: 0 use-spacing(10) use-spacing(10) use-spacing(10);
     font-size: use-text-size('normal');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     position: relative;
     overflow-wrap: break-word;
   }
@@ -104,19 +104,19 @@ $prefix: '#{$component-prefix}-card' !default;
     white-space: nowrap;
     text-overflow: ellipsis;
     flex: 1;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
   }
 
   &__extra {
     font-size: use-text-size('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     font-weight: use-text-weight('normal');
   }
 
   &--bordered {
-    border: use-border-size('normal') use-color('gray', 200);
+    border: use-border-size('normal') use-color('gray', 300);
   }
 
   &--hoverable {

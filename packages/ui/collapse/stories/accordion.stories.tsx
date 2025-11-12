@@ -1,5 +1,6 @@
 import React from 'react'
 import Collapse from '../src'
+import { Button } from '@hi-ui/button'
 import { EditOutlined } from '@hi-ui/icons'
 
 /**
@@ -28,8 +29,9 @@ export const Accordion = () => {
             title="红米手机"
             id="2"
             extra={
-              <EditOutlined
-                style={{ marginRight: 8, color: '#60636b' }}
+              <Button
+                appearance="link"
+                icon={<EditOutlined />}
                 onClick={(evt) => evt.stopPropagation()}
               />
             }

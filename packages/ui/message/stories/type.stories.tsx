@@ -20,7 +20,7 @@ export const Type = () => {
     <>
       <h1>Close</h1>
       <div className="message-close__wrap">
-        <Button type="secondary" onClick={addToast('info')}>
+        <Button type="primary" onClick={addToast('info')}>
           Info
         </Button>
         <Button type="success" onClick={addToast('success')}>
@@ -29,7 +29,7 @@ export const Type = () => {
         <Button type="danger" onClick={addToast('error')}>
           Error
         </Button>
-        <Button type="default" onClick={addToast('warning')}>
+        <Button type="default" appearance="solid" onClick={addToast('warning')}>
           Warning
         </Button>
       </div>

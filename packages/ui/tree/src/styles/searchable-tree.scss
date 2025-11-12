@@ -5,14 +5,14 @@ $prefix: '#{$component-prefix}-tree' !default;
 .#{$prefix} {
   &-searcher {
     position: relative;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     margin-bottom: use-spacing(4);
     box-sizing: border-box;
 
     &--empty {
       box-sizing: border-box;
       display: inline-block;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
       font-weight: use-text-weight('normal');

@@ -18,8 +18,8 @@ $solid-color-map: (
     'hover': use-color-mode('danger', 400)
   ),
   'default': (
-    'normal': use-color('gray', 500),
-    'hover': use-color('gray', 300)
+    'normal': use-color('gray', 600),
+    'hover': use-color('gray', 400)
   ),
   'yellow': (
     'normal': use-color('yellow', 500),
@@ -69,9 +69,9 @@ $line-color-map: (
   ),
   'default': (
     'text': use-color('gray', 800),
-    'border': use-color('gray', 400),
-    'hover-text': use-color('gray', 600),
-    'hover-border': use-color('gray', 200)
+    'border': use-color('gray', 500),
+    'hover-text': use-color('gray', 700),
+    'hover-border': use-color('gray', 300)
   ),
   'yellow': (
     'text': use-color('yellow', 500),
@@ -127,9 +127,9 @@ $filled-color-map: (
     'hover-background': use-color-mode('danger', 100)
   ),
   'default': (
-    'color': use-color('gray', 700),
-    'background': use-color('gray', 100),
-    'hover-background': use-color('gray', 200)
+    'color': use-color('gray', 900),
+    'background': use-color('gray', 200),
+    'hover-background': use-color('gray', 300)
   ),
   'yellow': (
     'color': use-color('yellow', 900),
@@ -228,7 +228,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     }
 
     .#{$prefix}__content-wrapper {
-      padding: 0 use-spacing(3);
+      padding: 0 use-spacing(2);
     }
   }
 
@@ -245,7 +245,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     }
 
     .#{$prefix}__content-wrapper {
-      padding: 0 use-spacing(4);
+      padding: 0 use-spacing(3);
     }
   }
 
@@ -262,7 +262,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
     }
 
     .#{$prefix}__content-wrapper {
-      padding: 0 use-spacing(5);
+      padding: 0 use-spacing(4);
     }
   }
 
@@ -277,7 +277,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
   }
 
   &--in-edit {
-    @include edit-shadow();
+    // @include edit-shadow();
 
     .#{$prefix}__content {
       opacity: 0;
@@ -323,7 +323,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
   &__close-button {
     height: calc(100% - #{use-spacing(4)});
     padding: 0 use-spacing(2);
-    border-left: use-border-size('normal') use-color('gray', 300);
+    border-left: use-border-size('normal') use-color('gray', 400);
     display: flex;
     align-items: center;
     justify-content: center;

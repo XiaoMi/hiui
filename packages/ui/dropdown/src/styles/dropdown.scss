@@ -11,10 +11,10 @@ $prefix: '#{$component-prefix}-dropdown' !default;
 
   background-color: use-color-static('white');
   border-radius: use-border-radius('xl');
-  border: use-border-size('normal') use-color('gray', 100);
+  border: use-border-size('normal') use-color('gray', 200);
   font-size: use-text-size('normal');
   padding: use-spacing(2);
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   max-height: 268px;
   overflow-y: auto;
   // max-height: 260px;
@@ -39,7 +39,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   }
 
   &__link {
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     width: 100%;
     text-decoration: none;
     box-sizing: border-box;
@@ -75,23 +75,23 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   }
 
   &:not(.#{$prefix}-menu-item--disabled) > &__trigger:hover {
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 200);
   }
 
   &--active:not(.#{$prefix}-menu-item--disabled) > &__trigger {
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 200);
   }
 
   &--disabled > &__trigger {
     cursor: not-allowed;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 }
 
 .#{$prefix}-divider {
   @include list-item-reset();
 
-  background-color: use-color('gray', 200);
+  background-color: use-color('gray', 300);
   width: 100%;
   height: 1px;
   margin: use-spacing(4) 0;

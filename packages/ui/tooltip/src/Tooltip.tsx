@@ -17,6 +17,7 @@ import { Portal } from '@hi-ui/portal'
 import { isElement, isString } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { TooltipHelpers } from './types'
+import { ArrowIcon } from './ArrowIcon'
 
 export const _prefix = getPrefixCls('tooltip')
 
@@ -138,7 +139,11 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
           >
             <div className={`${prefixCls}__popper`} {...getPopperProps()}>
               <div ref={ref} className={cls} {...getTooltipProps()}>
-                {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
+                {arrow ? (
+                  <div className={`${prefixCls}__arrow`} {...getArrowProps()}>
+                    <ArrowIcon />
+                  </div>
+                ) : null}
                 <div className={`${prefixCls}__content`}>{title}</div>
               </div>
             </div>

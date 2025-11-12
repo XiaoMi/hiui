@@ -7,13 +7,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   display: flex;
   align-items: stretch;
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
 
   &--type {
     &-single {
       .#{$prefix}-operation-arrow {
         font-size: 20px;
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -24,7 +24,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   width: 240px;
   min-width: 180px;
   background-color: use-color-static('white');
-  border: use-border-size('normal') use-color('gray', 300);
+  border: use-border-size('normal') use-color('gray', 400);
   border-radius: use-border-radius('xl');
   overflow: hidden;
   font-size: use-text-size('normal');
@@ -68,13 +68,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__limit {
     word-wrap: break-word;
     line-height: 2;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: use-text-size('normal');
     display: flex;
     align-items: start;
@@ -108,7 +108,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
     &--right {
       font-size: use-text-size('sm');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       font-weight: use-text-weight('normal');
     }
 
@@ -129,13 +129,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 300);
-    background: use-color('gray', 100);
+    border-bottom: 1px solid use-color('gray', 400);
+    background: use-color('gray', 200);
     font-weight: use-text-weight('medium');
   }
 
   &__footer {
-    border-top: 1px solid use-color('gray', 300);
+    border-top: 1px solid use-color('gray', 400);
     width: 100%;
     display: inline-flex;
     flex-direction: row-reverse;
@@ -174,7 +174,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     border-radius: use-border-radius('normal');
 
     &:hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     // 拖拽指示器-小圆球
@@ -212,7 +212,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &--disabled {
     #{$this}__wrap {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }

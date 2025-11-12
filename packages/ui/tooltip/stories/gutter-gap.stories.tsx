@@ -11,7 +11,7 @@ export const GutterGap = () => {
     <>
       <h1>Gutter Gap</h1>
       <div className="Tooltip-basic__wrap">
-        <Tooltip title="Tooltip Title" gutterGap={30} trigger="hover">
+        <Tooltip title="Tooltip Title" gutterGap={6} trigger="hover">
           <Button>trigger</Button>
         </Tooltip>
       </div>

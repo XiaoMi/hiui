@@ -25,18 +25,8 @@ $prefix: '#{$component-prefix}-tree' !default;
   @include list-item-reset;
 
   position: relative;
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   cursor: pointer;
-  // 节点间隔控制
-  padding: use-spacing(2) 0;
-
-  .#{$prefix}--size-md & {
-    padding: use-spacing(1) 0;
-  }
-
-  .#{$prefix}--size-sm & {
-    padding: use-spacing(0) 0;
-  }
 
   &__indent,
   &__checkbox,
@@ -58,7 +48,7 @@ $prefix: '#{$component-prefix}-tree' !default;
     // transition-timing-function: use-motion-bezier('slow');
 
     &:hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &.dragging {
@@ -173,11 +163,11 @@ $prefix: '#{$component-prefix}-tree' !default;
   &--focused {
     #{$this}__wrap {
       // background-color: use-color-mode('primary', 50);
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
     }
 
     #{$this}__title {
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
     }
   }
 
@@ -194,7 +184,7 @@ $prefix: '#{$component-prefix}-tree' !default;
 
   &--disabled {
     cursor: not-allowed;
-    color: use-color('gray', 400);
+    color: use-color('gray', 500);
 
     #{$this}__wrap {
       background-color: use-color-static('white');
@@ -205,13 +195,13 @@ $prefix: '#{$component-prefix}-tree' !default;
     }
 
     &#{$this}--selected {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
 
       #{$this}__wrap {
         background-color: use-color-mode('primary', 50);
 
         #{$this}__title {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
 
         &:hover {
@@ -222,12 +212,12 @@ $prefix: '#{$component-prefix}-tree' !default;
 
     &#{$this}--focused {
       #{$this}__title {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
 
     #{$this}__switcher:not(#{$this}__switcher--noop) {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 

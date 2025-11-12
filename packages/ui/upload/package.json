@@ -52,6 +52,7 @@
     "@hi-ui/message": "^4.0.8",
     "@hi-ui/modal": "^4.1.1",
     "@hi-ui/preview": "^4.0.9",
+    "@hi-ui/use-timeout": "^4.0.4",
     "@hi-ui/use-id": "^4.0.4",
     "react-cropper": "^2.1.8",
     "uuid": "^8.3.2"

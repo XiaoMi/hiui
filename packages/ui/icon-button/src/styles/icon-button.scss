@@ -15,7 +15,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   position: relative;
   flex-shrink: 0;
   z-index: use-zindex('absolute');
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
 
   &--virtual-area {
     &::after {
@@ -48,7 +48,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
     &:hover,
     &:focus {
       &::before {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }
@@ -59,7 +59,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
 
   &--disabled {
     &.#{$icon-button-prefix} {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
   }
 }

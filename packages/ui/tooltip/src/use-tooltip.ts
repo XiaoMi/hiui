@@ -89,7 +89,7 @@ export const useTooltip = ({
       // @DesignToken zIndex: tooltip
       zIndex: 1060,
       // @DesignToken
-      gutterGap: 14,
+      gutterGap: 10,
     })
 
     return {

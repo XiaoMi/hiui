@@ -9,7 +9,7 @@ $upload-state-height: 2px !default;
     margin-left: use-spacing(4);
     line-height: use-text-lineheight('md');
     font-size: use-text-size('md');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
 
     &--single-line {
       display: block;
@@ -31,7 +31,7 @@ $upload-state-height: 2px !default;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     cursor: pointer;
     width: 20px;
     text-align: center;
@@ -39,8 +39,8 @@ $upload-state-height: 2px !default;
     transition: all 0.3s;
     font-size: use-text-size('lg');
 
-    &:hover {
-      background-color: use-color('gray', 300);
+    &:not(&--show-success):hover {
+      background-color: use-color('gray', 400);
       border-radius: use-border-radius('normal');
     }
   }
@@ -96,13 +96,13 @@ $upload-state-height: 2px !default;
     display: flex;
     align-items: center;
     margin-top: use-spacing(4);
-    border: 1px solid use-color('gray', 300);
+    border: 1px solid use-color('gray', 400);
     border-radius: use-border-radius('normal');
     overflow: hidden;
     cursor: pointer;
 
     &.#{$prefix}__item--status-success:hover {
-      background: use-color('gray', 50);
+      background: use-color('gray', 100);
     }
 
     &.#{$prefix}__item--status-error {
@@ -117,7 +117,7 @@ $upload-state-height: 2px !default;
       overflow: hidden;
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
     }
 
     &-icon,
@@ -171,7 +171,7 @@ $upload-state-height: 2px !default;
         }
 
         .#{$prefix}__del-btn {
-          &:hover {
+          &:not(&--show-success):hover {
             background-color: use-color-mode('error', 100);
           }
         }
@@ -187,8 +187,13 @@ $upload-state-height: 2px !default;
 
   &__list--size-md {
     .#{$prefix}__item {
-      height: use-height-size(8);
-      padding: use-spacing(2) use-spacing(4);
+      height: use-height-size(10);
+      padding: use-spacing(4);
+
+      &-icon {
+        height: use-height-size(5);
+        font-size: use-height-size(5);
+      }
     }
   }
 
@@ -197,10 +202,15 @@ $upload-state-height: 2px !default;
       height: use-height-size(15);
       padding: use-spacing(4) use-spacing(6);
 
+      &-icon {
+        height: use-height-size(10);
+        font-size: use-height-size(10);
+      }
+
       .#{$prefix}__file-size {
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -254,11 +264,11 @@ $upload-state-height: 2px !default;
   &--drag {
     position: relative;
     width: 100%;
-    background: use-color('gray', 50);
+    background: use-color('gray', 100);
     // min-height: 172px;
     // height: 88px;
     box-sizing: border-box;
-    border: 1px dashed use-color('gray', 300);
+    border: 1px dashed use-color('gray', 400);
     transition: border-color 0.3s;
     border-radius: use-border-radius('normal');
     cursor: pointer;
@@ -285,13 +295,13 @@ $upload-state-height: 2px !default;
 
       &,
       &:hover {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
       }
     }
 
     .#{$prefix}__item {
       &:not(:first-child) {
-        border-bottom: 1px solid use-color('gray', 200);
+        border-bottom: 1px solid use-color('gray', 300);
       }
     }
 
@@ -315,7 +325,7 @@ $upload-state-height: 2px !default;
       .#{$prefix}__tips--single-line {
         padding: 0;
         margin-top: use-spacing(2);
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
         font-size: use-text-size('sm');
       }
 
@@ -341,7 +351,7 @@ $upload-state-height: 2px !default;
         &,
         &:hover,
         &:focus {
-          border-color: use-color('gray', 300);
+          border-color: use-color('gray', 400);
         }
       }
     }
@@ -364,7 +374,7 @@ $upload-state-height: 2px !default;
       margin-inline-end: use-spacing(4);
       cursor: pointer;
       vertical-align: middle;
-      background: use-color('gray', 50);
+      background: use-color('gray', 100);
       border-radius: use-border-radius('normal');
       overflow: hidden;
 
@@ -377,7 +387,7 @@ $upload-state-height: 2px !default;
       }
 
       &:not(:last-child) {
-        background: use-color('gray', 200);
+        background: use-color('gray', 300);
       }
 
       img {
@@ -391,8 +401,8 @@ $upload-state-height: 2px !default;
         align-items: center;
         justify-content: center;
         font-size: 20px;
-        color: use-color('gray', 700);
-        border: 1px dashed use-color('gray', 300);
+        color: use-color('gray', 900);
+        border: 1px dashed use-color('gray', 400);
         transition: border-color 0.3s;
         margin-inline-end: 0;
 
@@ -408,7 +418,7 @@ $upload-state-height: 2px !default;
       .#{$prefix}__item__upload-text {
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
       }
 
       .#{$prefix}__action-group {
@@ -500,7 +510,7 @@ $upload-state-height: 2px !default;
       box-sizing: border-box;
       cursor: pointer;
       font-size: 20px;
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
 
       &:focus {
         border-color: use-color-mode('primary');
@@ -598,16 +608,16 @@ $upload-state-height: 2px !default;
         }
 
         &:hover {
-          background: use-color('gray', 50);
+          background: use-color('gray', 100);
         }
 
         &:focus {
-          background: use-color('gray', 50);
+          background: use-color('gray', 100);
           outline: 0;
         }
 
         &.loading {
-          color: use-color('gray', 700);
+          color: use-color('gray', 900);
         }
 
         &-icon {

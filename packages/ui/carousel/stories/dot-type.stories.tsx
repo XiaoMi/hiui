@@ -69,13 +69,9 @@ export const DotType = () => {
   return (
     <>
       <h1>dot type</h1>
-      <h2>slider(default)</h2>
+      <h2>line (default)</h2>
       <div style={{ minWidth: '660px', height: '320px' }}>
         <Carousel>{generateContent()}</Carousel>
-      </div>
-      <h2>line</h2>
-      <div style={{ minWidth: '660px', height: '320px' }}>
-        <Carousel dotType={'line'}>{generateContent()}</Carousel>
       </div>
       <h2>dot</h2>
       <div style={{ minWidth: '660px', height: '320px' }}>

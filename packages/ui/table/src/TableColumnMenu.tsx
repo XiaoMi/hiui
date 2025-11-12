@@ -50,7 +50,9 @@ export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenu
     return (
       <>
         <IconButton
-          className={`${prefixCls}__trigger`}
+          className={cx(`${prefixCls}__trigger`, {
+            [`${prefixCls}__trigger--active`]: menuVisible,
+          })}
           ref={setMenuTrigger}
           onClick={menuVisibleAction.not}
           icon={<DownOutlined />}

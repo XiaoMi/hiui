@@ -147,7 +147,7 @@ $prefixCls: #{$component-prefix}-loading !default;
 
   &__content {
     font-size: use-text-size('md');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     // animation: #{$component-prefix}-flash 1.6s linear infinite;
   }
 

@@ -48,14 +48,14 @@ $float-menu-container-prefix: '#{$component-prefix}-float-menu-container' !defau
     align-items: center;
     height: use-height-size(6);
     padding: 0 use-spacing(4);
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     cursor: pointer;
     white-space: nowrap;
 
     &:hover {
       border-radius: use-border-radius('normal');
       color: #565a66;
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 300);
     }
 
     &-wrapper {

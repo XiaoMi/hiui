@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-list' !default;
   margin: 0;
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   background-color: use-color-static('white');
 
   &:not(.#{$prefix}-item--split) {
@@ -19,10 +19,10 @@ $prefix: '#{$component-prefix}-list' !default;
 
   &__header {
     padding: use-spacing(6) use-spacing(8);
-    border-bottom: use-border-size('normal') use-color('gray', 100);
+    border-bottom: use-border-size('normal') use-color('gray', 200);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
   }
 
   &__pagination {
@@ -36,7 +36,7 @@ $prefix: '#{$component-prefix}-list' !default;
   }
 
   &--bordered {
-    border: 1px solid use-color('gray', 200);
+    border: 1px solid use-color('gray', 300);
     border-radius: use-border-radius('normal');
 
     .#{$prefix}-item--split {
@@ -64,11 +64,11 @@ $prefix: '#{$component-prefix}-list' !default;
     &__desc {
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
 
     &__extra {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
       margin-top: use-spacing(6);
     }
 
@@ -95,7 +95,7 @@ $prefix: '#{$component-prefix}-list' !default;
 
         &:hover {
           cursor: pointer;
-          background-color: use-color('gray', 50);
+          background-color: use-color('gray', 100);
         }
       }
     }
@@ -103,7 +103,7 @@ $prefix: '#{$component-prefix}-list' !default;
     &.#{$prefix}-item--split {
       .#{$prefix}-item {
         padding: use-spacing(6) use-spacing(8);
-        border-bottom: 1px solid use-color('gray', 100);
+        border-bottom: 1px solid use-color('gray', 200);
 
         &:hover {
           cursor: pointer;

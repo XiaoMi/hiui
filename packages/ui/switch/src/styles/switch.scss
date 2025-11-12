@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed:not(.#{$prefix}--disabled) {
-    background: use-color('gray', 300);
+    background: use-color('gray', 400);
   }
 
   &--open.#{$prefix}--disabled {
@@ -31,7 +31,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--closed.#{$prefix}--disabled {
-    background: use-color('gray', 100);
+    background: use-color('gray', 200);
   }
 
   &--disabled {
@@ -84,18 +84,19 @@ $prefix: '#{$component-prefix}-switch' !default;
       }
 
       .#{$prefix}__text {
-        margin: 0 use-spacing(8) 0 use-spacing(2);
+        margin: 0 calc(#{use-spacing(5)} + 1px) 0 1px;
       }
     }
 
     &.#{$prefix}--closed {
       .#{$prefix}__text {
-        margin: 0 use-spacing(2) 0 use-spacing(8);
+        margin: 0 1px 0 calc(#{use-spacing(5)} + 1px);
       }
     }
 
     .#{$prefix}__text {
-      font-size: use-text-size('sm');
+      font-size: 20px;
+      transform: scale(0.5);
     }
   }
 

@@ -24,7 +24,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     overflow: hidden;
 
     // outline
-    border-color: use-color('gray', 300);
+    border-color: use-color('gray', 400);
     border-radius: 4px;
 
     &:not(.disabled):hover {
@@ -38,17 +38,17 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
 
     &.disabled {
       cursor: not-allowed;
-      color: use-color('gray', 500);
-      background-color: use-color('gray', 100);
+      color: use-color('gray', 600);
+      background-color: use-color('gray', 200);
 
       .#{$tag-input-prefix}__tag {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
       }
     }
   }
 
   &__placeholder {
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__suffix {
@@ -65,7 +65,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     width: 16px;
     height: 16px;
     font-size: 14px;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s;
@@ -107,7 +107,7 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     font-size: 12px;
     color: #333;
     user-select: none;
-    background-color: use-color('gray', 100);
+    background-color: use-color('gray', 200);
     border-radius: 4px;
   }
 

@@ -29,7 +29,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     }
 
     &-prefix {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
 
     &-clear {
@@ -41,7 +41,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     display: inline-flex;
     height: use-height-size(4);
     padding-left: use-spacing(5);
-    border-left: use-border-size('normal') use-color('gray', 300);
+    border-left: use-border-size('normal') use-color('gray', 400);
   }
 
   &__content {
@@ -50,7 +50,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     flex-direction: column;
     padding: use-spacing(4);
     max-height: 550px;
-    border-top: use-border-size('normal') use-color('gray', 100);
+    border-top: use-border-size('normal') use-color('gray', 200);
 
     &--visible {
       display: flex;
@@ -62,7 +62,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
     font-weight: use-text-weight('medium');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
 
     &-count {
       color: use-color-mode('primary');
@@ -91,13 +91,13 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
 
       &__title {
         font-size: use-text-size('normal');
-        color: use-color('gray', 700);
+        color: use-color('gray', 900);
       }
 
       &--selected,
       &:hover {
         cursor: pointer;
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }
@@ -106,7 +106,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 400);
+    color: use-color('gray', 500);
   }
 
   &__footer {
@@ -120,7 +120,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
       align-items: center;
       margin-right: use-spacing(8);
       font-size: use-text-size('sm');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
 
       &__icon {
         box-sizing: border-box;
@@ -131,7 +131,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
         margin-right: use-spacing(2);
         padding: 0 use-spacing(2);
         height: use-height-size(5);
-        border: use-border-size('normal') use-color('gray', 300);
+        border: use-border-size('normal') use-color('gray', 400);
         border-radius: use-border-radius('md');
       }
     }

@@ -22,8 +22,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__wrapper {
     position: relative;
     z-index: 0;
-    border-top: use-border-size('normal') use-color('gray', 200);
-    border-bottom: use-border-size('normal') use-color('gray', 200);
+    border-top: use-border-size('normal') use-color('gray', 300);
+    border-bottom: use-border-size('normal') use-color('gray', 300);
   }
 
   // 表格高度自动拉伸样式配置
@@ -63,7 +63,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   // 内嵌面板
   &__switcher {
     &.#{$component-prefix}-icon-button {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
 
     &--expanded {
@@ -198,12 +198,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
   &--bordered {
     > .#{$prefix}__wrapper {
-      border-left: use-border-size('normal') use-color('gray', 200);
-      border-right: use-border-size('normal') use-color('gray', 200);
-      border-bottom: use-border-size('normal') use-color('gray', 200);
+      border-left: use-border-size('normal') use-color('gray', 300);
+      border-right: use-border-size('normal') use-color('gray', 300);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
 
       .#{$prefix}-header-cell, .#{$prefix}-cell {
-        border-left: use-border-size('normal') use-color('gray', 200);
+        border-left: use-border-size('normal') use-color('gray', 300);
       }
 
       .#{$prefix}-row {
@@ -225,7 +225,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       > .#{$prefix}__wrapper {
         .#{$prefix}-row {
           .#{$prefix}-cell {
-            border-bottom: use-border-size('normal') use-color('gray', 200);
+            border-bottom: use-border-size('normal') use-color('gray', 300);
           }
         }
 
@@ -246,7 +246,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   // &--striped {
   // tr:not(:hover):nth-child(2n) {
   //   td {
-  //     background-color: use-color('gray', 50);
+  //     background-color: use-color('gray', 100);
   //   }
   // }
   // }
@@ -266,11 +266,11 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       background-clip: padding-box;
 
       &:hover {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
 
         .#{$prefix}-header__resizable-handle {
-          border-left-color: use-color('gray', 200);
-          border-right-color: use-color('gray', 200);
+          border-left-color: use-color('gray', 300);
+          border-right-color: use-color('gray', 300);
         }
       }
 
@@ -293,8 +293,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
         &:hover {
           background-color: use-color-mode('primary');
-          border-left-color: use-color('gray', 200);
-          border-right-color: use-color('gray', 200);
+          border-left-color: use-color('gray', 300);
+          border-right-color: use-color('gray', 300);
         }
       }
     }
@@ -302,12 +302,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &-cell {
       box-sizing: border-box;
       background-color: use-color-static('white');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       font-size: use-text-size('normal');
       font-weight: use-text-weight('medium');
       line-height: use-text-lineheight('sm');
       padding: use-spacing(7) use-spacing(8);
-      border-bottom: use-border-size('normal') use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
 
       &.#{$prefix}__embed-col {
         padding: use-spacing(7) use-spacing(5);
@@ -323,10 +323,10 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       &#{$this}__col--highlight,
       &#{$this}__col--hovered-highlight,
       &#{$this}__col--active {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
 
         &[data-sticky] {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
     }
@@ -347,7 +347,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       bottom: 0;
 
       .#{$prefix}-cell {
-        border-top: use-border-size('normal') use-color('gray', 300);
+        border-top: use-border-size('normal') use-color('gray', 400);
       }
     }
 
@@ -368,7 +368,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     &--striped {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
     }
 
@@ -412,12 +412,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &--avg,
     &--total {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &:hover {
         & > .#{$prefix}-cell {
-          background-color: use-color('gray', 50);
+          background-color: use-color('gray', 100);
         }
       }
     }
@@ -437,7 +437,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-header-col,
   &-col {
     .#{$prefix}-header & {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &[data-hover-highlight] {
@@ -446,7 +446,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       }
 
       .#{$prefix}-header & {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }
@@ -468,10 +468,10 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 .#{$prefix}-cell {
   box-sizing: border-box;
   word-break: break-word;
-  border-bottom: use-border-size('normal') use-color('gray', 200);
+  border-bottom: use-border-size('normal') use-color('gray', 300);
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
   line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
   background-color: use-color-static('white');
@@ -488,7 +488,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__switcher {
     &.#{$component-prefix}-icon-button {
       margin-right: use-spacing(1);
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       vertical-align: middle;
     }
   }
@@ -541,6 +541,10 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       &.#{$component-prefix}-icon-button {
         margin-left: 4px;
       }
+
+      &--active.#{$component-prefix}-icon-button {
+        transform: rotate(180deg);
+      }
     }
 
     &__content {
@@ -557,7 +561,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
       font-size: use-text-size('normal');
 
       &:first-child {
@@ -565,7 +569,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       }
 
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &--active {
@@ -592,7 +596,11 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       overflow: hidden;
       // font-size: 16px;
       font-weight: use-text-weight('normal');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
+
+      &:hover {
+        color: use-color('gray', 700);
+      }
 
       svg {
         position: relative;
@@ -608,7 +616,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-custom {
     &__trigger {
       margin-left: 6px;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       cursor: pointer;
     }
 
@@ -623,7 +631,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   z-index: 0;
 
   & > td {
-    background-color: use-color('gray', 50);
+    background-color: use-color('gray', 100);
     padding: use-spacing(6);
   }
 }
@@ -636,8 +644,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   right: 0;
   display: flex;
   align-items: center;
-  // border-left: use-border-size('normal') use-color('gray', 300);
-  color: use-color('gray', 500);
+  // border-left: use-border-size('normal') use-color('gray', 400);
+  color: use-color('gray', 600);
   cursor: pointer;
   font-size: use-text-size('sm');
   width: 18px;
