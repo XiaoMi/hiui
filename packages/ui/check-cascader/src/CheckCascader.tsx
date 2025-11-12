@@ -71,6 +71,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       searchable: searchableProp,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       overlayClassName,
       type = 'tree',
       flattedSearchResult = true,
@@ -341,6 +342,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         header={renderExtraHeader?.()}
         trigger={
           customRender ? (

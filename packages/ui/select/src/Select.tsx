@@ -63,6 +63,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       // search
       searchable: searchableProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
       dataSource,
       searchOnInit,
       filterOption,
@@ -103,7 +104,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       disabled,
       onOpen,
       onClose: () => {
-        pickerInnerRef.current?.resetSearch()
+        clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
         onClose?.()
       },
     })
@@ -292,6 +293,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           searchable={searchable}
           keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
+          clearSearchOnClosed={clearSearchOnClosed}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
@@ -322,7 +324,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    pickerInnerRef.current?.resetSearch()
+                    pickerInnerRef.current?.clearSearch()
                     onClearProp?.()
                   }
                 }}

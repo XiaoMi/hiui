@@ -28,6 +28,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       clearable = false,
       searchable = false,
       keyword: keywordProp,
+      clearSearchOnClosed = false,
       scrollable = true,
       creatableInSearch = false,
       createTitle: createTitleProp,
@@ -82,9 +83,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onSearch,
       Object.is
     )
-    // const inSearch = searchable && !!searchValue
-    // const isEmpty = inSearch && showEmpty
-    const resetSearchOnClosed = keywordProp === undefined
 
     const handleChange = useCallback(
       (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +95,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       [searchable, setSearchValue]
     )
 
-    const resetSearch = useCallback(() => {
+    const clearSearch = useCallback(() => {
       setSearchValue('')
     }, [setSearchValue])
 
@@ -127,8 +125,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      resetSearchOnClosed && resetSearch()
-    }, [resetSearchOnClosed, disabled, menuVisibleAction, resetSearch])
+      clearSearchOnClosed && clearSearch()
+    }, [clearSearch, clearSearchOnClosed, disabled, menuVisibleAction])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -153,8 +151,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     >(null)
 
     useImperativeHandle(innerRef, () => ({
-      resetSearch: () => {
-        resetSearchOnClosed && resetSearch()
+      clearSearch: () => {
+        keywordProp === undefined && clearSearch()
       },
       update: () => {
         popperRef.current?.update()
@@ -269,7 +267,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 )
 
 export interface PickerHelper {
-  resetSearch: () => void
+  clearSearch: () => void
   update: () => void
   forceUpdate: () => void
 }
@@ -323,6 +321,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 搜索时触发回调
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 是否在关闭时清除搜索
+   */
+  clearSearchOnClosed?: boolean
   /**
    * 是否可清空
    */
