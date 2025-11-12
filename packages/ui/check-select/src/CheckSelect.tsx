@@ -85,6 +85,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       suffix,
       onKeyDown: onKeyDownProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
       label,
       showIndicator = true,
       renderExtraHeader,
@@ -283,7 +284,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onItemCreate?.(createdItem)
 
       // 创建后重置搜索和关闭弹窗
-      pickerInnerRef.current?.resetSearch()
+      clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
       menuVisibleAction.off()
     })
 
@@ -359,6 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onClose={menuVisibleAction.off}
           onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           keyword={keywordProp}
+          clearSearchOnClosed={clearSearchOnClosed}
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}

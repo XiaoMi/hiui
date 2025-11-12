@@ -74,6 +74,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // emptyContent,
       // ********* popper ********* //
       // optionWidth,
@@ -398,6 +399,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
         header={renderExtraHeader?.()}
