@@ -74,7 +74,8 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             target={item.target}
             value={item.id}
             menu={menu}
-            onClick={() => {
+            onClick={(evt) => {
+              evt.stopPropagation()
               if (item.disabled) return
               onClick?.(item.id)
               if (!isArray(item.children)) {
