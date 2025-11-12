@@ -58,6 +58,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     searchable: searchableProp,
     keyword: keywordProp,
     onSearch: onSearchProp,
+    clearSearchOnClosed,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
@@ -289,6 +290,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         header={renderExtraHeader?.()}
         trigger={
           customRender ? (
