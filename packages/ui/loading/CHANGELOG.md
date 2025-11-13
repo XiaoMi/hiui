@@ -1,5 +1,11 @@
 # @hi-ui/loading
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 88e2a28c1: fix(loading): rename wrapper class to content-wrapper and adjust styles for better layout (5.0)
+
 ## 5.0.0-canary.6
 
 ### Minor Changes
