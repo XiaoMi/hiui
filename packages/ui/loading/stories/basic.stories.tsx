@@ -24,14 +24,14 @@ export const Basic = () => {
         <Loading content="Loading..." delay={500}>
           <div
             style={{
-              width: 500,
+              // width: 500,
               height: 300,
               boxSizing: 'border-box',
               background: '#f5f7fa',
               padding: 20,
               border: '20px solid #5f6a7a',
             }}
-          />
+          ></div>
         </Loading>
       </div>
     </>
