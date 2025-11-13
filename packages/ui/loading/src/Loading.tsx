@@ -92,7 +92,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       >
         <div ref={ref} role={role} className={cls} {...restProps}>
           {showMask && <div className={`${prefixCls}__mask`} />}
-          <div className={`${prefixCls}__wrapper`}>
+          <div className={`${prefixCls}__content-wrapper`}>
             {getIndicator()}
             {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
           </div>
