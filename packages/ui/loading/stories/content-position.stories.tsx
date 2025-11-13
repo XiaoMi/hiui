@@ -20,10 +20,10 @@ export const ContentPosition = () => {
         className="loading-content-position__wrap"
         style={{ position: 'relative', width: 500, height: 300 }}
       >
-        <Loading visible size="sm" content="Loading..." contentPosition="right" showMask={false}>
+        <Loading visible size="sm" content="Loading..." contentPosition="right">
           <div
             style={{
-              width: 500,
+              // width: 500,
               height: 300,
               boxSizing: 'border-box',
               background: '#f5f7fa',
