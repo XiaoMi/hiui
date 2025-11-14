@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -8,6 +8,7 @@ import { useCascaderContext } from './context'
 import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 const menuListPrefix = getPrefixCls('cascader-menu-list')
 
@@ -60,6 +61,26 @@ export const CascaderMenu = ({
   } = useCascaderContext()
 
   const cls = cx(prefixCls, className)
+  const activeNodeRef = useRef<HTMLLIElement>()
+  const rafId = useRef<number>(0)
+
+  useEffect(() => {
+    if (activeNodeRef.current) {
+      // 每次打开菜单时，滚动到选中的节点，双重 requestAnimationFrame 确保 DOM 已经渲染后再滚动
+      rafId.current = requestAnimationFrame(() => {
+        rafId.current = requestAnimationFrame(() => {
+          scrollIntoView(activeNodeRef.current!, {
+            scrollMode: 'if-needed',
+            block: 'center',
+          })
+        })
+      })
+    }
+
+    return () => {
+      cancelAnimationFrame(rafId.current)
+    }
+  }, [activeNodeRef])
 
   return (
     <ul className={cls} style={style} role={role}>
@@ -78,7 +99,16 @@ export const CascaderMenu = ({
         )
 
         return (
-          <li key={option.id} role="menu-item" className={`${prefixCls}-item`}>
+          <li
+            ref={(node) => {
+              if (node && active) {
+                activeNodeRef.current = node
+              }
+            }}
+            key={option.id}
+            role="menu-item"
+            className={`${prefixCls}-item`}
+          >
             <div
               className={optionCls}
               onClick={() => {

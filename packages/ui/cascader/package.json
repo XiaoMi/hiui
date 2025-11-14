@@ -60,7 +60,8 @@
     "@hi-ui/use-latest": "^4.0.4",
     "@hi-ui/use-search-mode": "^4.2.1",
     "@hi-ui/use-toggle": "^4.0.4",
-    "@hi-ui/use-uncontrolled-state": "^4.0.4"
+    "@hi-ui/use-uncontrolled-state": "^4.0.4",
+    "scroll-into-view-if-needed": "^3.1.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",
