@@ -2,17 +2,12 @@ import React, { useMemo } from 'react'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { LocaleContext, getLanguage } from './LocaleContext'
 import { LocaleEnum, LocaleLanguage } from './types'
-import zhCN from './locale/zh-CN'
+import { BUILT_IN_LOCALES } from './locale'
 
 const DEFAULT_LOCALE = 'zh-CN'
 
 // 自定义语言包注册表
 const USER_LANGUAGES_TABLES = {} as Record<string, LocaleLanguage>
-
-// 内置的默认语言
-const BUILT_IN_LOCALES: Record<string, LocaleLanguage> = {
-  'zh-CN': zhCN,
-}
 
 export const LocaleProvider: React.FC<LocaleProviderProps> & {
   extends: LocaleExtendsFunc

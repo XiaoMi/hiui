@@ -8,13 +8,9 @@ import { withPerformance } from "storybook-addon-performance";
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
-import HiUIProvider from '@hi-ui/provider'
-import { LocaleProvider } from '../packages/ui/locale-context/src'
+// import HiUIProvider from '@hi-ui/provider'
+import HiUIProvider from '../packages/ui/provider/src'
 
-import zhCN from '../packages/ui/locale-context/src/locale/zh-CN'
-import enUS from '../packages/ui/locale-context/src/locale/en-US'
-import zhHK from '../packages/ui/locale-context/src/locale/zh-HK'
-import zhTW from '../packages/ui/locale-context/src/locale/zh-TW'
 import jaJP from '../packages/ui/locale-context/src/locale/ja-JP'
 import koKR from '../packages/ui/locale-context/src/locale/ko-KR'
 import thTH from '../packages/ui/locale-context/src/locale/th-TH'
@@ -40,34 +36,30 @@ import elGR from '../packages/ui/locale-context/src/locale/el-GR'
 import fiFI from '../packages/ui/locale-context/src/locale/fi-FI'
 import trTR from '../packages/ui/locale-context/src/locale/tr-TR'
 
-LocaleProvider.extends('zh-CN', zhCN)
-LocaleProvider.extends('en-US', enUS)
-LocaleProvider.extends('zh-HK', zhHK)
-LocaleProvider.extends('zh-TW', zhTW)
-LocaleProvider.extends('ja-JP', jaJP)
-LocaleProvider.extends('ko-KR', koKR)
-LocaleProvider.extends('th-TH', thTH)
-LocaleProvider.extends('vi-VN', viVN)
-LocaleProvider.extends('fr-FR', frFR)
-LocaleProvider.extends('de-DE', deDE)
-LocaleProvider.extends('es-ES', esES)
-LocaleProvider.extends('it-IT', itIT)
-LocaleProvider.extends('pt-PT', ptPT)
-LocaleProvider.extends('pt-BR', ptBR)
-LocaleProvider.extends('ru-RU', ruRU)
-LocaleProvider.extends('az-AZ', azAZ)
-LocaleProvider.extends('hy-AM', hyAM)
-LocaleProvider.extends('ka-GE', kaGE)
-LocaleProvider.extends('uz-UZ', uzUZ)
-LocaleProvider.extends('bs-BA', bsBA)
-LocaleProvider.extends('bg-BG', bgBG)
-LocaleProvider.extends('ur-PK', urPK)
-LocaleProvider.extends('nl-NL', nlNL)
-LocaleProvider.extends('cs-CZ', csCZ)
-LocaleProvider.extends('da-DK', daDK)
-LocaleProvider.extends('el-GR', elGR)
-LocaleProvider.extends('fi-FI', fiFI)
-LocaleProvider.extends('tr-TR', trTR)
+HiUIProvider.extends('ja-JP', jaJP)
+HiUIProvider.extends('ko-KR', koKR)
+HiUIProvider.extends('th-TH', thTH)
+HiUIProvider.extends('vi-VN', viVN)
+HiUIProvider.extends('fr-FR', frFR)
+HiUIProvider.extends('de-DE', deDE)
+HiUIProvider.extends('es-ES', esES)
+HiUIProvider.extends('it-IT', itIT)
+HiUIProvider.extends('pt-PT', ptPT)
+HiUIProvider.extends('pt-BR', ptBR)
+HiUIProvider.extends('ru-RU', ruRU)
+HiUIProvider.extends('az-AZ', azAZ)
+HiUIProvider.extends('hy-AM', hyAM)
+HiUIProvider.extends('ka-GE', kaGE)
+HiUIProvider.extends('uz-UZ', uzUZ)
+HiUIProvider.extends('bs-BA', bsBA)
+HiUIProvider.extends('bg-BG', bgBG)
+HiUIProvider.extends('ur-PK', urPK)
+HiUIProvider.extends('nl-NL', nlNL)
+HiUIProvider.extends('cs-CZ', csCZ)
+HiUIProvider.extends('da-DK', daDK)
+HiUIProvider.extends('el-GR', elGR)
+HiUIProvider.extends('fi-FI', fiFI)
+HiUIProvider.extends('tr-TR', trTR)
 
 // import Popper from '../packages/ui/popper/src/index.js'
 // import Alert from '../packages/ui/alert/es/index.js'
