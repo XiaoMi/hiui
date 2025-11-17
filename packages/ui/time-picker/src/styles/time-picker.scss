@@ -20,7 +20,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     margin-right: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: inherit;
     text-align: center;
   }
@@ -29,7 +29,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     position: relative;
     z-index: 0;
     background: use-color-static('white');
-    border-color: use-color('gray', 300);
+    border-color: use-color('gray', 400);
 
     &:not(.#{$prefix}--disabled):not(.#{$prefix}--input-not-valid):hover {
       border-color: use-color-mode('primary');
@@ -37,17 +37,17 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-filled {
-    background: use-color('gray', 100);
+    background: use-color('gray', 200);
 
     &:not(.#{$prefix}--disabled):hover {
-      background: use-color('gray', 200);
+      background: use-color('gray', 300);
     }
   }
 
   &--appearance-unset {
     &:not(.#{$prefix}--disabled):hover,
     &.#{$prefix}--active {
-      background: use-color('gray', 100);
+      background: use-color('gray', 200);
     }
   }
 
@@ -56,14 +56,14 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-contained {
-    background: use-color('gray', 50);
+    background: use-color('gray', 100);
 
     .#{$prefix}__label {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
       white-space: nowrap;
 
       .#{$prefix}--disabled & {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
 
@@ -90,7 +90,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$prefix}__function-button {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 
@@ -166,7 +166,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     display: flex;
     justify-content: space-between;
     padding: 10px 8px;
-    border-top: 1px solid use-color('gray', 100);
+    border-top: 1px solid use-color('gray', 200);
     align-items: center;
     flex-wrap: wrap;
     // 单个情况下居右
@@ -184,16 +184,19 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &--disabled {
     cursor: not-allowed;
-    background: use-color('gray', 50);
+    background: use-color('gray', 100);
 
     .#{$input-wrapper-class} {
       pointer-events: none;
-      opacity: 0.3;
+    }
+
+    .#{$prefix}__function-button {
+      color: use-color('gray', 500);
     }
   }
 

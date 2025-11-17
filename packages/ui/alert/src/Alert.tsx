@@ -1,12 +1,11 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
-
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { AlertTypeEnum } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useTimeout } from '@hi-ui/use-timeout'
-import { IconButton } from '@hi-ui/icon-button'
+import { Button } from '@hi-ui/button'
 import { alertIconMap, defaultCloseIcon } from './icons'
 
 const _prefix = getPrefixCls('alert')
@@ -32,12 +31,15 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       closeIcon = defaultCloseIcon,
       // duration小于 0，表示不开启自动关闭
       duration = -1,
-      size = 'lg',
+      size: sizeProp,
       onClose,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'lg'
+
     const [internalVisible, setInternalVisible] = useState(true)
 
     const handleClose = useLatestCallback(() => {
@@ -75,7 +77,12 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
           {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
         </div>
         {closeable && closeIcon ? (
-          <IconButton className={`${prefixCls}__close`} onClick={handleClose} icon={closeIcon} />
+          <Button
+            className={`${prefixCls}__close`}
+            onClick={handleClose}
+            appearance="link"
+            icon={closeIcon}
+          />
         ) : null}
       </div>
     ) : null

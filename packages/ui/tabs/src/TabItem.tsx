@@ -3,6 +3,7 @@ import { TabPaneProps } from './TabPane'
 import { cx } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CloseOutlined } from '@hi-ui/icons'
+import { Button } from '@hi-ui/button'
 import { Input } from '@hi-ui/input'
 import { Tooltip } from '@hi-ui/tooltip'
 
@@ -98,17 +99,19 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
 
         if (closeable && !editRender) {
           return (
-            <span
+            <Button
               className={`${prefixCls}__close-btn`}
+              type={active ? 'primary' : 'default'}
+              size="xs"
+              appearance="link"
+              icon={<CloseOutlined />}
               onClick={(evt) => {
                 evt.stopPropagation()
                 if (onDelete) {
                   onDelete({ tabId, tabTitle }, evt)
                 }
               }}
-            >
-              <CloseOutlined />
-            </span>
+            />
           )
         }
       }
@@ -139,12 +142,14 @@ export const TabItem = forwardRef<HTMLDivElement | null, TabItemProps>(
         draggable={draggable}
         tabIndex={disabled ? 0 : -1}
         onClick={disabled ? undefined : _onClick}
-        {...(editable ? {
-          onDoubleClick: (e) => {
-            e.stopPropagation()
-            setEditing(true)
-          }
-        } : {})}
+        {...(editable
+          ? {
+              onDoubleClick: (e) => {
+                e.stopPropagation()
+                setEditing(true)
+              },
+            }
+          : {})}
         onDragStart={(e) => {
           e.stopPropagation()
           e.dataTransfer.setData('tab', JSON.stringify({ tabId, tabTitle }))

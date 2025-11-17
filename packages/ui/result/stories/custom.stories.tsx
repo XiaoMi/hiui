@@ -1,12 +1,12 @@
 import React from 'react'
-import Result, {
-  ResultImageClientError,
-  ResultImageNetError,
-  ResultImageForbidden,
-  ResultImageNotFound,
-  ResultImageServerError,
-} from '../src'
+import Result from '../src'
 import Button from '@hi-ui/button'
+import {
+  EMPTY_STATE_IMAGE_NO_NETWORK,
+  EMPTY_STATE_IMAGE_NO_ACCESS,
+  EMPTY_STATE_IMAGE_404,
+  EMPTY_STATE_IMAGE_SERVICE_ERROR,
+} from '@hi-ui/empty-state'
 
 /**
  * @title 自定义指示器
@@ -18,18 +18,7 @@ export const Custom = () => {
       <h1>自定义指示器</h1>
       <div className="result-basic__wrap">
         <Result
-          image={<ResultImageClientError />}
-          title="页面发送错误"
-          content="这是对页面错误的说明文案"
-          children={[
-            <Button key="refresh">刷新</Button>,
-            <Button type="primary" key="back">
-              返回
-            </Button>,
-          ]}
-        />
-        <Result
-          image={<ResultImageNetError />}
+          image={<img src={EMPTY_STATE_IMAGE_NO_NETWORK} />}
           title="网络连接失败"
           content="这是对网络连接失败的说明文案"
           children={[
@@ -40,7 +29,7 @@ export const Custom = () => {
           ]}
         />
         <Result
-          image={<ResultImageForbidden />}
+          image={<img src={EMPTY_STATE_IMAGE_NO_ACCESS} />}
           title="暂无权限"
           content="这是对暂无权限的说明文案"
           children={[
@@ -51,13 +40,13 @@ export const Custom = () => {
           ]}
         />
         <Result
-          image={<ResultImageNotFound />}
+          image={<img src={EMPTY_STATE_IMAGE_404} />}
           title="404"
           content="抱歉，请求资源不存在！"
           children={<Button type="primary">返回首页</Button>}
         />
         <Result
-          image={<ResultImageServerError />}
+          image={<img src={EMPTY_STATE_IMAGE_SERVICE_ERROR} />}
           title="500"
           content="抱歉，服务器开小差了！"
           children={<Button type="primary">刷新</Button>}

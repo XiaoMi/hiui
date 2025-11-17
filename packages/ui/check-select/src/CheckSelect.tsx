@@ -23,7 +23,7 @@ import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -80,17 +80,22 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       checkedOnEntered = true,
       customRender,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onKeyDown: onKeyDownProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     // ************************** 国际化 ************************* //
 
     const i18n = useLocaleContext()
@@ -166,9 +171,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'filter' || searchMode === 'dataSource')
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
           <Checkbox checked={node.checked} disabled={node.disabled}>
-            <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+            <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
           </Checkbox>
         ) : (
           true
@@ -276,7 +284,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       onItemCreate?.(createdItem)
 
       // 创建后重置搜索和关闭弹窗
-      pickerInnerRef.current?.resetSearch()
+      clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
       menuVisibleAction.off()
     })
 
@@ -352,6 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onClose={menuVisibleAction.off}
           onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           keyword={keywordProp}
+          clearSearchOnClosed={clearSearchOnClosed}
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
@@ -359,6 +368,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           footer={renderDefaultFooter()}
           creatableInSearch={creatableInSearch}
           onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
               customRenderContent
@@ -461,7 +471,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 )
 
 export interface CheckSelectProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseCheckSelectProps {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
@@ -535,6 +545,10 @@ export interface CheckSelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 选择框前置内容
    */

@@ -13,91 +13,97 @@ export const Loading = () => {
       <div className="button-basic__wrap">
         <div style={{ marginBottom: 24 }}>
           <Button type="primary" icon={<PlusOutlined />} loading>
-            面性按钮
+            Solid
           </Button>
           <Button type="primary" icon={<PlusOutlined />} loading />
-          <Button type="secondary" icon={<PlusOutlined />} loading>
-            面性按钮
-          </Button>
-          <Button type="secondary" icon={<PlusOutlined />} loading />
           <Button icon={<PlusOutlined />} loading>
-            面性按钮
+            Solid
           </Button>
           <Button icon={<PlusOutlined />} loading />
           <Button type="danger" icon={<PlusOutlined />} loading>
-            面性按钮
+            Solid
           </Button>
           <Button type="danger" icon={<PlusOutlined />} loading />
           <Button type="success" icon={<PlusOutlined />} loading>
-            面性按钮
+            Solid
           </Button>
           <Button type="success" icon={<PlusOutlined />} loading />
         </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} loading>
+            Filled
+          </Button>
+          <Button type="primary" appearance="filled" icon={<PlusOutlined />} loading />
+          <Button appearance="filled" icon={<PlusOutlined />} loading>
+            Filled
+          </Button>
+          <Button appearance="filled" icon={<PlusOutlined />} loading />
+          <Button type="danger" appearance="filled" icon={<PlusOutlined />} loading>
+            Filled
+          </Button>
+          <Button type="danger" appearance="filled" icon={<PlusOutlined />} loading />
+          <Button type="success" appearance="filled" icon={<PlusOutlined />} loading>
+            Filled
+          </Button>
+          <Button type="success" appearance="filled" icon={<PlusOutlined />} loading />
+        </div>
+
         <div style={{ marginBottom: 24 }}>
           <Button type="primary" icon={<PlusOutlined />} appearance="line" loading>
-            线性按钮
+            Line
           </Button>
           <Button type="primary" icon={<PlusOutlined />} appearance="line" loading />
-          <Button type="secondary" icon={<PlusOutlined />} appearance="line" loading>
-            线性按钮
-          </Button>
-          <Button type="secondary" icon={<PlusOutlined />} appearance="line" loading />
           <Button icon={<PlusOutlined />} appearance="line" loading>
-            线性按钮
+            Line
           </Button>
           <Button icon={<PlusOutlined />} appearance="line" loading />
           <Button type="danger" icon={<PlusOutlined />} appearance="line" loading>
-            线性按钮
+            Line
           </Button>
           <Button type="danger" icon={<PlusOutlined />} appearance="line" loading />
           <Button type="success" icon={<PlusOutlined />} appearance="line" loading>
-            线性按钮
+            Line
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="line" loading />
         </div>
+
         <div style={{ marginBottom: 24 }}>
-          <Button type="primary" icon={<PlusOutlined />} appearance="link" loading>
-            链接按钮
-          </Button>
-          <Button type="primary" icon={<PlusOutlined />} appearance="link" loading />
-          <Button type="secondary" icon={<PlusOutlined />} appearance="link" loading>
-            链接按钮
-          </Button>
-          <Button type="secondary" icon={<PlusOutlined />} appearance="link" loading />
-          <Button icon={<PlusOutlined />} appearance="link" loading>
-            链接按钮
-          </Button>
-          <Button icon={<PlusOutlined />} appearance="link" loading />
-          <Button type="danger" icon={<PlusOutlined />} appearance="link" loading>
-            链接按钮
-          </Button>
-          <Button type="danger" icon={<PlusOutlined />} appearance="link" loading />
-          <Button type="success" icon={<PlusOutlined />} appearance="link" loading>
-            链接按钮
-          </Button>
-          <Button type="success" icon={<PlusOutlined />} appearance="link" loading />
-        </div>
-        <div>
           <Button type="primary" icon={<PlusOutlined />} appearance="text" loading>
-            链接按钮
+            Text
           </Button>
           <Button type="primary" icon={<PlusOutlined />} appearance="text" loading />
-          <Button type="secondary" icon={<PlusOutlined />} appearance="text" loading>
-            链接按钮
-          </Button>
-          <Button type="secondary" icon={<PlusOutlined />} appearance="text" loading />
           <Button icon={<PlusOutlined />} appearance="text" loading>
-            链接按钮
+            Text
           </Button>
           <Button icon={<PlusOutlined />} appearance="text" loading />
           <Button type="danger" icon={<PlusOutlined />} appearance="text" loading>
-            链接按钮
+            Text
           </Button>
           <Button type="danger" icon={<PlusOutlined />} appearance="text" loading />
           <Button type="success" icon={<PlusOutlined />} appearance="text" loading>
-            链接按钮
+            Text
           </Button>
           <Button type="success" icon={<PlusOutlined />} appearance="text" loading />
+        </div>
+
+        <div>
+          <Button type="primary" icon={<PlusOutlined />} appearance="link" loading>
+            Link
+          </Button>
+          <Button type="primary" icon={<PlusOutlined />} appearance="link" loading />
+          <Button icon={<PlusOutlined />} appearance="link" loading>
+            Link
+          </Button>
+          <Button icon={<PlusOutlined />} appearance="link" loading />
+          <Button type="danger" icon={<PlusOutlined />} appearance="link" loading>
+            Link
+          </Button>
+          <Button type="danger" icon={<PlusOutlined />} appearance="link" loading />
+          <Button type="success" icon={<PlusOutlined />} appearance="link" loading>
+            Link
+          </Button>
+          <Button type="success" icon={<PlusOutlined />} appearance="link" loading />
         </div>
       </div>
     </>

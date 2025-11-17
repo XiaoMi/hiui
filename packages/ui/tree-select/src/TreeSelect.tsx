@@ -12,7 +12,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -62,6 +62,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
@@ -76,16 +77,20 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       virtual,
       itemHeight,
       height,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       customRender,
       label,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)
@@ -208,8 +213,11 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
-          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
         ) : (
           true
         )
@@ -273,7 +281,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -303,7 +313,6 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
-            size={'md'}
             className={`${prefixCls}__tree`}
             selectable
             selectedId={value}
@@ -324,7 +333,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
 )
 
 export interface TreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'> {
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header'> {
   /**
    * 展示数据
    */
@@ -464,6 +473,10 @@ export interface TreeSelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
 }
 
 if (__DEV__) {

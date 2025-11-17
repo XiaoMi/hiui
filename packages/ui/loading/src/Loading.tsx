@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
-import { HiBaseHTMLProps, HiBaseSizeEnum, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, usePortalContext, useGlobalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Spinner from '@hi-ui/spinner'
 import { mergeRefs } from '@hi-ui/react-utils'
@@ -21,22 +21,28 @@ export const Loading = forwardRef<null, LoadingProps>(
       role = _role,
       container: containerProp,
       content,
+      contentPosition = 'bottom',
       visible = true,
       full = false,
       part = false,
-      size = 'md',
+      size: sizeProp,
+      color,
       delay = -1,
       disabledPortal = false,
       innerRef,
       timeout = 300,
       indicator,
-      type = 'dot',
+      type = 'spin',
+      showMask = true,
       wrapperClassName,
       wrapperStyle,
       ...restProps
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const { internalVisible, setInternalVisible } = useLoading({ visible, delay })
 
     const globalContainer = usePortalContext()?.container
@@ -51,14 +57,9 @@ export const Loading = forwardRef<null, LoadingProps>(
       className,
       size && `${prefixCls}--size-${size}`,
       !full && (part || !!children) && `${prefixCls}--part`,
-      full && `${prefixCls}--full`
-    )
-
-    const defaultIconComponent = (
-      <div className={`${prefixCls}__icon`}>
-        <div />
-        <div />
-      </div>
+      full && `${prefixCls}--full`,
+      `${prefixCls}--type-${type}`,
+      `${prefixCls}--content-position-${contentPosition}`
     )
 
     const getIndicator = useLatestCallback(() => {
@@ -68,9 +69,18 @@ export const Loading = forwardRef<null, LoadingProps>(
 
       switch (type) {
         case 'spin':
-          return <Spinner size={size} />
+          return (
+            <div className={`${prefixCls}__icon`}>
+              <Spinner size={size} color={color} />
+            </div>
+          )
         default:
-          return defaultIconComponent
+          return (
+            <div className={`${prefixCls}__icon`}>
+              <div />
+              <div />
+            </div>
+          )
       }
     })
 
@@ -85,9 +95,11 @@ export const Loading = forwardRef<null, LoadingProps>(
         nodeRef={transitionNodeRef}
       >
         <div ref={mergeRefs(ref, transitionNodeRef)} role={role} className={cls} {...restProps}>
-          <div className={`${prefixCls}__mask`} />
-          <div className={`${prefixCls}__icon-wrapper`}>{getIndicator()}</div>
-          {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
+          {showMask && <div className={`${prefixCls}__mask`} />}
+          <div className={`${prefixCls}__content-wrapper`}>
+            {getIndicator()}
+            {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
+          </div>
         </div>
       </CSSTransition>
     )
@@ -109,13 +121,17 @@ export const Loading = forwardRef<null, LoadingProps>(
   }
 )
 
-export type LoadingSizeEnum = HiBaseSizeEnum | undefined
+export type LoadingSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
 export interface LoadingProps extends HiBaseHTMLProps<'div'> {
   /**
    * 	自定义加载中状态的文案
    */
   content?: React.ReactNode
+  /**
+   * 设置加载中状态的文案位置
+   */
+  contentPosition?: 'right' | 'bottom'
   /**
    * 是否开启显示
    */
@@ -129,9 +145,13 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    */
   delay?: number
   /**
-   * 自定义尺寸
+   * 设置尺寸
    */
   size?: LoadingSizeEnum
+  /**
+   * 设置颜色，仅在 type 为 spin 时有效
+   */
+  color?: React.CSSProperties['color']
   /**
    * 禁用 portal。暂不对外暴露
    * @private
@@ -166,6 +186,10 @@ export interface LoadingProps extends HiBaseHTMLProps<'div'> {
    * loading 效果类型
    */
   type?: 'dot' | 'spin'
+  /**
+   * 设置蒙层
+   */
+  showMask?: boolean
   /**
    * 设置包裹器类名
    */

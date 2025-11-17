@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { useDate } from './hooks/useData'
@@ -18,7 +18,6 @@ import {
   CalendarItemV3,
   DatePickerProps,
   DatePickerTypeEnum,
-  DatePickerValueV3,
   DateRange,
   DatePickerOnChangeDateString,
   DatePickerOnChangeDate,
@@ -72,7 +71,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       appearance = 'line',
-      size = 'md',
+      size: sizeProp,
       overlay,
       invalid = false,
       onOpen,
@@ -91,6 +90,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
     const locale = i18n.locale
 
@@ -134,20 +136,23 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       [weekOffset, locale]
     )
 
-    const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
-      if (!original) {
-        return original
-      } else {
-        if (Array.isArray(original)) {
-          return {
-            start: new Date(original[0] as any),
-            end: new Date(original[1] as any),
-          } as DateRange
-        } else {
+    const valueAdapter = useCallback(
+      (original) => {
+        if (!original) {
           return original
+        } else {
+          if (Array.isArray(original) && type.includes('range')) {
+            return {
+              start: new Date(original[0] as any),
+              end: new Date(original[1] as any),
+            } as DateRange
+          } else {
+            return original
+          }
         }
-      }
-    }, [])
+      },
+      [type]
+    )
 
     const altCalendar = useMemo<CalendarItemV3[] | undefined>(
       () =>

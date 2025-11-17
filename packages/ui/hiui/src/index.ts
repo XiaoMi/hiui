@@ -142,6 +142,9 @@ export { default as Progress } from '@hi-ui/progress'
 export * from '@hi-ui/provider'
 export { default as Provider } from '@hi-ui/provider'
 
+export * from '@hi-ui/query-filter'
+export { default as QueryFilter } from '@hi-ui/query-filter'
+
 export * from '@hi-ui/radio'
 export { default as Radio } from '@hi-ui/radio'
 
@@ -166,8 +169,8 @@ export { default as Slider } from '@hi-ui/slider'
 export * from '@hi-ui/space'
 export { default as Space } from '@hi-ui/space'
 
-// export * from '@hi-ui/spinner'
-// export { default as Spinner } from '@hi-ui/spinner'
+export * from '@hi-ui/spinner'
+export { default as Spinner } from '@hi-ui/spinner'
 
 export * from '@hi-ui/stepper'
 export { default as Stepper } from '@hi-ui/stepper'

@@ -9,33 +9,21 @@ $image-container: '#{$prefix}__image' !default;
   flex-direction: column;
   align-items: center;
 
+  &--size-xs {
+    .#{$image-container} {
+      height: 80px;
+    }
+  }
+
   &--size-sm {
     .#{$image-container} {
-      height: 72px;
+      height: 100px;
     }
   }
 
   &--size-md {
     .#{$image-container} {
-      height: 88px;
-    }
-  }
-
-  &--size-lg {
-    .#{$image-container} {
-      height: 96px;
-    }
-  }
-
-  &--size-xl {
-    .#{$image-container} {
       height: 120px;
-    }
-  }
-
-  &--size-xxl {
-    .#{$image-container} {
-      height: 160px;
     }
   }
 
@@ -49,7 +37,8 @@ $image-container: '#{$prefix}__image' !default;
 
   &__title {
     display: block;
-    color: use-color('gray', 500);
+    margin-top: use-spacing(6);
+    color: use-color('gray', 600);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('sm');
   }

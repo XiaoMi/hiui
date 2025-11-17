@@ -80,102 +80,42 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   &__arrow {
     z-index: 1;
     position: relative;
-
-    // TODO: 存在空间双倍占用，相当于 12 px，改写成正方形又会占用自己的区域
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-color: transparent;
-      border-width: 6px;
-    }
-
-    &::after {
-      filter: blur(8px);
-      z-index: -1;
-    }
+    display: inline-flex;
   }
 
   &__popper {
     &[data-popper-placement^=top] {
       .#{$prefix}__arrow {
-        bottom: -1px;
-
-        &::before {
-          left: 0;
-          transform: translateX(-6px);
-          top: -1px;
-          border-top-color: $arrow-color;
-        }
-
-        &::after {
-          left: 0;
-          transform: translateX(-6px);
-          top: 1px;
-          border-top-color: rgba(0, 0, 0, 0.1);
-        }
+        bottom: -6px;
       }
     }
 
     &[data-popper-placement^=bottom] {
       .#{$prefix}__arrow {
-        top: -1px;
+        top: -6px;
 
-        &::before {
-          left: 0;
-          transform: translateX(-6px);
-          bottom: -1px;
-          border-bottom-color: $arrow-color;
-        }
-
-        &::after {
-          left: 0;
-          transform: translateX(-6px);
-          bottom: 1px;
-          border-bottom-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(180deg);
         }
       }
     }
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        right: -1px;
+        right: -10px;
 
-        &::before {
-          top: 0;
-          transform: translateY(-50%);
-          left: -1px;
-          border-left-color: $arrow-color;
-        }
-
-        &::after {
-          top: 0;
-          transform: translateY(-50%);
-          left: 1px;
-          border-left-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(-90deg);
         }
       }
     }
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
-        left: -1px;
+        left: -10px;
 
-        &::before {
-          top: 0;
-          transform: translateY(-50%);
-          right: -1px;
-          border-right-color: $arrow-color;
-        }
-
-        &::after {
-          top: 0;
-          transform: translateY(-50%);
-          right: 1px;
-          border-right-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(90deg);
         }
       }
     }

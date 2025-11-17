@@ -1,0 +1,153 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$fast-prefix: '#{$component-prefix}-fast-transfer' !default;
+
+.#{$fast-prefix} {
+  box-sizing: border-box;
+  position: relative;
+  width: 520px;
+  height: 420px;
+  display: flex;
+  align-items: stretch;
+  border: use-border-size('normal') use-color('gray', 400);
+  border-radius: use-border-radius('xl');
+  overflow: hidden;
+  color: use-color('gray', 900);
+
+  &-source-panel,
+  &-target-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: use-spacing(8) use-spacing(4);
+
+    &__search {
+      padding: 0 use-spacing(4) use-spacing(4);
+    }
+
+    &__list {
+      flex: 1;
+      overflow: overlay;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: use-spacing(4);
+      padding: use-spacing(3) use-spacing(4);
+      border-radius: use-border-radius('normal');
+      overflow: hidden;
+      transition: all 0.3s;
+
+      &:not(&--disabled):hover {
+        background-color: use-color('gray', 100);
+        cursor: pointer;
+      }
+
+      &--disabled {
+        color: use-color('gray', 500);
+        cursor: not-allowed;
+      }
+
+      &-title {
+        font-size: use-text-size('normal');
+        line-height: use-text-lineheight('sm');
+      }
+    }
+
+    &__empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: use-spacing(4);
+      font-size: use-text-size('normal');
+      color: use-color('gray', 600);
+    }
+  }
+
+  &-source-panel {
+    &__check-all {
+      padding: 0 use-spacing(4) use-spacing(4);
+    }
+
+    &__item-group {
+      padding: use-spacing(3) use-spacing(4);
+      border-radius: use-border-radius('normal');
+      overflow: hidden;
+
+      &-title {
+        font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
+        color: use-color('gray', 700);
+      }
+    }
+  }
+
+  &-target-panel {
+    border-left: use-border-size('normal') use-color('gray', 400);
+
+    &__checked {
+      padding: 0 use-spacing(4) use-spacing(4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__checked-title {
+      font-size: use-text-size('normal');
+    }
+
+    &__item {
+      position: relative;
+      gap: use-spacing(2);
+
+      // 拖拽指示器-线条
+      &::after {
+        position: absolute;
+        content: '';
+        // TODO: zIndex 全局约定设置
+        z-index: 9998;
+        display: block;
+        box-sizing: border-box;
+        border-bottom-width: 0;
+        border-bottom-style: solid;
+        border-bottom-color: use-color-mode('primary');
+        left: 0;
+        width: 100%;
+      }
+
+      &-drag-dot {
+        color: use-color('gray', 700);
+      }
+
+      &-title {
+        flex: 1;
+      }
+
+      &-close {
+        margin-left: auto;
+      }
+
+      &--drag-before {
+        &::after {
+          top: 0;
+          border-bottom-width: 1px;
+        }
+      }
+
+      &--drag-after {
+        &::after {
+          bottom: 0;
+          border-bottom-width: 1px;
+        }
+      }
+    }
+  }
+
+  &-tree {
+    .#{$component-prefix}-tree-node {
+      padding: 0;
+    }
+  }
+}

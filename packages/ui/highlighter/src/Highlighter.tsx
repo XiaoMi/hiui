@@ -5,9 +5,9 @@ import { HiBaseHTMLProps } from '@hi-ui/core'
 
 const HIGHLIGHTER_PREFIX = getPrefixCls('highlighter')
 
-const addGlobalFlag = (regex: RegExp) =>{
-  const newFlags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
-  return new RegExp(regex.source, newFlags);
+const addGlobalFlag = (regex: RegExp) => {
+  const newFlags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g'
+  return new RegExp(regex.source, newFlags)
 }
 
 /**
@@ -36,7 +36,7 @@ export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
     const parts = children.split(keyword)
 
     let matches: RegExpMatchArray | null
-    if(keyword instanceof RegExp){
+    if (keyword instanceof RegExp) {
       matches = children.match(addGlobalFlag(keyword))
     }
 

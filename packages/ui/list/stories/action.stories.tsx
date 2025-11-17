@@ -1,8 +1,10 @@
 import React from 'react'
+import Button from '@hi-ui/button'
 import List from '../src'
 
 /**
  * @title 带操作
+ * @desc 可通过 actionPlacement 配置操作项的垂直对齐位置
  */
 export const Action = () => {
   return (
@@ -10,74 +12,43 @@ export const Action = () => {
       <h1>带操作</h1>
       <div className="list-basic__wrap">
         <List
-          style={{ marginBottom: 20 }}
           data={[
             {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
             },
             {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
+            },
+            {
+              title: '当前这里是标题信息',
+              description:
+                '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
+              avatar: 'https://xiaomi.github.io/hiui/logo.png',
+              action: (
+                <Button type="primary" appearance="text">
+                  操作
+                </Button>
+              ),
             },
           ]}
           render={(dataItem) => {
-            return <List.Item {...dataItem} />
-          }}
-        />
-        <List
-          style={{ marginBottom: 20 }}
-          data={[
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-          ]}
-          render={(dataItem) => {
-            return <List.Item {...dataItem} actionPlacement={'top'} />
-          }}
-        />
-        <List
-          data={[
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-            {
-              title: '下单量-指标',
-              description: '下单量在交易环节中整体用户下单的数量',
-              extra: '最新使用：2019.12.23 下午07:07',
-              avatar:
-                'https://cdn.cnbj1.fds.api.mi-img.com/hiui-template/resources/images/HiUI/logo.png',
-              action: '编辑',
-            },
-          ]}
-          render={(dataItem) => {
-            return <List.Item {...dataItem} actionPlacement={'bottom'} />
+            return <List.Item {...dataItem} actionPlacement="center" />
           }}
         />
       </div>

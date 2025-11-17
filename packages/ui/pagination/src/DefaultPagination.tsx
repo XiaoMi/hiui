@@ -33,6 +33,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       onJump,
       onPageSizeChange,
       showTotal,
+      renderTotal,
       showJumper,
       showPagers = true,
       type = 'default',
@@ -162,7 +163,9 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {showTotal ? (
-          <div className={`${prefixCls}__total`}>{`${totalText[0]} ${total} ${totalText[1]}`}</div>
+          <div className={`${prefixCls}__total`}>
+            {renderTotal ? renderTotal(total) : `${totalText[0]} ${total} ${totalText[1]}`}
+          </div>
         ) : null}
 
         {showPagers ? (
@@ -173,6 +176,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               disabled={disabled || current === 1}
               onChange={onClick}
               current={current}
+              size={size}
             />
             {renderPagers()}
             <PagerButton
@@ -180,6 +184,7 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               prefixCls={prefixCls}
               onChange={onClick}
               current={current}
+              size={size}
               disabled={disabled || current === maxPage}
             />
           </ul>
@@ -278,6 +283,10 @@ export interface PaginationProps extends HiBaseHTMLProps<'div'> {
    * 设置尺寸
    */
   size?: 'xs' | 'sm' | 'md'
+  /**
+   * 自定义显示总数样式
+   */
+  renderTotal?: (total: number) => React.ReactNode
 }
 
 if (__DEV__) {

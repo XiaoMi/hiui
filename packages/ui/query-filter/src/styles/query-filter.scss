@@ -1,0 +1,74 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-query-filter' !default;
+$query-filter-form-prefix: '#{$component-prefix}-query-filter-form' !default;
+$query-filter-button-prefix: '#{$component-prefix}-query-filter-button' !default;
+$query-filter-search-input-prefix: '#{$component-prefix}-query-filter-search-input' !default;
+
+$query-filter-form-gap: use-spacing(4) !default;
+
+.#{$query-filter-form-prefix}-wrapper {
+  .#{$query-filter-form-prefix} {
+    gap: var(--query-filter-form-gap, $query-filter-form-gap);
+
+    &-item {
+      display: flex;
+      align-items: center;
+
+      &-form {
+        flex: 1;
+        overflow: hidden;
+      }
+
+      &-pin {
+        &-btn {
+          flex-shrink: 0;
+          width: use-height-size(8) !important;
+          height: use-height-size(8) !important;
+          margin: use-spacing(1) 0 0 use-spacing(4);
+        }
+      }
+    }
+  }
+}
+
+.#{$query-filter-button-prefix} {
+  &-icon {
+    font-size: use-text-size('lg');
+  }
+
+  &-text {
+    margin-inline-start: use-spacing(4);
+
+    .#{$query-filter-button-prefix}.has-count & {
+      color: use-color-mode('primary', 600);
+    }
+  }
+
+  &-count-wrapper {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    color: #fff;
+    background-color: use-color-mode('primary', 600);
+  }
+
+  &-count {
+    font-size: 20px;
+    transform: scale(0.5);
+    transform-origin: center;
+  }
+}
+
+.#{$query-filter-search-input-prefix} {
+  &[class*='--appearance-filled'] {
+    [class*='__inner'],
+    [class*='__inner--focused'] {
+      background-color: use-color('gray', 100) !important;
+    }
+  }
+}

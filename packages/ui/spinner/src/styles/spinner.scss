@@ -1,13 +1,13 @@
-@import "~@hi-ui/core-css/lib/index.scss";
+@import '~@hi-ui/core-css/lib/index.scss';
 
-$prefix: "#{$component-prefix}-spinner" !default;
+$prefix: '#{$component-prefix}-spinner' !default;
 
 .#{$prefix} {
   width: 1em;
   height: 1em;
-  display: inline-block;
+  display: inline-flex;
   cursor: default;
-  color: use-color-mode("primary");
+  color: use-color-mode('primary');
 
   &--size {
     &-sm {
@@ -19,7 +19,7 @@ $prefix: "#{$component-prefix}-spinner" !default;
     }
 
     &-lg {
-      font-size: use-height-size(9);
+      font-size: use-height-size(10);
     }
   }
 

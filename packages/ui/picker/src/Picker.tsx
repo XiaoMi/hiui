@@ -6,7 +6,6 @@ import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
-import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
 
@@ -29,6 +28,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       clearable = false,
       searchable = false,
       keyword: keywordProp,
+      clearSearchOnClosed = false,
       scrollable = true,
       creatableInSearch = false,
       createTitle: createTitleProp,
@@ -55,6 +55,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       styles,
       classNames,
       gutterGap = 4,
+      header,
       ...rest
     },
     ref
@@ -82,11 +83,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onSearch,
       Object.is
     )
-    // const inSearch = searchable && !!searchValue
-    // const isEmpty = inSearch && showEmpty
-    const resetSearchOnClosed = keywordProp === undefined
-
-    const onSearchLatest = useLatestCallback(onSearch)
 
     const handleChange = useCallback(
       (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +95,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       [searchable, setSearchValue]
     )
 
-    const resetSearch = useCallback(() => {
+    const clearSearch = useCallback(() => {
       setSearchValue('')
     }, [setSearchValue])
 
@@ -129,8 +125,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      resetSearchOnClosed && resetSearch()
-    }, [resetSearchOnClosed, disabled, menuVisibleAction, resetSearch])
+      clearSearchOnClosed && clearSearch()
+    }, [clearSearch, clearSearchOnClosed, disabled, menuVisibleAction])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -155,8 +151,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     >(null)
 
     useImperativeHandle(innerRef, () => ({
-      resetSearch: () => {
-        resetSearchOnClosed && resetSearch()
+      clearSearch: () => {
+        keywordProp === undefined && clearSearch()
       },
       update: () => {
         popperRef.current?.update()
@@ -210,6 +206,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
             className={cx(`${prefixCls}__panel`, classNames?.panel)}
             style={{ minWidth: optionWidth, width: optionWidth, ...styles?.panel }}
           >
+            {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
             {searchable ? (
               <div className={`${prefixCls}__search`}>
                 <Input
@@ -270,7 +267,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 )
 
 export interface PickerHelper {
-  resetSearch: () => void
+  clearSearch: () => void
   update: () => void
   forceUpdate: () => void
 }
@@ -324,6 +321,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 搜索时触发回调
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 是否在关闭时清除搜索
+   */
+  clearSearchOnClosed?: boolean
   /**
    * 是否可清空
    */
@@ -392,6 +393,10 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
     body?: string
     footer?: string
   }
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  header?: React.ReactNode
 }
 
 if (__DEV__) {

@@ -50,6 +50,7 @@
     "@hi-ui/portal": "^4.0.8",
     "@hi-ui/use-latest": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4",
+    "@hi-ui/use-scroll-lock": "^4.0.4",
     "@hi-ui/watermark": "^4.0.8",
     "react-transition-group": "^4.4.5"
   },

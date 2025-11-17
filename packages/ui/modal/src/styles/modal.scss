@@ -137,7 +137,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     font-size: use-text-size('lg');
     font-weight: use-text-weight('semibold');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 800);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -145,7 +145,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     padding: calc(#{use-spacing(9)}) use-spacing(10);
 
     &--divided {
-      border-bottom: use-border-size('normal') use-color('gray', 200);
+      border-bottom: use-border-size('normal') use-color('gray', 300);
     }
 
     .#{$prefix}__close-button {
@@ -167,7 +167,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     padding: 0 use-spacing(10);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 800);
   }
 
   &__icon {
@@ -227,7 +227,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     position: relative;
 
     &--divided {
-      border-top: use-border-size('normal') use-color('gray', 200);
+      border-top: use-border-size('normal') use-color('gray', 300);
     }
   }
 }

@@ -30,7 +30,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { uuid } from '@hi-ui/use-id'
@@ -63,6 +63,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       // search
       searchable: searchableProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
       dataSource,
       searchOnInit,
       filterOption,
@@ -75,7 +76,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       render: titleRender,
       data: dataProp,
       fieldNames,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onSelect: onSelectProp,
@@ -86,10 +87,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       label,
       creatableInSearch,
       onItemCreate,
+      renderExtraHeader,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
     const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
@@ -99,7 +104,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       disabled,
       onOpen,
       onClose: () => {
-        pickerInnerRef.current?.resetSearch()
+        clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
         onClose?.()
       },
     })
@@ -156,8 +161,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = inSearch && (searchMode === 'filter' || searchMode === 'dataSource')
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
-          <Highlighter keyword={new RegExp(searchValue, 'ig')}>{node.title}</Highlighter>
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
         ) : (
           true
         )
@@ -285,11 +293,13 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           searchable={searchable}
           keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
+          clearSearchOnClosed={clearSearchOnClosed}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
           creatableInSearch={creatableInSearch}
           onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
               customRenderContent
@@ -314,7 +324,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    pickerInnerRef.current?.resetSearch()
+                    pickerInnerRef.current?.clearSearch()
                     onClearProp?.()
                   }
                 }}
@@ -361,7 +371,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 )
 
 export interface SelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseSelectProps {
   /**
    * 选项数据
@@ -399,6 +409,10 @@ export interface SelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private

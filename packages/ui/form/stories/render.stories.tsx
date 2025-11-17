@@ -16,6 +16,7 @@ export const Render = () => {
           initialValues={{ testInput: 'testInput', testInput2: 'testInput2' }}
           // validateTrigger={['onBlur']}
           labelWidth={80}
+          labelPlacement="top"
           rules={{
             testInput: [
               {
@@ -42,8 +43,10 @@ export const Render = () => {
             render={(props) => {
               return (
                 <div>
-                  <span>我是示例提示，请注意大小写哦</span>
                   <Input {...props} />
+                  <span style={{ fontSize: 12, color: '#60636b' }}>
+                    我是示例提示，请注意大小写哦
+                  </span>
                 </div>
               )
             }}

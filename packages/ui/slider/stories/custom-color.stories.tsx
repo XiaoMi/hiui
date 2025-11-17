@@ -49,7 +49,7 @@ export const CustomColor = () => {
             ></span>
           ))}
         </div>
-        <Slider color={colorMap.find((item) => item.type === type).color} />
+        <Slider color={colorMap.find((item) => item.type === type)?.color} />
       </div>
     </>
   )

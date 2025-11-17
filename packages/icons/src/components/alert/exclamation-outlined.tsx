@@ -12,7 +12,7 @@ export const ExclamationOutlined = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M533.333333 661.333333a21.333333 21.333333 0 0 0 21.333334-21.333333V192a21.333333 21.333333 0 0 0-21.333334-21.333333h-42.666666a21.333333 21.333333 0 0 0-21.333334 21.333333v448a21.333333 21.333333 0 0 0 21.333334 21.333333h42.666666z m-21.333333 192a64 64 0 1 0 0-128 64 64 0 0 0 0 128z" p-id="47721"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1045 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="41876"  ><path d="M569.642667 800a53.333333 53.333333 0 1 1-106.666667 0 53.333333 53.333333 0 0 1 106.666667 0zM473.642667 213.333333a42.666667 42.666667 0 0 1 85.333333 0v426.666667a42.666667 42.666667 0 1 1-85.333333 0V213.333333z" p-id="41877"></path></svg>
     )
   }
 )

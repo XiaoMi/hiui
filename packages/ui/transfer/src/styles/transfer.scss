@@ -7,13 +7,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   display: flex;
   align-items: stretch;
-  color: use-color('gray', 700);
+  color: use-color('gray', 900);
 
   &--type {
     &-single {
       .#{$prefix}-operation-arrow {
         font-size: 20px;
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -23,9 +23,9 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   width: 240px;
   min-width: 180px;
-  background-color: use-color-statc('white');
-  border: 1px solid use-color('gray', 300);
-  border-radius: use-border-radius('normal');
+  background-color: use-color-static('white');
+  border: use-border-size('normal') use-color('gray', 400);
+  border-radius: use-border-radius('xl');
   overflow: hidden;
   font-size: use-text-size('normal');
 
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     @include component-reset;
 
     list-style: none;
-    padding: use-spacing(2) 0;
+    padding: use-spacing(4) 0;
 
     &-scroller {
       height: 312px;
@@ -51,7 +51,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(4) use-spacing(2);
+    padding: use-spacing(4) use-spacing(4) 0;
 
     .#{$component-prefix}-input__prefix {
       padding-left: use-spacing(4);
@@ -68,18 +68,18 @@ $prefix: '#{$component-prefix}-transfer' !default;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__limit {
     word-wrap: break-word;
     line-height: 2;
-    color: use-color('gray', 700);
+    color: use-color('gray', 900);
     font-size: use-text-size('normal');
     display: flex;
     align-items: start;
     box-sizing: border-box;
-    padding: 4px 12px;
+    padding: use-spacing(4) use-spacing(6) 0;
     position: sticky;
     top: 0;
     z-index: 1;
@@ -108,7 +108,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
     &--right {
       font-size: use-text-size('sm');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       font-weight: use-text-weight('normal');
     }
 
@@ -129,13 +129,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 300);
-    background: use-color('gray', 100);
+    border-bottom: 1px solid use-color('gray', 400);
+    background: use-color('gray', 200);
     font-weight: use-text-weight('medium');
   }
 
   &__footer {
-    border-top: 1px solid use-color('gray', 300);
+    border-top: 1px solid use-color('gray', 400);
     width: 100%;
     display: inline-flex;
     flex-direction: row-reverse;
@@ -146,7 +146,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 .#{$prefix}-item {
   box-sizing: border-box;
   position: relative;
-  margin: use-spacing(4);
+  margin: 0 use-spacing(4);
 
   &__title,
   .#{$component-prefix}-checkbox {
@@ -212,7 +212,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &--disabled {
     #{$this}__wrap {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       cursor: not-allowed;
     }
   }

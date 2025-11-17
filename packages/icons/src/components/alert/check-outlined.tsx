@@ -12,7 +12,7 @@ export const CheckOutlined = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M840.832 328.832a42.666667 42.666667 0 0 0-57.621333-62.826667l-2.709334 2.496L405.333333 643.626667l-161.834666-161.813334a42.666667 42.666667 0 0 0-57.621334-2.496l-2.709333 2.496a42.666667 42.666667 0 0 0-2.496 57.621334l2.496 2.709333 192 192a42.666667 42.666667 0 0 0 57.621333 2.496l2.709334-2.496 405.333333-405.333333z" p-id="47651"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1045 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="40972"  ><path d="M822.442667 257.493333a38.4 38.4 0 0 1 55.488 53.077334L475.093333 731.989333a81.066667 81.066667 0 0 1-117.205333 0l-203.136-212.48a38.4 38.4 0 0 1 55.509333-53.098666l203.136 212.501333a4.266667 4.266667 0 0 0 6.186667 0L822.421333 257.493333z" p-id="40973"></path></svg>
     )
   }
 )

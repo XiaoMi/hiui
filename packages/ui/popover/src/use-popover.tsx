@@ -144,7 +144,7 @@ export const usePopover = ({
       // @DesignToken zIndex: `popper`
       zIndex: 1030,
       // @DesignToken 10
-      gutterGap: 14,
+      gutterGap: 10,
     })
 
     return {

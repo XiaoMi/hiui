@@ -44,10 +44,11 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
       pagination,
       split = true,
       render,
-      bordered = true,
+      bordered,
       data,
       fieldNames,
       emptyContent,
+      header,
       ...rest
     },
     ref
@@ -60,6 +61,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--bordered`]: bordered,
       [`${prefixCls}--with-pagination`]: pagination,
+      [`${prefixCls}-item--split`]: split,
     })
 
     const renderListItem = useCallback(
@@ -80,6 +82,7 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
+        {header && <div className={`${prefixCls}__header`}>{header}</div>}
         {transformedData && transformedData.length > 0 ? (
           <ul className={cx(`${prefixCls}__wrapper`)}>
             {transformedData.map((item, index) => {
@@ -137,6 +140,10 @@ export interface ListProps extends HiBaseHTMLProps<'div'> {
    * 数据为空时的展示内容
    */
   emptyContent?: React.ReactNode | (() => React.ReactNode)
+  /**
+   * 列表头部
+   */
+  header?: React.ReactNode
 }
 
 if (__DEV__) {

@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -45,8 +46,11 @@
   "dependencies": {
     "@hi-ui/classname": "^4.0.0",
     "@hi-ui/env": "^4.0.0",
+    "@hi-ui/icons": "^4.0.19",
     "@hi-ui/menu": "^4.0.0",
     "@hi-ui/popper": "^4.0.0",
+    "@hi-ui/popover": "^4.2.0",
+    "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
   "peerDependencies": {

@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { UserIcon } from './UserIcon'
 
@@ -20,7 +20,7 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
       className,
       children,
       src,
-      size = 'md',
+      size: sizeProp,
       shape = 'circle',
       bordered = false,
       initials,
@@ -32,6 +32,9 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const onErrorLatestRef = useLatestRef(onError)
     const renderAvatar = useCallback(() => {
       if (src) {

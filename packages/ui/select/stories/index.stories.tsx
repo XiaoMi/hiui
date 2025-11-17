@@ -11,6 +11,7 @@ export * from './disabled.stories'
 export * from './group.stories'
 export * from './search.stories'
 export * from './search-controlled.stories'
+export * from './clear-search.stories'
 export * from './create-item.stories'
 export * from './data-source.stories'
 export * from './title-render.stories'
@@ -23,6 +24,7 @@ export * from './empty-content.stories'
 export * from './tip.stories'
 export * from './addon.stories'
 export * from './custom-render.stories'
+export * from './extra-render.stories'
 
 export default {
   title: 'Data Input/Select',

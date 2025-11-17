@@ -1,24 +1,23 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
+import {
+  InfoCircleFilled,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
-import { ResultImageInfo, ResultImageSuccess, ResultImageWarning, ResultImageError } from './icons'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
 const DEFAULT_ICON_MAP = {
-  [ResultTypeEnum.INFO]: ResultImageInfo,
-  [ResultTypeEnum.SUCCESS]: ResultImageSuccess,
-  [ResultTypeEnum.WARNING]: ResultImageWarning,
-  [ResultTypeEnum.ERROR]: ResultImageError,
-}
-
-const IMAGE_CONTAINER_STYLE_MAP = {
-  sm: { width: '100px', height: '100px' },
-  md: { width: '140px', height: '140px' },
-  lg: { width: '180px', height: '180px' },
+  [ResultTypeEnum.INFO]: InfoCircleFilled,
+  [ResultTypeEnum.SUCCESS]: CheckCircleFilled,
+  [ResultTypeEnum.WARNING]: ExclamationCircleFilled,
+  [ResultTypeEnum.ERROR]: CloseCircleFilled,
 }
 
 /**
@@ -31,7 +30,7 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
       role = 'result',
       className,
       image,
-      imageSize = 'md',
+      imageSize: sizeProp,
       type = 'info',
       title,
       content,
@@ -40,7 +39,15 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const { size: globalSize } = useGlobalContext()
+    const imageSize = sizeProp ?? globalSize ?? 'md'
+
+    const cls = cx(
+      prefixCls,
+      className,
+      `${prefixCls}--type-${type}`,
+      `${prefixCls}--size-${imageSize}`
+    )
 
     const renderImage = () => {
       const DefaultImage = DEFAULT_ICON_MAP[type]
@@ -51,14 +58,7 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
         return
       }
 
-      return (
-        <div
-          style={IMAGE_CONTAINER_STYLE_MAP[imageSize]}
-          className={`${prefixCls}__image-container`}
-        >
-          {image ?? <DefaultImage />}
-        </div>
-      )
+      return <div className={cx(`${prefixCls}__image-container`)}>{image ?? <DefaultImage />}</div>
     }
 
     return (

@@ -88,7 +88,12 @@ export const EditRender = () => {
                     }
                   }}
                 >
-                  <EllipsisVerticalOutlined />
+                  <Button
+                    type="primary"
+                    size="xs"
+                    appearance="link"
+                    icon={<EllipsisVerticalOutlined />}
+                  />
                 </Dropdown>
               </div>
             )

@@ -8,6 +8,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { usePopper, UsePopperProps } from './use-popper'
 import { Portal } from '@hi-ui/portal'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { ArrowIcon } from './ArrowIcon'
 
 export { PopperJS }
 
@@ -145,7 +146,11 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
               className={cx(`${prefixCls}__container`, classNames?.container)}
               style={styles?.container}
             >
-              {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
+              {arrow ? (
+                <div className={`${prefixCls}__arrow`} {...getArrowProps()}>
+                  <ArrowIcon />
+                </div>
+              ) : null}
               <div className={`${prefixCls}__content`}>{children}</div>
             </div>
           </div>

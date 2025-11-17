@@ -44,6 +44,7 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/avatar": "^4.0.8",
     "@hi-ui/classname": "^4.0.5",
     "@hi-ui/empty-state": "^4.1.1",
     "@hi-ui/env": "^4.0.5",

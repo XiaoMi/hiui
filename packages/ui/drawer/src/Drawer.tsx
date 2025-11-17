@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect } from 'react'
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
@@ -88,6 +88,44 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       onExitedLatest()
     }, [onExitedLatest, transitionExitedAction])
 
+    const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null)
+    const [scrollState, setScrollState] = useState<{
+      isContentOverflow: boolean
+      isScrollToTop: boolean
+      isScrollToBottom: boolean
+    }>({
+      isContentOverflow: false,
+      isScrollToTop: true,
+      isScrollToBottom: false,
+    })
+
+    const handleScroll = useCallback((evt: React.UIEvent<HTMLDivElement>) => {
+      if (!evt.currentTarget) return
+
+      const { scrollTop, scrollHeight, clientHeight } = evt.currentTarget
+
+      // 判断内容是否超过容器高度
+      const isContentOverflow = scrollHeight > clientHeight
+
+      // 判断是否滚动到顶部
+      const isScrollToTop = scrollTop === 0
+
+      // 判断是否滚动到底部
+      const isScrollToBottom = scrollTop + clientHeight >= scrollHeight - 1 // 减1像素容差
+
+      setScrollState({
+        isContentOverflow,
+        isScrollToTop,
+        isScrollToBottom,
+      })
+    }, [])
+
+    useEffect(() => {
+      if (scrollElement && visible) {
+        handleScroll({ currentTarget: scrollElement } as React.UIEvent<HTMLDivElement>)
+      }
+    }, [handleScroll, visible, scrollElement])
+
     const hasHeader = !!title || closeable
     const bodyWidth = isNumeric(width) ? width + 'px' : width
     const bodyHeight = isNumeric(height) ? height + 'px' : height
@@ -147,11 +185,24 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                   {closeable ? <IconButton effect onClick={onClose} icon={closeIcon} /> : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`} style={styles?.body}>
+              <main
+                className={`${prefixCls}__body`}
+                style={styles?.body}
+                ref={setScrollElement}
+                onScroll={handleScroll}
+              >
                 {children}
               </main>
               {footer ? (
-                <footer className={`${prefixCls}__footer`} style={styles?.footer}>
+                <footer
+                  className={cx(
+                    `${prefixCls}__footer`,
+                    scrollState.isContentOverflow &&
+                      !scrollState.isScrollToBottom &&
+                      `${prefixCls}__footer--divided`
+                  )}
+                  style={styles?.footer}
+                >
                   {footer}
                 </footer>
               ) : null}

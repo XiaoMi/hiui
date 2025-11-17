@@ -1,3 +1,3 @@
 import { HiBaseSizeEnum } from '@hi-ui/core'
 
-export type EmptyStateSizeEnum = HiBaseSizeEnum | undefined
+export type EmptyStateSizeEnum = Omit<HiBaseSizeEnum, 'lg'> | undefined

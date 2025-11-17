@@ -15,7 +15,7 @@ $prefix: '#{$component-prefix}-picker' !default;
     cursor: pointer;
 
     &__suffix {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -53,13 +53,13 @@ $prefix: '#{$component-prefix}-picker' !default;
   // &--closed {
   //   .#{$component-prefix}-mock-input {
   //     &__suffix {
-  //       color: use-color('gray', 500);
+  //       color: use-color('gray', 600);
   //     }
   //   }
 
   //   .#{$component-prefix}-tag-input-mock {
   //     &__suffix {
-  //       color: use-color('gray', 500);
+  //       color: use-color('gray', 600);
   //     }
   //   }
   // }
@@ -71,23 +71,26 @@ $prefix: '#{$component-prefix}-picker' !default;
     padding: use-spacing(2);
   }
 
-  $top-normal-shadow: 0 -2px 4px 0 rgba(31, 39, 51, 0.1) !default;
-
   &__footer {
-    box-shadow: $top-normal-shadow;
+    border-top: use-border-size('normal') use-color('gray', 300);
     padding: use-spacing(5) use-spacing(7);
     background-color: use-color-static('white');
   }
 
+  &__header {
+    background-color: use-color-static('white');
+    border-bottom: use-border-size('normal') use-color('gray', 300);
+  }
+
   &__panel {
     padding: 0;
-    border: 1px solid use-color('gray', 200);
+    border: 1px solid use-color('gray', 300);
     border-radius: use-border-radius('xl');
     overflow: hidden;
   }
 
   &__search {
-    border-bottom: use-border-size('normal') use-color('gray', 200);
+    border-bottom: use-border-size('normal') use-color('gray', 300);
 
     .#{$component-prefix}-input {
       font-size: use-text-size('normal');
@@ -95,7 +98,7 @@ $prefix: '#{$component-prefix}-picker' !default;
       &__prefix {
         padding-left: use-spacing(6);
         font-size: use-text-size('lg');
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
 
       &--appearance-underline {
@@ -119,7 +122,7 @@ $prefix: '#{$component-prefix}-picker' !default;
     padding: calc(#{use-spacing(2)} + 1px) use-spacing(3);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     line-height: use-text-lineheight('normal');
     display: flex;
     align-items: center;
@@ -136,21 +139,21 @@ $prefix: '#{$component-prefix}-picker' !default;
     border-radius: use-border-radius('normal');
 
     &:hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
       cursor: pointer;
     }
 
     &-title {
       margin-right: use-spacing(4);
       font-size: use-text-size('normal');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       white-space: nowrap;
     }
 
     &-value {
       font-weight: use-text-weight('medium');
       font-size: use-text-size('normal');
-      color: use-color('gray', 700);
+      color: use-color('gray', 900);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 import Scrollbar from '@hi-ui/scrollbar'
@@ -43,7 +43,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onEmbedExpand,
       expandedRender,
       // 其它
-      size = 'md',
+      size: sizeProp,
       extra,
       onRow,
       onHeaderRow,
@@ -59,6 +59,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     // ********************** 内嵌式面板 *********************** //
     const {
       embedExpandable,
@@ -251,7 +254,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
       const doubleTableContent = (
         <>
-          <div {...restTableHeaderProps} style={{ ...style, overflow: 'unset' }}>
+          <div {...restTableHeaderProps} style={{ ...style, overflow: undefined }}>
             <TableHeader />
 
             {/* 不跟随内部 header 横向滚动，固定到右侧 */}

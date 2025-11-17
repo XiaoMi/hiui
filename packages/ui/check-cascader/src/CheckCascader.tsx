@@ -31,7 +31,7 @@ import {
 import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
 
@@ -71,6 +71,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       searchable: searchableProp,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       overlayClassName,
       type = 'tree',
       flattedSearchResult = true,
@@ -79,7 +80,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onOpen,
       onClose,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       renderExtraFooter,
@@ -91,10 +92,14 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       virtual,
       showCheckAll,
       showIndicator = true,
+      renderExtraHeader,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
 
     const pickerInnerRef = useRef<PickerHelper>(null)
@@ -337,6 +342,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -455,7 +462,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   }
 )
 
-export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrollable'> {
+export interface CheckCascaderProps
+  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'> {
   /**
    * 设置选择项数据源
    */
@@ -591,6 +599,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单每列渲染
    */

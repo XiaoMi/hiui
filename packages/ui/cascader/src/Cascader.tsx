@@ -26,7 +26,7 @@ import {
 } from '@hi-ui/use-search-mode'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { CascaderMenuList } from './CascaderMenuList'
 import Highlighter from '@hi-ui/highlighter'
@@ -58,12 +58,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     searchable: searchableProp,
     keyword: keywordProp,
     onSearch: onSearchProp,
+    clearSearchOnClosed,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
     flattedSearchResult = true,
     visible,
-    size = 'md',
+    size: sizeProp,
     prefix,
     suffix,
     onOpen,
@@ -77,8 +78,12 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     virtual,
     onItemClick: onItemClickProp,
     showIndicator = true,
+    renderExtraHeader,
     ...rest
   } = props
+  const { size: globalSize } = useGlobalContext()
+  const size = sizeProp ?? globalSize ?? 'md'
+
   const i18n = useLocaleContext()
 
   const pickerInnerRef = useRef<PickerHelper>(null)
@@ -285,6 +290,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -319,7 +326,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
 })
 
 export interface CascaderProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
+  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer'>,
     UseCascaderProps {
   /**
    * 将 check 子项拍平展示。暂不对外暴露
@@ -387,6 +394,10 @@ export interface CascaderProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单每列渲染
    */
