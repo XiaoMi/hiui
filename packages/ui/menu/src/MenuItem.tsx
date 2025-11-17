@@ -445,7 +445,7 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   parentIds?: React.ReactText[]
   render?: (node: MenuDataItem, level?: number) => React.ReactNode
   raw?: MenuDataItem
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {

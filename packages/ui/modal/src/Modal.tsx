@@ -73,7 +73,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const i18n = useLocaleContext()
 
@@ -274,7 +277,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export type ModalSizeEnum = HiBaseSizeEnum | undefined
+export type ModalSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
 export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**

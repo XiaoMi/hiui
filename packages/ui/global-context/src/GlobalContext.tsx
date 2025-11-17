@@ -8,4 +8,4 @@ export const useGlobalContext = () => {
   return context
 }
 
-export type UseGlobalContext = { size?: 'sm' | 'md' }
+export type UseGlobalContext = { size?: 'xs' | 'sm' | 'md' | 'lg' }
