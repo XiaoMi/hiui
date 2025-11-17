@@ -80,7 +80,10 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
 
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'lg'
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
 
@@ -420,7 +423,7 @@ export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
   /**
    * 设置菜单项的尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
   /**
    * 是否在 mini 模式下显示菜单项的标题
    */

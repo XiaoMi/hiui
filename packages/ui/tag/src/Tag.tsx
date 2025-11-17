@@ -42,7 +42,10 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const contentRef = useRef<HTMLDivElement | null>(null)
 

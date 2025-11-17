@@ -3,6 +3,7 @@ import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import scrollIntoView, {
   StandardBehaviorOptions as ScrollOptions,
 } from 'scroll-into-view-if-needed'
+import { HiBaseSizeEnum } from '@hi-ui/core'
 import {
   FormAction,
   FormState,
@@ -696,7 +697,7 @@ export interface UseFormProps<T = Record<string, any>> {
   /**
    * 设置表单尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>

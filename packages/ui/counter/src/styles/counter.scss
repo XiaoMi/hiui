@@ -38,10 +38,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
         border-color: use-color-mode('primary');
       }
 
-      &::before {
-        background-color: use-color-mode('primary', 50);
-      }
-
       &#{$this}--invalid,
       &#{$this}--out-of-bounds {
         .#{$content-class} {

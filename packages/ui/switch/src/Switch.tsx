@@ -28,7 +28,10 @@ export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const [checked, tryChangeChecked] = useUncontrolledState(defaultChecked, checkedProp, onChange)
 

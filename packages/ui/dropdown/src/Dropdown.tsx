@@ -52,7 +52,10 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
 
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
@@ -201,7 +204,7 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
   /**
    * 设置大小
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {
@@ -255,7 +258,7 @@ interface DropdownMenuProps extends HiBaseHTMLProps<'ul'> {
    * 设置大小
    * @private
    */
-  size?: HiBaseSizeEnum
+  size?: DropdownProps['size']
 }
 
 if (__DEV__) {

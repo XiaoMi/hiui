@@ -39,7 +39,13 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+    if (size === 'lg') {
+      size = 'md'
+    }
 
     const noBackground = appearance === 'unset' && labelPlacement === 'right'
     const vertical = placement === 'vertical'
