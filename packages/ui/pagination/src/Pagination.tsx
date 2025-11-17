@@ -21,7 +21,10 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'sm'
+    let size = sizeProp ?? globalSize ?? 'sm'
+    if (size === 'lg') {
+      size = 'md'
+    }
 
     const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
     if (type === 'default') {

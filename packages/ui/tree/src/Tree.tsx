@@ -94,7 +94,10 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'lg'
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const [treeData, setTreeData] = useCache(data)
 
@@ -479,7 +482,7 @@ export interface TreeProps {
   /**
    * 设置大小
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
   /**
    * 提供辅助方法的内部引用
    */

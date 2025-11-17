@@ -40,7 +40,10 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const imageSize = sizeProp ?? globalSize ?? 'md'
+    let imageSize = sizeProp ?? globalSize ?? 'md'
+    if (imageSize === 'xs') {
+      imageSize = 'sm'
+    }
 
     const cls = cx(
       prefixCls,

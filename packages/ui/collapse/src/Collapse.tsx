@@ -35,7 +35,10 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const cls = cx(
       prefixCls,
@@ -134,7 +137,7 @@ export interface CollapseProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置头部大小
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {
