@@ -1,8 +1,9 @@
 import React from 'react'
 
 export * from './basic.stories'
+export * from './locale-extends.stories'
+export * from './locale-merge.stories'
 export * from './portal.stories'
-export * from './locale-methods.stories'
 
 export default {
   title: 'Provider',
