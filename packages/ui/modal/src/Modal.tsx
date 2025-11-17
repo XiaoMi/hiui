@@ -175,6 +175,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       type && `${prefixCls}--type-${type}`
     )
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
@@ -186,8 +187,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getModalProps(rootProps, ref)}>
+          <div className={cls} {...getModalProps(rootProps, [ref, transitionNodeRef])}>
             {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
               className={`${prefixCls}__wrapper`}
