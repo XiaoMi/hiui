@@ -147,6 +147,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={innerRef}
         >
           <div
             className={cls}
