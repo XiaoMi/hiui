@@ -209,15 +209,10 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       ],
     })
 
-    const dataMemo = useMemo(() => {
-      const flattedStateData = flatData(stateInSearch.data)
-      return isArrayNonEmpty(flattedStateData) ? flattedStateData : flattedData
-    }, [flatData, stateInSearch.data, flattedData])
-
     const [value, tryChangeValue, onNodeCheck, checkedNodes, parsedCheckedIds] = useCheck(
       checkedMode,
       disabled,
-      dataMemo,
+      flattedData,
       defaultValue,
       valueProp,
       onChange
@@ -289,13 +284,17 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     }, [checkedNodes, flattedData])
 
     const toggleCheckAll = useCallback(() => {
-      const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(dataMemo, parsedCheckedIds)
+      const flattedData = flatData(showData)
+      const [currentAllChecked, , hasCheckedAll] = getAllCheckedStatus(
+        flattedData,
+        parsedCheckedIds
+      )
       const shouldChecked = !currentAllChecked
 
       // 全选操作
       if (!currentAllChecked && !hasCheckedAll) {
         tryChangeValue(
-          dataMemo
+          flattedData
             .filter((item) => {
               if (!item.disabled) {
                 // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
@@ -318,11 +317,12 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       } else {
         tryChangeValue([], null, shouldChecked, [])
       }
-    }, [checkedMode, dataMemo, parsedCheckedIds, tryChangeValue])
+    }, [checkedMode, flatData, parsedCheckedIds, showData, tryChangeValue])
 
     const [showAllChecked, showIndeterminate] = useMemo(() => {
-      return getAllCheckedStatus(dataMemo, parsedCheckedIds)
-    }, [dataMemo, parsedCheckedIds])
+      const flattedData = flatData(showData)
+      return getAllCheckedStatus(flattedData, parsedCheckedIds)
+    }, [flatData, parsedCheckedIds, showData])
 
     const renderDefaultFooter = () => {
       const extra = renderExtraFooter ? renderExtraFooter() : null
