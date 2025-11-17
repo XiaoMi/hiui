@@ -8,7 +8,7 @@ import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { useResizeObserver } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNextTabId } from './utils'
@@ -45,7 +45,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       onDrop,
       onDragEnd,
       type = 'line',
-      size = 'md',
+      size: sizeProp,
       showDivider,
       extra,
       maxTabTitleWidth,
@@ -53,6 +53,12 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const direction = placement ?? directionProp ?? 'horizontal'
 
     const [activeTabId, setActiveTabId] = useUncontrolledState(

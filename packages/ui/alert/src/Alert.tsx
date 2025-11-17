@@ -38,7 +38,10 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'lg'
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const [internalVisible, setInternalVisible] = useState(true)
 
@@ -127,7 +130,7 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {

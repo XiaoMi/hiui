@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { FormProvider } from './context'
 import { useForm, UseFormProps } from './use-form'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { FormRuleModel, FormHelpers } from './types'
 
 const _role = 'form'
@@ -133,7 +133,7 @@ export interface FormProps<Values = Record<string, any>>
   /**
    * 设置表单尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {
