@@ -50,7 +50,7 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__header {
-    padding: use-spacing(8) use-spacing(10);
+    padding: use-spacing(10) use-spacing(10) 0;
     line-height: use-text-lineheight('lg');
     display: flex;
     flex-direction: column;

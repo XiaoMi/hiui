@@ -622,6 +622,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     &__content {
       padding: use-spacing(6);
+      border: use-border-size('normal') use-color('gray', 300);
+      border-radius: use-border-radius('normal');
     }
   }
 }

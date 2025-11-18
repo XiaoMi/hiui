@@ -115,7 +115,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.5);
+          transform: scale(0.4);
           background-color: use-color-static('white');
         }
       }

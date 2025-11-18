@@ -50,7 +50,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     }
 
     &__label {
-      color: use-color('gray', 700);
+      color: use-color('gray', 600);
       margin-inline-end: use-spacing(6);
       flex-shrink: 0;
     }

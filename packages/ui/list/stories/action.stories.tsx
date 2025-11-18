@@ -19,7 +19,7 @@ export const Action = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -30,7 +30,7 @@ export const Action = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -41,14 +41,14 @@ export const Action = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
             },
           ]}
           render={(dataItem) => {
-            return <List.Item {...dataItem} actionPlacement="center" />
+            return <List.Item {...dataItem} actionPlacement="top" />
           }}
         />
       </div>

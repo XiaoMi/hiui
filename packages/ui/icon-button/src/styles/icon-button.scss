@@ -35,14 +35,14 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
       content: '';
       position: absolute;
       display: block;
-      right: calc(-1 * #{use-spacing(1)});
-      top: calc(-1 * #{use-spacing(1)});
-      bottom: calc(-1 * #{use-spacing(1)});
-      left: calc(-1 * #{use-spacing(1)});
+      right: calc(-1 * #{use-spacing(2)});
+      top: calc(-1 * #{use-spacing(2)});
+      bottom: calc(-1 * #{use-spacing(2)});
+      left: calc(-1 * #{use-spacing(2)});
       z-index: -1;
       background-color: transparent;
       transition: background-color use-motion-duration('normal');
-      border-radius: use-border-radius('full');
+      border-radius: use-border-radius('normal');
     }
 
     &:hover,

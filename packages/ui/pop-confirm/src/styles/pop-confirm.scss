@@ -41,7 +41,8 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
   }
 
   &__footer {
+    display: flex;
+    justify-content: end;
     margin-top: use-spacing(8);
-    text-align: right;
   }
 }

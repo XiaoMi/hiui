@@ -13,7 +13,13 @@ import { Portal } from '@hi-ui/portal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { IconButton } from '@hi-ui/icon-button'
-import { CloseOutlined, CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@hi-ui/icons'
+import {
+  CloseOutlined,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  InfoCircleFilled,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType, ModalTypeEnum } from './types'
@@ -28,7 +34,7 @@ const modalIconMap = {
   // TODO: designToken 颜色抽离 css 为代码
   [ModalType.SUCCESS]: <CheckCircleFilled />,
   [ModalType.ERROR]: <CloseCircleFilled />,
-  [ModalType.WARNING]: <InfoCircleFilled />,
+  [ModalType.WARNING]: <ExclamationCircleFilled />,
   [ModalType.INFO]: <InfoCircleFilled />,
 }
 const defaultMaxHeight = 600

@@ -1,6 +1,6 @@
 import React from 'react'
 import TextArea from '../src'
-import { CopyFilled, ExpressionOutlined } from '@hi-ui/icons'
+import { CopyOutlined, ExpressionOutlined } from '@hi-ui/icons'
 
 /**
  * @title 输入框内置内容
@@ -15,7 +15,7 @@ export const Header = () => {
           placeholder="请输入"
           header={
             <>
-              <CopyFilled style={{ marginRight: 5, fontSize: 16, color: '#5f6a7a' }} />
+              <CopyOutlined style={{ marginRight: 6, fontSize: 16, color: '#5f6a7a' }} />
               <ExpressionOutlined style={{ fontSize: 16, color: '#5f6a7a' }} />
             </>
           }
