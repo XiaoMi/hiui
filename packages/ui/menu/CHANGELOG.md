@@ -1,5 +1,24 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- d97cc24eb: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 1f9c6e335: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/popper@5.0.0-canary.9
+  - @hi-ui/tooltip@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/icon-button@5.0.0-canary.5
+  - @hi-ui/input@5.0.0-canary.15
+  - @hi-ui/picker@5.0.0-canary.13
+  - @hi-ui/scrollbar@5.0.0-canary.6
+
 ## 5.0.0-canary.12
 
 ### Minor Changes

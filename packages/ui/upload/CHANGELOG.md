@@ -1,5 +1,19 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/message@5.0.0-canary.9
+  - @hi-ui/modal@5.0.0-canary.10
+  - @hi-ui/preview@5.0.0-canary.8
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/button@5.0.0-canary.12
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

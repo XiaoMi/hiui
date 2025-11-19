@@ -1,5 +1,18 @@
 # @hi-ui/pagination
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 1f9c6e335: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/counter@5.0.0-canary.5
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/input@5.0.0-canary.15
+  - @hi-ui/select@5.0.0-canary.14
+
 ## 5.0.0-canary.7
 
 ### Minor Changes

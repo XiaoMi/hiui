@@ -1,5 +1,15 @@
 # @hi-ui/card
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+  - @hi-ui/loading@5.0.0-canary.8
+  - @hi-ui/core@5.0.0-canary.6
+
 ## 5.0.0-canary.5
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @hi-ui/toast
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- d97cc24eb: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- Updated dependencies [1f9c6e335]
+  - @hi-ui/core@5.0.0-canary.6
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

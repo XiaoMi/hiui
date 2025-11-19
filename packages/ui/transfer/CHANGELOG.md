@@ -1,5 +1,20 @@
 # @hi-ui/transfer
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/tree@5.0.0-canary.7
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/pagination@5.0.0-canary.8
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/checkbox@5.0.0-canary.6
+  - @hi-ui/input@5.0.0-canary.15
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

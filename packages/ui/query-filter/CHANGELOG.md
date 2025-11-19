@@ -1,5 +1,20 @@
 # @hi-ui/query-filter
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/drawer@5.0.0-canary.8
+  - @hi-ui/tooltip@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/form@5.0.0-canary.9
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/input@5.0.0-canary.15
+
 ## 5.0.0-canary.3
 
 ### Patch Changes

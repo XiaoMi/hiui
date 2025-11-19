@@ -1,5 +1,18 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.23
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/popper@5.0.0-canary.9
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/time-picker@5.0.0-canary.15
+
 ## 5.0.0-canary.22
 
 ### Minor Changes

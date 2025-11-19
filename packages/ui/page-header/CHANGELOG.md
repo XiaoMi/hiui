@@ -1,5 +1,16 @@
 # @hi-ui/page-header
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/breadcrumb@5.0.0-canary.7
+  - @hi-ui/icon-button@5.0.0-canary.5
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

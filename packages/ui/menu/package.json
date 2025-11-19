@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/menu",
-  "version": "5.0.0-canary.12",
+  "version": "5.0.0-canary.13",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,19 +45,19 @@
   },
   "dependencies": {
     "@hi-ui/array-utils": "^5.0.0-canary.2",
-    "@hi-ui/button": "^5.0.0-canary.11",
+    "@hi-ui/button": "^5.0.0-canary.12",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/icons": "^5.0.0-canary.5",
-    "@hi-ui/icon-button": "^5.0.0-canary.4",
+    "@hi-ui/icon-button": "^5.0.0-canary.5",
     "@hi-ui/ellipsis-tooltip": "^5.0.0-canary.5",
     "@hi-ui/highlighter": "^5.0.0-canary.4",
-    "@hi-ui/input": "^5.0.0-canary.14",
-    "@hi-ui/picker": "^5.0.0-canary.12",
-    "@hi-ui/popper": "^5.0.0-canary.8",
-    "@hi-ui/scrollbar": "^5.0.0-canary.5",
+    "@hi-ui/input": "^5.0.0-canary.15",
+    "@hi-ui/picker": "^5.0.0-canary.13",
+    "@hi-ui/popper": "^5.0.0-canary.9",
+    "@hi-ui/scrollbar": "^5.0.0-canary.6",
     "@hi-ui/times": "^5.0.0-canary.2",
-    "@hi-ui/tooltip": "^5.0.0-canary.5",
+    "@hi-ui/tooltip": "^5.0.0-canary.6",
     "@hi-ui/tree-utils": "^5.0.0-canary.2",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-id": "^5.0.0-canary.2",
@@ -70,12 +70,12 @@
     "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.5",
+    "@hi-ui/core": ">=5.0.0-canary.6",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.5",
+    "@hi-ui/core": "^5.0.0-canary.6",
     "@hi-ui/core-css": "^5.0.0-canary.9",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

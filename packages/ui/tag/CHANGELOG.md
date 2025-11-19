@@ -1,5 +1,18 @@
 # @hi-ui/tag
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 1f9c6e335: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/tooltip@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/button@5.0.0-canary.12
+
 ## 5.0.0-canary.8
 
 ### Minor Changes

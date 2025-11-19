@@ -1,5 +1,15 @@
 # @hi-ui/list
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [1f9c6e335]
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/empty-state@5.0.0-canary.6
+  - @hi-ui/pagination@5.0.0-canary.8
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

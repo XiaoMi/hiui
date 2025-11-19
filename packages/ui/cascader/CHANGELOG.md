@@ -1,5 +1,18 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.18
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/popper@5.0.0-canary.9
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/input@5.0.0-canary.15
+  - @hi-ui/picker@5.0.0-canary.13
+
 ## 5.0.0-canary.17
 
 ### Minor Changes

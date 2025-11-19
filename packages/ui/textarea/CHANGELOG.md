@@ -1,5 +1,15 @@
 # @hi-ui/textarea
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/input@5.0.0-canary.15
+
 ## 5.0.0-canary.9
 
 ### Minor Changes

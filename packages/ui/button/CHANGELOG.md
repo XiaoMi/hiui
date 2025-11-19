@@ -1,5 +1,13 @@
 # @hi-ui/button
 
+## 5.0.0-canary.12
+
+### Patch Changes
+
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [1f9c6e335]
+  - @hi-ui/core@5.0.0-canary.6
+
 ## 5.0.0-canary.11
 
 ### Minor Changes

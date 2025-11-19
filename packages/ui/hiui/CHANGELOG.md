@@ -1,5 +1,67 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.38
+
+### Patch Changes
+
+- d97cc24eb: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 1f9c6e335: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 22db9cf70: style: fix ui bug (5.0)
+- Updated dependencies [d97cc24eb]
+- Updated dependencies [1f9c6e335]
+- Updated dependencies [22db9cf70]
+  - @hi-ui/drawer@5.0.0-canary.8
+  - @hi-ui/loading@5.0.0-canary.8
+  - @hi-ui/menu@5.0.0-canary.13
+  - @hi-ui/message@5.0.0-canary.9
+  - @hi-ui/modal@5.0.0-canary.10
+  - @hi-ui/notification@5.0.0-canary.8
+  - @hi-ui/pop-confirm@5.0.0-canary.8
+  - @hi-ui/popover@5.0.0-canary.8
+  - @hi-ui/preview@5.0.0-canary.8
+  - @hi-ui/tooltip@5.0.0-canary.6
+  - @hi-ui/tree@5.0.0-canary.7
+  - @hi-ui/alert@5.0.0-canary.8
+  - @hi-ui/collapse@5.0.0-canary.6
+  - @hi-ui/core@5.0.0-canary.6
+  - @hi-ui/counter@5.0.0-canary.5
+  - @hi-ui/descriptions@5.0.0-canary.7
+  - @hi-ui/dropdown@5.0.0-canary.9
+  - @hi-ui/empty-state@5.0.0-canary.6
+  - @hi-ui/form@5.0.0-canary.9
+  - @hi-ui/pagination@5.0.0-canary.8
+  - @hi-ui/result@5.0.0-canary.6
+  - @hi-ui/switch@5.0.0-canary.7
+  - @hi-ui/table@5.0.0-canary.20
+  - @hi-ui/tabs@5.0.0-canary.11
+  - @hi-ui/tag@5.0.0-canary.9
+  - @hi-ui/badge@5.0.0-canary.6
+  - @hi-ui/breadcrumb@5.0.0-canary.7
+  - @hi-ui/button@5.0.0-canary.12
+  - @hi-ui/card@5.0.0-canary.6
+  - @hi-ui/cascader@5.0.0-canary.18
+  - @hi-ui/check-select@5.0.0-canary.16
+  - @hi-ui/checkbox@5.0.0-canary.6
+  - @hi-ui/date-picker@5.0.0-canary.23
+  - @hi-ui/filter@5.0.0-canary.5
+  - @hi-ui/input@5.0.0-canary.15
+  - @hi-ui/layout@5.0.0-canary.12
+  - @hi-ui/list@5.0.0-canary.6
+  - @hi-ui/number-input@5.0.0-canary.13
+  - @hi-ui/page-header@5.0.0-canary.3
+  - @hi-ui/picker@5.0.0-canary.13
+  - @hi-ui/query-filter@5.0.0-canary.4
+  - @hi-ui/radio@5.0.0-canary.6
+  - @hi-ui/scrollbar@5.0.0-canary.6
+  - @hi-ui/search@5.0.0-canary.6
+  - @hi-ui/select@5.0.0-canary.14
+  - @hi-ui/stepper@5.0.0-canary.7
+  - @hi-ui/textarea@5.0.0-canary.10
+  - @hi-ui/time-picker@5.0.0-canary.15
+  - @hi-ui/timeline@5.0.0-canary.6
+  - @hi-ui/transfer@5.0.0-canary.6
+  - @hi-ui/upload@5.0.0-canary.9
+
 ## 5.0.0-canary.37
 
 ### Patch Changes
