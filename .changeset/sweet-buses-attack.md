@@ -14,6 +14,7 @@
 "@hi-ui/dropdown": patch
 "@hi-ui/filter": patch
 "@hi-ui/form": patch
+"@hi-ui/hiui": patch
 "@hi-ui/icon-button": patch
 "@hi-ui/input": patch
 "@hi-ui/layout": patch
