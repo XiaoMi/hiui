@@ -18,7 +18,7 @@ export const WithAPI = () => {
               type: 'error',
               title: '错误',
               content: '操作失败，请联系管理员！',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '我知道了',
             })
           }
@@ -33,7 +33,7 @@ export const WithAPI = () => {
               type: 'warning',
               title: '警告',
               content: '执行该操作后将无法撤销，是否确定继续？',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
               closeOnEsc: false,
               maskClosable: false,
@@ -51,7 +51,7 @@ export const WithAPI = () => {
               title: '成功',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
             })
           }
@@ -67,7 +67,7 @@ export const WithAPI = () => {
               title: '普通',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
             })
           }
@@ -83,7 +83,7 @@ export const WithAPI = () => {
               title: '普通',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
               onConfirm: async () => {
                 return new Promise((resolve) => setTimeout(resolve, 1000))

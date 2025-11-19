@@ -140,7 +140,7 @@ export const WithMenu = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <DetailsFilled size={18} color="#60636b" />
+                  <DetailsFilled size={16} color="#7c87a6" />
                 </div>
                 {collapsed ? null : <span>帮助反馈</span>}
               </div>

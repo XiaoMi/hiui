@@ -25,7 +25,7 @@ $link-hover-color-map:(
 $link-active-color-map: (
   'primary': use-color-mode('primary', 600),
   'secondary': use-color-mode('primary'),
-  'default': use-color('gray', 900),
+  'default': use-color('gray', 800),
   'success': use-color-mode('success', 600),
   'danger': use-color-mode('danger', 500),
 ) !default;

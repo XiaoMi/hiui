@@ -9,6 +9,7 @@ import PopConfirm from '../src'
 export const Async = () => {
   const [visible, setVisible] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+
   return (
     <>
       <h1>Async</h1>
@@ -29,8 +30,8 @@ export const Async = () => {
               onClick={() => {
                 setLoading(true)
                 setTimeout(() => {
-                  setLoading(false)
-                  setVisible(false)
+                  // setLoading(false)
+                  // setVisible(false)
                 }, 2000)
               }}
             >

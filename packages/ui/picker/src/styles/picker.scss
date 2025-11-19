@@ -153,7 +153,7 @@ $prefix: '#{$component-prefix}-picker' !default;
     &-value {
       font-weight: use-text-weight('medium');
       font-size: use-text-size('normal');
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

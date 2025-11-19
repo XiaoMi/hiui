@@ -15,7 +15,6 @@ export const TriggerEdit = () => {
       <h1>TriggerEdit</h1>
       <div style={{ display: 'flex', gap: 8 }}>
         <Tag
-          type="primary"
           editable
           onEdit={setTestValue}
           render={(children, triggerEdit) => {
@@ -24,8 +23,7 @@ export const TriggerEdit = () => {
                 {children}
                 <Button
                   appearance="link"
-                  size="sm"
-                  icon={<EditFilled />}
+                  icon={<EditFilled style={{ color: '#1a1d26' }} />}
                   style={{ marginLeft: 4 }}
                   onClick={triggerEdit}
                 />

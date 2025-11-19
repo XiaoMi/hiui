@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-search' !default;
       align-items: center;
       padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(10);
       border-radius: use-border-radius('md');
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
       cursor: pointer;
       transition: all 0.3s;
 
@@ -61,7 +61,7 @@ $prefix: '#{$component-prefix}-search' !default;
         align-items: center;
         padding: use-spacing(2) use-spacing(4);
         border-radius: use-border-radius('md');
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
         cursor: pointer;
         transition: all 0.3s;
 

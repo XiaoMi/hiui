@@ -19,7 +19,7 @@ export const CustomAvatar = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_1.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -30,7 +30,7 @@ export const CustomAvatar = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_2.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -41,7 +41,7 @@ export const CustomAvatar = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'http://i1.mifile.cn/f/i/hiui/docs/card/pic_3.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
