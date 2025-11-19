@@ -114,6 +114,7 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
                 className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}
                 appearance="link"
                 icon={<RightOutlined />}
+                disabled={disabled}
               />
             )
           ) : null}

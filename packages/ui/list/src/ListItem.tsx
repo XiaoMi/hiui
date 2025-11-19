@@ -15,7 +15,7 @@ export const ListItem: React.FC<ListItemProps> = ({
   extra,
   action,
   avatar,
-  actionPlacement = 'center',
+  actionPlacement = 'top',
 }) => {
   const cls = cx(`${prefixCls}`, className)
 

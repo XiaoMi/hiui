@@ -79,8 +79,8 @@ $prefix: '#{$component-prefix}-form' !default;
       }
 
       .#{$prefix}-label--required > .#{$prefix}-label__content > & {
-        &::after {
-          margin-left: use-spacing(2);
+        &::before {
+          margin-inline-end: use-spacing(2);
           content: '*';
           color: use-color-mode('error');
         }

@@ -26,7 +26,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
     min-height: use-height-size(8);
     font-size: inherit;
     line-height: inherit;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     resize: vertical;
     overflow: auto;
     z-index: auto;
@@ -72,7 +72,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     font-size: inherit;
     text-align: center;
   }
@@ -311,7 +311,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
         z-index: calc(#{use-zindex('absolute')} + 1);
 
         &-value {
-          color: use-color('gray', 900);
+          color: use-color('gray', 800);
         }
       }
     }

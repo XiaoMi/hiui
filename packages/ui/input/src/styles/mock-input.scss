@@ -22,7 +22,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   z-index: auto;
   font-size: inherit;
   line-height: inherit;
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   border: use-border-size('normal') use-color-static('transparent');
   background-color: use-color-static('white');
 

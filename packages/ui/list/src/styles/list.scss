@@ -8,7 +8,7 @@ $prefix: '#{$component-prefix}-list' !default;
   margin: 0;
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   background-color: use-color-static('white');
 
   &:not(.#{$prefix}-item--split) {
@@ -22,7 +22,7 @@ $prefix: '#{$component-prefix}-list' !default;
     border-bottom: use-border-size('normal') use-color('gray', 200);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
   }
 
   &__pagination {

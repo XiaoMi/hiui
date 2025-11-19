@@ -117,7 +117,7 @@ $upload-state-height: 2px !default;
       overflow: hidden;
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
     }
 
     &-icon,
@@ -401,7 +401,7 @@ $upload-state-height: 2px !default;
         align-items: center;
         justify-content: center;
         font-size: 20px;
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
         border: 1px dashed use-color('gray', 400);
         transition: border-color 0.3s;
         margin-inline-end: 0;
@@ -418,7 +418,7 @@ $upload-state-height: 2px !default;
       .#{$prefix}__item__upload-text {
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
       }
 
       .#{$prefix}__action-group {
@@ -510,7 +510,7 @@ $upload-state-height: 2px !default;
       box-sizing: border-box;
       cursor: pointer;
       font-size: 20px;
-      color: use-color('gray', 900);
+      color: use-color('gray', 700);
 
       &:focus {
         border-color: use-color-mode('primary');
@@ -617,7 +617,7 @@ $upload-state-height: 2px !default;
         }
 
         &.loading {
-          color: use-color('gray', 900);
+          color: use-color('gray', 800);
         }
 
         &-icon {

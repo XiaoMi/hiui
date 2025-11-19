@@ -54,6 +54,9 @@ export const QueryFilter = forwardRef<HTMLDivElement | null, QueryFilterProps>(
 )
 
 export interface QueryFilterProps extends HiBaseHTMLProps<'div'>, FilterFormProps {
+  /**
+   * 表单数据变化回调
+   */
   onChange?: (formData: Record<string, unknown>) => void
 }
 

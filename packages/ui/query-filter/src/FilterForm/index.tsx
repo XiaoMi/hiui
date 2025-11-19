@@ -1,6 +1,6 @@
 import React, { ReactText, useEffect, useRef } from 'react'
 import { useLocaleContext } from '@hi-ui/core'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import Form, { FormProps, FormHelpers } from '@hi-ui/form'
 import Tooltip from '@hi-ui/tooltip'
 import Button from '@hi-ui/button'
@@ -10,6 +10,8 @@ import { useFilterContext } from '../context'
 const prefixCls = getPrefixCls('query-filter-form')
 
 export const FilterForm: React.FC<FilterFormProps> = ({
+  styles = {},
+  classNames,
   filterFields,
   formData,
   onChange,
@@ -40,14 +42,14 @@ export const FilterForm: React.FC<FilterFormProps> = ({
   return (
     <div className={`${prefixCls}-wrapper`}>
       <Form
-        className={`${prefixCls}`}
+        style={{ '--filter-form-gap': `${gap}px`, ...styles?.form } as React.CSSProperties}
+        className={cx(`${prefixCls}`, classNames?.form)}
         innerRef={formRef}
         initialValues={formData}
         onValuesChange={onChange}
         labelPlacement="top"
         placement={placement}
         showValidateMessage={placement === 'vertical'}
-        style={{ '--filter-form-gap': `${gap}px` } as React.CSSProperties}
       >
         {prependList.map((item, index) => (
           <Form.Item key={index}>{item}</Form.Item>
@@ -74,38 +76,107 @@ export const FilterForm: React.FC<FilterFormProps> = ({
 }
 
 export interface FilterFieldProps {
+  /**
+   * 字段名
+   */
   field: string
+  /**
+   * 标签
+   */
   label: React.ReactNode
+  /**
+   * 组件
+   */
   component: React.ReactElement
+  /**
+   * 选项
+   */
   options?: {
     id: ReactText
     title: string
   }[]
+  /**
+   * 是否可见
+   */
   visible?: boolean
 }
 
 export interface FilterFormProps {
+  /**
+   * 语义化结构 style
+   */
+  styles?: {
+    form?: React.CSSProperties
+  }
+  /**
+   * 语义化结构 class
+   */
+  classNames?: {
+    form?: string
+  }
+  /**
+   * 筛选字段
+   */
   filterFields: FilterFieldProps[]
+  /**
+   * 表单数据
+   */
   formData: Record<string, unknown>
+  /**
+   * 表单数据变化回调
+   */
   onChange?: FormProps['onValuesChange']
+  /**
+   * 固定字段变化回调
+   */
   onPinChange?: (field: string, visible: boolean) => void
+  /**
+   * 布局方式
+   */
   placement?: FormProps['placement']
+  /**
+   * 是否显示标签
+   */
   showLabel?: boolean
+  /**
+   * 是否显示固定字段
+   */
   showPin?: boolean
+  /**
+   * 外观
+   */
   appearance?: 'line' | 'contained'
+  /**
+   * 间距
+   */
   gap?: number
+  /**
+   * 前置内容
+   */
   prepend?: React.ReactNode | React.ReactNode[]
+  /**
+   * 后置内容
+   */
   append?: React.ReactNode | React.ReactNode[]
+  /**
+   * 固定字段文本
+   */
   pinTexts?: {
     pin: string
     unpin: string
   }
+  /**
+   * 数据变化回调
+   */
   onDataChange?: (
     field: string,
     value: React.ReactText | React.ReactText[],
     item: unknown,
     items: unknown[]
   ) => void
+  /**
+   * 自定义字段属性
+   */
   customFieldProps?: (filterField: FilterFieldProps) => Record<string, unknown> | undefined
 }
 

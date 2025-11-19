@@ -7,7 +7,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   position: relative;
   display: flex;
   align-items: stretch;
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
 
   &--type {
     &-single {
@@ -74,7 +74,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   &__limit {
     word-wrap: break-word;
     line-height: 2;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     font-size: use-text-size('normal');
     display: flex;
     align-items: start;
