@@ -98,7 +98,7 @@ $label-class: '#{$prefix}__label' !default;
       &__label {
         box-sizing: border-box;
         margin-inline-start: use-spacing(4);
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
       }
     }
 

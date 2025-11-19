@@ -471,7 +471,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   border-bottom: use-border-size('normal') use-color('gray', 300);
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   line-height: use-text-lineheight('sm');
   padding: use-spacing(7) use-spacing(8);
   background-color: use-color-static('white');
@@ -561,7 +561,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
       font-size: use-text-size('normal');
 
       &:first-child {
