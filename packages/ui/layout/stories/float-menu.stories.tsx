@@ -11,6 +11,7 @@ import {
   DetailsFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
+import IconButton from '@hi-ui/icon-button'
 import Layout, {
   Sider,
   Content,
@@ -281,11 +282,10 @@ export const FloatMenu = () => {
                 }}
                 onOutsideClick={() => setAppListPopoverVisible(false)}
               >
-                <Button
+                <IconButton
                   style={!collapsed ? { marginInlineStart: 'auto' } : { margin: '16px auto 0' }}
-                  icon={<MenuOutlined />}
-                  appearance="text"
-                  size="xs"
+                  icon={<MenuOutlined size={18} />}
+                  effect
                   onClick={() => {
                     setAppListPopoverVisible(!appListPopoverVisible)
                   }}
@@ -391,7 +391,7 @@ export const FloatMenu = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <DetailsFilled size={18} color="#60636b" />
+                  <DetailsFilled size={16} color="#7c87a6" />
                 </div>
                 {collapsed ? null : <span>帮助反馈</span>}
               </div>

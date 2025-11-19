@@ -98,7 +98,7 @@ $label-class: '#{$prefix}__label' !default;
       &__label {
         box-sizing: border-box;
         margin-inline-start: use-spacing(4);
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
       }
     }
 
@@ -115,7 +115,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.5);
+          transform: scale(0.4);
           background-color: use-color-static('white');
         }
       }

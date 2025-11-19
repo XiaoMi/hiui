@@ -308,7 +308,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     border-radius: use-border-radius('normal');
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     // overflow: hidden;
   }
 
@@ -317,7 +317,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     margin-right: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     font-size: inherit;
     text-align: center;
   }
@@ -436,7 +436,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &-text {
       cursor: pointer;
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
       font-size: use-text-size('normal');
     }
   }
@@ -846,7 +846,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     text-align: center;
     box-sizing: border-box;
     font-size: use-text-size('normal');
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
   }
 
   &__period-header {

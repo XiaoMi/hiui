@@ -14,7 +14,7 @@ $disabled-color: use-color('gray', 500) !default;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
   display: flex;
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   border-radius: use-border-radius('normal');
   flex-wrap: wrap;
 
@@ -69,7 +69,7 @@ $disabled-color: use-color('gray', 500) !default;
   margin: 0;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   width: 216px;
   box-sizing: border-box;
 
@@ -136,7 +136,7 @@ $disabled-color: use-color('gray', 500) !default;
 
 .#{$prefix} {
   background-color: use-color-static('white');
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   box-sizing: border-box;

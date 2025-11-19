@@ -18,7 +18,7 @@ export const Pagination = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -29,7 +29,7 @@ export const Pagination = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),
@@ -40,7 +40,7 @@ export const Pagination = () => {
                 '这里是一段比较长的描述信息这里是一段比较长的描述信息这里是一段比较长的描述信息',
               avatar: 'https://xiaomi.github.io/hiui/logo.png',
               action: (
-                <Button type="primary" appearance="text">
+                <Button type="primary" appearance="link">
                   操作
                 </Button>
               ),

@@ -19,10 +19,9 @@ export const Extra = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>我是大标题</div>
               <Button
+                style={{ marginRight: 20, flexShrink: 0 }}
                 icon={<EditOutlined />}
                 appearance="link"
-                size="sm"
-                style={{ marginRight: 8, flexShrink: 0 }}
               />
             </div>
           }

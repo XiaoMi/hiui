@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   border: use-border-size('normal') use-color('gray', 200);
   font-size: use-text-size('normal');
   padding: use-spacing(2);
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   max-height: 268px;
   overflow-y: auto;
   // max-height: 260px;
@@ -39,7 +39,7 @@ $prefix: '#{$component-prefix}-dropdown' !default;
   }
 
   &__link {
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     width: 100%;
     text-decoration: none;
     box-sizing: border-box;

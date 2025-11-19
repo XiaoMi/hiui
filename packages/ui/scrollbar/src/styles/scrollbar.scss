@@ -20,7 +20,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
   $thumb-size: 10px;
   $rail-background: use-color('gray', 300);
   $rail-opacity: 0.8;
-  $thumb-background: use-color('gray', 900);
+  $thumb-background: use-color('gray', 800);
   $thumb-active-background: use-color('gray', 600);
   $transition: opacity use-motion-duration('normal') use-motion-bezier('normal'),background-color use-motion-duration('normal') use-motion-bezier('normal');
 

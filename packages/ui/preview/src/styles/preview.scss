@@ -16,7 +16,7 @@ $prefix: '#{$component-prefix}-preview' !default;
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: use-color('gray', 900);
+    background-color: use-color('gray', 800);
     opacity: 0;
   }
 
@@ -235,6 +235,6 @@ $prefix: '#{$component-prefix}-preview' !default;
     max-width: 100%;
     max-height: 100%;
     overflow: hidden;
-    background-color: use-color('gray', 900);
+    background-color: use-color('gray', 800);
   }
 }

@@ -9,6 +9,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({ count, children, ...
   return (
     <Button
       className={`${prefixCls} ${count ? 'has-count' : ''}`}
+      appearance="filled"
       {...restProps}
       type={count ? 'secondary' : 'default'}
     >

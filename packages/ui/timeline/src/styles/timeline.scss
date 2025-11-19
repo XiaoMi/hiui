@@ -77,7 +77,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
               }
 
               .#{$prefix}-item__title {
-                color: use-color('gray', 900);
+                color: use-color('gray', 800);
                 font-size: use-text-size('normal');
                 line-height: use-text-lineheight('normal');
                 font-weight: use-text-weight('normal');
@@ -137,7 +137,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
               }
 
               .#{$prefix}-item__title {
-                color: use-color('gray', 900);
+                color: use-color('gray', 800);
                 font-size: use-text-size('normal');
                 font-weight: use-text-weight('normal');
                 line-height: use-text-lineheight('normal');
@@ -160,7 +160,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
             margin-left: 24px;
 
             .#{$prefix}-item__title {
-              color: use-color('gray', 900);
+              color: use-color('gray', 800);
               font-size: use-text-size('normal');
               line-height: use-text-lineheight('normal');
               font-weight: use-text-weight('normal');
@@ -394,7 +394,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
               margin-bottom: use-spacing(12);
 
               .#{$prefix}-item__title {
-                color: use-color('gray', 900);
+                color: use-color('gray', 800);
                 font-size: use-text-size('normal');
                 line-height: use-text-lineheight('normal');
                 font-weight: use-text-weight('normal');
@@ -514,7 +514,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
 
         &__title {
           font-weight: use-text-weight('semibold');
-          color: use-color('gray', 900);
+          color: use-color('gray', 800);
           line-height: use-text-lineheight('sm');
           word-break: break-word;
         }
@@ -530,7 +530,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
         &__time {
           font-size: use-text-size('normal');
           font-weight: use-text-weight('semibold');
-          color: use-color('gray', 900);
+          color: use-color('gray', 800);
           line-height: use-text-lineheight('sm');
           word-break: break-word;
         }

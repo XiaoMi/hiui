@@ -34,7 +34,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__icon {
-        color: use-color('gray', 300);
+        color: use-color('gray', 700);
         font-size: 24px;
         line-height: 24px;
       }
@@ -78,7 +78,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         &-tip {
           &__title {
-            color: use-color('gray', 900);
+            color: use-color('gray', 800);
           }
         }
       }
@@ -104,7 +104,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
 
         &-tip {
           &__title {
-            color: use-color('gray', 900);
+            color: use-color('gray', 800);
             font-weight: use-text-weight('medium');
           }
         }

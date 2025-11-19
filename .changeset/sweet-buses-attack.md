@@ -1,0 +1,52 @@
+---
+"@hi-ui/badge": patch
+"@hi-ui/breadcrumb": patch
+"@hi-ui/button": patch
+"@hi-ui/card": patch
+"@hi-ui/cascader": patch
+"@hi-ui/check-select": patch
+"@hi-ui/checkbox": patch
+"@hi-ui/collapse": patch
+"@hi-ui/counter": patch
+"@hi-ui/date-picker": patch
+"@hi-ui/descriptions": patch
+"@hi-ui/drawer": patch
+"@hi-ui/dropdown": patch
+"@hi-ui/filter": patch
+"@hi-ui/form": patch
+"@hi-ui/hiui": patch
+"@hi-ui/icon-button": patch
+"@hi-ui/input": patch
+"@hi-ui/layout": patch
+"@hi-ui/list": patch
+"@hi-ui/menu": patch
+"@hi-ui/modal": patch
+"@hi-ui/notification": patch
+"@hi-ui/number-input": patch
+"@hi-ui/page-header": patch
+"@hi-ui/picker": patch
+"@hi-ui/pop-confirm": patch
+"@hi-ui/popover": patch
+"@hi-ui/preview": patch
+"@hi-ui/query-filter": patch
+"@hi-ui/radio": patch
+"@hi-ui/result": patch
+"@hi-ui/scrollbar": patch
+"@hi-ui/search": patch
+"@hi-ui/select": patch
+"@hi-ui/stepper": patch
+"@hi-ui/table": patch
+"@hi-ui/tabs": patch
+"@hi-ui/tag": patch
+"@hi-ui/tag-input": patch
+"@hi-ui/textarea": patch
+"@hi-ui/time-picker": patch
+"@hi-ui/timeline": patch
+"@hi-ui/tooltip": patch
+"@hi-ui/transfer": patch
+"@hi-ui/tree": patch
+"@hi-ui/upload": patch
+"@hi-ui/virtual-list": patch
+---
+
+style: fix ui bug (5.0)
