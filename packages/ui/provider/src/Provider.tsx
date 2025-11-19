@@ -30,10 +30,14 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
     const accentColorTheme = getAccentColorTheme(accentColor)
 
     const mergedThemes = extendsTheme(accentColorTheme, theme)
+    console.log('mergedThemes', mergedThemes)
 
     if (!mergedThemes) return
 
-    createSystem(mergedThemes, PREFIX)
+    requestAnimationFrame(() => {
+      createSystem(mergedThemes, PREFIX)
+    })
+
     return () => {
       createSystem(null, PREFIX)
     }

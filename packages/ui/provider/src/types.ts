@@ -146,22 +146,22 @@ export interface DesignSystemBorderRadiusProps {
 }
 
 export interface DesignSystemHeightProps {
-  1: CSS.Property.Height
-  2: CSS.Property.Height
-  3: CSS.Property.Height
-  4: CSS.Property.Height
-  5: CSS.Property.Height
-  6: CSS.Property.Height
-  7: CSS.Property.Height
-  8: CSS.Property.Height
-  9: CSS.Property.Height
-  10: CSS.Property.Height
-  11: CSS.Property.Height
-  12: CSS.Property.Height
-  13: CSS.Property.Height
-  14: CSS.Property.Height
-  15: CSS.Property.Height
-  16: CSS.Property.Height
+  1?: CSS.Property.Height
+  2?: CSS.Property.Height
+  3?: CSS.Property.Height
+  4?: CSS.Property.Height
+  5?: CSS.Property.Height
+  6?: CSS.Property.Height
+  7?: CSS.Property.Height
+  8?: CSS.Property.Height
+  9?: CSS.Property.Height
+  10?: CSS.Property.Height
+  11?: CSS.Property.Height
+  12?: CSS.Property.Height
+  13?: CSS.Property.Height
+  14?: CSS.Property.Height
+  15?: CSS.Property.Height
+  16?: CSS.Property.Height
 }
 
 export interface DesignSystemMotionDurationProps {
