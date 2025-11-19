@@ -70,18 +70,22 @@ $prefix: '#{$component-prefix}-drawer' !default;
 
     .#{$prefix}--motion-enter-done.#{$prefix}--placement-left & {
       box-shadow: use-shadow('md', 'right');
+      transform: translateX(0);
     }
 
     .#{$prefix}--motion-enter-done.#{$prefix}--placement-right & {
       box-shadow: use-shadow('md', 'left');
+      transform: translateX(0);
     }
 
     .#{$prefix}--motion-enter-done.#{$prefix}--placement-top & {
       box-shadow: use-shadow('md', 'down');
+      transform: translateY(0);
     }
 
     .#{$prefix}--motion-enter-done.#{$prefix}--placement-bottom & {
       box-shadow: use-shadow('md', 'top');
+      transform: translateY(0);
     }
 
     .#{$prefix}--placement-left &,
