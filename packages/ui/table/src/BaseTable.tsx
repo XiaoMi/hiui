@@ -60,7 +60,10 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     // ********************** 内嵌式面板 *********************** //
     const {
@@ -384,7 +387,7 @@ export interface BaseTableProps
   /**
    *  配置表格尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
   /**
    * 底部吸底
    */

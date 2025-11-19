@@ -6,6 +6,7 @@ import { Portal } from '@hi-ui/portal'
 import { HiBaseHTMLProps, HiBaseSizeEnum, usePortalContext, useGlobalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Spinner from '@hi-ui/spinner'
+import { mergeRefs } from '@hi-ui/react-utils'
 import { useLoading } from './use-loading'
 
 const _role = 'loading'
@@ -83,14 +84,17 @@ export const Loading = forwardRef<null, LoadingProps>(
       }
     })
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     const loadingComponent = (
       <CSSTransition
         classNames={`${prefixCls}--motion`}
         in={internalVisible}
         timeout={timeout}
         unmountOnExit
+        // 参考：https://github.com/reactjs/react-transition-group/issues/918
+        nodeRef={transitionNodeRef}
       >
-        <div ref={ref} role={role} className={cls} {...restProps}>
+        <div ref={mergeRefs(ref, transitionNodeRef)} role={role} className={cls} {...restProps}>
           {showMask && <div className={`${prefixCls}__mask`} />}
           <div className={`${prefixCls}__content-wrapper`}>
             {getIndicator()}

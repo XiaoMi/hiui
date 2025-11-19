@@ -13,7 +13,13 @@ import { Portal } from '@hi-ui/portal'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { IconButton } from '@hi-ui/icon-button'
-import { CloseOutlined, CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@hi-ui/icons'
+import {
+  CloseOutlined,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  InfoCircleFilled,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType, ModalTypeEnum } from './types'
@@ -28,7 +34,7 @@ const modalIconMap = {
   // TODO: designToken 颜色抽离 css 为代码
   [ModalType.SUCCESS]: <CheckCircleFilled />,
   [ModalType.ERROR]: <CloseCircleFilled />,
-  [ModalType.WARNING]: <InfoCircleFilled />,
+  [ModalType.WARNING]: <ExclamationCircleFilled />,
   [ModalType.INFO]: <InfoCircleFilled />,
 }
 const defaultMaxHeight = 600
@@ -73,7 +79,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const i18n = useLocaleContext()
 
@@ -175,6 +184,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       type && `${prefixCls}--type-${type}`
     )
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
@@ -186,8 +196,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getModalProps(rootProps, ref)}>
+          <div className={cls} {...getModalProps(rootProps, [ref, transitionNodeRef])}>
             {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
               className={`${prefixCls}__wrapper`}
@@ -271,7 +283,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export type ModalSizeEnum = HiBaseSizeEnum | undefined
+export type ModalSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
 export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
   /**

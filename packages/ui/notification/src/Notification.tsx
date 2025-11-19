@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { IconButton } from '@hi-ui/icon-button'
 import {
@@ -41,13 +41,19 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       type = 'info',
       action,
       destroy,
-      size = 'lg',
+      size: sizeProp,
       onClose,
       direction = 'right',
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const [transitionVisible, setTransitionVisible] = useState(false)
 
     const timerRef = useRef(0)
@@ -105,6 +111,8 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
           destroy?.()
           onClose?.()
         }}
+        // 参考：https://github.com/reactjs/react-transition-group/issues/918
+        nodeRef={motionElRef}
       >
         <div ref={motionElRef} className={containerCls}>
           <div ref={ref} role={role} className={cls} {...rest}>
@@ -176,8 +184,10 @@ export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>
   /**
    * 通知框尺寸
    */
-  size?: HiBaseSizeEnum
-  /** 弹出方向 */
+  size?: Omit<HiBaseSizeEnum, 'xs'>
+  /**
+   * 弹出方向
+   */
   direction?: 'left' | 'right'
 }
 

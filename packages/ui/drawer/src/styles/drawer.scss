@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
   }
 
   &__wrapper {
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     font-size: use-text-size('normal');
     display: flex;
     flex-direction: column;
@@ -95,6 +95,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
 
     .#{$prefix}--placement-left & {
       left: 0;
+      transform: translateX(-100%);
     }
 
     // left
@@ -117,6 +118,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // right
     .#{$prefix}--placement-right & {
       right: 0;
+      transform: translateX(100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-right & {
@@ -147,6 +149,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // bottom
     .#{$prefix}--placement-bottom & {
       bottom: 0;
+      transform: translateY(100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-bottom & {
@@ -168,6 +171,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     // top
     .#{$prefix}--placement-top & {
       top: 0;
+      transform: translateY(-100%);
     }
 
     .#{$prefix}--motion-enter.#{$prefix}--placement-top & {
@@ -235,7 +239,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
     line-height: use-text-lineheight('sm');
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     padding: use-spacing(9) use-spacing(10);
     display: flex;
     align-items: center;

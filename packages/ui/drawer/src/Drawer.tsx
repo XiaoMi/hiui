@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, usePortalContext } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
 import { useModal, UseModalProps } from '@hi-ui/modal'
@@ -38,7 +38,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       closeIcon = defaultCloseIcon,
       width,
       height,
-      size = 'md',
+      size: sizeProp,
       preload = false,
       unmountOnClose = false,
       visible = false,
@@ -55,6 +55,14 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const [transitionExited, transitionExitedAction] = useToggle(true)
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+    if (size === 'lg') {
+      size = 'md'
+    }
 
     const { rootProps, getModalProps, getModalWrapperProps } = useModal({
       ...rest,
@@ -147,6 +155,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={innerRef}
         >
           <div
             className={cls}

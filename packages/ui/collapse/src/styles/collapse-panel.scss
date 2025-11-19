@@ -50,7 +50,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     position: relative;
     display: flex;
     align-items: center;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     cursor: pointer;
 
     .#{$component-prefix}-collapse--size-sm & {
@@ -150,7 +150,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__content {
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
 
     .#{$component-prefix}-collapse--size-sm & {
       padding: use-spacing(6);

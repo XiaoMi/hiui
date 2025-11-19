@@ -67,7 +67,7 @@
     "@hi-ui/use-toggle": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2",
     "@hi-ui/use-outside-click": "^5.0.0-canary.2",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-canary.5",

@@ -50,7 +50,7 @@
     "@hi-ui/icons": "^5.0.0-canary.5",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/toast": "^5.0.0-canary.5",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-canary.5",

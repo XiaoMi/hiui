@@ -16,7 +16,10 @@ const _prefix = getPrefixCls(_role)
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   ({ prefixCls = _prefix, role = _role, size: sizeProp, ...rest }, ref) => {
     const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize
+    let size = sizeProp ?? globalSize
+    if (size === 'xs') {
+      size = 'sm'
+    }
 
     const {
       rootProps,

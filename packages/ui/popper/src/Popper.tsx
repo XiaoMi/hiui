@@ -123,6 +123,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       forceUpdate,
     }))
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
@@ -137,8 +138,10 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
           onExit={onExit}
           onEntered={onEnteredLatest}
           onExited={onExitedLatest}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getPopperProps(rest, ref)}>
+          <div className={cls} {...getPopperProps(rest, [ref, transitionNodeRef])}>
             <div
               className={cx(`${prefixCls}__container`, classNames?.container)}
               style={styles?.container}

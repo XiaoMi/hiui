@@ -80,7 +80,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(20);
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
 
       &::after {
         content: '';
@@ -114,7 +114,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 
     .#{$prefix}-item__label {
       &-title {
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
         font-weight: use-text-weight('semibold');
       }
     }

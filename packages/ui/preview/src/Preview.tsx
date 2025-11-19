@@ -55,6 +55,7 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className)
+    const maskElRef = useRef<HTMLDivElement>(null)
 
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
@@ -271,16 +272,22 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
             timeout={200}
             mountOnEnter
             unmountOnExit={false}
-            onEnter={(ele: HTMLElement) => {
+            // 参考：https://github.com/reactjs/react-transition-group/issues/918
+            nodeRef={maskElRef}
+            onEnter={() => {
+              const ele = maskElRef.current
+              if (!ele) return
               ;(ele.parentNode as HTMLElement).style.display = 'block'
               ele.style.display = 'block'
             }}
-            onExited={(ele: HTMLElement) => {
+            onExited={() => {
+              const ele = maskElRef.current
+              if (!ele) return
               ;(ele.parentNode as HTMLElement).style.display = 'none'
               ele.style.display = 'none'
             }}
           >
-            <div className={`${prefixCls}__mask`} />
+            <div className={`${prefixCls}__mask`} ref={maskElRef} />
           </CSSTransition>
           {visible && (
             <>

@@ -10,7 +10,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 .#{$prefix} {
   position: relative;
   display: inline-block;
-  color: use-color('gray', 900);
+  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   z-index: use-zindex('normal');
   width: fit-content;
@@ -36,10 +36,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     &#{$this}--focused {
       .#{$content-class} {
         border-color: use-color-mode('primary');
-      }
-
-      &::before {
-        background-color: use-color-mode('primary', 50);
       }
 
       &#{$this}--invalid,
@@ -79,7 +75,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     .#{$minus-class},
     .#{$plus-class} {
       background-color: use-color-static('white');
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
 
       &:hover {
         background-color: use-color('gray', 100);
@@ -151,7 +147,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     .#{$minus-class},
     .#{$plus-class} {
       background-color: use-color('gray', 200);
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
 
       &:hover {
         background-color: use-color('gray', 300);

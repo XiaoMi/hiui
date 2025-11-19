@@ -28,7 +28,7 @@ export const Img = () => {
               title={item.title}
               coverUrl={item.image}
             >
-              <span style={{ fontSize: 12, color: '#5F6A7A' }}>{item.content}</span>
+              <span style={{ fontSize: 12, color: '#60636b' }}>{item.content}</span>
             </Card>
           )
         })}

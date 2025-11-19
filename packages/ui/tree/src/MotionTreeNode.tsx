@@ -52,6 +52,8 @@ export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodePr
         onExit={open}
         onExiting={close}
         onExited={onMotionEnd}
+        // 参考：https://github.com/reactjs/react-transition-group/issues/918
+        nodeRef={motionNodeRef}
       >
         {/* 使用一个 dom 包裹，给过渡的列表集合体添加过渡动画 */}
         <div ref={useMergeRefs(ref, motionNodeRef)} className={`${prefixCls}-motion-node`}>

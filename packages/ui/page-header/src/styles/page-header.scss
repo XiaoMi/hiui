@@ -19,7 +19,7 @@ $prefix: '#{$component-prefix}-page-header' !default;
     margin-inline-end: use-spacing(4) !important;
 
     svg {
-      color: use-color('gray', 900);
+      color: use-color('gray', 800);
       font-size: use-text-size('lg');
     }
   }
@@ -34,7 +34,7 @@ $prefix: '#{$component-prefix}-page-header' !default;
     font-size: use-text-size('xl');
     line-height: use-text-lineheight('lg');
     font-weight: use-text-weight('medium');
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

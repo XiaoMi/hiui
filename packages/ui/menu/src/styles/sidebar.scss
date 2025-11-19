@@ -146,7 +146,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
       }
 
       &__inner--active-p {
-        color: use-color('gray', 900);
+        color: use-color('gray', 800);
 
         .#{$prefix}-item__icon {
           color: use-color('gray', 700);

@@ -34,10 +34,7 @@ $prefix: '#{$component-prefix}-input' !default;
     width: 100%;
     font-size: inherit;
     line-height: inherit;
-    color: use-color('gray', 900);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: use-color('gray', 800);
 
     &::placeholder {
       color: use-color('gray', 500);
@@ -112,7 +109,7 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     font-size: inherit;
     text-align: center;
   }
@@ -132,7 +129,7 @@ $prefix: '#{$component-prefix}-input' !default;
   &__prepend,
   &__append {
     position: relative;
-    color: use-color('gray', 900);
+    color: use-color('gray', 800);
     background-color: use-color('gray', 100);
     flex-shrink: 0;
     display: inline-flex;
