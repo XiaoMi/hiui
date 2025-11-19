@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-tree-select",
-  "version": "4.7.5",
+  "version": "4.7.6",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -63,12 +63,12 @@
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=4.0.8",
+    "@hi-ui/core": ">=4.0.11",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.8",
+    "@hi-ui/core": "^4.0.11",
     "@hi-ui/core-css": "^4.1.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

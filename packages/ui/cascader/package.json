@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/cascader",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -64,12 +64,12 @@
     "scroll-into-view-if-needed": "^3.1.0"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=4.0.8",
+    "@hi-ui/core": ">=4.0.11",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.8",
+    "@hi-ui/core": "^4.0.11",
     "@hi-ui/core-css": "^4.1.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
