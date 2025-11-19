@@ -1,5 +1,14 @@
 # @hi-ui/check-tree-select
 
+## 4.7.6
+
+### Patch Changes
+
+- [#3409](https://github.com/XiaoMi/hiui/pull/3409) [`467701f`](https://github.com/XiaoMi/hiui/commit/467701f925d0bb0709e3fd17ca6e178fa1ca01c6) Thanks [@zyprepare](https://github.com/zyprepare)! - refactor(check-tree-select): 搜索和全选勾选逻辑调整，过滤后的结果勾选态还是按照全量数据进行计算，全选态根据过滤后的数据进行计算 (#3398)
+
+- Updated dependencies [[`b2de718e9`](https://github.com/XiaoMi/hiui/commit/b2de718e9fd12dbe8fa1d762c6924696c19bc924)]:
+  - @hi-ui/core@4.0.11
+
 ## 4.7.5
 
 ### Patch Changes

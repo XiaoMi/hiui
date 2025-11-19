@@ -1,5 +1,14 @@
 # @hi-ui/cascader
 
+## 4.5.1
+
+### Patch Changes
+
+- [#3407](https://github.com/XiaoMi/hiui/pull/3407) [`4a1444965`](https://github.com/XiaoMi/hiui/commit/4a1444965bdeeeb12333e43a05caa2e76d74eb47) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(cascader): 体验优化：每次打开菜单时自动定位到已选节点 (#3406)
+
+- Updated dependencies [[`b2de718e9`](https://github.com/XiaoMi/hiui/commit/b2de718e9fd12dbe8fa1d762c6924696c19bc924)]:
+  - @hi-ui/core@4.0.11
+
 ## 4.5.0
 
 ### Minor Changes

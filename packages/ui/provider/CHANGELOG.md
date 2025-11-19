@@ -1,5 +1,16 @@
 # @hi-ui/provider
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3410](https://github.com/XiaoMi/hiui/pull/3410) [`b2de718e9`](https://github.com/XiaoMi/hiui/commit/b2de718e9fd12dbe8fa1d762c6924696c19bc924) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(locale-context): 增加语言包 & 增加 merge 方法
+
+### Patch Changes
+
+- Updated dependencies [[`b2de718e9`](https://github.com/XiaoMi/hiui/commit/b2de718e9fd12dbe8fa1d762c6924696c19bc924)]:
+  - @hi-ui/core@4.0.11
+
 ## 4.1.1
 
 ### Patch Changes
