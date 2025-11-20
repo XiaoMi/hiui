@@ -40,6 +40,13 @@ export const DesignSystemAccentColorEnum = {
 // eslint-disable-next-line no-redeclare
 export type DesignSystemAccentColorEnum = ValueOf<typeof DesignSystemAccentColorEnum>
 
+export interface ThemeDataProps {
+  token?: DesignSystemProps
+  components?: {
+    [key: string]: DesignSystemProps | ThemeDataProps
+  }
+}
+
 export interface DesignSystemProps {
   color?: {
     primary?: DesignSystemColorProps

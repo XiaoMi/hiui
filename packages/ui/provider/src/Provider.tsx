@@ -8,8 +8,14 @@ import {
   GlobalProvider,
   UseGlobalContext,
 } from '@hi-ui/core'
-import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
-import { createSystem, extendsTheme } from './theme'
+import { DesignSystemAccentColorEnum, ThemeDataProps } from './types'
+import {
+  createComponentsSystem,
+  createSystem,
+  extendsTheme,
+  removeComponentsSystem,
+  removeSystem,
+} from './theme'
 import { getAccentColorTheme } from './accent-color'
 
 const PREFIX = 'hi-v5'
@@ -29,17 +35,19 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   useEffect(() => {
     const accentColorTheme = getAccentColorTheme(accentColor)
 
-    const mergedThemes = extendsTheme(accentColorTheme, theme)
-    console.log('mergedThemes', mergedThemes)
+    const mergedThemes = extendsTheme(accentColorTheme, theme?.token)
+    const componentsThemes = theme?.components
 
-    if (!mergedThemes) return
+    if (!mergedThemes && !componentsThemes) return
 
     requestAnimationFrame(() => {
       createSystem(mergedThemes, PREFIX)
+      createComponentsSystem(componentsThemes, PREFIX)
     })
 
     return () => {
-      createSystem(null, PREFIX)
+      removeSystem(PREFIX)
+      removeComponentsSystem(componentsThemes, PREFIX)
     }
   }, [accentColor, theme])
 
@@ -68,7 +76,7 @@ interface ThemeProviderProps {
   /**
    * 自定义主题，包括色彩、圆角、边框、动效等
    */
-  theme?: DesignSystemProps
+  theme?: ThemeDataProps
 }
 
 if (__DEV__) {
