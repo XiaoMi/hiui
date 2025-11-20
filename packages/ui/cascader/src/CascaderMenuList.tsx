@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -62,25 +62,25 @@ export const CascaderMenu = ({
 
   const cls = cx(prefixCls, className)
   const activeNodeRef = useRef<HTMLLIElement>()
-  const rafId = useRef<number>(0)
+  const [activeNode, setActiveNode] = useState<HTMLLIElement | null>(null)
+  const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (activeNodeRef.current) {
-      // 每次打开菜单时，滚动到选中的节点，双重 requestAnimationFrame 确保 DOM 已经渲染后再滚动
-      rafId.current = requestAnimationFrame(() => {
-        rafId.current = requestAnimationFrame(() => {
-          scrollIntoView(activeNodeRef.current!, {
-            scrollMode: 'if-needed',
-            block: 'center',
-          })
+    if (activeNode) {
+      timeoutId.current = setTimeout(() => {
+        scrollIntoView(activeNode!, {
+          scrollMode: 'if-needed',
+          block: 'center',
         })
-      })
+      }, 100)
     }
 
     return () => {
-      cancelAnimationFrame(rafId.current)
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current)
+      }
     }
-  }, [activeNodeRef])
+  }, [activeNode, activeNodeRef])
 
   return (
     <ul className={cls} style={style} role={role}>
@@ -102,7 +102,7 @@ export const CascaderMenu = ({
           <li
             ref={(node) => {
               if (node && active) {
-                activeNodeRef.current = node
+                setActiveNode(node)
               }
             }}
             key={option.id}
