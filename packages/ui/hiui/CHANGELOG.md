@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.17.1
+
+### Patch Changes
+
+- [#3415](https://github.com/XiaoMi/hiui/pull/3415) [`e7a09db`](https://github.com/XiaoMi/hiui/commit/e7a09db7f75022fee82a254a74a2ec17c6b03638) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(cascader): 修复在异步加载数据下,首次打开弹窗没有定位到已选节点位置的问题 (#3414)
+
+- Updated dependencies [[`e7a09db`](https://github.com/XiaoMi/hiui/commit/e7a09db7f75022fee82a254a74a2ec17c6b03638)]:
+  - @hi-ui/cascader@4.5.2
+
 ## 4.17.0
 
 ### Minor Changes
