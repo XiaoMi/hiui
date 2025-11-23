@@ -1,4 +1,5 @@
 ---
+"@hi-ui/hiui": patch
 "@hi-ui/locale-context": patch
 "@hi-ui/provider": patch
 "@hi-ui/core": patch
