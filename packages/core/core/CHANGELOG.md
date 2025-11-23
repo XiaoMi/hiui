@@ -1,5 +1,14 @@
 # @hi-ui/core
 
+## 4.0.12
+
+### Patch Changes
+
+- [#3417](https://github.com/XiaoMi/hiui/pull/3417) [`d3dad52`](https://github.com/XiaoMi/hiui/commit/d3dad52a9a8df4cb6451832c0083c03a79f3a1a4) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(locale-context): update build scripts and type definitions for locale support
+
+- Updated dependencies [[`d3dad52`](https://github.com/XiaoMi/hiui/commit/d3dad52a9a8df4cb6451832c0083c03a79f3a1a4)]:
+  - @hi-ui/locale-context@4.1.1
+
 ## 4.0.11
 
 ### Patch Changes

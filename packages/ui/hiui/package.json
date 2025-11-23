@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.17.1",
+  "version": "4.17.2",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -84,7 +84,7 @@
     "@hi-ui/popover": "^4.2.0",
     "@hi-ui/preview": "^4.2.2",
     "@hi-ui/progress": "^4.0.11",
-    "@hi-ui/provider": "^4.2.0",
+    "@hi-ui/provider": "^4.2.1",
     "@hi-ui/radio": "^4.1.4",
     "@hi-ui/rating": "^4.0.10",
     "@hi-ui/result": "^4.0.8",
@@ -112,12 +112,12 @@
     "@hi-ui/zen-mode": "^4.0.8"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=4.0.11",
+    "@hi-ui/core": ">=4.0.12",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.11",
+    "@hi-ui/core": "^4.0.12",
     "@hi-ui/core-css": "^4.1.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
