@@ -23,8 +23,14 @@
       "default": "./lib/esm/index.js"
     },
     "./locale/*": {
+      "types": "./lib/types/locale/*.d.ts",
       "require": "./lib/cjs/locale/*.js",
       "default": "./lib/esm/locale/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "locale/*": ["./lib/types/locale/*"]
     }
   },
   "publishConfig": {
@@ -40,7 +46,7 @@
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
-    "build:locale": "tsc src/locale/*.ts --outDir lib/esm/locale --module esnext --target es2015 --skipLibCheck --declaration false && tsc src/locale/*.ts --outDir lib/cjs/locale --module commonjs --target es2015 --skipLibCheck --declaration false",
+    "build:locale": "tsc src/locale/*.ts --outDir lib/esm --rootDir src --module esnext --target es2015 --skipLibCheck --declaration false && tsc src/locale/*.ts --outDir lib/cjs --rootDir src --module commonjs --target es2015 --skipLibCheck --declaration false",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
     "build": "yarn build:esm && yarn build:cjs && yarn build:locale && yarn build:types"
   },
