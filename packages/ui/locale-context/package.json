@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/locale-context",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -30,7 +30,9 @@
   },
   "typesVersions": {
     "*": {
-      "locale/*": ["./lib/types/locale/*"]
+      "locale/*": [
+        "./lib/types/locale/*"
+      ]
     }
   },
   "publishConfig": {
