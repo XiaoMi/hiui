@@ -59,7 +59,7 @@ export const removeComponentsSystem = (
   Object.keys(components).forEach((componentName) => {
     const elements = document.getElementsByClassName(`${prefix}-${componentName}`)
     Array.from(elements).forEach((element) => {
-      element.classList.remove(`${prefix}-theme-custom`)
+      // element.classList.remove(`${prefix}-theme-custom`)
       injectCssComponent(componentName, prefix, '')
     })
   })

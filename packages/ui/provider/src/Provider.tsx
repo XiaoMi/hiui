@@ -27,7 +27,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   accentColor,
   theme,
   portal,
-  size,
+  ...rest
 }) => {
   /**
    * global css var config
@@ -54,7 +54,7 @@ export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc 
   return (
     <PortalProvider portal={portal}>
       <LocaleProvider locale={locale} languages={languages}>
-        <GlobalProvider value={{ size }}>{children}</GlobalProvider>
+        <GlobalProvider value={rest}>{children}</GlobalProvider>
       </LocaleProvider>
     </PortalProvider>
   )

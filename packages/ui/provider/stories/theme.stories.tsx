@@ -127,7 +127,11 @@ export const Theme = () => {
     <>
       <h1>主题定制</h1>
       <div className="provider-basic__wrap">
-        <Provider theme={theme === 'default' ? undefined : customTheme}>
+        <Provider
+          prefix="hi-v5"
+          customThemeClassName="hi-v5-theme-custom"
+          theme={theme === 'default' ? undefined : customTheme}
+        >
           <div style={{ marginBottom: 24 }}>
             <Radio.Group
               data={[
