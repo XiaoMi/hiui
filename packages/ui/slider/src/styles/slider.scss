@@ -57,7 +57,7 @@ $prefix: '#{$component-prefix}-slider' !default;
     }
 
     .#{$prefix}__handle {
-      margin-left: -5px;
+      margin-left: -6px;
       margin-top: 0;
       transform: translateY(-50%);
     }

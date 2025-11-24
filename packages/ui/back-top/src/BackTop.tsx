@@ -4,7 +4,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { isBrowser, __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import { ArrowUpOutlined } from '@hi-ui/icons'
+import { ArrowUpBoldOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useDidMount } from '@hi-ui/use-did-mount'
 import { useScroll } from '@hi-ui/use-scroll'
@@ -91,7 +91,7 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
       <div ref={ref} role={role} className={cls} onClick={handleClick} {...rest}>
         {children || (
           <div className={contentCls}>
-            <ArrowUpOutlined />
+            <ArrowUpBoldOutlined />
           </div>
         )}
       </div>

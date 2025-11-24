@@ -12,7 +12,7 @@ export const RightOutlined = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M414.165333 225.834667a42.666667 42.666667 0 0 0-62.826666 57.621333l2.496 2.709333L579.626667 512 353.834667 737.834667a42.666667 42.666667 0 0 0-2.496 57.621333l2.496 2.709333a42.666667 42.666667 0 0 0 57.621333 2.496l2.709333-2.496 256-256a42.666667 42.666667 0 0 0 2.496-57.621333l-2.496-2.709333-256-256z" p-id="49596"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2055"  ><path d="M392.725333 183.146667a38.4 38.4 0 1 0-54.293333 54.314666L612.992 512 338.410667 786.56a38.4 38.4 0 1 0 54.293333 54.293333L679.338667 554.24a59.733333 59.733333 0 0 0 0-84.48L392.725333 183.146667z" p-id="2056"></path></svg>
     )
   }
 )

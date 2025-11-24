@@ -539,7 +539,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-dropdown {
     &__trigger {
       &.#{$component-prefix}-icon-button {
-        margin-left: 4px;
+        margin-inline-start: use-spacing(2);
+        color: use-color('gray', 600);
       }
 
       &--active.#{$component-prefix}-icon-button {

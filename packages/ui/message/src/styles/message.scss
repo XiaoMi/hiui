@@ -97,6 +97,7 @@ $prefix: '#{$component-prefix}-message' !default;
     display: inline-flex;
     margin-inline-end: use-spacing(4);
     font-size: use-text-size('lg');
+    transform: scale(1.05);
   }
 }
 

@@ -590,13 +590,52 @@ export const Basic = () => {
 
               { component: Icons.DownOutlined, tagName: 'DownOutlined' },
 
+              { component: Icons.LeftOutlined, tagName: 'LeftOutlined' },
+
+              { component: Icons.RightOutlined, tagName: 'RightOutlined' },
+
+              { component: Icons.UpOutlined, tagName: 'UpOutlined' },
+
+              { component: Icons.LeftShortOutlined, tagName: 'LeftShortOutlined' },
+
+              { component: Icons.RightShortOutlined, tagName: 'RightShortOutlined' },
+
+              { component: Icons.LeftShortBoldOutlined, tagName: 'LeftShortBoldOutlined' },
+
+              { component: Icons.RightShortBoldOutlined, tagName: 'RightShortBoldOutlined' },
+
+              { component: Icons.ArrowDownBoldOutlined, tagName: 'ArrowDownBoldOutlined' },
+
+              { component: Icons.ArrowLeftBoldOutlined, tagName: 'ArrowLeftBoldOutlined' },
+
+              { component: Icons.ArrowRightBoldOutlined, tagName: 'ArrowRightBoldOutlined' },
+
+              { component: Icons.ArrowUpBoldOutlined, tagName: 'ArrowUpBoldOutlined' },
+
+              { component: Icons.DownBoldOutlined, tagName: 'DownBoldOutlined' },
+
+              { component: Icons.LeftBoldOutlined, tagName: 'LeftBoldOutlined' },
+
+              { component: Icons.RightBoldOutlined, tagName: 'RightBoldOutlined' },
+
+              { component: Icons.UpBoldOutlined, tagName: 'UpBoldOutlined' },
+
+              { component: Icons.DirectionDownBoldOutlined, tagName: 'DirectionDownBoldOutlined' },
+
+              { component: Icons.DirectionLeftBoldOutlined, tagName: 'DirectionLeftBoldOutlined' },
+
+              {
+                component: Icons.DirectionRightBoldOutlined,
+                tagName: 'DirectionRightBoldOutlined',
+              },
+
+              { component: Icons.DirectionUpBoldOutlined, tagName: 'DirectionUpBoldOutlined' },
+
               { component: Icons.ExpandOutlined, tagName: 'ExpandOutlined' },
 
               { component: Icons.FullscreenOutlined, tagName: 'FullscreenOutlined' },
 
               { component: Icons.FullscreenExitOutlined, tagName: 'FullscreenExitOutlined' },
-
-              { component: Icons.LeftOutlined, tagName: 'LeftOutlined' },
 
               { component: Icons.LeftRightOutlined, tagName: 'LeftRightOutlined' },
 
@@ -604,15 +643,11 @@ export const Basic = () => {
 
               { component: Icons.MenuUnfoldOutlined, tagName: 'MenuUnfoldOutlined' },
 
-              { component: Icons.RightOutlined, tagName: 'RightOutlined' },
-
               { component: Icons.ShrinkOutlined, tagName: 'ShrinkOutlined' },
 
               { component: Icons.ToBottomOutlined, tagName: 'ToBottomOutlined' },
 
               { component: Icons.ToTopOutlined, tagName: 'ToTopOutlined' },
-
-              { component: Icons.UpOutlined, tagName: 'UpOutlined' },
             ],
           },
         ],

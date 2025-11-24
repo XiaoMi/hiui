@@ -23,7 +23,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
     transition-duration: use-motion-duration('normal');
     transition-timing-function: use-motion-bezier('normal');
     width: 100%;
-    min-height: use-height-size(8);
+    min-height: calc(#{use-height-size(8)} - 2px);
     font-size: inherit;
     line-height: inherit;
     color: use-color('gray', 800);

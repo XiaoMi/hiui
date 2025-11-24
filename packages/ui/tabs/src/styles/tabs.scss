@@ -65,7 +65,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
     font-size: use-text-size('normal');
     color: use-color('gray', 600);
     display: flex;
-    overflow: hidden;
     align-items: center;
 
     &.#{$prefix}__list--editable {
@@ -85,8 +84,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-static('white');
-          border-radius: use-border-radius('normal') 0 0
-            use-border-radius('normal');
         }
       }
     }
@@ -277,6 +274,13 @@ $prefix: '#{$component-prefix}-tabs' !default;
       &.#{$prefix}__list--show-divider {
         border-bottom: 1px solid use-color('gray', 300);
       }
+
+      &.#{$prefix}__list--type-card {
+        .#{$prefix}__list--scroll {
+          border-radius: use-border-radius('normal') use-border-radius('normal') 0 0;
+          overflow: hidden;
+        }
+      }
     }
   }
 
@@ -343,6 +347,11 @@ $prefix: '#{$component-prefix}-tabs' !default;
       }
 
       &.#{$prefix}__list--type-card {
+        .#{$prefix}__list--scroll {
+          border-radius: use-border-radius('normal')  0 0 use-border-radius('normal');
+          overflow: hidden;
+        }
+
         .#{$prefix}__item {
           margin: 0;
           padding: use-spacing(5) use-spacing(8);
@@ -354,8 +363,6 @@ $prefix: '#{$component-prefix}-tabs' !default;
           &--active {
             color: use-color-mode('primary');
             background-color: use-color-static('white');
-            border-radius: use-border-radius('normal') 0 0
-              use-border-radius('normal');
           }
         }
       }

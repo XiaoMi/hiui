@@ -12,7 +12,7 @@ export const DownOutlined = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M798.165333 414.165333a42.666667 42.666667 0 0 0-57.621333-62.826666l-2.709333 2.496L512 579.626667 286.165333 353.834667a42.666667 42.666667 0 0 0-57.621333-2.496l-2.709333 2.496a42.666667 42.666667 0 0 0-2.496 57.621333l2.496 2.709333 256 256a42.666667 42.666667 0 0 0 57.621333 2.496l2.709333-2.496 256-256z" p-id="49576"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3508"  ><path d="M188.645878 377.688816a37.616327 37.616327 0 1 1 53.206204-53.206204l268.935836 268.956735 268.956735-268.956735a37.616327 37.616327 0 1 1 53.185306 53.206204L552.165878 658.432a58.514286 58.514286 0 0 1-82.755919 0L188.645878 377.709714z" p-id="3509"></path></svg>
     )
   }
 )

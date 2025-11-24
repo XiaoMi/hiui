@@ -136,6 +136,7 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &__extra {
+    display: flex;
     color: use-color('gray', 700);
   }
 

@@ -10,7 +10,7 @@ export const Arrow = () => {
     <>
       <h1>Arrow</h1>
       <div className="popper-arrow__wrap">
-        <Popover arrow={false} content="Popover 文字内容">
+        <Popover arrow={false} gutterGap={4} content="Popover 文字内容">
           <Button>trigger</Button>
         </Popover>
       </div>
