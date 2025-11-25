@@ -277,6 +277,14 @@ $upload-state-height: 2px !default;
 
     &:hover:not(.#{$prefix}--nohover) {
       border-color: use-color-mode('primary');
+
+      .drag-upload__desc {
+        color: use-color-mode('primary');
+
+        .#{$prefix}__tips--single-line {
+          color: use-color-mode('primary');
+        }
+      }
     }
 
     &:focus {

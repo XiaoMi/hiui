@@ -18,7 +18,7 @@ export const Range = () => {
         <DatePicker
           type="daterange"
           style={{ width: 480 }}
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(7, 'day').toDate(), new Date()]}
           format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
@@ -43,7 +43,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="yearrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'year').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -54,7 +54,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="quarterrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[new Date(`${new Date().getFullYear()}-09-01`), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -65,7 +65,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="monthrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'month').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -77,7 +77,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="weekrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'week').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}

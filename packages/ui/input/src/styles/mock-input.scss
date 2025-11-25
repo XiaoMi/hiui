@@ -288,7 +288,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         .#{$mock-input-prefix}__label,
         .#{$mock-input-prefix}__value,
         .#{$mock-input-prefix}__suffix {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }
@@ -300,7 +300,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         &.#{$mock-input-prefix},
         .#{$mock-input-prefix}__placeholder,
         .#{$mock-input-prefix}__suffix {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }

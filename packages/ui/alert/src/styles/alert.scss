@@ -77,6 +77,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   &__icon {
     font-size: use-text-size('lg');
     flex-shrink: 0;
+    transform: scale(1.05);
 
     .#{$prefix}--size-lg & {
       margin-inline-end: use-spacing(5);

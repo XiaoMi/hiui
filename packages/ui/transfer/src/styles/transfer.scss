@@ -130,7 +130,6 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &__header {
     border-bottom: 1px solid use-color('gray', 400);
-    background: use-color('gray', 200);
     font-weight: use-text-weight('medium');
   }
 
