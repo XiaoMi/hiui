@@ -19,14 +19,14 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: use-spacing(8) use-spacing(4);
 
     &__search {
-      padding: 0 use-spacing(4) use-spacing(4);
+      padding: use-spacing(4) use-spacing(6) 0;
     }
 
     &__list {
       flex: 1;
+      padding: use-spacing(4);
       overflow: overlay;
     }
 
@@ -68,7 +68,10 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
 
   &-source-panel {
     &__check-all {
-      padding: 0 use-spacing(4) use-spacing(4);
+      padding: use-spacing(6) use-spacing(8) use-spacing(2);
+      font-size: use-text-size('normal');
+      font-weight: use-text-weight('medium');
+      line-height: use-text-lineheight('normal');
     }
 
     &__item-group {
@@ -88,7 +91,7 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
     border-left: use-border-size('normal') use-color('gray', 400);
 
     &__checked {
-      padding: 0 use-spacing(4) use-spacing(4);
+      padding: use-spacing(6) use-spacing(8) use-spacing(2);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -96,6 +99,8 @@ $fast-prefix: '#{$component-prefix}-fast-transfer' !default;
 
     &__checked-title {
       font-size: use-text-size('normal');
+      font-weight: use-text-weight('medium');
+      line-height: use-text-lineheight('normal');
     }
 
     &__item {

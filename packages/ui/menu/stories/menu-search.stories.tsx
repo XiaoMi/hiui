@@ -1,6 +1,6 @@
 import React from 'react'
 import { MenuDataItem, MenuSearch, MenuSearchHelper } from '../src'
-import { AppStoreOutlined, UserOutlined, SunOutlined, PadOutlined } from '@hi-ui/icons'
+import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
 import Button from '@hi-ui/button'
 
@@ -13,17 +13,17 @@ export const MenuSearchDemo = () => {
     {
       title: '首页',
       id: 1,
-      icon: <AppStoreOutlined />,
+      icon: <AppStoreFilled />,
     },
     {
       title: '小米MIX',
       id: 2,
-      icon: <UserOutlined />,
+      icon: <UserFilled />,
     },
     {
       title: '手机',
       id: 3,
-      icon: <SunOutlined />,
+      icon: <SunFilled />,
       children: [
         {
           title: '小米',
@@ -97,7 +97,7 @@ export const MenuSearchDemo = () => {
     {
       title: '超长超长超长字符超长超长超长字符',
       id: 4,
-      icon: <PadOutlined />,
+      icon: <PadFilled />,
     },
   ])
 

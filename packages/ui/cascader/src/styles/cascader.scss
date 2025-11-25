@@ -17,8 +17,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
       }
 
       &__body {
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
         overflow-y: hidden;
       }
 
@@ -81,11 +80,10 @@ $prefix: '#{$component-prefix}-cascader' !default;
   min-width: 160px;
   max-height: 260px;
   overflow: auto;
-  padding: 0 use-spacing(2);
-  border-right: use-border-size('normal') use-color('gray', 300);
+  padding: use-spacing(2);
 
-  &:last-of-type {
-    border: none;
+  &:not(:last-of-type) {
+    border-right: use-border-size('normal') use-color('gray', 300);
   }
 
   $this: &;
