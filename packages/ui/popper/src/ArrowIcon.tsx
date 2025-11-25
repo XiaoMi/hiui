@@ -2,7 +2,7 @@ import React from 'react'
 
 export const ArrowIcon = ({
   color = 'white',
-  borderColor = '#EDEFF2',
+  borderColor = '#e6e8eb',
 }: {
   color?: string
   borderColor?: string

@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        right: -10px;
+        right: -15px;
 
         svg {
           transform: rotate(-90deg);
@@ -112,7 +112,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
-        left: -10px;
+        left: -15px;
 
         svg {
           transform: rotate(90deg);

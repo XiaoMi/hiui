@@ -45,8 +45,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
       border-radius: use-border-radius('normal');
     }
 
-    &:hover,
-    &:focus {
+    &:hover {
       &::before {
         background-color: use-color('gray', 200);
       }

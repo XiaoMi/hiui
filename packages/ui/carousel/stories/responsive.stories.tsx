@@ -55,31 +55,24 @@ export const Responsive = () => {
         alt={'3'}
         onClick={() => console.error('3')}
       />,
-      <img
-        key={'4'}
-        src={
-          'https://images.unsplash.com/photo-1640280056011-e1c0fda0fef5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
-        }
-        alt={'4'}
-        onClick={() => console.error('4')}
-      />,
     ]
   }
 
   return (
     <>
       <h1>Responsive</h1>
-      <div className="carousel-Responsive__wrap" style={{ display: 'flex' }}>
+      <div className="carousel-Responsive__wrap" style={{ display: 'flex', height: '320px' }}>
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <Carousel>{generateContent()}</Carousel>
         </div>
         <div
           style={{
             width: '100px',
+            marginInlineStart: 4,
             flexBasis: '100px',
             height: '100%',
             flexShrink: 0,
-            backgroundColor: '#237ffa',
+            backgroundColor: '#2660ff',
           }}
         >
           模拟侧边栏定宽

@@ -25,7 +25,7 @@ export const Size = () => {
           content={
             <div>
               <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
-              <Button type="secondary" appearance="link">
+              <Button type="primary" appearance="link">
                 操作按钮
               </Button>
             </div>
@@ -51,7 +51,7 @@ export const Size = () => {
           content={
             <div>
               <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
-              <Button type="secondary" appearance="link">
+              <Button type="primary" appearance="link">
                 操作按钮
               </Button>
             </div>
@@ -77,7 +77,7 @@ export const Size = () => {
           content={
             <div>
               <div style={{ marginBottom: 4 }}>文字说明文字说明文字说明</div>
-              <Button type="secondary" appearance="link">
+              <Button type="primary" appearance="link">
                 操作按钮
               </Button>
             </div>

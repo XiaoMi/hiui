@@ -153,6 +153,7 @@ $disabled-color: use-color('gray', 500) !default;
     transition: all 0.3s;
 
     &__icon {
+      display: inline-flex;
       color: use-color('gray', 600);
       margin-inline-end: use-spacing(4);
 
