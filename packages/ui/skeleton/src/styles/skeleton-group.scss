@@ -1,0 +1,21 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-skeleton' !default;
+
+.#{$prefix}-group {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+
+  // 垂直布局（默认）
+  &--direction-column {
+    flex-direction: column;
+    gap: use-spacing(4); // 默认垂直间距 8px
+  }
+
+  // 水平布局
+  &--direction-row {
+    flex-direction: row;
+    gap: use-spacing(6); // 默认水平间距 12px
+  }
+}

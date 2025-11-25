@@ -1,0 +1,106 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-skeleton' !default;
+
+.#{$prefix} {
+  background: linear-gradient(
+    96.76deg,
+    #1a1d260d 0%,
+    #1a1d261a 50%,
+    #1a1d260d 100%
+  );
+  background-size: 200% 100%;
+  background-position-x: 180%;
+
+  &--type {
+    &-text {
+      width: 100%;
+      height: use-height-size(4);
+      border-radius: use-border-radius("full");
+    }
+
+    &-text.#{$prefix}--size-sm {
+      height: 14px;
+    }
+
+    &-text.#{$prefix}--size-lg {
+      height: use-height-size(5);
+    }
+
+    &-avatar {
+      width: use-height-size(10);
+      height: use-height-size(10);
+      border-radius: use-border-radius("full");
+      flex-shrink: 0;
+    }
+
+    &-avatar.#{$prefix}--size-sm {
+      width: use-height-size(8);
+      height: use-height-size(8);
+    }
+
+    &-avatar.#{$prefix}--size-lg {
+      width: use-height-size(12);
+      height: use-height-size(12);
+    }
+
+    &-image {
+      width: 100%;
+      height: 100%;
+      border-radius: use-border-radius("normal");
+    }
+
+    &-icon {
+      width: use-height-size(12);
+      height: use-height-size(12);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    &-icon.#{$prefix}--size-sm {
+      width: use-height-size(10);
+      height: use-height-size(10);
+    }
+
+    &-icon.#{$prefix}--size-lg {
+      width: use-height-size(14);
+      height: use-height-size(14);
+    }
+  }
+
+  &--animation {
+    &-wave {
+      background: linear-gradient(
+        96.76deg,
+        #1a1d260d 30%,
+        #1a1d261a 50%,
+        #1a1d260d 70%
+      );
+      background-size: 200% 100%;
+      background-position-x: 180%;
+      animation: skeleton-wave 1s infinite ease-in-out;
+    }
+
+    &-pulse {
+      background: #1a1d26;
+      animation: skeleton-pulse 1.5s infinite ease-in-out;
+    }
+  }
+}
+
+@keyframes skeleton-wave {
+  to {
+    background-position-x: -20%;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.05;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+}
