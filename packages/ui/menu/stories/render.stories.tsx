@@ -2,10 +2,10 @@ import React from 'react'
 import Menu, { MenuDataItem } from '../src'
 import {
   RightOutlined,
-  AppStoreOutlined,
-  UserOutlined,
-  SunOutlined,
-  PadOutlined,
+  AppStoreFilled,
+  UserFilled,
+  SunFilled,
+  PadFilled,
   SearchOutlined,
 } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
@@ -19,22 +19,22 @@ export const Render = () => {
     {
       title: '首页',
       id: 1,
-      icon: <AppStoreOutlined />,
+      icon: <AppStoreFilled />,
     },
     {
       title: '小米MIX',
       id: 2,
-      icon: <UserOutlined />,
+      icon: <UserFilled />,
     },
     {
       title: '手机',
       id: 3,
-      icon: <SunOutlined />,
+      icon: <SunFilled />,
     },
     {
       title: '电脑',
       id: 4,
-      icon: <PadOutlined />,
+      icon: <PadFilled />,
     },
   ]
 

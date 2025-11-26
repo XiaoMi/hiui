@@ -2,13 +2,7 @@ import React from 'react'
 import { Sidebar, MenuDataItem, filterTreeData } from '../src'
 import Search, { SearchDataItem } from '@hi-ui/search'
 import Tooltip from '@hi-ui/tooltip'
-import {
-  AppStoreOutlined,
-  UserOutlined,
-  SunOutlined,
-  PadOutlined,
-  SearchOutlined,
-} from '@hi-ui/icons'
+import { AppStoreFilled, UserFilled, SunFilled, PadFilled, SearchOutlined } from '@hi-ui/icons'
 
 /**
  * @title 侧边栏风格菜单
@@ -20,7 +14,7 @@ export const SidebarMenu = () => {
     {
       title: '首页',
       id: '1',
-      icon: <AppStoreOutlined />,
+      icon: <AppStoreFilled />,
       children: [
         {
           title: '新品发布',
@@ -51,12 +45,12 @@ export const SidebarMenu = () => {
     {
       title: '小米MIX',
       id: '2',
-      icon: <UserOutlined />,
+      icon: <UserFilled />,
       children: [
         {
           title: '小米Mix',
           id: '2-1',
-          icon: <AppStoreOutlined />,
+          icon: <AppStoreFilled />,
           children: [
             {
               title: '小米Mix1',
@@ -77,12 +71,12 @@ export const SidebarMenu = () => {
     {
       title: '手机',
       id: 'shouji',
-      icon: <SunOutlined />,
+      icon: <SunFilled />,
       children: [
         {
           title: '小米',
           id: 'xiaomi',
-          icon: <SunOutlined />,
+          icon: <SunFilled />,
           children: [
             {
               title: '小米1',
@@ -102,7 +96,7 @@ export const SidebarMenu = () => {
         {
           title: '红米',
           id: 'hongmi',
-          icon: <SunOutlined />,
+          icon: <SunFilled />,
           children: [
             {
               title: '红米1',
@@ -121,7 +115,7 @@ export const SidebarMenu = () => {
         {
           title: '小米note',
           id: 'xiaominote',
-          icon: <SunOutlined />,
+          icon: <SunFilled />,
           children: [
             {
               title: '小米 note7',
@@ -148,7 +142,7 @@ export const SidebarMenu = () => {
         </Tooltip>
       ),
       id: '4',
-      icon: <PadOutlined />,
+      icon: <PadFilled />,
     },
   ])
 
