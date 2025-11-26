@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from '../src'
-import { AppStoreOutlined, SunOutlined } from '@hi-ui/icons'
+import { AppStoreFilled, SunFilled } from '@hi-ui/icons'
 
 /**
  * @title 默认展开所有
@@ -21,12 +21,12 @@ export const DefaultExpandAll = () => {
             {
               title: '首页',
               id: 1,
-              icon: <AppStoreOutlined />,
+              icon: <AppStoreFilled />,
             },
             {
               title: '小米手机',
               id: 3,
-              icon: <SunOutlined />,
+              icon: <SunFilled />,
               children: [
                 {
                   title: '小米',

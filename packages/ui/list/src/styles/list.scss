@@ -92,10 +92,15 @@ $prefix: '#{$component-prefix}-list' !default;
       .#{$prefix}-item {
         padding: use-spacing(6);
         border-radius: use-border-radius('lg');
+        transition: all 0.3s;
 
         &:hover {
           cursor: pointer;
           background-color: use-color('gray', 100);
+        }
+
+        &:active {
+          background-color: use-color('gray', 200);
         }
       }
     }

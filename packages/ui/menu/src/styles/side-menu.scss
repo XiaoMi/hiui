@@ -46,6 +46,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     &__icon {
       display: inline-flex;
       margin-right: use-spacing(4);
+      font-size: use-text-size('lg');
       color: #7c87a6;
     }
 

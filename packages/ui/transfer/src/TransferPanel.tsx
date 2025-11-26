@@ -135,13 +135,15 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
                     checked={checkedAll}
                     onChange={handleCheckAll}
                   />
-                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}{' '}
+                  <span className={`${prefixCls}__check-all-count`}>
+                    (
+                    {checkedIds.length > 0
+                      ? `${checkedIds.length}/${cacheData.length}`
+                      : cacheData.length}
+                    )
+                  </span>
                 </div>
-                <span className={`${prefixCls}__check-all--right`}>
-                  {currentPanelHasChecked
-                    ? `${checkedIds.length}/${cacheData.length}`
-                    : `${cacheData.length}`}
-                </span>
               </div>
             ) : title ? (
               <div className={`${prefixCls}__title`}>{title}</div>
@@ -152,8 +154,6 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
           {searchable ? (
             <div className={`${prefixCls}__search`}>
               <Input
-                size="md"
-                appearance="underline"
                 prefix={<SearchOutlined />}
                 placeholder={placeholder}
                 value={searchValue}

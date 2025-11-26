@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  HomeOutlined,
-  UserOutlined,
-  SunOutlined,
-  PadOutlined,
-  ManOutlined,
-  LockOutlined,
-} from '@hi-ui/icons'
+import { HomeFilled, UserFilled, SunFilled, PadFilled, ManFilled, LockFilled } from '@hi-ui/icons'
 import Menu from '../src'
 
 /**
@@ -28,22 +21,22 @@ export const Horizontal = () => {
             {
               title: '电视',
               id: 1,
-              icon: <HomeOutlined />,
+              icon: <HomeFilled />,
             },
             {
               title: '小米MIX',
               id: 2,
-              icon: <UserOutlined />,
+              icon: <UserFilled />,
             },
             {
               title: '手机',
               id: 3,
-              icon: <SunOutlined />,
+              icon: <SunFilled />,
               children: [
                 {
                   title: '小米',
                   id: 666,
-                  icon: <LockOutlined />,
+                  icon: <LockFilled />,
 
                   children: [
                     {
@@ -61,7 +54,7 @@ export const Horizontal = () => {
                     {
                       title: '小米6',
                       id: 'xiaomi6',
-                      icon: <ManOutlined />,
+                      icon: <ManFilled />,
                     },
                     {
                       title: '小米5',
@@ -113,27 +106,27 @@ export const Horizontal = () => {
             {
               title: '数码产品',
               id: 4,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
             {
               title: '一级导航1',
               id: 5,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
             {
               title: '一级导航2',
               id: 6,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
             {
               title: '一级导航3',
               id: 7,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
             {
               title: '一级导航4',
               id: 8,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
           ]}
         />
