@@ -17,7 +17,7 @@ import {
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { isArray, isObjectLike, isFunction } from '@hi-ui/type-assertion'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { setNested, getNested } from '@hi-ui/object-utils'
+import { setNested, getNested, omit } from '@hi-ui/object-utils'
 import { stopEvent } from '@hi-ui/dom-utils'
 
 const EMPTY_RULES = {}
@@ -41,6 +41,7 @@ export const useForm = <Values = Record<string, any>>({
   validateTrigger: validateTriggerProp = DEFAULT_VALIDATE_TRIGGER,
   scrollToFirstError,
   size,
+  autoRegister = false,
   ...rest
 }: UseFormProps<Values>) => {
   /**
@@ -619,6 +620,20 @@ export const useForm = <Values = Record<string, any>>({
     [rules]
   )
 
+  const addField = useCallback((field: FormFieldPath, value?: any) => {
+    formDispatch({
+      type: 'ADD_FIELD',
+      payload: { field, value },
+    })
+  }, [])
+
+  const deleteField = useCallback((field: FormFieldPath) => {
+    formDispatch({
+      type: 'DELETE_FIELD',
+      payload: { field },
+    })
+  }, [])
+
   return {
     ...formState,
     setFormState,
@@ -641,8 +656,11 @@ export const useForm = <Values = Record<string, any>>({
     getFieldsValue,
     setFieldsValue,
     getFieldsError,
+    addField,
+    deleteField,
     formItemsRef,
     onValuesChange,
+    autoRegister,
   }
 }
 
@@ -698,6 +716,12 @@ export interface UseFormProps<T = Record<string, any>> {
    * 设置表单尺寸
    */
   size?: HiBaseSizeEnum
+  /**
+   * @private
+   * 是否自动注册字段到表单状态
+   * @default false
+   */
+  autoRegister?: boolean
 }
 
 export type UseFormReturn = ReturnType<typeof useForm>
@@ -739,6 +763,16 @@ function formReducer<T>(state: FormState<T>, action: FormAction<T>) {
       return {
         ...state,
         submitting: false,
+      }
+    case 'ADD_FIELD':
+      return {
+        ...state,
+        values: setNested(state.values, action.payload.field, action.payload.value),
+      }
+    case 'DELETE_FIELD':
+      return {
+        ...state,
+        values: omit(state.values as any, action.payload.field),
       }
     default:
       return state
