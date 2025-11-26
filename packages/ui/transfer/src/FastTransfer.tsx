@@ -346,20 +346,6 @@ function SourcePanel({
 
   return (
     <div className={prefixCls}>
-      {searchable && (
-        <div className={`${prefixCls}__search`}>
-          <Input
-            size="md"
-            prefix={<SearchOutlined />}
-            placeholder={placeholder}
-            value={keyword}
-            onChange={(evt) => {
-              tryChangeKeyword(evt.target.value)
-              filterTree(evt.target.value)
-            }}
-          />
-        </div>
-      )}
       {filteredData.length > 0 && (
         <div className={`${prefixCls}__check-all`}>
           <Checkbox
@@ -385,6 +371,20 @@ function SourcePanel({
               )
             </span>
           </Checkbox>
+        </div>
+      )}
+      {searchable && (
+        <div className={`${prefixCls}__search`}>
+          <Input
+            size="md"
+            prefix={<SearchOutlined />}
+            placeholder={placeholder}
+            value={keyword}
+            onChange={(evt) => {
+              tryChangeKeyword(evt.target.value)
+              filterTree(evt.target.value)
+            }}
+          />
         </div>
       )}
       {filteredData.length > 0 ? (
@@ -506,6 +506,16 @@ function TargetPanel({
 
   return (
     <div className={prefixCls}>
+      {checkedIds.length > 0 && filteredData.length > 0 && (
+        <div className={`${prefixCls}__checked`}>
+          <div className={`${prefixCls}__checked-title`}>
+            {title} ({checkedIds.length})
+          </div>
+          <Button size="xs" type="secondary" appearance="link" onClick={() => onChange?.([])}>
+            {i18n.get('transfer.clear')}
+          </Button>
+        </div>
+      )}
       {searchable && (
         <div className={`${prefixCls}__search`}>
           <Input
@@ -515,16 +525,6 @@ function TargetPanel({
             value={keyword}
             onChange={(evt) => tryChangeKeyword(evt.target.value)}
           />
-        </div>
-      )}
-      {checkedIds.length > 0 && filteredData.length > 0 && (
-        <div className={`${prefixCls}__checked`}>
-          <div className={`${prefixCls}__checked-title`}>
-            {title} ({checkedIds.length})
-          </div>
-          <Button size="xs" type="secondary" appearance="link" onClick={() => onChange?.([])}>
-            {i18n.get('transfer.clear')}
-          </Button>
         </div>
       )}
       {filteredData.length > 0 ? (

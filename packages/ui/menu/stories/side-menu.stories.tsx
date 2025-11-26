@@ -1,7 +1,7 @@
 import React from 'react'
 import { SideMenu, useSideMenuCascade, MenuDataItem } from '../src'
 import Button from '@hi-ui/button'
-import { AppStoreOutlined, UserOutlined, SunOutlined, PadOutlined } from '@hi-ui/icons'
+import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
 
 /**
  * @title 侧边菜单
@@ -11,12 +11,12 @@ export const SideMenuDemo = () => {
     {
       title: '首页',
       id: 1,
-      icon: <AppStoreOutlined />,
+      icon: <AppStoreFilled />,
     },
     {
       title: '电视',
       id: 2,
-      icon: <UserOutlined />,
+      icon: <UserFilled />,
       children: [
         {
           title: '小米电视',
@@ -49,7 +49,7 @@ export const SideMenuDemo = () => {
     {
       title: '手机',
       id: 3,
-      icon: <SunOutlined />,
+      icon: <SunFilled />,
       children: [
         {
           title: '小米',
@@ -108,7 +108,7 @@ export const SideMenuDemo = () => {
     {
       title: '超长超长超长字符超长超长超长字符',
       id: 4,
-      icon: <PadOutlined />,
+      icon: <PadFilled />,
     },
   ])
   const [selectId, setSelectId] = React.useState<React.ReactText>('')

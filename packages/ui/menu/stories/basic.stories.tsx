@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from '../src'
-import { AppStoreOutlined, UserOutlined, SunOutlined, PadOutlined } from '@hi-ui/icons'
+import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
 
 /**
  * @title 基础用法
@@ -21,17 +21,17 @@ export const Basic = () => {
             {
               title: '首页',
               id: 1,
-              icon: <AppStoreOutlined />,
+              icon: <AppStoreFilled />,
             },
             {
               title: '小米MIX',
               id: 2,
-              icon: <UserOutlined />,
+              icon: <UserFilled />,
             },
             {
               title: '手机',
               id: 3,
-              icon: <SunOutlined />,
+              icon: <SunFilled />,
               children: [
                 {
                   title: '小米',
@@ -105,7 +105,7 @@ export const Basic = () => {
             {
               title: '超长超长超长字符超长超长超长字符',
               id: 4,
-              icon: <PadOutlined />,
+              icon: <PadFilled />,
             },
           ]}
         />
