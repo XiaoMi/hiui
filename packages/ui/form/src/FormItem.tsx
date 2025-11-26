@@ -45,7 +45,6 @@ export const FormItem: React.FC<FormItemProps> = ({
 
   React.useEffect(() => {
     if (autoRegister) {
-      console.log('autoRegister', field, getFieldValue(field))
       if (field && !hasProperty(values, field)) {
         addField(field, getFieldValue(field) ?? (valueType === 'number' ? null : undefined))
       }
