@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import moment, { Moment } from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
-import { getBelongWeek, getBelongWeekBoundary } from '../utils/week'
+import { getBelongWeek, getBelongWeekBoundary, getBelongWeekYear } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/core'
 import { createDateWithUTCOffset, toUtcTime } from '../utils'
 
@@ -393,16 +393,14 @@ const getDateRows = ({
       if (type === 'week') {
         col.weekType = col.type
         if (originDate) {
-          const wFirst = getBelongWeekBoundary(originDate, weekOffset)
-          const wLast = getBelongWeekBoundary(originDate, weekOffset, false)
-          if (currentTime.isSame(wFirst, 'day') || currentTime.isSame(wLast, 'day')) {
-            col.type = 'selected'
-            continue
-          }
-          // 处于周开始与结束之间，也看做，被选中了
-          if (currentTime.isBetween(wFirst, wLast)) {
-            // col.type = 'normal'
-            // col.range = true
+          // 通过比较日期所属的周是否相同来判断是否选中，而不是使用 isBetween
+          // 这样可以避免 weekOffset 导致的边界判断问题
+          const originWeek = getBelongWeek(originDate, weekOffset)
+          const originWeekYear = getBelongWeekYear(originDate, weekOffset)
+          const currentWeek = getBelongWeek(currentTime, weekOffset)
+          const currentWeekYear = getBelongWeekYear(currentTime, weekOffset)
+
+          if (originWeek === currentWeek && originWeekYear === currentWeekYear) {
             col.type = 'selected'
           }
         }
