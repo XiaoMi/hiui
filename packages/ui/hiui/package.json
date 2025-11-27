@@ -95,6 +95,7 @@
     "@hi-ui/scrollbar": "^4.2.1",
     "@hi-ui/search": "^4.1.1",
     "@hi-ui/select": "^4.6.2",
+    "@hi-ui/skeleton": "^4.0.0",
     "@hi-ui/slider": "^4.0.12",
     "@hi-ui/space": "^4.0.11",
     "@hi-ui/spinner": "^4.0.9",
