@@ -95,6 +95,7 @@
     "@hi-ui/scrollbar": "^5.0.0-canary.6",
     "@hi-ui/search": "^5.0.0-canary.6",
     "@hi-ui/select": "^5.0.0-canary.14",
+    "@hi-ui/skeleton": "^5.0.0-canary.0",
     "@hi-ui/slider": "^5.0.0-canary.7",
     "@hi-ui/space": "^5.0.0-canary.4",
     "@hi-ui/spinner": "^5.0.0-canary.5",
