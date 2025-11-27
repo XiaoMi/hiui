@@ -1,5 +1,14 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.19
+
+### Patch Changes
+
+- 947edaa7e: style: fix ui bug (5.0)
+- Updated dependencies [0b67f7083]
+  - @hi-ui/icons@5.0.0-canary.6
+  - @hi-ui/popper@5.0.0-canary.10
+
 ## 5.0.0-canary.18
 
 ### Patch Changes

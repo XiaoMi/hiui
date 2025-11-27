@@ -1,5 +1,16 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 0b67f7083: style: 修改 UI 问题 (5.0)
+- Updated dependencies [379925d97]
+- Updated dependencies [0b67f7083]
+  - @hi-ui/modal@5.0.0-canary.11
+  - @hi-ui/icons@5.0.0-canary.6
+  - @hi-ui/message@5.0.0-canary.10
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

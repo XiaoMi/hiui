@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 0b67f7083: style: 修改 UI 问题 (5.0)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

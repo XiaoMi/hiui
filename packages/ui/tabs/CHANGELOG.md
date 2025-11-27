@@ -1,5 +1,16 @@
 # @hi-ui/tabs
 
+## 5.0.0-canary.12
+
+### Patch Changes
+
+- 0b67f7083: style: 修改 UI 问题 (5.0)
+- Updated dependencies [947edaa7e]
+- Updated dependencies [0b67f7083]
+  - @hi-ui/tooltip@5.0.0-canary.7
+  - @hi-ui/icons@5.0.0-canary.6
+  - @hi-ui/icon-button@5.0.0-canary.6
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

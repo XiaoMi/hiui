@@ -1,5 +1,13 @@
 # @hi-ui/pagination
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 947edaa7e: style: fix ui bug (5.0)
+- Updated dependencies [0b67f7083]
+  - @hi-ui/icons@5.0.0-canary.6
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

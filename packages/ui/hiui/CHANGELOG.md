@@ -1,5 +1,48 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.39
+
+### Minor Changes
+
+- 4b1c9c16a: feat(form): 增加 autoRegister 参数,支持动态添加和删除表单时,数据同步更新 (5.0)
+- 379925d97: feat(modal): add styles and classNames api (5.0)
+- 5c1c052ec: feat(Skeleton): New Component Skeleton 新增组件骨架屏 (5.0)
+
+### Patch Changes
+
+- 947edaa7e: style: fix ui bug (5.0)
+- c669202f6: fix(date-picker): 修复 weekOffset 设置不为 0 的值时会选中 2 周的问题 (5.0)
+- 0b67f7083: style: 修改 UI 问题 (5.0)
+- Updated dependencies [947edaa7e]
+- Updated dependencies [4b1c9c16a]
+- Updated dependencies [379925d97]
+- Updated dependencies [c669202f6]
+- Updated dependencies [0b67f7083]
+  - @hi-ui/carousel@5.0.0-canary.5
+  - @hi-ui/cascader@5.0.0-canary.19
+  - @hi-ui/check-cascader@5.0.0-canary.21
+  - @hi-ui/list@5.0.0-canary.7
+  - @hi-ui/menu@5.0.0-canary.14
+  - @hi-ui/pagination@5.0.0-canary.9
+  - @hi-ui/tag@5.0.0-canary.10
+  - @hi-ui/tooltip@5.0.0-canary.7
+  - @hi-ui/transfer@5.0.0-canary.7
+  - @hi-ui/form@5.0.0-canary.10
+  - @hi-ui/modal@5.0.0-canary.11
+  - @hi-ui/date-picker@5.0.0-canary.24
+  - @hi-ui/alert@5.0.0-canary.9
+  - @hi-ui/back-top@5.0.0-canary.6
+  - @hi-ui/collapse@5.0.0-canary.7
+  - @hi-ui/message@5.0.0-canary.10
+  - @hi-ui/notification@5.0.0-canary.9
+  - @hi-ui/page-header@5.0.0-canary.4
+  - @hi-ui/pop-confirm@5.0.0-canary.9
+  - @hi-ui/slider@5.0.0-canary.7
+  - @hi-ui/table@5.0.0-canary.21
+  - @hi-ui/tabs@5.0.0-canary.12
+  - @hi-ui/textarea@5.0.0-canary.11
+  - @hi-ui/upload@5.0.0-canary.10
+
 ## 5.0.0-canary.38
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/list",
-  "version": "5.0.0-canary.6",
+  "version": "5.0.0-canary.7",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -48,7 +48,7 @@
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/empty-state": "^5.0.0-canary.6",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/pagination": "^5.0.0-canary.8"
+    "@hi-ui/pagination": "^5.0.0-canary.9"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-canary.6",

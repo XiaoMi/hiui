@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 0b67f7083: style: 修改 UI 问题 (5.0)
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

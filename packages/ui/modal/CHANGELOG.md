@@ -1,5 +1,17 @@
 # @hi-ui/modal
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- 379925d97: feat(modal): add styles and classNames api (5.0)
+
+### Patch Changes
+
+- Updated dependencies [0b67f7083]
+  - @hi-ui/icons@5.0.0-canary.6
+  - @hi-ui/icon-button@5.0.0-canary.6
+
 ## 5.0.0-canary.10
 
 ### Patch Changes
