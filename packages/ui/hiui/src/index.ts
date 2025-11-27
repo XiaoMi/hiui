@@ -226,7 +226,8 @@ export { default as Watermark } from '@hi-ui/watermark'
 export * from '@hi-ui/zen-mode'
 export { default as ZenMode } from '@hi-ui/zen-mode'
 
-// export * from '@hi-ui/skeleton'
+export * from '@hi-ui/skeleton'
+export { default as Skeleton } from '@hi-ui/skeleton'
 
 export * from '@hi-ui/scrollbar'
 export { default as Scrollbar } from '@hi-ui/scrollbar'
