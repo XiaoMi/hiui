@@ -312,14 +312,14 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
               <>
                 <Button
                   shape="round"
-                  type={enabledSourceToTarget ? 'primary' : 'default'}
+                  type="primary"
                   disabled={!enabledSourceToTarget || isOverflowed}
                   icon={<RightOutlined />}
                   onClick={() => moveTo('right')}
                 />
                 <Button
                   shape="round"
-                  type={enabledTargetToSource ? 'primary' : 'default'}
+                  type="primary"
                   disabled={!enabledTargetToSource}
                   icon={<LeftOutlined />}
                   onClick={() => moveTo('left')}

@@ -264,7 +264,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   .#{$component-prefix}-button + .#{$component-prefix}-button {
-    margin-top: use-spacing(12);
+    margin-top: use-spacing(6);
     margin-left: 0;
   }
 }
