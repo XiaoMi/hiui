@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import Breadcrumb, { BreadcrumbProps } from '@hi-ui/breadcrumb'
 import IconButton from '@hi-ui/icon-button'
-import { ArrowLeftOutlined } from '@hi-ui/icons'
+import { LeftShortOutlined } from '@hi-ui/icons'
 
 const PAGE_HEADER_PREFIX = getPrefixCls('page-header')
 
@@ -38,7 +38,7 @@ export const PageHeader = forwardRef<HTMLDivElement | null, PageHeaderProps>(
             {backIcon !== false && (
               <IconButton
                 className={`${prefixCls}__back-button`}
-                icon={typeof backIcon === 'boolean' ? <ArrowLeftOutlined /> : backIcon}
+                icon={typeof backIcon === 'boolean' ? <LeftShortOutlined /> : backIcon}
                 effect
                 onClick={onBack}
               />

@@ -212,3 +212,108 @@ export const object2Paths = <T extends Object>(props: T) => {
   dig(props, [])
   return objectPaths
 }
+
+/**
+ * Omit object by paths
+ *
+ * @example
+ *
+ * omit({ a: { b: 2 } }, ['a', 'b']) // { a: {} }
+ */
+export const omit = <T extends object>(obj: T, paths: (string | number)[] | string | number): T => {
+  paths = normalizeArray(paths)
+
+  // 处理路径数组
+  const props: (string | number)[] = []
+  paths.forEach((p) => {
+    if (Number.isSafeInteger(p)) {
+      props.push(p)
+    } else {
+      p = p + ''
+      if (p !== '') {
+        props.push(p)
+      }
+    }
+  })
+
+  if (props.length === 0) {
+    return clone(obj)
+  }
+
+  // 克隆对象以保持纯函数特性
+  obj = clone(obj)
+
+  // 如果只有一个路径，直接删除
+  if (props.length === 1) {
+    if (Array.isArray(obj)) {
+      const index = props[0] as number
+      if (Number.isSafeInteger(index) && index >= 0 && index < obj.length) {
+        obj.splice(index, 1)
+      }
+    } else {
+      delete (obj as any)[props[0]]
+    }
+    return obj
+  }
+
+  // 处理嵌套路径
+  const lastIndex = props.length - 1
+  let i = 0
+  let target: any = obj
+
+  // 遍历到目标字段的父对象
+  while (i < lastIndex) {
+    const key = props[i++]
+    if (isNullish(target) || !isObjectLike(target)) {
+      return obj
+    }
+    target = target[key]
+  }
+
+  // 删除目标字段
+  if (isObjectLike(target)) {
+    delete target[props[i]]
+  }
+
+  return obj
+}
+
+/**
+ * 判断对象上是否存在某个属性
+ *
+ * @example
+ *
+ * hasProperty({ a: 1 }, 'a') // true
+ * hasProperty({ a: { b: 2 } }, ['a', 'b']) // true
+ * hasProperty({ a: { b: 2 } }, ['a', 'c']) // false
+ */
+export const hasProperty = <T extends object>(
+  obj: T,
+  paths: (string | number)[] | string | number
+): boolean => {
+  paths = normalizeArray(paths)
+  const props = paths.map((p) => p + '').filter((p) => p !== '')
+
+  if (props.length === 0) {
+    return false
+  }
+
+  let target: any = obj
+  let i = 0
+  const len = props.length
+
+  // 遍历到目标属性的父对象
+  while (i < len - 1) {
+    if (isNullish(target) || !isObjectLike(target)) {
+      return false
+    }
+    target = target[props[i++]]
+  }
+
+  // 检查最后一层属性是否存在
+  if (isNullish(target) || !isObjectLike(target)) {
+    return false
+  }
+
+  return hasOwnProp(target, props[i])
+}

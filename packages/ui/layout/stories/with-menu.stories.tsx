@@ -125,6 +125,7 @@ export const WithMenu = () => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
                   gap: 4,
                   height: 40,
                   fontSize: 14,
@@ -140,9 +141,9 @@ export const WithMenu = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <DetailsFilled size={16} color="#7c87a6" />
+                  <DetailsFilled size={collapsed ? 18 : 16} color="#7c87a6" />
                 </div>
-                {collapsed ? null : <span>帮助反馈</span>}
+                {collapsed ? null : <span>使用手册</span>}
               </div>
               <ProfilePopover
                 visible={profileVisible}
@@ -191,6 +192,7 @@ export const WithMenu = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'flex-start',
                     gap: 4,
                     height: 40,
                     fontSize: 14,

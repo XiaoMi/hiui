@@ -22,6 +22,7 @@ $prefix: '#{$component-prefix}-pop-confirm' !default;
       margin-right: use-spacing(4);
       color: use-color-mode('primary');
       font-size: use-text-size('lg');
+      transform: scale(1.05);
     }
 
     &-title {

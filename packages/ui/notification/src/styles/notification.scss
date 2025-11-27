@@ -70,6 +70,7 @@ $prefix: '#{$component-prefix}-notification' !default;
   &__icon {
     display: flex;
     align-items: center;
+    transform: scale(1.05);
 
     .#{$prefix}--size-lg & {
       margin-right: use-spacing(6);

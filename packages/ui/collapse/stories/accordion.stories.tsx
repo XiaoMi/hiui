@@ -1,6 +1,6 @@
 import React from 'react'
 import Collapse from '../src'
-import { Button } from '@hi-ui/button'
+import { IconButton } from '@hi-ui/icon-button'
 import { EditOutlined } from '@hi-ui/icons'
 
 /**
@@ -29,10 +29,11 @@ export const Accordion = () => {
             title="红米手机"
             id="2"
             extra={
-              <Button
-                appearance="link"
+              <IconButton
+                style={{ marginInlineEnd: 12 }}
                 icon={<EditOutlined />}
                 onClick={(evt) => evt.stopPropagation()}
+                effect
               />
             }
           >

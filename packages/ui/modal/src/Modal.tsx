@@ -74,6 +74,8 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       unmountOnClose = false,
       visible = false,
       innerRef,
+      styles,
+      classNames,
       ...rest
     },
     ref
@@ -202,11 +204,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           <div className={cls} {...getModalProps(rootProps, [ref, transitionNodeRef])}>
             {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
             <div
-              className={`${prefixCls}__wrapper`}
+              className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)}
               style={{
                 width,
                 height,
                 ...(!height ? { maxHeight: defaultMaxHeight } : null),
+                ...styles?.wrapper,
               }}
               {...getModalWrapperProps()}
             >
@@ -216,11 +219,16 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                     `${prefixCls}__header`,
                     (showHeaderDivider ||
                       (scrollState.isContentOverflow && !scrollState.isScrollToTop)) &&
-                      `${prefixCls}__header--divided`
+                      `${prefixCls}__header--divided`,
+                    classNames?.header
                   )}
+                  style={styles?.header}
                 >
                   {title ? (
-                    <div className={`${prefixCls}__title`}>
+                    <div
+                      className={cx(`${prefixCls}__title`, classNames?.title)}
+                      style={styles?.title}
+                    >
                       {type && modalIconMap[type] ? (
                         <span className={`${prefixCls}__icon`}>{modalIconMap[type]}</span>
                       ) : null}
@@ -237,7 +245,12 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                   ) : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`} ref={setScrollElement} onScroll={handleScroll}>
+              <main
+                className={cx(`${prefixCls}__body`, classNames?.body)}
+                ref={setScrollElement}
+                onScroll={handleScroll}
+                style={styles?.body}
+              >
                 {children}
               </main>
               {hasFooter ? (
@@ -246,8 +259,10 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                     `${prefixCls}__footer`,
                     (showFooterDivider ||
                       (scrollState.isContentOverflow && !scrollState.isScrollToBottom)) &&
-                      `${prefixCls}__footer--divided`
+                      `${prefixCls}__footer--divided`,
+                    classNames?.footer
                   )}
+                  style={styles?.footer}
                 >
                   {footer === undefined
                     ? [
@@ -395,6 +410,26 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * 确认框类型
    */
   type?: ModalTypeEnum
+  /**
+   * 自定义模态框样式
+   */
+  styles?: {
+    wrapper?: React.CSSProperties
+    header?: React.CSSProperties
+    title?: React.CSSProperties
+    body?: React.CSSProperties
+    footer?: React.CSSProperties
+  }
+  /**
+   * 自定义模态框类名
+   */
+  classNames?: {
+    wrapper?: string
+    header?: string
+    title?: string
+    body?: string
+    footer?: string
+  }
 }
 
 if (__DEV__) {

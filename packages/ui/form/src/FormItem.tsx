@@ -6,6 +6,7 @@ import { FormMessage } from './FormMessage'
 import { FormField } from './FormField'
 import { useFormContext } from './context'
 import { cx } from '@hi-ui/classname'
+import { hasProperty } from '@hi-ui/object-utils'
 
 export const FormItem: React.FC<FormItemProps> = ({
   className,
@@ -21,7 +22,16 @@ export const FormItem: React.FC<FormItemProps> = ({
   render,
   ...rest
 }) => {
-  const { prefixCls, showRequiredOnValidateRequired, formItemsRef } = useFormContext()
+  const {
+    prefixCls,
+    showRequiredOnValidateRequired,
+    formItemsRef,
+    values,
+    getFieldValue,
+    addField,
+    deleteField,
+    autoRegister,
+  } = useFormContext()
 
   const fieldRules = useFiledRules({ field, rules, valueType })
   const { required } = rest
@@ -32,6 +42,20 @@ export const FormItem: React.FC<FormItemProps> = ({
     }
     return required
   }, [required, showRequiredOnValidateRequired, fieldRules])
+
+  React.useEffect(() => {
+    if (autoRegister) {
+      if (field && !hasProperty(values, field)) {
+        addField(field, getFieldValue(field) ?? (valueType === 'number' ? null : undefined))
+      }
+    }
+
+    return () => {
+      if (autoRegister) {
+        field && deleteField(field)
+      }
+    }
+  }, [addField, deleteField, field, getFieldValue])
 
   return (
     <FormLabel

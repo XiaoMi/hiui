@@ -48,6 +48,16 @@ export const Cascade = () => {
             console.log('changedValues,allValues', changedValues, allValues)
             setFormData(allValues)
           }}
+          onReset={(values) => {
+            console.log('onReset values', values)
+          }}
+          rules={{
+            counter: [
+              {
+                required: true,
+              },
+            ],
+          }}
         >
           <FormItem label="表单名称" field={null} valueType={null}>
             <>动态表单</>
@@ -226,8 +236,10 @@ export const Cascade = () => {
               <FormSubmit
                 type="primary"
                 onClick={() => {
-                  // console.log('Get form value:', values, errors)
-                  const values = formRef.current.getFieldsValue()
+                  const values = formRef.current?.getFieldsValue() ?? {}
+                  console.log('Get form value:', values)
+                  console.log('Get form errors:', formRef.current?.getFieldsError())
+
                   message.open({
                     title: (
                       <div style={{ width: 400, wordBreak: 'break-all' }}>
@@ -246,7 +258,7 @@ export const Cascade = () => {
                 onClick={() => {
                   console.log('填充表单')
 
-                  formRef.current.setFieldsValue({
+                  formRef.current?.setFieldsValue({
                     select: '2',
                     phone: '15666666666',
                     radio: 0,

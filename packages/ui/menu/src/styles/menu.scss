@@ -153,12 +153,10 @@ $disabled-color: use-color('gray', 500) !default;
     transition: all 0.3s;
 
     &__icon {
-      color: use-color('gray', 600);
+      display: inline-flex;
       margin-inline-end: use-spacing(4);
-
-      svg[class^='#{$component-prefix}-icon'] {
-        font-size: use-text-size('lg');
-      }
+      font-size: use-text-size('lg');
+      color: use-color('gray', 600);
     }
 
     &__arrow {
@@ -331,6 +329,7 @@ $disabled-color: use-color('gray', 500) !default;
       justify-content: center;
       border-radius: use-border-radius('normal');
       color: use-color('gray', 600);
+      font-size: use-text-size('lg');
       flex-shrink: 0;
 
       // @animation

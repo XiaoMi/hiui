@@ -1,7 +1,7 @@
 import React from 'react'
 import Collapse from '../src'
 import { PlusOutlined } from '@hi-ui/icons'
-import { Button } from '@hi-ui/button'
+import { IconButton } from '@hi-ui/icon-button'
 
 /**
  * @title 箭头位置
@@ -53,8 +53,9 @@ export const ArrowPlacement = () => {
             title="小米 AI"
             id="4"
             extra={
-              <Button
-                appearance="link"
+              <IconButton
+                style={{ marginInlineEnd: 12 }}
+                effect
                 icon={<PlusOutlined />}
                 onClick={(evt) => evt.stopPropagation()}
               />

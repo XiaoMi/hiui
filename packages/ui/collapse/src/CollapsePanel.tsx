@@ -5,7 +5,7 @@ import { useCollapseContext } from './context'
 import { RightOutlined, DownOutlined } from '@hi-ui/icons'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isFunction } from '@hi-ui/type-assertion'
-import { Button } from '@hi-ui/button'
+import { IconButton } from '@hi-ui/icon-button'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -110,11 +110,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <Button
+              <IconButton
                 className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}
-                appearance="link"
                 icon={<RightOutlined />}
                 disabled={disabled}
+                effect
               />
             )
           ) : null}
@@ -126,10 +126,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <Button
+              <IconButton
                 className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`)}
-                appearance="link"
+                disabled={disabled}
                 icon={<DownOutlined />}
+                effect
               />
             )
           ) : null}

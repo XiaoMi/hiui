@@ -44,6 +44,8 @@ export type FormAction<T> =
   | { type: 'SET_STATUS'; payload: any }
   | { type: 'SET_FORM'; payload: FormState<T> }
   | { type: 'SET_STATE'; payload: FormSetState<T> }
+  | { type: 'ADD_FIELD'; payload: { field: FormFieldPath; value?: any } }
+  | { type: 'DELETE_FIELD'; payload: { field: FormFieldPath } }
 
 export type FormValidateFunction<T = any> = (value: T) => string | Promise<string> | undefined
 

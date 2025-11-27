@@ -165,6 +165,7 @@ export const FloatMenu = () => {
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>('xiaomi3')
   // 定时器，用于优化浮动菜单的隐藏时体验
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const timerRef2 = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const sideMenuRef = React.useRef<HTMLDivElement>(null)
   const floatContainerRef = React.useRef<HTMLDivElement>(null)
@@ -321,26 +322,31 @@ export const FloatMenu = () => {
                 }
               }}
               onMouseEnter={(event, id, item) => {
-                // hover 到一级菜单时，如果有二级菜单，则显示浮动菜单，并且更新选中的菜单项
-                if (item.children && item.children.length > 0) {
-                  setSelectMenuId(id)
-                  setFloatContainerVisible(true)
-                }
-                // 如果没有二级菜单，并且激活的一级菜单有二级菜单，则将选中的菜单项设置为激活的一级菜单
-                else if (
-                  (data.find((item) => item.id === activeParentId)?.children?.length || 0) > 0
-                ) {
-                  setSelectMenuId(activeParentId)
-                  if (floatContainerCollapsed) {
-                    setFloatContainerVisible(false)
+                timerRef2.current = setTimeout(() => {
+                  // hover 到一级菜单时，如果有二级菜单，则显示浮动菜单，并且更新选中的菜单项
+                  if (item.children && item.children.length > 0) {
+                    setSelectMenuId(id)
+                    setFloatContainerVisible(true)
                   }
-                }
+                  // 如果没有二级菜单，并且激活的一级菜单有二级菜单，则将选中的菜单项设置为激活的一级菜单
+                  else if (
+                    (data.find((item) => item.id === activeParentId)?.children?.length || 0) > 0
+                  ) {
+                    setSelectMenuId(activeParentId)
+                    if (floatContainerCollapsed) {
+                      setFloatContainerVisible(false)
+                    }
+                  }
+                }, 200)
 
                 if (timerRef.current) {
                   clearTimeout(timerRef.current)
                 }
               }}
               onMouseLeave={(event, id, item) => {
+                if (timerRef2.current) {
+                  clearTimeout(timerRef2.current)
+                }
                 // 当鼠标离开菜单时，将当前选中的菜单项设置为父级菜单项
                 if (
                   !sideMenuRef.current?.contains(event.relatedTarget as Node) &&
@@ -360,7 +366,7 @@ export const FloatMenu = () => {
 
                 timerRef.current = setTimeout(() => {
                   setFloatContainerVisible(false)
-                }, 100)
+                }, 200)
               }}
               data={data}
             />
@@ -376,6 +382,7 @@ export const FloatMenu = () => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
                   gap: 4,
                   height: 40,
                   fontSize: 14,
@@ -442,6 +449,7 @@ export const FloatMenu = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'flex-start',
                     gap: 4,
                     fontSize: 14,
                     height: 40,
@@ -476,7 +484,9 @@ export const FloatMenu = () => {
               }
             }}
             onMouseLeave={(event) => {
-              setFloatContainerVisible(false)
+              timerRef.current = setTimeout(() => {
+                setFloatContainerVisible(false)
+              }, 200)
 
               // 当鼠标离开菜单时，将当前选中的菜单项设置为父级菜单项
               if (

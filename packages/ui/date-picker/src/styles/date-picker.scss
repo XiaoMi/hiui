@@ -144,7 +144,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &.#{$prefix}__picker--disabled {
         .#{$prefix}__picker__label {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
 
@@ -231,10 +231,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
 
         &:hover {
-          color: use-color('gray', 500) !important;
+          color: use-color('gray', 600) !important;
         }
       }
 
@@ -296,7 +296,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -568,12 +568,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--disabled {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       cursor: not-allowed;
       background: use-color('gray', 200);
 
       .#{$prefix}__lunar {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
       //&::before {
       //  content: '';
