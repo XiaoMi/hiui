@@ -126,7 +126,7 @@ export const useColWidth = ({
         if (virtual) {
           setColWidths(getVirtualWidths())
         } else {
-          // 当第一行有内容时并且没有重新设置列宽时，在去设置列宽
+          // 当第一行有内容时并且没有重新设置列宽时，再去设置列宽
           // Warning hasResetWidths.current 作用是防止某些浏览器下，下面逻辑死循环
           if (measureRowElement?.childNodes && hasResetWidths.current === false) {
             hasResetWidths.current = true
@@ -149,7 +149,9 @@ export const useColWidth = ({
   )
 
   // 控制列最小可调整宽度
-  const [minColWidths, setMinColWidths] = React.useState<number[]>([])
+  const [minColWidths, setMinColWidths] = React.useState<number[]>(
+    getGroupItemWidth(columns).minColWidths
+  )
 
   // 当列变化时同步更新 minColWidths
   React.useEffect(() => {
@@ -157,23 +159,21 @@ export const useColWidth = ({
 
     if (headerTableElement) {
       resizeObserver = new ResizeObserver(() => {
-        const resizableHandlerWidth = 4
         const calcMinColWidths = Array.from(headerTableElement.childNodes).map((th, index) => {
           const minColWidth = getGroupItemWidth(columns).minColWidths[index]
+
+          // 如果设置了最小宽度，则直接使用最小宽度，否则使用标题宽度
+          if (minColWidth !== undefined && minColWidth !== 0) {
+            return minColWidth
+          }
+
           const thPaddingLeft = parseFloat(
             window.getComputedStyle(th as Element).getPropertyValue('padding-left')
           )
-          const childNodes = Array.from(th.childNodes)
-          const childNodesWidth =
-            childNodes
-              .map((child) => (child as HTMLElement).offsetWidth)
-              .reduce((prev, next) => {
-                return prev + next
-              }, 0) +
-            thPaddingLeft * 2 +
-            resizableHandlerWidth
+          const childNode = Array.from(th.childNodes)[0]
+          const childNodeWidth = (childNode as HTMLElement).offsetWidth + thPaddingLeft * 2
 
-          return childNodesWidth > minColWidth ? minColWidth : childNodesWidth
+          return childNodeWidth
         })
 
         setMinColWidths(calcMinColWidths)
@@ -252,17 +252,17 @@ export const useColWidth = ({
   const getColgroupProps = React.useCallback(
     (column: FlattedTableColumnItemData, index: number) => {
       const width = colWidths[index] || undefined
-      const minWidth = minColWidths[index] || undefined
+      // const minWidth = minColWidths[index] || undefined
 
       return {
         style: {
           width: width,
-          minWidth: minWidth || width,
+          // minWidth: minWidth || width,
         },
         // 'data-hover-highlight': setAttrStatus(isHoveredCol(column.dataKey)),
       }
     },
-    [colWidths, minColWidths]
+    [colWidths]
   )
 
   return {
