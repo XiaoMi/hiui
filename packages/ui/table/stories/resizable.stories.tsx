@@ -31,8 +31,8 @@ export const Resizable = () => {
               title: <EllipsisTooltip>这是个很长的标题</EllipsisTooltip>,
               dataKey: 'type',
               width: 80,
-              // 注：当 title 长度过长时，可设置 minWidth 来保证列头最小宽度
-              // minWidth: 60,
+              // 注：当 title 过长且传入的是 block 元素时，需要设置 minWidth 来保证列头最小宽度
+              minWidth: 60,
             },
             {
               title: '规格',

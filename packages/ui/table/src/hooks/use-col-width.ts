@@ -173,7 +173,7 @@ export const useColWidth = ({
           const childNode = Array.from(th.childNodes)[0]
           const childNodeWidth = (childNode as HTMLElement).offsetWidth + thPaddingLeft * 2
 
-          return childNodeWidth
+          return childNodeWidth || 40
         })
 
         setMinColWidths(calcMinColWidths)
