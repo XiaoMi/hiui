@@ -169,7 +169,9 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &--hoverable {
-    transition: box-shadow 0.3s;
+    transition-property: box-shadow;
+    transition-duration: use-motion-duration('fast');
+    transition-timing-function: use-motion-bezier('normal');
 
     &:hover {
       box-shadow: use-shadow('normal');
