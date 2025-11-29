@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.17.2",
+  "version": "4.17.3",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -97,7 +97,7 @@
     "@hi-ui/stepper": "^4.1.0",
     "@hi-ui/svg-icon": "^4.0.8",
     "@hi-ui/switch": "^4.0.11",
-    "@hi-ui/table": "^4.12.2",
+    "@hi-ui/table": "^4.12.3",
     "@hi-ui/tabs": "^4.2.0",
     "@hi-ui/tag": "^4.3.0",
     "@hi-ui/textarea": "^4.1.7",

@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.17.3
+
+### Patch Changes
+
+- [#3426](https://github.com/XiaoMi/hiui/pull/3426) [`a8cc00c`](https://github.com/XiaoMi/hiui/commit/a8cc00cc9c5591309049c25a458ffcd41e292eba) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复设置 minWidth 无效的问题 (#3425)
+
+- Updated dependencies [[`a8cc00c`](https://github.com/XiaoMi/hiui/commit/a8cc00cc9c5591309049c25a458ffcd41e292eba)]:
+  - @hi-ui/table@4.12.3
+
 ## 4.17.2
 
 ### Patch Changes
