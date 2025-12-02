@@ -7,6 +7,7 @@ import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
 import { getView, parseRenderDates, genNewDates, toUtcTime, parseValue } from '../utils'
+import { getBelongWeekBoundary } from '../utils/week'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
@@ -27,7 +28,6 @@ const RangePanel = () => {
     shortcuts,
     theme,
     locale,
-    weekOffset,
     onSelect,
     onPanelChange,
     hourStep,
@@ -45,6 +45,7 @@ const RangePanel = () => {
     utcOffset,
     defaultPickerValue,
     focusIndex,
+    weekOffset,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -159,10 +160,10 @@ const RangePanel = () => {
         // 固定模式下，即使跨月选择了日期，仍然显示当前月的日期选择面板
         if (strideSelectMode === 'fixed') {
           const { start, end } = newRange
-          // 开始周周一日期
-          const startOfWeek = start.clone()!.startOf('week')
-          // 结束周周日日期
-          const endOfWeek = end!.clone()!.endOf('week')
+          // 开始周的第一天日期（考虑 weekOffset）
+          const startOfWeek = getBelongWeekBoundary(start.clone()!, weekOffset, true)
+          // 结束周的最后一天日期（考虑 weekOffset）
+          const endOfWeek = getBelongWeekBoundary(end!.clone()!, weekOffset, false)
           // 当月最后一天
           const endOfMonth = end!.clone().endOf('month')
           // 重新计算出的开始日期，逻辑：（开始周日期不能是上个月的日期）
@@ -186,7 +187,13 @@ const RangePanel = () => {
 
           onPick([rangeStart, rangeEnd], showTime)
         } else {
-          onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
+          onPick(
+            [
+              getBelongWeekBoundary(newRange.start!, weekOffset, true),
+              getBelongWeekBoundary(newRange.end!, weekOffset, false),
+            ],
+            showTime
+          )
         }
       } else {
         onPick([newRange.start, newRange.end], showTime)
