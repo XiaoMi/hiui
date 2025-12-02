@@ -8,7 +8,6 @@ $prefix: '#{$component-prefix}-page-header' !default;
   &__content {
     display: flex;
     align-items: center;
-    // justify-content: space-between;
   }
 
   &__breadcrumb {

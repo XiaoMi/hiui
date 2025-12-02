@@ -17,7 +17,7 @@ $prefix: '#{$component-prefix}-select' !default;
 
   &__indent {
     display: inline-block;
-    width: 16px;
+    width: use-height-size(4);
     height: 100%;
   }
 

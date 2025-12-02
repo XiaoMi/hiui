@@ -103,6 +103,6 @@ $prefix: '#{$component-prefix}-message' !default;
 
 .#{$prefix}-manager {
   &--placement-top {
-    padding-top: use-spacing(16);
+    padding-block-start: use-spacing(16);
   }
 }

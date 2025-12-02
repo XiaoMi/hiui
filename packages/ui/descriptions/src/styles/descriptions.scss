@@ -25,7 +25,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
 
     &:last-child {
       box-sizing: border-box;
-      border-bottom: none;
+      border-block-end: none;
     }
   }
 
@@ -37,7 +37,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       box-sizing: border-box;
       display: flex;
       align-items: var(--#{$component-prefix}-container-align-items, normal);
-      padding-right: var(--#{$component-prefix}-container-padding-right, 0);
+      padding-inline-end: var(--#{$component-prefix}-container-padding-right, 0);
     }
 
     &__label,
@@ -66,25 +66,25 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       &.#{$prefix}--size-md {
         .#{$prefix}-row > th,
         .#{$prefix}-row > td {
-          padding-bottom: use-spacing(6);
+          padding-block-end: use-spacing(6);
         }
       }
 
       &.#{$prefix}--size-sm {
         .#{$prefix}-row > th,
         .#{$prefix}-row > td {
-          padding-bottom: use-spacing(2);
+          padding-block-end: use-spacing(2);
         }
       }
     }
 
     &-vertical {
       .#{$prefix}-item__label {
-        padding-bottom: use-spacing(1);
+        padding-block-end: use-spacing(1);
       }
 
       .#{$prefix}-item__content {
-        padding-bottom: use-spacing(8);
+        padding-block-end: use-spacing(8);
       }
     }
   }
@@ -117,10 +117,10 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       .#{$prefix}-item__label,
       .#{$prefix}-item__content {
         padding: use-spacing(7);
-        border-right: use-border-size('normal') use-color('gray', 300);
+        border-inline-end: use-border-size('normal') use-color('gray', 300);
 
         &:last-child {
-          border-right: none;
+          border-inline-end: none;
         }
       }
 
@@ -132,10 +132,10 @@ $prefix: '#{$component-prefix}-descriptions' !default;
       }
 
       .#{$prefix}-row {
-        border-bottom: use-border-size('normal') use-color('gray', 300);
+        border-block-end: use-border-size('normal') use-color('gray', 300);
 
         &:last-child {
-          border-bottom: none;
+          border-block-end: none;
         }
       }
     }
@@ -143,7 +143,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
     &-unset {
       &.#{$prefix}--label-placement-right {
         .#{$prefix}-item__label {
-          padding-right: use-spacing(5);
+          padding-inline-end: use-spacing(5);
         }
       }
     }

@@ -202,8 +202,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
   &__input {
     height: 100%;
-    //width: 2 * 32px;
-    padding: 0 6px;
+    padding: 0 use-spacing(3);
     color: inherit;
     outline: none;
     border: none;
@@ -220,10 +219,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--size-sm {
-    height: 24px;
+    height: use-height-size(6);
 
     .#{$minus-class}, .#{$plus-class} {
-      width: 24px;
+      width: use-height-size(6);
     }
 
     .#{$input-class} {
@@ -232,10 +231,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--size-md {
-    height: 32px;
+    height: use-height-size(8);
 
     .#{$minus-class}, .#{$plus-class} {
-      width: 32px;
+      width: use-height-size(8);
     }
 
     .#{$input-class} {
@@ -244,10 +243,10 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--size-lg {
-    height: 40px;
+    height: use-height-size(10);
 
     .#{$minus-class}, .#{$plus-class} {
-      width: 40px;
+      width: use-height-size(10);
     }
 
     .#{$input-class} {

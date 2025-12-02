@@ -54,7 +54,7 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
 
     .#{$prefixCls}__content {
-      margin-top: use-spacing(4);
+      margin-block-start: use-spacing(4);
     }
   }
 
@@ -65,7 +65,7 @@ $prefixCls: #{$component-prefix}-loading !default;
     }
 
     .#{$prefixCls}__content {
-      margin-left: use-spacing(2);
+      margin-inline-start: use-spacing(2);
     }
   }
 
@@ -133,7 +133,7 @@ $prefixCls: #{$component-prefix}-loading !default;
       }
 
       &:first-child {
-        background: #f63;
+        background: use-color('orange', 500);
         left: 0;
         transform: translateX(0);
         animation: #{$component-prefix}-left-dot 1.5s linear infinite;

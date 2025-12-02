@@ -126,8 +126,8 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
 
   &__close {
     position: absolute;
-    right: 8px;
-    font-size: 18px;
+    inset-inline-end: use-spacing(4);
+    font-size: use-text-size('xl');
     cursor: pointer;
     background-color: transparent;
   }
@@ -142,10 +142,10 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
-    padding: calc(#{use-spacing(9)}) use-spacing(10);
+    padding: use-spacing(9) use-spacing(10);
 
     &--divided {
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
     }
 
     .#{$prefix}__close-button {
@@ -182,7 +182,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
       }
 
       .#{$prefix}__body {
-        padding-top: use-spacing(2);
+        padding-block-start: use-spacing(2);
       }
     }
 
@@ -192,7 +192,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
       }
 
       .#{$prefix}__body {
-        padding-top: use-spacing(2);
+        padding-block-start: use-spacing(2);
       }
     }
 
@@ -202,7 +202,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
       }
 
       .#{$prefix}__body {
-        padding-top: use-spacing(2);
+        padding-block-start: use-spacing(2);
       }
     }
 
@@ -212,7 +212,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
       }
 
       .#{$prefix}__body {
-        padding-top: use-spacing(2);
+        padding-block-start: use-spacing(2);
       }
     }
   }
@@ -227,7 +227,7 @@ $modal-overlay-background-color: rgba(26, 29, 38, 0.5) !default;
     position: relative;
 
     &--divided {
-      border-top: use-border-size('normal') use-color('gray', 300);
+      border-block-start: use-border-size('normal') use-color('gray', 300);
     }
   }
 }

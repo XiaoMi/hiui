@@ -11,7 +11,7 @@ $prefix: '#{$component-prefix}-card' !default;
 
   &#{&}--no-header {
     > .#{$prefix}__body {
-      padding-top: use-spacing(10);
+      padding-block-start: use-spacing(10);
     }
   }
 
@@ -106,13 +106,14 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      margin-bottom: use-spacing(8);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
+      margin-block-end: use-spacing(8);
 
       &::after {
         content: '';
         display: block;
         position: absolute;
-        bottom: 0;
+        inset-block-end: 0;
         border-bottom: use-border-size('normal') use-color('gray', 300);
       }
     }

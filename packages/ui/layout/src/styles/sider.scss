@@ -3,6 +3,7 @@
 $sider-prefix: '#{$component-prefix}-sider' !default;
 $scrollbar-prefix: '#{$component-prefix}-scrollbar' !default;
 $menu-prefix: '#{$component-prefix}-menu' !default;
+$siderPrimaryColor: #2b64ff !default;
 
 .#{$sider-prefix} {
   box-sizing: border-box;
@@ -26,10 +27,10 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
     right: -2px;
     width: 2px;
     height: 100%;
-    border-left: 2px solid transparent;
-    border-right: 2px solid transparent;
+    border-inline-start: 2px solid transparent;
+    border-inline-end: 2px solid transparent;
     cursor: col-resize;
-    background-color: #2b64ff;
+    background-color: $siderPrimaryColor;
     background-clip: content-box;
     opacity: 0;
     transition: opacity 0.2s;
@@ -52,7 +53,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
     &--vertical {
       .#{$menu-prefix}-item {
         &__inner {
-          margin-bottom: use-spacing(4) !important;
+          margin-block-end: use-spacing(4) !important;
 
           &:not(&--active):hover {
             background-color: rgba(#7c87a6, 0.15);
@@ -62,12 +63,12 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
             background-color: #fff;
 
             .#{$menu-prefix}-item__icon {
-              color: #2b64ff;
+              color: $siderPrimaryColor;
             }
 
             &-p {
               .#{$menu-prefix}-item__icon {
-                color: #2b64ff;
+                color: $siderPrimaryColor;
               }
             }
           }
@@ -77,12 +78,12 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
               background-color: use-color-static('white');
 
               .#{$menu-prefix}-item__icon {
-                color: #2b64ff;
+                color: $siderPrimaryColor;
               }
 
               &-p {
                 .#{$menu-prefix}-item__icon {
-                  color: #2b64ff;
+                  color: $siderPrimaryColor;
                 }
               }
 
@@ -105,7 +106,7 @@ $menu-prefix: '#{$component-prefix}-menu' !default;
       .#{$menu-prefix}-submenu {
         .#{$menu-prefix}-item {
           &__inner {
-            margin-bottom: 0 !important;
+            margin-block-end: 0 !important;
           }
         }
       }

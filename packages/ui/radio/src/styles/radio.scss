@@ -71,21 +71,21 @@ $label-class: '#{$prefix}__label' !default;
 
         position: relative;
         box-sizing: border-box;
-        width: 16px;
-        height: 16px;
-        border: 1px solid use-color('gray', 400);
+        width: use-height-size(4);
+        height: use-height-size(4);
+        border: use-border-size('normal') use-color('gray', 400);
         border-radius: use-border-radius('full');
         transition: all use-motion-duration('normal');
         flex: none;
 
         &::after {
           position: absolute;
-          top: -1px;
-          left: -1px;
+          inset-block-start: -1px;
+          inset-inline-start: -1px;
           box-sizing: border-box;
           display: inline-block;
-          width: 16px;
-          height: 16px;
+          width: use-height-size(4);
+          height: use-height-size(4);
           content: '';
           background: use-color-mode('primary');
           border-radius: use-border-radius('full');
@@ -194,9 +194,9 @@ $label-class: '#{$prefix}__label' !default;
         content: '';
         background: use-color('gray', 300);
         width: 1px;
-        left: 0;
-        top: 8px;
-        bottom: 8px;
+        inset-inline-start: 0;
+        inset-block-start: use-spacing(4);
+        inset-block-end: use-spacing(4);
         position: absolute;
         z-index: use-zindex('absolute');
       }
@@ -218,9 +218,9 @@ $label-class: '#{$prefix}__label' !default;
         content: '';
         background: use-color('gray', 300);
         height: 1px;
-        left: 8px;
-        right: 8px;
-        top: 0;
+        inset-inline-start: use-spacing(4);
+        inset-inline-end: use-spacing(4);
+        inset-block-start: 0;
         position: absolute;
         z-index: use-zindex('absolute');
       }

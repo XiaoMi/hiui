@@ -23,7 +23,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
   &--showMenu {
     .#{$sidebar-prefix}-menu-wrapper {
-      border-right: 1px solid use-color('gray', 400);
+      border-inline-end: use-border-size('normal') use-color('gray', 400);
     }
 
     .#{$sidebar-prefix}-toggle {
@@ -55,7 +55,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   height: 100%;
   padding: use-spacing(4) 0;
   overflow: auto;
-  border-right: 1px solid use-color('gray', 400);
+  border-inline-end: use-border-size('normal') use-color('gray', 400);
   background-color: #fff;
 
   &-list {
@@ -104,7 +104,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
     &__title {
       font-size: use-text-size('sm');
-      line-height: 20px;
+      line-height: use-text-lineheight('sm');
       color: use-color('gray', 600);
     }
   }
@@ -112,7 +112,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
 
 .#{$sidebar-prefix}-menu-wrapper {
   width: 0;
-  border-right: none;
+  border-inline-end: none;
   overflow: hidden;
   transition: width 0.3s;
 
@@ -120,7 +120,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
     &-item {
       .#{$prefix}-item__inner {
         height: use-height-size(8);
-        margin-bottom: 0;
+        margin-block-end: 0;
         padding: 0 use-spacing(4);
 
         &--hasIcon + div {
@@ -188,7 +188,7 @@ $sidebar-prefix: '#{$component-prefix}-sidebar' !default;
   transform: translateY(-50%);
   border-start-end-radius: 16px 8px;
   border-end-end-radius: 16px 8px;
-  border: 1px solid use-color('gray', 400);
+  border: use-border-size('normal') use-color('gray', 400);
   border-left: none;
   cursor: pointer;
   color: use-color('gray', 700);

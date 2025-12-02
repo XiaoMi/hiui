@@ -19,11 +19,11 @@ $disabled-color: use-color('gray', 500) !default;
   flex-wrap: wrap;
 
   &__group:not(:last-of-type) {
-    margin-right: use-spacing(18);
+    margin-inline-end: use-spacing(18);
   }
 
   .#{$prefix}-group-item {
-    height: 40px;
+    height: use-height-size(10);
     margin: 0;
     display: flex;
     align-items: center;
@@ -32,7 +32,7 @@ $disabled-color: use-color('gray', 500) !default;
   }
 
   .#{$prefix}-item {
-    height: 40px;
+    height: use-height-size(10);
     margin: 0;
     border-radius: use-border-radius('normal');
     display: flex;
@@ -302,8 +302,8 @@ $disabled-color: use-color('gray', 500) !default;
       overflow-x: hidden;
 
       &.#{$prefix}--show-title-on-mini {
-        padding-left: use-spacing(2);
-        padding-right: use-spacing(2);
+        padding-inline-start: use-spacing(2);
+        padding-inline-end: use-spacing(2);
       }
     }
 
@@ -318,7 +318,7 @@ $disabled-color: use-color('gray', 500) !default;
           > .#{$prefix}-item {
             &:last-child {
               .#{$prefix}-item__inner {
-                margin-bottom: 0;
+                margin-block-end: 0;
               }
             }
           }
@@ -397,22 +397,22 @@ $disabled-color: use-color('gray', 500) !default;
           box-sizing: border-box;
           width: 52px;
           height: 48px;
-          padding: 6px 6px 0;
+          padding: use-spacing(3) use-spacing(3) 0;
 
           .#{$prefix}-item__icon {
             margin-inline-end: 0;
-            margin-block-end: 2px;
+            margin-block-end: use-spacing(1);
             display: inline-flex;
 
             svg[class^='#{$component-prefix}-icon'] {
-              font-size: 18px;
+              font-size: use-text-size('xl');
             }
           }
 
           .#{$prefix}-item__content {
             transform: scale(0.5);
             width: 200%;
-            font-size: 20px;
+            font-size: calc(#{use-text-size('xl')} + 2px);
             text-align: center;
             text-indent: 0;
           }
@@ -424,7 +424,7 @@ $disabled-color: use-color('gray', 500) !default;
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(10);
-          margin-bottom: use-spacing(4);
+          margin-block-end: use-spacing(4);
         }
       }
     }
@@ -433,7 +433,7 @@ $disabled-color: use-color('gray', 500) !default;
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(9);
-          margin-bottom: use-spacing(2);
+          margin-block-end: use-spacing(2);
         }
       }
     }
@@ -442,7 +442,7 @@ $disabled-color: use-color('gray', 500) !default;
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(8);
-          margin-bottom: use-spacing(1);
+          margin-block-end: use-spacing(1);
         }
       }
     }

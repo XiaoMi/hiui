@@ -13,8 +13,8 @@ $prefix: '#{$component-prefix}-result' !default;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: use-spacing(1);
-    font-size: 56px;
+    margin-block-end: use-spacing(1);
+    font-size: use-height-size(14);
 
     img {
       width: 100%;
@@ -24,7 +24,7 @@ $prefix: '#{$component-prefix}-result' !default;
   }
 
   &__title {
-    margin-top: use-spacing(6);
+    margin-block-start: use-spacing(6);
     font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
     color: use-color('gray', 800);
@@ -32,7 +32,7 @@ $prefix: '#{$component-prefix}-result' !default;
   }
 
   &__content {
-    margin-top: use-spacing(2);
+    margin-block-start: use-spacing(2);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
     color: use-color('gray', 700);
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-result' !default;
   &__children {
     width: 100%;
     text-align: center;
-    margin-top: use-spacing(4);
+    margin-block-start: use-spacing(4);
   }
 
   &--type-info {

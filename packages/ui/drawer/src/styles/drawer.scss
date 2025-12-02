@@ -240,22 +240,24 @@ $prefix: '#{$component-prefix}-drawer' !default;
     box-sizing: border-box;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
-    line-height: use-text-lineheight('sm');
     color: use-color('gray', 800);
     padding: use-spacing(9) use-spacing(10);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid use-color('gray', 300);
+    border-block-end: use-border-size('normal') use-color('gray', 300);
 
     .#{$prefix}--size-sm & {
-      padding: use-spacing(7) use-spacing(10);
+      padding: calc(#{use-spacing(7)} - 1px) use-spacing(8);
+      font-size: use-text-size('normal');
+      line-height: use-text-lineheight('normal');
     }
 
     .#{$prefix}--size-md & {
-      padding: use-spacing(10);
+      padding: use-spacing(9) use-spacing(10);
+      font-size: use-text-size('lg');
+      line-height: use-text-lineheight('lg');
     }
   }
 
@@ -277,7 +279,7 @@ $prefix: '#{$component-prefix}-drawer' !default;
     position: relative;
 
     &--divided {
-      border-top: use-border-size('normal') use-color('gray', 300);
+      border-block-start: use-border-size('normal') use-color('gray', 300);
     }
 
     // &::before {
