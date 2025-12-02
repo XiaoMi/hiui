@@ -1,2 +1,2 @@
 export * from './default'
-export * from './colourful'
+export * from './colorful'
