@@ -24,8 +24,7 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
 
   &--vertical {
     left: 50%;
-    transform: translateX(-50%);
-    transform: rotate(90deg);
+    transform: translateX(-50%) rotate(90deg);
   }
 
   &::before {

@@ -206,10 +206,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       #{$this}--disabled & {
         cursor: not-allowed;
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
 
         &:hover {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }
@@ -550,12 +550,12 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
         .#{$tag-input-mock-prefix}__label,
         .#{$tag-input-mock-prefix}__value,
         .#{$tag-input-mock-prefix}__suffix {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
 
         .#{$tag-input-mock-prefix}__tag--total {
           background-color: use-color('gray', 200);
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }
@@ -564,42 +564,42 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-filled {
       &.#{$tag-input-mock-prefix}--disabled {
         background-color: use-color('gray', 100);
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color('gray', 200);
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
 
           &--total {
             background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
+            color: use-color('gray', 600);
           }
         }
 
         .#{$tag-input-mock-prefix}__placeholder,
         .#{$tag-input-mock-prefix}__suffix {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }
 
     &-unset {
       &.#{$tag-input-mock-prefix}--disabled {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color('gray', 200);
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
 
           &--total {
             background-color: use-color('gray', 200);
-            color: use-color('gray', 500);
+            color: use-color('gray', 600);
           }
         }
 
         .#{$tag-input-mock-prefix}__placeholder,
         .#{$tag-input-mock-prefix}__suffix {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
     }

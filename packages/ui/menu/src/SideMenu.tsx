@@ -85,7 +85,13 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                 >
                   <div className={cx(`${prefixCls}-item__icon`)}>{icon}</div>
                   <div className={cx(`${prefixCls}-item__title`)}>
-                    <EllipsisTooltip>{title as string}</EllipsisTooltip>
+                    <EllipsisTooltip
+                      tooltipProps={{
+                        placement: 'right',
+                      }}
+                    >
+                      {title as string}
+                    </EllipsisTooltip>
                   </div>
                 </div>
               </div>

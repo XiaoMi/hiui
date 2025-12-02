@@ -10,7 +10,7 @@ export const defaultExpandIcon = (
 )
 export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16 }} />
 
-export const defaultLoadingIcon = <Spinner />
+export const defaultLoadingIcon = <Spinner size="sm" />
 
 export const defaultActionIcon = (
   <svg

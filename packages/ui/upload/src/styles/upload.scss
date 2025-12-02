@@ -53,6 +53,19 @@ $upload-state-height: 2px !default;
 
   &__error-btn {
     color: use-color-mode('error');
+
+    &::before {
+      content: '';
+      display: block;
+      width: calc(#{use-text-size('lg')} - 4px);
+      height: calc(#{use-text-size('lg')} - 4px);
+      background-color: use-color-static('white');
+      border-radius: 50%;
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      z-index: -1;
+    }
   }
 
   &___del-btn {
@@ -426,7 +439,6 @@ $upload-state-height: 2px !default;
       .#{$prefix}__item__upload-text {
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
-        color: use-color('gray', 800);
       }
 
       .#{$prefix}__action-group {
@@ -442,6 +454,7 @@ $upload-state-height: 2px !default;
       .#{$prefix}__delete-btn,
       .#{$prefix}__error-btn {
         position: absolute;
+        z-index: 1;
       }
 
       .#{$prefix}__delete-btn {
