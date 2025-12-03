@@ -93,7 +93,12 @@ export const SearchDropdown: React.FC<SearchDropdownProps> = ({
   })
 
   return (
-    <Popper {...popper}>
+    <Popper
+      classNames={{
+        container: `${prefixCls}__dropdown-container`,
+      }}
+      {...popper}
+    >
       <Loading visible={loading}>
         <div className={cx(`${prefixCls}__dropdown`, className)}>{renderItem(data)}</div>
       </Loading>

@@ -11,6 +11,28 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="card-size__wrap">
+        <h2>紧凑</h2>
+        <Card
+          title="标题"
+          size="sm"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
+          <div
+            style={{
+              height: 174,
+              backgroundColor: '#F5F8FC',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            此处展示卡片内容
+          </div>
+        </Card>
         <h2>常规</h2>
         <Card
           title="标题"
@@ -34,10 +56,10 @@ export const Size = () => {
           </div>
         </Card>
         <br />
-        <h2>紧凑</h2>
+        <h2>大尺寸</h2>
         <Card
           title="标题"
-          size="sm"
+          size="lg"
           extra={
             <Button type="primary" appearance="link">
               链接

@@ -46,7 +46,7 @@ export const Group = () => {
         <Avatar.Group
           maxCount={3}
           moreButton={{
-            text: <EllipsisOutlined />,
+            text: <EllipsisOutlined size={16} />,
             // style: { backgroundColor: '#74a2ff', color: '#fff' },
           }}
         >

@@ -4,6 +4,6 @@ import { Spinner } from '@hi-ui/spinner'
 
 export const defaultSuffixIcon = <DownOutlined />
 
-export const defaultLeafIcon = <span style={{ display: 'inline-block', width: 16 }} />
+export const defaultLeafIcon = null
 
-export const defaultLoadingIcon = <Spinner />
+export const defaultLoadingIcon = <Spinner size="sm" />
