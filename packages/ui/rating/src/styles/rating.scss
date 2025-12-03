@@ -9,12 +9,12 @@ $prefix: '#{$component-prefix}-rating' !default;
   margin: 0;
   padding: 0;
   display: inline-flex;
-  gap: 6px;
+  gap: use-spacing(3);
   width: fit-content;
   align-items: center;
-  height: 24px;
-  line-height: 24px;
-  font-size: 24px;
+  height: use-height-size(6);
+  line-height: use-height-size(6);
+  font-size: use-height-size(6);
   color: use-color('yellow', 500);
   fill: use-color('yellow', 500);
 
@@ -70,8 +70,8 @@ $prefix: '#{$component-prefix}-rating' !default;
       &--left {
         width: 50%;
         position: absolute;
-        top: 0;
-        left: 0;
+        inset-block-start: 0;
+        inset-inline-start: 0;
         z-index: 10;
         overflow: hidden;
       }
@@ -85,8 +85,8 @@ $prefix: '#{$component-prefix}-rating' !default;
       &--top {
         height: 50%;
         position: absolute;
-        top: 0;
-        left: 0;
+        inset-block-start: 0;
+        inset-inline-start: 0;
         z-index: 10;
         overflow: hidden;
       }
@@ -107,10 +107,11 @@ $prefix: '#{$component-prefix}-rating' !default;
   }
 
   &__desc {
-    margin-left: use-spacing(7);
+    margin-inline-start: use-spacing(7);
     display: inline-block;
-    height: 24px;
-    line-height: use-text-lineheight('normal');
+    vertical-align: middle;
+    height: use-height-size(6);
+    line-height: use-height-size(6);
     font-size: use-text-size('normal');
   }
 }

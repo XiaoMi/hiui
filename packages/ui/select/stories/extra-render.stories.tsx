@@ -6,16 +6,13 @@ import Select from '../src'
  */
 export const ExtraRender = () => {
   const [data] = useState([
-    { title: '电视', id: '3', disabled: false },
-    { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: false },
-    {
-      title: '生活周边超长文案展示超长文案展示',
-      id: '5',
-    },
-    { title: '办公', id: '6' },
-    { title: '生活周边7', id: '7' },
-    { title: '办公8', id: '8' },
+    { title: '手机', id: 'shouji' },
+    { title: '电脑', id: 'diannao' },
+    { title: '电视', id: 'dianshi' },
+    { title: '洗衣机', id: 'xiyiji' },
+    { title: '冰箱', id: 'bingxiang' },
+    { title: '空调', id: 'kongtiao' },
+    { title: '汽车', id: 'qiche' },
   ])
 
   return (

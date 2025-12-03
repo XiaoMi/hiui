@@ -19,6 +19,7 @@ import Layout, {
   FloatMenuContainer,
   AppListPopover,
   ProfilePopover,
+  ActionItem,
 } from '../src'
 import PageHeader from '@hi-ui/page-header'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
@@ -286,6 +287,7 @@ export const FloatMenu = () => {
                 <IconButton
                   style={!collapsed ? { marginInlineStart: 'auto' } : { margin: '16px auto 0' }}
                   icon={<MenuOutlined size={18} />}
+                  effectColor="rgba(124, 135, 166, 0.15)"
                   effect
                   onClick={() => {
                     setAppListPopoverVisible(!appListPopoverVisible)
@@ -374,34 +376,13 @@ export const FloatMenu = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                margin: '12px 16px',
+                margin: '12px 8px',
                 marginBlockStart: 'auto',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: collapsed ? 'center' : 'flex-start',
-                  gap: 4,
-                  height: 40,
-                  fontSize: 14,
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: 24,
-                    height: 24,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <DetailsFilled size={16} color="#7c87a6" />
-                </div>
-                {collapsed ? null : <span>帮助反馈</span>}
-              </div>
+              <ActionItem icon={<DetailsFilled />} mini={collapsed}>
+                使用手册
+              </ActionItem>
               <ProfilePopover
                 visible={profileVisible}
                 header={
@@ -449,10 +430,10 @@ export const FloatMenu = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: collapsed ? 'center' : 'flex-start',
                     gap: 4,
-                    fontSize: 14,
                     height: 40,
+                    marginLeft: collapsed ? 12 : 10,
+                    fontSize: 14,
                     cursor: 'pointer',
                   }}
                   onClick={() => setProfileVisible(!profileVisible)}

@@ -21,10 +21,9 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
   }
 
   &--mini {
-    justify-content: center;
     width: 32px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: use-spacing(7);
+    justify-content: center;
   }
 
   &__placeholder {

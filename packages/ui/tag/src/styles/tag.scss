@@ -3,43 +3,53 @@
 $solid-color-map: (
   'primary': (
     'normal': use-color-mode('primary'),
-    'hover': use-color-mode('primary', 400)
+    'hover': use-color-mode('primary', 400),
+    'divider': use-color-mode('primary', 300)
   ),
   'warning': (
     'normal':use-color-mode('warning'),
-    'hover':use-color-mode('warning', 400)
+    'hover':use-color-mode('warning', 400),
+    'divider': use-color-mode('warning', 300)
   ),
   'success': (
     'normal':use-color-mode('success'),
-    'hover':use-color-mode('success', 400)
+    'hover':use-color-mode('success', 400),
+    'divider': use-color-mode('success', 300)
   ),
   'danger': (
     'normal': use-color-mode('danger'),
-    'hover': use-color-mode('danger', 400)
+    'hover': use-color-mode('danger', 400),
+    'divider': use-color-mode('danger', 300)
   ),
   'default': (
     'normal': use-color('gray', 600),
-    'hover': use-color('gray', 400)
+    'hover': use-color('gray', 400),
+    'divider': use-color('gray', 300)
   ),
   'yellow': (
     'normal': use-color('yellow', 500),
-    'hover': use-color('yellow', 300)
+    'hover': use-color('yellow', 400),
+    'divider': use-color('yellow', 300)
   ),
   'ultramarine': (
     'normal': use-color('ultramarine', 500),
-    'hover': use-color('ultramarine', 300)
+    'hover': use-color('ultramarine', 400),
+    'divider': use-color('ultramarine', 300)
   ),
   'skyblue': (
     'normal': use-color('skyblue', 500),
-    'hover': use-color('skyblue', 300)
+    'hover': use-color('skyblue', 400),
+    'divider': use-color('skyblue', 300)
   ),
   'purple': (
     'normal': use-color('purple', 500),
-    'hover': use-color('purple', 300)
+    'hover': use-color('purple', 400),
+    'divider': use-color('purple', 300)
   ),
   'rosered': (
     'normal': use-color('rosered', 500),
-    'hover': use-color('rosered', 300)
+    'hover': use-color('rosered', 400),
+    'divider': use-color('rosered', 300)
   )
 ) !default;
 $line-color-map: (
@@ -109,7 +119,8 @@ $filled-color-map: (
   'primary': (
     'color': use-color-mode('primary', 800),
     'background':use-color-mode('primary', 200),
-    'hover-background':use-color-mode('primary', 100)
+    'hover-background':use-color-mode('primary', 100),
+    'divider': use-color-mode('primary', 50)
   ),
   'warning': (
     'color':use-color-mode('warning', 800),
@@ -182,6 +193,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
 
         &.#{$prefix}--hover-enable:hover {
           background: map-get($value, 'hover');
+        }
+
+        .#{$prefix}__close-button {
+          border-color: map-get($value, 'divider');
         }
       }
     }

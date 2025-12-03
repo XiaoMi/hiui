@@ -177,7 +177,8 @@ $prefix: '#{$component-prefix}-tree' !default;
       background-color: use-color-mode('primary', 50);
     }
 
-    #{$this}__title {
+    #{$this}__title,
+    #{$this}__switcher {
       color: use-color-mode('primary');
     }
   }

@@ -87,7 +87,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
       &.disabled {
         background-color: use-color('gray', 100);
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
   }
@@ -155,7 +155,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
       &.disabled {
         background-color: use-color('gray', 200);
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
   }

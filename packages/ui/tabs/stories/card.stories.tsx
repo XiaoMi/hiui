@@ -9,7 +9,7 @@ export const Card = () => {
   return (
     <>
       <h1>Card</h1>
-      <div className="tabs-card__wrap" style={{ padding: 20, background: '#f5f7fa' }}>
+      <div className="tabs-card__wrap" style={{ padding: 20, background: '#f8fafc' }}>
         <Tabs type="card" placement="vertical" style={{ marginBottom: 40 }}>
           <TabPane tabId="1" tabTitle="Tab 1">
             <div
