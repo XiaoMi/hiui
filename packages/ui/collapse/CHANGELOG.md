@@ -1,5 +1,14 @@
 # @hi-ui/collapse
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/icon-button@5.0.0-canary.7
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

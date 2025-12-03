@@ -1,5 +1,14 @@
 # @hi-ui/number-input
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/counter@5.0.0-canary.6
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

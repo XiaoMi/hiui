@@ -1,5 +1,16 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/menu@5.0.0-canary.15
+  - @hi-ui/popover@5.0.0-canary.9
+  - @hi-ui/popper@5.0.0-canary.11
+
 ## 5.0.0-canary.12
 
 ### Patch Changes

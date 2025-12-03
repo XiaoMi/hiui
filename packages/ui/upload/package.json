@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/upload",
-  "version": "5.0.0-canary.10",
+  "version": "5.0.0-canary.11",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -48,7 +48,7 @@
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/file-select": "^5.0.0-canary.4",
-    "@hi-ui/icons": "^5.0.0-canary.6",
+    "@hi-ui/icons": "^5.0.0-canary.7",
     "@hi-ui/message": "^5.0.0-canary.10",
     "@hi-ui/modal": "^5.0.0-canary.11",
     "@hi-ui/preview": "^5.0.0-canary.8",

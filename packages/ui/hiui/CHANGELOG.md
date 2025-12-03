@@ -1,5 +1,47 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.40
+
+### Patch Changes
+
+- 627cf6a30: refactor(empty-state): deprecate COLOURFUL components (5.0)
+- 58db39510: style: fix ui bug (5.0)
+- 5897e08dc: fix(date-picker): 修复 weekOffset 设置为 3、4、5、6 时显示 2 周选中的问题 (5.0)
+- Updated dependencies [627cf6a30]
+- Updated dependencies [58db39510]
+- Updated dependencies [5897e08dc]
+  - @hi-ui/empty-state@5.0.0-canary.7
+  - @hi-ui/back-top@5.0.0-canary.7
+  - @hi-ui/card@5.0.0-canary.7
+  - @hi-ui/carousel@5.0.0-canary.6
+  - @hi-ui/cascader@5.0.0-canary.20
+  - @hi-ui/check-cascader@5.0.0-canary.22
+  - @hi-ui/check-select@5.0.0-canary.17
+  - @hi-ui/check-tree-select@5.0.0-canary.17
+  - @hi-ui/collapse@5.0.0-canary.8
+  - @hi-ui/counter@5.0.0-canary.6
+  - @hi-ui/form@5.0.0-canary.11
+  - @hi-ui/input@5.0.0-canary.16
+  - @hi-ui/layout@5.0.0-canary.13
+  - @hi-ui/menu@5.0.0-canary.15
+  - @hi-ui/number-input@5.0.0-canary.14
+  - @hi-ui/page-header@5.0.0-canary.5
+  - @hi-ui/pop-confirm@5.0.0-canary.10
+  - @hi-ui/popover@5.0.0-canary.9
+  - @hi-ui/radio@5.0.0-canary.7
+  - @hi-ui/rating@5.0.0-canary.6
+  - @hi-ui/search@5.0.0-canary.7
+  - @hi-ui/stepper@5.0.0-canary.8
+  - @hi-ui/table@5.0.0-canary.22
+  - @hi-ui/tabs@5.0.0-canary.13
+  - @hi-ui/tag@5.0.0-canary.11
+  - @hi-ui/textarea@5.0.0-canary.12
+  - @hi-ui/time-picker@5.0.0-canary.16
+  - @hi-ui/transfer@5.0.0-canary.8
+  - @hi-ui/tree@5.0.0-canary.8
+  - @hi-ui/upload@5.0.0-canary.11
+  - @hi-ui/date-picker@5.0.0-canary.25
+
 ## 5.0.0-canary.39
 
 ### Minor Changes

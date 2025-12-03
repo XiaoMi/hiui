@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

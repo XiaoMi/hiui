@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.25
+
+### Patch Changes
+
+- 5897e08dc: fix(date-picker): 修复 weekOffset 设置为 3、4、5、6 时显示 2 周选中的问题 (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/popper@5.0.0-canary.11
+  - @hi-ui/time-picker@5.0.0-canary.16
+
 ## 5.0.0-canary.24
 
 ### Patch Changes

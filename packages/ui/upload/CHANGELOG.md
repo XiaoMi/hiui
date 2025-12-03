@@ -1,5 +1,13 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

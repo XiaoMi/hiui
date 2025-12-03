@@ -1,5 +1,17 @@
 # @hi-ui/check-select
 
+## 5.0.0-canary.17
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/input@5.0.0-canary.16
+  - @hi-ui/popper@5.0.0-canary.11
+  - @hi-ui/tag-input@5.0.0-canary.19
+  - @hi-ui/virtual-list@5.0.0-canary.6
+
 ## 5.0.0-canary.16
 
 ### Patch Changes

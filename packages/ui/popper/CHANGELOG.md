@@ -1,5 +1,11 @@
 # @hi-ui/popper
 
+## 5.0.0-canary.11
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

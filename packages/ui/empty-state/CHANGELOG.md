@@ -1,5 +1,11 @@
 # @hi-ui/empty-state
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 627cf6a30: refactor(empty-state): deprecate COLOURFUL components (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

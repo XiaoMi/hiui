@@ -1,5 +1,15 @@
 # @hi-ui/search
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- 58db39510: style: fix ui bug (5.0)
+- Updated dependencies [58db39510]
+  - @hi-ui/icons@5.0.0-canary.7
+  - @hi-ui/input@5.0.0-canary.16
+  - @hi-ui/popper@5.0.0-canary.11
+
 ## 5.0.0-canary.6
 
 ### Patch Changes
