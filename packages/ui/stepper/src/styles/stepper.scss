@@ -24,7 +24,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__dot {
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 600);
         width: 8px;
         height: 8px;
         // 24 * 24 size
@@ -34,7 +34,7 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
 
       &__icon {
-        color: use-color('gray', 700);
+        color: use-color('gray', 600);
         font-size: 24px;
         line-height: 24px;
       }

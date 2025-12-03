@@ -109,7 +109,6 @@ $prefix: '#{$component-prefix}-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 800);
     font-size: inherit;
     text-align: center;
   }

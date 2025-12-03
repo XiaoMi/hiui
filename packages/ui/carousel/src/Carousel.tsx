@@ -187,7 +187,9 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
             prefixCls={prefixCls}
             inAnimation={isInAnimation}
             direction={
-              dotPlacement === 'top' || dotPlacement === 'bottom' ? 'horizontal' : 'vertical'
+              dotPlacement === 'top' || dotPlacement === 'bottom' || dotPlacement === 'outer'
+                ? 'horizontal'
+                : 'vertical'
             }
           />
         )}

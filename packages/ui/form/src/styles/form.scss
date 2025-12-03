@@ -79,6 +79,18 @@ $prefix: '#{$component-prefix}-form' !default;
       }
 
       .#{$prefix}-label--required > .#{$prefix}-label__content > & {
+        &::after {
+          margin-inline-start: use-spacing(2);
+          content: '*';
+          color: use-color-mode('error');
+        }
+      }
+
+      .#{$prefix}-label--placement-right.#{$prefix}-label--required > .#{$prefix}-label__content > & {
+        &::after {
+          display: none;
+        }
+
         &::before {
           margin-inline-end: use-spacing(2);
           content: '*';

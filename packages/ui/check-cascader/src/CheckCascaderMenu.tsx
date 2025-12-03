@@ -129,7 +129,13 @@ const MenuItem = forwardRef<
   )
 
   return (
-    <li ref={ref} role="menu-item" className={`${prefixCls}-item`} key={option.id}>
+    <li
+      ref={ref}
+      role="menu-item"
+      className={`${prefixCls}-item`}
+      key={option.id}
+      title={typeof option.title === 'string' ? option.title : undefined}
+    >
       <div
         className={optionCls}
         onClick={(evt) => {

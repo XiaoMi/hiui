@@ -76,13 +76,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
   &__limit {
     word-wrap: break-word;
-    line-height: 2;
     color: use-color('gray', 800);
     font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
     display: flex;
-    align-items: start;
+    align-items: center;
     box-sizing: border-box;
-    padding: use-spacing(4) use-spacing(6) 0;
+    padding: 0 use-spacing(6) use-spacing(4);
     position: sticky;
     top: 0;
     z-index: 1;
@@ -92,8 +92,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
       &[class^='#{$component-prefix}-icon'] {
         margin-inline-end: 8px;
         color: rgb(212, 161, 69);
-        font-size: 16px;
-        height: 28px;
+        font-size: use-text-size('lg');
       }
     }
   }

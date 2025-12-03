@@ -19,22 +19,71 @@ $prefix: '#{$component-prefix}-card' !default;
     &-sm {
       .#{$prefix} {
         &__header {
-          padding: use-spacing(7) use-spacing(10);
+          padding: calc(#{use-spacing(5)} - 1px) use-spacing(8);
           font-size: use-text-size('normal');
-          line-height: use-text-lineheight('sm');
-        }
+          line-height: use-text-lineheight('normal');
 
-        &__title {
-          line-height: use-text-lineheight('sm');
-          font-size: use-text-size('normal');
-        }
-
-        &__extra {
-          font-size: use-text-size('sm');
+          &--divider::after {
+            left: use-spacing(8);
+            right: use-spacing(8);
+          }
         }
 
         &__subhead {
           font-size: use-text-size('sm');
+          line-height: use-text-lineheight('sm');
+        }
+
+        &__body {
+          padding: 0 use-spacing(8) use-spacing(8);
+        }
+      }
+    }
+
+    &-md {
+      .#{$prefix} {
+        &__header {
+          padding: calc(#{use-spacing(7)} - 1px) use-spacing(10);
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+
+          &--divider::after {
+            left: use-spacing(10);
+            right: use-spacing(10);
+          }
+        }
+
+        &__subhead {
+          font-size: use-text-size('sm');
+          line-height: use-text-lineheight('sm');
+        }
+
+        &__body {
+          padding: 0 use-spacing(10) use-spacing(8);
+        }
+      }
+    }
+
+    &-lg {
+      .#{$prefix} {
+        &__header {
+          padding: use-spacing(9) use-spacing(10);
+          font-size: use-text-size('lg');
+          line-height: use-text-lineheight('lg');
+
+          &--divider::after {
+            left: use-spacing(10);
+            right: use-spacing(10);
+          }
+        }
+
+        &__subhead {
+          font-size: use-text-size('normal');
+          line-height: use-text-lineheight('normal');
+        }
+
+        &__body {
+          padding: 0 use-spacing(10) use-spacing(10);
         }
       }
     }
@@ -50,8 +99,6 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__header {
-    padding: use-spacing(10) use-spacing(10) 0;
-    line-height: use-text-lineheight('lg');
     display: flex;
     flex-direction: column;
     position: relative;
@@ -59,8 +106,15 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      border-bottom: use-border-size('normal') use-color('gray', 300);
       margin-bottom: use-spacing(8);
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        border-bottom: use-border-size('normal') use-color('gray', 300);
+      }
     }
   }
 
@@ -71,9 +125,6 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__subhead {
-    font-size: use-text-size('normal');
-    font-weight: use-text-weight('normal');
-    line-height: use-text-lineheight('sm');
     color: use-color('gray', 700);
   }
 
@@ -82,8 +133,8 @@ $prefix: '#{$component-prefix}-card' !default;
   }
 
   &__body {
-    padding: 0 use-spacing(10) use-spacing(10) use-spacing(10);
     font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
     color: use-color('gray', 700);
     position: relative;
     overflow-wrap: break-word;
@@ -105,12 +156,10 @@ $prefix: '#{$component-prefix}-card' !default;
     text-overflow: ellipsis;
     flex: 1;
     color: use-color('gray', 800);
-    font-size: use-text-size('lg');
     font-weight: use-text-weight('medium');
   }
 
   &__extra {
-    font-size: use-text-size('normal');
     color: use-color('gray', 600);
     font-weight: use-text-weight('normal');
   }

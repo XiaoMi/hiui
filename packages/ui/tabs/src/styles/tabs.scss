@@ -74,7 +74,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--type-card {
       .#{$prefix}__item {
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 100);
         margin: 0;
         padding: use-spacing(5) use-spacing(8);
         border-radius: 0;
@@ -355,7 +355,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
         .#{$prefix}__item {
           margin: 0;
           padding: use-spacing(5) use-spacing(8);
-          background-color: use-color('gray', 300);
+          background-color: use-color('gray', 100);
           border-radius: 0;
           transition: all 0.3s;
           line-height: use-text-lineheight('sm');

@@ -13,10 +13,10 @@ export const Virtual = () => {
       title: `item-${index}`,
       children: Array.from({ length: 100 }, (_, index2) => ({
         id: `item-${index}-${index2}`,
-        title: `item-${index}-${index2}`,
+        title: `item-${index}-${index2}asdfasdfasdfadsfasd`,
         children: Array.from({ length: 1000 }, (_, index3) => ({
           id: `item-${index}-${index2}-${index3}`,
-          title: `item-${index}-${index2}-${index3}`,
+          title: `item-${index}-${index2}-${index3}啊都是法师打发斯蒂芬`,
         })),
       })),
     })),

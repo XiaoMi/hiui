@@ -260,12 +260,12 @@ $prefix: '#{$component-prefix}-textarea' !default;
     &-filled {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
           -webkit-text-fill-color: use-color('gray', 500);
           background-color: use-color('gray', 100);
 
           .#{$prefix}__text {
-            color: use-color('gray', 500);
+            color: use-color('gray', 600);
           }
         }
       }
@@ -275,12 +275,12 @@ $prefix: '#{$component-prefix}-textarea' !default;
     &-underline {
       .#{$prefix}__inner {
         &.#{$prefix}__inner--disabled {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
           -webkit-text-fill-color: use-color('gray', 500);
           background-color: transparent;
 
           .#{$prefix}__text {
-            color: use-color('gray', 500);
+            color: use-color('gray', 600);
           }
         }
       }

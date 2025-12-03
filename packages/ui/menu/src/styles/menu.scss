@@ -86,10 +86,18 @@ $disabled-color: use-color('gray', 500) !default;
       &--active {
         color: use-color-mode('primary');
         background-color: use-color-mode('primary', 50);
+
+        .#{$prefix}-item__icon {
+          color: use-color-mode('primary');
+        }
       }
 
       &--active-p {
         color: use-color-mode('primary');
+
+        .#{$prefix}-item__icon {
+          color: use-color-mode('primary');
+        }
       }
 
       &--expanded {
@@ -160,7 +168,6 @@ $disabled-color: use-color('gray', 500) !default;
     }
 
     &__arrow {
-      color: use-color('gray', 600);
       font-size: use-text-size('lg');
     }
 
@@ -320,13 +327,11 @@ $disabled-color: use-color('gray', 500) !default;
     }
 
     .#{$prefix}__toggle {
-      width: use-height-size(10);
       height: use-height-size(10);
+      line-height: use-height-size(10);
+      padding: 0 use-spacing(6);
       // margin-top: use-spacing(4);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       border-radius: use-border-radius('normal');
       color: use-color('gray', 600);
       font-size: use-text-size('lg');
@@ -354,10 +359,6 @@ $disabled-color: use-color('gray', 500) !default;
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-mode('primary', 50);
-
-          .#{$prefix}-item__icon {
-            color: use-color-mode('primary');
-          }
         }
 
         &--active-p {
