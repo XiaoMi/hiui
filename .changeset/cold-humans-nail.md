@@ -5,6 +5,8 @@
 "@hi-ui/carousel": patch
 "@hi-ui/cascader": patch
 "@hi-ui/check-cascader": patch
+"@hi-ui/check-select": patch
+"@hi-ui/check-tree-select": patch
 "@hi-ui/collapse": patch
 "@hi-ui/counter": patch
 "@hi-ui/form": patch
@@ -15,6 +17,8 @@
 "@hi-ui/menu": patch
 "@hi-ui/number-input": patch
 "@hi-ui/page-header": patch
+"@hi-ui/pop-confirm": patch
+"@hi-ui/popover": patch
 "@hi-ui/popper": patch
 "@hi-ui/radio": patch
 "@hi-ui/rating": patch
