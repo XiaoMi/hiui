@@ -5,9 +5,7 @@ $prefix: 'rc-virtual-list' !default;
 .#{$prefix} {
   &-scrollbar {
     box-sizing: border-box;
-    width: 10px !important;
-    border: 2px solid transparent;
-    background-clip: content-box;
+    width: 6px !important;
 
     &-thumb {
       background: use-color('gray', 800) !important;

@@ -103,23 +103,21 @@ export const DropdownColumnRender = () => {
             return level < 5 ? (
               <div
                 className="custom-menu"
-                style={{ overflow: 'hidden', borderRight: '1px solid #ebedf0' }}
+                style={{ overflow: 'hidden', borderRight: '1px solid #e6e8eb' }}
               >
                 <header
                   style={{
-                    lineHeight: '20px',
-                    padding: '0px 8px 8px',
-                    borderBottom: '1px solid #ebedf0',
+                    padding: 8,
+                    borderBottom: '1px solid #e6e8eb',
                   }}
                 >
                   header
                 </header>
-                {React.cloneElement(menu, { style: { height: 186 } })}
+                {React.cloneElement(menu, { style: { height: 180 } })}
                 <footer
                   style={{
-                    lineHeight: '20px',
-                    padding: '8px 8px 0',
-                    borderTop: '1px solid #ebedf0',
+                    padding: 8,
+                    borderTop: '1px solid #e6e8eb',
                   }}
                 >
                   footer(level {level})

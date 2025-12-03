@@ -1,17 +1,19 @@
 import React from 'react'
 import Select from '../src'
-import Tooltip from '@hi-ui/tooltip'
+import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
 /**
  * @title 带Tooltip提示
  */
 export const Tip = () => {
   const [data] = React.useState([
-    { title: '电视', id: '3', disabled: false },
-    { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: false },
-    { title: '生活周边超级长文案展示生活周边超级长文案展示', id: '5' },
-    { title: '办公', id: '6' },
+    { title: '手机', id: 'shouji' },
+    { title: '电脑', id: 'diannao' },
+    { title: '电视', id: 'dianshi' },
+    { title: '洗衣机洗衣机洗衣机洗衣机洗衣机洗衣机洗衣机', id: 'xiyiji' },
+    { title: '冰箱', id: 'bingxiang' },
+    { title: '空调', id: 'kongtiao' },
+    { title: '汽车', id: 'qiche' },
   ])
 
   return (
@@ -25,20 +27,25 @@ export const Tip = () => {
           render={(item) => {
             console.log(item)
             return (
-              <Tooltip title={item.title} placement="right">
-                <span
-                  style={{
-                    width: '100%',
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    verticalAlign: 'middle',
-                  }}
-                >
-                  {item.title}
-                </span>
-              </Tooltip>
+              <EllipsisTooltip
+                tooltipProps={{
+                  placement: 'right',
+                  gutterGap: 14,
+                }}
+              >
+                {item.title}
+              </EllipsisTooltip>
+            )
+          }}
+          displayRender={(item) => {
+            return (
+              <EllipsisTooltip
+                tooltipProps={{
+                  gutterGap: 14,
+                }}
+              >
+                {item.title}
+              </EllipsisTooltip>
             )
           }}
         />

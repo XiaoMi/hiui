@@ -165,6 +165,9 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   .title__text {
     flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &--cols {
       display: block;

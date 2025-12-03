@@ -10,7 +10,7 @@ import {
   EllipsisOutlined,
   PlusOutlined,
 } from '@hi-ui/icons'
-import Layout, { Sider, Content, SearchTrigger, ProfilePopover } from '../src'
+import Layout, { Sider, Content, SearchTrigger, ProfilePopover, ActionItem } from '../src'
 import Button from '@hi-ui/button'
 import Avatar from '@hi-ui/avatar'
 import PageHeader from '@hi-ui/page-header'
@@ -120,31 +120,10 @@ export const WithMenu = () => {
                 data={data}
               />
             </Scrollbar>
-            <div style={{ display: 'flex', flexDirection: 'column', margin: '12px 16px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: collapsed ? 'center' : 'flex-start',
-                  gap: 4,
-                  height: 40,
-                  fontSize: 14,
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: 24,
-                    height: 24,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <DetailsFilled size={collapsed ? 18 : 16} color="#7c87a6" />
-                </div>
-                {collapsed ? null : <span>使用手册</span>}
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', margin: '12px 8px' }}>
+              <ActionItem icon={<DetailsFilled />} mini={collapsed}>
+                使用手册
+              </ActionItem>
               <ProfilePopover
                 visible={profileVisible}
                 header={
@@ -192,9 +171,9 @@ export const WithMenu = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: collapsed ? 'center' : 'flex-start',
                     gap: 4,
                     height: 40,
+                    marginLeft: collapsed ? 12 : 10,
                     fontSize: 14,
                     cursor: 'pointer',
                   }}

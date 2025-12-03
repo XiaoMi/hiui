@@ -437,6 +437,7 @@ function SourcePanel({
               checkable
               checkedMode="SEPARATE"
               {...treeProps}
+              checkOnSelect
               checkedIds={checkedIds}
               onCheck={(checkedIds) => {
                 onChange?.(checkedIds)
@@ -506,16 +507,14 @@ function TargetPanel({
 
   return (
     <div className={prefixCls}>
-      {checkedIds.length > 0 && filteredData.length > 0 && (
-        <div className={`${prefixCls}__checked`}>
-          <div className={`${prefixCls}__checked-title`}>
-            {title} ({checkedIds.length})
-          </div>
-          <Button size="xs" type="secondary" appearance="link" onClick={() => onChange?.([])}>
-            {i18n.get('transfer.clear')}
-          </Button>
+      <div className={`${prefixCls}__checked`}>
+        <div className={`${prefixCls}__checked-title`}>
+          {title} ({checkedIds.length})
         </div>
-      )}
+        <Button size="xs" type="secondary" appearance="link" onClick={() => onChange?.([])}>
+          {i18n.get('transfer.clear')}
+        </Button>
+      </div>
       {searchable && (
         <div className={`${prefixCls}__search`}>
           <Input

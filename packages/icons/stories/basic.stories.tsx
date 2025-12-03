@@ -596,9 +596,17 @@ export const Basic = () => {
 
               { component: Icons.UpOutlined, tagName: 'UpOutlined' },
 
+              { component: Icons.UpShortOutlined, tagName: 'UpShortOutlined' },
+
+              { component: Icons.DownShortOutlined, tagName: 'DownShortOutlined' },
+
               { component: Icons.LeftShortOutlined, tagName: 'LeftShortOutlined' },
 
               { component: Icons.RightShortOutlined, tagName: 'RightShortOutlined' },
+
+              { component: Icons.UpShortBoldOutlined, tagName: 'UpShortBoldOutlined' },
+
+              { component: Icons.DownShortBoldOutlined, tagName: 'DownShortBoldOutlined' },
 
               { component: Icons.LeftShortBoldOutlined, tagName: 'LeftShortBoldOutlined' },
 

@@ -10,7 +10,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="card-basic__wrap">
-        <Card title="标题">
+        <Card title="标题" size="sm">
           <div
             style={{
               height: 174,

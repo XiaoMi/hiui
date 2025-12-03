@@ -2,6 +2,8 @@
 
 $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
 
+$icon-button-effect-color: var(--#{$icon-button-prefix}-effect-color, use-color('gray', 200)) !default;
+
 .#{$icon-button-prefix} {
   @include button-reset;
 
@@ -47,7 +49,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
 
     &:hover {
       &::before {
-        background-color: use-color('gray', 200);
+        background-color: $icon-button-effect-color;
       }
     }
   }

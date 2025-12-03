@@ -62,6 +62,7 @@
     "@hi-ui/use-search-mode": "^4.2.1",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4",
+    "@hi-ui/virtual-list": "^4.0.8",
     "scroll-into-view-if-needed": "^3.1.0"
   },
   "peerDependencies": {
