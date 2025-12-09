@@ -324,4 +324,9 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * @default true
    */
   showIndicator?: boolean
+  /**
+   * 是否展示周，仅在 type 为 date 或 daterange 时生效
+   * @default false
+   */
+  showWeek?: boolean
 }

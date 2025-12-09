@@ -268,6 +268,7 @@ const getDateRows = ({
   renderDate,
   disabledDate,
   utcOffset,
+  showWeek,
 }: {
   originDate: moment.Moment | null
   range?: CalenderSelectedRange
@@ -278,6 +279,7 @@ const getDateRows = ({
   renderDate: moment.Moment | null
   disabledDate: DisabledDate
   utcOffset?: number
+  showWeek?: boolean
 }) => {
   const rows: CalendarRowInfo[] = [[], [], [], [], [], []] as any
   // 根据utcOffset计算今天的日期
@@ -412,7 +414,7 @@ const getDateRows = ({
 
   // 新增功能：周选择显示周数
   // 如果是周类型，则计算出每一行的周数并放入每行数组第一个
-  if (type === 'week' || type === 'weekrange') {
+  if (type === 'week' || type === 'weekrange' || showWeek) {
     const year = _date.year()
     const month = _date.month() + 1
 
@@ -500,6 +502,7 @@ const useDate = ({
   renderDate,
   disabledDate,
   utcOffset,
+  showWeek,
 }: {
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
@@ -512,6 +515,7 @@ const useDate = ({
   i18n: UseLocaleContext
   range?: CalenderSelectedRange
   utcOffset?: number
+  showWeek?: boolean
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
 
@@ -540,6 +544,7 @@ const useDate = ({
             renderDate,
             disabledDate,
             utcOffset,
+            showWeek,
           })
 
     setRows(_rows)
@@ -555,6 +560,7 @@ const useDate = ({
     weekOffset,
     originDate,
     utcOffset,
+    showWeek,
   ])
 
   return [rows]
