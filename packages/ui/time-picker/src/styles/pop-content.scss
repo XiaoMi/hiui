@@ -13,7 +13,7 @@ $pop-content-prefix: '#{$component-prefix}-time-picker__pop-content' !default;
   &__separator {
     width: 1px;
     background-color: use-color('gray', 200);
-    border-left: none;
-    border-right: none;
+    border-inline-start: none;
+    border-inline-end: none;
   }
 }

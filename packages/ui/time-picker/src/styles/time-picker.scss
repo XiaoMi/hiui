@@ -165,8 +165,8 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   &__pop-function-buttons {
     display: flex;
     justify-content: space-between;
-    padding: 10px 8px;
-    border-top: 1px solid use-color('gray', 200);
+    padding: use-spacing(5) use-spacing(4);
+    border-top: use-border-size('normal') use-color('gray', 200);
     align-items: center;
     flex-wrap: wrap;
     // 单个情况下居右
@@ -179,7 +179,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &__function-button {
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(4);
     font-size: use-text-size('lg');
     cursor: pointer;
     display: flex;

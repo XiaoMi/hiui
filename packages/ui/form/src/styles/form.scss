@@ -44,7 +44,7 @@ $prefix: '#{$component-prefix}-form' !default;
     display: flex;
 
     .#{$prefix}-label--placement-top > & {
-      text-align: left;
+      text-align: start;
       flex-direction: column;
       padding-inline-end: 0;
     }
@@ -64,11 +64,11 @@ $prefix: '#{$component-prefix}-form' !default;
       line-height: use-height-size(8);
 
       .#{$prefix}-label--placement-left > .#{$prefix}-label__content > & {
-        text-align: left;
+        text-align: start;
       }
 
       .#{$prefix}-label--placement-right > .#{$prefix}-label__content > & {
-        text-align: right;
+        text-align: end;
       }
 
       .#{$prefix}-label--placement-top > .#{$prefix}-label__content > & {

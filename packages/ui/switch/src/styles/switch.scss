@@ -3,12 +3,6 @@
 $prefix: '#{$component-prefix}-switch' !default;
 
 .#{$prefix} {
-  // &:not(.#{$prefix}--disabled):focus {
-  //   outline: 0;
-  //   z-index: 1;
-  //   box-shadow: 0 0 0 2px use-color-mode('primary', 200);
-  // }
-
   display: inline-flex;
   border-radius: use-border-radius('full');
   cursor: pointer;
@@ -40,7 +34,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &__handle {
     position: absolute;
-    top: use-spacing(1);
+    inset-block-start: use-spacing(1);
     border-radius: use-border-radius('full');
     box-shadow: use-shadow('sm');
     background: use-color-static('white');
@@ -65,7 +59,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &--closed {
     .#{$prefix}__handle {
-      left: use-spacing(1);
+      inset-inline-start: use-spacing(1);
     }
   }
 
@@ -80,7 +74,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        left: calc(100% - #{use-height-size(3)} - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{use-height-size(3)} - #{use-spacing(1)});
       }
 
       .#{$prefix}__text {
@@ -111,7 +105,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        left: calc(100% - #{use-height-size(3)} - 2px - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{use-height-size(3)} - 2px - #{use-spacing(1)});
       }
 
       .#{$prefix}__text {
@@ -141,7 +135,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        left: calc(100% - #{use-height-size(4)} - 2px - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{use-height-size(4)} - 2px - #{use-spacing(1)});
       }
 
       .#{$prefix}__text {

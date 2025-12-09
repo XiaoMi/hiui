@@ -75,7 +75,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     width: 100%;
     height: 100%;
     color: inherit;
-    text-align: left;
+    text-align: start;
     padding: 0 use-spacing(6);
     overflow: hidden;
     text-overflow: ellipsis;

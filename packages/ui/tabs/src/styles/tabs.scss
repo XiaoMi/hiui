@@ -12,26 +12,26 @@ $prefix: '#{$component-prefix}-tabs' !default;
   &__add-input {
     display: flex;
     align-items: center;
-    margin-left: use-spacing(14);
+    margin-inline-start: use-spacing(14);
   }
 
   &__add-btn-wrap {
     display: flex;
     align-items: center;
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(4);
 
     .#{$prefix}__add-btn {
       display: flex;
       height: 16px;
-      padding-left: use-spacing(4);
-      border-left: 1px solid use-color('gray', 300);
+      padding-inline-start: use-spacing(4);
+      border-inline-start: 1px solid use-color('gray', 300);
     }
   }
 
   &__add-input,
   &__edit-input {
     width: 120px;
-    margin-right: 1px;
+    margin-inline-end: 1px;
   }
 
   &__up-btn,
@@ -46,7 +46,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   &__close-btn {
     cursor: pointer;
     color: use-color('gray', 600);
-    margin-left: use-spacing(2);
+    margin-inline-start: use-spacing(2);
     transition: color 0.3s;
 
     &:hover {
@@ -116,8 +116,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
             width: 1px;
             height: use-height-size(4);
             background-color: use-color('gray', 400);
-            left: 0;
-            top: 50%;
+            inset-inline-start: 0;
+            inset-block-start: 50%;
             transform: translateY(-50%);
           }
 
@@ -227,11 +227,11 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
       &.#{$prefix}__list--placement-horizontal {
         .#{$prefix}__item:first-child {
-          padding-left: 0;
+          padding-inline-start: 0;
         }
 
         .#{$prefix}__item:last-child {
-          padding-right: 0;
+          padding-inline-end: 0;
         }
       }
     }
@@ -289,8 +289,8 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     // 使用 `>` 限定关系，避免嵌套使用时样式污染
     & > .#{$prefix}__content {
-      padding-left: 16px;
-      padding-top: 0;
+      padding-inline-start: 16px;
+      padding-block-start: 0;
     }
 
     & > .#{$prefix}__list {
@@ -412,23 +412,23 @@ $prefix: '#{$component-prefix}-tabs' !default;
         }
 
         &--prev {
-          border-top: 1px dashed use-color-mode('primary');
-          border-left: none;
+          border-block-start: 1px dashed use-color-mode('primary');
+          border-inline-start: none;
         }
 
         &--next {
-          border-bottom: 1px dashed use-color-mode('primary');
-          border-right: none;
+          border-block-end: 1px dashed use-color-mode('primary');
+          border-inline-end: none;
         }
       }
 
       .#{$prefix}__ink {
         position: absolute;
-        left: 0;
-        bottom: auto;
+        inset-inline-start: 0;
+        inset-block-end: auto;
         width: 2px;
         background-color: use-color-mode('primary');
-        transition: top 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
+        transition: inset-block-start 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
           height 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
       }
     }
@@ -436,14 +436,14 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
   &__ink {
     position: absolute;
-    bottom: 0;
-    right: auto;
-    top: auto;
+    inset-block-end: 0;
+    inset-inline-end: auto;
+    inset-block-start: auto;
     height: 3px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-start-start-radius: 3px;
+    border-start-end-radius: 3px;
     background-color: use-color-mode('primary');
-    transition: left 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
+    transition: inset-inline-start 0.2s cubic-bezier(0.34, 0.69, 0.1, 1),
       width 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
   }
 
@@ -468,11 +468,11 @@ $prefix: '#{$component-prefix}-tabs' !default;
     }
 
     &--prev {
-      border-left: 1px dashed use-color-mode('primary');
+      border-inline-start: 1px dashed use-color-mode('primary');
     }
 
     &--next {
-      border-right: 1px dashed use-color-mode('primary');
+      border-inline-end: 1px dashed use-color-mode('primary');
     }
 
     &--disabled,
@@ -491,7 +491,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
   &__content {
     width: 100%;
     overflow: hidden;
-    padding-top: use-spacing(8);
+    padding-block-start: use-spacing(8);
     box-sizing: border-box;
   }
 

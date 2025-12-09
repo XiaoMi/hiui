@@ -68,8 +68,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   &__clear {
     display: inline-flex;
     align-items: center;
-    width: 16px;
-    height: 16px;
+    width: use-height-size(4);
+    height: use-height-size(4);
     font-size: use-text-size('lg');
     color: use-color('gray', 600);
     text-align: center;
@@ -101,7 +101,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     vertical-align: middle;
     user-select: none;
     cursor: inherit;
-    margin-left: use-spacing(2);
+    margin-inline-start: use-spacing(2);
     padding: 0 use-spacing(3);
     font-size: use-text-size('sm');
     border-radius: use-border-radius('md');
@@ -115,7 +115,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     transition-timing-function: use-motion-bezier('normal');
 
     &:has(+ *) {
-      margin-right: use-spacing(3);
+      margin-inline-end: use-spacing(3);
     }
 
     .#{$tag-input-mock-prefix}--expandable & {
@@ -132,7 +132,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   }
 
   &__prefix {
-    margin-right: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__tags,
@@ -162,13 +162,13 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   &__tag,
   &__placeholder {
     // 控制上下间距
-    margin-top: use-spacing(1);
-    margin-bottom: use-spacing(1);
+    margin-block-start: use-spacing(1);
+    margin-block-end: use-spacing(1);
   }
 
   &__tag {
     max-width: 100%;
-    margin-right: use-spacing(2);
+    margin-inline-end: use-spacing(2);
     box-sizing: border-box;
     padding: 0 use-spacing(4);
     vertical-align: middle;
@@ -194,7 +194,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     &-closed {
       display: inline-flex;
       align-items: center;
-      margin-left: use-spacing(2);
+      margin-inline-start: use-spacing(2);
       font-size: use-text-size('sm');
       box-sizing: border-box;
       color: use-color('gray', 600);
@@ -235,18 +235,18 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
-        margin-top: 1px;
-        margin-bottom: 1px;
+        margin-block-start: 1px;
+        margin-block-end: 1px;
       }
 
       .#{$tag-input-mock-prefix}__label,
       .#{$tag-input-mock-prefix}__prefix,
       .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: use-spacing(3);
+        margin-inline-start: use-spacing(3);
       }
 
       .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
 
@@ -266,18 +266,18 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
-        margin-top: use-spacing(1);
-        margin-bottom: use-spacing(1);
+        margin-block-start: use-spacing(1);
+        margin-block-end: use-spacing(1);
       }
 
       .#{$tag-input-mock-prefix}__label,
       .#{$tag-input-mock-prefix}__prefix,
       .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: use-spacing(2);
+        margin-inline-start: use-spacing(2);
       }
 
       .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
 
@@ -297,18 +297,18 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
-        margin-top: use-spacing(1);
-        margin-bottom: use-spacing(1);
+        margin-block-start: use-spacing(1);
+        margin-block-end: use-spacing(1);
       }
 
       .#{$tag-input-mock-prefix}__label,
       .#{$tag-input-mock-prefix}__prefix,
       .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: use-spacing(4);
+        margin-inline-start: use-spacing(4);
       }
 
       .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
 
@@ -328,18 +328,18 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       .#{$tag-input-mock-prefix}__tag,
       .#{$tag-input-mock-prefix}__placeholder {
         // 控制上下间距
-        margin-top: use-spacing(1);
-        margin-bottom: use-spacing(1);
+        margin-block-start: use-spacing(1);
+        margin-block-end: use-spacing(1);
       }
 
       .#{$tag-input-mock-prefix}__label,
       .#{$tag-input-mock-prefix}__prefix,
       .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: use-spacing(5);
+        margin-inline-start: use-spacing(5);
       }
 
       .#{$tag-input-mock-prefix}__prefix + .#{$tag-input-mock-prefix}__placeholder {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }
@@ -512,7 +512,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       }
 
       .#{$tag-input-mock-prefix}__suffix {
-        padding-left: use-spacing(4);
+        padding-inline-start: use-spacing(4);
       }
 
       &:not(.#{$tag-input-mock-prefix}--disabled).#{$tag-input-mock-prefix}--has-value,

@@ -81,7 +81,7 @@ $prefix: '#{$component-prefix}-slider' !default;
       position: absolute;
       margin: 0;
       inset-inline-end: 18px;
-      text-align: right;
+      text-align: end;
 
       .#{$prefix}__label {
         inset-inline-end: 0;
@@ -92,7 +92,7 @@ $prefix: '#{$component-prefix}-slider' !default;
         position: absolute;
         inset-inline-end: 0;
         margin-top: 0;
-        text-align: right;
+        text-align: end;
       }
 
       .#{$prefix}__max {
@@ -100,7 +100,7 @@ $prefix: '#{$component-prefix}-slider' !default;
         position: absolute;
         inset-inline-end: 0;
         margin-top: 0;
-        text-align: right;
+        text-align: end;
       }
     }
   }

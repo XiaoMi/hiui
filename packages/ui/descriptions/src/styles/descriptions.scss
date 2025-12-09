@@ -128,7 +128,7 @@ $prefix: '#{$component-prefix}-descriptions' !default;
         color: use-color('gray', 800);
         background-color: use-color('gray', 200);
         font-weight: use-text-weight('medium');
-        text-align: left;
+        text-align: start;
       }
 
       .#{$prefix}-row {
