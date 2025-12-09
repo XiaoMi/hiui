@@ -111,6 +111,11 @@ const Input = ({
         onChange={inputChangeEvent}
         onFocus={onFocus}
         value={value || ''}
+        onBlur={() => {
+          if (!moment(value).isValid()) {
+            setValue(cacheValues.current)
+          }
+        }}
       />
       <div className={`${prefixCls}__picker__input-shadow`}>{value || placeholder}</div>
     </div>
