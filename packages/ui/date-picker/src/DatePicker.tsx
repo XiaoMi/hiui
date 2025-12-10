@@ -87,6 +87,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       visible,
       label,
       showIndicator = true,
+      showWeek,
       ...otherProps
     },
     ref
@@ -508,6 +509,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           focusIndex,
           setFocusIndex,
           showIndicator,
+          showWeek,
         }}
       >
         <div
