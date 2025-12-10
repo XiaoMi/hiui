@@ -8,7 +8,7 @@ import DatePicker from '../src'
 export const ShowWeek = () => {
   return (
     <>
-      <h1>日期</h1>
+      <h1>展示周</h1>
       <div className="date-picker-basic__wrap">
         <h2>展示周</h2>
         <DatePicker
@@ -23,7 +23,6 @@ export const ShowWeek = () => {
         <DatePicker
           style={{ width: 240 }}
           showWeek
-          size="lg"
           cellRender={(info) => {
             const { value, weekNum } = info
             return weekNum ? 'W' + weekNum : value
