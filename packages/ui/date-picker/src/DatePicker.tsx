@@ -509,6 +509,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           focusIndex,
           setFocusIndex,
           showIndicator,
+          needConfirm,
+          onConfirm,
           showWeek,
         }}
       >

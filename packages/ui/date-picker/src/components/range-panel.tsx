@@ -46,6 +46,8 @@ const RangePanel = () => {
     defaultPickerValue,
     focusIndex,
     weekOffset,
+    needConfirm,
+    onConfirm,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -196,7 +198,7 @@ const RangePanel = () => {
           )
         }
       } else {
-        onPick([newRange.start, newRange.end], showTime)
+        onPick([newRange.start, newRange.end], needConfirm || showTime)
       }
     } else {
       newRange.selecting = true
@@ -416,7 +418,8 @@ const RangePanel = () => {
     `theme__${theme}`,
     type.includes('range') && `${prefixCls}__panel--range`,
     type === 'timeperiod' && `${prefixCls}__panel--timeperiod`,
-    (showTime || type === 'timeperiod' || footerRender) && `${prefixCls}__panel--noshadow`
+    (showTime || type === 'timeperiod' || footerRender || needConfirm) &&
+      `${prefixCls}__panel--noshadow`
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -536,7 +539,15 @@ const RangePanel = () => {
           />
         </React.Fragment>
       )}
-      {footerRender && <Footer />}
+      {(footerRender || needConfirm) && (
+        <Footer
+          disabled={!outDate[0]}
+          onConfirmButtonClick={() => {
+            onPick([range.start, range.end], needConfirm ? false : showTime)
+            onConfirm?.([range.start, range.end].map((item) => item?.toDate()) as Date[])
+          }}
+        />
+      )}
     </React.Fragment>
   )
 }
