@@ -448,13 +448,27 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &--md {
       width: 240px; // https://github.com/XiaoMi/hiui/issues/2400
 
-      &.#{$prefix}__calendar-wrap--type-week, &.#{$prefix}__calendar-wrap--type-weekrange {
+      &.#{$prefix}__calendar-wrap--type-week, &.#{$prefix}__calendar-wrap--type-weekrange,
+      &.#{$prefix}__calendar-wrap--show-week {
         width: 280px;
       }
     }
 
     &--lg {
       width: 338px; // https://github.com/XiaoMi/hiui/issues/2428
+    }
+
+    &.#{$prefix}__calendar-wrap--show-week {
+      .#{$prefix}__cell--weekNum {
+        cursor: default;
+        pointer-events: none;
+
+        &:hover {
+          .#{$prefix}__cell-text {
+            background: transparent;
+          }
+        }
+      }
     }
   }
 
