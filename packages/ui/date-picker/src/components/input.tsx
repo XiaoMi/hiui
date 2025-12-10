@@ -96,7 +96,7 @@ const Input = ({
   }
 
   return (
-    <div className={`${prefixCls}__picker__input-container`}>
+    <div className={`${prefixCls}__picker__input-container`} title={value || placeholder}>
       <input
         type="text"
         placeholder={placeholder}
