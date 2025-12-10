@@ -59,8 +59,8 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   const contentRef = useRef<HTMLDivElement | null>(null)
 
   const stringChildren = useMemo(() => {
-    if (typeof childrenProp === 'string') {
-      return childrenProp
+    if (typeof childrenProp === 'string' || typeof childrenProp === 'number') {
+      return String(childrenProp)
     }
 
     if (isValidElement(childrenProp)) {
