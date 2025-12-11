@@ -15,7 +15,7 @@ $prefix: '#{$component-prefix}-timeline' !default;
             margin-block-end: use-spacing(12);
 
             .#{$prefix}-item__line {
-              top: 7px;
+              inset-block-start: 7px;
               height: calc(100% + #{use-spacing(12)});
             }
 
@@ -38,9 +38,9 @@ $prefix: '#{$component-prefix}-timeline' !default;
                 border-radius: 50%;
                 box-sizing: border-box;
                 position: absolute;
-                top: 7px;
-                right: -22px;
-                transform: translateX(50%);
+                inset-block-start: 7px;
+                inset-inline-end: -22px;
+                transform: translate3d(50%, 0, 0);
                 z-index: 2;
 
                 &--type-hollow {

@@ -59,31 +59,31 @@ $prefix: '#{$component-prefix}-message' !default;
     transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration  $transition-height-delay;
     transition-timing-function: use-motion-bezier('normal');
     opacity: 1;
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
     transform-origin: 50% 50% 0;
     will-change: transform;
   }
 
   &--motion {
     &-enter {
-      transform: translateY(-100%);
+      transform: translate3d(0, -100%, 0);
     }
 
     &-enter-active {
-      transform: translateY(0%);
+      transform: translate3d(0, 0, 0);
     }
 
     &-enter-done {
-      transform: translateY(0%);
+      transform: translate3d(0, 0, 0);
     }
 
     &-exit {
-      transform: translateY(0%);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
     }
 
     &-exit-active {
-      transform: translateY(0%) scale(0.84, 0.84);
+      transform: translate3d(0, 0, 0) scale(0.84, 0.84);
       opacity: 0;
     }
 

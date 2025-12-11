@@ -119,7 +119,7 @@ $disabled-color: use-color('gray', 500) !default;
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 100%;
-      padding-right: use-spacing(4);
+      padding-inline-end: use-spacing(4);
     }
   }
 
@@ -218,14 +218,14 @@ $disabled-color: use-color('gray', 500) !default;
         color: use-color-mode('primary');
 
         .#{$prefix}-item__inner {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
       }
 
       &--active {
         color: use-color-mode('primary');
         .#{$prefix}-item__inner {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
 
         .#{$prefix}-item__icon {
@@ -246,10 +246,10 @@ $disabled-color: use-color('gray', 500) !default;
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        border-bottom: 2px solid transparent;
+        border-block-end: 2px solid transparent;
 
         &--expanded {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
       }
 

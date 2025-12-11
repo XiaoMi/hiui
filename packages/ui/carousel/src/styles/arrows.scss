@@ -19,12 +19,12 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
 
   &--horizontal {
     inset-block-start: 50%;
-    transform: translateY(-50%);
+    transform: translate3d(0, -50%, 0);
   }
 
   &--vertical {
     inset-inline-start: 50%;
-    transform: translateX(-50%) rotate(90deg);
+    transform: translate3d(-50%, 0, 0) rotate(90deg);
   }
 
   &::before {

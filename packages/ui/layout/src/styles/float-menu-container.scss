@@ -14,8 +14,8 @@ $float-menu-container-prefix: '#{$component-prefix}-float-menu-container' !defau
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
     height: 100%;
     padding: use-spacing(6) 0;
     background-color: #f5f8fc;

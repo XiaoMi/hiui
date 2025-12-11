@@ -42,12 +42,12 @@ $prefix: '#{$component-prefix}-resize-box' !default;
       box-sizing: border-box;
       width: 6px;
       height: 100%;
-      border-right: 2px solid use-color('gray', 400);
+      border-inline-end: 2px solid use-color('gray', 400);
     }
 
     &:hover {
       .#{$prefix}-separator-content {
-        border-right-color: use-color('brandblue', 300);
+        border-inline-end-color: use-color('brandblue', 300);
       }
 
       + .#{$prefix}-toggle {

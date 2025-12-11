@@ -62,7 +62,7 @@ export const usePopConfirm = ({
       arrow: true,
       placement: 'top',
       // @DesignToken 10
-      gutterGap: 14,
+      gutterGap: 10,
     })
 
     return {

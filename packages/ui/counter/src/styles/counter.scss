@@ -54,9 +54,9 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       position: absolute;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      transform: translate3d(-50%, -50%, 0);
       content: '';
       border-radius: use-border-radius('lg');
       z-index: -1;
@@ -64,8 +64,8 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     .#{$input-class} {
       border: use-border-size('normal') use-color('gray', 400);
-      border-top: none;
-      border-bottom: none;
+      border-block-start: none;
+      border-block-end: none;
 
       &:disabled {
         background-color: use-color('gray', 100);
@@ -128,9 +128,9 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
         position: absolute;
         width: calc(100% + 4px);
         height: calc(100% + 4px);
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        transform: translate3d(-50%, -50%, 0);
         content: '';
         border-radius: use-border-radius('normal');
         z-index: -1;
@@ -139,8 +139,8 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
     .#{$input-class} {
       border: use-border-size('normal') use-color-static('white');
-      border-top: none;
-      border-bottom: none;
+      border-block-start: none;
+      border-block-end: none;
       background-color: use-color('gray', 200);
     }
 
@@ -195,7 +195,6 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &__input-wrapper {
-    //height: 32px;
     display: flex;
     align-items: center;
   }

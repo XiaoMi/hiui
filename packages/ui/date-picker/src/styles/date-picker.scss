@@ -222,7 +222,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     .hi-icon {
-      margin-left: use-spacing(6);
+      margin-inline-start: use-spacing(6);
       font-size: use-text-size('lg');
       cursor: pointer;
       display: block;
@@ -781,7 +781,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     transform: scale(0.8);
     line-height: use-text-lineheight('lg');
     margin-block-end: calc(#{use-spacing(4)} * -1);
+    display: inline-block;
+    width: 100%;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     &--highlight {
       color: use-color-mode('primary');
@@ -826,8 +830,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
   }
 
   &__timetext {

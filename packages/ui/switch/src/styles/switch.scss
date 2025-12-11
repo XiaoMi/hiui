@@ -1,6 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-switch' !default;
+$gap: 2px !default;
 
 .#{$prefix} {
   display: inline-flex;
@@ -11,6 +12,7 @@ $prefix: '#{$component-prefix}-switch' !default;
   flex: none;
   flex-shrink: 0;
   width: fit-content;
+  vertical-align: middle;
 
   &:not(.#{$prefix}--disabled) {
     background: use-color-mode('primary');
@@ -34,7 +36,7 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &__handle {
     position: absolute;
-    inset-block-start: use-spacing(1);
+    inset-block-start: $gap;
     border-radius: use-border-radius('full');
     box-shadow: use-shadow('sm');
     background: use-color-static('white');
@@ -59,22 +61,25 @@ $prefix: '#{$component-prefix}-switch' !default;
 
   &--closed {
     .#{$prefix}__handle {
-      inset-inline-start: use-spacing(1);
+      inset-inline-start: $gap;
     }
   }
 
   &--size-sm {
+    $handle-size: use-height-size(3);
+
     min-width: use-height-size(7);
-    height: use-height-size(4);
+    height: calc(#{$handle-size} + $gap * 2);
 
     .#{$prefix}__handle {
-      width: use-height-size(3);
-      height: use-height-size(3);
+      width: $handle-size;
+      height: $handle-size;
+      inset-block-start: calc(50% - #{$handle-size} / 2);
     }
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        inset-inline-start: calc(100% - #{use-height-size(3)} - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{$handle-size} - $gap);
       }
 
       .#{$prefix}__text {
@@ -95,17 +100,20 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--size-md {
+    $handle-size: calc(#{use-height-size(3)} + 2px);
+
     min-width: use-height-size(8);
-    height: calc(#{use-height-size(4)} + 2px);
+    height: calc(#{$handle-size} + $gap * 2);
 
     .#{$prefix}__handle {
-      width: calc(#{use-height-size(3)} + 2px);
-      height: calc(#{use-height-size(3)} + 2px);
+      width: $handle-size;
+      height: $handle-size;
+      inset-block-start: calc(50% - #{$handle-size} / 2);
     }
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        inset-inline-start: calc(100% - #{use-height-size(3)} - 2px - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{$handle-size} - $gap);
       }
 
       .#{$prefix}__text {
@@ -125,17 +133,20 @@ $prefix: '#{$component-prefix}-switch' !default;
   }
 
   &--size-lg {
+    $handle-size: calc(#{use-height-size(4)} + 2px);
+
     min-width: use-height-size(10);
-    height: calc(#{use-height-size(5)} + 2px);
+    height: calc(#{$handle-size} + $gap * 2);
 
     .#{$prefix}__handle {
-      width: calc(#{use-height-size(4)} + 2px);
-      height: calc(#{use-height-size(4)} + 2px);
+      width: $handle-size;
+      height: $handle-size;
+      inset-block-start: calc(50% - #{$handle-size} / 2);
     }
 
     &.#{$prefix}--open {
       .#{$prefix}__handle {
-        inset-inline-start: calc(100% - #{use-height-size(4)} - 2px - #{use-spacing(1)});
+        inset-inline-start: calc(100% - #{$handle-size} - $gap);
       }
 
       .#{$prefix}__text {

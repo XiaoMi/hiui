@@ -40,7 +40,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
     .#{$component-prefix}-input__prefix {
       font-size: use-text-size('lg');
-      padding-left: 0;
+      padding-inline-start: 0;
     }
 
     &__empty {
@@ -102,7 +102,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     position: relative;
 
     &::after {
-      right: 0;
+      inset-inline-end: 0;
       inset-block-start: calc(#{use-spacing(4)} * -1);
       inset-block-end: calc(#{use-spacing(4)} * -1);
       inset-inline-start: calc(#{use-spacing(4)} * -1);

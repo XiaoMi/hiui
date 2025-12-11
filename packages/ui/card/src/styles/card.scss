@@ -24,8 +24,8 @@ $prefix: '#{$component-prefix}-card' !default;
           line-height: use-text-lineheight('normal');
 
           &--divider::after {
-            left: use-spacing(8);
-            right: use-spacing(8);
+            inset-inline-start: use-spacing(8);
+            inset-inline-end: use-spacing(8);
           }
         }
 
@@ -48,8 +48,8 @@ $prefix: '#{$component-prefix}-card' !default;
           line-height: use-text-lineheight('normal');
 
           &--divider::after {
-            left: use-spacing(10);
-            right: use-spacing(10);
+            inset-inline-start: use-spacing(10);
+            inset-inline-end: use-spacing(10);
           }
         }
 
@@ -72,8 +72,8 @@ $prefix: '#{$component-prefix}-card' !default;
           line-height: use-text-lineheight('lg');
 
           &--divider::after {
-            left: use-spacing(10);
-            right: use-spacing(10);
+            inset-inline-start: use-spacing(10);
+            inset-inline-end: use-spacing(10);
           }
         }
 
@@ -106,7 +106,6 @@ $prefix: '#{$component-prefix}-card' !default;
     overflow: hidden;
 
     &--divider {
-      border-block-end: use-border-size('normal') use-color('gray', 300);
       margin-block-end: use-spacing(8);
 
       &::after {
@@ -114,7 +113,7 @@ $prefix: '#{$component-prefix}-card' !default;
         display: block;
         position: absolute;
         inset-block-end: 0;
-        border-bottom: use-border-size('normal') use-color('gray', 300);
+        border-block-end: use-border-size('normal') use-color('gray', 300);
       }
     }
   }
@@ -144,10 +143,10 @@ $prefix: '#{$component-prefix}-card' !default;
   &__loading {
     .#{$prefix} & {
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset-block-start: 0;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      inset-inline-start: 0;
     }
   }
 

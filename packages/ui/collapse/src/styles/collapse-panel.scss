@@ -77,22 +77,22 @@ $icon-class: #{$panel-prefix}__icon !default;
       display: block;
       box-sizing: border-box;
       position: absolute;
-      bottom: 0;
+      inset-block-end: 0;
       border-block-end: use-border-size('normal') use-color('gray', 300);
 
       .#{$component-prefix}-collapse--size-sm & {
-        left: use-spacing(6);
-        right: use-spacing(6);
+        inset-inline-start: use-spacing(6);
+        inset-inline-end: use-spacing(6);
       }
 
       .#{$component-prefix}-collapse--size-md & {
-        left: use-spacing(8);
-        right: use-spacing(8);
+        inset-inline-start: use-spacing(8);
+        inset-inline-end: use-spacing(8);
       }
 
       .#{$component-prefix}-collapse--size-lg & {
-        left: use-spacing(10);
-        right: use-spacing(10);
+        inset-inline-start: use-spacing(10);
+        inset-inline-end: use-spacing(10);
       }
     }
   }

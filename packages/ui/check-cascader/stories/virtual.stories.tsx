@@ -8,14 +8,14 @@ import CheckCascader from '../src'
 export const Virtual = () => {
   const [dataOnlyLeafCheckable] = React.useState(() => {
     const data = [
-      // 随机生成 10 * 100 * 1000 条的级联数据
+      // 随机生成 10 * 10 * 1000 条的级联数据
       ...Array.from({ length: 100 }, (_, index) => ({
         id: `item-${index}`,
         title: `item-${index}`,
-        children: Array.from({ length: 100 }, (_, index2) => ({
+        children: Array.from({ length: 10 }, (_, index2) => ({
           id: `item-${index}-${index2}`,
           title: `item-${index}-${index2}`,
-          children: Array.from({ length: 100 }, (_, index3) => ({
+          children: Array.from({ length: 1000 }, (_, index3) => ({
             id: `item-${index}-${index2}-${index3}`,
             title: `item-${index}-${index2}-${index3}`,
           })),

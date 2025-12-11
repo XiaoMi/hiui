@@ -71,17 +71,20 @@ $prefix: '#{$component-prefix}-picker' !default;
     padding: use-spacing(2);
   }
 
+  &__header,
   &__footer {
-    border-block-start: use-border-size('normal') use-color('gray', 300);
-    padding: use-spacing(5) use-spacing(7);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
     color: use-color('gray', 800);
     background-color: use-color-static('white');
   }
 
+  &__footer {
+    border-block-start: use-border-size('normal') use-color('gray', 300);
+    padding: use-spacing(5) use-spacing(7);
+  }
+
   &__header {
-    background-color: use-color-static('white');
     border-block-end: use-border-size('normal') use-color('gray', 300);
   }
 

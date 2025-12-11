@@ -5,8 +5,8 @@ $prefix: '#{$component-prefix}-back-top' !default;
 
 .#{$prefix} {
   position: fixed;
-  right: use-spacing(16);
-  bottom: use-spacing(16);
+  inset-inline-end: use-spacing(16);
+  inset-block-end: use-spacing(16);
   z-index: use-zindex('sticky');
   display: none;
   cursor: pointer;

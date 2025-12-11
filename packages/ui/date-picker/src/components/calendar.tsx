@@ -288,6 +288,7 @@ const Calendar = ({
               className={`${prefixCls}__lunar ${
                 fullTimeInfo.highlight ? `${prefixCls}__lunar--highlight` : ''
               }`}
+              title={String(fullTimeInfo.text || fullTimeInfo.name)}
             >
               {/* 如果是节气，使用 fullTimeInfo.name */}
               {fullTimeInfo.name || fullTimeInfo.text}

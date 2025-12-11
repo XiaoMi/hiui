@@ -110,7 +110,7 @@ $prefix: '#{$component-prefix}-alert' !default;
   &__close {
     .#{$prefix} & {
       line-height: inherit;
-      height: use-text-lineheight('sm');
+      height: use-text-lineheight('normal');
       margin-inline-start: use-spacing(4);
     }
   }

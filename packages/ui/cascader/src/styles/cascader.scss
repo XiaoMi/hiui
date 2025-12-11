@@ -43,7 +43,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   .#{$component-prefix}-input__prefix {
     font-size: use-text-size('lg');
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   &__empty {

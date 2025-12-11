@@ -69,7 +69,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &.#{$prefix}__list--editable {
       // width: fit-content;
-      border-bottom: 1px solid use-color('gray', 300);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
     }
 
     &--type-card {
@@ -118,7 +118,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
             background-color: use-color('gray', 400);
             inset-inline-start: 0;
             inset-block-start: 50%;
-            transform: translateY(-50%);
+            transform: translate3d(0, -50%, 0);
           }
 
           &:first-child::after {
@@ -272,7 +272,7 @@ $prefix: '#{$component-prefix}-tabs' !default;
 
     &--placement-horizontal {
       &.#{$prefix}__list--show-divider {
-        border-bottom: 1px solid use-color('gray', 300);
+        border-block-end: use-border-size('normal') use-color('gray', 300);
       }
 
       &.#{$prefix}__list--type-card {
