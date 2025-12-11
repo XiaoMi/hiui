@@ -22,28 +22,28 @@ export const Gutter = () => {
       <div className="grid-gutter__wrap">
         <Row gutter={true}>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-6
               <br />
               25%

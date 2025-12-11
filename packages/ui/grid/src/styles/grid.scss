@@ -14,8 +14,10 @@ $prefix: '#{$component-prefix}-grid' !default;
     margin-inline-end: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
 
     $justify-content: with-prefix-var('grid-row-justify') !default;
+    $align-content: with-prefix-var('grid-row-align') !default;
 
     justify-content: var($justify-content);
+    align-items: var($align-content);
 
     & + & {
       margin-block-start: var(with-prefix-var('grid-row-gap'));
