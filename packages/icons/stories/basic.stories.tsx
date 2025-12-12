@@ -213,6 +213,8 @@ export const Basic = () => {
 
               { component: Icons.ShieldFilled, tagName: 'ShieldFilled' },
 
+              { component: Icons.ShopFilled, tagName: 'ShopFilled' },
+
               { component: Icons.ShoppingFilled, tagName: 'ShoppingFilled' },
 
               { component: Icons.ShoppingCartFilled, tagName: 'ShoppingCartFilled' },
