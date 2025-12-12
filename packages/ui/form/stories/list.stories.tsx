@@ -32,16 +32,12 @@ export const List = () => {
           rules={{
             testInput: [
               {
-                // name: 'max',
-                // strategy: 10,
                 max: 10,
                 message: 'max is 10',
               },
             ],
             testInput2: [
               {
-                // name: 'required',
-                // strategy: true,
                 required: true,
                 message: 'testInput2 is required',
               },
