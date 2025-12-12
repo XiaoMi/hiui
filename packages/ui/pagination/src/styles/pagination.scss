@@ -10,18 +10,17 @@ $prefix: '#{$component-prefix}-pagination' !default;
   user-select: none;
 
   &__total {
-    margin-right: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__option {
-    // width: 114px !important;
     margin: 0 0 0 use-spacing(4) !important;
   }
 
   &__jumper {
     display: flex;
     align-items: center;
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(4);
   }
 
   &__list {
@@ -37,7 +36,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(4);
     min-width: use-height-size(8);
     box-sizing: border-box;
     height: use-height-size(8);
@@ -91,7 +90,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
     }
 
     &:last-of-type {
-      margin-left: use-spacing(4);
+      margin-inline-start: use-spacing(4);
     }
 
     & > button {
@@ -127,8 +126,8 @@ $prefix: '#{$component-prefix}-pagination' !default;
       height: use-height-size(6);
 
       > button {
-        padding-left: use-spacing(2);
-        padding-right: use-spacing(2);
+        padding-inline-start: use-spacing(2);
+        padding-inline-end: use-spacing(2);
       }
     }
 
@@ -170,17 +169,11 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
   position: relative;
   display: inline-flex;
   height: auto;
-  min-height: 24px;
+  min-height: use-height-size(6);
   box-sizing: border-box;
   outline: none;
 
   $this: &;
-
-  &--focused {
-    // #{$this}__input {
-    //   border: 1px solid use-color-mode('primary');
-    // }
-  }
 
   &__input {
     &.#{$component-prefix}-input {
@@ -198,11 +191,11 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
 
 .#{$prefix} {
   .#{$component-prefix}-mock-input {
-    padding-left: use-spacing(4) !important;
-    padding-right: use-spacing(4) !important;
+    padding-inline-start: use-spacing(4) !important;
+    padding-inline-end: use-spacing(4) !important;
 
     &__suffix {
-      padding-left: use-spacing(2) !important;
+      padding-inline-start: use-spacing(2) !important;
     }
   }
 }

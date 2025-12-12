@@ -25,11 +25,11 @@ $item-class: '#{$selector-prefix}__item' !default;
   }
 
   &--position-left {
-    margin-right: 2px;
+    margin-inline-end: use-spacing(2);
   }
 
   &--position-right {
-    margin-left: 2px;
+    margin-inline-start: use-spacing(2);
   }
 
   &__item {
@@ -37,7 +37,7 @@ $item-class: '#{$selector-prefix}__item' !default;
     align-items: center;
     justify-content: center;
     user-select: none;
-    font-size: 14px;
+    font-size: use-text-size('normal');
 
     &:hover {
       background: use-color('gray', 100);
@@ -55,15 +55,11 @@ $item-class: '#{$selector-prefix}__item' !default;
   }
 
   &__demarcate {
-    margin: 2px 0;
-    height: 32px;
+    margin-block-start: use-spacing(2);
+    height: use-height-size(8);
 
     &:first-of-type {
-      margin-top: 0;
-    }
-
-    &:last-of-type {
-      margin-bottom: 0;
+      margin-block-start: 0;
     }
   }
 
@@ -87,7 +83,7 @@ $item-class: '#{$selector-prefix}__item' !default;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 12px;
+    height: use-height-size(3);
     opacity: 0;
   }
 }

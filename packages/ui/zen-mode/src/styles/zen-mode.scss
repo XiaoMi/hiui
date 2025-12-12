@@ -6,10 +6,10 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
 .#{$prefix} {
   font-size: $zen-mode-text-size;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
   height: 100%;
   z-index: use-zindex('dialog');
   background: use-color-static('white');
@@ -41,11 +41,11 @@ $prefix: '#{$component-prefix}-zen-mode' !default;
 
   &__toolbar {
     position: sticky;
-    top: 0;
+    inset-block-start: 0;
     z-index: 1;
     width: 100%;
     height: 60px;
-    border-bottom: 1px solid use-color('gray', 300);
+    border-block-end: use-border-size('normal') use-color('gray', 300);
     background-color: use-color-static('white');
     display: flex;
     align-items: center;

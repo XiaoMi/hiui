@@ -41,6 +41,7 @@ const Calendar = ({
     prefixCls,
     cellRender,
     utcOffset,
+    showWeek,
   } = useContext(DPContext)
 
   // const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
@@ -67,6 +68,7 @@ const Calendar = ({
     // panelPosition,
     disabledDate,
     utcOffset,
+    showWeek,
   })
 
   const [calendarCls, setCalenderCls] = useState(`${prefixCls}__calendar`)
@@ -108,8 +110,8 @@ const Calendar = ({
     // 根据偏移做数组移位，展示顶部星期文案
     const _week = week.slice(weekOffset).concat(week.slice(0, weekOffset))
 
-    // 如果是周选择类型，第一个th增加一个空白标题
-    if (type === 'week' || type === 'weekrange') _week.unshift('')
+    // 如果是周选择类型，或者日期选择需要展示周时，第一个th增加一个空白标题
+    if (type === 'week' || type === 'weekrange' || showWeek) _week.unshift('')
 
     return _week
   }
@@ -288,6 +290,7 @@ const Calendar = ({
               className={`${prefixCls}__lunar ${
                 fullTimeInfo.highlight ? `${prefixCls}__lunar--highlight` : ''
               }`}
+              title={String(fullTimeInfo.text || fullTimeInfo.name)}
             >
               {/* 如果是节气，使用 fullTimeInfo.name */}
               {fullTimeInfo.name || fullTimeInfo.text}
@@ -305,7 +308,8 @@ const Calendar = ({
       className={cx(
         `${prefixCls}__calendar-wrap`,
         `${prefixCls}__calendar-wrap--${isLarge ? 'lg' : 'md'}`,
-        `${prefixCls}__calendar-wrap--type-${type}`
+        `${prefixCls}__calendar-wrap--type-${type}`,
+        showWeek && `${prefixCls}__calendar-wrap--show-week`
       )}
     >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>

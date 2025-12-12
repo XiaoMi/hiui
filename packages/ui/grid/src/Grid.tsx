@@ -4,7 +4,7 @@ import { invariant, __DEV__ } from '@hi-ui/env'
 import { useGridContext, GridProvider } from './context'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isNumeric, isObject, isString } from '@hi-ui/type-assertion'
-import { GridJustifyEnum, GridResponsiveSize } from './types'
+import { GridAlignEnum, GridJustifyEnum, GridResponsiveSize } from './types'
 
 const rowPrefix = getPrefixCls('grid-row')
 const gutterNameVar = getPrefixStyleVar('grid-row-gutter')
@@ -27,6 +27,7 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
       children,
       style: styleProp,
       justify: justifyContent,
+      align: alignContent,
       columns = 24,
       rowGap = DEFAULT_ROW_GAP,
       gutter: gutterProp = false,
@@ -61,12 +62,29 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
       },
     })
 
+    const alignContentStyle = calcResponsiveGrid({
+      name: 'row-align',
+      value: alignContent,
+      defaultValue: 'top',
+      allowSet: isString,
+      setValue(value) {
+        return value
+      },
+    })
+
     const style = Object.assign(
       justifyContent
         ? {
             ...styleProp,
             display: 'flex',
             ...justifyContentStyle,
+          }
+        : { ...styleProp },
+      alignContent
+        ? {
+            ...styleProp,
+            display: 'flex',
+            ...alignContentStyle,
           }
         : { ...styleProp },
       {
@@ -92,7 +110,11 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
 
 export interface RowProps extends HiBaseHTMLProps<'div'> {
   /**
-   * 里面的元素排布方式
+   * 垂直对齐方式
+   */
+  align?: GridAlignEnum | GridResponsiveSize<GridAlignEnum>
+  /**
+   * 水平对齐方式
    */
   justify?: GridJustifyEnum | GridResponsiveSize<GridJustifyEnum>
   /**

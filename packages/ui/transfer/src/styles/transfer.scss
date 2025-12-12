@@ -57,7 +57,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     padding: 0 use-spacing(4) use-spacing(4);
 
     .#{$component-prefix}-input__prefix {
-      padding-left: use-spacing(4);
+      padding-inline-start: use-spacing(4);
     }
 
     .#{$component-prefix}-input {
@@ -90,8 +90,8 @@ $prefix: '#{$component-prefix}-transfer' !default;
 
     &-icon {
       &[class^='#{$component-prefix}-icon'] {
-        margin-inline-end: 8px;
-        color: rgb(212, 161, 69);
+        margin-inline-end: use-spacing(4);
+        color: use-color-mode('warning');
         font-size: use-text-size('lg');
       }
     }
@@ -131,12 +131,12 @@ $prefix: '#{$component-prefix}-transfer' !default;
   }
 
   &__header {
-    padding-bottom: use-spacing(2);
+    padding-block-end: use-spacing(2);
     font-weight: use-text-weight('medium');
   }
 
   &__footer {
-    border-top: 1px solid use-color('gray', 400);
+    border-block-start: use-border-size('normal') use-color('gray', 400);
     width: 100%;
     display: inline-flex;
     flex-direction: row-reverse;
@@ -152,9 +152,9 @@ $prefix: '#{$component-prefix}-transfer' !default;
   &__title,
   .#{$component-prefix}-checkbox {
     width: 100%;
-    min-height: 32px;
     padding: 0 use-spacing(4);
-    line-height: 32px;
+    min-height: use-height-size(8);
+    line-height: use-height-size(8);
   }
 
   &__title {
@@ -166,10 +166,10 @@ $prefix: '#{$component-prefix}-transfer' !default;
   &__wrap {
     width: 100%;
     box-sizing: border-box;
-    min-height: 32px;
     display: flex;
     align-items: center;
-    line-height: 22px;
+    min-height: use-height-size(8);
+    line-height: use-height-size(8);
     cursor: pointer;
     transition: all 0.3s;
     border-radius: use-border-radius('normal');
@@ -181,7 +181,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
     // 拖拽指示器-小圆球
     &::before {
       position: absolute;
-      left: 0;
+      inset-inline-start: 0;
       z-index: 9999;
       display: none;
       box-sizing: border-box;
@@ -189,7 +189,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
       height: 8px;
       content: '';
       background-color: use-color-static('white');
-      border: 1px solid use-color-mode('primary');
+      border: use-border-size('normal') use-color-mode('primary');
       border-radius: 100%;
     }
 
@@ -204,7 +204,7 @@ $prefix: '#{$component-prefix}-transfer' !default;
       border-bottom-width: 0;
       border-bottom-style: solid;
       border-bottom-color: use-color-mode('primary');
-      left: 0;
+      inset-inline-start: 0;
       width: 100%;
     }
   }
@@ -222,13 +222,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
     #{$this}__wrap {
       &::before {
         display: block;
-        top: 0;
-        transform: translateY(-3px);
+        inset-block-start: 0;
+        transform: translate3d(0, -3px, 0);
       }
 
       &::after {
-        top: 0;
-        border-bottom-width: 1px;
+        inset-block-start: 0;
+        border-block-end-width: 1px;
       }
     }
   }
@@ -237,13 +237,13 @@ $prefix: '#{$component-prefix}-transfer' !default;
     #{$this}__wrap {
       &::before {
         display: block;
-        bottom: 0;
-        transform: translateY(3px);
+        inset-block-end: 0;
+        transform: translate3d(0, 3px, 0);
       }
 
       &::after {
-        bottom: 0;
-        border-bottom-width: 1px;
+        inset-block-end: 0;
+        border-block-end-width: 1px;
       }
     }
   }
@@ -258,12 +258,12 @@ $prefix: '#{$component-prefix}-transfer' !default;
   flex-basis: 56px;
 
   .#{$component-prefix}-button {
-    margin-top: -4px;
+    margin-block-start: calc(#{use-spacing(2)} * -1);
     font-size: use-text-size('lg');
   }
 
   .#{$component-prefix}-button + .#{$component-prefix}-button {
-    margin-top: use-spacing(6);
-    margin-left: 0;
+    margin-block-start: use-spacing(6);
+    margin-inline-start: 0;
   }
 }

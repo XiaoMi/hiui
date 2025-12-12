@@ -29,7 +29,7 @@ $action-item-prefix: '#{$component-prefix}-action-item' !default;
   }
 
   &--mini {
-    margin-left: use-spacing(2);
+    margin-inline-start: use-spacing(2);
 
     .#{$action-item-prefix}__icon {
       font-size: use-text-size('lg');

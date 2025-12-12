@@ -91,40 +91,40 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   &__popper {
     &[data-popper-placement^=top] {
       .#{$prefix}__arrow {
-        bottom: 0;
+        inset-block-end: 0;
 
         svg {
-          transform: translateX(-50%);
+          transform: translate3d(-50%, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=bottom] {
       .#{$prefix}__arrow {
-        top: -6px;
+        inset-block-start: -6px;
 
         svg {
-          transform: rotate(180deg) translateX(50%);
+          transform: rotate(180deg) translate3d(50%, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        right: 9px;
+        inset-inline-end: 9px;
 
         svg {
-          transform: rotate(-90deg) translateX(3px);
+          transform: rotate(-90deg) translate3d(3px, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
-        left: -15px;
+        inset-inline-start: -15px;
 
         svg {
-          transform: rotate(90deg) translateX(-3px);
+          transform: rotate(90deg) translate3d(-3px, 0, 0);
         }
       }
     }
@@ -138,6 +138,6 @@ $prefix: '#{$component-prefix}-tooltip' !default;
     color: inherit;
     padding: use-spacing(4) use-spacing(5);
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
   }
 }

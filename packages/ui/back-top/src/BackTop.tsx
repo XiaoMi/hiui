@@ -71,8 +71,8 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
     }, [duration, target, top])
 
     const handleClick = useLatestCallback(() => {
-      scrollToTop()
       onClick?.()
+      setTimeout(scrollToTop, 100)
     })
 
     useDidMount(() => {

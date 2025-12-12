@@ -16,13 +16,13 @@ $prefix: '#{$component-prefix}-popper' !default;
 
   &[data-popper-placement^=top] {
     .#{$prefix}__arrow {
-      bottom: -6px;
+      inset-block-end: -6px;
     }
   }
 
   &[data-popper-placement^=bottom] {
     .#{$prefix}__arrow {
-      top: -6px;
+      inset-block-start: -6px;
 
       svg {
         transform: rotate(180deg);
@@ -32,7 +32,7 @@ $prefix: '#{$component-prefix}-popper' !default;
 
   &[data-popper-placement^=left] {
     .#{$prefix}__arrow {
-      right: -10.5px;
+      inset-inline-end: -10.5px;
 
       svg {
         transform: rotate(-90deg);
@@ -42,7 +42,7 @@ $prefix: '#{$component-prefix}-popper' !default;
 
   &[data-popper-placement^=right] {
     .#{$prefix}__arrow {
-      left: -10.5px;
+      inset-inline-start: -10.5px;
 
       svg {
         transform: rotate(90deg);

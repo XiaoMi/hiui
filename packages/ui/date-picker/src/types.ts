@@ -314,7 +314,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 点击确认按钮的回调
    */
-  onConfirm?: (date: Date) => void
+  onConfirm?: (date: Date | Date[]) => void
   /**
    * 是否显示日期选择器
    */
@@ -324,4 +324,8 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * @default true
    */
   showIndicator?: boolean
+  /**
+   * 是否展示周，仅在 type 为 date 或 daterange 时生效
+   */
+  showWeek?: boolean
 }

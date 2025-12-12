@@ -18,7 +18,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
     &__indent {
       display: inline-block;
-      width: 16px;
+      width: use-height-size(4);
       height: 100%;
     }
 
@@ -37,17 +37,8 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
     $this: &;
 
-    // &:not(#{$this}--checked):not(#{$this}--focused):not(#{$this}--disabled):hover {
-    //   background-color: use-color('gray', 200);
-    // }
-
     &:hover {
       background-color: use-color('gray', 100);
-    }
-
-    &--checked {
-      // background-color: use-color-mode('primary', 50);
-      // color: use-color-mode('primary');
     }
 
     &--focused {

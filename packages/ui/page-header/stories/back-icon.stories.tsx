@@ -1,7 +1,6 @@
 import React from 'react'
 import PageHeader from '../src'
-import IconButton from '@hi-ui/icon-button'
-import { LeftBoldOutlined } from '@hi-ui/icons'
+import { LeftOutlined } from '@hi-ui/icons'
 
 /**
  * @title 带返回图标
@@ -21,7 +20,7 @@ export const BackIcon = () => {
         <PageHeader
           style={{ backgroundColor: '#f5f8fc', paddingLeft: 16, paddingRight: 16 }}
           title="页面标题"
-          backIcon={<IconButton icon={<LeftBoldOutlined />} />}
+          backIcon={<LeftOutlined />}
           onBack={() => alert('back button clicked')}
         />
       </div>

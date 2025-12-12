@@ -7,7 +7,7 @@ $app-list-prefix: '#{$component-prefix}-app-list' !default;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: use-spacing(4);
   }
 
   &-item {
@@ -15,7 +15,7 @@ $app-list-prefix: '#{$component-prefix}-app-list' !default;
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    gap: 8px;
+    gap: use-spacing(4);
     width: 256px;
     height: use-height-size(12);
     padding: 0 use-spacing(6);

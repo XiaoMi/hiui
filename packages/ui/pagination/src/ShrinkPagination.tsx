@@ -82,7 +82,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
           分页的快捷键是回车下一页，
           counter 的快捷键焦点始终在 input 之上，上下控制加减
         */}
-        <PagerButton {...getMinusButtonProps()} type="prev" />
+        <PagerButton {...getMinusButtonProps()} size={size} type="prev" />
 
         {showJumper ? (
           <>
@@ -92,7 +92,7 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
           </>
         ) : null}
 
-        <PagerButton {...getPlusButtonProps()} type="next" />
+        <PagerButton {...getPlusButtonProps()} size={size} type="next" />
       </div>
     )
   }

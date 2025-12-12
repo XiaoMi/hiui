@@ -16,11 +16,11 @@ $prefix: '#{$component-prefix}-skeleton' !default;
     &-text {
       width: 100%;
       height: use-height-size(4);
-      border-radius: use-border-radius("full");
+      border-radius: use-border-radius('full');
     }
 
     &-text.#{$prefix}--size-sm {
-      height: 14px;
+      height: calc(#{use-height-size(4)} - 2px);
     }
 
     &-text.#{$prefix}--size-lg {
@@ -30,7 +30,7 @@ $prefix: '#{$component-prefix}-skeleton' !default;
     &-avatar {
       width: use-height-size(10);
       height: use-height-size(10);
-      border-radius: use-border-radius("full");
+      border-radius: use-border-radius('full');
       flex-shrink: 0;
     }
 
@@ -47,7 +47,7 @@ $prefix: '#{$component-prefix}-skeleton' !default;
     &-image {
       width: 100%;
       height: 100%;
-      border-radius: use-border-radius("normal");
+      border-radius: use-border-radius('normal');
     }
 
     &-icon {
