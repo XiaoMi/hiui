@@ -3,13 +3,13 @@
 $prefix: '#{$component-prefix}-alert' !default;
 
 .#{$prefix} {
-  $alert-icon-size: 20px;
+  $alert-icon-size: use-height-size(5);
 
   position: relative;
   border-radius: use-border-radius('lg');
   font-size: use-text-size('normal');
   color: use-color('gray', 700);
-  line-height: use-text-lineheight('md');
+  line-height: use-text-lineheight('normal');
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -27,13 +27,13 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-lg {
-    padding: calc(#{use-spacing(6)} - 1px) use-spacing(8);
+    padding: calc(#{use-spacing(5)} + 1px) use-spacing(8);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(10);
 
       .#{$prefix}__title {
-        margin-bottom: use-spacing(4);
+        margin-block-end: use-spacing(4);
       }
 
       .#{$prefix}__icon {
@@ -43,13 +43,13 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-md {
-    padding: calc(#{use-spacing(5)} - 1px) use-spacing(6);
+    padding: calc(#{use-spacing(4)} + 1px) use-spacing(6);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(8);
 
       .#{$prefix}__title {
-        margin-bottom: use-spacing(3);
+        margin-block-end: use-spacing(3);
       }
 
       .#{$prefix}__icon {
@@ -59,13 +59,13 @@ $prefix: '#{$component-prefix}-alert' !default;
   }
 
   &--size-sm {
-    padding: calc(#{use-spacing(4)} - 1px) use-spacing(4);
+    padding: calc(#{use-spacing(3)} + 1px) use-spacing(4);
 
     &.#{$prefix}--with-content {
       padding: use-spacing(6);
 
       .#{$prefix}__title {
-        margin-bottom: use-spacing(2);
+        margin-block-end: use-spacing(2);
       }
 
       .#{$prefix}__icon {
@@ -77,7 +77,6 @@ $prefix: '#{$component-prefix}-alert' !default;
   &__icon {
     font-size: use-text-size('lg');
     flex-shrink: 0;
-    transform: scale(1.05);
 
     .#{$prefix}--size-lg & {
       margin-inline-end: use-spacing(5);
@@ -92,6 +91,12 @@ $prefix: '#{$component-prefix}-alert' !default;
     }
   }
 
+  &:not(.#{$prefix}--with-content) {
+    .#{$prefix}__icon {
+      transform: scale(1.05);
+    }
+  }
+
   &__message {
     flex: 1;
     width: 100%;
@@ -100,13 +105,12 @@ $prefix: '#{$component-prefix}-alert' !default;
   &__title {
     font-size: use-text-size('normal');
     color: use-color('gray', 800);
-    // line-height: use-text-lineheight('sm');
   }
 
   &__close {
     .#{$prefix} & {
       line-height: inherit;
-      height: use-text-lineheight('sm');
+      height: use-text-lineheight('normal');
       margin-inline-start: use-spacing(4);
     }
   }

@@ -16,8 +16,8 @@ $settingPrefix: '#{$component-prefix}-setting' !default;
 
 .#{$settingPrefix}-item {
   position: relative;
-  padding-top: use-spacing(1);
-  padding-bottom: use-spacing(1);
+  padding-block-start: use-spacing(1);
+  padding-block-end: use-spacing(1);
   box-sizing: border-box;
 
   $this: &;
@@ -33,8 +33,7 @@ $settingPrefix: '#{$component-prefix}-setting' !default;
 
     @include flex(space-between);
 
-    padding: use-spacing(3) use-spacing(4);
-    line-height: use-text-lineheight('sm');
+    padding: calc(#{use-spacing(3)} - 1px) use-spacing(4);
     border-radius: use-border-radius('normal');
 
     &:hover {
@@ -49,15 +48,15 @@ $settingPrefix: '#{$component-prefix}-setting' !default;
   // 拖拽指示器-小圆球
   &::before {
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     z-index: 9999;
     display: none;
     box-sizing: border-box;
-    width: 8px;
-    height: 8px;
+    width: use-height-size(2);
+    height: use-height-size(2);
     content: '';
     background-color: use-color-static('white');
-    border: 1px solid use-color-mode('primary');
+    border: use-border-size('normal') use-color-mode('primary');
     border-radius: 100%;
   }
 
@@ -69,43 +68,43 @@ $settingPrefix: '#{$component-prefix}-setting' !default;
     z-index: 9998;
     display: block;
     box-sizing: border-box;
-    border-bottom-width: 0;
-    border-bottom-style: solid;
-    border-bottom-color: use-color-mode('primary');
-    left: 0;
+    border-block-end-width: 0;
+    border-block-end-style: solid;
+    border-block-end-color: use-color-mode('primary');
+    inset-inline-start: 0;
     width: 100%;
   }
 
   &::before,
   &::after {
-    margin-left: -10px;
-    margin-right: -10px;
+    margin-inline-start: calc(-1 * #{use-spacing(5)});
+    margin-inline-end: calc(-1 * #{use-spacing(5)});
   }
 
   &--direction {
     &-before {
       &::before {
         display: block;
-        top: -0.5px;
-        transform: translateY(-4px);
+        inset-block-start: -0.5px;
+        transform: translate3d(0, -4px, 0);
       }
 
       &::after {
-        top: -0.5px;
-        border-bottom-width: 1px;
+        inset-block-start: -0.5px;
+        border-block-end-width: 1px;
       }
     }
 
     &-after {
       &::before {
         display: block;
-        bottom: 0.5px;
-        transform: translateY(4px);
+        inset-block-end: 0.5px;
+        transform: translate3d(0, 4px, 0);
       }
 
       &::after {
-        bottom: 0.5px;
-        border-bottom-width: 1px;
+        inset-block-end: 0.5px;
+        border-block-end-width: 1px;
       }
     }
   }

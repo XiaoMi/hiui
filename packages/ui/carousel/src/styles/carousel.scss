@@ -19,7 +19,7 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
 
   &--dot-outer {
     .#{$wrapper-class} {
-      height: calc(100% - 32px);
+      height: calc(100% - #{use-height-size(8)});
     }
   }
 
@@ -64,8 +64,8 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
 
   &__page-number {
     position: absolute;
-    right: 12px;
-    bottom: 16px;
+    inset-inline-end: 12px;
+    inset-block-end: 16px;
     color: use-color-static('white');
     font-size: use-text-size('sm');
     line-height: 22px;

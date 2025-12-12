@@ -12,18 +12,18 @@ $prefix: '#{$component-prefix}-popover' !default;
 
   &__title {
     box-sizing: border-box;
-    margin-bottom: use-spacing(2);
+    margin-block-end: use-spacing(2);
     color: use-color('gray', 800);
     font-size: use-text-size('md');
     font-weight: use-text-weight('medium');
     line-height: use-text-lineheight('md');
 
     .#{$prefix}--divided > & {
-      padding-bottom: use-spacing(6);
-      margin-bottom: use-spacing(6);
+      padding-block-end: use-spacing(6);
+      margin-block-end: use-spacing(6);
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
     }
   }
 

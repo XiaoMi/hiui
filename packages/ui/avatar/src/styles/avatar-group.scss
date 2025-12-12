@@ -4,7 +4,7 @@ $prefix: '#{$component-prefix}-avatar' !default;
 
 .#{$prefix}-group {
   > *:not(:first-child) {
-    margin-left: calc(#{use-spacing(6)} * -1);
+    margin-inline-start: calc(#{use-spacing(6)} * -1);
   }
 
   .#{$prefix} {

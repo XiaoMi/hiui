@@ -104,11 +104,11 @@ $prefix: '#{$component-prefix}-textarea' !default;
       line-height: use-text-lineheight('normal');
 
       .#{$prefix}__text {
-        padding: 4px $input-padding-width;
+        padding: use-spacing(2) $input-padding-width;
       }
 
       .#{$prefix}__header {
-        padding: 4px $input-padding-width 0;
+        padding: use-spacing(2) $input-padding-width 0;
       }
 
       .#{$prefix}__inner {
@@ -123,11 +123,11 @@ $prefix: '#{$component-prefix}-textarea' !default;
       line-height: use-text-lineheight('lg');
 
       .#{$prefix}__text {
-        padding: 7px $input-padding-width;
+        padding: calc(#{use-spacing(4)} - 1px) $input-padding-width;
       }
 
       .#{$prefix}__header {
-        padding: 7px $input-padding-width 0;
+        padding: calc(#{use-spacing(4)} - 1px) $input-padding-width 0;
       }
 
       .#{$prefix}__inner {
@@ -205,8 +205,8 @@ $prefix: '#{$component-prefix}-textarea' !default;
 
     &-underline {
       .#{$prefix}__text {
-        padding-left: 0;
-        padding-right: 0;
+        padding-inline-start: 0;
+        padding-inline-end: 0;
       }
 
       .#{$prefix}__inner {
@@ -215,34 +215,34 @@ $prefix: '#{$component-prefix}-textarea' !default;
           box-sizing: border-box;
           display: block;
           position: absolute;
-          bottom: 0;
+          inset-block-end: 0;
           // 两边透明边框各负 1px
-          left: -1px;
-          right: -1px;
-          border-bottom: 1px solid use-color('gray', 400);
+          inset-inline-start: -1px;
+          inset-inline-end: -1px;
+          border-block-end: use-border-size('normal') use-color('gray', 400);
           transition: all 0.3s;
         }
 
         &:not(.#{$prefix}__inner--disabled):hover {
           &::after {
-            border-bottom-color: use-color-mode('primary');
+            border-block-end-color: use-color-mode('primary');
           }
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--focused {
           &::after {
-            border-bottom-color: use-color-mode('primary');
+            border-block-end-color: use-color-mode('primary');
           }
         }
 
         &:not(.#{$prefix}__inner--disabled).#{$prefix}__inner--invalid {
           &::after {
-            border-bottom-color: use-color-mode('error');
+            border-block-end-color: use-color-mode('error');
           }
 
           &.hover {
             &::after {
-              border-bottom-color: use-color-mode('error');
+              border-block-end-color: use-color-mode('error');
             }
           }
         }
@@ -251,8 +251,8 @@ $prefix: '#{$component-prefix}-textarea' !default;
 
     &-borderless {
       .#{$prefix}__text {
-        padding-left: 0;
-        padding-right: 0;
+        padding-inline-start: 0;
+        padding-inline-end: 0;
       }
     }
 
@@ -294,7 +294,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
       position: relative;
 
       .#{$prefix}__text {
-        padding-bottom: use-spacing(10);
+        padding-block-end: use-spacing(10);
       }
 
       .#{$prefix}__count {
@@ -304,10 +304,9 @@ $prefix: '#{$component-prefix}-textarea' !default;
         line-height: use-text-lineheight('sm');
         white-space: nowrap;
         pointer-events: none;
-        float: right;
         position: absolute;
-        right: use-spacing(5);
-        bottom: use-spacing(1);
+        inset-inline-end: use-spacing(5);
+        inset-block-end: use-spacing(1);
         z-index: calc(#{use-zindex('absolute')} + 1);
 
         &-value {

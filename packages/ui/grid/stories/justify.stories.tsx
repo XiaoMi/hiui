@@ -22,21 +22,21 @@ export const Justify = () => {
       <div className="grid-justify">
         <Row justify="center" gutter={true}>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-6</div>
           </Col>
         </Row>
         <Row justify="space-between" gutter={true}>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-6</div>
           </Col>
         </Row>
       </div>

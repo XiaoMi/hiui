@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 .#{$prefix} {
   &:last-child {
     .#{$prefix}-item--appearance-filled {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
   }
 }
@@ -62,7 +62,7 @@ $prefix: '#{$component-prefix}-filter' !default;
   }
 
   &--appearance-link {
-    line-height: 44px;
+    line-height: use-height-size(11);
 
     .#{$prefix}-item__label {
       &::after {
@@ -85,8 +85,8 @@ $prefix: '#{$component-prefix}-filter' !default;
       &::after {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 50%;
+        inset-block-end: 0;
+        inset-inline-start: 50%;
         transform: translate(-50%, -50%);
         transition: background-color 0.3s;
       }
@@ -109,8 +109,8 @@ $prefix: '#{$component-prefix}-filter' !default;
   }
 
   &--appearance-filled {
-    line-height: 36px;
-    margin-bottom: use-spacing(4);
+    line-height: use-height-size(9);
+    margin-block-end: use-spacing(4);
 
     .#{$prefix}-item__label {
       &-title {
@@ -121,7 +121,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(12);
-      padding: 2px 0;
+      padding: use-spacing(1) 0;
       color: use-color('gray', 700);
 
       &__text {

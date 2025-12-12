@@ -35,22 +35,21 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-search {
     box-sizing: border-box;
-    // padding: 10px;
-    padding: 0 10px 10px;
+    padding: 0 use-spacing(5) use-spacing(5);
     position: relative;
 
     .#{$component-prefix}-input__prefix {
-      font-size: 16px;
-      padding-left: 0;
+      font-size: use-text-size('lg');
+      padding-inline-start: 0;
     }
 
     &__empty {
       display: inline-block;
-      margin-top: 20px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #999;
-      line-height: 20px;
+      margin-block-start: use-spacing(10);
+      font-size: use-text-size('normal');
+      font-weight: use-text-weight('normal');
+      line-height: use-text-lineheight('normal');
+      color: use-color('gray', 800);
     }
   }
 }
@@ -70,7 +69,6 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 .#{$prefix}-menu {
   @include component-reset;
 
-  // padding: 0 0 10px 0;
   list-style: none;
   width: auto;
   box-sizing: border-box;
@@ -82,20 +80,19 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   padding: use-spacing(2);
 
   &:not(:last-of-type) {
-    border-right: use-border-size('normal') use-color('gray', 300);
+    border-inline-end: use-border-size('normal') use-color('gray', 300);
   }
 
   $this: &;
 
   &--checkable {
     #{$this}-checkbox + .title__text {
-      padding-left: 8px;
+      padding-inline-start: use-spacing(2);
     }
   }
 
   &-item {
     width: 100%;
-    // padding: use-spacing(1) 0;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -105,10 +102,10 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     position: relative;
 
     &::after {
-      right: 0;
-      top: -8px;
-      bottom: -8px;
-      left: -8px;
+      inset-inline-end: 0;
+      inset-block-start: calc(#{use-spacing(4)} * -1);
+      inset-block-end: calc(#{use-spacing(4)} * -1);
+      inset-inline-start: calc(#{use-spacing(4)} * -1);
       content: '';
       position: absolute;
       display: block;
@@ -199,7 +196,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-switcher {
     flex-shrink: 0;
-    font-size: 16px;
+    font-size: use-text-size('lg');
     color: use-color('gray', 600);
 
     &--loading {

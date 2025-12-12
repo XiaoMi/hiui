@@ -37,13 +37,13 @@ $image-container: '#{$prefix}__image' !default;
 
   &__title {
     display: block;
-    margin-top: use-spacing(6);
+    margin-block-start: use-spacing(6);
     color: use-color('gray', 600);
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
   }
 
   &__slot {
-    margin-top: 10px;
+    margin-block-start: use-spacing(5);
   }
 }

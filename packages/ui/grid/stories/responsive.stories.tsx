@@ -23,29 +23,29 @@ export const Responsive = () => {
         <h2>span</h2>
         <Row>
           <Col span={{ xs: 24, md: 12, lg: 6 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>.xs-24 .md-12 .lg-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>.xs-24 .md-12 .lg-6</div>
           </Col>
           <Col span={{ xs: 24, md: 12, lg: 6 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>.xs-24 .md-12 .lg-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>.xs-24 .md-12 .lg-6</div>
           </Col>
           <Col span={{ xs: 24, md: 12, lg: 6 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>.xs-24 .md-12 .lg-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>.xs-24 .md-12 .lg-6</div>
           </Col>
           <Col span={{ xs: 24, md: 12, lg: 6 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>.xs-24 .md-12 .lg-6</div>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>.xs-24 .md-12 .lg-6</div>
           </Col>
         </Row>
 
         <h2>offset</h2>
         <Row>
           <Col span={{ xs: 12, md: 8 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>.xs-12 .md-8</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>.xs-12 .md-8</div>
           </Col>
           <Col span={{ xs: 12, md: 8 }} offset={{ xs: 6, md: 0 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>xs-12 .md-8</div>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>xs-12 .md-8</div>
           </Col>
           <Col span={{ xs: 12, md: 8 }} offset={{ xs: 12, md: 0 }}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>xs-12 .md-8</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>xs-12 .md-8</div>
           </Col>
         </Row>
       </div>
