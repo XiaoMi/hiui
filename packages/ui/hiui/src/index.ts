@@ -73,7 +73,8 @@ export { default as Grid } from '@hi-ui/grid'
 export * from '@hi-ui/highlighter'
 export { default as Highlighter } from '@hi-ui/highlighter'
 
-// export * from '@hi-ui/icon-button'
+export * from '@hi-ui/icon-button'
+export { default as IconButton } from '@hi-ui/icon-button'
 
 export * from '@hi-ui/input'
 export { default as Input } from '@hi-ui/input'
@@ -120,8 +121,8 @@ export { default as PageHeader } from '@hi-ui/page-header'
 export * from '@hi-ui/pagination'
 export { default as Pagination } from '@hi-ui/pagination'
 
-// export * from '@hi-ui/picker'
-// export { default as Picker } from '@hi-ui/picker'
+export * from '@hi-ui/picker'
+export { default as Picker } from '@hi-ui/picker'
 
 export * from '@hi-ui/pop-confirm'
 export { default as PopConfirm } from '@hi-ui/pop-confirm'
@@ -129,9 +130,11 @@ export { default as PopConfirm } from '@hi-ui/pop-confirm'
 export * from '@hi-ui/popover'
 export { default as Popover } from '@hi-ui/popover'
 
-// export * from '@hi-ui/popper'
+export * from '@hi-ui/popper'
+export { default as Popper } from '@hi-ui/popper'
 
-// export * from '@hi-ui/portal'
+export * from '@hi-ui/portal'
+export { default as Portal } from '@hi-ui/portal'
 
 export * from '@hi-ui/preview'
 export { default as Preview } from '@hi-ui/preview'
@@ -190,7 +193,8 @@ export { default as Tabs } from '@hi-ui/tabs'
 export * from '@hi-ui/tag'
 export { default as Tag } from '@hi-ui/tag'
 
-// export * from '@hi-ui/tag-input'
+export * from '@hi-ui/tag-input'
+export { default as TagInput } from '@hi-ui/tag-input'
 
 export * from '@hi-ui/textarea'
 export { default as Textarea } from '@hi-ui/textarea'
