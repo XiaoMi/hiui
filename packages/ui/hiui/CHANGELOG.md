@@ -1,5 +1,92 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.41
+
+### Minor Changes
+
+- 95f167a1f: feat(date-picker): add showWeek api (5.0)
+- 4d3260ee4: feat(hiui): 增加组件导出 IconButton Picker Popper Portal TagInput (5.0)
+- d1e7ade1e: feat(grid): add align api (5.0)
+- 10dba616e: feat(date-picker): needConfirm 支持日期范围选择场景 (5.0)
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- ddebd7824: perf(popover): 优化通过方法调用组件时的渲染和打开方式 (5.0)
+- 1e6276dde: fix(ellipsis-tooltip): 兼容 number 类型展示 (5.0)
+- Updated dependencies [95f167a1f]
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [10dba616e]
+- Updated dependencies [ddebd7824]
+- Updated dependencies [1e6276dde]
+  - @hi-ui/date-picker@5.0.0-canary.26
+  - @hi-ui/alert@5.0.0-canary.10
+  - @hi-ui/anchor@5.0.0-canary.5
+  - @hi-ui/avatar@5.0.0-canary.6
+  - @hi-ui/back-top@5.0.0-canary.8
+  - @hi-ui/badge@5.0.0-canary.7
+  - @hi-ui/button@5.0.0-canary.13
+  - @hi-ui/card@5.0.0-canary.8
+  - @hi-ui/carousel@5.0.0-canary.7
+  - @hi-ui/cascader@5.0.0-canary.21
+  - @hi-ui/check-cascader@5.0.0-canary.23
+  - @hi-ui/check-select@5.0.0-canary.18
+  - @hi-ui/check-tree-select@5.0.0-canary.18
+  - @hi-ui/checkbox@5.0.0-canary.7
+  - @hi-ui/collapse@5.0.0-canary.9
+  - @hi-ui/counter@5.0.0-canary.7
+  - @hi-ui/descriptions@5.0.0-canary.8
+  - @hi-ui/drawer@5.0.0-canary.9
+  - @hi-ui/dropdown@5.0.0-canary.10
+  - @hi-ui/empty-state@5.0.0-canary.8
+  - @hi-ui/filter@5.0.0-canary.6
+  - @hi-ui/form@5.0.0-canary.12
+  - @hi-ui/grid@5.0.0-canary.6
+  - @hi-ui/icon-button@5.0.0-canary.8
+  - @hi-ui/input@5.0.0-canary.17
+  - @hi-ui/input-group@5.0.0-canary.5
+  - @hi-ui/layout@5.0.0-canary.14
+  - @hi-ui/list@5.0.0-canary.8
+  - @hi-ui/loading@5.0.0-canary.9
+  - @hi-ui/menu@5.0.0-canary.16
+  - @hi-ui/message@5.0.0-canary.11
+  - @hi-ui/modal@5.0.0-canary.12
+  - @hi-ui/notification@5.0.0-canary.10
+  - @hi-ui/number-input@5.0.0-canary.15
+  - @hi-ui/page-header@5.0.0-canary.6
+  - @hi-ui/pagination@5.0.0-canary.10
+  - @hi-ui/picker@5.0.0-canary.14
+  - @hi-ui/pop-confirm@5.0.0-canary.11
+  - @hi-ui/popover@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.12
+  - @hi-ui/preview@5.0.0-canary.9
+  - @hi-ui/progress@5.0.0-canary.7
+  - @hi-ui/provider@5.0.0-canary.7
+  - @hi-ui/radio@5.0.0-canary.8
+  - @hi-ui/result@5.0.0-canary.7
+  - @hi-ui/scrollbar@5.0.0-canary.7
+  - @hi-ui/search@5.0.0-canary.8
+  - @hi-ui/select@5.0.0-canary.15
+  - @hi-ui/skeleton@5.0.0-canary.1
+  - @hi-ui/slider@5.0.0-canary.8
+  - @hi-ui/stepper@5.0.0-canary.9
+  - @hi-ui/switch@5.0.0-canary.8
+  - @hi-ui/table@5.0.0-canary.23
+  - @hi-ui/tabs@5.0.0-canary.14
+  - @hi-ui/tag@5.0.0-canary.12
+  - @hi-ui/tag-input@5.0.0-canary.20
+  - @hi-ui/textarea@5.0.0-canary.13
+  - @hi-ui/time-picker@5.0.0-canary.17
+  - @hi-ui/timeline@5.0.0-canary.7
+  - @hi-ui/tooltip@5.0.0-canary.8
+  - @hi-ui/transfer@5.0.0-canary.9
+  - @hi-ui/tree@5.0.0-canary.9
+  - @hi-ui/tree-select@5.0.0-canary.13
+  - @hi-ui/upload@5.0.0-canary.12
+  - @hi-ui/zen-mode@5.0.0-canary.5
+  - @hi-ui/ellipsis-tooltip@5.0.0-canary.6
+
 ## 5.0.0-canary.40
 
 ### Patch Changes

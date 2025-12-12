@@ -1,5 +1,18 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [da16450b4]
+- Updated dependencies [ddebd7824]
+  - @hi-ui/menu@5.0.0-canary.16
+  - @hi-ui/popover@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.12
+  - @hi-ui/icons@5.0.0-canary.8
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

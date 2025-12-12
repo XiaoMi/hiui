@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 5.0.0-canary.8
+
+### Minor Changes
+
+- da16450b4: feat(icon-summation): add ShopFilled icon (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

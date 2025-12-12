@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tooltip",
-  "version": "5.0.0-canary.7",
+  "version": "5.0.0-canary.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -49,7 +49,7 @@
     "@hi-ui/container": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/popper": "^5.0.0-canary.10",
+    "@hi-ui/popper": "^5.0.0-canary.12",
     "@hi-ui/portal": "^5.0.0-canary.4",
     "@hi-ui/react-compat": "^5.0.0-canary.2",
     "@hi-ui/react-utils": "^5.0.0-canary.2",

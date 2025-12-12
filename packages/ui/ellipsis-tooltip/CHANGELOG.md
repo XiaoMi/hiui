@@ -1,5 +1,13 @@
 # @hi-ui/ellipsis-tooltip
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- 1e6276dde: fix(ellipsis-tooltip): 兼容 number 类型展示 (5.0)
+- Updated dependencies [d1e7ade1e]
+  - @hi-ui/tooltip@5.0.0-canary.8
+
 ## 5.0.0-canary.5
 
 ### Patch Changes

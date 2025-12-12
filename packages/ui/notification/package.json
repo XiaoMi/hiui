@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/notification",
-  "version": "5.0.0-canary.9",
+  "version": "5.0.0-canary.10",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,8 +46,8 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/icon-button": "^5.0.0-canary.6",
-    "@hi-ui/icons": "^5.0.0-canary.6",
+    "@hi-ui/icon-button": "^5.0.0-canary.8",
+    "@hi-ui/icons": "^5.0.0-canary.8",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/toast": "^5.0.0-canary.6",
     "react-transition-group": "^4.4.5"

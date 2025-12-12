@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/back-top",
-  "version": "5.0.0-canary.7",
+  "version": "5.0.0-canary.8",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,8 +46,8 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/icons": "^5.0.0-canary.7",
-    "@hi-ui/tooltip": "^5.0.0-canary.7",
+    "@hi-ui/icons": "^5.0.0-canary.8",
+    "@hi-ui/tooltip": "^5.0.0-canary.8",
     "@hi-ui/use-did-mount": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-scroll": "^5.0.0-canary.2",

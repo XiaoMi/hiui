@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/input",
-  "version": "5.0.0-canary.16",
+  "version": "5.0.0-canary.17",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -48,7 +48,7 @@
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/func-utils": "^5.0.0-canary.2",
-    "@hi-ui/icons": "^5.0.0-canary.7",
+    "@hi-ui/icons": "^5.0.0-canary.8",
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-merge-refs": "^5.0.0-canary.2",

@@ -1,5 +1,22 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.26
+
+### Minor Changes
+
+- 95f167a1f: feat(date-picker): add showWeek api (5.0)
+- 10dba616e: feat(date-picker): needConfirm 支持日期范围选择场景 (5.0)
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [da16450b4]
+  - @hi-ui/button@5.0.0-canary.13
+  - @hi-ui/popper@5.0.0-canary.12
+  - @hi-ui/time-picker@5.0.0-canary.17
+  - @hi-ui/icons@5.0.0-canary.8
+
 ## 5.0.0-canary.25
 
 ### Patch Changes

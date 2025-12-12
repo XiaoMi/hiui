@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/modal",
-  "version": "5.0.0-canary.11",
+  "version": "5.0.0-canary.12",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,14 +44,14 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": "^5.0.0-canary.12",
+    "@hi-ui/button": "^5.0.0-canary.13",
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/container": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/func-utils": "^5.0.0-canary.2",
-    "@hi-ui/icon-button": "^5.0.0-canary.6",
-    "@hi-ui/icons": "^5.0.0-canary.6",
+    "@hi-ui/icon-button": "^5.0.0-canary.8",
+    "@hi-ui/icons": "^5.0.0-canary.8",
     "@hi-ui/portal": "^5.0.0-canary.4",
     "@hi-ui/react-compat": "^5.0.0-canary.2",
     "@hi-ui/react-utils": "^5.0.0-canary.2",

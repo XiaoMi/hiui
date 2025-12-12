@@ -1,5 +1,25 @@
 # @hi-ui/table
 
+## 5.0.0-canary.23
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [da16450b4]
+  - @hi-ui/button@5.0.0-canary.13
+  - @hi-ui/checkbox@5.0.0-canary.7
+  - @hi-ui/drawer@5.0.0-canary.9
+  - @hi-ui/empty-state@5.0.0-canary.8
+  - @hi-ui/icon-button@5.0.0-canary.8
+  - @hi-ui/loading@5.0.0-canary.9
+  - @hi-ui/pagination@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.12
+  - @hi-ui/radio@5.0.0-canary.8
+  - @hi-ui/scrollbar@5.0.0-canary.7
+  - @hi-ui/select@5.0.0-canary.15
+  - @hi-ui/icons@5.0.0-canary.8
+
 ## 5.0.0-canary.22
 
 ### Patch Changes

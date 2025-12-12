@@ -1,5 +1,18 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- Updated dependencies [d1e7ade1e]
+- Updated dependencies [da16450b4]
+  - @hi-ui/checkbox@5.0.0-canary.7
+  - @hi-ui/icon-button@5.0.0-canary.8
+  - @hi-ui/input@5.0.0-canary.17
+  - @hi-ui/popper@5.0.0-canary.12
+  - @hi-ui/icons@5.0.0-canary.8
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

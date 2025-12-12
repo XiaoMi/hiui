@@ -1,5 +1,11 @@
 # @hi-ui/progress
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- d1e7ade1e: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+
 ## 5.0.0-canary.6
 
 ### Minor Changes
