@@ -11,7 +11,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
   &-item {
     &:not(:first-child) {
-      margin-top: use-spacing(4);
+      margin-block-start: use-spacing(4);
     }
 
     &__content {
@@ -64,7 +64,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
     &__icon {
       display: inline-flex;
-      margin-right: use-spacing(4);
+      margin-inline-end: use-spacing(4);
       font-size: use-text-size('lg');
     }
   }
@@ -85,12 +85,12 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
     &:not(:first-child) {
       > .#{$group-menu-prefix}-item__content {
-        margin-top: use-spacing(12);
+        margin-block-start: use-spacing(12);
       }
     }
 
     + .#{$group-menu-prefix}-item {
-      margin-top: use-spacing(12);
+      margin-block-start: use-spacing(12);
     }
   }
 }

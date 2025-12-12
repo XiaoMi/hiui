@@ -5,6 +5,8 @@ export type GridJustifyEnum =
   | 'space-around'
   | 'space-between'
 
+export type GridAlignEnum = 'flex-start' | 'flex-end' | 'center' | 'stretch'
+
 export interface GridResponsiveSize<T> {
   /**
    * 设置屏幕 < 576px 时响应式栅格数

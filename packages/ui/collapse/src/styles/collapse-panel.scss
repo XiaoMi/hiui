@@ -31,12 +31,12 @@ $icon-class: #{$panel-prefix}__icon !default;
     overflow: hidden;
 
     &::after {
-      border-bottom: none;
+      border-block-end: none;
     }
 
     .#{$panel-prefix}__head {
       &::after {
-        border-bottom: none;
+        border-block-end: none;
       }
     }
   }
@@ -77,22 +77,22 @@ $icon-class: #{$panel-prefix}__icon !default;
       display: block;
       box-sizing: border-box;
       position: absolute;
-      bottom: 0;
-      border-bottom: 1px solid use-color('gray', 300);
+      inset-block-end: 0;
+      border-block-end: use-border-size('normal') use-color('gray', 300);
 
       .#{$component-prefix}-collapse--size-sm & {
-        left: use-spacing(6);
-        right: use-spacing(6);
+        inset-inline-start: use-spacing(6);
+        inset-inline-end: use-spacing(6);
       }
 
       .#{$component-prefix}-collapse--size-md & {
-        left: use-spacing(8);
-        right: use-spacing(8);
+        inset-inline-start: use-spacing(8);
+        inset-inline-end: use-spacing(8);
       }
 
       .#{$component-prefix}-collapse--size-lg & {
-        left: use-spacing(10);
-        right: use-spacing(10);
+        inset-inline-start: use-spacing(10);
+        inset-inline-end: use-spacing(10);
       }
     }
   }
@@ -168,7 +168,7 @@ $icon-class: #{$panel-prefix}__icon !default;
 
   &--show {
     &::after {
-      border-bottom: 1px solid use-color('gray', 300);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
     }
 
     > .#{$panel-prefix}__head {

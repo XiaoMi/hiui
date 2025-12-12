@@ -64,7 +64,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     .ps__thumb-y {
       width: $thumb-size;
       border-radius: $thumb-size;
-      right: 0;
+      inset-inline-end: 0;
       transition: $transition;
     }
 
@@ -76,7 +76,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
 
       .ps__thumb-y {
         width: $thumb-size;
-        right: 0;
+        inset-inline-end: 0;
         background-color: $thumb-background;
         opacity: 0.6;
       }
@@ -86,7 +86,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
     .ps__thumb-x {
       height: $thumb-size;
       border-radius: $thumb-size;
-      bottom: 0;
+      inset-block-end: 0;
       transition: $transition;
     }
 
@@ -98,7 +98,7 @@ $prefix: '#{$component-prefix}-scrollbar' !default;
 
       .ps__thumb-x {
         height: $thumb-size;
-        bottom: 0;
+        inset-block-end: 0;
         background-color: $thumb-background;
         opacity: 0.6;
       }

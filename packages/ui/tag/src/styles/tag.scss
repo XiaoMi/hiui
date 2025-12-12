@@ -329,16 +329,16 @@ $shape-round: '#{$prefix}--shape-round' !default;
     width: calc(100% - #{use-spacing(8)});
     position: absolute;
     line-height: inherit;
-    left: use-spacing(4);
-    top: 50%;
-    transform: translateY(-50%);
+    inset-inline-start: use-spacing(4);
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
     z-index: use-zindex('absolute');
   }
 
   &__close-button {
     height: calc(100% - #{use-spacing(4)});
     padding: 0 use-spacing(2);
-    border-left: use-border-size('normal') use-color('gray', 400);
+    border-inline-start: use-border-size('normal') use-color('gray', 400);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -21,7 +21,7 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
 
   &--range {
     .#{$interact-area} {
-      text-align: left;
+      text-align: start;
     }
   }
 
@@ -63,8 +63,8 @@ $wrapper: '#{$input-prefix}__wrapper' !default;
     font-weight: inherit;
     font-family: inherit;
     position: absolute;
-    left: 0;
-    top: 0;
+    inset-inline-start: 0;
+    inset-block-start: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
