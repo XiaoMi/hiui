@@ -106,7 +106,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &__prefix {
-    margin-right: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__value {

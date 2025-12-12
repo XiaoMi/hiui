@@ -38,22 +38,21 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
 .#{$prefix}-search {
   box-sizing: border-box;
-  // padding: 10px;
-  padding: 0 10px 10px;
+  padding: 0 use-spacing(5) use-spacing(5);
   position: relative;
 
   .#{$component-prefix}-input__prefix {
-    font-size: 16px;
-    padding-left: 0;
+    font-size: use-text-size('lg');
+    padding-inline-start: 0;
   }
 
   &__empty {
     display: inline-block;
-    margin-top: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #999;
-    line-height: 20px;
+    margin-block-start: use-spacing(10);
+    font-size: use-text-size('normal');
+    font-weight: use-text-weight('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 800);
   }
 }
 
@@ -83,14 +82,13 @@ $prefix: '#{$component-prefix}-cascader' !default;
   padding: use-spacing(2);
 
   &:not(:last-of-type) {
-    border-right: use-border-size('normal') use-color('gray', 300);
+    border-inline-end: use-border-size('normal') use-color('gray', 300);
   }
 
   $this: &;
 
   &-item {
     width: 100%;
-    // padding: use-spacing(1) 0;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -126,7 +124,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
     }
 
     &--checked {
-      font-weight: 700;
+      font-weight: use-text-weight('bold');
     }
 
     &#{&}--disabled {
@@ -176,7 +174,7 @@ $prefix: '#{$component-prefix}-cascader' !default;
 
   &-switcher {
     flex-shrink: 0;
-    font-size: 16px;
+    font-size: use-text-size('lg');
     color: use-color('gray', 600);
 
     &--loading {

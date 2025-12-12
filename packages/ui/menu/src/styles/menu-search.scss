@@ -16,8 +16,8 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     height: use-height-size(12);
 
     .#{$menu-search-prefix}--open & {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
     }
   }
 
@@ -40,8 +40,8 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
   &__close {
     display: inline-flex;
     height: use-height-size(4);
-    padding-left: use-spacing(5);
-    border-left: use-border-size('normal') use-color('gray', 400);
+    padding-inline-start: use-spacing(5);
+    border-inline-start: use-border-size('normal') use-color('gray', 400);
   }
 
   &__content {
@@ -50,7 +50,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     flex-direction: column;
     padding: use-spacing(4);
     max-height: 550px;
-    border-top: use-border-size('normal') use-color('gray', 200);
+    border-block-start: use-border-size('normal') use-color('gray', 200);
 
     &--visible {
       display: flex;
@@ -118,7 +118,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     &-item {
       display: flex;
       align-items: center;
-      margin-right: use-spacing(8);
+      margin-inline-end: use-spacing(8);
       font-size: use-text-size('sm');
       color: use-color('gray', 600);
 
@@ -128,7 +128,7 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
         align-items: center;
         justify-content: center;
         gap: use-spacing(1);
-        margin-right: use-spacing(2);
+        margin-inline-end: use-spacing(2);
         padding: 0 use-spacing(2);
         height: use-height-size(5);
         border: use-border-size('normal') use-color('gray', 400);
@@ -141,14 +141,14 @@ $menu-search-prefix: '#{$component-prefix}-menu-search' !default;
     .#{$menu-search-prefix}__picker {
       &-container {
         min-width: 360px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
       }
 
       &-panel {
         border-top: none;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
       }
 
       &-body {

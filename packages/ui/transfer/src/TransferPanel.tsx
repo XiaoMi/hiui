@@ -6,7 +6,7 @@ import { useTransferContext } from './context'
 import Input from '@hi-ui/input'
 import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
-import { SearchOutlined, InfoCircleOutlined } from '@hi-ui/icons'
+import { SearchOutlined, ExclamationCircleOutlined } from '@hi-ui/icons'
 import { ShrinkPagination } from '@hi-ui/pagination'
 import { useLocaleContext } from '@hi-ui/core'
 
@@ -165,7 +165,7 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
             {/* 滚动时吸附顶部，同时与 target 集合滚动高度保持一致 */}
             {overflowed ? (
               <div className={`${prefixCls}__limit`}>
-                <InfoCircleOutlined className={`${prefixCls}__limit-icon`} />
+                <ExclamationCircleOutlined className={`${prefixCls}__limit-icon`} />
                 <span>{limitContent}</span>
               </div>
             ) : null}

@@ -22,16 +22,16 @@ export const Nested = () => {
       <div className="grid-nested__wrap">
         <Row gutter={true}>
           <Col span={16}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-16
               <Row gutter={8}>
                 <Col span={12}>
-                  <div style={{ ...blockStyle, backgroundColor: '#237ffa', opacity: 1 }}>
+                  <div style={{ ...blockStyle, backgroundColor: '#2660ff', opacity: 1 }}>
                     col-12
                   </div>
                 </Col>
                 <Col span={12}>
-                  <div style={{ ...blockStyle, backgroundColor: '#237ffa', opacity: 1 }}>
+                  <div style={{ ...blockStyle, backgroundColor: '#2660ff', opacity: 1 }}>
                     col-12
                   </div>
                 </Col>
@@ -39,7 +39,7 @@ export const Nested = () => {
             </div>
           </Col>
           <Col span={8}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-4</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-4</div>
           </Col>
         </Row>
       </div>

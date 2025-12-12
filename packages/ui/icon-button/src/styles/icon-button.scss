@@ -24,10 +24,10 @@ $icon-button-effect-color: var(--#{$icon-button-prefix}-effect-color, use-color(
       content: '';
       position: absolute;
       display: block;
-      right: calc(-1 * #{use-spacing(2)});
-      top: calc(-1 * #{use-spacing(2)});
-      bottom: calc(-1 * #{use-spacing(2)});
-      left: calc(-1 * #{use-spacing(2)});
+      inset-inline-end: calc(-1 * #{use-spacing(2)});
+      inset-block-start: calc(-1 * #{use-spacing(2)});
+      inset-block-end: calc(-1 * #{use-spacing(2)});
+      inset-inline-start: calc(-1 * #{use-spacing(2)});
       background: use-color-static('transparent');
     }
   }
@@ -37,10 +37,10 @@ $icon-button-effect-color: var(--#{$icon-button-prefix}-effect-color, use-color(
       content: '';
       position: absolute;
       display: block;
-      right: calc(-1 * #{use-spacing(2)});
-      top: calc(-1 * #{use-spacing(2)});
-      bottom: calc(-1 * #{use-spacing(2)});
-      left: calc(-1 * #{use-spacing(2)});
+      inset-inline-end: calc(-1 * #{use-spacing(2)});
+      inset-block-start: calc(-1 * #{use-spacing(2)});
+      inset-block-end: calc(-1 * #{use-spacing(2)});
+      inset-inline-start: calc(-1 * #{use-spacing(2)});
       z-index: -1;
       background-color: transparent;
       transition: background-color use-motion-duration('normal');

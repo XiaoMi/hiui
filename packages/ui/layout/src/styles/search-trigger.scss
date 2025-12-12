@@ -7,22 +7,22 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  gap: 8px;
-  height: 32px;
-  margin: 0 8px 12px;
-  font-size: 16px;
+  gap: use-spacing(4);
+  height: use-height-size(8);
+  margin: 0 use-spacing(4) use-spacing(6);
+  font-size: use-text-size('lg');
   color: use-color('gray', 600);
   background-color: rgba(#717ea3, 0.1);
   cursor: pointer;
   border-radius: 9999px;
 
   &:not(&--mini) {
-    padding: 0 12px;
+    padding: 0 use-spacing(6);
   }
 
   &--mini {
-    width: 32px;
-    margin-left: use-spacing(7);
+    width: use-width-size(8);
+    margin-inline-start: use-spacing(7);
     justify-content: center;
   }
 

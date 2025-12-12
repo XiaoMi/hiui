@@ -14,7 +14,7 @@ export const GutterGap = () => {
         <PopConfirm
           style={{ minWidth: 280 }}
           title="Delete this item along with the entered content?"
-          gutterGap={20}
+          gutterGap={12}
         >
           <Button>Trigger</Button>
         </PopConfirm>

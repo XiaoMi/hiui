@@ -24,18 +24,16 @@ $group-gap-color-map: (
 
   background-color: transparent;
   position: relative; // Used by button :focus radio-style etc.
-  // display: inline-block;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
   box-sizing: border-box;
   appearance: none;
   margin: 0;
-  border: 1px solid transparent;
+  border: use-border-size('normal') transparent;
   font-weight: use-text-weight('normal');
-  // text-align: center;
   text-decoration: none;
-  // vertical-align: middle;
   white-space: nowrap;
   touch-action: manipulation; // 禁用非标准手势
   &:not(#{&}--loading) {
@@ -70,13 +68,13 @@ $group-gap-color-map: (
   }
 
   // 尺寸通用
+  &--size-xs,
   &--size-sm {
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 14px;
+      font-size: calc(#{use-text-size('sm')} + 2px);
     }
 
     &:not(.#{$prefix}--icon-only) {
@@ -103,8 +101,7 @@ $group-gap-color-map: (
     line-height: use-text-lineheight('normal');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 16px;
+      font-size: calc(#{use-text-size('normal')} + 2px);
     }
 
     &:not(.#{$prefix}--icon-only) {
@@ -131,8 +128,7 @@ $group-gap-color-map: (
     line-height: use-text-lineheight('lg');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 20px;
+      font-size: calc(#{use-text-size('lg')} + 4px);
     }
 
     &:not(.#{$prefix}--icon-only) {
@@ -150,34 +146,6 @@ $group-gap-color-map: (
       }
       .#{$prefix}__icon--suffix {
         margin-inline-start: use-spacing(4);
-      }
-    }
-  }
-
-  &--size-xl {
-    font-size: use-text-size('xl');
-    line-height: use-text-lineheight('xl');
-
-    .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 24px;
-    }
-
-    &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon--prefix {
-        margin-inline-end: use-spacing(6);
-      }
-      .#{$prefix}__icon--suffix {
-        margin-inline-start: use-spacing(6);
-      }
-    }
-
-    &.#{$prefix}--loading {
-      .#{$prefix}__icon--prefix {
-        margin-inline-end: use-spacing(6);
-      }
-      .#{$prefix}__icon--suffix {
-        margin-inline-start: use-spacing(6);
       }
     }
   }
@@ -217,30 +185,30 @@ $group-gap-color-map: (
 
     .#{$prefix} {
       &:first-child:has(+ .#{$prefix}) {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-right: none;
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+        border-inline-end: none;
       }
 
       &:last-child:not(:first-child) {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-left: none;
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        border-inline-start: none;
       }
 
       &:not(:first-child):not(:last-child) {
         border-radius: 0;
-        border-left: none;
-        border-right: none;
+        border-inline-start: none;
+        border-inline-end: none;
       }
 
       &:not(:first-child) {
-        margin-left: 0;
+        margin-inline-start: 0;
 
         &::before {
           content: '';
           position: absolute;
-          left: -1px;
+          inset-inline-start: -1px;
           width: 1px;
           height: 100%;
         }

@@ -45,7 +45,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
 
     &__icon {
       display: inline-flex;
-      margin-right: use-spacing(4);
+      margin-inline-end: use-spacing(4);
       font-size: use-text-size('lg');
       color: #7c87a6;
     }
@@ -64,13 +64,13 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
       height: 48px;
 
       .#{$side-menu-prefix}-item__icon {
-        margin-right: 0;
-        font-size: 18px;
+        margin-inline-end: 0;
+        font-size: use-text-size('xl');
       }
 
       .#{$side-menu-prefix}-item__title {
         width: 200%;
-        font-size: 20px;
+        font-size: calc(#{use-text-size('xl')} + 2px);
         text-align: center;
         text-indent: 0;
         transform: scale(0.5);

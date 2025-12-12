@@ -62,7 +62,7 @@ $prefix: '#{$component-prefix}-tree' !default;
       width: 160px;
       box-shadow: 0 2px 8px 0 use-color('gray', 200);
       padding: use-spacing(6) use-spacing(4);
-      border-radius: 4px;
+      border-radius: use-border-radius('md');
 
       &__item {
         list-style: none;
@@ -79,7 +79,7 @@ $prefix: '#{$component-prefix}-tree' !default;
         border-radius: use-border-radius('normal');
 
         &:not(:last-of-type) {
-          margin-bottom: use-spacing(4);
+          margin-block-end: use-spacing(4);
         }
 
         &:hover {

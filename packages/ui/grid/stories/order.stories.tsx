@@ -22,25 +22,25 @@ export const Order = () => {
       <div className="grid-order__wrap">
         <Row>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               <div>1号空间</div>
               <div>序号：未定义</div>
             </div>
           </Col>
           <Col span={6} order={-1}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               <div>2号空间</div>
               <div>序号：-1</div>
             </div>
           </Col>
           <Col span={6} order={24}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               <div>3号空间</div>
               <div>序号：24</div>
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               <div>4号空间</div>
               <div>序号：未定义</div>
             </div>

@@ -3,8 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import Breadcrumb, { BreadcrumbProps } from '@hi-ui/breadcrumb'
-import IconButton from '@hi-ui/icon-button'
-import { LeftShortBoldOutlined } from '@hi-ui/icons'
+import { LeftShortOutlined } from '@hi-ui/icons'
 
 const PAGE_HEADER_PREFIX = getPrefixCls('page-header')
 
@@ -36,12 +35,9 @@ export const PageHeader = forwardRef<HTMLDivElement | null, PageHeaderProps>(
         <div className={`${prefixCls}__content`}>
           <div className={`${prefixCls}__title-container`}>
             {backIcon !== false && (
-              <IconButton
-                className={`${prefixCls}__back-button`}
-                icon={typeof backIcon === 'boolean' ? <LeftShortBoldOutlined /> : backIcon}
-                effect
-                onClick={onBack}
-              />
+              <span className={`${prefixCls}__back-button`} onClick={onBack}>
+                {typeof backIcon === 'boolean' ? <LeftShortOutlined /> : backIcon}
+              </span>
             )}
             <div className={`${prefixCls}__title`}>{title}</div>
             {subTitle && <div className={`${prefixCls}__sub-title`}>{subTitle}</div>}

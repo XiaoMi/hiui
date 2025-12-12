@@ -10,7 +10,7 @@ $prefix: '#{$component-prefix}-anchor' !default;
     @include list-reset();
 
     position: relative;
-    padding-left: use-spacing(2);
+    padding-inline-start: use-spacing(2);
 
     &::before {
       content: '';
@@ -42,7 +42,7 @@ $item-prefix: '#{$prefix}-item' !default;
   width: 100%;
 
   & > & {
-    padding-left: use-spacing(6);
+    padding-inline-start: use-spacing(6);
   }
 
   &__link {

@@ -30,12 +30,12 @@ $prefix: '#{$component-prefix}-dropdown' !default;
 .#{$prefix}-menu-item {
   @include list-item-reset();
 
-  margin: 2px 0 0 0;
+  margin: use-spacing(1) 0 0 0;
   box-sizing: border-box;
   overflow: visible;
 
   &:first-child {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   &__link {

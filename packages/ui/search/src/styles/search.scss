@@ -50,13 +50,13 @@ $prefix: '#{$component-prefix}-search' !default;
     }
 
     &-subgroup {
-      padding-left: use-spacing(4);
+      padding-inline-start: use-spacing(4);
     }
 
     &-item {
       &:not(.#{$prefix}__dropdown-group) {
         &:last-of-type {
-          margin-bottom: 0;
+          margin-block-end: 0;
         }
 
         box-sizing: border-box;

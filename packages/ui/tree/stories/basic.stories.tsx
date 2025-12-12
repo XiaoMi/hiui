@@ -14,6 +14,7 @@ export const Basic = () => {
       <h1>Basic for Tree</h1>
       <div className="tree-basic__wrap">
         <Button
+          style={{ marginBottom: 8 }}
           onClick={() => {
             setExpandedIds([1])
           }}

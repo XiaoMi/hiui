@@ -5,17 +5,17 @@ $prefix: '#{$component-prefix}-preview' !default;
 .#{$prefix} {
   z-index: use-zindex('dialog');
   position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  inset-inline-start: 0;
 
   &__mask {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     background-color: use-color('gray', 800);
     opacity: 0;
   }
@@ -55,9 +55,9 @@ $prefix: '#{$component-prefix}-preview' !default;
     align-items: center;
     justify-content: space-between;
     position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
+    inset-block-start: use-spacing(10);
+    inset-inline-start: use-spacing(10);
+    inset-inline-end: use-spacing(10);
     z-index: 2;
   }
 
@@ -72,10 +72,10 @@ $prefix: '#{$component-prefix}-preview' !default;
 
   &__container {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     text-align: center;
     outline: none;
     display: flex;
@@ -88,9 +88,9 @@ $prefix: '#{$component-prefix}-preview' !default;
     display: flex;
     align-items: center;
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    inset-block-end: use-spacing(10);
+    inset-inline-start: 50%;
+    transform: translate3d(-50%, 0, 0);
     background: rgba(#1a1d26, 0.9);
     padding: 0 use-spacing(4);
     height: use-height-size(12);
@@ -131,7 +131,7 @@ $prefix: '#{$component-prefix}-preview' !default;
         justify-content: center;
         width: calc(#{use-height-size(3)} + 2px);
         height: calc(#{use-height-size(3)} + 2px);
-        border-radius: 4px;
+        border-radius: use-border-radius('md');
         border: use-border-size('semibold') use-color-static('white');
         user-select: none;
 
@@ -172,8 +172,8 @@ $prefix: '#{$component-prefix}-preview' !default;
     &::after {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
       width: 16px;
       height: 2px;
       background-color: use-color-static('white');
@@ -189,34 +189,27 @@ $prefix: '#{$component-prefix}-preview' !default;
     }
   }
 
-  &__left-btn {
+  &__left-btn,
+  &__right-btn {
     position: absolute;
-    left: 10px;
-    top: 50%;
+    inset-block-start: 50%;
     width: 40px;
     height: 40px;
     line-height: 40px;
     font-size: 24px;
     cursor: pointer;
-    margin-top: -18px;
+    margin-block-start: -18px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.1);
     color: use-color-static('white');
   }
 
+  &__left-btn {
+    inset-inline-start: use-spacing(5);
+  }
+
   &__right-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 24px;
-    cursor: pointer;
-    margin-top: -18px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: use-color-static('white');
+    inset-inline-end: use-spacing(5);
   }
 
   &__image {

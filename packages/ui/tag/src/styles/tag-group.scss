@@ -6,10 +6,10 @@ $tag-group-prefix: '#{$component-prefix}-tag-group' !default;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: calc(-1 * #{use-spacing(4)});
+  margin-block-start: calc(-1 * #{use-spacing(4)});
 
   &__item {
-    margin-top: use-spacing(4);
+    margin-block-start: use-spacing(4);
     margin-inline-end: use-spacing(4);
   }
 
@@ -17,6 +17,6 @@ $tag-group-prefix: '#{$component-prefix}-tag-group' !default;
     height: use-height-size(6);
     display: flex;
     align-items: center;
-    margin-top: use-spacing(4);
+    margin-block-start: use-spacing(4);
   }
 }

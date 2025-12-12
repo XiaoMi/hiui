@@ -22,47 +22,47 @@ export const Basic = () => {
       <div className="grid-basic__wrap">
         <Row>
           <Col span={24}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>col-24</div>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>col-24</div>
           </Col>
         </Row>
         <Row>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#237ffa' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#2660ff' }}>
               col-6
               <br />
               25%
             </div>
           </Col>
           <Col span={6}>
-            <div style={{ ...blockStyle, backgroundColor: '#fab007' }}>
+            <div style={{ ...blockStyle, backgroundColor: '#4b82ff' }}>
               col-6
               <br />
               25%
