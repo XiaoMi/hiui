@@ -1,135 +1,91 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 
 /**
  * @title 表格分页
  */
 export const Pagination = () => {
-  const [columns] = React.useState([
+  const [columns] = useState([
     {
-      title: '商品名',
+      title: 'Name',
       dataKey: 'name',
-      width: 120,
     },
     {
-      title: '品类',
-      dataKey: 'type',
-      width: 80,
+      title: 'Age',
+      dataKey: 'age',
     },
     {
-      title: '规格',
-      dataKey: 'size',
-    },
-    {
-      title: '单价',
-      dataKey: 'price',
-    },
-    {
-      title: '门店',
+      title: 'Address',
       dataKey: 'address',
     },
     {
-      title: '库存',
-      dataKey: 'stock',
+      title: 'Email',
+      dataKey: 'email',
     },
   ])
 
-  const [dataSource] = React.useState([
+  const [data] = useState([
     {
-      name: '小米9',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '3299.00',
-      address: '华润五彩城店',
-      stock: '29,000',
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
       key: 1,
     },
     {
-      name: '小米9 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '1999.00',
-      address: '清河店',
-      stock: '10,000',
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
       key: 2,
     },
     {
-      name: '小米8',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '2599.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
       key: 3,
     },
     {
-      name: 'Redmi Note7',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '999.00',
-      address: '华润五彩城店',
-      stock: '140,000',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+      email: 'jim.green@example.com',
       key: 4,
     },
     {
-      name: '小米8 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '699.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Jane Doe',
+      age: 30,
+      address: '32 Park Road, London',
+      email: 'jane.doe@example.com',
       key: 5,
     },
     {
-      name: '小米10',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '3299.00',
-      address: '华润五彩城店',
-      stock: '29,000',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+      email: 'jim.green@example.com',
       key: 6,
     },
     {
-      name: '小米10 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '1999.00',
-      address: '清河店',
-      stock: '10,000',
+      name: 'Jane Doe',
+      age: 30,
+      address: '32 Park Road, London',
+      email: 'jane.doe@example.com',
       key: 7,
     },
     {
-      name: '小米8',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '2599.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+      email: 'jim.green@example.com',
       key: 8,
     },
-    {
-      name: 'Redmi Note7',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '999.00',
-      address: '华润五彩城店',
-      stock: '140,000',
-      key: 9,
-    },
-    // {
-    //   name: '小米8 SE',
-    //   type: '手机',
-    //   size: '6G+64G 幻彩蓝',
-    //   price: '699.00',
-    //   address: '双安店',
-    //   stock: '12,000',
-    //   key: 10,
-    // },
   ])
 
   const [paginationState, setPaginationState] = React.useState({
     current: 1,
-    data: dataSource.slice(0, 5),
+    data: data.slice(0, 5),
     pageSize: 5,
   })
 
@@ -138,7 +94,7 @@ export const Pagination = () => {
   return (
     <>
       <h1>Pagination for Table</h1>
-      <div className="table-pagination__wrap" style={{ minWidth: 660 }}>
+      <div className="table-pagination__wrap">
         <Table
           pagination={{
             showTotal: true,
@@ -156,7 +112,7 @@ export const Pagination = () => {
                 pageSize,
               }))
             },
-            total: dataSource.length,
+            total: data.length,
             current: paginationState.current,
             onChange: (page, pre, size = 5) => {
               console.log('onPaginationChange', page, pre, size)
@@ -164,7 +120,7 @@ export const Pagination = () => {
               setPaginationState((prev) => ({
                 ...prev,
                 current: page,
-                data: dataSource.slice(size * (page - 1), size * page),
+                data: data.slice(size * (page - 1), size * page),
               }))
             },
           }}

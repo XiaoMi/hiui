@@ -51,11 +51,11 @@ export const GetValues = () => {
           <FormItem required={true} label="姓名" field="name" valueType="string">
             <Input placeholder="请输入" style={{ width: 200 }} />
           </FormItem>
-          <FormItem valueType={null} field={null} showValidateMessage={false}>
+          <FormItem valueType={undefined} field={undefined} showValidateMessage={false}>
             <Button
               type="primary"
               onClick={() => {
-                const values = formRef.current.getFieldsValue()
+                const values = formRef.current?.getFieldsValue()
                 console.log('获取表单值, 但是不触发校验方法', values)
                 message.open({
                   title: JSON.stringify(values),

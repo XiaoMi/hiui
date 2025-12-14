@@ -48,20 +48,12 @@ export const DataSource = () => {
   return (
     <>
       <h1>DataSource for Table</h1>
-      <div className="table-data-source__wrap" style={{ minWidth: 660, background: '#fff' }}>
+      <div className="table-data-source__wrap">
         <Space align="center" style={{ marginBottom: '1em' }}>
           <Button onClick={() => setSearchVal(searchVal + 1)}>模拟更新查询参数</Button>
           <small>更新后表格会从第一页开始重新加载数据</small>
         </Space>
-        <Table
-          columns={columns}
-          dataSource={handleDataSource}
-          // @ts-ignore
-          // pagination={{
-          //   showTotal: true,
-          //   pageSizeOptions: [5, 10, 20],
-          // }}
-        />
+        <Table columns={columns} dataSource={handleDataSource} />
       </div>
     </>
   )

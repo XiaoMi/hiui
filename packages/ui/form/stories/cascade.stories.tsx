@@ -77,9 +77,6 @@ export const Cascade = () => {
                 },
               ]}
               placeholder="控制Counter的显示隐藏"
-              onChange={(ids) => {
-                console.log('select ids', ids)
-              }}
             />
           </FormItem>
 
@@ -106,27 +103,17 @@ export const Cascade = () => {
                 { id: 'Cascader', title: 'Cascader' },
                 { id: 'Radio', title: 'Radio' },
               ]}
-              onChange={(data) => console.log('Checkbox data', data)}
             ></CheckboxGroup>
           </FormItem>
 
           {formData.checkbox.includes('DatePicker') && (
             <FormItem label="DatePicker" field="datePicker" required={true} valueType="array">
-              <DatePicker
-                type="daterange"
-                onChange={(date, dateStr) => {
-                  console.log('onChange DatePicker', date, dateStr)
-                }}
-              />
+              <DatePicker type="daterange" />
             </FormItem>
           )}
-          {/* TODO: 动态切换时，是否移除脏数据，但是初始数据必然有额外数据，移除同名字段数据显然不合理 */}
           {formData.checkbox.includes('Cascader') && (
             <FormItem label="Cascader" field="Cascader" valueType="string">
               <Cascader
-                onChange={(id) => {
-                  console.log('Cascader change id', id)
-                }}
                 data={[
                   {
                     id: '手机',
@@ -146,34 +133,6 @@ export const Cascade = () => {
                           },
                         ],
                       },
-                      {
-                        id: '红米',
-                        title: '红米',
-                        children: [
-                          {
-                            id: '红米3',
-                            title: '红米3',
-                          },
-                          {
-                            id: '红米4',
-                            title: '红米4',
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    id: '电视',
-                    title: '电视',
-                    children: [
-                      {
-                        id: '小米电视4A',
-                        title: '小米电视4A',
-                      },
-                      {
-                        id: '小米电视4C',
-                        title: '小米电视4C',
-                      },
                     ],
                   },
                 ]}
@@ -187,15 +146,13 @@ export const Cascade = () => {
                 data={[
                   { id: 0, title: '手机类' },
                   { id: 1, title: '电脑类' },
-                  { id: 2, title: '生活类' },
                 ]}
-                onChange={(data) => console.log('radio data', data)}
               ></RadioGroup>
             </FormItem>
           )}
 
           <FormItem label="Switch" field="switch" valueType="boolean">
-            <Switch content={['ON', 'OFF']} onChange={(val) => console.log('change Switch', val)} />
+            <Switch content={['ON', 'OFF']} />
           </FormItem>
 
           <FormItem label="Rating" field="rating" valueType="number">
@@ -205,11 +162,7 @@ export const Cascade = () => {
             <Upload
               type="photo"
               uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
-              onChange={(file, fileList, response) => {
-                console.log('upload callback', file, fileList, response)
-              }}
               onRemove={(file, fileList, index) => {
-                console.log('remove callback', file, fileList, index)
                 return new Promise((resolve) => resolve(true))
               }}
               name={'files[]'}
@@ -267,7 +220,7 @@ export const Cascade = () => {
                     switch: false,
                     datePicker: { start: new Date(), end: new Date() },
                     checkbox: ['Phone', 'Computer'],
-                    cascader: ['电视', '小米电视4C'],
+                    cascader: ['手机', '小米', '小米3'],
                   })
                 }}
               >

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 
 /**
@@ -6,103 +6,70 @@ import Table from '../src'
  * @desc 只支持表头列合并，被合并的表头需要设置 colSpan 为 0，则该表头不显示
  */
 export const HeaderColSpan = () => {
+  const [columns] = useState([
+    {
+      title: 'Name',
+      dataKey: 'name',
+    },
+    {
+      title: 'Age',
+      dataKey: 'age',
+    },
+    {
+      title: 'Address + Email',
+      dataKey: 'address',
+      colSpan: 2,
+    },
+    {
+      title: 'Email',
+      dataKey: 'email',
+      colSpan: 0,
+    },
+    {
+      title: 'Phone',
+      dataKey: 'phone',
+    },
+    {
+      title: 'Phone2',
+      dataKey: 'phone2',
+    },
+  ])
+
+  const [data] = useState([
+    {
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
+      phone: '1234567890',
+      phone2: '1234567890',
+      key: 1,
+    },
+    {
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
+      phone: '1234567890',
+      phone2: '1234567890',
+      key: 2,
+    },
+    {
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
+      phone: '1234567890',
+      phone2: '1234567890',
+      key: 3,
+    },
+  ])
+
   return (
     <>
       <h1>Header ColSpan</h1>
-      <div className="table-header-colspan__wrap" style={{ minWidth: 660, background: '#fff' }}>
-        <Table
-          bordered
-          columns={[
-            {
-              title: '商品名',
-              dataKey: 'name',
-              width: 100,
-              align: 'center',
-              render: (text, row) => {
-                console.log(text, row)
-                return text + '*'
-              },
-            },
-            {
-              title: '品类 + 型号',
-              dataKey: 'type',
-              align: 'center',
-              width: 100,
-              colSpan: 2,
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 100,
-              colSpan: 0,
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 100,
-            },
-            {
-              title: '门店 + 库存',
-              dataKey: 'address',
-              align: 'center',
-              width: 100,
-              colSpan: 2,
-            },
-            {
-              title: '库存',
-              dataKey: 'stock',
-              width: 100,
-              colSpan: 0,
-            },
-          ]}
-          data={[
-            {
-              name: '小米9',
-              type: '手机',
-              size: '6G+64G',
-              price: '3299.00',
-              address: '华润五彩城店',
-              stock: '29,000',
-              key: 1,
-            },
-            {
-              name: '小米9 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '1999.00',
-              address: '清河店',
-              stock: '10,000',
-              key: 2,
-            },
-            {
-              name: '小米8',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '2599.00',
-              address: '双安店',
-              stock: '12,000',
-              key: 3,
-            },
-            {
-              name: 'Redmi Note7',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '999.00',
-              address: '华润五彩城店',
-              stock: '140,000',
-              key: 4,
-            },
-            {
-              name: '小米8 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '699.00',
-              address: '双安店',
-              stock: '12,000',
-              key: 5,
-            },
-          ]}
-        />
+      <div className="table-header-colspan__wrap">
+        <Table bordered columns={columns} data={data} />
       </div>
     </>
   )
