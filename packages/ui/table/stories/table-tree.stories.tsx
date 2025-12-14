@@ -8,16 +8,8 @@ export const TableTree = () => {
   return (
     <>
       <h1>TableTree for Table</h1>
-      <div className="table-TableTree__wrap" style={{ minWidth: 660 }}>
+      <div className="table-TableTree__wrap">
         <Table
-          // striped
-          // fixedToColumn={'a'}
-          // expandedRowKeys={[1]}
-          // rowSelection={{}}
-          // expandedRender={(row, index) => {
-          //   return <div>12313</div>
-          // }}
-          // maxHeight={'calc(100vh - 900px)'}
           columns={[
             {
               title: 'A',
