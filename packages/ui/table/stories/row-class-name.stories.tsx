@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 
 /**
@@ -6,6 +6,49 @@ import Table from '../src'
  * @desc 用于自定义行和单元格的个性化样式
  */
 export const RowClassName = () => {
+  const [columns] = useState([
+    {
+      title: 'Name',
+      dataKey: 'name',
+    },
+    {
+      title: 'Age',
+      dataKey: 'age',
+    },
+    {
+      title: 'Address',
+      dataKey: 'address',
+    },
+    {
+      title: 'Email',
+      dataKey: 'email',
+    },
+  ])
+
+  const [data] = useState([
+    {
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
+      key: 1,
+    },
+    {
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
+      key: 2,
+    },
+    {
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
+      key: 3,
+    },
+  ])
+
   // 实际使用中可以直接将样式写在样式文件中，不必这样动态创建style标签，此处只是做示例展示
   React.useLayoutEffect(() => {
     const head = document.getElementsByTagName('head')[0]
@@ -29,98 +72,23 @@ export const RowClassName = () => {
   return (
     <>
       <h1>RowClassName for Table</h1>
-      <div className="table-row-class-name__wrap" style={{ minWidth: 660, background: '#fff' }}>
+      <div className="table-row-class-name__wrap">
         <Table
-          rowClassName={(record, index) => {
-            const { price } = record.raw
-            if (price > 2000) {
+          rowClassName={(record) => {
+            const { age } = record.raw
+            if (age > 30) {
               return 'table-row--price-warning'
             }
             return 'table-row--price-normal'
           }}
-          cellClassName={(record, column, index) => {
-            if (column.raw.dataKey === 'stock' && record.raw.stock <= 10000) {
+          cellClassName={(record, column) => {
+            if (column.raw.dataKey === 'age' && record.raw.age <= 30) {
               return 'table-cell--stock-danger'
             }
             return ''
           }}
-          columns={[
-            {
-              title: '商品名',
-              dataKey: 'name',
-              render: (text, row) => {
-                console.log(text, row)
-                return text + '*'
-              },
-            },
-            {
-              title: '品类',
-              dataKey: 'type',
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-            },
-            {
-              title: '门店',
-              dataKey: 'address',
-            },
-            {
-              title: '库存',
-              dataKey: 'stock',
-            },
-          ]}
-          data={[
-            {
-              name: '小米9',
-              type: '手机',
-              size: '6G+64G',
-              price: '3299.00',
-              address: '华润五彩城店',
-              stock: '29000',
-              key: 1,
-            },
-            {
-              name: '小米9 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '1999.00',
-              address: '清河店',
-              stock: '10000',
-              key: 2,
-            },
-            {
-              name: '小米8',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '2599.00',
-              address: '双安店',
-              stock: '12000',
-              key: 3,
-            },
-            {
-              name: 'Redmi Note7',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '999.00',
-              address: '华润五彩城店',
-              stock: '140000',
-              key: 4,
-            },
-            {
-              name: '小米8 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '699.00',
-              address: '双安店',
-              stock: '12000',
-              key: 5,
-            },
-          ]}
+          columns={columns}
+          data={data}
         />
       </div>
     </>

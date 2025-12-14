@@ -606,7 +606,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
       svg {
         position: relative;
-        inset-block-start: -0.5px;
+        inset-block-start: -5px;
       }
 
       &--active {

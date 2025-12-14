@@ -1,140 +1,90 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 
 /**
- * @title 表脚底部
+ * @title 页脚吸底
  */
 export const StickyFooter = () => {
-  const [columns] = React.useState([
+  const [columns] = useState([
     {
-      title: '商品名',
+      title: 'Name',
       dataKey: 'name',
     },
     {
-      title: '品类',
-      dataKey: 'type',
+      title: 'Age',
+      dataKey: 'age',
     },
     {
-      title: '规格',
-      dataKey: 'size',
-    },
-    {
-      title: '单价',
-      dataKey: 'price',
-    },
-    {
-      title: '门店',
+      title: 'Address',
       dataKey: 'address',
     },
     {
-      title: '库存',
-      dataKey: 'stock',
+      title: 'Email',
+      dataKey: 'email',
     },
   ])
-  const [dataSource] = React.useState([
+
+  const [data] = useState([
     {
-      name: '小米9',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '3299.00',
-      address: '华润五彩城店',
-      stock: '29,000',
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
       key: 1,
     },
     {
-      name: '小米9 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '1999.00',
-      address: '清河店',
-      stock: '10,000',
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
       key: 2,
     },
     {
-      name: '小米8',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '2599.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
       key: 3,
     },
     {
-      name: 'Redmi Note7',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '999.00',
-      address: '华润五彩城店',
-      stock: '140,000',
+      name: 'John Doe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'john.doe@example.com',
       key: 4,
     },
     {
-      name: '小米8 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '699.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Jane Doe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'jane.doe@example.com',
       key: 5,
     },
     {
-      name: '小米10',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '3299.00',
-      address: '华润五彩城店',
-      stock: '29,000',
+      name: 'Jim Beam',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'jim.beam@example.com',
       key: 6,
     },
     {
-      name: '小米10 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '1999.00',
-      address: '清河店',
-      stock: '10,000',
+      name: 'Jill Bean',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'jill.bean@example.com',
       key: 7,
-    },
-    {
-      name: '小米8',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '2599.00',
-      address: '双安店',
-      stock: '12,000',
-      key: 8,
-    },
-    {
-      name: 'Redmi Note7',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '999.00',
-      address: '华润五彩城店',
-      stock: '140,000',
-      key: 9,
-    },
-    {
-      name: '小米8 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '699.00',
-      address: '双安店',
-      stock: '12,000',
-      key: 10,
     },
   ])
 
   const [paginationState, setPaginationState] = React.useState({
     current: 0,
-    data: dataSource.slice(0, 5),
+    data: data.slice(0, 5),
   })
-
-  console.log('paginationState', paginationState)
 
   return (
     <>
       <h1>StickyFooter for Table</h1>
-      <div className="table-sticky-footer__wrap" style={{ minWidth: 660 }}>
+      <div className="table-sticky-footer__wrap">
         <Table
           stickyFooter
           maxHeight={200}
@@ -142,14 +92,14 @@ export const StickyFooter = () => {
             showTotal: true,
             showJumper: true,
             pageSize: 5,
-            total: dataSource.length,
+            total: data.length,
             current: paginationState.current,
             onChange: (page, pre, size = 5) => {
               console.log('onPaginationChange', page, pre, size)
 
               setPaginationState({
                 current: page,
-                data: dataSource.slice(size * (page - 1), size * page),
+                data: data.slice(size * (page - 1), size * page),
               })
             },
           }}
