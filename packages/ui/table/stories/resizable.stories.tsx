@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
@@ -6,223 +6,87 @@ import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
  * @title 可调节列宽
  */
 export const Resizable = () => {
+  const [columns] = useState([
+    {
+      title: 'Name',
+      dataKey: 'name',
+      width: 120,
+      render(text: string) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
+    },
+    {
+      title: 'Age',
+      dataKey: 'age',
+      width: 100,
+    },
+    {
+      title: 'Address',
+      dataKey: 'address',
+      width: 200,
+      // 注：当 title 长度过长时，可设置 minWidth 来保证列头最小宽度
+      minWidth: 100,
+      render(text: string) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
+    },
+    {
+      title: 'Email',
+      dataKey: 'email',
+      width: 200,
+      render(text: string) {
+        return <EllipsisTooltip>{text}</EllipsisTooltip>
+      },
+    },
+    {
+      title: 'Phone',
+      dataKey: 'phone',
+      width: 150,
+    },
+    {
+      title: 'Phone2',
+      dataKey: 'phone2',
+      width: 150,
+    },
+  ])
+
+  const [data] = useState([
+    {
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
+      key: 1,
+    },
+    {
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
+      key: 2,
+    },
+    {
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
+      key: 3,
+    },
+  ])
+
   return (
     <>
       <h1>Resizable for Table</h1>
       <div className="table-resizable__wrap" style={{ minWidth: 660 }}>
         <Table
-          fixedToColumn={{ left: 'name', right: 'stock' }}
           resizable
           // 拖拽过程中想要实现表格宽度自由拉伸，可配置该参数
           // tableWidthAdjustOnResize
           onResizeStop={(e, data, index, columnsWidth) => {
             console.log('onResizeStop', e, data, index, columnsWidth)
           }}
-          columns={[
-            {
-              title: '商品名',
-              dataKey: 'name',
-              width: 120,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: <EllipsisTooltip>这是个很长的标题</EllipsisTooltip>,
-              dataKey: 'type',
-              width: 80,
-              // 注：当 title 长度过长时，可设置 minWidth 来保证列头最小宽度
-              // minWidth: 60,
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-
-            {
-              title: '规格',
-              dataKey: 'size',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '单价',
-              dataKey: 'price',
-              width: 150,
-              render(text) {
-                return <EllipsisTooltip>{text}</EllipsisTooltip>
-              },
-            },
-            {
-              title: '门店',
-              dataKey: 'address',
-              width: 150,
-            },
-            {
-              title: '库存',
-              dataKey: 'stock',
-              width: 100,
-              fixed: true,
-            },
-          ]}
-          data={[
-            {
-              name: '小米9',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '3299.00',
-              address: '华润五彩城店',
-              stock: '29,000',
-              key: 1,
-            },
-            {
-              name: '小米9 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '1999.00',
-              address: '清河店',
-              stock: '10,000',
-              key: 2,
-            },
-            {
-              name: '小米8',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '2599.00',
-              address: '双安店',
-              stock: '12,000',
-              key: 3,
-            },
-            {
-              name: 'Redmi Note7',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '999.00',
-              address: '华润五彩城店',
-              stock: '140,000',
-              key: 4,
-            },
-            {
-              name: '小米8 SE',
-              type: '手机',
-              size: '6G+64G 幻彩蓝',
-              price: '699.00',
-              address: '双安店',
-              stock: '12,000',
-              key: 5,
-            },
-          ]}
+          columns={columns}
+          data={data}
         />
       </div>
     </>
