@@ -55,46 +55,6 @@ export const GroupHeader = () => {
       width: 100,
     },
     {
-      title: 'Name3',
-      dataKey: 'name3',
-      width: 100,
-    },
-    {
-      title: 'Name4',
-      dataKey: 'name4',
-      width: 100,
-    },
-    {
-      title: 'Name5',
-      dataKey: 'name5',
-      width: 100,
-    },
-    {
-      title: 'Name6',
-      dataKey: 'name6',
-      width: 100,
-    },
-    {
-      title: 'Name7',
-      dataKey: 'name7',
-      width: 100,
-    },
-    {
-      title: 'Name8',
-      dataKey: 'name8',
-      width: 100,
-    },
-    {
-      title: 'Name9',
-      dataKey: 'name9',
-      width: 100,
-    },
-    {
-      title: 'Name10',
-      dataKey: 'name10',
-      width: 100,
-    },
-    {
       title: 'Company',
       dataKey: 'company',
       children: [
@@ -107,37 +67,6 @@ export const GroupHeader = () => {
           title: 'Name',
           dataKey: 'companyName',
           width: 150,
-        },
-      ],
-    },
-    {
-      title: 'Name11',
-      dataKey: 'name11',
-      width: 100,
-    },
-    {
-      title: 'Name12',
-      dataKey: 'name12',
-      width: 100,
-    },
-    {
-      title: 'Name13',
-      dataKey: 'name13',
-      width: 100,
-    },
-    {
-      title: 'Name14',
-      dataKey: 'name14',
-      children: [
-        {
-          title: 'Address14',
-          dataKey: 'address14',
-          width: 100,
-        },
-        {
-          title: 'Company14',
-          dataKey: 'company14',
-          width: 100,
         },
       ],
     },
@@ -158,13 +87,10 @@ export const GroupHeader = () => {
         building: 'C',
         number: 2035,
         name: 'Flcwl',
+        name2: 'Flcwl2',
         companyAddress: 'Lake Street 42',
         companyName: 'SoftLake Co',
         gender: 'M',
-      }
-
-      for (let j = 2; j <= 14; j++) {
-        item[`name${j}`] = `name${j}`
       }
 
       data.push(item)
@@ -180,13 +106,8 @@ export const GroupHeader = () => {
         <Table
           rowSelection={{}}
           fixedToColumn={{
-            // left: 'building',
-            // left: 'address',
-            left: 'number',
+            left: 'name',
             right: 'gender',
-            // right: 'address14',
-            // right: 'companyName',
-            // right: 'companyAddress',
           }}
           columns={columns}
           data={data}

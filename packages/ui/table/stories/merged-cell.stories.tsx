@@ -8,7 +8,7 @@ export const MergedCell = () => {
   return (
     <>
       <h1>MergedCell for Table</h1>
-      <div className="table-merged-cell__wrap" style={{ minWidth: 660 }}>
+      <div className="table-merged-cell__wrap">
         <Table
           striped
           columns={[
