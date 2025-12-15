@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.12.3
+
+### Patch Changes
+
+- [#3432](https://github.com/XiaoMi/hiui/pull/3432) [`098dd97`](https://github.com/XiaoMi/hiui/commit/098dd97be846a621a12dad63e91ea5fc6b0567af) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(date-picker): 修复清空时输入非法内容后无法清空的问题 (#3431)
+
 ## 4.12.2
 
 ### Patch Changes
