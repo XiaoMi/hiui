@@ -13,6 +13,8 @@ export const Calc = () => {
     {
       title: 'Age',
       dataKey: 'age',
+      total: true,
+      avg: true,
     },
     {
       title: 'Address',
