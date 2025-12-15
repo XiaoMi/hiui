@@ -37,7 +37,7 @@ export const CustomFilter = () => {
     },
   ])
   const [data, setData] = React.useState(initialData.current)
-  const customFilterData = (keyword: string, label: string) => {
+  const customFilterData = (keyword, label) => {
     if (keyword.length > 0) {
       setData(
         initialData.current.filter((item) => {
