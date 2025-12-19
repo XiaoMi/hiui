@@ -77,6 +77,9 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
 
     const title = useMemo(() => {
+      if (typeof titleProp === 'function') {
+        return titleProp(Array.isArray(src) ? src[active] : src, active)
+      }
       return titleProp ?? getTitle(Array.isArray(src) ? src[active] : src)
     }, [active, src, titleProp])
 
@@ -379,10 +382,14 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   >
                     <RotateLeftOutlined />
                   </div>
-                  <i className={`${prefixCls}__toolbar-divider`} />
-                  <div className={`${prefixCls}__toolbar-action`} onClick={handleDownload}>
-                    <DownloadOutlined />
-                  </div>
+                  {!disabledDownload && (
+                    <>
+                      <i className={`${prefixCls}__toolbar-divider`} />
+                      <div className={`${prefixCls}__toolbar-action`} onClick={handleDownload}>
+                        <DownloadOutlined />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               {watermarkProps && watermarkContainer && (
@@ -404,7 +411,7 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
   /**
    * 预览窗体标题
    */
-  title?: string
+  title?: React.ReactNode | ((url: string, index: number) => React.ReactNode)
   /**
    * 预览图片地址
    */

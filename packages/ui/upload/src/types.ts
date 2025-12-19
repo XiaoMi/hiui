@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReactCropperProps } from 'react-cropper'
-
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import { PreviewProps } from '@hi-ui/preview'
 
 export interface UploadFileItem extends Partial<File> {
   /**
@@ -153,7 +153,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
   /**
    * 预览透传 props
    */
-  preview?: { className?: string }
+  preview?: Omit<PreviewProps, 'visible' | 'src'>
   /**
    * 上传文件前的钩子，返回 true 继续上传，其他终止上传
    */
