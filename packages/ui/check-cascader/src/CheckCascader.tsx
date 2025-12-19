@@ -34,6 +34,7 @@ import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
 import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { Highlighter } from '@hi-ui/highlighter'
 
 const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
@@ -199,6 +200,16 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && searchMode === 'upMatch'
 
+        if (highlight && !flattedSearchResult) {
+          return (
+            <span className={cx(`title__text`, `title__text--cols`)}>
+              <Highlighter key={node.id} keyword={new RegExp(searchValue, 'ig')}>
+                {node.title}
+              </Highlighter>
+            </span>
+          )
+        }
+
         let found = false
 
         const ret = highlight ? (
@@ -242,11 +253,12 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
         return ret
       },
-      [titleRender, searchValue, searchMode]
+      [titleRender, searchValue, searchMode, flattedSearchResult]
     )
 
     const shouldUseSearch = !!searchValue
 
+    console.log('stateInSearch', stateInSearch)
     const selectProps = {
       data: filterItems || (shouldUseSearch ? stateInSearch.data : flattedData),
       titleRender: proxyTitleRender,
