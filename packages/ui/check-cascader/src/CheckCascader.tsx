@@ -258,7 +258,6 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const shouldUseSearch = !!searchValue
 
-    console.log('stateInSearch', stateInSearch)
     const selectProps = {
       data: filterItems || (shouldUseSearch ? stateInSearch.data : flattedData),
       titleRender: proxyTitleRender,
