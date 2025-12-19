@@ -1,5 +1,13 @@
 # @hi-ui/table
 
+## 5.0.0-canary.24
+
+### Patch Changes
+
+- 732decb61: perf(table): 优化表格列宽更新逻辑，当内容宽度没有超出时再更新列宽 (5.0)
+- Updated dependencies [732decb61]
+  - @hi-ui/empty-state@5.0.0-canary.9
+
 ## 5.0.0-canary.23
 
 ### Patch Changes

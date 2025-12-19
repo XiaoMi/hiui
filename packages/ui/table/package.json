@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "5.0.0-canary.23",
+  "version": "5.0.0-canary.24",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -50,7 +50,7 @@
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/drawer": "^5.0.0-canary.9",
-    "@hi-ui/empty-state": "^5.0.0-canary.8",
+    "@hi-ui/empty-state": "^5.0.0-canary.9",
     "@hi-ui/env": "^5.0.0-canary.2",
     "@hi-ui/func-utils": "^5.0.0-canary.2",
     "@hi-ui/icon-button": "^5.0.0-canary.8",
