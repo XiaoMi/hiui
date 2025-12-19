@@ -192,6 +192,9 @@ export const useTable = ({
     onSelect: setHoveredColKey,
   })
 
+  const bodyTableRef = useRef<HTMLTableElement>(null)
+  const scrollBodyElementRef = useRef<HTMLTableElement>(null)
+
   // ************************ 列宽 resizable ************************ //
 
   const {
@@ -206,12 +209,10 @@ export const useTable = ({
     resizable,
     tableWidthAdjustOnResize,
     virtual: !!virtual,
+    scrollBodyElementRef,
   })
 
   // ************************ 列冻结 ************************ //
-
-  const bodyTableRef = useRef<HTMLTableElement>(null)
-  const scrollBodyElementRef = useRef<HTMLTableElement>(null)
 
   /**
    * 左右 fixed 所在的列，抹平数据结构

@@ -28,8 +28,8 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
   ) => {
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
-    if (size === 'lg') {
-      size = 'md'
+    if (size === 'xs') {
+      size = 'sm'
     }
 
     const i18n = useLocaleContext()
