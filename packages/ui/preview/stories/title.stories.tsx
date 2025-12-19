@@ -3,28 +3,33 @@ import Preview from '../src'
 import Grid from '@hi-ui/grid'
 
 /**
- * @title 禁止下载
+ * @title 图片标题
+ * @desc 默认使用图片的文件名作为标题，可以通过 <code>title</code> 属性自定义标题
  */
-export const Banned = () => {
-  const [showIndex, setShowIndex] = React.useState(-1)
+export const Title = () => {
   const [images] = React.useState([
     'http://i1.mifile.cn/f/i/hiui/docs/card/pic_1.png',
     'http://i1.mifile.cn/f/i/hiui/docs/card/pic_2.png',
     'http://i1.mifile.cn/f/i/hiui/docs/card/pic_3.png',
     'http://i1.mifile.cn/f/i/hiui/docs/card/pic_4.png',
   ])
+  const [visible, setVisible] = React.useState(false)
+  const [current, setCurrent] = React.useState(0)
 
   return (
     <>
-      <h1>Banned</h1>
-      <div className="preview-banned__wrap">
+      <h1>Title</h1>
+      <div className="preview-title__wrap">
         <Preview
-          title={`pic_${showIndex}.png`}
-          src={images[showIndex]}
-          visible={showIndex !== -1}
-          disabledDownload={true}
+          src={images}
+          title={(url, index) => {
+            return `title_${index}`
+          }}
+          current={current}
+          onPreviewChange={setCurrent}
+          visible={visible}
           onClose={() => {
-            setShowIndex(-1)
+            setVisible(false)
           }}
         />
 
@@ -37,7 +42,8 @@ export const Banned = () => {
                     src={url}
                     style={{ width: '100%', cursor: 'pointer' }}
                     onClick={() => {
-                      setShowIndex(index)
+                      setCurrent(index)
+                      setVisible(true)
                     }}
                   />
                 </div>
