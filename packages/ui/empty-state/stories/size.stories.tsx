@@ -9,9 +9,9 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="empty-state-size__wrap" style={{ display: 'flex', alignItems: 'center' }}>
-        <EmptyState size={'xs'} />
-        <EmptyState title="暂无数据" size={'sm'} />
+        <EmptyState size={'sm'} />
         <EmptyState title="暂无数据" size={'md'} />
+        <EmptyState title="暂无数据" size={'lg'} />
       </div>
     </>
   )
