@@ -9,12 +9,14 @@ export const useColWidth = ({
   data,
   columns,
   virtual,
+  scrollBodyElementRef,
 }: {
   resizable: boolean
   tableWidthAdjustOnResize: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
   virtual?: boolean
+  scrollBodyElementRef: React.RefObject<HTMLTableElement>
 }) => {
   const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
   // 是否重新设置过表格每列宽度
@@ -137,8 +139,13 @@ export const useColWidth = ({
     setColWidths(getGroupItemWidth(columns).colWidths)
 
     // 重新设置列宽后，真实的宽度会发生变化，基于真实的宽度再次重新计算出合适的列宽
-    requestAnimationFrame(() => {
-      setColWidths(getWidths(measureRowElementRef.current))
+    setTimeout(() => {
+      const scrollBodyElementWidth = scrollBodyElementRef.current?.offsetWidth ?? 0
+      const measureRowElementWidth = measureRowElementRef.current?.offsetWidth
+      // 如果测量元素的宽度小于等于容器宽度，则重新设置列宽
+      if (measureRowElementWidth && measureRowElementWidth <= scrollBodyElementWidth) {
+        setColWidths(getWidths(measureRowElementRef.current))
+      }
     })
   }, [columns])
 
