@@ -43,5 +43,10 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "@hi-ui/classname": "^4.0.5"
+  },
+  "peerDependencies": {
+    "@hi-ui/core": ">=4.0.8"
+  }
 }

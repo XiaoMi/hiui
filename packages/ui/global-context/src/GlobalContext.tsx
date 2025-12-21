@@ -10,6 +10,6 @@ export const useGlobalContext = () => {
 
 export type UseGlobalContext = {
   size?: 'xs' | 'sm' | 'md' | 'lg'
-  prefix?: string
+  prefixCls?: string
   customThemeClassName?: string
 }

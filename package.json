@@ -9,6 +9,7 @@
       "packages/core/*",
       "packages/icons",
       "packages/patches/*",
+      "packages/others/style-inject",
       "scripts/hi-docs"
     ]
   },

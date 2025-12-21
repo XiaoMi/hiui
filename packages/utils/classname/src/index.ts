@@ -1,5 +1,7 @@
 export { default as cx } from 'classnames'
 
+export const defaultPrefixCls = 'hi-v5'
+
 /**
  * 给组件选择器类添加上 hiui 版本控制
  *
@@ -7,7 +9,8 @@ export { default as cx } from 'classnames'
  * @param componentPrefix 类前缀
  * @returns 带版本控制的选择器类
  */
-export const getPrefixCls = (cls: string, componentPrefix = 'hi-v5') => `${componentPrefix}-${cls}`
+export const getPrefixCls = (cls: string, componentPrefix = defaultPrefixCls) =>
+  `${componentPrefix}-${cls}`
 
 /**
  * 给 css 变量名添加上 hiui 版本控制
@@ -16,5 +19,5 @@ export const getPrefixCls = (cls: string, componentPrefix = 'hi-v5') => `${compo
  * @param componentPrefix 类前缀
  * @returns 带版本控制的变量名
  */
-export const getPrefixStyleVar = (name: string, componentPrefix = '--hi-v5') =>
+export const getPrefixStyleVar = (name: string, componentPrefix = `--${defaultPrefixCls}`) =>
   `${componentPrefix}-${name}`

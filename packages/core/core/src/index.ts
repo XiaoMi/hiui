@@ -81,3 +81,10 @@ export type { UsePortalContext, PortalProviderProps } from '@hi-ui/portal-contex
 
 export { useGlobalContext, GlobalProvider } from '@hi-ui/global-context'
 export type { UseGlobalContext, GlobalProviderProps } from '@hi-ui/global-context'
+
+/**
+ * 全局配置，用于存储非 React state 的全局数据
+ */
+export const GlobalConfig = {
+  prefixCls: '',
+}
