@@ -100,6 +100,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       suffix,
       label,
       showIndicator = true,
+      renderExtraHeader,
       renderExtraFooter,
       ...rest
     },
@@ -700,6 +701,10 @@ export interface CheckTreeSelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单底部渲染
    */
