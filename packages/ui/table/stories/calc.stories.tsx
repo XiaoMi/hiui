@@ -29,21 +29,21 @@ export const Calc = () => {
   const [data] = useState([
     {
       name: 'Raynor Maverick',
-      age: 31,
+      age: 30,
       address: '45 Sunbeam Lane, Mistville',
       email: 'raynor.mav@maildemo.net',
       key: 1,
     },
     {
       name: 'Elina Voss',
-      age: 26,
+      age: 27,
       address: '83 Dewdrop Road, Rivertown',
       email: 'elina.voss@sampleinbox.cc',
       key: 2,
     },
     {
       name: 'Darin Poe',
-      age: 37,
+      age: 42,
       address: '12 Blossom Close, Newcrest',
       email: 'darin.poe@mockpost.io',
       key: 3,
