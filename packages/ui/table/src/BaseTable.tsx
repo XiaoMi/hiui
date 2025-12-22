@@ -228,6 +228,12 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const alwaysFixedColumn = fixedColumnTrigger === 'always'
 
+    const wrapperRef = React.useRef<HTMLDivElement>(null)
+    const isTableContentExceedWrapperHeight =
+      bodyTableRef.current &&
+      wrapperRef.current &&
+      bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
+
     const renderTable = () => {
       const tableContent = (
         <table
@@ -342,7 +348,13 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rootProps}>
-        <div className={`${prefixCls}__wrapper`}>
+        <div
+          ref={wrapperRef}
+          className={cx(
+            `${prefixCls}__wrapper`,
+            isTableContentExceedWrapperHeight && `${prefixCls}--exceed-wrapper-height`
+          )}
+        >
           <TableProvider
             value={{
               ...providedValue,

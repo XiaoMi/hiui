@@ -3,6 +3,7 @@ import Table, { TableHelper } from '../src'
 import Button from '@hi-ui/button'
 /**
  * @title 虚拟列表
+ * @desc 内嵌面板、表头分组等复杂场景暂不支持
  */
 export const Virtual = () => {
   const MockData: any = []

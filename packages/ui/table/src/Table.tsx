@@ -38,7 +38,6 @@ const DOUBLE_TABLE_SCENE = [
   'stickyTop',
   'setting',
   'virtual',
-  'stretchHeight',
 ] as const
 
 const STANDARD_PRESET = {

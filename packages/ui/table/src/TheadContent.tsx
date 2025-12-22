@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import { Resizable } from 'react-resizable'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
@@ -27,13 +27,24 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
+    const trRefs = useRef<HTMLTableRowElement[]>([])
 
     return (
       <thead {...rest}>
         {/* 渲染列 */}
         {groupedColumns.map((cols, colsIndex) => {
           return (
-            <tr key={colsIndex} ref={setHeaderTableElement}>
+            <tr
+              key={colsIndex}
+              ref={(el) => {
+                if (el) {
+                  trRefs.current[colsIndex] = el
+                  if (colsIndex === 0) {
+                    setHeaderTableElement(el)
+                  }
+                }
+              }}
+            >
               {cols.map((col, colIndex) => {
                 const { dataKey, title, raw } = col || {}
                 let titleContent = isFunction(title) ? title(col) : title
@@ -67,6 +78,7 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                       ...stickyColProps.style,
                       // 表头合并场景下，被合并的表头需要隐藏
                       display: col?.colSpan === 0 ? 'none' : undefined,
+                      top: trRefs.current[colsIndex]?.offsetTop,
                     }}
                     className={cx(
                       `${prefixCls}-cell`,

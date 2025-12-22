@@ -831,6 +831,7 @@ export interface UseTableProps {
    * -Row：onDoubleClick
    * -Cell: colspan，rowspan
    * -统计：平局行，总数行
+   * -表头分组
    */
   virtual?:
     | boolean

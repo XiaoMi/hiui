@@ -80,8 +80,8 @@ export const Resizable = () => {
       <div className="table-resizable__wrap" style={{ minWidth: 660 }}>
         <Table
           resizable
-          // 拖拽过程中想要实现表格宽度自由拉伸，可配置该参数
-          // tableWidthAdjustOnResize
+          // 可选，拖拽过程中想要实现表格宽度自由拉伸，可配置该参数
+          tableWidthAdjustOnResize
           onResizeStop={(e, data, index, columnsWidth) => {
             console.log('onResizeStop', e, data, index, columnsWidth)
           }}
