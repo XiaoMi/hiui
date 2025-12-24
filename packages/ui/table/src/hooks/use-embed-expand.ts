@@ -3,6 +3,7 @@ import { isFunction, isPromise } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheck } from '@hi-ui/use-check'
 import { useCheckState } from '@hi-ui/use-check-state'
+import { useLatestCallback } from '@hi-ui/use-latest'
 import { TableColumnItem, FlattedTableRowData } from './../types'
 
 const DEFAULT_EXPAND_EMBED_ROW_KEYS = [] as []
@@ -17,19 +18,20 @@ export const useEmbedExpand = ({
   onEmbedExpand,
   expandedRender,
 }: UseEmbedExpandProps) => {
+  const expandedRenderLatest = useLatestCallback(expandedRender)
   /**
    * 收敛行内嵌面板配置开关
    */
   const embedExpandable = useMemo(() => {
     if (!rowExpandable) return false
     // 不传入 render 方法，则不开启内嵌面板
-    if (!isFunction(expandedRender)) return false
+    if (!isFunction(expandedRenderLatest)) return false
 
     return {
       rowExpandable,
-      expandedRender,
+      expandedRender: expandedRenderLatest,
     }
-  }, [rowExpandable, expandedRender])
+  }, [rowExpandable, expandedRenderLatest])
 
   /**
    * 是否展开状态控制

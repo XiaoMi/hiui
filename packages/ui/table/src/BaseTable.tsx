@@ -90,6 +90,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           dataKey: EMBED_DATA_KEY,
           title: '',
           width: 38,
+          fixed: true,
           className: `${prefixCls}__embed-col`,
           align: 'center',
           render: (_: any, rowItem: any) => {
