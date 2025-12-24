@@ -11,7 +11,7 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   color: $font-color;
   border-color: $content-color;
   background-color: $content-color;
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   box-shadow: use-shadow('normal');
 
   // animation
