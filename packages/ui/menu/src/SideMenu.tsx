@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
-import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
+import Tooltip from '@hi-ui/tooltip'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import Scrollbar from '@hi-ui/scrollbar'
@@ -72,9 +72,29 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
               <div
                 key={id}
                 className={cx(`${prefixCls}-item-wrapper`)}
-                onClick={(event) => handleClick(event, id, item)}
-                onMouseEnter={(event) => handleMouseEnter(event, id, item)}
-                onMouseLeave={(event) => handleMouseLeave(event, id, item)}
+                onClick={(evt) => handleClick(evt, id, item)}
+                onMouseEnter={(evt) => {
+                  const currentTarget = evt.currentTarget as HTMLDivElement
+                  const titleElement = currentTarget.querySelector(
+                    `.${prefixCls}-item__title`
+                  ) as HTMLDivElement
+                  const { scrollWidth, clientWidth } = titleElement
+
+                  if (scrollWidth > clientWidth) {
+                    Tooltip.open(currentTarget, {
+                      key: `side-menu-tooltip-${id}`,
+                      title,
+                      placement: 'right',
+                      zIndex: 2001,
+                    })
+                  }
+
+                  handleMouseEnter(evt, id, item)
+                }}
+                onMouseLeave={(evt) => {
+                  Tooltip.close(`side-menu-tooltip-${id}`)
+                  handleMouseLeave(evt, id, item)
+                }}
               >
                 <div
                   className={cx(`${prefixCls}-item`, {
@@ -84,15 +104,7 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                   })}
                 >
                   <div className={cx(`${prefixCls}-item__icon`)}>{icon}</div>
-                  <div className={cx(`${prefixCls}-item__title`)}>
-                    <EllipsisTooltip
-                      tooltipProps={{
-                        placement: 'right',
-                      }}
-                    >
-                      {title as string}
-                    </EllipsisTooltip>
-                  </div>
+                  <div className={cx(`${prefixCls}-item__title`)}>{title}</div>
                 </div>
               </div>
             )

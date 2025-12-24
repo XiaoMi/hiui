@@ -29,8 +29,7 @@ export const Group = () => {
       title: '菜单五',
     },
     {
-      id: 5,
-      title: '菜单六',
+      id: 'divider',
       split: true,
     },
     {

@@ -405,7 +405,7 @@ $upload-state-height: 2px !default;
 
       img {
         margin-block-start: 50%;
-        transform: translate3d(-50%, -50%, 0);
+        transform: translate3d(0, -50%, 0);
       }
 
       &--upload {
