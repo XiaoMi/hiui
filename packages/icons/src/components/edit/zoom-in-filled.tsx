@@ -1,0 +1,23 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-zoom-in-filled')
+
+export const ZoomInFilled = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
+
+    return (
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5752"  ><path d="M910.869333 856.554667a38.4 38.4 0 0 1-54.314666 54.314666l-153.194667-153.237333a367.530667 367.530667 0 0 1-232.426667 82.368c-203.818667 0-369.066667-165.226667-369.066666-369.066667 0-203.818667 165.248-369.066667 369.066666-369.066666 203.84 0 369.066667 165.248 369.066667 369.066666 0 88.106667-30.869333 168.96-82.346667 232.405334l153.216 153.216zM637.333333 470.933333a38.4 38.4 0 0 0-38.4-38.4h-89.6v-89.6a38.4 38.4 0 1 0-76.8 0v89.6h-89.6a38.4 38.4 0 0 0 0 76.8h89.6v89.6a38.4 38.4 0 0 0 76.8 0v-89.6h89.6a38.4 38.4 0 0 0 38.4-38.4z" p-id="5753"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  ZoomInFilled.displayName = 'ZoomInFilled'
+}
+  
