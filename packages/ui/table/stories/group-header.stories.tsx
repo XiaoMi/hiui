@@ -102,7 +102,7 @@ export const GroupHeader = () => {
   return (
     <>
       <h1>GroupHeader for Table</h1>
-      <div className="table-group-header__wrap" style={{ minWidth: 660 }}>
+      <div className="table-group-header__wrap">
         <Table
           rowSelection={{}}
           fixedToColumn={{

@@ -38,7 +38,6 @@ const DOUBLE_TABLE_SCENE = [
   'stickyTop',
   'setting',
   'virtual',
-  'stretchHeight',
 ] as const
 
 const STANDARD_PRESET = {
@@ -221,6 +220,13 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           const rowKey = getRowKeyField(rowItem)
           const checked = isCheckedRowKey(rowKey)
           const disabledCheckbox = checkRowIsDisabledCheckbox(rowItem)
+
+          if (rowItem.key === 'avg' || rowItem.key === 'sum') {
+            return {
+              node: null,
+              checked: false,
+            }
+          }
 
           return {
             node:

@@ -47,6 +47,7 @@ export default {
       timeperiod: ['Select Start Date Time', 'Select Start End Time'],
       timerange: ['Select Start Date Time', 'Select Start End Time'],
     },
+    year: 'year',
     timePeriod: 'Period',
     hours: 'H',
     minutes: 'M',

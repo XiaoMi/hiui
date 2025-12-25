@@ -77,9 +77,9 @@ export const getGroupItemWidth = (
 
       // 如果没有设置列宽度，css 宽度默认是 `auto`，这里对于非数字 width 均设置为 0
       const colWidth = isNumeric(width) ? Number(width) : 0
-      const minColWidth = isNumeric(minWidth) ? Number(minWidth) : colWidth || 60
+      const minColWidth = isNumeric(minWidth) ? Number(minWidth) : 0
 
-      colWidths.push(colWidth < minColWidth ? minColWidth : colWidth)
+      colWidths.push(colWidth)
       minColWidths.push(minColWidth)
     })
   }
@@ -266,4 +266,19 @@ export const getColumnByDefaultSortOrder = (columns: TableColumnItem[]): TableCo
   }
 
   return {} as TableColumnItem
+}
+
+export const flattenColumns = (columns: TableColumnItem[]): TableColumnItem[] => {
+  const result: TableColumnItem[] = []
+  const traverse = (cols: TableColumnItem[]) => {
+    cols.forEach((col) => {
+      if (col.children?.length) {
+        traverse(col.children)
+      } else {
+        result.push(col)
+      }
+    })
+  }
+  traverse(columns)
+  return result
 }

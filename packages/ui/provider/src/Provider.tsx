@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { __DEV__ } from '@hi-ui/env'
 import {
-  LocaleProvider,
-  LocaleProviderProps,
   PortalProvider,
   PortalProviderProps,
+  LocaleProvider,
+  LocaleProviderProps,
   GlobalProvider,
   UseGlobalContext,
 } from '@hi-ui/core'
@@ -20,15 +20,10 @@ import { getAccentColorTheme } from './accent-color'
 
 const PREFIX = 'hi-v5'
 
-export const Provider: React.FC<ProviderProps> & { extends: ProviderExtendsFunc } = ({
-  children,
-  locale,
-  languages,
-  accentColor,
-  theme,
-  portal,
-  ...rest
-}) => {
+export const Provider: React.FC<ProviderProps> & {
+  extends: ProviderExtendsFunc
+  merge: ProviderMergeFunc
+} = ({ children, locale, languages, accentColor, theme, portal, ...rest }) => {
   /**
    * global css var config
    */
@@ -83,6 +78,11 @@ if (__DEV__) {
   Provider.displayName = 'Provider'
 }
 
+/**
+ * 从 LocaleProvider 导出的方法
+ */
 Provider.extends = LocaleProvider.extends
+Provider.merge = LocaleProvider.merge
 
 type ProviderExtendsFunc = typeof LocaleProvider.extends
+type ProviderMergeFunc = typeof LocaleProvider.merge

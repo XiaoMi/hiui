@@ -12,6 +12,7 @@ $icon-class: #{$panel-prefix}__icon !default;
     content: '';
     display: block;
     box-sizing: border-box;
+    border-block-end: use-border-size('normal') use-color('gray', 300);
 
     .#{$component-prefix}-collapse--size-sm & {
       margin: 0 use-spacing(6);
@@ -32,12 +33,6 @@ $icon-class: #{$panel-prefix}__icon !default;
 
     &::after {
       border-block-end: none;
-    }
-
-    .#{$panel-prefix}__head {
-      &::after {
-        border-block-end: none;
-      }
     }
   }
 
@@ -167,10 +162,6 @@ $icon-class: #{$panel-prefix}__icon !default;
   }
 
   &--show {
-    &::after {
-      border-block-end: use-border-size('normal') use-color('gray', 300);
-    }
-
     > .#{$panel-prefix}__head {
       .#{$icon-class} {
         &--left {

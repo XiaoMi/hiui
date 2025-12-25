@@ -3,7 +3,7 @@ import Preview from '../src'
 import Grid from '@hi-ui/grid'
 
 /**
- * @title 禁止右键下载
+ * @title 禁止下载
  */
 export const Banned = () => {
   const [showIndex, setShowIndex] = React.useState(-1)

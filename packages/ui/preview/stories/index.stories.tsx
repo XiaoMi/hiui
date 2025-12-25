@@ -3,6 +3,7 @@ import Preview from '../src'
 
 export * from './basic.stories'
 export * from './multiple.stories'
+export * from './title.stories'
 export * from './watermark.stories'
 export * from './banned.stories'
 

@@ -22,16 +22,17 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__wrapper {
     position: relative;
     z-index: 0;
-    border-top: use-border-size('normal') use-color('gray', 300);
-    // border-bottom: use-border-size('normal') use-color('gray', 300);
+    border-block-start: use-border-size('normal') use-color('gray', 300);
 
-    &::after {
-      content: '';
-      position: absolute;
-      inset-block-end: 0;
-      inset-inline-start: 0;
-      width: 100%;
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+    &.#{$prefix}--exceed-wrapper-height {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        border-block-end: use-border-size('normal') use-color('gray', 300);
+      }
     }
   }
 
@@ -50,6 +51,12 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         flex-grow: 1;
         overflow: auto;
       }
+    }
+
+    .#{$prefix}-header-cell {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 1;
     }
 
     &.#{$prefix}--empty {
@@ -137,6 +144,17 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &--virtual {
     width: 100%;
     overflow: hidden;
+
+    .#{$prefix}__wrapper {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        border-block-end: use-border-size('normal') use-color('gray', 300);
+      }
+    }
 
     .#{$component-prefix}-table-cell {
       box-sizing: border-box;

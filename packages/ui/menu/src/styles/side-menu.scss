@@ -52,6 +52,9 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
 
     &__title {
       min-width: 1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &--mini {

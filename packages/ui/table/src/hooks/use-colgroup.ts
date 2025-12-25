@@ -30,7 +30,7 @@ export const useColumns = ({ columns }: { columns: TableColumnItem[] }) => {
         // TODO: remove it
         dataKey: raw.dataKey,
         title: raw.title,
-        align: raw.align ?? 'left',
+        align: raw.align ?? 'start',
         render: raw.render,
         colSpan: raw.colSpan,
       }

@@ -41,12 +41,12 @@ export const Resizable = () => {
     {
       title: 'Phone',
       dataKey: 'phone',
-      width: 150,
+      width: 200,
     },
     {
       title: 'Phone2',
       dataKey: 'phone2',
-      width: 150,
+      width: 200,
     },
   ])
 
@@ -56,6 +56,8 @@ export const Resizable = () => {
       age: 31,
       address: '45 Sunbeam Lane, Mistville',
       email: 'raynor.mav@maildemo.net',
+      phone: '1234567890',
+      phone2: '1234567890',
       key: 1,
     },
     {
@@ -63,6 +65,8 @@ export const Resizable = () => {
       age: 26,
       address: '83 Dewdrop Road, Rivertown',
       email: 'elina.voss@sampleinbox.cc',
+      phone: '1234567890',
+      phone2: '1234567890',
       key: 2,
     },
     {
@@ -70,6 +74,8 @@ export const Resizable = () => {
       age: 37,
       address: '12 Blossom Close, Newcrest',
       email: 'darin.poe@mockpost.io',
+      phone: '1234567890',
+      phone2: '1234567890',
       key: 3,
     },
   ])
@@ -80,8 +86,8 @@ export const Resizable = () => {
       <div className="table-resizable__wrap" style={{ minWidth: 660 }}>
         <Table
           resizable
-          // 拖拽过程中想要实现表格宽度自由拉伸，可配置该参数
-          // tableWidthAdjustOnResize
+          // 可选，拖拽过程中想要实现表格宽度自由拉伸，可配置该参数
+          tableWidthAdjustOnResize
           onResizeStop={(e, data, index, columnsWidth) => {
             console.log('onResizeStop', e, data, index, columnsWidth)
           }}

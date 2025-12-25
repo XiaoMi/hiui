@@ -26,11 +26,11 @@ export const Basic = () => {
                 data={[
                   {
                     id: 'zh-CN',
-                    title: '中文',
+                    title: '简体中文',
                   },
                   {
                     id: 'zh-TW',
-                    title: '繁体',
+                    title: '繁体中文',
                   },
                   {
                     id: 'en-US',
