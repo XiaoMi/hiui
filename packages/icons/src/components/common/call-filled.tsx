@@ -1,0 +1,23 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-call-filled')
+
+export const CallFilled = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
+
+    return (
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9802"  ><path d="M746.666667 85.333333a128 128 0 0 1 128 128v597.333334a128 128 0 0 1-128 128H277.333333a128 128 0 0 1-128-128V213.333333a128 128 0 0 1 128-128h469.333334zM418.986667 362.837333c-35.136 2.56-70.634667 25.941333-76.842667 75.178667-6.656 52.864 27.477333 115.648 86.826667 178.197333 49.28 51.925333 118.997333 88.298667 168.661333 87.786667 44.437333-0.448 80.469333-38.869333 84.458667-72.533333 2.773333-23.445333-4.352-42.197333-22.421334-50.986667-4.949333-2.389333-13.12-4.885333-24.533333-7.68a648.704 648.704 0 0 0-18.986667-4.352 1323.349333 1323.349333 0 0 0-44.330666-8.597333l-6.08-1.066667-4.373334 4.352-23.722666 23.658667c-31.872-13.482667-62.826667-45.44-80.746667-80.768l27.882667-28.373334 4.714666-4.8-1.685333-6.549333-0.981333-3.690667a1029.205333 1029.205333 0 0 0-11.114667-39.082666 650.026667 650.026667 0 0 0-4.608-14.506667c-5.12-15.317333-9.237333-25.173333-13.333333-30.229333-9.6-11.925333-22.805333-17.130667-38.762667-15.957334z" p-id="9803"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  CallFilled.displayName = 'CallFilled'
+}
+  

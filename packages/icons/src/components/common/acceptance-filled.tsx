@@ -1,0 +1,23 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-acceptance-filled')
+
+export const AcceptanceFilled = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
+
+    return (
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="24203"  ><path d="M285.866667 176.597333c0 68.352 55.424 123.733333 123.754666 123.733334H614.4a123.733333 123.733333 0 0 0 123.733333-123.733334V137.066667H789.333333a102.4 102.4 0 0 1 102.4 102.4v597.333333a102.4 102.4 0 0 1-102.4 102.4H234.666667a102.4 102.4 0 0 1-102.4-102.4v-597.333333a102.4 102.4 0 0 1 102.4-102.4h51.2v39.530666z m402.325333 286.08a38.421333 38.421333 0 0 0-54.314667 0.597334l-156.522666 160a4.266667 4.266667 0 0 1-6.186667-0.085334l-64.874667-69.930666-1.002666-1.045334-15.488-15.445333a38.4 38.4 0 0 0-54.272 54.293333l15.274666 15.274667 64.085334 69.098667a81.066667 81.066667 0 0 0 117.376 1.557333l156.522666-160c14.826667-15.146667 14.549333-39.488-0.597333-54.314667z"  p-id="24204"></path><path d="M591.402667 84.8a69.930667 69.930667 0 1 1 0 139.882667h-158.805334a69.930667 69.930667 0 0 1 0-139.882667h158.805334z"  p-id="24205"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  AcceptanceFilled.displayName = 'AcceptanceFilled'
+}
+  
