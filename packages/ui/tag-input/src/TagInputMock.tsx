@@ -68,7 +68,8 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       if (wrap) {
         return tagList
       }
-      return tagList.slice(0, Math.min(tagList.length, containerWidth / tagWidth))
+      const maxCount = Math.min(tagList.length, containerWidth / tagWidth)
+      return tagList.slice(0, maxCount < 1 ? 1 : maxCount)
     }, [tagList, tagWidth, containerWidth, wrap])
 
     const showTags = mergedTagList.length > 0
