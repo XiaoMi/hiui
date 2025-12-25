@@ -21,16 +21,7 @@ export const Basic = () => {
     <>
       <h1>Basic</h1>
       <div className="check-select-basic__wrap">
-        <CheckSelect
-          style={{ width: 80 }}
-          tagInputProps={{
-            tagWidth: 100,
-          }}
-          placeholder="请选择"
-          searchable
-          clearable
-          data={data}
-        />
+        <CheckSelect style={{ width: 240 }} placeholder="请选择" searchable clearable data={data} />
       </div>
     </>
   )
