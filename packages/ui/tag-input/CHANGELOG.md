@@ -1,5 +1,11 @@
 # @hi-ui/tag-input
 
+## 4.1.5
+
+### Patch Changes
+
+- [#3450](https://github.com/XiaoMi/hiui/pull/3450) [`0cea4d7`](https://github.com/XiaoMi/hiui/commit/0cea4d75c771b5db56f520821b53864051c33594) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tag-input): ensure at least one tag is displayed when container width is insufficient (#3449)
+
 ## 4.1.4
 
 ### Patch Changes

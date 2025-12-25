@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "4.17.4",
+  "version": "4.17.5",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -54,7 +54,7 @@
     "@hi-ui/carousel": "^4.1.1",
     "@hi-ui/cascader": "^4.5.2",
     "@hi-ui/check-cascader": "^4.5.2",
-    "@hi-ui/check-select": "^4.6.4",
+    "@hi-ui/check-select": "^4.6.5",
     "@hi-ui/check-tree-select": "^4.7.6",
     "@hi-ui/checkbox": "^4.0.10",
     "@hi-ui/collapse": "^4.1.6",

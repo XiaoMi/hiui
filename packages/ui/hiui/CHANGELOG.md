@@ -1,5 +1,14 @@
 # @hi-ui/hiui
 
+## 4.17.5
+
+### Patch Changes
+
+- [#3450](https://github.com/XiaoMi/hiui/pull/3450) [`0cea4d7`](https://github.com/XiaoMi/hiui/commit/0cea4d75c771b5db56f520821b53864051c33594) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(tag-input): ensure at least one tag is displayed when container width is insufficient (#3449)
+
+- Updated dependencies [[`0cea4d7`](https://github.com/XiaoMi/hiui/commit/0cea4d75c771b5db56f520821b53864051c33594)]:
+  - @hi-ui/check-select@4.6.5
+
 ## 4.17.4
 
 ### Patch Changes

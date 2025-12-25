@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-select",
-  "version": "4.6.4",
+  "version": "4.6.5",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -54,7 +54,7 @@
     "@hi-ui/input": "^4.3.0",
     "@hi-ui/picker": "^4.1.8",
     "@hi-ui/popper": "^4.1.7",
-    "@hi-ui/tag-input": "^4.1.3",
+    "@hi-ui/tag-input": "^4.1.5",
     "@hi-ui/times": "^4.0.4",
     "@hi-ui/tree-utils": "^4.1.6",
     "@hi-ui/type-assertion": "^4.0.4",
