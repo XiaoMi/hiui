@@ -1,0 +1,23 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-commend-filled')
+
+export const CommendFilled = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
+
+    return (
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5044"  ><path d="M757.333333 117.674667a102.4 102.4 0 0 1 102.4 102.4v583.68c0 82.005333-91.605333 130.752-159.637333 84.906666l-173.781333-117.12a25.642667 25.642667 0 0 0-28.629334 0l-173.781333 117.12c-68.032 45.845333-159.637333-2.901333-159.637333-84.906666v-583.68a102.4 102.4 0 0 1 102.4-102.4h490.666666z m-235.178666 194.389333a10.666667 10.666667 0 0 0-20.309334 0l-30.549333 94.08a10.666667 10.666667 0 0 1-10.154667 7.36H362.24a10.666667 10.666667 0 0 0-6.272 19.285333l80 58.154667a10.666667 10.666667 0 0 1 3.882667 11.946667l-30.549334 94.037333a10.666667 10.666667 0 0 0 16.426667 11.946667l80-58.154667a10.666667 10.666667 0 0 1 12.544 0l80 58.154667a10.666667 10.666667 0 0 0 16.426667-11.946667l-30.549334-94.058667a10.666667 10.666667 0 0 1 3.861334-11.946666l80.042666-58.133334a10.666667 10.666667 0 0 0-6.293333-19.285333h-98.901333a10.666667 10.666667 0 0 1-10.154667-7.381333l-30.549333-94.08z" p-id="5045"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  CommendFilled.displayName = 'CommendFilled'
+}
+  
