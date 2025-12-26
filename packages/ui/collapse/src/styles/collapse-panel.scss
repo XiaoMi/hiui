@@ -66,30 +66,6 @@ $icon-class: #{$panel-prefix}__icon !default;
     &:focus {
       outline: none;
     }
-
-    &::after {
-      content: '';
-      display: block;
-      box-sizing: border-box;
-      position: absolute;
-      inset-block-end: 0;
-      border-block-end: use-border-size('normal') use-color('gray', 300);
-
-      .#{$component-prefix}-collapse--size-sm & {
-        inset-inline-start: use-spacing(6);
-        inset-inline-end: use-spacing(6);
-      }
-
-      .#{$component-prefix}-collapse--size-md & {
-        inset-inline-start: use-spacing(8);
-        inset-inline-end: use-spacing(8);
-      }
-
-      .#{$component-prefix}-collapse--size-lg & {
-        inset-inline-start: use-spacing(10);
-        inset-inline-end: use-spacing(10);
-      }
-    }
   }
 
   &__title-container {

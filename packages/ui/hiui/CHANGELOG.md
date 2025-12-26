@@ -1,5 +1,31 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.43
+
+### Minor Changes
+
+- 68614f4f1: <br>
+  - feat(preview): title 参数支持传入函数返回自定义内容 (5.0)
+  - fix(preview): 修复禁止下载时下载按钮没有隐藏问题 (5.0)
+
+### Patch Changes
+
+- 7fd475d45: fix(check-cascader): 修复非平铺展示搜索结果时显示出层级问题 (5.0)
+- 305b4dd37: style: fix ui bug (5.0)
+- d5092f349: refactor(table): stretchHeight 模式不再使用双表格结构，使用 sticky 实现 (5.0)
+- Updated dependencies [7fd475d45]
+- Updated dependencies [305b4dd37]
+- Updated dependencies [d5092f349]
+- Updated dependencies [68614f4f1]
+  - @hi-ui/check-cascader@5.0.0-canary.24
+  - @hi-ui/collapse@5.0.0-canary.10
+  - @hi-ui/layout@5.0.0-canary.15
+  - @hi-ui/menu@5.0.0-canary.17
+  - @hi-ui/tooltip@5.0.0-canary.9
+  - @hi-ui/upload@5.0.0-canary.13
+  - @hi-ui/table@5.0.0-canary.25
+  - @hi-ui/preview@5.0.0-canary.10
+
 ## 5.0.0-canary.42
 
 ### Patch Changes

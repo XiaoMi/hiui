@@ -1,5 +1,21 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.13
+
+### Minor Changes
+
+- 68614f4f1: <br>
+  - feat(preview): title 参数支持传入函数返回自定义内容 (5.0)
+  - fix(preview): 修复禁止下载时下载按钮没有隐藏问题 (5.0)
+
+### Patch Changes
+
+- 305b4dd37: style: fix ui bug (5.0)
+- Updated dependencies [c6c0159c4]
+- Updated dependencies [68614f4f1]
+  - @hi-ui/icons@5.0.0-canary.9
+  - @hi-ui/preview@5.0.0-canary.10
+
 ## 5.0.0-canary.12
 
 ### Patch Changes

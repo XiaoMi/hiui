@@ -1,5 +1,13 @@
 # @hi-ui/check-cascader
 
+## 5.0.0-canary.24
+
+### Patch Changes
+
+- 7fd475d45: fix(check-cascader): 修复非平铺展示搜索结果时显示出层级问题 (5.0)
+- Updated dependencies [c6c0159c4]
+  - @hi-ui/icons@5.0.0-canary.9
+
 ## 5.0.0-canary.23
 
 ### Patch Changes

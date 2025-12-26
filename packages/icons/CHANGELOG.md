@@ -1,5 +1,11 @@
 # @hi-ui/icons
 
+## 5.0.0-canary.9
+
+### Minor Changes
+
+- c6c0159c4: feat(icons): 增加新图标并调整分类 (5.0)
+
 ## 5.0.0-canary.8
 
 ### Minor Changes

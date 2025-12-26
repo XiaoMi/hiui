@@ -1,5 +1,11 @@
 # @hi-ui/tooltip
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- 305b4dd37: style: fix ui bug (5.0)
+
 ## 5.0.0-canary.8
 
 ### Patch Changes

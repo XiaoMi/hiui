@@ -1,5 +1,15 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.17
+
+### Patch Changes
+
+- 305b4dd37: style: fix ui bug (5.0)
+- Updated dependencies [c6c0159c4]
+- Updated dependencies [305b4dd37]
+  - @hi-ui/icons@5.0.0-canary.9
+  - @hi-ui/tooltip@5.0.0-canary.9
+
 ## 5.0.0-canary.16
 
 ### Patch Changes
