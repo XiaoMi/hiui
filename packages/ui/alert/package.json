@@ -54,7 +54,8 @@
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",
     "react": ">=16.8.6",
-    "react-dom": ">=16.8.6"
+    "react-dom": ">=16.8.6",
+    "@hi-ui/style-inject": ">=4.0.0"
   },
   "devDependencies": {
     "@hi-ui/core": "^4.0.8",

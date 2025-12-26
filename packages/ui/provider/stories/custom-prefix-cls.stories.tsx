@@ -16,11 +16,13 @@ import Switch from '@hi-ui/switch'
 import Checkbox from '@hi-ui/checkbox'
 import Table from '@hi-ui/table'
 
+Provider.config({ prefixCls: 'yun-test' })
+
 /**
- * @title 主题定制
- * @desc 支持全局 Token 和组件 Token 的定制
+ * @title 自定义样式前缀
+ * @desc 该方式主要是解决样式冲突问题，不适用于动态改变样式前缀，需要全局配置一次。
  */
-export const Theme = () => {
+export const CustomPrefixCls = () => {
   const [theme, setTheme] = React.useState('default')
 
   const customTheme: ThemeDataProps = {
@@ -141,8 +143,8 @@ export const Theme = () => {
 
   return (
     <>
-      <h1>主题定制</h1>
-      <div className="provider-theme__wrap">
+      <h1>定制样式前缀</h1>
+      <div className="provider-custom-prefix-cls__wrap">
         <Provider theme={theme === 'default' ? undefined : customTheme}>
           <div style={{ marginBottom: 24 }}>
             <Radio.Group
@@ -161,7 +163,7 @@ export const Theme = () => {
             />
           </div>
 
-          <Row gutter={12} style={{ marginBottom: 24 }}>
+          {/* <Row gutter={12} style={{ marginBottom: 24 }}>
             <Col span={12}>
               <Row>
                 <Col span={24}>
@@ -243,7 +245,7 @@ export const Theme = () => {
                 ]}
               />
             </Col>
-          </Row>
+          </Row> */}
 
           <Row gutter={12} style={{ marginBottom: 24 }}>
             <Col span={6}>
@@ -260,7 +262,7 @@ export const Theme = () => {
             </Col>
           </Row>
 
-          <Row gutter={12} style={{ marginBottom: 24 }}>
+          {/* <Row gutter={12} style={{ marginBottom: 24 }}>
             <Col span={6}>
               <Input />
             </Col>
@@ -390,7 +392,7 @@ export const Theme = () => {
             showTotal
             showJumper
             pageSizeOptions={[10, 20, 50, 100]}
-          />
+          /> */}
         </Provider>
       </div>
     </>

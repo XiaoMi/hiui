@@ -7,6 +7,7 @@ import {
   LocaleProviderProps,
   GlobalProvider,
   UseGlobalContext,
+  GlobalConfig,
 } from '@hi-ui/core'
 import { DesignSystemAccentColorEnum, ThemeDataProps } from './types'
 import {
@@ -23,7 +24,10 @@ const PREFIX = 'hi-v5'
 export const Provider: React.FC<ProviderProps> & {
   extends: ProviderExtendsFunc
   merge: ProviderMergeFunc
-} = ({ children, locale, languages, accentColor, theme, portal, ...rest }) => {
+  config: ProviderConfigFunc
+} = ({ children, locale, languages, accentColor, theme, portal, prefixCls, ...rest }) => {
+  const prefix = GlobalConfig.prefixCls || PREFIX
+
   /**
    * global css var config
    */
@@ -36,20 +40,20 @@ export const Provider: React.FC<ProviderProps> & {
     if (!mergedThemes && !componentsThemes) return
 
     requestAnimationFrame(() => {
-      createSystem(mergedThemes, PREFIX)
-      createComponentsSystem(componentsThemes, PREFIX)
+      createSystem(mergedThemes, prefix)
+      createComponentsSystem(componentsThemes, prefix)
     })
 
     return () => {
-      removeSystem(PREFIX)
-      removeComponentsSystem(componentsThemes, PREFIX)
+      removeSystem(prefix)
+      removeComponentsSystem(componentsThemes, prefix)
     }
-  }, [accentColor, theme])
+  }, [accentColor, prefix, theme])
 
   return (
     <PortalProvider portal={portal}>
       <LocaleProvider locale={locale} languages={languages}>
-        <GlobalProvider value={rest}>{children}</GlobalProvider>
+        <GlobalProvider value={{ ...rest, prefixCls }}>{children}</GlobalProvider>
       </LocaleProvider>
     </PortalProvider>
   )
@@ -86,3 +90,8 @@ Provider.merge = LocaleProvider.merge
 
 type ProviderExtendsFunc = typeof LocaleProvider.extends
 type ProviderMergeFunc = typeof LocaleProvider.merge
+type ProviderConfigFunc = (config: { prefixCls: string }) => void
+
+Provider.config = ({ prefixCls }: { prefixCls: string }) => {
+  GlobalConfig.prefixCls = prefixCls
+}

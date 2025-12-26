@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { AlertTypeEnum } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useTimeout } from '@hi-ui/use-timeout'
@@ -19,7 +19,7 @@ const _prefix = getPrefixCls('alert')
 export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = 'alert',
       className,
       children,
@@ -38,6 +38,9 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
     ref
   ) => {
     const { size: globalSize } = useGlobalContext()
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('alert', globalPrefixCls)) || _prefix
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'
