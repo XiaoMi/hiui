@@ -143,7 +143,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data: cascaderData,
     flattedData: flattedData,
     enabled: searchableProp,
-    exclude: (node: any) => node.disabled,
+    exclude: (node: any) => node.disabled || node.children,
     // exclude: (option: FlattedCascaderDataItem) => {
     //   return checkCanLoadChildren(option, onLoadChildren)
     // },
