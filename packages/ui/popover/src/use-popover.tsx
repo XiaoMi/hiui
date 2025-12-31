@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { PopoverTriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { omitPopperOverlayProps, PopperJS, PopperOverlayProps } from '@hi-ui/popper'
@@ -34,6 +34,12 @@ export const usePopover = ({
       onClose?.()
     },
   })
+
+  useEffect(() => {
+    if (visible) {
+      onOpen?.()
+    }
+  }, [visible, onOpen])
 
   const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
     visibleAction.on()

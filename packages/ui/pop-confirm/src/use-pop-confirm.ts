@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
@@ -26,6 +26,12 @@ export const usePopConfirm = ({
     onOpen,
     onClose,
   })
+
+  useEffect(() => {
+    if (visible) {
+      onOpen?.()
+    }
+  }, [visible, onOpen])
 
   const onCancelLatest = useLatestCallback(onCancelProp)
 

@@ -117,6 +117,7 @@ export const Basic = () => {
           { component: Icons.TemplateFilled, tagName: 'TemplateFilled' },
           { component: Icons.TimeFilled, tagName: 'TimeFilled' },
           { component: Icons.ToolFilled, tagName: 'ToolFilled' },
+          { component: Icons.TranspondFilled, tagName: 'TranspondFilled' },
           { component: Icons.TravelFilled, tagName: 'TravelFilled' },
           { component: Icons.TruckFilled, tagName: 'TruckFilled' },
           { component: Icons.UmberFilled, tagName: 'UmberFilled' },

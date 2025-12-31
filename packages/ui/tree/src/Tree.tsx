@@ -101,11 +101,19 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 
     const [treeData, setTreeData] = useCache(data)
 
-    const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData, fieldNames), [
-      treeData,
-      flattedDataProp,
-      fieldNames,
-    ])
+    const flattedShowData = useMemo(() => {
+      const _flattedShowData = flattenTreeData(treeData, fieldNames)
+      if (checkable && flattedDataProp && flattedDataProp.length > 0) {
+        // 加这段处理是为了解决在 checkable 为 true 时，在搜索结果中选中子节点时，父节点勾选状态不正确的问题
+        // 原因是 treeData 是过滤后的数据，所以无法保证完整的父子节点关系，需要基于原始的 flattedDataProp 数据再进行过滤
+        return (
+          flattedDataProp?.filter((item) =>
+            _flattedShowData.some((_item) => _item.id === item.id)
+          ) || []
+        )
+      }
+      return _flattedShowData
+    }, [treeData, fieldNames, checkable, flattedDataProp])
 
     const [selectedId, onNodeSelect] = useSelect(
       !selectable,
@@ -117,14 +125,14 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
       checkedMode,
       !checkable,
-      flattedData,
+      flattedShowData,
       defaultCheckedIds,
       checkedIdsProp,
       onCheck
     )
 
     const [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] = useExpand(
-      flattedData,
+      flattedShowData,
       defaultExpandedIds,
       expandedIds,
       onExpand,
@@ -154,7 +162,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     const dropTree = useTreeDrop(
       getTreeNodeRequiredProps,
       treeData,
-      flattedData,
+      flattedShowData,
       setTreeData,
       onDrop,
       onDropEnd

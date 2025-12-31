@@ -4,7 +4,9 @@ import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
 import { SearchOutlined } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
-import { MenuDataItem, MenuSearch, MenuSearchHelper } from '@hi-ui/menu'
+import { MenuSearch, MenuSearchHelper, MenuSearchProps } from '@hi-ui/menu'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { mergeRefs } from '@hi-ui/react-utils'
 
 const SEARCH_TRIGGER_PREFIX = getPrefixCls('search-trigger')
 
@@ -17,10 +19,18 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
       prefixCls = SEARCH_TRIGGER_PREFIX,
       role = 'search-trigger',
       className,
+      style,
       mini,
       placeholder,
+      defaultValue = '',
+      value: valueProp,
+      onChange,
       data,
       onClick,
+      onSelect,
+      onClear,
+      onClose,
+      onEsc,
       ...rest
     },
     ref
@@ -28,7 +38,7 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
     const i18n = useLocaleContext()
 
     const [visible, setVisible] = React.useState(false)
-    const [value, setValue] = React.useState('')
+    const [value, setValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const innerRef = React.useRef<HTMLDivElement>(null)
     const searchRef = React.useRef<MenuSearchHelper>(null)
 
@@ -48,7 +58,13 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
 
     return (
       <>
-        <div ref={innerRef} role={role} className={cls} onClick={handleClick} {...rest}>
+        <div
+          ref={mergeRefs(innerRef, ref)}
+          role={role}
+          className={cls}
+          onClick={handleClick}
+          {...rest}
+        >
           <SearchOutlined />
           {!mini && (
             <span className={`${prefixCls}__placeholder`}>
@@ -88,15 +104,19 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
             onSelect={(id: ReactText, item: MenuDataItem) => {
               console.log('select', id, item)
               setVisible(false)
+              onSelect?.(id, item)
             }}
             onClear={() => {
               setValue('')
+              onClear?.()
             }}
             onClose={() => {
               setVisible(false)
+              onClose?.()
             }}
             onEsc={() => {
               setVisible(false)
+              onEsc?.()
             }}
           />
         </Popper>
@@ -105,19 +125,11 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
   }
 )
 
-export interface SearchTriggerProps extends HiBaseHTMLProps<'div'> {
+export interface SearchTriggerProps extends HiBaseHTMLProps<'div'>, MenuSearchProps {
   /**
    * 迷你模式
    */
   mini?: boolean
-  /**
-   * 占位符
-   */
-  placeholder?: string
-  /**
-   * 菜单数据
-   */
-  data?: MenuDataItem[]
 }
 
 if (__DEV__) {
