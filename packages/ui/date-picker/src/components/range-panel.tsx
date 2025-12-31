@@ -147,6 +147,28 @@ const RangePanel = () => {
   const setRanges = (date: moment.Moment, panelIndex: number = 0) => {
     const newRange = { ...range }
 
+    // 检查是否需要自动切换面板月份
+    if (type.includes('range')) {
+      const currentPanelDate = calRenderDates[panelIndex]
+      if (currentPanelDate) {
+        const selectedMonth = date.clone().startOf('month')
+        const panelMonth = currentPanelDate.clone().startOf('month')
+
+        // 左边面板：如果选择的日期是上个月的，自动定位到上个月
+        if (panelIndex === 0 && selectedMonth.isBefore(panelMonth, 'month')) {
+          const newDates = genNewDates(calRenderDates, date.clone().startOf('month'), 0)
+          setCalRenderDates(newDates)
+          onPanelChange?.(date.toDate())
+        }
+        // 右边面板：如果选择的日期是下个月的，自动定位到下个月
+        else if (panelIndex === 1 && selectedMonth.isAfter(panelMonth, 'month')) {
+          const newDates = genNewDates(calRenderDates, date.clone().startOf('month'), 1)
+          setCalRenderDates(newDates)
+          onPanelChange?.(date.toDate())
+        }
+      }
+    }
+
     if (newRange.start && range.selecting) {
       if (date.isSameOrBefore(newRange.start)) {
         newRange.selecting = false

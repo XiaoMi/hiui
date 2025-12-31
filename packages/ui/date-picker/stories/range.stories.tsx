@@ -24,19 +24,6 @@ export const Range = () => {
             console.log('onChange', date, dateStr)
           }}
           onSelect={console.log}
-          disabledDate={(val) => {
-            const tomorrow = DayJs(new Date()).isBefore(DayJs(val))
-            if (tomorrow) return true
-
-            if (dynamicSelectedValue) {
-              const startTime = DayJs(dynamicSelectedValue).startOf('month').valueOf()
-              const endTime = DayJs(dynamicSelectedValue).endOf('month').valueOf()
-
-              if (DayJs(val).isBefore(startTime)) return true
-              if (DayJs(val).isAfter(endTime)) return true
-            }
-            return false
-          }}
         />
 
         <h2>年份</h2>
