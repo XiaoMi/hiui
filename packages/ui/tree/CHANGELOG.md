@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 5b1575bc6: fix(tree): 修复在可勾选模式下搜索结果中父节点勾选状态不正确的问题，更新相关数据处理逻辑 (5.0)
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

@@ -1,5 +1,30 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.44
+
+### Minor Changes
+
+- fc69cd0d3: feat(search-trigger): 继承 MenuSearch 组件参数 (5.0)
+
+### Patch Changes
+
+- ce5cab0bc: fix(cascader): 平铺搜索结果时不再展示不可点击的父节点 (5.0)
+- 5b1575bc6: fix(tree): 修复在可勾选模式下搜索结果中父节点勾选状态不正确的问题，更新相关数据处理逻辑 (5.0)
+- 916ad5c8a: feat: add onOpen callback trigger on visibility change (5.0)
+- c00195de9: perf(date-picker): 优化跨月范围选择交互体验，选择跨月日期时，自动切换面板月份 (5.0)
+- Updated dependencies [fc69cd0d3]
+- Updated dependencies [ce5cab0bc]
+- Updated dependencies [5b1575bc6]
+- Updated dependencies [916ad5c8a]
+- Updated dependencies [c00195de9]
+  - @hi-ui/layout@5.0.0-canary.16
+  - @hi-ui/cascader@5.0.0-canary.22
+  - @hi-ui/tree@5.0.0-canary.10
+  - @hi-ui/pop-confirm@5.0.0-canary.12
+  - @hi-ui/popover@5.0.0-canary.11
+  - @hi-ui/tooltip@5.0.0-canary.10
+  - @hi-ui/date-picker@5.0.0-canary.27
+
 ## 5.0.0-canary.43
 
 ### Minor Changes

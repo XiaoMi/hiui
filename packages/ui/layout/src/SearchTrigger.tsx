@@ -101,8 +101,7 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
             onChange={setValue}
             data={data}
             placeholder={i18n.menuSearch.placeholder}
-            onSelect={(id: ReactText, item: MenuDataItem) => {
-              console.log('select', id, item)
+            onSelect={(id: ReactText, item) => {
               setVisible(false)
               onSelect?.(id, item)
             }}

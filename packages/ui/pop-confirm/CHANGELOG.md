@@ -1,5 +1,11 @@
 # @hi-ui/pop-confirm
 
+## 5.0.0-canary.12
+
+### Patch Changes
+
+- 916ad5c8a: feat: add onOpen callback trigger on visibility change (5.0)
+
 ## 5.0.0-canary.11
 
 ### Patch Changes

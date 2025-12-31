@@ -1,5 +1,11 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.22
+
+### Patch Changes
+
+- ce5cab0bc: fix(cascader): 平铺搜索结果时不再展示不可点击的父节点 (5.0)
+
 ## 5.0.0-canary.21
 
 ### Patch Changes

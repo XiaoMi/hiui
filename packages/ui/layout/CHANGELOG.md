@@ -1,5 +1,16 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.16
+
+### Minor Changes
+
+- fc69cd0d3: feat(search-trigger): 继承 MenuSearch 组件参数 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [916ad5c8a]
+  - @hi-ui/popover@5.0.0-canary.11
+
 ## 5.0.0-canary.15
 
 ### Patch Changes
