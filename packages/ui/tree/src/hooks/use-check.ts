@@ -42,7 +42,7 @@ export const useCheck = (
   )
 
   // 入口数据处理
-  const parsedCheckedIds = parseCheckDataDirty(checkedMode, checkedIds, flattedData)
+  const parsedCheckedIds = parseCheckDataDirty(checkedMode, checkedIds, flattedData, allowCheck)
 
   const cascaded = checkedMode !== 'SEPARATE'
 
@@ -53,7 +53,7 @@ export const useCheck = (
     checkedIds: parsedCheckedIds,
     onCheck: (checkedIds, checkedNode, checked, semiCheckedIds) => {
       // 出口数据处理
-      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData)
+      const processedIds = processCheckedIds(checkedMode, checkedIds, flattedData, allowCheck)
       trySetCheckedIds(processedIds, checkedNode, checked, semiCheckedIds)
     },
     allowCheck,
