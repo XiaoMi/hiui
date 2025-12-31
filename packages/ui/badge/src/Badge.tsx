@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo, isValidElement, cloneElement, ReactNode } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isNullish } from '@hi-ui/type-assertion'
 import { BadgeTypeEnum } from './types'
 
@@ -24,7 +24,7 @@ const getShowContent = (content: ReactNode) => {
 export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       type = 'bubble',
@@ -38,6 +38,9 @@ export const Badge = forwardRef<HTMLSpanElement | null, BadgeProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('badge', globalPrefixCls)) || _prefix
     const badgeStyle = useMemo(() => {
       const style: React.CSSProperties = {
         backgroundColor: color,

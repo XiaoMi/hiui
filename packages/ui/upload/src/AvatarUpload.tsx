@@ -15,18 +15,18 @@ import {
   ResetOutlined,
 } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
 import Cropper, { ReactCropperElement } from 'react-cropper'
 import { getImageTypeByFilename } from './utils'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 
 export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'upload',
       className,
       children,
@@ -55,6 +55,9 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const uploadSuccessText = i18n.get('upload.uploadSuccess')

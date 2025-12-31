@@ -1,13 +1,13 @@
 import React, { forwardRef, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useSlider, UseSliderProps } from './use-slider'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { Tooltip, TooltipHelpers } from '@hi-ui/tooltip'
 import { isFunction, isObject } from '@hi-ui/type-assertion'
 
-const SLIDER_PREFIX = getPrefixCls('slider')
+const _prefix = getPrefixCls('slider')
 
 /**
  * 滑块
@@ -15,7 +15,7 @@ const SLIDER_PREFIX = getPrefixCls('slider')
 export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
   (
     {
-      prefixCls = SLIDER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'slider',
       className,
       children,
@@ -26,6 +26,10 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('slider', globalPrefixCls)) || _prefix
+
     const tooltipRef = useRef<TooltipHelpers>(null)
     const tooltipRef2 = useRef<TooltipHelpers>(null)
 

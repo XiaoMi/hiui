@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { Popover, PopoverProps } from '@hi-ui/popover'
 import { Avatar, AvatarProps } from './Avatar'
 
@@ -12,7 +12,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement | null, AvatarGroupProps>(
   (
     {
       children,
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       maxCount = Infinity,
@@ -25,6 +25,9 @@ export const AvatarGroup = forwardRef<HTMLDivElement | null, AvatarGroupProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('avatar-group', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     const renderChildren = useMemo(() => {

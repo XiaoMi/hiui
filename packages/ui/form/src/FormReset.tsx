@@ -3,11 +3,15 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import Button, { ButtonProps } from '@hi-ui/button'
+import { GlobalConfig } from '@hi-ui/core'
 
-const FORM_RESET_PREFIX = getPrefixCls('form-reset')
+const _prefix = getPrefixCls('form-reset')
 
 export const FormReset = forwardRef<HTMLButtonElement | null, FormResetProps>(
-  ({ prefixCls = FORM_RESET_PREFIX, className, children, type, onClick, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, className, children, type, onClick, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('form-reset', globalPrefixCls)) || _prefix
     const { resetForm } = useFormContext()
 
     const cls = cx(prefixCls, className)

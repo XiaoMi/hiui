@@ -1,14 +1,14 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, GlobalConfig } from '@hi-ui/core'
 import { useRadioGroup, UseRadioGroupProps } from './use-radio-group'
 import { RadioGroupProvider } from './context'
 import { RadioDataItem, RadioGroupTypeEnum, RadioGroupPlacementEnum } from './types'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { Radio } from './Radio'
 
-const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
+const _prefix = getPrefixCls('radio-group')
 
 /**
  * 单选组合器
@@ -16,7 +16,7 @@ const RADIO_GROUP_PREFIX = getPrefixCls('radio-group')
 export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   (
     {
-      prefixCls = RADIO_GROUP_PREFIX,
+      prefixCls: prefixClsProp,
       className,
       children,
       data,
@@ -27,6 +27,10 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('radio-group', globalPrefixCls)) || _prefix
+
     const { rootProps, name, value, onChange, isChecked, disabled } = useRadioGroup(rest)
 
     const providedValue = useMemo(

@@ -3,14 +3,14 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { DefaultPagination, PaginationProps } from './DefaultPagination'
 import { ShrinkPagination } from './ShrinkPagination'
-import { useGlobalContext } from '@hi-ui/core'
+import { useGlobalContext, GlobalConfig } from '@hi-ui/core'
 
-const PAGINATION_PREFIX = getPrefixCls('pagination')
+const _prefix = getPrefixCls('pagination')
 
 export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
   (
     {
-      prefixCls = PAGINATION_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'pagination',
       type = 'default',
       className,
@@ -20,6 +20,9 @@ export const Pagination = forwardRef<HTMLDivElement | null, PaginationProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('pagination', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'sm'
     if (size === 'lg') {

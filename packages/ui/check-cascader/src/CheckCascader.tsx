@@ -31,7 +31,13 @@ import {
 import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import {
+  HiBaseFieldNames,
+  HiBaseSizeEnum,
+  useLocaleContext,
+  useGlobalContext,
+  GlobalConfig,
+} from '@hi-ui/core'
 import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -45,7 +51,7 @@ const NOOP_ARRAY = [] as []
 export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       defaultValue = NOOP_ARRAY,
       value: valueProp,
@@ -98,6 +104,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('check-cascader', globalPrefixCls)) ||
+      _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

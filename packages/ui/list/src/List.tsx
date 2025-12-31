@@ -3,11 +3,11 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { PaginationProps, Pagination } from '@hi-ui/pagination'
 import { EmptyState } from '@hi-ui/empty-state'
-import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { ListDataItem, ListPaginationPlacementEnum } from './types'
 import { transformData } from './utils'
 
-const LIST_PREFIX = getPrefixCls('list')
+const _prefix = getPrefixCls('list')
 
 /**
  * 列表
@@ -37,7 +37,7 @@ const getPagePosition = (
 export const List = forwardRef<HTMLDivElement | null, ListProps>(
   (
     {
-      prefixCls = LIST_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'list',
       className,
       children,
@@ -53,6 +53,10 @@ export const List = forwardRef<HTMLDivElement | null, ListProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('list', globalPrefixCls)) || _prefix
+
     const transformedData = useMemo((): ListDataItem[] => transformData(data, fieldNames), [
       data,
       fieldNames,

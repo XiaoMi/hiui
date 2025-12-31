@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import * as PopperJS from '@popperjs/core'
@@ -17,7 +17,7 @@ const _prefix = getPrefixCls('popper')
 export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       style,
@@ -59,6 +59,9 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('popper', globalPrefixCls)) || _prefix
     const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
       defaultVisible: false,
       visible: visibleProp,

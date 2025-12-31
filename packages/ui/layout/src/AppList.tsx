@@ -1,13 +1,13 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import Popover, { PopoverProps } from '@hi-ui/popover'
 import { CheckOutlined } from '@hi-ui/icons'
 
-const APP_LIST_PREFIX = getPrefixCls('app-list')
+const _prefix = getPrefixCls('app-list')
 
 /**
  * 应用列表组件
@@ -15,7 +15,7 @@ const APP_LIST_PREFIX = getPrefixCls('app-list')
 export const AppList = forwardRef<HTMLDivElement | null, AppListProps>(
   (
     {
-      prefixCls = APP_LIST_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'app-list',
       className,
       data,
@@ -27,6 +27,9 @@ export const AppList = forwardRef<HTMLDivElement | null, AppListProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('app-list', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     const [activeId, tryChangeActiveId] = useUncontrolledState<React.ReactText | undefined>(

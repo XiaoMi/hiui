@@ -5,7 +5,7 @@ import { MinusOutlined, PlusOutlined } from '@hi-ui/icons'
 import { useCounter } from './use-counter'
 import type { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import type { CounterSizeEnum } from './types'
-import { useGlobalContext } from '@hi-ui/core'
+import { useGlobalContext, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
@@ -14,7 +14,10 @@ const _prefix = getPrefixCls(_role)
  * 数字加减器
  */
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
-  ({ prefixCls = _prefix, role = _role, size: sizeProp, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = _role, size: sizeProp, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('counter', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize
     if (size === 'xs') {

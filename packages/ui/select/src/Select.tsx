@@ -30,7 +30,7 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { uuid } from '@hi-ui/use-id'
@@ -44,7 +44,7 @@ const _prefix = getPrefixCls(_role)
 export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -92,6 +92,9 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('select', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

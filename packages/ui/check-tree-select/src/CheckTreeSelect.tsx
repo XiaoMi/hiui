@@ -17,7 +17,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -32,7 +32,7 @@ import { useCheck } from './hooks/use-check'
 import { getAllCheckedStatus } from './utils'
 import { BaseTreeNodeData } from 'packages/utils/tree-utils/lib/types/types'
 
-const TREE_SELECT_PREFIX = getPrefixCls('check-tree-select')
+const _prefix = getPrefixCls('check-tree-select')
 const DEFAULT_DATA = [] as []
 const DEFAULT_VALUE = [] as []
 const DEFAULT_FIELD_NAMES = {} as any
@@ -44,7 +44,7 @@ const DEFAULT_EXPANDED_IDS = [] as []
 export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelectProps>(
   (
     {
-      prefixCls = TREE_SELECT_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'check-tree-select',
       className,
       data = DEFAULT_DATA,
@@ -106,6 +106,11 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('check-tree-select', globalPrefixCls)) ||
+      _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

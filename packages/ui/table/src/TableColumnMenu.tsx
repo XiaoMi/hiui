@@ -13,7 +13,7 @@ import Popper from '@hi-ui/popper'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useTableContext } from './context'
 import { FlattedTableColumnItemData } from './types'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('table-column-menu')
 
@@ -21,7 +21,13 @@ const _prefix = getPrefixCls('table-column-menu')
  * 表头每列下拉式菜单，包含冻结、高亮、递增、递减操作
  */
 export const TableColumnMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
-  ({ prefixCls = _prefix, column, onOpen, onClose }, ref) => {
+  ({ prefixCls: prefixClsProp, column, onOpen, onClose }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('table-column-menu', globalPrefixCls)) ||
+      _prefix
+
     const i18n = useLocaleContext()
 
     const {

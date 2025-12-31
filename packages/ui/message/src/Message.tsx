@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import {
   CloseCircleFilled,
@@ -26,7 +26,7 @@ const messageIconMap: any = {
 export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -42,6 +42,10 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('message', globalPrefixCls)) || _prefix
+
     const [transitionVisible, setTransitionVisible] = useState(false)
 
     const timerRef = useRef(0)

@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled } from '@hi-ui/icons'
 import type { HiBaseAppearanceEnum, HiBaseDataItem, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { GlobalConfig } from '@hi-ui/core'
 import { isArray } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
@@ -19,7 +20,7 @@ const NOOP_ARRAY = [] as []
 export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data = NOOP_ARRAY,
@@ -47,6 +48,10 @@ export const MockInput = forwardRef<HTMLDivElement | null, MockInputProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('mock-input', globalPrefixCls)) || _prefix
+
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
     const displayItem = useMemo(() => {

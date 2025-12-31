@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
 import Popper from '@hi-ui/popper'
@@ -17,7 +17,7 @@ export const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
 export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
   (
     {
-      prefixCls = POP_CONFIRM_PREFIX,
+      prefixCls: prefixClsProp,
       innerRef,
       role = 'alert-dialog',
       className,
@@ -32,6 +32,11 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('pop-confirm', globalPrefixCls)) ||
+      POP_CONFIRM_PREFIX
     const i18n = useLocaleContext()
 
     const cancelText = isUndef(cancelTextProp) ? i18n.get('popConfirm.cancelText') : cancelTextProp

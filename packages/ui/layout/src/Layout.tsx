@@ -1,18 +1,21 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const LAYOUT_PREFIX = getPrefixCls('layout')
+const _prefix = getPrefixCls('layout')
 
 /**
  * 布局组件，用于布局页面结构
  */
 export const Layout = forwardRef<HTMLDivElement | null, LayoutProps>(
   (
-    { prefixCls = LAYOUT_PREFIX, role = 'layout', className, children, direction = 'row', ...rest },
+    { prefixCls: prefixClsProp, role = 'layout', className, children, direction = 'row', ...rest },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('layout', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, `${prefixCls}--direction-${direction}`)
 
     return (

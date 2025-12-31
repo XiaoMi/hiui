@@ -1,13 +1,13 @@
 import React, { forwardRef, Children, Fragment, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isNullish } from '@hi-ui/type-assertion'
 
 import { handleTransformGap } from './utils'
 import { SpaceAlignEnum, SpaceDirectionEnum, SpaceSizeEnum } from './types'
 
-const SPACE_PREFIX = getPrefixCls('space')
+const _prefix = getPrefixCls('space')
 
 /**
  * Space
@@ -16,7 +16,7 @@ const SPACE_PREFIX = getPrefixCls('space')
 export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
   (
     {
-      prefixCls = SPACE_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'space',
       inline = true,
       align = 'center',
@@ -32,6 +32,10 @@ export const Space = forwardRef<HTMLDivElement | null, SpaceProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('space', globalPrefixCls)) || _prefix
+
     const separatorMemo = useMemo(() => {
       if (!isNullish(split)) {
         if (isNullish(separator)) {

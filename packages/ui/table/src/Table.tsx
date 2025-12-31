@@ -24,6 +24,7 @@ import { cloneTree, flattenTree } from '@hi-ui/tree-utils'
 import { BaseTable, BaseTableProps } from './BaseTable'
 import { uuid } from './utils'
 import { useColSet } from './hooks/use-col-set'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('table')
 
@@ -62,7 +63,7 @@ const DEFAULT_PAGINATION = {
 export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       standard = false,
       loading: loadingProp = false,
       dataSource,
@@ -83,6 +84,10 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table', globalPrefixCls)) || _prefix
+
     // 是否需要双表格
     const needDoubleTable = DOUBLE_TABLE_SCENE.some((prop) => !!rest[prop])
 

@@ -8,7 +8,7 @@ import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { transformData } from './utils'
 
 const _role = 'transfer'
@@ -23,7 +23,7 @@ const allowCheck = (item: any) => !item.disabled
 export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       disabled = false,
@@ -54,6 +54,10 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('transfer', globalPrefixCls)) || _prefix
+
     const [targetIds, tryChangeTargetIds] = useUncontrolledState(
       defaultTargetIds,
       targetIdsProp,

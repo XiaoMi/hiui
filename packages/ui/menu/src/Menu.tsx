@@ -17,6 +17,7 @@ import {
   HiBaseSizeEnum,
   useLocaleContext,
   useGlobalContext,
+  GlobalConfig,
 } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -30,7 +31,7 @@ import { MenuItem } from './MenuItem'
 import MenuContext from './context'
 import { getAncestorIds, transformTreeData } from './util'
 
-const MENU_PREFIX = getPrefixCls('menu')
+const _prefix = getPrefixCls('menu')
 
 const DEFAULT_EXPANDED_IDS = [] as []
 const NOOP_ARRAY = [] as []
@@ -44,7 +45,7 @@ const MENU_MORE_ID = `MENU_MORE_${uuid()}`
 export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
   (
     {
-      prefixCls = MENU_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'menu',
       className,
       data = NOOP_ARRAY,
@@ -75,6 +76,9 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('menu', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)

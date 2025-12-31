@@ -1,9 +1,9 @@
 import React, { forwardRef, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const HIGHLIGHTER_PREFIX = getPrefixCls('highlighter')
+const _prefix = getPrefixCls('highlighter')
 
 const addGlobalFlag = (regex: RegExp) => {
   const newFlags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g'
@@ -16,7 +16,7 @@ const addGlobalFlag = (regex: RegExp) => {
 export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
   (
     {
-      prefixCls = HIGHLIGHTER_PREFIX,
+      prefixCls: prefixClsProp,
       className,
       keyword,
       highlightClassName,
@@ -26,6 +26,10 @@ export const Highlighter = forwardRef<HTMLSpanElement | null, HighlighterProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('highlighter', globalPrefixCls)) || _prefix
+
     const startIndex = useRef(0)
     startIndex.current = 0
 

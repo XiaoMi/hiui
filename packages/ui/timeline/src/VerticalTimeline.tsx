@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import {
   TimelineMergedItem,
   TimelineDataItem,
@@ -22,7 +22,7 @@ const NOOP_ARRAY = [] as []
 export const VerticalTimeline = forwardRef<HTMLDivElement | null, VerticalTimelineProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -32,6 +32,9 @@ export const VerticalTimeline = forwardRef<HTMLDivElement | null, VerticalTimeli
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('timeline', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
 
     const renderItem = useCallback(

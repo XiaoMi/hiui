@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CollapseProvider, CollapseContext } from './context'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'collapse'
 const _prefix = getPrefixCls(_role)
@@ -16,7 +16,7 @@ const NOOP_ARRAY = [] as string[]
 export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -34,6 +34,9 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('collapse', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

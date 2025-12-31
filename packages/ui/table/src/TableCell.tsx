@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/array-utils'
 import { isObject, isFunction } from '@hi-ui/type-assertion'
@@ -23,7 +23,7 @@ const _prefix = getPrefixCls('table-cell')
 export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       column,
       rowData,
@@ -38,6 +38,10 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table-cell', globalPrefixCls)) || _prefix
+
     const {
       isHighlightedCol,
       onLoadChildren,

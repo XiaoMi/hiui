@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import Popper from '@hi-ui/popper'
 import { usePopover, UsePopoverProps } from './use-popover'
 import { isString } from '@hi-ui/type-assertion'
@@ -22,7 +22,7 @@ export const prefix = getPrefixCls(_role)
 export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
   (
     {
-      prefixCls = prefix,
+      prefixCls: prefixClsProp,
       innerRef,
       className,
       children,
@@ -36,6 +36,10 @@ export const Popover = forwardRef<HTMLDivElement | null, PopoverProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('popover', globalPrefixCls)) || prefix
+
     const {
       rootProps,
       getTriggerProps,

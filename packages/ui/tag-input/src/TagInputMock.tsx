@@ -11,7 +11,12 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { TagInputOption } from './types'
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
+import {
+  HiBaseAppearanceEnum,
+  HiBaseHTMLFieldProps,
+  HiBaseSizeEnum,
+  GlobalConfig,
+} from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isArray } from '@hi-ui/type-assertion'
 import ResizeDetector from 'react-resize-detector'
@@ -23,7 +28,7 @@ const NOOP_ARRAY = [] as []
 export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       defaultValue = NOOP_ARRAY,
@@ -56,6 +61,12 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('tag-input-mock', globalPrefixCls)) ||
+      _prefix
+
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
     const dataMap = useMemo(() => {

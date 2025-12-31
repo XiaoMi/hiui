@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { TransferDataItem } from './types'
 import { useTransferContext } from './context'
 import Checkbox from '@hi-ui/checkbox'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'transfer-item'
 const _prefix = getPrefixCls(_role)
@@ -11,7 +12,7 @@ const _prefix = getPrefixCls(_role)
 export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -27,6 +28,12 @@ export const TransferItem = forwardRef<HTMLLIElement | null, TransferItemProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('transfer-item', globalPrefixCls)) ||
+      _prefix
+
     const {
       disabled: disabledContext,
       type = 'multiple',

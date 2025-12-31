@@ -1,25 +1,21 @@
 import React, { cloneElement, forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const INPUT_GROUP_PREFIX = getPrefixCls('input-group')
+const _prefix = getPrefixCls('input-group')
 
 /**
  * 输入框组合器
  */
 export const InputGroup = forwardRef<HTMLDivElement | null, InputGroupProps>(
   (
-    {
-      prefixCls = INPUT_GROUP_PREFIX,
-      role = 'input-group',
-      className,
-      children,
-      disabled,
-      ...rest
-    },
+    { prefixCls: prefixClsProp, role = 'input-group', className, children, disabled, ...rest },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('input-group', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

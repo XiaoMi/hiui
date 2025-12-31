@@ -5,7 +5,7 @@ import { PagerButton } from './PagerButton'
 import { Pager } from './Pager'
 import { calculatePage } from './util'
 import { PageOption } from './PageOption'
-import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext, HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { PageJumper } from './PageJumper'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -20,7 +20,7 @@ const calculatePageCount = (total: number, pageSize: number) => Math.ceil(total 
 export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       onChange,
       className,
@@ -44,6 +44,9 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('pagination', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const totalText = i18n.get('pagination.total')

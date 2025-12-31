@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { FlattedTransferDataItem, TransferDataItem } from './types'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { CloseOutlined, DragDotOutlined, SearchOutlined } from '@hi-ui/icons'
 import Checkbox from '@hi-ui/checkbox'
@@ -23,7 +23,7 @@ const NOOP_ARRAY = [] as []
 export const FastTransfer = forwardRef<HTMLDivElement | null, FastTransferProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       disabled = false,
@@ -55,6 +55,11 @@ export const FastTransfer = forwardRef<HTMLDivElement | null, FastTransferProps>
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('fast-transfer', globalPrefixCls)) ||
+      _prefix
     const i18n = useLocaleContext()
 
     const [targetIds, tryChangeTargetIds] = useUncontrolledState(

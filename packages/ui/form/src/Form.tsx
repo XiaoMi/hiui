@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { FormProvider } from './context'
 import { useForm, UseFormProps } from './use-form'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { FormRuleModel, FormHelpers } from './types'
 
 const _role = 'form'
@@ -18,7 +18,7 @@ export const FORM_REGISTER_TABLE: Record<string, FormRuleModel> = {}
 export const Form = forwardRef<HTMLFormElement | null, FormProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -35,6 +35,9 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('form', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize
 

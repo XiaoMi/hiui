@@ -2,16 +2,20 @@ import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { EllipsisOutlined } from '@hi-ui/icons'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
 export const Pager: React.FC<PagerProps> = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   onClick,
   page = '',
   active,
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('pagination', globalPrefixCls)) || _prefix
   const cls = cx(`${prefixCls}__item`, {
     [`${prefixCls}__item--active`]: active,
     [`${prefixCls}__item--break`]: page === '...',

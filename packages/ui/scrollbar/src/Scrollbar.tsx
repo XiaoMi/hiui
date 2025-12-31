@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import PerfectScrollbar from 'perfect-scrollbar'
 import {
@@ -13,12 +13,12 @@ import {
 } from './types'
 import { ScrollbarEventToPsMap } from './utils'
 
-const SCROLLBAR_PREFIX = getPrefixCls('scrollbar')
+const _prefix = getPrefixCls('scrollbar')
 
 export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
   (
     {
-      prefixCls = SCROLLBAR_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'scrollbar',
       position = 'relative',
       axes = 'both',
@@ -35,6 +35,9 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('scrollbar', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, 'priority', {
       [`${prefixCls}--keep-visible`]: keepVisible,
       [`${prefixCls}--only-scroll-visible`]: !keepVisible && onlyScrollVisible,

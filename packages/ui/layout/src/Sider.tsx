@@ -1,11 +1,11 @@
 import React, { forwardRef, useCallback, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { Resizable, ResizeCallbackData } from 'react-resizable'
 
-const SIDER_PREFIX = getPrefixCls('sider')
+const _prefix = getPrefixCls('sider')
 
 const DEFAULT_SIDER_WIDTH = 180
 const SIDER_WIDTH_MIN = 60
@@ -18,7 +18,7 @@ const SIDER_WIDTH_MAX = 360
 export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
   (
     {
-      prefixCls = SIDER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'sider',
       className,
       width: widthProp,
@@ -31,6 +31,10 @@ export const Sider = forwardRef<HTMLDivElement | null, SiderProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('sider', globalPrefixCls)) || _prefix
+
     const [collapsed, setCollapsed] = useUncontrolledState(false, collapsedProp, onCollapse)
     const siderWidth = widthProp || DEFAULT_SIDER_WIDTH
     const [width, setWidth] = useState(collapsedProp ? SIDER_WIDTH_MIN : siderWidth)

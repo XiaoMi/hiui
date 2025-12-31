@@ -1,12 +1,15 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const HEADER_PREFIX = getPrefixCls('footer')
+const _prefix = getPrefixCls('footer')
 
 export const Footer = forwardRef<HTMLDivElement | null, FooterProps>(
-  ({ prefixCls = HEADER_PREFIX, role = 'footer', className, children, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = 'footer', className, children, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('footer', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

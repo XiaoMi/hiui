@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import Button from '@hi-ui/button'
 
 const _role = 'pagination'
@@ -11,7 +11,7 @@ const _prefix = getPrefixCls(_role)
 export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       onChange,
       type = 'prev',
       current = 1,
@@ -21,6 +21,10 @@ export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('pagination', globalPrefixCls)) || _prefix
+
     const handleChange = useCallback(() => {
       if (onChange && !disabled) {
         onChange(type === 'prev' ? current - 1 : current + 1)

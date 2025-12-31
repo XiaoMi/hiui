@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCollapseContext } from './context'
 import { RightOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isFunction } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
 
@@ -18,7 +18,7 @@ const ActionDelayMs = 100
 export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -31,6 +31,11 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('collapse-panel', globalPrefixCls)) ||
+      _prefix
     const isInInitialize = useRef(true)
 
     const {

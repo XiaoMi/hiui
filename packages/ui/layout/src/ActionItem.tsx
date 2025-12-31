@@ -1,23 +1,18 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const ACTION_ITEM_PREFIX = getPrefixCls('action-item')
+const _prefix = getPrefixCls('action-item')
 
 export const ActionItem = forwardRef<HTMLDivElement | null, ActionItemProps>(
   (
-    {
-      prefixCls = ACTION_ITEM_PREFIX,
-      role = 'action-item',
-      className,
-      children,
-      icon,
-      mini,
-      ...rest
-    },
+    { prefixCls: prefixClsProp, role = 'action-item', className, children, icon, mini, ...rest },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('action-item', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, mini && `${prefixCls}--mini`)
 
     return (

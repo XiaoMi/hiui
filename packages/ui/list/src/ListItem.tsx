@@ -1,14 +1,14 @@
 import React from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import Avatar from '@hi-ui/avatar'
 import { ListDataItem } from './types'
 
-const LIST_ITEM_PREFIX = getPrefixCls('list-item')
+const _prefix = getPrefixCls('list-item')
 
 export const ListItem: React.FC<ListItemProps> = ({
-  prefixCls = LIST_ITEM_PREFIX,
+  prefixCls: prefixClsProp,
   className,
   title,
   description,
@@ -17,6 +17,9 @@ export const ListItem: React.FC<ListItemProps> = ({
   avatar,
   actionPlacement = 'top',
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('list-item', globalPrefixCls)) || _prefix
   const cls = cx(`${prefixCls}`, className)
 
   return (

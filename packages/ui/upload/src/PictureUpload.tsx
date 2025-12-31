@@ -5,15 +5,15 @@ import { UploadProps } from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import { PlusOutlined, DeleteOutlined, SearchOutlined, CloseCircleFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 
 export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'upload',
       className,
       children,
@@ -41,6 +41,10 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
+
     const photoSize = useMemo(() => {
       switch (photoSizeProp) {
         case 'sm':

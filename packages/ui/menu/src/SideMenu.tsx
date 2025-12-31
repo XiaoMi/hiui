@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -9,7 +9,7 @@ import Scrollbar from '@hi-ui/scrollbar'
 import { MenuDataItem } from './types'
 import { getAncestorIds } from './util'
 
-const SIDE_MENU_PREFIX = getPrefixCls('side-menu')
+const _prefix = getPrefixCls('side-menu')
 
 /**
  * 侧边菜单组件
@@ -17,7 +17,7 @@ const SIDE_MENU_PREFIX = getPrefixCls('side-menu')
 export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
   (
     {
-      prefixCls = SIDE_MENU_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'side-menu',
       className,
       defaultActiveId = null,
@@ -33,6 +33,9 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('side-menu', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, {
       [`${prefixCls}--mini`]: mini,
     })

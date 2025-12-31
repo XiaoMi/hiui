@@ -1,15 +1,15 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { LeftOutlined } from '@hi-ui/icons'
 
-const SEPARATOR_PREFIX = getPrefixCls('resize-box-separator')
+const _prefix = getPrefixCls('resize-box-separator')
 
 export const Separator = forwardRef<HTMLDivElement | null, SeparatorProps>(
   (
     {
-      prefixCls = SEPARATOR_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'resize-box-separator',
       className,
       children,
@@ -20,6 +20,11 @@ export const Separator = forwardRef<HTMLDivElement | null, SeparatorProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('resize-box-separator', globalPrefixCls)) ||
+      _prefix
     const cls = cx(prefixCls, className, collapsed && `${prefixCls}--collapsed`)
 
     return (

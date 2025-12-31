@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { UserIcon } from './UserIcon'
 
@@ -14,7 +14,7 @@ const _prefix = getPrefixCls(_role)
 export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       style: styleProp,
       className,
@@ -32,6 +32,9 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('avatar', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

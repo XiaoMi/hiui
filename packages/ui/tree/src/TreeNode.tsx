@@ -1,4 +1,5 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
+import { GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/array-utils'
@@ -17,7 +18,7 @@ const treePrefix = getPrefixCls(_role)
 
 export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, ref) => {
   const {
-    prefixCls = treePrefix,
+    prefixCls: prefixClsProp,
     role = _role,
     className,
     data: node,
@@ -33,6 +34,10 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     leafIcon: leafIconProp = defaultLeafIcon,
     ...rest
   } = props
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('tree-node', globalPrefixCls)) || treePrefix
+
   const {
     draggable = false,
     checkable = false,

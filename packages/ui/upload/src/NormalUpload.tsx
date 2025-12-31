@@ -6,15 +6,15 @@ import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import { UploadOutlined } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { FileList } from './FileList'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 
 export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'upload',
       className,
       children,
@@ -47,6 +47,9 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const buttonText = i18n.get('upload.buttonText')

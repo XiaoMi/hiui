@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useRef } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -14,7 +14,11 @@ const _prefix = getPrefixCls('table-body')
 const _prefixRow = getPrefixCls('table-row')
 
 export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>(
-  ({ prefixCls = _prefix, emptyContent }, ref) => {
+  ({ prefixCls: prefixClsProp, emptyContent }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table-body', globalPrefixCls)) || _prefix
+
     const {
       columns,
       isExpandTreeRows,

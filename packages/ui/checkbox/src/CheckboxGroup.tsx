@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CheckboxGroupProvider } from './context'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, GlobalConfig } from '@hi-ui/core'
 import { CheckboxPlacementEnum, CheckboxDataItem } from './types'
 import { checkDefault } from '@hi-ui/use-check'
 import { Checkbox } from './Checkbox'
@@ -22,7 +22,7 @@ const NOOP_ARRAY = [] as []
 export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       disabled = false,
@@ -37,6 +37,11 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('checkbox-group', globalPrefixCls)) ||
+      _prefix
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp ?? [], onChange)
 
     const handleChange = useLatestCallback(

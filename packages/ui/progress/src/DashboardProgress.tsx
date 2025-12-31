@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { ProgressProps } from './Progress'
 
-const DASHBOARD_PROGRESS_PREFIX = getPrefixCls('dashboard-progress')
+const _prefix = getPrefixCls('dashboard-progress')
 
 const sizeMap = {
   sm: 48,
@@ -21,7 +21,7 @@ const strokeWidthMap = {
 export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProgressProps>(
   (
     {
-      prefixCls = DASHBOARD_PROGRESS_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'progressbar',
       className,
       children,
@@ -38,6 +38,12 @@ export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProg
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('dashboard-progress', globalPrefixCls)) ||
+      _prefix
+
     const percent = percentNum > 0 ? percentNum : 0
     const _width = width || sizeMap[size]
     const radius = _width / 2

@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const SVG_ICON_PREFIX = getPrefixCls('svg-icon')
+const _prefix = getPrefixCls('svg-icon')
 
 /**
  * SVG 图标
@@ -11,7 +11,7 @@ const SVG_ICON_PREFIX = getPrefixCls('svg-icon')
 export const SvgIcon = forwardRef<SVGSVGElement | null, SvgIconProps>(
   (
     {
-      prefixCls = SVG_ICON_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'img',
       className,
       children,
@@ -23,6 +23,9 @@ export const SvgIcon = forwardRef<SVGSVGElement | null, SvgIconProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('svg-icon', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

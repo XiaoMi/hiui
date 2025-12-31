@@ -1,7 +1,13 @@
 import React, { cloneElement, forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import {
+  HiBaseFieldNames,
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  useGlobalContext,
+  GlobalConfig,
+} from '@hi-ui/core'
 import { PopperOverlayProps, Popper, PopperProps } from '@hi-ui/popper'
 import { DropDownProvider, useDropDownContext } from './context'
 import { useDropdown, UseDropdownProps } from './use-dropdown'
@@ -21,7 +27,7 @@ const DEFAULT_DATA = [] as []
 export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children: triggerButton,
@@ -37,6 +43,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('dropdown', globalPrefixCls)) || _prefix
     const transformedData = useMemo(() => transformData(data, fieldNames), [data, fieldNames])
 
     const { rootProps, ...providedValue } = useDropdown(rest)

@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { useGridContext, GridProvider } from './context'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isNumeric, isObject, isString } from '@hi-ui/type-assertion'
 import { GridAlignEnum, GridJustifyEnum, GridResponsiveSize } from './types'
 
@@ -22,7 +22,7 @@ const DEFAULT_GUTTER_GAP = 16
 export const Row = forwardRef<HTMLDivElement | null, RowProps>(
   (
     {
-      prefixCls = rowPrefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       style: styleProp,
@@ -35,6 +35,10 @@ export const Row = forwardRef<HTMLDivElement | null, RowProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('grid-row', globalPrefixCls)) || rowPrefix
+
     const gutter = useMemo(() => {
       if (typeof gutterProp === 'boolean') {
         return gutterProp ? DEFAULT_GUTTER_GAP : 0
@@ -149,7 +153,7 @@ const getGridStyleVar = (prop: string, size?: string) => {
 export const Col = forwardRef<HTMLDivElement | null, ColProps>(
   (
     {
-      prefixCls = colPrefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       style: styleProp,
@@ -161,6 +165,10 @@ export const Col = forwardRef<HTMLDivElement | null, ColProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('grid-col', globalPrefixCls)) || colPrefix
+
     const { columns = 24 } = useGridContext()
 
     const spanStyle = calcResponsiveGrid({

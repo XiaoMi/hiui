@@ -3,18 +3,22 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { Select } from '@hi-ui/select'
 import { __DEV__ } from '@hi-ui/env'
 import { PopperOverlayProps } from '@hi-ui/popper'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
 
 export const PageOption: React.FC<PageOptionProps> = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   pageSizeOptions,
   pageSizeOptionsOverlay,
   onPageSizeChange,
   pageSize,
   size = 'md',
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('pagination', globalPrefixCls)) || _prefix
   const cls = cx(`${prefixCls}__option`)
 
   return (

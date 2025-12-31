@@ -10,11 +10,16 @@ import { TableRowRequiredProps } from './types'
 import { useTableContext } from './context'
 import { ColGroupContent } from './ColGroupContent'
 import { TbodyContent, renderEmptyContent } from './TbodyContent'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
 
-export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps) => {
+export const TableBody = ({ prefixCls: prefixClsProp, emptyContent }: TableBodyProps) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('table', globalPrefixCls)) || _prefix
+
   const {
     columns,
     isExpandTreeRows,

@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { CollapseIcon } from './CollapseIcon'
 
-const FLOAT_MENU_CONTAINER_PREFIX = getPrefixCls('float-menu-container')
+const _prefix = getPrefixCls('float-menu-container')
 
 /**
  * 浮动菜单容器组件
@@ -12,7 +12,7 @@ const FLOAT_MENU_CONTAINER_PREFIX = getPrefixCls('float-menu-container')
 export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuContainerProps>(
   (
     {
-      prefixCls = FLOAT_MENU_CONTAINER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'float-menu-container',
       className,
       children,
@@ -25,6 +25,11 @@ export const FloatMenuContainer = forwardRef<HTMLDivElement | null, FloatMenuCon
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('float-menu-container', globalPrefixCls)) ||
+      _prefix
     const cls = cx(prefixCls, className)
 
     const i18n = useLocaleContext()

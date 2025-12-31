@@ -1,16 +1,16 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import Breadcrumb, { BreadcrumbProps } from '@hi-ui/breadcrumb'
 import { LeftShortOutlined } from '@hi-ui/icons'
 
-const PAGE_HEADER_PREFIX = getPrefixCls('page-header')
+const _prefix = getPrefixCls('page-header')
 
 export const PageHeader = forwardRef<HTMLDivElement | null, PageHeaderProps>(
   (
     {
-      prefixCls = PAGE_HEADER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'page-header',
       className,
       title,
@@ -23,6 +23,9 @@ export const PageHeader = forwardRef<HTMLDivElement | null, PageHeaderProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('page-header', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

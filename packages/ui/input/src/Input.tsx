@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { CloseCircleFilled } from '@hi-ui/icons'
-import { HiBaseHTMLFieldProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { useInput } from './use-input'
 import { InputAppearanceEnum, InputTypeEnum } from './types'
 
@@ -15,7 +15,7 @@ const _prefix = getPrefixCls('input')
 export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = 'input',
       className,
       style,
@@ -52,6 +52,9 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('input', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

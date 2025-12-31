@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef } from 'react'
 import { Resizable } from 'react-resizable'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
@@ -12,7 +12,11 @@ import { renderFilter } from './TableAdvancedFilter'
 const _prefix = getPrefixCls('table-header')
 
 export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>(
-  ({ prefixCls = _prefix, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table-header', globalPrefixCls)) || _prefix
+
     const {
       groupedColumns,
       resizable,

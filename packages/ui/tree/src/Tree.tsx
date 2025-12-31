@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
-import { HiBaseFieldNames, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
@@ -39,7 +39,7 @@ const NOOP_ARRAY = [] as []
 export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
   (
     {
-      prefixCls = treePrefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -93,6 +93,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tree', globalPrefixCls)) || treePrefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {

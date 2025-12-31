@@ -4,11 +4,16 @@ import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
 import { ColGroupContent } from './ColGroupContent'
 import { TheadContent } from './TheadContent'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('table-header')
 
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
-  ({ prefixCls = _prefix, className }, ref) => {
+  ({ prefixCls: prefixClsProp, className }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table-header', globalPrefixCls)) || _prefix
+
     const { onTableBodyScrollMock, scrollHeaderElementRef, getTableHeaderProps } = useTableContext()
 
     const cls = cx(prefixCls, className)

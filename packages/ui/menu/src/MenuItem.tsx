@@ -6,12 +6,12 @@ import Popper from '@hi-ui/popper'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import { times } from '@hi-ui/array-utils'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, GlobalConfig } from '@hi-ui/core'
 import { MenuDataItem } from './types'
 import MenuContext from './context'
 import { Expander } from './Expander'
 
-const MENU_PREFIX = getPrefixCls('menu')
+const _prefix = getPrefixCls('menu')
 
 const hiddenStyle: React.CSSProperties = {
   position: 'absolute',
@@ -23,7 +23,7 @@ const hiddenStyle: React.CSSProperties = {
 export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
   (
     {
-      prefixCls = MENU_PREFIX,
+      prefixCls: prefixClsProp,
       className,
       icon,
       title,
@@ -39,6 +39,10 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('menu', globalPrefixCls)) || _prefix
+
     const itemRef = useRef<HTMLLIElement | null>(null)
     const {
       placement,

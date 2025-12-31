@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useState, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
@@ -12,7 +12,7 @@ import Loading from '@hi-ui/loading'
 import { isUndef } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
-const PICKER_PREFIX = getPrefixCls('picker')
+const _prefix = getPrefixCls('picker')
 
 /**
  * 选择器
@@ -20,7 +20,7 @@ const PICKER_PREFIX = getPrefixCls('picker')
 export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
   (
     {
-      prefixCls = PICKER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'picker',
       className,
       children,
@@ -60,6 +60,9 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('picker', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const searchPlaceholder = isUndef(searchPlaceholderProp)

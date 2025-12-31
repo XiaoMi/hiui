@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { IconButton } from '@hi-ui/icon-button'
 import {
@@ -28,7 +28,7 @@ const notificationIconMap: any = {
 export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>(
   (
     {
-      prefixCls = notificationPrefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -48,6 +48,11 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('notification', globalPrefixCls)) ||
+      notificationPrefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {

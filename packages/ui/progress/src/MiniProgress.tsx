@@ -1,15 +1,15 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { ProgressProps } from './Progress'
 
-const MINI_PROGRESS_PREFIX = getPrefixCls('mini-progress')
+const _prefix = getPrefixCls('mini-progress')
 
 export const MiniProgress = forwardRef<HTMLDivElement | null, MiniProgressProps>(
   (
     {
-      prefixCls = MINI_PROGRESS_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'progressbar',
       className,
       children,
@@ -25,8 +25,13 @@ export const MiniProgress = forwardRef<HTMLDivElement | null, MiniProgressProps>
     },
     ref
   ) => {
-    const _width = width || 16
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('mini-progress', globalPrefixCls)) ||
+      _prefix
 
+    const _width = width || 16
     const percent = percentNum > 0 ? percentNum : 0
     const radius = _width / 2
     const totalRadiusWidth = radius + 2

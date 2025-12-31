@@ -1,12 +1,15 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const CONTENT_PREFIX = getPrefixCls('content')
+const _prefix = getPrefixCls('content')
 
 export const Content = forwardRef<HTMLDivElement | null, ContentProps>(
-  ({ prefixCls = CONTENT_PREFIX, role = 'content', className, children, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = 'content', className, children, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('content', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

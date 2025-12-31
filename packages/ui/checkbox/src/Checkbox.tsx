@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheckboxGroupContext } from './context'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, GlobalConfig } from '@hi-ui/core'
 import { withDefaultProp } from '@hi-ui/react-utils'
 
 const _role = 'checkbox'
@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
 export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -31,6 +31,9 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('checkbox', globalPrefixCls)) || _prefix
     const {
       disabled: disabledGroup,
       name: nameGroup,

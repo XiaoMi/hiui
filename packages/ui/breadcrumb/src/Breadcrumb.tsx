@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { BreadcrumbDataItem, BreadcrumbSizeEnum } from './types'
-import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { RightOutlined } from '@hi-ui/icons'
 import { transformData } from './util'
 
@@ -15,7 +15,7 @@ const _prefix = getPrefixCls(_role)
 export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data,
@@ -27,6 +27,9 @@ export const Breadcrumb = forwardRef<HTMLUListElement | null, BreadcrumbProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('breadcrumb', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

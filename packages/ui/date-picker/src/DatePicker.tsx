@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { useDate } from './hooks/useData'
@@ -27,7 +27,7 @@ import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
 
-const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
+const _prefix = getPrefixCls('date-picker')
 
 const DEFAULT_DISABLED_DATE = () => false
 const DEFAULT_ON_CHANGE = () => {}
@@ -36,7 +36,7 @@ const DEFAULT_DISABLED_FUNCTION = () => []
 export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
   (
     {
-      prefixCls = DATE_PICKER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'date-picker',
       className,
       type: propType = 'date',
@@ -91,6 +91,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('date-picker', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

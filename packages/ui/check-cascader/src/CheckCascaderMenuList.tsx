@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useMemo } from 'react'
+import { GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import {
@@ -23,7 +24,7 @@ const NOOP_ARRAY = [] as []
 export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenusProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -50,6 +51,11 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('check-cascader-menus', globalPrefixCls)) ||
+      _prefix
     if (checkCascaded === false) {
       checkedMode = 'SEPARATE'
     }

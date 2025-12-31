@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { ProgressProps } from './Progress'
 
-const CIRCLE_PROGRESS_PREFIX = getPrefixCls('circle-progress')
+const _prefix = getPrefixCls('circle-progress')
 const sizeMap = {
   sm: 48,
   md: 64,
@@ -20,7 +20,7 @@ const strokeWidthMap = {
 export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressProps>(
   (
     {
-      prefixCls = CIRCLE_PROGRESS_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'progressbar',
       className,
       children,
@@ -36,8 +36,13 @@ export const CircleProgress = forwardRef<HTMLDivElement | null, CircleProgressPr
     },
     ref
   ) => {
-    const _width = width || sizeMap[size]
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('circle-progress', globalPrefixCls)) ||
+      _prefix
 
+    const _width = width || sizeMap[size]
     const percent = percentNum > 0 ? percentNum : 0
     const radius = _width / 2
     const totalRadiusWidth = radius + strokeWidthMap[size]

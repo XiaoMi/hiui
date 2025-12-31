@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { SkeletonProps } from './Skeleton'
 
 const _role = 'skeleton-group'
@@ -14,7 +14,7 @@ const _prefix = getPrefixCls(_role)
 export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -28,6 +28,11 @@ export const SkeletonGroup = forwardRef<HTMLDivElement | null, SkeletonGroupProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('skeleton-group', globalPrefixCls)) ||
+      _prefix
     const cls = cx(prefixCls, className, `${prefixCls}--direction-${direction}`)
 
     const { style, ...restProps } = rest

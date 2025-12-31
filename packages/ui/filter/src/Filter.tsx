@@ -1,11 +1,11 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { FilterItem } from './FilterItem'
 import { useFilter, UseFilterProps } from './use-filter'
 
-const CASCADE_FILTER_PREFIX = getPrefixCls('filter')
+const _prefix = getPrefixCls('filter')
 
 /**
  * 筛选
@@ -13,7 +13,7 @@ const CASCADE_FILTER_PREFIX = getPrefixCls('filter')
 export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
   (
     {
-      prefixCls = CASCADE_FILTER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'menu',
       className,
       children,
@@ -24,6 +24,9 @@ export const Filter = forwardRef<HTMLDivElement | null, FilterProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('filter', globalPrefixCls)) || _prefix
     const { rootProps, menus, onItemSelect } = useFilter(rest)
 
     const cls = cx(prefixCls, className)

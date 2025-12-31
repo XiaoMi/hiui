@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useGlobalContext, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, usePortalContext, GlobalConfig } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
 import { useModal, UseModalProps } from '@hi-ui/modal'
@@ -14,7 +14,7 @@ import { mergeRefs } from '@hi-ui/react-utils'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { DrawerPlacementEnum } from './types'
 
-const DRAWER_PREFIX = getPrefixCls('drawer')
+const _prefix = getPrefixCls('drawer')
 
 const defaultCloseIcon = <CloseOutlined />
 
@@ -24,7 +24,7 @@ const defaultCloseIcon = <CloseOutlined />
 export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   (
     {
-      prefixCls = DRAWER_PREFIX,
+      prefixCls: prefixClsProp,
       className,
       styles,
       children,
@@ -51,6 +51,9 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('drawer', globalPrefixCls)) || _prefix
     const [transitionVisible, transitionVisibleAction] = useToggle(false)
     const [transitionExited, transitionExitedAction] = useToggle(true)
     const globalContainer = usePortalContext()?.container

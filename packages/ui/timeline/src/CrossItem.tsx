@@ -3,11 +3,12 @@ import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
 import { DotIcon } from './DotIcon'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('timeline-item')
 
 export const CrossItem: React.FC<TimelineDataItem> = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   title,
   content,
   timestamp,
@@ -17,6 +18,10 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
   dotType,
   children,
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('timeline-item', globalPrefixCls)) || _prefix
+
   return isArrayNonEmpty(children) ? (
     <>
       <div className={prefixCls}>

@@ -2,27 +2,23 @@ import React, { forwardRef } from 'react'
 import { Resizable } from 'react-resizable'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { LeftOutlined } from '@hi-ui/icons'
 import { ResizeBoxPane, ResizeBoxPaneProps } from './ResizeBoxPane'
 import { Separator, SeparatorProps } from './Separator'
 
-const RESIZE_BOX_PREFIX = getPrefixCls('resize-box')
+const _prefix = getPrefixCls('resize-box')
 
 export const ResizeBox = forwardRef<HTMLDivElement | null, ResizeBoxProps>(
   (
-    {
-      prefixCls = RESIZE_BOX_PREFIX,
-      role = 'resize-box',
-      className,
-      children,
-      separatorProps,
-      ...rest
-    },
+    { prefixCls: prefixClsProp, role = 'resize-box', className, children, separatorProps, ...rest },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('resize-box', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     const containerRef = React.useRef<Element | null>(null)

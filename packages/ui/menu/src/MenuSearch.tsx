@@ -7,19 +7,17 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { SearchOutlined, CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@hi-ui/icons'
 import IconButton from '@hi-ui/icon-button'
 import Button from '@hi-ui/button'
-import Picker from '@hi-ui/picker'
 import Input from '@hi-ui/input'
 import Highlighter from '@hi-ui/highlighter'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
-import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { MenuDataItem } from './types'
 import { EnterIcon } from './EnterIcon'
 import { searchMenuWithPath } from './util'
@@ -31,7 +29,7 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
   (
     {
       innerRef,
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       clearText,
       placeholder,
@@ -52,6 +50,9 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('menu-search', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const [visible, visibleAction] = useUncontrolledToggle({

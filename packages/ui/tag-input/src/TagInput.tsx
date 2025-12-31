@@ -7,7 +7,7 @@ import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { useTagInput } from './use-tag-input'
 import { TagInputOption } from './types'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
 const _role = 'tag-input'
@@ -20,7 +20,7 @@ const NOOP_ARRAY = [] as []
 export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       defaultValue = NOOP_ARRAY,
@@ -41,6 +41,10 @@ export const TagInput = forwardRef<HTMLDivElement | null, TagInputProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tag-input', globalPrefixCls)) || _prefix
+
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
     const tagInputRef = useRef<HTMLDivElement>(null)

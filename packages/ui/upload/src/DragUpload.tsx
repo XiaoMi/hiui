@@ -4,16 +4,16 @@ import { __DEV__ } from '@hi-ui/env'
 import { UploadProps } from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { CloudUploadOutlined } from '@hi-ui/icons'
 import { FileList } from './FileList'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 
 export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'upload',
       className,
       children,
@@ -44,6 +44,9 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const dragText = i18n.get('upload.drag')

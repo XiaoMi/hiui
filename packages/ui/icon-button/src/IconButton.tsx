@@ -1,10 +1,10 @@
 import React, { Children, forwardRef } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isString } from '@hi-ui/type-assertion'
 
-const ICON_BUTTON_PREFIX = getPrefixCls('icon-button')
+const _prefix = getPrefixCls('icon-button')
 
 /**
  * 专门用于把 icon 当按钮的场景，和 Button 的边界区分如下：
@@ -16,7 +16,7 @@ const ICON_BUTTON_PREFIX = getPrefixCls('icon-button')
 export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
   (
     {
-      prefixCls = ICON_BUTTON_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'icon-button',
       className,
       children,
@@ -30,6 +30,9 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('icon-button', globalPrefixCls)) || _prefix
     const cls = cx(
       prefixCls,
       className,

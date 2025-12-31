@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { StepperDataItem } from './types'
 import { StepperItem } from './StepperItem'
@@ -18,7 +18,7 @@ const NOOP_ARRAY = [] as []
 export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data = NOOP_ARRAY,
@@ -32,6 +32,10 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('stepper', globalPrefixCls)) || _prefix
+
     const transformedData = useMemo((): StepperDataItem[] => transformData(data, fieldNames), [
       data,
       fieldNames,

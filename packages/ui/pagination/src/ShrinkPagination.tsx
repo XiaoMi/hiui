@@ -7,14 +7,14 @@ import { calculateCurrentPageSize, calculatePage, MIN_PAGE } from './util'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { PagerButton } from './PagerButton'
 import Input from '@hi-ui/input'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('pagination-mini')
 
 export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginationProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = 'pagination',
       onChange,
       className,
@@ -30,6 +30,12 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('pagination-mini', globalPrefixCls)) ||
+      _prefix
+
     const [current, trySetCurrent] = useUncontrolledState(defaultCurrent, currentProp, onChange)
 
     const currentRef = useLatestRef(current)

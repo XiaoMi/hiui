@@ -4,7 +4,7 @@ import { PlusOutlined } from '@hi-ui/icons'
 import { Tag, TagProps } from './Tag'
 import { invariant, __DEV__ } from '@hi-ui/env'
 import { Button } from '@hi-ui/button'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 
 import { isUndef } from '@hi-ui/type-assertion'
 
@@ -16,7 +16,7 @@ const NOOP_ARRAY = [] as []
 export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data = NOOP_ARRAY,
@@ -33,6 +33,10 @@ export const TagGroup = forwardRef<HTMLDivElement | null, TagGroupProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tag-group', globalPrefixCls)) || _prefix
+
     const rootClassName = useMemo(() => cx(className, prefixCls), [className, prefixCls])
     const [isInAdding, setIsInAdding] = useState(false)
 

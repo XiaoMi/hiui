@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { HiBaseHTMLProps, useGlobalContext, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, HiBaseSizeEnum, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Loading from '@hi-ui/loading'
@@ -14,7 +14,7 @@ const _prefix = getPrefixCls(_role)
 export const Card = forwardRef<HTMLDivElement | null, CardProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -33,6 +33,9 @@ export const Card = forwardRef<HTMLDivElement | null, CardProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('card', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

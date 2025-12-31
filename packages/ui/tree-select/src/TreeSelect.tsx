@@ -12,7 +12,7 @@ import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -24,7 +24,7 @@ import {
   useTreeCustomSearch,
 } from '@hi-ui/use-search-mode'
 
-const TREE_SELECT_PREFIX = getPrefixCls('tree-select')
+const _prefix = getPrefixCls('tree-select')
 const DEFAULT_DATA = [] as []
 // const DEFAULT_VALUE = [] as []
 const DEFAULT_FIELD_NAMES = {} as any
@@ -36,7 +36,7 @@ const DEFAULT_EXPANDED_IDS = [] as []
 export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   (
     {
-      prefixCls = TREE_SELECT_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'tree-select',
       className,
       data = DEFAULT_DATA,
@@ -88,6 +88,9 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tree-select', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

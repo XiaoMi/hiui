@@ -2,11 +2,12 @@ import React from 'react'
 import { getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
 import { DotIcon } from './DotIcon'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('timeline-item')
 
 export const RightItem: React.FC<TimelineDataItem> = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   title,
   content,
   timestamp,
@@ -15,6 +16,10 @@ export const RightItem: React.FC<TimelineDataItem> = ({
   dotColor,
   dotType,
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('timeline-item', globalPrefixCls)) || _prefix
+
   return (
     <div className={prefixCls}>
       <div className={`${prefixCls}__title`}>{title}</div>

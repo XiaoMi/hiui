@@ -3,7 +3,13 @@ import { CSSTransition } from 'react-transition-group'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { Portal } from '@hi-ui/portal'
-import { HiBaseHTMLProps, HiBaseSizeEnum, usePortalContext, useGlobalContext } from '@hi-ui/core'
+import {
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  usePortalContext,
+  useGlobalContext,
+  GlobalConfig,
+} from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import Spinner from '@hi-ui/spinner'
 import { mergeRefs } from '@hi-ui/react-utils'
@@ -15,7 +21,7 @@ export const _prefix = getPrefixCls('loading')
 export const Loading = forwardRef<null, LoadingProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       role = _role,
@@ -40,6 +46,10 @@ export const Loading = forwardRef<null, LoadingProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('loading', globalPrefixCls)) || _prefix
+
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

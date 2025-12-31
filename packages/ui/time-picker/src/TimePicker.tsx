@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import {
   TimePickerStep,
   TimePickerType,
@@ -43,7 +43,7 @@ const getValueMatchString = (
 export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
   (
     {
-      prefixCls = timePickerPrefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       value: controlledValue,
@@ -73,6 +73,12 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('time-picker', globalPrefixCls)) ||
+      timePickerPrefix
+
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

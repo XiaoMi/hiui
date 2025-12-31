@@ -1,4 +1,5 @@
 import React, { forwardRef, useCallback } from 'react'
+import { GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import {
   FlattedCheckCascaderDataItem,
@@ -18,13 +19,18 @@ const _role = 'check-cascader-menu'
 const _prefix = getPrefixCls(_role)
 
 export const CheckCascaderMenu = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   role = _role,
   className,
   style,
   data: menu,
   getCascaderItemRequiredProps,
 }: CheckCascaderMenuProps) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp ||
+    (globalPrefixCls && getPrefixCls('check-cascader-menu', globalPrefixCls)) ||
+    _prefix
   const { virtual } = useCheckCascaderContext()
 
   const isCheckableMenu = menu.some(({ checkable }) => checkable)
@@ -73,7 +79,12 @@ const MenuItem = forwardRef<
       option: FlattedCheckCascaderDataItem
     ) => CheckCascaderDataItemRequiredProps
   }
->(({ option, prefixCls = _prefix, getCascaderItemRequiredProps }, ref) => {
+>(({ option, prefixCls: prefixClsProp, getCascaderItemRequiredProps }, ref) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp ||
+    (globalPrefixCls && getPrefixCls('check-cascader-menu', globalPrefixCls)) ||
+    _prefix
   const {
     flatted = false,
     changeOnSelect = false,

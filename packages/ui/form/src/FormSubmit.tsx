@@ -3,15 +3,27 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import Button, { ButtonProps } from '@hi-ui/button'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'form-submit'
 const _prefix = getPrefixCls(_role)
 
 export const FormSubmit = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, FormSubmitProps>(
   (
-    { prefixCls = _prefix, role = _role, className, children, type = 'primary', onClick, ...rest },
+    {
+      prefixCls: prefixClsProp,
+      role = _role,
+      className,
+      children,
+      type = 'primary',
+      onClick,
+      ...rest
+    },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('form-submit', globalPrefixCls)) || _prefix
     const { submitForm } = useFormContext()
 
     const cls = cx(prefixCls, className)

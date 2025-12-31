@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 
@@ -13,7 +13,7 @@ const _prefix = getPrefixCls('switch')
 export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       size: sizeProp,
       onChange,
@@ -27,6 +27,9 @@ export const Switch = forwardRef<HTMLDivElement | null, SwitchProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('switch', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

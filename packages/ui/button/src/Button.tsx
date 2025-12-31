@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import Spinner from '@hi-ui/spinner'
 
 const _role = 'button'
@@ -13,7 +13,7 @@ const _prefix = getPrefixCls(_role)
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -29,6 +29,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('button', globalPrefixCls)) || _prefix
     const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
     const isNonInteractive = disabled || loading
 

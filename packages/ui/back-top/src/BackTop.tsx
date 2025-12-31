@@ -3,13 +3,13 @@ import TWEEN from '@tweenjs/tween.js'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { isBrowser, __DEV__ } from '@hi-ui/env'
 import { isFunction } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { UpShortOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useDidMount } from '@hi-ui/use-did-mount'
 import { useScroll } from '@hi-ui/use-scroll'
 
-const BACK_TOP_PREFIX = getPrefixCls('back-top')
+const _prefix = getPrefixCls('back-top')
 
 /**
  * 回到顶部
@@ -17,7 +17,7 @@ const BACK_TOP_PREFIX = getPrefixCls('back-top')
 export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
   (
     {
-      prefixCls = BACK_TOP_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'back-top',
       className,
       children,
@@ -30,6 +30,9 @@ export const BackTop = forwardRef<HTMLDivElement | null, BackTopProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('back-top', globalPrefixCls)) || _prefix
     const [target, setTarget] = useState<HTMLElement | Window | null>(null)
 
     const { top } = useScroll(target)

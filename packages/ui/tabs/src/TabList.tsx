@@ -8,7 +8,7 @@ import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { useResizeObserver } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNextTabId } from './utils'
@@ -28,7 +28,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       defaultActiveId,
       onChange,
       onTabClick,
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       // @ts-ignore deprecated
       direction: directionProp,
       placement = 'horizontal',
@@ -53,6 +53,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tabs', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

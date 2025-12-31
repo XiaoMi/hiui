@@ -10,6 +10,7 @@ import { SELECTION_DATA_KEY } from './Table'
 import { EMBED_DATA_KEY } from './BaseTable'
 import { FlattedTableRowData } from './types'
 import { isFunction } from '@hi-ui/type-assertion'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'table'
 const _prefix = getPrefixCls(_role)
@@ -19,7 +20,7 @@ const EMBED_ON_ROW_PROPS = {} as any
 export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       rowData: rowDataProp,
       rowIndex,
@@ -29,6 +30,10 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table', globalPrefixCls)) || _prefix
+
     const {
       striped,
       showRowHighlight,

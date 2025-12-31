@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
 import { isNumeric } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'form-label'
 const _prefix = getPrefixCls(_role)
@@ -20,7 +20,7 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
   } = useFormContext()
 
   const {
-    prefixCls = _prefix,
+    prefixCls: prefixClsProp,
     role = _role,
     className,
     style: styleProp,
@@ -36,6 +36,10 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     showValidateMessage: showValidateMessageProp = showValidateMessageContext,
     ...rest
   } = props
+
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('form-label', globalPrefixCls)) || _prefix
 
   const { labelWidth, controlWidth } = useMemo(() => {
     if (labelPlacement === 'top')

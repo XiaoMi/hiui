@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -9,7 +9,7 @@ import { MenuDataItem } from './types'
 import Scrollbar from '@hi-ui/scrollbar'
 
 const _role = 'group-menu'
-const GROUP_MENU_PREFIX = getPrefixCls(_role)
+const _prefix = getPrefixCls(_role)
 
 /**
  * 分组菜单
@@ -17,7 +17,7 @@ const GROUP_MENU_PREFIX = getPrefixCls(_role)
 export const GroupMenu = forwardRef<HTMLDivElement | null, GroupMenuProps>(
   (
     {
-      prefixCls = GROUP_MENU_PREFIX,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data = [],
@@ -29,6 +29,10 @@ export const GroupMenu = forwardRef<HTMLDivElement | null, GroupMenuProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('group-menu', globalPrefixCls)) || _prefix
+
     const [activeId, tryChangeActiveId] = useUncontrolledState<React.ReactText>(
       defaultActiveId,
       activeIdProp

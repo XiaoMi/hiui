@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useTableContext } from './context'
 import Loading from '@hi-ui/loading'
 import { FlattedTableRowData } from './types'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _prefix = getPrefixCls('table-embed-row')
 
@@ -11,11 +12,17 @@ const _prefix = getPrefixCls('table-embed-row')
  *  可展开的内嵌面板
  */
 export const TableEmbedRow = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   colSpan,
   rowIndex,
   rowData,
 }: TableEmbedRowProps) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp ||
+    (globalPrefixCls && getPrefixCls('table-embed-row', globalPrefixCls)) ||
+    _prefix
+
   const {
     isExpandEmbedRows,
     getEmbedPanelById,

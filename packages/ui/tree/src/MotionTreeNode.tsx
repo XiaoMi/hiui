@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect, forwardRef, useCallback } from 'react'
 import { CSSTransition } from 'react-transition-group'
+import { GlobalConfig } from '@hi-ui/core'
+import { getPrefixCls } from '@hi-ui/classname'
 import { times } from '@hi-ui/array-utils'
 import { TreeNode } from './TreeNode'
 import { TreeNodeType, MotionTreeNodeData, TreeNodeRequiredProps } from './types'
@@ -7,7 +9,14 @@ import { __DEV__ } from '@hi-ui/env'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 export const MotionTreeNode = forwardRef<HTMLDivElement | null, MotionTreeNodeProps>(
-  ({ prefixCls, data, onMotionEnd, overscanCount, getTreeNodeRequiredProps }, ref) => {
+  (
+    { prefixCls: prefixClsProp, data, onMotionEnd, overscanCount, getTreeNodeRequiredProps },
+    ref
+  ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('motion-tree-node', globalPrefixCls))
+
     const { children: childrenNodes, type } = data
 
     // 根据 type 控制显隐过渡动画

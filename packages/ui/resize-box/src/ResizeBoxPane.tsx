@@ -1,14 +1,14 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const RESIZE_BOX_PANE_PREFIX = getPrefixCls('resize-box-pane')
+const _prefix = getPrefixCls('resize-box-pane')
 
 export const ResizeBoxPane = forwardRef<HTMLDivElement | null, ResizeBoxPaneProps>(
   (
     {
-      prefixCls = RESIZE_BOX_PANE_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'resize-box-pane',
       className,
       children,
@@ -24,6 +24,11 @@ export const ResizeBoxPane = forwardRef<HTMLDivElement | null, ResizeBoxPaneProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('resize-box-pane', globalPrefixCls)) ||
+      _prefix
     const cls = cx(prefixCls, className, collapsed && `${prefixCls}--collapsed`)
 
     return (

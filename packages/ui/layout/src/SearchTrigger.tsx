@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { SearchOutlined } from '@hi-ui/icons'
 import Popper from '@hi-ui/popper'
 import { MenuDataItem, MenuSearch, MenuSearchHelper } from '@hi-ui/menu'
 
-const SEARCH_TRIGGER_PREFIX = getPrefixCls('search-trigger')
+const _prefix = getPrefixCls('search-trigger')
 
 /**
  * 搜索触发器组件
@@ -14,7 +14,7 @@ const SEARCH_TRIGGER_PREFIX = getPrefixCls('search-trigger')
 export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProps>(
   (
     {
-      prefixCls = SEARCH_TRIGGER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'search-trigger',
       className,
       mini,
@@ -25,6 +25,11 @@ export const SearchTrigger = forwardRef<HTMLDivElement | null, SearchTriggerProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('search-trigger', globalPrefixCls)) ||
+      _prefix
     const i18n = useLocaleContext()
 
     const [visible, setVisible] = React.useState(false)

@@ -3,10 +3,9 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { UseTableProps } from './use-table'
 import { MoveOutlined, EllipsisVerticalOutlined } from '@hi-ui/icons'
-import { IconButton } from '@hi-ui/icon-button'
 import { useToggle } from '@hi-ui/use-toggle'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { runIfFunc } from '@hi-ui/func-utils'
 import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
 import { UseColSorterReturn } from './hooks/use-col-sorter'
@@ -23,7 +22,7 @@ const _prefix = getPrefixCls('table-setting')
 export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMenuProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       sortedCols,
       setSortColKeys,
       cacheSortedCols,
@@ -38,6 +37,11 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('table-setting', globalPrefixCls)) ||
+      _prefix
     const i18n = useLocaleContext()
 
     const dropProps = useDrop({

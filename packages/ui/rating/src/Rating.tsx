@@ -4,7 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import * as Icons from './icons'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, GlobalConfig } from '@hi-ui/core'
 import Tooltip from '@hi-ui/tooltip'
 import { useDidMount } from '@hi-ui/use-did-mount'
 
@@ -17,7 +17,7 @@ const _prefix = getPrefixCls(_role)
 export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -48,6 +48,10 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('rating', globalPrefixCls)) || _prefix
+
     const allowHalf = useEmoji ? false : allowHalfProp
 
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)

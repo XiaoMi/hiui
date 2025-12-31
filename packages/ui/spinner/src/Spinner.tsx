@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, GlobalConfig } from '@hi-ui/core'
 
-const SPINNER_PREFIX = getPrefixCls('spinner')
+const _prefix = getPrefixCls('spinner')
 
 /**
  * 加载器
@@ -11,7 +11,7 @@ const SPINNER_PREFIX = getPrefixCls('spinner')
 export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
   (
     {
-      prefixCls = SPINNER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'spinner',
       className,
       children,
@@ -21,6 +21,9 @@ export const Spinner = forwardRef<HTMLElement | null, SpinnerProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('spinner', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className, typeof size === 'string' && prefixCls + `--size-${size}`)
 
     return (

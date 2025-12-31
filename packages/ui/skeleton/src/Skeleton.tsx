@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
-const SKELETON_PREFIX = getPrefixCls('skeleton')
+const _prefix = getPrefixCls('skeleton')
 
 /**
  * 骨架屏组件，用于页面或区域加载时的占位展示。
@@ -11,7 +11,7 @@ const SKELETON_PREFIX = getPrefixCls('skeleton')
 export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
   (
     {
-      prefixCls = SKELETON_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'skeleton',
       className,
       children,
@@ -25,6 +25,9 @@ export const Skeleton = forwardRef<HTMLDivElement | null, SkeletonProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('skeleton', globalPrefixCls)) || _prefix
     const cls = cx(
       prefixCls,
       className,

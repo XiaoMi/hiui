@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { useLocaleContext, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useLocaleContext, HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { isUndef } from '@hi-ui/type-assertion'
 
 import { IMAGE_NO_DATA } from './icons'
@@ -13,7 +13,7 @@ const _prefix = getPrefixCls(_role)
 export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -26,6 +26,9 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('empty-state', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

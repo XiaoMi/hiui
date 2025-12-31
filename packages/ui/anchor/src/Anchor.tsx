@@ -1,17 +1,20 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useAnchor, UseAnchorProps, useAnchorItem, UseAnchorItemProps } from './use-anchor'
 import { AnchorProvider } from './context'
 
-const ANCHOR_PREFIX = getPrefixCls('anchor')
+const _prefix = getPrefixCls('anchor')
 
 /**
  * 锚点
  */
 export const Anchor = forwardRef<HTMLDivElement | null, AnchorProps>(
-  ({ prefixCls = ANCHOR_PREFIX, role = 'anchor', className, children, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = 'anchor', className, children, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('anchor', globalPrefixCls)) || _prefix
     const { rootProps, ...context } = useAnchor(rest)
     const { getAnchorInkProps } = context
 
@@ -39,7 +42,7 @@ const ANCHOR_ITEM_PREFIX = getPrefixCls('anchor-item')
 export const AnchorItem = forwardRef<HTMLLIElement | null, AnchorItemProps>(
   (
     {
-      prefixCls = ANCHOR_ITEM_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'anchor-item',
       className,
       title,
@@ -49,6 +52,11 @@ export const AnchorItem = forwardRef<HTMLLIElement | null, AnchorItemProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('anchor-item', globalPrefixCls)) ||
+      ANCHOR_ITEM_PREFIX
     const { rootProps, getAnchorLinkProps, showActive } = useAnchorItem(rest)
 
     const cls = cx(prefixCls, className, showActive && `${prefixCls}--active`)

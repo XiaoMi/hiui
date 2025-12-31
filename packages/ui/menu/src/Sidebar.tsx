@@ -11,7 +11,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { isFunction } from '@hi-ui/type-assertion'
 import Scrollbar from '@hi-ui/scrollbar'
@@ -20,7 +20,7 @@ import { getAncestorIds, getIdsWithChildren } from './util'
 import { Menu } from './Menu'
 
 const _role = 'sidebar'
-const SIDEBAR_PREFIX = getPrefixCls(_role)
+const _prefix = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 
@@ -30,7 +30,7 @@ const NOOP_ARRAY = [] as []
 export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
   (
     {
-      prefixCls = SIDEBAR_PREFIX,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       data = NOOP_ARRAY,
@@ -49,6 +49,10 @@ export const Sidebar = forwardRef<HTMLDivElement | null, SidebarProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('sidebar', globalPrefixCls)) || _prefix
+
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
     const [expandIds, setExpandIds] = React.useState<ReactText[]>([])

@@ -37,10 +37,10 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
     const globalPrefixCls = GlobalConfig.prefixCls
     const prefixCls =
       prefixClsProp || (globalPrefixCls && getPrefixCls('alert', globalPrefixCls)) || _prefix
+    const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'

@@ -8,7 +8,7 @@ import { TransferItem } from './TransferItem'
 import Checkbox from '@hi-ui/checkbox'
 import { SearchOutlined, ExclamationCircleOutlined } from '@hi-ui/icons'
 import { ShrinkPagination } from '@hi-ui/pagination'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'transfer-panel'
 const _prefix = getPrefixCls(_role)
@@ -16,7 +16,7 @@ const _prefix = getPrefixCls(_role)
 export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -42,6 +42,11 @@ export const TransferPanel = forwardRef<HTMLDivElement | null, TransferPanelProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp ||
+      (globalPrefixCls && getPrefixCls('transfer-panel', globalPrefixCls)) ||
+      _prefix
     const i18n = useLocaleContext()
     const limitContent = i18n.get('transfer.limit')
 

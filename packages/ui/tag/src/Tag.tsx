@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { Tooltip, TooltipProps } from '@hi-ui/tooltip'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'tag'
 const _prefix = getPrefixCls(_role)
@@ -18,7 +18,7 @@ const DEFAULT_RENDER = (e?: React.ReactText) => e
 export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children = '',
@@ -41,6 +41,9 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tag', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

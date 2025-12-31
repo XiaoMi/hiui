@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSelect } from '@hi-ui/use-check'
 import { FilterDataItem } from './types'
 
-const FILTER_ITEM_PREFIX = getPrefixCls('filter-item')
+const _prefix = getPrefixCls('filter-item')
 
 const NOOP_ARRAY = [] as []
 const allowSelect = (item: FilterDataItem) => !item.disabled
@@ -14,7 +14,7 @@ const allowSelect = (item: FilterDataItem) => !item.disabled
 export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
   (
     {
-      prefixCls = FILTER_ITEM_PREFIX,
+      prefixCls: prefixClsProp,
       className,
       children,
       appearance = 'link',
@@ -29,6 +29,9 @@ export const FilterItem = forwardRef<HTMLDivElement | null, FilterProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('filter-item', globalPrefixCls)) || _prefix
     const [value, tryChangeValue] = useUncontrolledState(
       defaultValue,
       valueProp,

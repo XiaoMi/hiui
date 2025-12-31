@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MoveOutlined } from '@hi-ui/icons'
 import { useLatestCallback } from '@hi-ui/use-latest'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { runIfFunc } from '@hi-ui/func-utils'
 import { useDrag, useDrop } from '@hi-ui/use-drag-sorter'
 import { isFunction } from '@hi-ui/type-assertion'
@@ -24,7 +24,7 @@ const _prefix = getPrefixCls('setting')
 export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       visible: visibleProp,
       onClose,
@@ -44,6 +44,9 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('setting', globalPrefixCls)) || _prefix
     const i18n = useLocaleContext()
 
     const [cacheHiddenColKeys, setCacheHiddenColKeys] = useState<string[]>([])

@@ -4,12 +4,13 @@ import { __DEV__ } from '@hi-ui/env'
 import { CarouselProps } from './types'
 import { Arrows } from './Arrows'
 import { Dots } from './Dots'
+import { GlobalConfig } from '@hi-ui/core'
 
-const CAROUSEL_PREFIX = getPrefixCls('carousel')
+const _prefix = getPrefixCls('carousel')
 
 export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props, ref) => {
   const {
-    prefixCls = CAROUSEL_PREFIX,
+    prefixCls: prefixClsProp,
     role = 'carousel',
     className,
     children,
@@ -24,6 +25,9 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     onIndexChange,
     ...rest
   } = props
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('carousel', globalPrefixCls)) || _prefix
   // 判断是否为垂直方向（当 dotPlacement 为 left 或 right 时）
   const isVertical = dotPlacement === 'left' || dotPlacement === 'right'
   const cls = cx(

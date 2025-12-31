@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CheckOutlined } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { isUndef } from '@hi-ui/type-assertion'
 import { StepperDataItem } from './types'
 
@@ -12,7 +12,7 @@ const _prefix = getPrefixCls(_role)
 export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       type = 'default',
@@ -25,6 +25,10 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('stepper-item', globalPrefixCls)) || _prefix
+
     const active = step === current
     const done = step < current
     const pending = step > current

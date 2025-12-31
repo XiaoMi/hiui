@@ -1,7 +1,13 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import {
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  useLocaleContext,
+  useGlobalContext,
+  GlobalConfig,
+} from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 import Scrollbar from '@hi-ui/scrollbar'
@@ -30,7 +36,7 @@ const DEFAULT_DATA = [] as []
 export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       columns = DEFAULT_COLUMNS,
@@ -59,6 +65,9 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('table', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

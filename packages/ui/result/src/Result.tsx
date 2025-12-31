@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
 import {
   InfoCircleFilled,
@@ -11,7 +11,7 @@ import {
 } from '@hi-ui/icons'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
 
-const RESULT_PREFIX = getPrefixCls('result')
+const _prefix = getPrefixCls('result')
 
 const DEFAULT_ICON_MAP = {
   [ResultTypeEnum.INFO]: InfoCircleFilled,
@@ -26,7 +26,7 @@ const DEFAULT_ICON_MAP = {
 export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
   (
     {
-      prefixCls = RESULT_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'result',
       className,
       image,
@@ -39,6 +39,9 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('result', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let imageSize = sizeProp ?? globalSize ?? 'md'
     if (imageSize === 'xs') {

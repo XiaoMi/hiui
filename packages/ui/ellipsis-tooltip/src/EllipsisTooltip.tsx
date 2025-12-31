@@ -8,12 +8,12 @@ import React, {
   ReactNode,
   isValidElement,
 } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import Tooltip, { TooltipProps } from '@hi-ui/tooltip'
 
-const ELLIPSIS_TOOLTIP_PREFIX = getPrefixCls('ellipsis-tooltip')
+const _prefix = getPrefixCls('ellipsis-tooltip')
 
 // 格式化子文本，超出规定字数时展示...
 const formatChildText = (text: string = '', maxTextCount: number) => {
@@ -47,7 +47,7 @@ const extractTextFromReactNode = (node: ReactNode): string => {
  * 这是一个文字超出后，展示省略号，并且鼠标悬停时出现全部描述的组件
  */
 export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
-  prefixCls = ELLIPSIS_TOOLTIP_PREFIX,
+  prefixCls: prefixClsProp,
   role = 'ellipsis-tooltip',
   className,
   children: childrenProp,
@@ -55,6 +55,11 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   maxTextCount = 0,
   tooltipProps,
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp ||
+    (globalPrefixCls && getPrefixCls('ellipsis-tooltip', globalPrefixCls)) ||
+    _prefix
   const [disableTooltip, setDisableTooltip] = useState(true)
   const contentRef = useRef<HTMLDivElement | null>(null)
 

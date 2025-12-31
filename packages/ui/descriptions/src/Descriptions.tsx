@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
@@ -12,7 +12,7 @@ import {
 } from './types'
 import { DescriptionsItem, DescriptionsItemProps } from './DescriptionsItem'
 
-const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
+const _prefix = getPrefixCls('descriptions')
 
 /**
  * 描述列表组件
@@ -20,7 +20,7 @@ const DESCRIPTIONS_PREFIX = getPrefixCls('descriptions')
 export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>(
   (
     {
-      prefixCls = DESCRIPTIONS_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'descriptions',
       className,
       children,
@@ -38,6 +38,9 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('descriptions', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

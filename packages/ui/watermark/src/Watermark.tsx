@@ -3,7 +3,7 @@ import Portal from '@hi-ui/portal'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { WatermarkGenerator } from './utils'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, GlobalConfig } from '@hi-ui/core'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 
 import { isUndef } from '@hi-ui/type-assertion'
@@ -16,7 +16,7 @@ export const watermarkPrefix = getPrefixCls(_role)
  */
 export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((props, ref) => {
   const {
-    prefixCls = watermarkPrefix,
+    prefixCls: prefixClsProp,
     role = _role,
     children,
     style,
@@ -34,6 +34,12 @@ export const Watermark = forwardRef<HTMLDivElement | null, WatermarkProps>((prop
     textOverflowEffect = 'zoom',
     ...rest
   } = props
+
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp ||
+    (globalPrefixCls && getPrefixCls('watermark', globalPrefixCls)) ||
+    watermarkPrefix
 
   const i18n = useLocaleContext()
 

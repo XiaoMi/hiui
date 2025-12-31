@@ -4,6 +4,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { TimelinePlacementEnum } from './types'
 import { HorizontalTimelineProps, HorizontalTimeline } from './HorizontalTimeline'
 import { VerticalTimeline, VerticalTimelineProps } from './VerticalTimeline'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'timeline'
 const _prefix = getPrefixCls(_role)
@@ -12,7 +13,10 @@ const _prefix = getPrefixCls(_role)
  * 时间轴
  */
 export const Timeline = forwardRef<HTMLDivElement | null, TimelineProps>(
-  ({ prefixCls = _prefix, className, placement = 'vertical', ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, className, placement = 'vertical', ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('timeline', globalPrefixCls)) || _prefix
     const cls = cx(className, `${prefixCls}--placement-${placement}`)
 
     switch (placement) {

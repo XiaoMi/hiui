@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { LeftOutlined } from '@hi-ui/icons'
-import { useLocaleContext, HiBaseHTMLProps } from '@hi-ui/core'
+import { useLocaleContext, HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'zen-mode'
 const _prefix = getPrefixCls(_role)
@@ -21,7 +21,7 @@ const getDefaultContainer = () => {
 }
 
 export const ZenMode: React.FC<ZenModeProps> = ({
-  prefixCls = _prefix,
+  prefixCls: prefixClsProp,
   className,
   children,
   visible = false,
@@ -31,6 +31,9 @@ export const ZenMode: React.FC<ZenModeProps> = ({
   zoom = 1.8,
   ...rest
 }) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('zen-mode', globalPrefixCls)) || _prefix
   const i18n = useLocaleContext()
 
   const backContent = i18n.get('zenMode.back')

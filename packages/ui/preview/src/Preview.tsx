@@ -5,7 +5,7 @@ import { Portal } from '@hi-ui/portal'
 import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, usePortalContext, GlobalConfig } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useScrollLock } from '@hi-ui/use-scroll-lock'
 import {
@@ -19,7 +19,7 @@ import {
 } from '@hi-ui/icons'
 import { Scale1Icon } from './scale1Icon'
 
-const PREVIEW_PREFIX = getPrefixCls('preview')
+const _prefix = getPrefixCls('preview')
 
 /**
  * 图片预览
@@ -34,7 +34,7 @@ const defaultTransform = {
 export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
   (
     {
-      prefixCls = PREVIEW_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'preview',
       className,
       style,
@@ -54,9 +54,12 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
     const maskElRef = useRef<HTMLDivElement>(null)
 
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('preview', globalPrefixCls)) || _prefix
+    const cls = cx(prefixCls, className)
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
 

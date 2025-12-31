@@ -5,7 +5,7 @@ import { TabPaneProps } from './TabPane'
 import { TabList } from './TabList'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isUndef } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { EditActions } from './TabItem'
 
 const _role = 'tabs'
@@ -17,7 +17,7 @@ const _prefix = getPrefixCls(_role)
 export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -48,6 +48,10 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tabs', globalPrefixCls)) || _prefix
+
     const tabList = useMemo(() => {
       const list: TabPaneProps[] = []
       React.Children.map(children, (child) => {

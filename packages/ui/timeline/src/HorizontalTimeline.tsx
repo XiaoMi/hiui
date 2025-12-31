@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { TimelineItemPlacementEnum, TimelineMergedItem } from './types'
 import { DotIcon } from './DotIcon'
 
@@ -16,7 +16,7 @@ const NOOP_ARRAY = [] as []
 export const HorizontalTimeline = forwardRef<HTMLDivElement | null, HorizontalTimelineProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -26,6 +26,9 @@ export const HorizontalTimeline = forwardRef<HTMLDivElement | null, HorizontalTi
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('timeline', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

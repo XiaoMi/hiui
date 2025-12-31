@@ -1,13 +1,16 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 
 const _role = 'button-group'
 const _prefix = getPrefixCls(_role)
 
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = _role, className, children, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('button-group', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     return (

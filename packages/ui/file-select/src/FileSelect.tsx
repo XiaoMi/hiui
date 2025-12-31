@@ -1,4 +1,5 @@
 import React, { forwardRef, useCallback, useRef } from 'react'
+import { GlobalConfig } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -11,7 +12,7 @@ const _prefix = getPrefixCls(_role)
 export const FileSelect = forwardRef<HTMLDivElement | null, FileSelectProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -23,6 +24,9 @@ export const FileSelect = forwardRef<HTMLDivElement | null, FileSelectProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('file-select', globalPrefixCls)) || _prefix
     const inputRef = useRef<HTMLInputElement>(null)
     const onClick = useCallback(() => {
       if (inputRef.current) {

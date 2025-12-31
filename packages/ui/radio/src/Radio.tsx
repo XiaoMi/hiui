@@ -1,19 +1,23 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, GlobalConfig } from '@hi-ui/core'
 import { useRadio, UseRadioProps } from './use-radio'
 import { useRadioGroupContext } from './context'
 import { isNullish } from '@hi-ui/type-assertion'
 import { callAllFuncs } from '@hi-ui/func-utils'
 
-const RADIO_PREFIX = getPrefixCls('radio')
+const _prefix = getPrefixCls('radio')
 
 /**
  * 单选
  */
 export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
-  ({ prefixCls = RADIO_PREFIX, role = 'radio', className, children, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = 'radio', className, children, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('radio', globalPrefixCls)) || _prefix
+
     const groupContext = useRadioGroupContext()
     const {
       disabled: disabledContext,

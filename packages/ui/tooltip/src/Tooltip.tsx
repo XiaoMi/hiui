@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -27,7 +27,7 @@ export const _prefix = getPrefixCls('tooltip')
 export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       title,
@@ -46,6 +46,10 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('tooltip', globalPrefixCls)) || _prefix
+
     const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
       defaultVisible: false,
       visible: visibleProp,

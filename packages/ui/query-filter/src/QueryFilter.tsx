@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, GlobalConfig } from '@hi-ui/core'
 import { FilterForm, FilterFormProps, useCacheSelectedData } from './FilterForm'
 
-const QUERY_FILTER_PREFIX = getPrefixCls('query-filter')
+const _prefix = getPrefixCls('query-filter')
 
 /**
  * 筛选表单
@@ -12,7 +12,7 @@ const QUERY_FILTER_PREFIX = getPrefixCls('query-filter')
 export const QueryFilter = forwardRef<HTMLDivElement | null, QueryFilterProps>(
   (
     {
-      prefixCls = QUERY_FILTER_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'query-filter',
       className,
       children,
@@ -23,6 +23,9 @@ export const QueryFilter = forwardRef<HTMLDivElement | null, QueryFilterProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('query-filter', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     const { cacheSelectedData } = useCacheSelectedData()

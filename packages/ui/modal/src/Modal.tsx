@@ -6,6 +6,7 @@ import {
   useLocaleContext,
   usePortalContext,
   useGlobalContext,
+  GlobalConfig,
 } from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
@@ -45,7 +46,7 @@ const defaultMaxHeight = 600
 export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   (
     {
-      prefixCls = modalPrefix,
+      prefixCls: prefixClsProp,
       className,
       children,
       size: sizeProp,
@@ -80,6 +81,9 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('modal', globalPrefixCls)) || modalPrefix
     const { size: globalSize } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {

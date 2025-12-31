@@ -18,8 +18,9 @@ import {
 } from '@hi-ui/icons'
 import { useTimeout } from '@hi-ui/use-timeout'
 import { formatFileSize } from './utils'
+import { GlobalConfig } from '@hi-ui/core'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 
 const fileTypeMap = {
   img: <JpgColorful />,
@@ -39,7 +40,7 @@ const fileTypeMap = {
 export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       onDownload,
       onDelete,
       fileList,
@@ -50,6 +51,10 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
+
     return (
       <ul className={`${prefixCls}__list ${prefixCls}__list--size-${size}`} ref={ref}>
         {fileList.map((file, index) => {
@@ -64,6 +69,7 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
               actionRender={actionRender}
               disabled={disabled}
               size={size}
+              prefixCls={prefixCls}
             />
           )
         })}
@@ -77,7 +83,7 @@ if (__DEV__) {
 }
 
 const FileItem = ({
-  prefixCls = UPLOAD_PREFIX,
+  prefixCls,
   file,
   index,
   onDownload,

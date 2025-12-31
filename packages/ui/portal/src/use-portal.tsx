@@ -5,11 +5,16 @@ import * as Container from '@hi-ui/container'
 import { useForceUpdate } from '@hi-ui/use-force-update'
 import { useOwnDocument } from './hooks'
 import { addDOMClass, removeDOMClass, resolveContainer } from './utils'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'portal'
 const _prefix = getPrefixCls(_role)
 
-export const usePortal = ({ prefixCls = _prefix, className }: UsePortalProps) => {
+export const usePortal = ({ prefixCls: prefixClsProp, className }: UsePortalProps) => {
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('portal', globalPrefixCls)) || _prefix
+
   const portalElRef = useRef<Element | null>(null)
 
   const [doc, tempNode] = useOwnDocument()

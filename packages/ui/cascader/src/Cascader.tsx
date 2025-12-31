@@ -26,7 +26,7 @@ import {
 } from '@hi-ui/use-search-mode'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
-import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { CascaderMenuList } from './CascaderMenuList'
 import Highlighter from '@hi-ui/highlighter'
@@ -41,7 +41,7 @@ const NOOP_ARRAY = [] as []
  */
 export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props, ref) => {
   const {
-    prefixCls = _prefix,
+    prefixCls: prefixClsProp,
     className,
     placeholder: placeholderProp,
     disabled = false,
@@ -81,6 +81,9 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     renderExtraHeader,
     ...rest
   } = props
+  const globalPrefixCls = GlobalConfig.prefixCls
+  const prefixCls =
+    prefixClsProp || (globalPrefixCls && getPrefixCls('cascader', globalPrefixCls)) || _prefix
   const { size: globalSize } = useGlobalContext()
   const size = sizeProp ?? globalSize ?? 'md'
 

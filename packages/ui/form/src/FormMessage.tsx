@@ -2,12 +2,16 @@ import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useFormContext } from './context'
+import { GlobalConfig } from '@hi-ui/core'
 
 const _role = 'form-message'
 const _prefix = getPrefixCls(_role)
 
 export const FormMessage = forwardRef<HTMLSpanElement | null, FormMessageProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, field, ...rest }, ref) => {
+  ({ prefixCls: prefixClsProp, role = _role, className, children, field, ...rest }, ref) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('form-message', globalPrefixCls)) || _prefix
     const { getFieldError } = useFormContext()
 
     // field 支持数组，递归去设置或者获取对象中的属性值

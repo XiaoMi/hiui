@@ -23,7 +23,7 @@ import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext, GlobalConfig } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -45,7 +45,7 @@ const DEFAULT_FIELD_NAMES = {} as any
 export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls: prefixClsProp,
       role = _role,
       className,
       children,
@@ -93,6 +93,9 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('check-select', globalPrefixCls)) || _prefix
     const { size: globalSize } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 

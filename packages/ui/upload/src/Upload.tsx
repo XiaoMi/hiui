@@ -7,8 +7,9 @@ import { DragUpload } from './DragUpload'
 import { PictureListUpload } from './PictureListUpload'
 import { PictureUpload } from './PictureUpload'
 import { AvatarUpload } from './AvatarUpload'
+import { GlobalConfig } from '@hi-ui/core'
 
-const UPLOAD_PREFIX = getPrefixCls('upload')
+const _prefix = getPrefixCls('upload')
 const NOOP_ARRAY = [] as []
 
 /**
@@ -17,7 +18,7 @@ const NOOP_ARRAY = [] as []
 export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
   (
     {
-      prefixCls = UPLOAD_PREFIX,
+      prefixCls: prefixClsProp,
       role = 'upload',
       type = 'default',
       data = NOOP_ARRAY,
@@ -26,6 +27,9 @@ export const Upload = forwardRef<HTMLDivElement | null, UploadProps>(
     },
     ref
   ) => {
+    const globalPrefixCls = GlobalConfig.prefixCls
+    const prefixCls =
+      prefixClsProp || (globalPrefixCls && getPrefixCls('upload', globalPrefixCls)) || _prefix
     const cls = cx(prefixCls, className)
 
     switch (type) {
