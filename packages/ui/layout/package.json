@@ -50,6 +50,7 @@
     "@hi-ui/menu": "^4.0.0",
     "@hi-ui/popper": "^4.0.0",
     "@hi-ui/popover": "^4.2.0",
+    "@hi-ui/react-utils": "^4.0.4",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
