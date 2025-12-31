@@ -4,7 +4,7 @@ import Button from '@hi-ui/button'
 
 /**
  * @title 不同大小
- * @desc 通过 size 设置标椎的间距大小，默认为小号
+ * @desc 通过 size 设置间距大小，默认为小号
  */
 export const Size = () => {
   return (
