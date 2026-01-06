@@ -544,34 +544,40 @@ export const useTable = ({
     }, [] as FlattedTableColumnItemData[][])
   }, [mergedColumns1])
 
-  const getStickyColProps = useLatestCallback((column) => {
-    const { rightStickyWidth, leftStickyWidth, align } = column
-    const sticky =
-      canScroll &&
-      (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
+  const getStickyColProps = useLatestCallback(
+    (column, type: 'th' | 'td' = 'td', stickyTop?: number) => {
+      const { rightStickyWidth, leftStickyWidth, align } = column
+      const sticky =
+        canScroll &&
+        (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
 
-    const style: React.CSSProperties = {
-      textAlign: align,
-    }
+      const style: React.CSSProperties = {
+        textAlign: align,
+      }
 
-    if (sticky) {
-      style.position = 'sticky'
-      style.right = rightStickyWidth + 'px'
-      style.left = leftStickyWidth + 'px'
-      // the value is same with v3
-      style.zIndex = 5
-    }
+      if (sticky) {
+        style.position = 'sticky'
+        style.insetInlineEnd = rightStickyWidth + 'px'
+        style.insetInlineStart = leftStickyWidth + 'px'
+        // the value is same with v4
+        style.zIndex = type === 'th' ? 5 : 4
 
-    return {
-      style,
-      'data-sticky': setAttrStatus(sticky),
+        if (type === 'th' && stickyTop) {
+          style.insetBlockStart = stickyTop + 'px'
+        }
+      }
+
+      return {
+        style,
+        'data-sticky': setAttrStatus(sticky),
+      }
     }
-  })
+  )
 
   const getTableHeaderProps = React.useCallback(() => {
     const style: React.CSSProperties = {
       position: sticky ? 'sticky' : 'relative',
-      top: sticky ? stickyTop : undefined,
+      insetBlockStart: sticky ? stickyTop : undefined,
       overflow: 'hidden',
       zIndex: sticky ? 10 : undefined,
     }

@@ -68,7 +68,11 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   }
                 }
 
-                const stickyColProps = getStickyColProps(col)
+                const stickyColProps = getStickyColProps(
+                  col,
+                  'th',
+                  trRefs.current[colsIndex]?.offsetTop
+                )
 
                 const cell = (
                   <th
@@ -78,7 +82,6 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                       ...stickyColProps.style,
                       // 表头合并场景下，被合并的表头需要隐藏
                       display: col?.colSpan === 0 ? 'none' : undefined,
-                      top: trRefs.current[colsIndex]?.offsetTop,
                     }}
                     className={cx(
                       `${prefixCls}-cell`,

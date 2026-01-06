@@ -105,7 +105,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
 
     if (virtual) {
       const width = colWidths[colIndex]
-      const colProps = getStickyColProps(column)
+      const colProps = getStickyColProps(column, 'td')
       return (
         <div
           ref={ref}
@@ -144,7 +144,7 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
         ref={ref}
         key={dataKey}
         className={cls}
-        {...getStickyColProps(column)}
+        {...getStickyColProps(column, 'td')}
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
         // 按需绑定函数，避免频繁调用 setState 特别消耗性能
