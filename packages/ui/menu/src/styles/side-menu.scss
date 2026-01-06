@@ -12,7 +12,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     display: flex;
     align-items: center;
     height: use-height-size(8);
-    padding: 0 use-spacing(4);
+    padding: 0 use-spacing(4) 0 use-spacing(6);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
     color: use-color('gray', 800);
@@ -65,6 +65,7 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
       padding: use-spacing(3) use-spacing(3) 0;
       width: 52px;
       height: 48px;
+      color: use-color('gray', 700);
 
       .#{$side-menu-prefix}-item__icon {
         margin-inline-end: 0;
