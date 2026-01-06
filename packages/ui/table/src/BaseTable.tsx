@@ -236,6 +236,29 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
 
     const renderTable = () => {
+      if (needDoubleTable) {
+        const { style, ...restTableHeaderProps } = getTableHeaderProps()
+
+        const doubleTableContent = (
+          <>
+            <div {...restTableHeaderProps} style={{ ...style, overflow: undefined }}>
+              <TableHeader />
+
+              {/* 不跟随内部 header 横向滚动，固定到右侧 */}
+              {extraHeader ? (
+                <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
+                  {extraHeader}
+                </div>
+              ) : null}
+            </div>
+
+            <TableBody emptyContent={emptyContent} />
+          </>
+        )
+
+        return doubleTableContent
+      }
+
       const tableContent = (
         <table
           ref={bodyTableRef}
@@ -275,26 +298,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         </div>
       )
 
-      const { style, ...restTableHeaderProps } = getTableHeaderProps()
-
-      const doubleTableContent = (
-        <>
-          <div {...restTableHeaderProps} style={{ ...style, overflow: undefined }}>
-            <TableHeader />
-
-            {/* 不跟随内部 header 横向滚动，固定到右侧 */}
-            {extraHeader ? (
-              <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
-                {extraHeader}
-              </div>
-            ) : null}
-          </div>
-
-          <TableBody emptyContent={emptyContent} />
-        </>
-      )
-
-      return needDoubleTable ? doubleTableContent : singleTableContent
+      return singleTableContent
     }
 
     const renderFreezeShadow = () => {
