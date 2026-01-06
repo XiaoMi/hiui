@@ -544,7 +544,7 @@ export const useTable = ({
     }, [] as FlattedTableColumnItemData[][])
   }, [mergedColumns1])
 
-  const getStickyColProps = useLatestCallback((column) => {
+  const getStickyColProps = useLatestCallback((column, type: 'th' | 'td' = 'td') => {
     const { rightStickyWidth, leftStickyWidth, align } = column
     const sticky =
       canScroll &&
@@ -556,10 +556,10 @@ export const useTable = ({
 
     if (sticky) {
       style.position = 'sticky'
-      style.right = rightStickyWidth + 'px'
-      style.left = leftStickyWidth + 'px'
-      // the value is same with v3
-      style.zIndex = 5
+      style.insetInlineEnd = rightStickyWidth + 'px'
+      style.insetInlineStart = leftStickyWidth + 'px'
+      // the value is same with v4
+      style.zIndex = type === 'th' ? 5 : 4
     }
 
     return {
@@ -571,7 +571,7 @@ export const useTable = ({
   const getTableHeaderProps = React.useCallback(() => {
     const style: React.CSSProperties = {
       position: sticky ? 'sticky' : 'relative',
-      top: sticky ? stickyTop : undefined,
+      insetBlockStart: sticky ? stickyTop : undefined,
       overflow: 'hidden',
       zIndex: sticky ? 10 : undefined,
     }
