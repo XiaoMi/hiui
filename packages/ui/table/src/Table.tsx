@@ -84,7 +84,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
     ref
   ) => {
     // 是否需要双表格
-    const needDoubleTable = DOUBLE_TABLE_SCENE.some((prop) => !!rest[prop])
+    // 当 data 为空时，如果使用单表格，在表头分组下会导致表头错位（原生 table 特性），故而该情况下也要使用双表格
+    const needDoubleTable = DOUBLE_TABLE_SCENE.some((prop) => !!rest[prop]) || data.length === 0
 
     const virtual = rest.virtual
 
