@@ -544,35 +544,29 @@ export const useTable = ({
     }, [] as FlattedTableColumnItemData[][])
   }, [mergedColumns1])
 
-  const getStickyColProps = useLatestCallback(
-    (column, type: 'th' | 'td' = 'td', stickyTop?: number) => {
-      const { rightStickyWidth, leftStickyWidth, align } = column
-      const sticky =
-        canScroll &&
-        (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
+  const getStickyColProps = useLatestCallback((column, type: 'th' | 'td' = 'td') => {
+    const { rightStickyWidth, leftStickyWidth, align } = column
+    const sticky =
+      canScroll &&
+      (typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined')
 
-      const style: React.CSSProperties = {
-        textAlign: align,
-      }
-
-      if (sticky) {
-        style.position = 'sticky'
-        style.insetInlineEnd = rightStickyWidth + 'px'
-        style.insetInlineStart = leftStickyWidth + 'px'
-        // the value is same with v4
-        style.zIndex = type === 'th' ? 5 : 4
-
-        if (type === 'th' && stickyTop) {
-          style.insetBlockStart = stickyTop + 'px'
-        }
-      }
-
-      return {
-        style,
-        'data-sticky': setAttrStatus(sticky),
-      }
+    const style: React.CSSProperties = {
+      textAlign: align,
     }
-  )
+
+    if (sticky) {
+      style.position = 'sticky'
+      style.insetInlineEnd = rightStickyWidth + 'px'
+      style.insetInlineStart = leftStickyWidth + 'px'
+      // the value is same with v4
+      style.zIndex = type === 'th' ? 5 : 4
+    }
+
+    return {
+      style,
+      'data-sticky': setAttrStatus(sticky),
+    }
+  })
 
   const getTableHeaderProps = React.useCallback(() => {
     const style: React.CSSProperties = {
