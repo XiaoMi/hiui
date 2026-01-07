@@ -196,7 +196,9 @@ export const useColWidth = ({
     if (headerTableElement) {
       resizeObserver = new ResizeObserver(() => {
         const calcMinColWidths = Array.from(headerTableElement.childNodes).map((th, index) => {
-          const minColWidth = getGroupItemWidth(columns).minColWidths[index]
+          const { colWidths, minColWidths } = getGroupItemWidth(columns)
+          const colWidth = colWidths[index]
+          const minColWidth = minColWidths[index]
 
           // 如果设置了最小宽度，则直接使用最小宽度，否则使用标题宽度
           if (minColWidth !== undefined && minColWidth !== 0) {
@@ -208,6 +210,10 @@ export const useColWidth = ({
           )
           const childNode = Array.from(th.childNodes)[0]
           const childNodeWidth = (childNode as HTMLElement).offsetWidth + thPaddingLeft * 2
+
+          if (colWidth && colWidth < childNodeWidth) {
+            return colWidth
+          }
 
           return childNodeWidth || 40
         })
