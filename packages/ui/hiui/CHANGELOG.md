@@ -1,5 +1,32 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.45
+
+### Minor Changes
+
+- ba974ff38: feat(date-picker): add onClear api (5.0)
+
+### Patch Changes
+
+- 56c9f5a2b: fix(table): 修复在 stretchHeight 模式下，冻结列表头和单元格层级问题 (5.0)
+- f04a9d9fa: fix(date-picker): 修复 onSelect 回调没有处理 utcOffset 的问题 (5.0)
+- 50a17ebf2: fix(table): 修复表头分组数据为空时表头显示异常问题，当 data 为空时，使用双表格 (5.0)
+- b15a87bd4: style: fix ui bug (5.0)
+- f95f06844: fix(table): 修复标题过长时，列头宽度拉宽后无法缩小的问题 (5.0)
+- 14fa87a0f: refactor(table): 调整列宽计算逻辑，兼容表头分组和单元格合并场景 (5.0)
+- Updated dependencies [56c9f5a2b]
+- Updated dependencies [f04a9d9fa]
+- Updated dependencies [50a17ebf2]
+- Updated dependencies [b15a87bd4]
+- Updated dependencies [ba974ff38]
+- Updated dependencies [f95f06844]
+- Updated dependencies [14fa87a0f]
+  - @hi-ui/table@5.0.0-canary.26
+  - @hi-ui/date-picker@5.0.0-canary.28
+  - @hi-ui/layout@5.0.0-canary.17
+  - @hi-ui/menu@5.0.0-canary.18
+  - @hi-ui/upload@5.0.0-canary.14
+
 ## 5.0.0-canary.44
 
 ### Minor Changes

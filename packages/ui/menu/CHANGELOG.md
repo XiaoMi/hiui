@@ -1,5 +1,11 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.18
+
+### Patch Changes
+
+- b15a87bd4: style: fix ui bug (5.0)
+
 ## 5.0.0-canary.17
 
 ### Patch Changes

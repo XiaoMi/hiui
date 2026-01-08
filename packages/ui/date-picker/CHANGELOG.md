@@ -1,5 +1,15 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.28
+
+### Minor Changes
+
+- ba974ff38: feat(date-picker): add onClear api (5.0)
+
+### Patch Changes
+
+- f04a9d9fa: fix(date-picker): 修复 onSelect 回调没有处理 utcOffset 的问题 (5.0)
+
 ## 5.0.0-canary.27
 
 ### Patch Changes

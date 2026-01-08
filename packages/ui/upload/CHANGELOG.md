@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.14
+
+### Patch Changes
+
+- b15a87bd4: style: fix ui bug (5.0)
+
 ## 5.0.0-canary.13
 
 ### Minor Changes

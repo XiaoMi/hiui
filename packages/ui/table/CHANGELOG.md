@@ -1,5 +1,14 @@
 # @hi-ui/table
 
+## 5.0.0-canary.26
+
+### Patch Changes
+
+- 56c9f5a2b: fix(table): 修复在 stretchHeight 模式下，冻结列表头和单元格层级问题 (5.0)
+- 50a17ebf2: fix(table): 修复表头分组数据为空时表头显示异常问题，当 data 为空时，使用双表格 (5.0)
+- f95f06844: fix(table): 修复标题过长时，列头宽度拉宽后无法缩小的问题 (5.0)
+- 14fa87a0f: refactor(table): 调整列宽计算逻辑，兼容表头分组和单元格合并场景 (5.0)
+
 ## 5.0.0-canary.25
 
 ### Patch Changes
