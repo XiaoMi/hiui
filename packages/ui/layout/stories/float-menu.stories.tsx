@@ -8,7 +8,7 @@ import {
   MenuOutlined,
   EllipsisOutlined,
   PlusOutlined,
-  DetailsFilled,
+  QuestionCircleFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import IconButton from '@hi-ui/icon-button'
@@ -380,7 +380,7 @@ export const FloatMenu = () => {
                 marginBlockStart: 'auto',
               }}
             >
-              <ActionItem icon={<DetailsFilled />} mini={collapsed}>
+              <ActionItem icon={<QuestionCircleFilled />} mini={collapsed}>
                 使用手册
               </ActionItem>
               <ProfilePopover

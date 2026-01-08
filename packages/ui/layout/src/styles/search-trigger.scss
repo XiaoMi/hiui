@@ -21,7 +21,7 @@ $search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
   }
 
   &--mini {
-    width: use-width-size(8);
+    width: use-height-size(8);
     margin-inline-start: use-spacing(7);
     justify-content: center;
   }
