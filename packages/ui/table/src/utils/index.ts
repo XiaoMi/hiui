@@ -64,12 +64,18 @@ export const setColumnsDefaultWidth = (columns: any, defaultWidth: any) => {
  */
 export const getGroupItemWidth = (
   columns: TableColumnItem[]
-): { colWidths: number[]; minColWidths: number[] } => {
+): {
+  colWidths: number[]
+  minColWidths: number[]
+  flattedColumnsWithoutChildren: TableColumnItem[]
+} => {
   const colWidths: number[] = []
   const minColWidths: number[] = []
+  const flattedColumnsWithoutChildren: TableColumnItem[] = []
 
   const dig = (column: TableColumnItem[]) => {
-    column.forEach(({ children, width, minWidth }) => {
+    column.forEach((item) => {
+      const { children, width, minWidth } = item
       if (Array.isArray(children)) {
         dig(children)
         return
@@ -81,6 +87,7 @@ export const getGroupItemWidth = (
 
       colWidths.push(colWidth)
       minColWidths.push(minColWidth)
+      flattedColumnsWithoutChildren.push(item)
     })
   }
 
@@ -89,6 +96,7 @@ export const getGroupItemWidth = (
   return {
     colWidths,
     minColWidths,
+    flattedColumnsWithoutChildren,
   }
 }
 
