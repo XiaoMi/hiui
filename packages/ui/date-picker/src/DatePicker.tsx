@@ -76,6 +76,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       invalid = false,
       onOpen,
       onClose,
+      onClear: onClearProp,
       cellRender,
       footerRender,
       strideSelectMode = 'auto',
@@ -127,9 +128,32 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const propsOnSelect = useCallback(
       (data: moment.Moment, isCompleted: boolean, panelIndex?: number) => {
-        propsOnSelectOriginal?.(moment(data).toDate(), isCompleted, panelIndex)
+        if (!propsOnSelectOriginal) return
+
+        // 应用 utcOffset 处理，与 onChange 回调保持一致
+        let processedDate: moment.Moment
+
+        if (typeof utcOffset === 'number') {
+          // 完整的时区转换流程：
+          // 1. 将显示的时间理解为 utcOffset 指定时区的时间
+          // 2. 转换为 UTC 标准时间
+          // 3. 转换为当前系统时区的本地时间
+
+          // 第一步：减去 utcOffset，得到 UTC 时间
+          const utcTime = data.clone().subtract(utcOffset * 60, 'minutes')
+
+          // 第二步：获取当前系统时区偏移量并转换为本地时间
+          const currentTimezoneOffset = new Date().getTimezoneOffset()
+
+          // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
+          processedDate = utcTime.subtract(currentTimezoneOffset, 'minutes')
+        } else {
+          processedDate = data.clone()
+        }
+
+        propsOnSelectOriginal(processedDate.toDate(), isCompleted, panelIndex)
       },
-      [propsOnSelectOriginal]
+      [propsOnSelectOriginal, utcOffset]
     )
 
     const safeWeekOffset = useMemo(
@@ -269,7 +293,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           // 第二步：获取当前系统时区偏移量并转换为本地时间
           const currentTimezoneOffset = new Date().getTimezoneOffset()
 
-          return typeof utcOffset === 'number' && utcOffset !== currentTimezoneOffset
+          // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
+          // return utcTime.subtract(currentTimezoneOffset, 'minutes')
+          return typeof utcOffset === 'number'
             ? // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
               utcTime.subtract(currentTimezoneOffset, 'minutes')
             : utcTime
@@ -389,6 +415,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       // @ts-ignore
       onChange(null, '')
       onClose?.()
+      onClearProp?.()
     }
 
     const onSelect = useCallback(

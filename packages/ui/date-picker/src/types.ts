@@ -281,6 +281,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   onClose?: () => void
   /**
+   * 清空时回调
+   */
+  onClear?: () => void
+  /**
    * 自定义单元格内容
    */
   cellRender?: (colInfo: CalendarColInfo, date: Moment) => React.ReactNode

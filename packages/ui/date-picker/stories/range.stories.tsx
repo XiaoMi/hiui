@@ -116,6 +116,9 @@ export const Range = () => {
             console.log(val, isCompleted)
             setDynamicSelectedValue(isCompleted ? '' : val)
           }}
+          onClear={() => {
+            setDynamicSelectedValue('')
+          }}
         />
 
         <h2>动态限制日期时间范围</h2>

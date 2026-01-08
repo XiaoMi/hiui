@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import DayJs from 'dayjs'
 import DatePicker from '../src'
 
 /**
@@ -54,7 +55,7 @@ export const CellRender = () => {
         <DatePicker
           style={{ width: 560 }}
           type="weekrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'week').toDate(), new Date()]}
           strideSelectMode="fixed"
           format={(value) => {
             // console.log('format', value)
