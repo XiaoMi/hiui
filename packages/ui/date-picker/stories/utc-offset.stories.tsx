@@ -7,7 +7,7 @@ import moment from 'moment'
  * @desc UTC时间偏移量，单位为小时。例如：东八区传入 8，西五区传入 -5
  */
 export const UTCOffset = () => {
-  const [value, setValue] = React.useState<Date | Date[] | null>(new Date('2025-10-10 12:00:00'))
+  const [value, setValue] = React.useState<Date | Date[] | null>(new Date())
   const [utcOffset] = React.useState<number>(1)
 
   return (
@@ -21,6 +21,9 @@ export const UTCOffset = () => {
           showTime={true}
           utcOffset={utcOffset}
           format="YYYY-MM-DD HH:mm:ss"
+          onSelect={(date) => {
+            console.log('onSelect', date)
+          }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
             setValue(date)
