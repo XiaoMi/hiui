@@ -2,8 +2,8 @@ import React from 'react'
 import { NormalUpload, DragUpload, PictureUpload, PictureListUpload, AvatarUpload } from '../src'
 
 /**
- * @title 单个导入，按需引用
- * @desc 建议采用该方式引用，有利用打包时做 Tree Shaking
+ * @title 按需引用
+ * @desc 支持单个组件按需引用，有利于打包时做 Tree Shaking
  */
 export const SingleImport = () => {
   return (

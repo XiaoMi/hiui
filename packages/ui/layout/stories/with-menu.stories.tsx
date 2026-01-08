@@ -3,7 +3,7 @@ import Menu from '@hi-ui/menu'
 import Scrollbar from '@hi-ui/scrollbar'
 import {
   AppStoreFilled,
-  DetailsFilled,
+  QuestionCircleFilled,
   UserFilled,
   SunFilled,
   PadFilled,
@@ -121,7 +121,7 @@ export const WithMenu = () => {
               />
             </Scrollbar>
             <div style={{ display: 'flex', flexDirection: 'column', margin: '12px 8px' }}>
-              <ActionItem icon={<DetailsFilled />} mini={collapsed}>
+              <ActionItem icon={<QuestionCircleFilled />} mini={collapsed}>
                 使用手册
               </ActionItem>
               <ProfilePopover

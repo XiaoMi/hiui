@@ -404,6 +404,7 @@ $upload-state-height: 2px !default;
       }
 
       img {
+        display: inline-block;
         margin-block-start: 50%;
         transform: translate3d(0, -50%, 0);
       }
