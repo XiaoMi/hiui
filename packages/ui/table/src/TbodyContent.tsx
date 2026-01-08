@@ -27,6 +27,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
       measureRowElementRef,
       rowClassName,
       fixedToRow,
+      flattedColumnsWithoutChildren,
     } = useTableContext()
 
     const getRequiredProps = useLatestCallback(
@@ -88,25 +89,28 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
     // 外层增加 div 作为滚动容器
     return (
       <tbody>
+        {/* 测量行，用于测量表格每列宽度 */}
+        <tr ref={measureRowElementRef} aria-hidden style={{ height: 0 }}>
+          {flattedColumnsWithoutChildren.map((column) => (
+            <td
+              key={column.id}
+              style={{
+                height: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                borderTop: 'none',
+                borderBottom: 'none',
+              }}
+            />
+          ))}
+        </tr>
         {isArrayNonEmpty(transitionData) ? (
           <>
             {transitionData.map((row, index) => {
               return (
                 <TableRow
-                  ref={(el) => {
-                    // 当 el 的子节点数量和 columns 的数量相等时（考虑单元格合并的情况），并且measureRowElementRefNeedUpdate.current为true时，才更新measureRowElementRef
-                    if (
-                      el?.childNodes.length === columns.length &&
-                      measureRowElementRefNeedUpdate.current
-                    ) {
-                      measureRowElementRef.current = el
-                      measureRowElementRefNeedUpdate.current = false
-                    }
-                  }}
-                  // key={depth + index}
                   key={row.id}
                   className={cx(rowClassName?.(row, index), ...fixedToRowTopClassName(row, index))}
-                  // @ts-ignore
                   rowIndex={index}
                   rowData={row}
                   // expandedTree={isExpandTreeRows(row.id)}

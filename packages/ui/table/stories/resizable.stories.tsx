@@ -4,6 +4,7 @@ import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
 
 /**
  * @title 可调节列宽
+ * @desc 表头分组不支持拖拽调节列宽
  */
 export const Resizable = () => {
   const [columns] = useState([
