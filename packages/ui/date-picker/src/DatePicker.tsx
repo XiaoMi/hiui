@@ -76,6 +76,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       invalid = false,
       onOpen,
       onClose,
+      onClear: onClearProp,
       cellRender,
       footerRender,
       strideSelectMode = 'auto',
@@ -414,6 +415,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       // @ts-ignore
       onChange(null, '')
       onClose?.()
+      onClearProp?.()
     }
 
     const onSelect = useCallback(
