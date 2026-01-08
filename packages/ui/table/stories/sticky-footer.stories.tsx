@@ -77,7 +77,7 @@ export const StickyFooter = () => {
   ])
 
   const [paginationState, setPaginationState] = React.useState({
-    current: 0,
+    current: 1,
     data: data.slice(0, 5),
   })
 
