@@ -5,7 +5,7 @@ import { invariant } from '@hi-ui/env'
 import { useLatestRef, useLatestCallback } from '@hi-ui/use-latest'
 import { useToggle } from '@hi-ui/use-toggle'
 import { isNumeric } from '@hi-ui/type-assertion'
-import { CounterProps } from './Counter'
+import { CounterProps, CounterSemanticName } from './Counter'
 
 /**
  * 核心逻辑：
@@ -16,6 +16,9 @@ import { CounterProps } from './Counter'
 export const useCounter = ({
   prefixCls,
   className,
+  style,
+  classNames,
+  styles,
   value: valueProp,
   defaultValue = 0,
   step = 1,
@@ -293,12 +296,14 @@ export const useCounter = ({
     focused && `${prefixCls}--focused`,
     disabled && `${prefixCls}--disabled`,
     (invalid || !isNumeric(parsedValue)) && `${prefixCls}--invalid`,
-    isOutOfRange(parsedValue, min, max) && `${prefixCls}--out-of-bounds`
+    isOutOfRange(parsedValue, min, max) && `${prefixCls}--out-of-bounds`,
+    classNames?.root
   )
 
   const rootProps = {
     ...rest,
     className: cls,
+    style: { ...style, ...styles?.root },
   }
 
   const getInputProps = useCallback(() => {
@@ -307,7 +312,8 @@ export const useCounter = ({
 
     return {
       ref: inputRef,
-      className: `${prefixCls}__input`,
+      className: cx(`${prefixCls}__input`, classNames?.input),
+      style: styles?.input,
       type: 'text',
       role: 'spinbutton',
       'aria-valuenow': parsedValue,
@@ -325,60 +331,66 @@ export const useCounter = ({
       onWheel: onInputWheel,
     }
   }, [
-    formatter,
+    autoFocus,
+    classNames?.input,
+    disabled,
     focused,
     formattedValue,
+    formatter,
     inputValue,
-    prefixCls,
-    parsedValue,
-    minProp,
     maxProp,
-    tabIndex,
-    autoFocus,
-    disabled,
-    placeholder,
+    minProp,
+    onInputBlur,
     onInputChange,
     onInputFocus,
-    onInputBlur,
     onInputKeyDown,
     onInputWheel,
+    parsedValue,
+    placeholder,
+    prefixCls,
+    styles?.input,
+    tabIndex,
   ])
 
   const getMinusButtonProps = useCallback(() => {
     return {
       ref: minusButtonElementRef,
-      className: cx(`${prefixCls}__minus`, disabledMinus && 'disabled'),
+      className: cx(`${prefixCls}__minus`, disabledMinus && 'disabled', classNames?.minus),
+      style: styles?.minus,
       role: 'button',
       'aria-disabled': disabledMinus ? true : undefined,
       tabIndex: -1,
       disabled: disabledMinus,
       onClick: handleMinusButtonTouch,
     }
-  }, [prefixCls, disabledMinus, handleMinusButtonTouch])
+  }, [classNames?.minus, disabledMinus, handleMinusButtonTouch, prefixCls, styles?.minus])
 
   const getPlusButtonProps = useCallback(() => {
     return {
       ref: plusButtonElementRef,
-      className: cx(`${prefixCls}__plus`, disabledPlus && 'disabled'),
+      className: cx(`${prefixCls}__plus`, disabledPlus && 'disabled', classNames?.plus),
+      style: styles?.plus,
       role: 'button',
       'aria-disabled': disabledPlus ? true : undefined,
       tabIndex: -1,
       disabled: disabledPlus,
       onClick: handlePlusButtonTouch,
     }
-  }, [prefixCls, disabledPlus, handlePlusButtonTouch])
+  }, [prefixCls, disabledPlus, handlePlusButtonTouch, classNames?.plus, styles?.plus])
 
   const getContentProps = useCallback(() => {
     return {
-      className: cx(`${prefixCls}__content`),
+      className: cx(`${prefixCls}__content`, classNames?.content),
+      style: styles?.content,
     }
-  }, [prefixCls])
+  }, [prefixCls, classNames?.content, styles?.content])
 
   const getInputWrapperProps = useCallback(() => {
     return {
-      className: cx(`${prefixCls}__input-wrapper`),
+      className: cx(`${prefixCls}__input-wrapper`, classNames?.inputWrapper),
+      style: styles?.inputWrapper,
     }
-  }, [prefixCls])
+  }, [prefixCls, classNames?.inputWrapper, styles?.inputWrapper])
 
   return {
     rootProps,
@@ -392,6 +404,8 @@ export const useCounter = ({
 
 export interface UseCounterProps extends CounterProps {
   prefixCls: string
+  classNames?: Partial<Record<CounterSemanticName, string>>
+  styles?: Partial<Record<CounterSemanticName, React.CSSProperties>>
 }
 
 const isOutOfRange = (val: number, min: number, max: number) => val > max || val < min

@@ -6,6 +6,12 @@ import { useCounter } from './use-counter'
 import type { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import type { CounterSizeEnum } from './types'
 import { useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
@@ -14,12 +20,34 @@ const _prefix = getPrefixCls(_role)
  * 数字加减器
  */
 export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
-  ({ prefixCls = _prefix, role = _role, size: sizeProp, ...rest }, ref) => {
-    const { size: globalSize } = useGlobalContext()
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      size: sizeProp,
+      className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      ...rest
+    },
+    ref
+  ) => {
+    const { size: globalSize, counter: counterConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize
     if (size === 'xs') {
       size = 'sm'
     }
+
+    const { classNames, styles } = useMergeSemantic<
+      CounterSemanticClassNames,
+      CounterSemanticStyles,
+      CounterProps
+    >({
+      classNamesList: [counterConfig?.classNames, classNamesProp],
+      stylesList: [counterConfig?.styles, stylesProp],
+      info: { props: { ...rest, size } },
+    })
 
     const {
       rootProps,
@@ -32,6 +60,10 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
       prefixCls,
       role,
       size,
+      className,
+      style,
+      classNames,
+      styles,
       ...rest,
     })
 
@@ -53,7 +85,12 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
   }
 )
 
-export interface CounterProps extends HiBaseHTMLFieldProps<'div'> {
+export type CounterSemanticName = 'root' | 'content' | 'minus' | 'inputWrapper' | 'input' | 'plus'
+export type CounterSemanticClassNames = SemanticClassNamesType<CounterProps, CounterSemanticName>
+export type CounterSemanticStyles = SemanticStylesType<CounterProps, CounterSemanticName>
+export type CounterSemantic = ComponentSemantic<CounterSemanticClassNames, CounterSemanticStyles>
+
+export interface CounterProps extends HiBaseHTMLFieldProps<'div'>, CounterSemantic {
   /**
    * 开启自动聚焦
    */

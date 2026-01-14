@@ -5,6 +5,7 @@ export * from './basic.stories'
 export * from './size.stories'
 export * from './custom-icon.stories'
 export * from './separator.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Navigation/Breadcrumb',

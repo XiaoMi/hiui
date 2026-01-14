@@ -3,6 +3,12 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import Spinner from '@hi-ui/spinner'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'button'
 const _prefix = getPrefixCls(_role)
@@ -16,6 +22,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       type = 'default',
       size: sizeProp,
@@ -32,21 +41,43 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
     const isNonInteractive = disabled || loading
 
+    const { size: globalSize, button: buttonConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
+    const { classNames, styles } = useMergeSemantic<
+      ButtonSemanticClassNames,
+      ButtonSemanticStyles,
+      ButtonProps
+    >({
+      classNamesList: [buttonConfig?.classNames, classNamesProp],
+      stylesList: [buttonConfig?.styles, stylesProp],
+      info: { props: { ...rest, type, size, appearance, disabled, loading, shape } },
+    })
+
     const prefix = loading ? (
-      <Spinner color="currentColor" className={`${prefixCls}__icon ${prefixCls}__icon--prefix`} />
+      <Spinner
+        color="currentColor"
+        className={cx(`${prefixCls}__icon ${prefixCls}__icon--prefix`, classNames?.prefixIcon)}
+        style={styles?.prefixIcon}
+      />
     ) : icon && (!Array.isArray(icon) || icon[0]) ? (
-      <span className={`${prefixCls}__icon ${prefixCls}__icon--prefix`}>
+      <span
+        className={cx(`${prefixCls}__icon ${prefixCls}__icon--prefix`, classNames?.prefixIcon)}
+        style={styles?.prefixIcon}
+      >
         {Array.isArray(icon) ? icon[0] : icon}
       </span>
     ) : null
 
     const suffix =
       Array.isArray(icon) && icon.length > 1 ? (
-        <span className={`${prefixCls}__icon ${prefixCls}__icon--suffix`}>{icon[1]}</span>
+        <span
+          className={cx(`${prefixCls}__icon ${prefixCls}__icon--suffix`, classNames?.suffixIcon)}
+          style={styles?.suffixIcon}
+        >
+          {icon[1]}
+        </span>
       ) : null
-
-    const { size: globalSize } = useGlobalContext()
-    const size = sizeProp ?? globalSize ?? 'md'
 
     // 兼容 V4 版本，当 type 是 secondary 类型时，自动转换为 primary 类型，appearance 自动转换为 filled 外观
     let _type = type
@@ -71,6 +102,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--appearance-${_appearance}`,
       `${prefixCls}--size-${size}`,
       `${prefixCls}--type-${_type}`,
@@ -85,6 +117,10 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         ref={ref}
         role={role}
         className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
         disabled={isNonInteractive}
         type="button"
         {...(rest as any)}
@@ -94,7 +130,17 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         {suffix}
       </button>
     ) : (
-      <a ref={ref} role={role} href={href} className={cls} {...(rest as any)}>
+      <a
+        ref={ref}
+        role={role}
+        href={href}
+        className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        {...(rest as any)}
+      >
         {prefix}
         {children}
         {suffix}
@@ -103,7 +149,12 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   }
 )
 
-export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
+export type ButtonSemanticName = 'root' | 'prefixIcon' | 'suffixIcon'
+export type ButtonSemanticClassNames = SemanticClassNamesType<ButtonProps, ButtonSemanticName>
+export type ButtonSemanticStyles = SemanticStylesType<ButtonProps, ButtonSemanticName>
+export type ButtonSemantic = ComponentSemantic<ButtonSemanticClassNames, ButtonSemanticStyles>
+
+export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'>, ButtonSemantic {
   /**
    * 设置按钮类型
    */
