@@ -3,8 +3,14 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCheckboxGroupContext } from './context'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
 import { withDefaultProp } from '@hi-ui/react-utils'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'checkbox'
 const _prefix = getPrefixCls(_role)
@@ -18,6 +24,9 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       name,
       value,
@@ -37,6 +46,26 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       value: valueGroup,
       onChange: onChangeGroup,
     } = useCheckboxGroupContext()
+
+    const { checkbox: checkboxConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckboxSemanticClassNames,
+      CheckboxSemanticStyles,
+      CheckboxProps
+    >({
+      classNamesList: [checkboxConfig?.classNames, classNamesProp],
+      stylesList: [checkboxConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          disabled: disabledProp,
+          indeterminate,
+          checked: checkedProp,
+          defaultChecked,
+        },
+      },
+    })
 
     const disabled = withDefaultProp(withDefaultProp(disabledProp, disabledGroup), false) as boolean
 
@@ -59,10 +88,19 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
       tryChangeChecked(evt.target.checked, evt)
     }
 
-    const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
+    const cls = cx(prefixCls, className, classNames?.root, disabled && `${prefixCls}--disabled`)
 
     return (
-      <label ref={ref} role={role} className={cls} {...rest}>
+      <label
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        {...rest}
+      >
         <input
           className={`${prefixCls}__input`}
           type="checkbox"
@@ -79,17 +117,28 @@ export const Checkbox = forwardRef<HTMLLabelElement | null, CheckboxProps>(
         <span
           className={cx(
             `${prefixCls}__icon`,
+            classNames?.icon,
             indeterminate && `${prefixCls}__icon--indeterminate`,
             checked && !indeterminate && `${prefixCls}__icon--checked`
           )}
+          style={styles?.icon}
         />
-        {children ? <span className={`${prefixCls}__text`}>{children}</span> : null}
+        {children ? (
+          <span className={cx(`${prefixCls}__text`, classNames?.text)} style={styles?.text}>
+            {children}
+          </span>
+        ) : null}
       </label>
     )
   }
 )
 
-export interface CheckboxProps extends HiBaseHTMLFieldProps<'label'> {
+export type CheckboxSemanticName = 'root' | 'icon' | 'text'
+export type CheckboxSemanticClassNames = SemanticClassNamesType<CheckboxProps, CheckboxSemanticName>
+export type CheckboxSemanticStyles = SemanticStylesType<CheckboxProps, CheckboxSemanticName>
+export type CheckboxSemantic = ComponentSemantic<CheckboxSemanticClassNames, CheckboxSemanticStyles>
+
+export interface CheckboxProps extends HiBaseHTMLFieldProps<'label'>, CheckboxSemantic {
   /**
    * 	是否自动获取焦点
    */

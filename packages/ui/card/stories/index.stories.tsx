@@ -11,6 +11,7 @@ export * from './img.stories'
 export * from './no-border.stories'
 export * from './hoverable.stories'
 export * from './loading.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Card',

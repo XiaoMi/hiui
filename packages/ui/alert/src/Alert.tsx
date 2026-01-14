@@ -7,6 +7,12 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { useTimeout } from '@hi-ui/use-timeout'
 import { Button } from '@hi-ui/button'
 import { alertIconMap, defaultCloseIcon } from './icons'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _prefix = getPrefixCls('alert')
 
@@ -22,6 +28,9 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       prefixCls = _prefix,
       role = 'alert',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       title,
       content,
@@ -37,7 +46,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, alert: alertConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'
@@ -64,24 +73,58 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
 
     const suffixIcon = alertIconMap[type] || null
 
+    const { classNames, styles } = useMergeSemantic<
+      AlertSemanticClassNames,
+      AlertSemanticStyles,
+      AlertProps
+    >({
+      classNamesList: [alertConfig?.classNames, classNamesProp],
+      stylesList: [alertConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, content, type, size } },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       suffixIcon && `${prefixCls}--type-${type}`,
       content && `${prefixCls}--with-content`,
       size && `${prefixCls}--size-${size}`
     )
 
     return internalVisible ? (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {showIcon && suffixIcon ? <span className={`${prefixCls}__icon`}>{suffixIcon}</span> : null}
-        <div className={`${prefixCls}__message`}>
-          <div className={`${prefixCls}__title`}>{title}</div>
-          {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        {...rest}
+      >
+        {showIcon && suffixIcon ? (
+          <span className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
+            {suffixIcon}
+          </span>
+        ) : null}
+        <div className={cx(`${prefixCls}__message`, classNames?.message)} style={styles?.message}>
+          <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+            {title}
+          </div>
+          {content ? (
+            <div
+              className={cx(`${prefixCls}__content`, classNames?.content)}
+              style={styles?.content}
+            >
+              {content}
+            </div>
+          ) : null}
         </div>
         {closeable && closeIcon ? (
           <Button
-            className={`${prefixCls}__close`}
+            className={cx(`${prefixCls}__close`, classNames?.close)}
+            style={styles?.close}
             onClick={handleClose}
             appearance="link"
             icon={closeIcon}
@@ -92,7 +135,12 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
   }
 )
 
-export interface AlertProps extends HiBaseHTMLProps<'div'> {
+export type AlertSemanticName = 'root' | 'icon' | 'message' | 'title' | 'content' | 'close'
+export type AlertSemanticClassNames = SemanticClassNamesType<AlertProps, AlertSemanticName>
+export type AlertSemanticStyles = SemanticStylesType<AlertProps, AlertSemanticName>
+export type AlertSemantic = ComponentSemantic<AlertSemanticClassNames, AlertSemanticStyles>
+
+export interface AlertProps extends HiBaseHTMLProps<'div'>, AlertSemantic {
   /**
    * 	警告提示类型
    */
@@ -119,12 +167,10 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
   onClose?: () => void
   /**
    * 自定义关闭 Icon
-   * @version 4.0.0
    */
   closeIcon?: React.ReactNode
   /**
    * 是否显示提示图标
-   * @version 4.0.0
    */
   showIcon?: boolean
   /**

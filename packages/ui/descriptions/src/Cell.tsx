@@ -2,6 +2,7 @@ import * as React from 'react'
 import { cx, getPrefixStyleVar } from '@hi-ui/classname'
 import { isNullish } from '@hi-ui/type-assertion'
 import { ContentPosition } from './types'
+import type { DescriptionsSemanticName } from './Descriptions'
 
 export const Cell: React.FC<CellProps> = ({
   itemPrefixCls,
@@ -16,6 +17,8 @@ export const Cell: React.FC<CellProps> = ({
   labelWidth,
   cellColumnGap,
   contentPosition: contentPositionProp = 'top',
+  cellClassNames,
+  cellStyles,
   ...rest
 }) => {
   const Component: any = component
@@ -23,8 +26,8 @@ export const Cell: React.FC<CellProps> = ({
   if (bordered) {
     const compareStyle =
       !isNullish(labelWidth) && !isNullish(label)
-        ? { ...style, width: labelWidth, wordBreak: 'break-word' }
-        : style
+        ? { ...style, width: labelWidth, wordBreak: 'break-word', ...cellStyles?.cell }
+        : { ...style, ...cellStyles?.cell }
     return (
       <Component
         className={cx(
@@ -32,15 +35,24 @@ export const Cell: React.FC<CellProps> = ({
             [`${itemPrefixCls}-item__label`]: !isNullish(label),
             [`${itemPrefixCls}-item__content`]: !isNullish(content),
           },
-          className
+          className,
+          cellClassNames?.cell
         )}
         style={compareStyle}
         colSpan={colSpan}
         rowSpan={rowSpan}
         {...rest}
       >
-        {!isNullish(label) && <span>{label}</span>}
-        {!isNullish(content) && <span>{content}</span>}
+        {!isNullish(label) && (
+          <span className={cellClassNames?.label} style={cellStyles?.label}>
+            {label}
+          </span>
+        )}
+        {!isNullish(content) && (
+          <span className={cellClassNames?.content} style={cellStyles?.content}>
+            {content}
+          </span>
+        )}
       </Component>
     )
   }
@@ -53,8 +65,8 @@ export const Cell: React.FC<CellProps> = ({
 
   return (
     <Component
-      className={cx(`${itemPrefixCls}-item`, className)}
-      style={style}
+      className={cx(`${itemPrefixCls}-item`, className, cellClassNames?.cell)}
+      style={{ ...style, ...cellStyles?.cell }}
       colSpan={colSpan}
       {...rest}
     >
@@ -67,12 +79,20 @@ export const Cell: React.FC<CellProps> = ({
         }}
       >
         {!isNullish(label) && (
-          <span className={cx(`${itemPrefixCls}-item__label`)} style={{ width: labelWidth }}>
+          <span
+            className={cx(`${itemPrefixCls}-item__label`, cellClassNames?.label)}
+            style={{ width: labelWidth, ...cellStyles?.label }}
+          >
             {label}
           </span>
         )}
         {!isNullish(content) && (
-          <span className={cx(`${itemPrefixCls}-item__content`)}>{content}</span>
+          <span
+            className={cx(`${itemPrefixCls}-item__content`, cellClassNames?.content)}
+            style={cellStyles?.content}
+          >
+            {content}
+          </span>
         )}
       </div>
     </Component>
@@ -92,4 +112,6 @@ export interface CellProps {
   labelWidth?: React.ReactText
   cellColumnGap?: React.ReactText
   contentPosition?: ContentPosition
+  cellClassNames?: Partial<Record<DescriptionsSemanticName, string>>
+  cellStyles?: Partial<Record<DescriptionsSemanticName, React.CSSProperties>>
 }

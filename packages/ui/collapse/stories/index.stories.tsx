@@ -8,6 +8,7 @@ export * from './no-border.stories'
 export * from './arrow-render.stories'
 export * from './title.stories'
 export * from './size.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Collapse',

@@ -11,6 +11,7 @@ export * from './vertical.stories'
 export * from './vertical-border.stories'
 export * from './label-width.stories'
 export * from './size.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Descriptions',

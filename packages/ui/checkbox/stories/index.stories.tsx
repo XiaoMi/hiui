@@ -8,6 +8,7 @@ export * from './group.stories'
 export * from './placement.stories'
 export * from './check-all.stories'
 export * from './children.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Checkbox',

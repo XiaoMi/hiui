@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 
 export const GlobalContext = createContext<UseGlobalContext>({})
 
@@ -8,8 +8,48 @@ export const useGlobalContext = () => {
   return context
 }
 
-export type UseGlobalContext = {
+export interface UseGlobalContext extends ConfigComponentProps {
   size?: 'xs' | 'sm' | 'md' | 'lg'
   prefix?: string
   customThemeClassName?: string
+}
+
+export interface ComponentStyleConfig {
+  className?: string
+  style?: React.CSSProperties
+  classNames?: any
+  styles?: any
+}
+
+export type AlertComponentConfig = ComponentStyleConfig
+
+export type AnchorComponentConfig = ComponentStyleConfig
+
+export type AnchorItemComponentConfig = ComponentStyleConfig
+
+export type BreadcrumbComponentConfig = ComponentStyleConfig
+
+export type ButtonComponentConfig = ComponentStyleConfig
+
+export type CardComponentConfig = ComponentStyleConfig
+
+export type CheckboxComponentConfig = ComponentStyleConfig
+
+export type CollapsePanelComponentConfig = ComponentStyleConfig
+
+export type CounterComponentConfig = ComponentStyleConfig
+
+export type DescriptionsComponentConfig = ComponentStyleConfig
+
+export interface ConfigComponentProps {
+  alert?: AlertComponentConfig
+  anchor?: AnchorComponentConfig
+  anchorItem?: AnchorItemComponentConfig
+  breadcrumb?: BreadcrumbComponentConfig
+  button?: ButtonComponentConfig
+  card?: CardComponentConfig
+  checkbox?: CheckboxComponentConfig
+  collapsePanel?: CollapsePanelComponentConfig
+  counter?: CounterComponentConfig
+  descriptions?: DescriptionsComponentConfig
 }
