@@ -521,7 +521,6 @@ export const FloatMenu = () => {
             <div
               style={{
                 flex: 1,
-                marginBottom: 16,
                 borderRadius: 12,
                 backgroundColor: '#fff',
                 boxShadow: '0 0 4px rgba(92, 94, 102, 0.06)',
