@@ -148,7 +148,7 @@ export const useColWidth = ({
       if (measureRowElementWidth && measureRowElementWidth <= scrollBodyElementWidth) {
         setColWidths(getWidths(measureRowElementRef.current))
       }
-    })
+    }, 16)
   }, [columns])
 
   /**

@@ -11,6 +11,7 @@ import { useTableContext } from './context'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
 
 const _prefix = getPrefixCls('table-body')
+const _prefixCell = getPrefixCls('table-cell')
 const _prefixRow = getPrefixCls('table-row')
 
 export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>(
@@ -94,6 +95,7 @@ export const TbodyContent = forwardRef<HTMLDivElement | null, TbodyContentProps>
           {flattedColumnsWithoutChildren.map((column) => (
             <td
               key={column.id}
+              className={`${_prefixCell}`}
               style={{
                 height: 0,
                 paddingTop: 0,
