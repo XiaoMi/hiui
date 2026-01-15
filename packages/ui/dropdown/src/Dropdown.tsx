@@ -80,7 +80,7 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             onClick={(evt) => {
               evt.stopPropagation()
               if (item.disabled) return
-              onClick?.(item.id)
+              onClick?.(item.id, item)
               if (!isArray(item.children)) {
                 menuVisibleAction.off()
               }
@@ -183,7 +183,7 @@ export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, 
   /**
    * 点击后的回调
    */
-  onClick?: (id: React.ReactText) => void
+  onClick?: (id: React.ReactText, item: DropdownDataItem) => void
   /**
    * 下拉根元素的类名称
    */
