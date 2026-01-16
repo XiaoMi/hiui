@@ -13,7 +13,7 @@ export const Basic = () => {
         title: '面型',
         children: [
           { component: Icons.AcceptanceFilled, tagName: 'AcceptanceFilled' },
-          { component: Icons.AiFilled, tagName: 'AddFilled' },
+          { component: Icons.AiFilled, tagName: 'AiFilled' },
           { component: Icons.AlarmClockFilled, tagName: 'AlarmClockFilled' },
           { component: Icons.AlarmFilled, tagName: 'AlarmFilled' },
           { component: Icons.AppStoreFilled, tagName: 'AppStoreFilled' },
