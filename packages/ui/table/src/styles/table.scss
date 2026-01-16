@@ -383,14 +383,22 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &--hover {
       &:hover {
         & > .#{$prefix}-cell {
-          background-color: use-color-mode('primary', 50);
+          background-color: use-color('gray', 100);
+        }
+      }
+
+      &.#{$prefix}-row--highlight {
+        &:hover {
+          & > .#{$prefix}-cell {
+            background-color: use-color-mode('primary', 100);
+          }
         }
       }
     }
 
     &--striped {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 100, 0.6);
       }
     }
 
