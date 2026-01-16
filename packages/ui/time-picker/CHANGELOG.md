@@ -1,5 +1,11 @@
 # @hi-ui/time-picker
 
+## 5.0.0-canary.18
+
+### Patch Changes
+
+- a066dc269: fix(time-picker): update notifyOutside callback to handle single value case (5.0)
+
 ## 5.0.0-canary.17
 
 ### Patch Changes

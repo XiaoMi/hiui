@@ -1,5 +1,12 @@
 # @hi-ui/table
 
+## 5.0.0-canary.27
+
+### Patch Changes
+
+- ad4a6d87b: style(table): update hover and striped row background colors for improved visibility (5.0)
+- 0a7a9e236: perf(table): add cell class prefix to TbodyContent and adjust useColWidth debounce timing (5.0)
+
 ## 5.0.0-canary.26
 
 ### Patch Changes

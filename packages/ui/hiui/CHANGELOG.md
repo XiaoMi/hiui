@@ -1,5 +1,27 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.46
+
+### Minor Changes
+
+- ed1bcd266: feat(dropdown): update onClick callback to include item data (5.0)
+
+### Patch Changes
+
+- ad4a6d87b: style(table): update hover and striped row background colors for improved visibility (5.0)
+- 0a7a9e236: perf(table): add cell class prefix to TbodyContent and adjust useColWidth debounce timing (5.0)
+- a066dc269: fix(time-picker): update notifyOutside callback to handle single value case (5.0)
+- ed1bcd266: style(anchor): add overflow hidden and adjust ink positioning for improved layout (5.0)
+- Updated dependencies [ad4a6d87b]
+- Updated dependencies [0a7a9e236]
+- Updated dependencies [a066dc269]
+- Updated dependencies [ed1bcd266]
+- Updated dependencies [ed1bcd266]
+  - @hi-ui/table@5.0.0-canary.27
+  - @hi-ui/time-picker@5.0.0-canary.18
+  - @hi-ui/dropdown@5.0.0-canary.11
+  - @hi-ui/anchor@5.0.0-canary.6
+
 ## 5.0.0-canary.45
 
 ### Minor Changes

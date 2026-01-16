@@ -1,5 +1,11 @@
 # @hi-ui/dropdown
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- ed1bcd266: feat(dropdown): update onClick callback to include item data (5.0)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

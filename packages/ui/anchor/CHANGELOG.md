@@ -1,5 +1,11 @@
 # @hi-ui/anchor
 
+## 5.0.0-canary.6
+
+### Patch Changes
+
+- ed1bcd266: style(anchor): add overflow hidden and adjust ink positioning for improved layout (5.0)
+
 ## 5.0.0-canary.5
 
 ### Patch Changes
