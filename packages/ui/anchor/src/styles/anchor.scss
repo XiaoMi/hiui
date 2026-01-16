@@ -5,6 +5,7 @@ $prefix: '#{$component-prefix}-anchor' !default;
 .#{$prefix} {
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
 
   &__list {
     @include list-reset();
@@ -26,10 +27,11 @@ $prefix: '#{$component-prefix}-anchor' !default;
   }
 
   &-ink {
-    left: 0;
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: -100%;
     width: 2px;
     height: 12px;
-    display: block;
     background-color: use-color-mode('primary');
   }
 }
@@ -45,7 +47,7 @@ $item-prefix: '#{$prefix}-item' !default;
     padding-inline-start: use-spacing(6);
   }
 
-  &__link {
+  > .#{$item-prefix}__link {
     @include link-reset();
     @include ellipsis();
 
