@@ -5,7 +5,7 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext, { DPContextData } from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import { getView, genNewDates, toUtcTime } from '../utils'
+import { getView, genNewDates, toUtcTime, parseValue } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
@@ -53,6 +53,7 @@ const Panel = (props: PanelProps) => {
     showPanel,
     footerRender,
     utcOffset,
+    defaultPickerValue,
   } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
@@ -67,18 +68,34 @@ const Panel = (props: PanelProps) => {
   }, [type])
 
   useEffect(() => {
-    const rDate = outDate[0]
-      ? moment(outDate[0])
-      : // 当没有设置value时，使用当前时区的今天作为默认日期
-      typeof utcOffset === 'number'
-      ? moment()
-          .add(utcOffset * 60, 'minutes')
-          .set('hour', 0)
-          .set('minute', 0)
-          .set('second', 0)
-      : moment().set('hour', 0).set('minute', 0).set('second', 0)
+    // 当用户没有传入或选择日期时，优先使用 defaultPickerValue，否则使用当前日期
+    let rDate: moment.Moment
+    if (outDate[0]) {
+      rDate = moment(outDate[0])
+    } else if (defaultPickerValue) {
+      // 解析 defaultPickerValue，对于单个日期取第一个元素
+      const parsedDefaultPickerValue = parseValue(
+        defaultPickerValue,
+        type,
+        weekOffset,
+        realFormat,
+        undefined,
+        utcOffset
+      )
+      rDate = parsedDefaultPickerValue[0] || moment()
+    } else {
+      // 当没有设置value和defaultPickerValue时，使用当前时区的今天作为默认日期
+      rDate =
+        typeof utcOffset === 'number'
+          ? moment()
+              .add(utcOffset * 60, 'minutes')
+              .set('hour', 0)
+              .set('minute', 0)
+              .set('second', 0)
+          : moment().set('hour', 0).set('minute', 0).set('second', 0)
+    }
     setCalRenderDates([rDate])
-  }, [outDate, utcOffset])
+  }, [outDate, utcOffset, defaultPickerValue, type, weekOffset, realFormat])
 
   const onPick = useCallback(
     (dates: (moment.Moment | null)[], isShowPanel?: boolean) => {

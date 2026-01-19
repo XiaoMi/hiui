@@ -24,6 +24,7 @@ type ExtendsType = Omit<
   | 'timeInterval'
   | 'value'
   | 'altCalendar'
+  | 'defaultPickerValue'
 > &
   Required<
     Pick<
@@ -64,5 +65,6 @@ export interface DPContextData extends ExtendsType {
   onPanelChange?: (data: Date) => void
   rangeRef: React.MutableRefObject<CalenderSelectedRange | null>
   utcOffset?: number
+  defaultPickerValue?: DatePickerValueV3
 }
 export default DPContext

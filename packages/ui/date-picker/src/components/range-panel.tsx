@@ -6,7 +6,7 @@ import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { getView, parseRenderDates, genNewDates, toUtcTime } from '../utils'
+import { getView, parseRenderDates, genNewDates, toUtcTime, parseValue } from '../utils'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
@@ -27,6 +27,7 @@ const RangePanel = () => {
     shortcuts,
     theme,
     locale,
+    weekOffset,
     onSelect,
     onPanelChange,
     hourStep,
@@ -42,6 +43,7 @@ const RangePanel = () => {
     rangeRef,
     footerRender,
     utcOffset,
+    defaultPickerValue,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -72,9 +74,39 @@ const RangePanel = () => {
 
   useEffect(() => {
     // 处理默认日期，确保在没有值时使用正确的时区
+    // 当用户没有传入或选择日期时，优先使用 defaultPickerValue，否则使用当前日期
+    let parsedDefaultPickerValue: (moment.Moment | null)[] | null = null
+    if (defaultPickerValue) {
+      parsedDefaultPickerValue = parseValue(
+        defaultPickerValue,
+        type,
+        weekOffset,
+        realFormat,
+        strideSelectMode,
+        utcOffset
+      )
+    }
+
     const processedOutDate = outDate.map((date, index) => {
       if (date) return date
-      // 如果没有日期值，使用当前时区的今天
+
+      // 如果没有日期值，优先使用 defaultPickerValue
+      if (parsedDefaultPickerValue) {
+        // 对于范围选择，使用对应的开始或结束日期
+        const defaultDate = parsedDefaultPickerValue[index]
+        if (defaultDate) {
+          return defaultDate
+        }
+        // 如果对应索引没有值，但另一个索引有值，则使用另一个值（用于单个日期的情况）
+        if (index === 0 && parsedDefaultPickerValue[1]) {
+          return parsedDefaultPickerValue[1]
+        }
+        if (index === 1 && parsedDefaultPickerValue[0]) {
+          return parsedDefaultPickerValue[0]
+        }
+      }
+
+      // 如果没有 defaultPickerValue，使用当前时区的今天
       const defaultDate =
         typeof utcOffset === 'number'
           ? toUtcTime(moment())
@@ -87,7 +119,7 @@ const RangePanel = () => {
     }) as (moment.Moment | null)[]
 
     setCalRenderDates(parseRenderDates(processedOutDate, type))
-  }, [outDate, type, utcOffset])
+  }, [outDate, type, utcOffset, defaultPickerValue, weekOffset, realFormat, strideSelectMode])
 
   // 更新视图类型
   useEffect(() => {
