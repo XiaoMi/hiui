@@ -485,10 +485,6 @@ export interface TreeProps {
    */
   innerRef?: React.Ref<TreeHelper>
   /**
-   * 是否在空节点上显示切换器，children 为 [] 时该参数才会生效，默认 false
-   */
-  showSwitcherOnEmpty?: boolean
-  /**
    * 自定义切换器显示逻辑
    */
   shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
