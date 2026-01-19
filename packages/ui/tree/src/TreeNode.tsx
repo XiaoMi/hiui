@@ -61,6 +61,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     leafIcon: leafIconContext,
     expandOnSelect,
     treeData,
+    shouldShowSwitcher,
   } = useTreeContext()
 
   const collapsedIcon = collapseIconContext || collapseIconProp
@@ -287,7 +288,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           leafIcon,
           onNodeExpand,
           onLoadChildren,
-          iconRender
+          iconRender,
+          shouldShowSwitcher
         )}
 
         {renderCheckbox(
@@ -438,7 +440,8 @@ const renderSwitcher = (
   leafIcon: React.ReactNode,
   onNodeExpand: (evt: React.MouseEvent) => Promise<void>,
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>,
-  iconRender?: (node: TreeNodeEventData) => React.ReactNode
+  iconRender?: (node: TreeNodeEventData) => React.ReactNode,
+  shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
 ) => {
   if (iconRender) {
     return (
@@ -461,9 +464,11 @@ const renderSwitcher = (
   }
 
   const hasChildren = node.children && node.children.length > 0
+  const showSwitcher =
+    typeof shouldShowSwitcher === 'function' ? shouldShowSwitcher(node) : hasChildren
   const canLoadChildren = onLoadChildren && !node.children && !node.isLeaf
 
-  if (hasChildren || canLoadChildren) {
+  if (showSwitcher || canLoadChildren) {
     return (
       <IconButton
         tabIndex={-1}
