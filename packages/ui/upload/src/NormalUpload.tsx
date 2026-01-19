@@ -42,6 +42,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       actionRender,
       method,
+      timeout,
       ...rest
     },
     ref
@@ -68,6 +69,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       method,
       disabled,
+      timeout,
     })
 
     return (

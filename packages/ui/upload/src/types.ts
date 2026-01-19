@@ -112,6 +112,10 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   withCredentials?: UploadRequestOption['withCredentials']
   /**
+   * 设置上传请求超时时间
+   */
+  timeout?: UploadRequestOption['timeout']
+  /**
    * 是否展示 uploadList, 仅在 type === 'default' 和 type === 'pictureCard' 时有效
    */
   showUploadList?: boolean

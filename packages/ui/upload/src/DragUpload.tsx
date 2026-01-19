@@ -39,6 +39,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      timeout,
       actionRender,
       ...rest
     },
@@ -67,6 +68,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       method,
       accept,
       disabled,
+      timeout,
     })
 
     const nonInteractive = disabled || (!!maxCount && _fileList.length >= maxCount)
