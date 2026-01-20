@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3470](https://github.com/XiaoMi/hiui/pull/3470) [`24216019a`](https://github.com/XiaoMi/hiui/commit/24216019a409bd9ea029df27e41cc9000856b1f2) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(upload): add timeout option to upload components and types (#3469)
+
 ## 4.2.5
 
 ### Patch Changes

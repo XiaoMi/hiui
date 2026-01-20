@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/tree-select",
-  "version": "4.3.1",
+  "version": "4.4.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -52,7 +52,7 @@
     "@hi-ui/input": "^4.4.0",
     "@hi-ui/picker": "^4.1.8",
     "@hi-ui/popper": "^4.1.7",
-    "@hi-ui/tree": "^4.6.1",
+    "@hi-ui/tree": "^4.7.0",
     "@hi-ui/tree-utils": "^4.1.4",
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-data-source": "^4.0.4",

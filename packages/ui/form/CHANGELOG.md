@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 4.3.4
+
+### Patch Changes
+
+- [#3476](https://github.com/XiaoMi/hiui/pull/3476) [`b12cd78`](https://github.com/XiaoMi/hiui/commit/b12cd78a3e701a0efaacc6f14705a0afcb0fae08) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 修复当 initialValues 为 {} 时无法正常重置表单问题 (#3475)
+
 ## 4.3.3
 
 ### Patch Changes

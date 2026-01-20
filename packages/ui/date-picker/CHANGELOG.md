@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 4.13.0
+
+### Minor Changes
+
+- [#3474](https://github.com/XiaoMi/hiui/pull/3474) [`e46b1ec03`](https://github.com/XiaoMi/hiui/commit/e46b1ec037fec5758a94d95635581c1b4f2b9b72) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 增加 defaultPickerValue 参数，支持配置默认的面板显示日期 (#3473)
+
 ## 4.12.3
 
 ### Patch Changes

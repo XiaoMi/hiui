@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3472](https://github.com/XiaoMi/hiui/pull/3472) [`1fae66f2d`](https://github.com/XiaoMi/hiui/commit/1fae66f2d10e4b3eba30e2af74bc793af91061d0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tree): add shouldShowSwitcher prop for custom switcher display logic (#3471)
+
 ## 4.6.2
 
 ### Patch Changes

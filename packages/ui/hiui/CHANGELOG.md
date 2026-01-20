@@ -1,5 +1,26 @@
 # @hi-ui/hiui
 
+## 4.18.0
+
+### Minor Changes
+
+- [#3470](https://github.com/XiaoMi/hiui/pull/3470) [`24216019a`](https://github.com/XiaoMi/hiui/commit/24216019a409bd9ea029df27e41cc9000856b1f2) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(upload): add timeout option to upload components and types (#3469)
+
+- [#3474](https://github.com/XiaoMi/hiui/pull/3474) [`e46b1ec03`](https://github.com/XiaoMi/hiui/commit/e46b1ec037fec5758a94d95635581c1b4f2b9b72) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(date-picker): 增加 defaultPickerValue 参数，支持配置默认的面板显示日期 (#3473)
+
+- [#3472](https://github.com/XiaoMi/hiui/pull/3472) [`1fae66f2d`](https://github.com/XiaoMi/hiui/commit/1fae66f2d10e4b3eba30e2af74bc793af91061d0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(tree): add shouldShowSwitcher prop for custom switcher display logic (#3471)
+
+### Patch Changes
+
+- [#3476](https://github.com/XiaoMi/hiui/pull/3476) [`b12cd78`](https://github.com/XiaoMi/hiui/commit/b12cd78a3e701a0efaacc6f14705a0afcb0fae08) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 修复当 initialValues 为 {} 时无法正常重置表单问题 (#3475)
+
+- Updated dependencies [[`24216019a`](https://github.com/XiaoMi/hiui/commit/24216019a409bd9ea029df27e41cc9000856b1f2), [`e46b1ec03`](https://github.com/XiaoMi/hiui/commit/e46b1ec037fec5758a94d95635581c1b4f2b9b72), [`1fae66f2d`](https://github.com/XiaoMi/hiui/commit/1fae66f2d10e4b3eba30e2af74bc793af91061d0), [`b12cd78`](https://github.com/XiaoMi/hiui/commit/b12cd78a3e701a0efaacc6f14705a0afcb0fae08)]:
+  - @hi-ui/upload@4.3.0
+  - @hi-ui/date-picker@4.13.0
+  - @hi-ui/tree@4.7.0
+  - @hi-ui/tree-select@4.4.0
+  - @hi-ui/form@4.3.4
+
 ## 4.17.5
 
 ### Patch Changes
