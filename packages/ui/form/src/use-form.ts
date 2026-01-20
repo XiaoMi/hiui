@@ -1,4 +1,4 @@
-import { stringify, parse, isValidField, mergeValues } from './utils'
+import { stringify, parse, isValidField, mergeValues, getEmptyValueByType } from './utils'
 import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import scrollIntoView, {
   StandardBehaviorOptions as ScrollOptions,
@@ -382,9 +382,39 @@ export const useForm = <Values = Record<string, any>>({
 
   const resetForm = useCallback(
     async (nextState?: Partial<FormState<any>>) => {
-      const values = nextState && nextState.values ? nextState.values : initialValuesRef.current
+      let values = nextState && nextState.values ? nextState.values : initialValuesRef.current
       const errors = nextState && nextState.errors ? nextState.errors : initialErrorsRef.current
       const touched = nextState && nextState.touched ? nextState.touched : initialTouchedRef.current
+      const registeredKeys = getRegisteredKeys()
+      const formValues = formState.values
+
+      // 处理缺失的字段：如果 registeredKeys 中的字段在 values 中不存在，
+      // 则根据 formValues 中对应字段的类型设置对应的空值
+      if (registeredKeys.length > 0) {
+        // 确保 values 是一个对象
+        if (!values || typeof values !== 'object' || isArray(values)) {
+          values = {}
+        } else {
+          // 浅拷贝 values 避免修改原始对象
+          values = { ...values }
+        }
+
+        registeredKeys.forEach((field) => {
+          // 检查字段是否存在于 values 中
+          const valueInReset = getNested(values, field)
+          // 如果字段不存在（undefined），则根据 formValues 中的类型设置空值
+          if (valueInReset === undefined) {
+            const currentValue = getNested(formValues, field)
+            // 如果当前值存在（包括 null），根据其类型设置对应的空值
+            if (currentValue !== undefined) {
+              const emptyValue = getEmptyValueByType(currentValue)
+              // setNested 返回新对象，需要重新赋值
+              values = setNested(values, field, emptyValue)
+            }
+          }
+        })
+      }
+
       initialValuesRef.current = values
       // @ts-ignore
       initialErrorsRef.current = errors
@@ -414,7 +444,7 @@ export const useForm = <Values = Record<string, any>>({
         dispatchFn()
       }
     },
-    [onResetLatestRef, formState.values]
+    [formState.values, getRegisteredKeys, onResetLatestRef]
   )
 
   /**
