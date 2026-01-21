@@ -71,6 +71,7 @@ export const Virtual = () => {
           //     console.log('onVisibleChange', ...args)
           //   },
           // }}
+          rowSelection={{}}
           fixedToColumn={{ right: 'email' }}
         />
       </div>
