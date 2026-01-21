@@ -160,6 +160,10 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       box-sizing: border-box;
       display: flex;
       align-items: center;
+
+      &.#{$prefix}__selection-col {
+        justify-content: center;
+      }
     }
 
     &.#{$prefix}--size {
