@@ -162,7 +162,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       align-items: center;
 
       &.#{$prefix}__selection-col {
-        justify-content: center;
+        justify-content: center !important;
       }
     }
 

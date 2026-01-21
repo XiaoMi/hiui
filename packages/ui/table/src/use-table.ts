@@ -552,6 +552,7 @@ export const useTable = ({
 
     const style: React.CSSProperties = {
       textAlign: align,
+      justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
     }
 
     if (sticky) {
