@@ -74,6 +74,28 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
         }
       }
     }
+
+    // 在 stretchHeight + bordered 模式下，将左右边框从 wrapper 移到表格内容区域
+    // 避免边框延伸到空白区域
+    &.#{$prefix}--bordered {
+      > .#{$prefix}__wrapper {
+        border-inline-start: none;
+        border-inline-end: none;
+
+        .#{$prefix}-content {
+          border-inline-start: use-border-size('normal') use-color('gray', 300);
+          border-inline-end: use-border-size('normal') use-color('gray', 300);
+        }
+      }
+
+      &.#{$prefix}--bordered-left-none {
+        > .#{$prefix}__wrapper {
+          .#{$prefix}-content {
+            border-inline-start: none;
+          }
+        }
+      }
+    }
   }
 
   // 内嵌面板
