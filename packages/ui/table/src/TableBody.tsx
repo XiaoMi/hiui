@@ -34,6 +34,7 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
     innerRef,
     rowClassName,
     stretchHeight,
+    onScroll,
   } = useTableContext()
   const virtualListRef = useRef(null)
   const listRef = useRef<ListRef>(null)
@@ -141,6 +142,9 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
                 isObject(virtual) &&
                   typeof virtual?.onVisibleChange === 'function' &&
                   virtual?.onVisibleChange(...args)
+              }}
+              onScroll={(evt: React.UIEvent<HTMLDivElement>) => {
+                onScroll?.(evt)
               }}
               children={(row, index) => {
                 return (
