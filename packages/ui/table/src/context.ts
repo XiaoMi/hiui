@@ -1,4 +1,4 @@
-import { createContext, SyntheticEvent, useContext } from 'react'
+import React, { createContext, SyntheticEvent, useContext } from 'react'
 import { UseEmbedExpandReturn } from './hooks/use-embed-expand'
 
 import { UseTableReturn } from './use-table'
@@ -38,6 +38,7 @@ const TableContext = createContext<
           top?: number | ((rowData: TableRowEventData, index: number) => boolean)
           bottom?: number | ((rowData: TableRowEventData, index: number) => boolean)
         }
+        onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
       })
   | null
 >(null)

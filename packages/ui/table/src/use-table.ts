@@ -96,6 +96,7 @@ export const useTable = ({
   onChange,
   onHighlightedCol,
   innerRef,
+  onScroll,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -488,8 +489,9 @@ export const useTable = ({
       if (scrollBodyElementRef.current) {
         syncScrollLeft(scrollBodyElementRef.current.scrollLeft, scrollHeaderElementRef.current)
       }
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // 1. 对于 sticky 的元素，触发滚轮滚动，需要模拟 onScroll 触发，比如 tableHeader 固定吸顶时
@@ -504,8 +506,10 @@ export const useTable = ({
 
       scrollHeaderElementRef.current.scrollLeft = scrollHeaderElementRef.current.scrollLeft + deltaX
       syncScrollLeft(scrollHeaderElementRef.current.scrollLeft, scrollBodyElementRef.current)
+
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // ************************ 行高亮 ************************ //
@@ -955,6 +959,10 @@ export interface UseTableProps {
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<TableHelper>
+  /**
+   * 内容滚动时触发的回调函数
+   */
+  onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

@@ -79,6 +79,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       fieldKey = 'key',
       extra,
       data = DEFAULT_DATA,
+      onScroll,
       ...rest
     },
     ref
@@ -362,6 +363,7 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           data={mergedData}
           fieldKey={fieldKey}
           virtual={virtual}
+          onScroll={onScroll}
           needDoubleTable={needDoubleTable}
           extra={{
             header: setting ? (
