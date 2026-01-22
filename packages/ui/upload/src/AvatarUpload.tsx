@@ -49,6 +49,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       avatarOptions = {},
       preview,
       method,
+      timeout,
       content,
       size = 'md',
       ...rest
@@ -81,6 +82,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       customUpload,
       method,
       disabled,
+      timeout,
     })
 
     const {

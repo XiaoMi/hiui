@@ -5,6 +5,7 @@ import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import moment from 'moment'
 import { CalendarViewEnum } from '../types'
 import { Footer } from './footer'
+import { parseValue } from '../utils'
 
 interface DateRangeTimePanelProps {
   nowIndex: number
@@ -13,7 +14,16 @@ interface DateRangeTimePanelProps {
 
 // 选择日期范围，并且希望选择时间
 export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
-  const { outDate, onPick, disabledDate } = useContext(DPContext)
+  const {
+    outDate,
+    onPick,
+    disabledDate,
+    defaultPickerValue,
+    type,
+    weekOffset,
+    realFormat,
+    utcOffset,
+  } = useContext(DPContext)
   const { nowIndex, onChangeNowIndex } = props
 
   const [range, setRange] = useState<CalenderSelectedRange>({
@@ -23,11 +33,29 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
   })
 
   useEffect(() => {
-    setRange({
-      start: outDate[0] && outDate[0].clone(),
-      end: outDate[1] && outDate[1].clone(),
-    })
-  }, [outDate])
+    // 当 outDate 为空时，优先使用 defaultPickerValue 来设置初始显示日期
+    if (!outDate[0] && !outDate[1] && defaultPickerValue) {
+      const parsedDefaultPickerValue = parseValue(
+        defaultPickerValue,
+        type,
+        weekOffset,
+        realFormat,
+        undefined,
+        utcOffset
+      )
+      setRange({
+        start: parsedDefaultPickerValue[0] && parsedDefaultPickerValue[0].clone(),
+        end: parsedDefaultPickerValue[1] && parsedDefaultPickerValue[1].clone(),
+        selecting: false,
+      })
+    } else {
+      setRange({
+        start: outDate[0] && outDate[0].clone(),
+        end: outDate[1] && outDate[1].clone(),
+        selecting: false,
+      })
+    }
+  }, [outDate, defaultPickerValue, type, weekOffset, realFormat, utcOffset])
 
   const panelData = useMemo(() => (nowIndex === 0 ? [range.start] : [range.end]), [range, nowIndex])
 

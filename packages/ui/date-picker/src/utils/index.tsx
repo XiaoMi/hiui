@@ -157,6 +157,11 @@ export const parseRenderDates = (dates: (moment.Moment | null)[], type: DatePick
       return moment(leftDate).add(12 * crossingPanelNumber, 'year')
     }
     if (type === 'monthrange' || type === 'quarterrange') {
+      // 如果 rightDate 存在且与 leftDate 不在同一年，使用 rightDate
+      // 否则基于 leftDate 加1年，确保两个面板显示不同的年份
+      if (rightDate && !rightDate.isSame(leftDate, 'year')) {
+        return rightDate
+      }
       return moment(leftDate).add(1, 'year')
     }
     if (!rightDate || leftDate?.isSame(rightDate, 'month')) {

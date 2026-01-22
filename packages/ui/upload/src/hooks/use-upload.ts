@@ -23,6 +23,7 @@ const useUpload = ({
   method = 'POST',
   accept,
   disabled,
+  timeout,
 }: UploadProps): [
   UploadFileItem[],
   (files: HTMLInputElement['files']) => Promise<void>,
@@ -225,9 +226,10 @@ const useUpload = ({
                   headers,
                   data,
                   method,
+                  timeout,
                   onSuccess,
-                  onError: onError,
-                  onProgress: onProgress,
+                  onError,
+                  onProgress,
                 })
                 file.abort = action.abort
               }
@@ -238,8 +240,8 @@ const useUpload = ({
     },
     [
       customUpload,
-      maxCount,
       accept,
+      maxCount,
       beforeUpload,
       maxSize,
       messageText,
@@ -252,6 +254,7 @@ const useUpload = ({
       onSuccess,
       onError,
       onProgress,
+      timeout,
     ]
   )
 

@@ -47,6 +47,7 @@ interface TreeContext {
   checkOnSelect: boolean
   expandOnSelect?: boolean
   treeData: TreeDataItem[]
+  shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
 }
 
 const treeContext = createContext<TreeContext | null>(null)

@@ -18,7 +18,16 @@
 
 > 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
-### Type
+### TableHelper
+| 名称               | 说明                                         | 类型                                          |
+| ------------------ | ------------------------------------------- | -------------------------------------------- |
+| scrollTo | 设置表格内容滚动位置，虚拟表格和普通表格参数有所不同 | <pre>{
+  // 虚拟表格场景：使用 number 或 TableVirtualScrollConfig
+  (arg: number &#124; TableVirtualScrollConfig): void
+  // 普通表格场景：使用 ScrollToOptions 对象
+  (options: { top?: number; left?: number; behavior?: 'auto' &#124; 'smooth' }): void
+}</pre> |
+
 
 ### TableColumnItem
 

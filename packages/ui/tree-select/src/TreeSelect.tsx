@@ -81,6 +81,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       prefix,
       suffix,
       customRender,
+      shouldShowSwitcher,
       label,
       showIndicator = true,
       renderExtraHeader,
@@ -324,6 +325,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
             virtual={virtual}
             itemHeight={itemHeight}
             height={height}
+            shouldShowSwitcher={shouldShowSwitcher}
             {...treeProps}
           />
         ) : null}
@@ -470,7 +472,12 @@ export interface TreeSelectProps
    */
   customRender?: React.ReactNode | ((selectedItem: TreeSelectDataItem | null) => React.ReactNode)
   /**
-   * 是否展示箭头
+   * 自定义切换器显示逻辑
+   */
+  shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  /**
+   * 是否展示指示器
+   * @default true
    */
   showIndicator?: boolean
   /**

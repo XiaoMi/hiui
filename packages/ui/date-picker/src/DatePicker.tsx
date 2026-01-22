@@ -42,6 +42,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       type: propType = 'date',
       value: controlledValue,
       defaultValue: uncontrolledValue,
+      defaultPickerValue: defaultPickerValueProp,
       placeholder,
       showTime = false,
       format,
@@ -223,6 +224,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     const defaultValue = useMemo(() => valueAdapter(uncontrolledValue), [
       valueAdapter,
       uncontrolledValue,
+    ])
+    const defaultPickerValue = useMemo(() => valueAdapter(defaultPickerValueProp), [
+      valueAdapter,
+      defaultPickerValueProp,
     ])
     const [outDate, changeOutDate] = useDate({
       value,
@@ -527,6 +532,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           strideSelectMode,
           rangeRef,
           utcOffset,
+          defaultPickerValue,
           focusIndex,
           setFocusIndex,
           showIndicator,

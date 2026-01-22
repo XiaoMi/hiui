@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   cloneTree,
   // fFindNestedChildNodesByIndex,
@@ -40,6 +47,7 @@ import {
   TableHelper,
 } from './types'
 import { SELECTION_DATA_KEY } from './Table'
+import { ListRef } from 'rc-virtual-list'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -96,6 +104,7 @@ export const useTable = ({
   onChange,
   onHighlightedCol,
   innerRef,
+  onScroll,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -194,6 +203,19 @@ export const useTable = ({
 
   const bodyTableRef = useRef<HTMLTableElement>(null)
   const scrollBodyElementRef = useRef<HTMLTableElement>(null)
+  const virtualListRef = useRef<ListRef>(null)
+
+  // @ts-ignore
+  useImperativeHandle(innerRef, () => {
+    if (virtual) {
+      return {
+        scrollTo: virtualListRef.current?.scrollTo,
+      }
+    }
+    return {
+      scrollTo: scrollBodyElementRef.current?.scrollTo?.bind(scrollBodyElementRef.current),
+    }
+  })
 
   // ************************ 列宽 resizable ************************ //
 
@@ -488,8 +510,9 @@ export const useTable = ({
       if (scrollBodyElementRef.current) {
         syncScrollLeft(scrollBodyElementRef.current.scrollLeft, scrollHeaderElementRef.current)
       }
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // 1. 对于 sticky 的元素，触发滚轮滚动，需要模拟 onScroll 触发，比如 tableHeader 固定吸顶时
@@ -504,8 +527,10 @@ export const useTable = ({
 
       scrollHeaderElementRef.current.scrollLeft = scrollHeaderElementRef.current.scrollLeft + deltaX
       syncScrollLeft(scrollHeaderElementRef.current.scrollLeft, scrollBodyElementRef.current)
+
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // ************************ 行高亮 ************************ //
@@ -552,6 +577,7 @@ export const useTable = ({
 
     const style: React.CSSProperties = {
       textAlign: align,
+      justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
     }
 
     if (sticky) {
@@ -722,6 +748,7 @@ export const useTable = ({
     cellClassName,
     onHighlightedCol,
     innerRef,
+    virtualListRef,
   }
 }
 
@@ -954,6 +981,10 @@ export interface UseTableProps {
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<TableHelper>
+  /**
+   * 内容滚动时触发的回调函数
+   */
+  onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

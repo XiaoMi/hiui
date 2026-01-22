@@ -324,6 +324,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   visible?: boolean
   /**
+   * 默认面板显示的日期，当用户没有传入或选择日期时，选择面板基于此值来显示日期
+   */
+  defaultPickerValue?: DatePickerValue | DatePickerValue[]
+  /**
    * 是否展示指示器
    * @default true
    */

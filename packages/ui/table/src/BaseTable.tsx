@@ -55,6 +55,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       needDoubleTable,
       onResizeStop,
       fixedToRow,
+      onScroll,
       ...rest
     },
     ref
@@ -199,6 +200,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       columns: mergedColumns,
       data,
       virtual,
+      onScroll,
     })
 
     const {
@@ -376,6 +378,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               sumRow,
               hasSumColumn,
               virtual,
+              onScroll,
               onResizeStop,
               fixedToRow,
             }}

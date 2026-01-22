@@ -39,6 +39,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      timeout,
       actionRender,
       ...rest
     },
@@ -65,6 +66,7 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       beforeUpload,
       customUpload,
       method,
+      timeout,
     })
 
     return (

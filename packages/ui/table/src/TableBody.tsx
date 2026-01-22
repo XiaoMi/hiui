@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useImperativeHandle } from 'react'
-import VirtualList, { ListRef } from 'rc-virtual-list'
+import React, { useMemo, useRef } from 'react'
+import VirtualList from 'rc-virtual-list'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useLatestCallback } from '@hi-ui/use-latest'
@@ -31,12 +31,12 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
     measureRowElementRef,
     scrollbar,
     scrollLeft,
-    innerRef,
+    virtualListRef,
     rowClassName,
     stretchHeight,
+    onScroll,
   } = useTableContext()
-  const virtualListRef = useRef(null)
-  const listRef = useRef<ListRef>(null)
+  const virtualListWrapperRef = useRef(null)
 
   const cls = cx(`${prefixCls}-body`)
 
@@ -59,10 +59,6 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
     colWidths.forEach((width) => (tmpWidth += width))
     return tmpWidth
   }, [colWidths])
-
-  useImperativeHandle(innerRef, () => ({
-    scrollTo: listRef.current?.scrollTo,
-  }))
 
   const [virtualListHeight, setVirtualListHeight] = React.useState(300)
 
@@ -126,11 +122,11 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
         ></div>
         {isArrayNonEmpty(transitionData) ? (
           <div
-            ref={virtualListRef}
+            ref={virtualListWrapperRef}
             style={{ width: '100%', position: 'sticky', left: 0, maxHeight }}
           >
             <VirtualList
-              ref={listRef}
+              ref={virtualListRef}
               prefixCls={`${cls}--virtual`}
               data={transitionData}
               height={vMaxHeight}
@@ -141,6 +137,9 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
                 isObject(virtual) &&
                   typeof virtual?.onVisibleChange === 'function' &&
                   virtual?.onVisibleChange(...args)
+              }}
+              onScroll={(evt: React.UIEvent<HTMLDivElement>) => {
+                onScroll?.(evt)
               }}
               children={(row, index) => {
                 return (
