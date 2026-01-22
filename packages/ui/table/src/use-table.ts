@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   cloneTree,
   // fFindNestedChildNodesByIndex,
@@ -40,6 +47,7 @@ import {
   TableHelper,
 } from './types'
 import { SELECTION_DATA_KEY } from './Table'
+import { ListRef } from 'rc-virtual-list'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -195,6 +203,19 @@ export const useTable = ({
 
   const bodyTableRef = useRef<HTMLTableElement>(null)
   const scrollBodyElementRef = useRef<HTMLTableElement>(null)
+  const virtualListRef = useRef<ListRef>(null)
+
+  // @ts-ignore
+  useImperativeHandle(innerRef, () => {
+    if (virtual) {
+      return {
+        scrollTo: virtualListRef.current?.scrollTo,
+      }
+    }
+    return {
+      scrollTo: scrollBodyElementRef.current?.scrollTo?.bind(scrollBodyElementRef.current),
+    }
+  })
 
   // ************************ 列宽 resizable ************************ //
 
@@ -727,6 +748,7 @@ export const useTable = ({
     cellClassName,
     onHighlightedCol,
     innerRef,
+    virtualListRef,
   }
 }
 

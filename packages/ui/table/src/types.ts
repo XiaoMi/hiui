@@ -334,5 +334,10 @@ export type TableVirtualScrollConfig =
     }
 
 export interface TableHelper {
-  scrollTo?: (arg: number | TableVirtualScrollConfig) => void
+  scrollTo?: {
+    // 虚拟表格场景：使用 number 或 TableVirtualScrollConfig
+    (arg: number | TableVirtualScrollConfig): void
+    // 普通表格场景：使用 ScrollToOptions 对象
+    (options: { top?: number; left?: number; behavior?: 'auto' | 'smooth' }): void
+  }
 }
