@@ -493,7 +493,7 @@ export const FloatMenu = () => {
               }}
             />
           </FloatMenuContainer>
-          <Content>
+          <Content style={!floatContainerCollapsed ? { paddingLeft: 0 } : {}}>
             <PageHeader
               title="标题"
               backIcon={false}
