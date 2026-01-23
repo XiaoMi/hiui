@@ -1,5 +1,17 @@
 # @hi-ui/table
 
+## 5.0.0-canary.28
+
+### Minor Changes
+
+- df301c0dc: feat(table): 普通表格支持 scrollTo 方法 (5.0)
+- aebefd73e: feat(table): add onScroll api (5.0)
+
+### Patch Changes
+
+- e5964c571: style(table): 修复虚拟表格中多选列没有居中问题 (5.0)
+- 76cfe571b: style(table): 修复虚拟表格下 align 设置无效问题 (5.0)
+
 ## 5.0.0-canary.27
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/form
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- b12cd78a3: fix(form): 修复当 initialValues 为 {} 时无法正常重置表单问题 (#3475)
+
 ## 5.0.0-canary.12
 
 ### Patch Changes

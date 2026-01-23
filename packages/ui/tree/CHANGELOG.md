@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.11
+
+### Minor Changes
+
+- 1fae66f2d: feat(tree): add shouldShowSwitcher prop for custom switcher display logic (#3471)
+
 ## 5.0.0-canary.10
 
 ### Patch Changes

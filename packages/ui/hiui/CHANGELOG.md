@@ -1,5 +1,35 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.47
+
+### Minor Changes
+
+- df301c0dc: feat(table): 普通表格支持 scrollTo 方法 (5.0)
+- 24216019a: feat(upload): add timeout option to upload components and types (#3469)
+- aebefd73e: feat(table): add onScroll api (5.0)
+- e46b1ec03: feat(date-picker): 增加 defaultPickerValue 参数，支持配置默认的面板显示日期 (#3473)
+- 1fae66f2d: feat(tree): add shouldShowSwitcher prop for custom switcher display logic (#3471)
+
+### Patch Changes
+
+- e5964c571: style(table): 修复虚拟表格中多选列没有居中问题 (5.0)
+- 76cfe571b: style(table): 修复虚拟表格下 align 设置无效问题 (5.0)
+- b12cd78a3: fix(form): 修复当 initialValues 为 {} 时无法正常重置表单问题 (#3475)
+- Updated dependencies [e5964c571]
+- Updated dependencies [76cfe571b]
+- Updated dependencies [df301c0dc]
+- Updated dependencies [24216019a]
+- Updated dependencies [aebefd73e]
+- Updated dependencies [e46b1ec03]
+- Updated dependencies [1fae66f2d]
+- Updated dependencies [b12cd78a3]
+  - @hi-ui/table@5.0.0-canary.28
+  - @hi-ui/upload@5.0.0-canary.15
+  - @hi-ui/date-picker@5.0.0-canary.29
+  - @hi-ui/tree@5.0.0-canary.11
+  - @hi-ui/tree-select@5.0.0-canary.14
+  - @hi-ui/form@5.0.0-canary.13
+
 ## 5.0.0-canary.46
 
 ### Minor Changes

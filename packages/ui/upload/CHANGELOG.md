@@ -1,5 +1,11 @@
 # @hi-ui/upload
 
+## 5.0.0-canary.15
+
+### Minor Changes
+
+- 24216019a: feat(upload): add timeout option to upload components and types (#3469)
+
 ## 5.0.0-canary.14
 
 ### Patch Changes

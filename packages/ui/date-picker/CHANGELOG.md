@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.29
+
+### Minor Changes
+
+- e46b1ec03: feat(date-picker): 增加 defaultPickerValue 参数，支持配置默认的面板显示日期 (#3473)
+
 ## 5.0.0-canary.28
 
 ### Minor Changes
