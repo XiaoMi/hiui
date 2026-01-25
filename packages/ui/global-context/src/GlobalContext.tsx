@@ -41,9 +41,9 @@ export type CounterComponentConfig = ComponentStyleConfig
 
 export type DescriptionsComponentConfig = ComponentStyleConfig
 
-// AIGC START
 export type DrawerComponentConfig = ComponentStyleConfig
-// AIGC END
+
+export type DropdownComponentConfig = ComponentStyleConfig
 
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
@@ -56,7 +56,6 @@ export interface ConfigComponentProps {
   collapsePanel?: CollapsePanelComponentConfig
   counter?: CounterComponentConfig
   descriptions?: DescriptionsComponentConfig
-  // AIGC START
   drawer?: DrawerComponentConfig
-  // AIGC END
+  dropdown?: DropdownComponentConfig
 }
