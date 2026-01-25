@@ -53,6 +53,8 @@ export type ListComponentConfig = ComponentStyleConfig
 
 export type LoadingComponentConfig = ComponentStyleConfig
 
+export type MessageComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -70,4 +72,5 @@ export interface ConfigComponentProps {
   input?: InputComponentConfig
   list?: ListComponentConfig
   loading?: LoadingComponentConfig
+  message?: MessageComponentConfig
 }
