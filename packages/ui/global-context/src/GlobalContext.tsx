@@ -51,6 +51,8 @@ export type InputComponentConfig = ComponentStyleConfig
 
 export type ListComponentConfig = ComponentStyleConfig
 
+export type LoadingComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -67,4 +69,5 @@ export interface ConfigComponentProps {
   emptyState?: EmptyStateComponentConfig
   input?: InputComponentConfig
   list?: ListComponentConfig
+  loading?: LoadingComponentConfig
 }
