@@ -6,6 +6,12 @@ import { CloseCircleFilled } from '@hi-ui/icons'
 import { HiBaseHTMLFieldProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { useInput } from './use-input'
 import { InputAppearanceEnum, InputTypeEnum } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _prefix = getPrefixCls('input')
 
@@ -46,13 +52,13 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       type,
       containerRef,
       waitCompositionEnd,
-      styles,
-      classNames,
+      styles: stylesProp,
+      classNames: classNamesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, input: inputConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     // @TODO: 临时方案，后面迁移至 InputGroup
@@ -110,6 +116,27 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     // 在开启 clearable 下展示 清除内容按钮，可点击进行内容清楚
     const showClearableIcon = clearable && !!value && !disabled
 
+    // 合并语义化类名和样式
+    const { classNames, styles } = useMergeSemantic<
+      InputSemanticClassNames,
+      InputSemanticStyles,
+      InputProps
+    >({
+      classNamesList: [inputConfig?.classNames, classNamesProp],
+      stylesList: [inputConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          size,
+          appearance,
+          disabled,
+          readOnly,
+          invalid,
+          clearable,
+        } as InputProps,
+      },
+    })
+
     const mergedRef = useMergeRefs(ref, inputElementRef)
 
     const cls = cx(
@@ -128,8 +155,13 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
     )
 
     return (
-      <div role={role} className={cls} style={style} ref={containerRef}>
-        <div className={outerCls}>
+      <div
+        role={role}
+        className={cx(cls, classNames?.root)}
+        style={{ ...style, ...styles?.root }}
+        ref={containerRef}
+      >
+        <div className={cx(outerCls, classNames?.outer)} style={styles?.outer}>
           {prepend ? (
             <div
               className={cx(`${prefixCls}__prepend`, classNames?.prepend)}
@@ -146,8 +178,10 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
               focused && `${prefixCls}__inner--focused`,
               disabled && `${prefixCls}__inner--disabled`,
               readOnly && `${prefixCls}__inner--readonly`,
-              invalid && `${prefixCls}__inner--invalid`
+              invalid && `${prefixCls}__inner--invalid`,
+              classNames?.inner
             )}
+            style={styles?.inner}
             onMouseOver={(e) => {
               setHover(true)
             }}
@@ -182,8 +216,10 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
                     ref={clearElementRef}
                     className={cx(
                       `${prefixCls}__clear`,
-                      (clearableTrigger === 'always' || hover) && `${prefixCls}__clear--active`
+                      (clearableTrigger === 'always' || hover) && `${prefixCls}__clear--active`,
+                      classNames?.clear
                     )}
+                    style={styles?.clear}
                     role="button"
                     tabIndex={-1}
                     onClick={(evt: React.MouseEvent<HTMLElement>) => {
@@ -210,7 +246,22 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
   }
 )
 
-export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
+// 定义语义化名称
+export type InputSemanticName =
+  | 'root'
+  | 'outer'
+  | 'inner'
+  | 'input'
+  | 'prefix'
+  | 'suffix'
+  | 'prepend'
+  | 'append'
+  | 'clear'
+export type InputSemanticClassNames = SemanticClassNamesType<InputProps, InputSemanticName>
+export type InputSemanticStyles = SemanticStylesType<InputProps, InputSemanticName>
+export type InputSemantic = ComponentSemantic<InputSemanticClassNames, InputSemanticStyles>
+
+export interface InputProps extends HiBaseHTMLFieldProps<'input'>, InputSemantic {
   /**
    * 开启输入框只读
    */
@@ -298,26 +349,6 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'> {
    * 是否等待文本段落组成完成
    */
   waitCompositionEnd?: boolean
-  /**
-   * 语义化样式设置
-   */
-  styles?: {
-    input?: React.CSSProperties
-    prefix?: React.CSSProperties
-    suffix?: React.CSSProperties
-    prepend?: React.CSSProperties
-    append?: React.CSSProperties
-  }
-  /**
-   * 语义化样式类名设置
-   */
-  classNames?: {
-    input?: string
-    prefix?: string
-    suffix?: string
-    prepend?: string
-    append?: string
-  }
 }
 
 if (__DEV__) {

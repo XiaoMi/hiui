@@ -47,6 +47,8 @@ export type DropdownComponentConfig = ComponentStyleConfig
 
 export type EmptyStateComponentConfig = ComponentStyleConfig
 
+export type InputComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -61,4 +63,5 @@ export interface ConfigComponentProps {
   drawer?: DrawerComponentConfig
   dropdown?: DropdownComponentConfig
   emptyState?: EmptyStateComponentConfig
+  input?: InputComponentConfig
 }
