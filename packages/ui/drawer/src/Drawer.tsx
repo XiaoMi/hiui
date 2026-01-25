@@ -13,6 +13,12 @@ import { IconButton } from '@hi-ui/icon-button'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { DrawerPlacementEnum } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
 
@@ -26,7 +32,9 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     {
       prefixCls = DRAWER_PREFIX,
       className,
-      styles,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       disabledPortal = false,
       closeable = true,
@@ -55,7 +63,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const [transitionExited, transitionExitedAction] = useToggle(true)
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, drawer: globalDrawerConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {
       size = 'sm'
@@ -134,6 +142,16 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       }
     }, [handleScroll, visible, scrollElement])
 
+    const { classNames, styles } = useMergeSemantic<
+      DrawerSemanticClassNames,
+      DrawerSemanticStyles,
+      DrawerProps
+    >({
+      classNamesList: [globalDrawerConfig?.classNames, classNamesProp],
+      stylesList: [globalDrawerConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, footer, placement, size, closeable, showMask } },
+    })
+
     const hasHeader = !!title || closeable
     const bodyWidth = isNumeric(width) ? width + 'px' : width
     const bodyHeight = isNumeric(height) ? height + 'px' : height
@@ -141,9 +159,12 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--placement-${placement}`,
       `${prefixCls}--size-${size}`
     )
+
+    console.log('bodyWidth', bodyWidth)
 
     return (
       <Portal container={container} disabled={disabledPortal}>
@@ -164,10 +185,12 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
               ...modalProps,
               ref: mergeRefs(modalProps.ref, innerRef),
             }}
-            {...(!showMask &&
-              visible && {
-                style:
-                  placement === 'left' || placement === 'right'
+            style={{
+              ...style,
+              ...styles?.root,
+              ...(!showMask &&
+                visible && {
+                  ...(placement === 'left' || placement === 'right'
                     ? {
                         ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth ?? '404px',
@@ -175,26 +198,51 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                     : {
                         ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight ?? '404px',
-                      },
-              })}
+                      }),
+                }),
+            }}
           >
-            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
+            {showMask ? (
+              <div
+                className={cx(`${prefixCls}__overlay`, classNames?.overlay)}
+                style={styles?.overlay}
+              />
+            ) : null}
             <div
-              className={`${prefixCls}__wrapper`}
+              className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)}
               style={{
                 [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth,
                 [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight,
+                ...styles?.wrapper,
               }}
               {...getModalWrapperProps(drawerConfig)}
             >
               {hasHeader ? (
-                <header className={`${prefixCls}__header`} style={styles?.header}>
-                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
-                  {closeable ? <IconButton effect onClick={onClose} icon={closeIcon} /> : null}
+                <header
+                  className={cx(`${prefixCls}__header`, classNames?.header)}
+                  style={styles?.header}
+                >
+                  {title ? (
+                    <div
+                      className={cx(`${prefixCls}__title`, classNames?.title)}
+                      style={styles?.title}
+                    >
+                      {title}
+                    </div>
+                  ) : null}
+                  {closeable ? (
+                    <IconButton
+                      className={cx(classNames?.close)}
+                      style={styles?.close}
+                      effect
+                      onClick={onClose}
+                      icon={closeIcon}
+                    />
+                  ) : null}
                 </header>
               ) : null}
               <main
-                className={`${prefixCls}__body`}
+                className={cx(`${prefixCls}__body`, classNames?.body)}
                 style={styles?.body}
                 ref={setScrollElement}
                 onScroll={handleScroll}
@@ -207,7 +255,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                     `${prefixCls}__footer`,
                     scrollState.isContentOverflow &&
                       !scrollState.isScrollToBottom &&
-                      `${prefixCls}__footer--divided`
+                      `${prefixCls}__footer--divided`,
+                    classNames?.footer
                   )}
                   style={styles?.footer}
                 >
@@ -222,7 +271,23 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   }
 )
 
-export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseModalProps {
+export type DrawerSemanticName =
+  | 'root'
+  | 'overlay'
+  | 'wrapper'
+  | 'header'
+  | 'title'
+  | 'close'
+  | 'body'
+  | 'footer'
+export type DrawerSemanticClassNames = SemanticClassNamesType<DrawerProps, DrawerSemanticName>
+export type DrawerSemanticStyles = SemanticStylesType<DrawerProps, DrawerSemanticName>
+export type DrawerSemantic = ComponentSemantic<DrawerSemanticClassNames, DrawerSemanticStyles>
+
+export interface DrawerProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'title'>,
+    UseModalProps,
+    DrawerSemantic {
   /**
    * 模态框标题
    */
@@ -231,14 +296,6 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 自定义抽屉底部
    */
   footer?: React.ReactNode
-  /**
-   * 自定义抽屉样式
-   */
-  styles?: {
-    header?: React.CSSProperties
-    body?: React.CSSProperties
-    footer?: React.CSSProperties
-  }
   /**
    * 是否显示蒙层
    */
