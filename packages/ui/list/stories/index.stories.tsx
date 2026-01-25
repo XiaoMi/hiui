@@ -9,6 +9,7 @@ export * from './pagination.stories'
 export * from './empty.stories'
 // export * from './border.stories'
 export * from './avatar.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/List',

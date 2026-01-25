@@ -1,4 +1,3 @@
-// AIGC START
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
@@ -105,4 +104,3 @@ export const Semantic = () => {
     </>
   )
 }
-// AIGC END
