@@ -11,6 +11,12 @@ import {
   CloseOutlined,
   ExclamationCircleFilled,
 } from '@hi-ui/icons'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'notification'
 export const notificationPrefix = getPrefixCls(_role)
@@ -31,6 +37,9 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       prefixCls = notificationPrefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       title,
       content,
@@ -48,7 +57,7 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, notification: notificationConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'
@@ -95,9 +104,29 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
       })
     }, [])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`, `${prefixCls}--size-${size}`)
+    const { classNames, styles } = useMergeSemantic<
+      NotificationSemanticClassNames,
+      NotificationSemanticStyles,
+      NotificationProps
+    >({
+      classNamesList: [notificationConfig?.classNames, classNamesProp],
+      stylesList: [notificationConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, content, type, size, direction, closable } },
+    })
+
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--type-${type}`,
+      `${prefixCls}--size-${size}`
+    )
     const transitionCls = cx(`${prefixCls}--${direction}`)
-    const containerCls = cx(`${prefixCls}-container`, `${prefixCls}--placement-${direction}`)
+    const containerCls = cx(
+      `${prefixCls}-container`,
+      `${prefixCls}--placement-${direction}`,
+      classNames?.container
+    )
 
     return (
       <CSSTransition
@@ -114,16 +143,41 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
         // 参考：https://github.com/reactjs/react-transition-group/issues/918
         nodeRef={motionElRef}
       >
-        <div ref={motionElRef} className={containerCls}>
-          <div ref={ref} role={role} className={cls} {...rest}>
-            <div className={`${prefixCls}__header`}>
-              <span className={`${prefixCls}__icon`}> {notificationIconMap[type]}</span>
-              <span className={`${prefixCls}__title`}>{title}</span>
+        <div ref={motionElRef} className={containerCls} style={{ ...styles?.container }}>
+          <div
+            ref={ref}
+            role={role}
+            className={cls}
+            style={{ ...style, ...styles?.root }}
+            {...rest}
+          >
+            <div className={cx(`${prefixCls}__header`, classNames?.header)} style={styles?.header}>
+              <span className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
+                {' '}
+                {notificationIconMap[type]}
+              </span>
+              <span className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+                {title}
+              </span>
             </div>
-            {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
-            {action ? <div className={`${prefixCls}__footer`}>{action}</div> : null}
+            {content ? (
+              <div
+                className={cx(`${prefixCls}__content`, classNames?.content)}
+                style={styles?.content}
+              >
+                {content}
+              </div>
+            ) : null}
+            {action ? (
+              <div
+                className={cx(`${prefixCls}__footer`, classNames?.footer)}
+                style={styles?.footer}
+              >
+                {action}
+              </div>
+            ) : null}
             {closable ? (
-              <div className={`${prefixCls}__close`}>
+              <div className={cx(`${prefixCls}__close`, classNames?.close)} style={styles?.close}>
                 <IconButton effect icon={<CloseOutlined />} onClick={requestClose} />
               </div>
             ) : null}
@@ -134,7 +188,31 @@ export const Notification = forwardRef<HTMLDivElement | null, NotificationProps>
   }
 )
 
-export interface NotificationProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
+export type NotificationSemanticName =
+  | 'root'
+  | 'container'
+  | 'header'
+  | 'icon'
+  | 'title'
+  | 'content'
+  | 'footer'
+  | 'close'
+export type NotificationSemanticClassNames = SemanticClassNamesType<
+  NotificationProps,
+  NotificationSemanticName
+>
+export type NotificationSemanticStyles = SemanticStylesType<
+  NotificationProps,
+  NotificationSemanticName
+>
+export type NotificationSemantic = ComponentSemantic<
+  NotificationSemanticClassNames,
+  NotificationSemanticStyles
+>
+
+export interface NotificationProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'title'>,
+    NotificationSemantic {
   /**
    * 开启可见
    */

@@ -57,6 +57,8 @@ export type MessageComponentConfig = ComponentStyleConfig
 
 export type ModalComponentConfig = ComponentStyleConfig
 
+export type NotificationComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -76,4 +78,5 @@ export interface ConfigComponentProps {
   loading?: LoadingComponentConfig
   message?: MessageComponentConfig
   modal?: ModalComponentConfig
+  notification?: NotificationComponentConfig
 }
