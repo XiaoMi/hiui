@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import DPContext from '../context'
-import { getBelongWeek, getBelongWeekYear } from '../utils/week'
+import { getBelongWeek, getBelongWeekYear, formatWeekByTemplate } from '../utils/week'
 import { cx } from '@hi-ui/classname'
 
 export type InputChangeEvent = (val: moment.Moment, index: number) => void
@@ -62,10 +62,7 @@ const Input = ({
         if (typeof format === 'function') {
           vals = format(date)
         } else {
-          const y = moment(date).weekYear()
-          const _date = moment(date).year(y)
-
-          vals = moment(_date).format(realFormat)
+          vals = formatWeekByTemplate(date, weekOffset, realFormat)
         }
       }
     }
