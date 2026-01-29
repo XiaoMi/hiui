@@ -26,41 +26,45 @@ export const getBelongWeekRange = (date: moment.Moment, weekOffset: number) => {
   return [getBelongWeekBoundary(date, weekOffset), getBelongWeekBoundary(date, weekOffset, false)]
 }
 
-// 计算日期所属的周数
-export const getBelongWeek = (date: moment.Moment, weekOffset: number) => {
-  const weekStart = getWeekStartDate(date, weekOffset)
-  const year = weekStart.year()
-  const yearStart = moment(`${year}-01-01`)
-
-  // 找到该年第一个周的第一天（1月1日所在周的起始日期）
-  const firstWeekStart = getWeekStartDate(yearStart, weekOffset)
-
-  // 如果第一个周的第一天在上一年，说明第一周跨年了
-  // 这种情况下，使用1月1日所在周的起始日期作为基准
-  const baseWeekStart =
-    firstWeekStart.year() < year ? getWeekStartDate(yearStart, weekOffset) : firstWeekStart
-
-  // 计算周数差
-  const diffDays = weekStart.diff(baseWeekStart, 'days')
-  const weekNumber = Math.floor(diffDays / 7) + 1
-
-  // 确保周数在合理范围内（1-53）
-  if (weekNumber < 1) {
-    // 如果周数小于1，说明可能跨年了，需要计算上一年的周数
-    const prevYearStart = moment(`${year - 1}-01-01`)
-    const prevYearFirstWeekStart = getWeekStartDate(prevYearStart, weekOffset)
-    const prevYearDiffDays = weekStart.diff(prevYearFirstWeekStart, 'days')
-    return Math.floor(prevYearDiffDays / 7) + 1
-  }
-
-  return weekNumber > 53 ? 53 : weekNumber
-}
-
-// 计算日期所属的周年份
+// 计算日期所属的周年份（周若包含某年的 1 月 1 日，则归属该年，用于正确显示跨年的「该年第一周」）
 export const getBelongWeekYear = (date: moment.Moment, weekOffset: number) => {
   const weekStart = getWeekStartDate(date, weekOffset)
-  // 使用周的第一天的年份作为周年份
+  const weekEnd = weekStart.clone().add(6, 'days')
+  const jan1NextYear = moment(`${weekStart.year() + 1}-01-01`)
+  // 若该周包含下一年的 1 月 1 日，则视为下一年的第一周（如 2025-12-28～2026-01-03 为 2026 年第 1 周）
+  // 使用 'day' 粒度比较，避免时间部分影响跨天判断
+  if (jan1NextYear.isSameOrAfter(weekStart, 'day') && jan1NextYear.isSameOrBefore(weekEnd, 'day')) {
+    return weekStart.year() + 1
+  }
   return weekStart.year()
+}
+
+// 计算日期所属的周数（基于 getBelongWeekYear 的周年，保证跨年第一周显示为第 1 周）
+export const getBelongWeek = (date: moment.Moment, weekOffset: number) => {
+  const weekStart = getWeekStartDate(date, weekOffset)
+  const year = getBelongWeekYear(date, weekOffset)
+  const yearStart = moment(`${year}-01-01`)
+  const firstWeekStart = getWeekStartDate(yearStart, weekOffset)
+  const diffDays = weekStart.diff(firstWeekStart, 'days')
+  const weekNumber = Math.floor(diffDays / 7) + 1
+  return weekNumber < 1 ? 1 : weekNumber > 53 ? 53 : weekNumber
+}
+
+/**
+ * 按 format 模板格式化周日期为字符串（使用 getBelongWeekYear/getBelongWeek，保证 YYYY-WW 等格式正确）
+ * 用于 onChange dateStr 与输入框回显，避免 moment 原生 format 在跨年第一周时得到错误年/周
+ */
+export const formatWeekByTemplate = (
+  date: moment.Moment,
+  weekOffset: number,
+  formatStr: string
+): string => {
+  const y = getBelongWeekYear(date, weekOffset)
+  const w = getBelongWeek(date, weekOffset)
+  return formatStr
+    .replace('YYYY', String(y))
+    .replace('WW', String(w).padStart(2, '0'))
+    .replace(/\bW\b/g, String(w))
 }
 
 // 保留旧的 weekOffsetPolyfill 函数以保持兼容性（虽然可能不再使用）

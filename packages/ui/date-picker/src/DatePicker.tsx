@@ -22,7 +22,7 @@ import {
   DatePickerOnChangeDateString,
   DatePickerOnChangeDate,
 } from './types'
-import { getBelongWeek, getBelongWeekYear } from './utils/week'
+import { getBelongWeek, getBelongWeekYear, formatWeekByTemplate } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
@@ -319,15 +319,18 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         } else if (type.includes('week')) {
           const getWeekString = (disposeDate: moment.Moment | null) => {
             if (disposeDate) {
-              return format
-                ? disposeDate.format(realFormat)
-                : i18n.get('datePicker.weekRange', {
-                    year: getBelongWeekYear(disposeDate, safeWeekOffset),
-                    week: getBelongWeek(disposeDate, safeWeekOffset),
-                  })
-            } else {
-              return ''
+              if (typeof format === 'string') {
+                return formatWeekByTemplate(disposeDate, safeWeekOffset, realFormat)
+              }
+              if (typeof format === 'function') {
+                return format(disposeDate)
+              }
+              return i18n.get('datePicker.weekRange', {
+                year: getBelongWeekYear(disposeDate, safeWeekOffset),
+                week: getBelongWeek(disposeDate, safeWeekOffset),
+              })
             }
+            return ''
           }
 
           returnDate = {
