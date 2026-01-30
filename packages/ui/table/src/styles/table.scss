@@ -77,7 +77,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     // 在 stretchHeight + bordered 模式下，将左右边框从 wrapper 移到表格内容区域
     // 避免边框延伸到空白区域
-    &.#{$prefix}--bordered {
+    &.#{$prefix}--bordered:not(.#{$prefix}--empty) {
       > .#{$prefix}__wrapper {
         border-inline-start: none;
         border-inline-end: none;

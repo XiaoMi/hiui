@@ -3,6 +3,7 @@ import Table, { TableColumnItem } from '../src'
 
 /**
  * @title 表头分组
+ * @desc 当列数较少且数据为空时，表头可能显示异常，可配置 <code>needDoubleTable</code> 为 <code>true</code> 来解决
  */
 export const GroupHeader = () => {
   const [columns] = React.useState<TableColumnItem[]>([
