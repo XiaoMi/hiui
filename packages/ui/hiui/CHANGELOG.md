@@ -1,5 +1,16 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.48
+
+### Patch Changes
+
+- 1f20567ca: fix(date-picker): 修复周选择模式下 2026 年第一周显示为 2025-W53 问题 (5.0)
+- 3d84a04aa: fix(table): 修复 stretchHeight+bordered 模式下数据为空时左右边框未显示问题 (5.0)
+- Updated dependencies [1f20567ca]
+- Updated dependencies [3d84a04aa]
+  - @hi-ui/date-picker@5.0.0-canary.30
+  - @hi-ui/table@5.0.0-canary.29
+
 ## 5.0.0-canary.47
 
 ### Minor Changes

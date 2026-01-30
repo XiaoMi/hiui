@@ -1,5 +1,11 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.30
+
+### Patch Changes
+
+- 1f20567ca: fix(date-picker): 修复周选择模式下 2026 年第一周显示为 2025-W53 问题 (5.0)
+
 ## 5.0.0-canary.29
 
 ### Minor Changes

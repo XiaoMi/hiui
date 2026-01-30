@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.29
+
+### Patch Changes
+
+- 3d84a04aa: fix(table): 修复 stretchHeight+bordered 模式下数据为空时左右边框未显示问题 (5.0)
+
 ## 5.0.0-canary.28
 
 ### Minor Changes
