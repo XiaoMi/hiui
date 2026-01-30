@@ -2,8 +2,8 @@ import React from 'react'
 import { MenuDataItem, GroupMenu, SideMenu, useSideMenuCascade } from '@hi-ui/menu'
 import {
   AppStoreFilled,
-  UserFilled,
-  SunFilled,
+  MonitorFilled,
+  MobileFilled,
   PadFilled,
   MenuOutlined,
   EllipsisOutlined,
@@ -41,7 +41,7 @@ export const FloatMenu = () => {
     {
       title: '电视',
       id: 2,
-      icon: <UserFilled />,
+      icon: <MonitorFilled />,
       children: [
         {
           title: '小米电视',
@@ -74,7 +74,7 @@ export const FloatMenu = () => {
     {
       title: '手机',
       id: 3,
-      icon: <SunFilled />,
+      icon: <MobileFilled />,
       children: [
         {
           title: '小米',

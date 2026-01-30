@@ -4,8 +4,8 @@ import Scrollbar from '@hi-ui/scrollbar'
 import {
   AppStoreFilled,
   QuestionCircleFilled,
-  UserFilled,
-  SunFilled,
+  MonitorFilled,
+  MobileFilled,
   PadFilled,
   EllipsisOutlined,
   PlusOutlined,
@@ -36,33 +36,18 @@ export const WithMenu = () => {
       icon: <AppStoreFilled />,
     },
     {
-      title: '小米MIX',
+      title: '小米电视',
       id: 2,
-      icon: <UserFilled />,
+      icon: <MonitorFilled />,
     },
     {
       title: '手机',
       id: 3,
-      icon: <SunFilled />,
+      icon: <MobileFilled />,
       children: [
         {
           title: '小米',
           id: 666,
-          children: [
-            {
-              title: '小米9',
-              id: 'xiaomi9',
-            },
-            {
-              title: '小米8',
-              id: 'xiaomi8',
-              disabled: true,
-            },
-            {
-              title: '小米7',
-              id: 'xiaomi7',
-            },
-          ],
         },
         {
           title: '红米',
