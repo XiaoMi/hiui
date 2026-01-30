@@ -45,6 +45,7 @@ export const useResizeObserver = ({
     }
 
     return () => {
+      // @ts-expect-error 在赋值前使用了变量“resizeObserver”
       if (resizeObserver) {
         resizeObserver.disconnect()
       }
