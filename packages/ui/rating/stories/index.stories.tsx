@@ -13,6 +13,7 @@ export * from './tooltip.stories'
 export * from './emoji.stories'
 export * from './custom.stories'
 export * from './desc.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Rating',
