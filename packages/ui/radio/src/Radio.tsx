@@ -1,7 +1,13 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { useRadio, UseRadioProps } from './use-radio'
 import { useRadioGroupContext } from './context'
 import { isNullish } from '@hi-ui/type-assertion'
@@ -13,7 +19,19 @@ const RADIO_PREFIX = getPrefixCls('radio')
  * 单选
  */
 export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
-  ({ prefixCls = RADIO_PREFIX, role = 'radio', className, children, ...rest }, ref) => {
+  (
+    {
+      prefixCls = RADIO_PREFIX,
+      role = 'radio',
+      className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     const groupContext = useRadioGroupContext()
     const {
       disabled: disabledContext,
@@ -56,19 +74,49 @@ export const Radio = forwardRef<HTMLLabelElement | null, RadioProps>(
 
     const inputProps = getInputProps()
 
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
+    const globalContext = useGlobalContext()
+    const { radio: radioConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      RadioSemanticClassNames,
+      RadioSemanticStyles,
+      RadioProps
+    >({
+      classNamesList: [radioConfig?.classNames, classNamesProp],
+      stylesList: [radioConfig?.styles, stylesProp],
+      info: { props: { ...rest, checked, disabled } },
+    })
+
+    const cls = cx(prefixCls, className, classNames?.root, `${prefixCls}--type-${type}`)
 
     return (
-      <label ref={ref} role={role} className={cls} {...rootProps}>
-        <input {...inputProps} tabIndex={0} className={`${prefixCls}__input`} />
-        <span className={`${prefixCls}__controller`} />
-        {children ? <span className={`${prefixCls}__label`}>{children}</span> : null}
+      <label
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{ ...style, ...styles?.root }}
+        {...rootProps}
+      >
+        <input {...inputProps} tabIndex={0} className={cx(`${prefixCls}__input`)} />
+        <span
+          className={cx(`${prefixCls}__controller`, classNames?.controller)}
+          style={styles?.controller}
+        />
+        {children ? (
+          <span className={cx(`${prefixCls}__label`, classNames?.label)} style={styles?.label}>
+            {children}
+          </span>
+        ) : null}
       </label>
     )
   }
 )
 
-export interface RadioProps extends HiBaseHTMLFieldProps<'label'>, UseRadioProps {}
+export type RadioSemanticName = 'root' | 'controller' | 'label'
+export type RadioSemanticClassNames = SemanticClassNamesType<RadioProps, RadioSemanticName>
+export type RadioSemanticStyles = SemanticStylesType<RadioProps, RadioSemanticName>
+export type RadioSemantic = ComponentSemantic<RadioSemanticClassNames, RadioSemanticStyles>
+
+export interface RadioProps extends HiBaseHTMLFieldProps<'label'>, RadioSemantic, UseRadioProps {}
 
 if (__DEV__) {
   Radio.displayName = 'Radio'

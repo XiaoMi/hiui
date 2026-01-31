@@ -9,6 +9,7 @@ export * from './placement.stories'
 export * from './children.stories'
 export * from './button.stories'
 export * from './auto-width.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Radio',
