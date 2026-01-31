@@ -69,6 +69,14 @@ export type PreviewComponentConfig = ComponentStyleConfig
 
 export type ProgressComponentConfig = ComponentStyleConfig
 
+export type RadioComponentConfig = ComponentStyleConfig
+
+export type RadioGroupComponentConfig = ComponentStyleConfig
+
+export type RatingComponentConfig = ComponentStyleConfig
+
+export type ResultComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -94,4 +102,8 @@ export interface ConfigComponentProps {
   pagination?: PaginationComponentConfig
   preview?: PreviewComponentConfig
   progress?: ProgressComponentConfig
+  radio?: RadioComponentConfig
+  radioGroup?: RadioGroupComponentConfig
+  rating?: RatingComponentConfig
+  result?: ResultComponentConfig
 }
