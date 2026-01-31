@@ -5,6 +5,7 @@ export * from './type.stories'
 export * from './complete.stories'
 // export * from './size.stories'
 export * from './custom.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/Result',
