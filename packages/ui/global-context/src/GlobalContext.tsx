@@ -65,6 +65,8 @@ export type PageHeaderComponentConfig = ComponentStyleConfig
 
 export type PaginationComponentConfig = ComponentStyleConfig
 
+export type PreviewComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -88,4 +90,5 @@ export interface ConfigComponentProps {
   numberInput?: NumberInputComponentConfig
   pageHeader?: PageHeaderComponentConfig
   pagination?: PaginationComponentConfig
+  preview?: PreviewComponentConfig
 }
