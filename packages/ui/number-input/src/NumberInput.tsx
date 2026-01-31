@@ -4,6 +4,12 @@ import { __DEV__ } from '@hi-ui/env'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { useCounter, CounterProps } from '@hi-ui/counter'
 import { useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'input'
 const _prefix = getPrefixCls('number-input')
@@ -18,20 +24,32 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
       role = _role,
       prefix,
       suffix,
-      styles,
-      classNames,
+      classNames: classNamesProp,
+      styles: stylesProp,
       size: sizeProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, numberInput: numberInputConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize
+
+    const { classNames, styles } = useMergeSemantic<
+      NumberInputSemanticClassNames,
+      NumberInputSemanticStyles,
+      NumberInputProps
+    >({
+      classNamesList: [numberInputConfig?.classNames, classNamesProp],
+      stylesList: [numberInputConfig?.styles, stylesProp],
+      info: { props: { ...rest, prefix, suffix, size } },
+    })
 
     const { rootProps, getInputProps, getMinusButtonProps, getPlusButtonProps } = useCounter({
       prefixCls,
       role,
       size,
+      classNames: { root: classNames?.root, input: classNames?.input },
+      styles: { root: styles?.root, input: styles?.input },
       ...rest,
     })
 
@@ -65,22 +83,26 @@ export const NumberInput = forwardRef<HTMLDivElement | null, NumberInputProps>(
   }
 )
 
-export interface NumberInputProps extends CounterProps {
+export type NumberInputSemanticName = 'root' | 'prefix' | 'input' | 'suffix' | 'handler'
+export type NumberInputSemanticClassNames = SemanticClassNamesType<
+  NumberInputProps,
+  NumberInputSemanticName
+>
+export type NumberInputSemanticStyles = SemanticStylesType<
+  NumberInputProps,
+  NumberInputSemanticName
+>
+export type NumberInputSemantic = ComponentSemantic<
+  NumberInputSemanticClassNames,
+  NumberInputSemanticStyles
+>
+
+export interface NumberInputProps
+  extends Omit<CounterProps, 'classNames' | 'styles'>,
+    NumberInputSemantic {
   prefix?: React.ReactNode
   placeholder?: string
   suffix?: React.ReactNode
-  styles?: {
-    input?: React.CSSProperties
-    prefix?: React.CSSProperties
-    suffix?: React.CSSProperties
-    handler?: React.CSSProperties
-  }
-  classNames?: {
-    input?: string
-    prefix?: string
-    suffix?: string
-    handler?: string
-  }
 }
 
 if (__DEV__) {
