@@ -59,6 +59,8 @@ export type ModalComponentConfig = ComponentStyleConfig
 
 export type NotificationComponentConfig = ComponentStyleConfig
 
+export type NumberInputComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -79,4 +81,5 @@ export interface ConfigComponentProps {
   message?: MessageComponentConfig
   modal?: ModalComponentConfig
   notification?: NotificationComponentConfig
+  numberInput?: NumberInputComponentConfig
 }
