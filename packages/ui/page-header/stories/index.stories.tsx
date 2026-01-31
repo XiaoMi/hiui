@@ -6,6 +6,7 @@ export * from './back-icon.stories'
 export * from './sub-title.stories'
 export * from './extra.stories'
 export * from './breadcrumb.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Navigation/PageHeader',
