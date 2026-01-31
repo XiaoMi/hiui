@@ -18,6 +18,8 @@ export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps
       disabled = false,
       onClick,
       size = 'sm',
+      className,
+      style,
     },
     ref
   ) => {
@@ -37,11 +39,12 @@ export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps
       [handleChange, disabled]
     )
 
-    const cls = cx(`${prefixCls}__btn`, disabled && `${prefixCls}__btn--disabled`)
+    const cls = cx(`${prefixCls}__btn`, disabled && `${prefixCls}__btn--disabled`, className)
 
     return (
       <li
         className={cls}
+        style={style}
         onClick={(evt) => {
           handleChange()
           onClick?.(evt)
@@ -85,6 +88,14 @@ export interface PagerButtonProps extends HiBaseHTMLProps<'li'> {
    * 按钮尺寸
    */
   size?: 'xs' | 'sm' | 'md' | 'lg'
+  /**
+   * 自定义类名
+   */
+  className?: string
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties
 }
 
 if (__DEV__) {
