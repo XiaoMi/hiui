@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { cx } from '@hi-ui/classname'
 import { Input } from '@hi-ui/input'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -8,6 +9,8 @@ export const PageJumper: React.FC<PageJumperProps> = ({
   onJump,
   maxJump,
   size = 'md',
+  className,
+  style,
 }) => {
   const [jumpPage, setJumpPage] = useState<string>('')
   const onJumperChange = useCallback((e) => {
@@ -34,7 +37,7 @@ export const PageJumper: React.FC<PageJumperProps> = ({
   )
 
   return (
-    <div className={`${prefixCls}__jumper`}>
+    <div className={cx(`${prefixCls}__jumper`, className)} style={style}>
       {pageText[0]}
       <Input
         value={jumpPage}
@@ -65,6 +68,14 @@ export interface PageJumperProps {
    * 设置尺寸
    */
   size?: 'xs' | 'sm' | 'md'
+  /**
+   * 自定义类名
+   */
+  className?: string
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties
 }
 
 if (__DEV__) {
