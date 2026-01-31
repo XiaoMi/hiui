@@ -61,6 +61,8 @@ export type NotificationComponentConfig = ComponentStyleConfig
 
 export type NumberInputComponentConfig = ComponentStyleConfig
 
+export type PageHeaderComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -82,4 +84,5 @@ export interface ConfigComponentProps {
   modal?: ModalComponentConfig
   notification?: NotificationComponentConfig
   numberInput?: NumberInputComponentConfig
+  pageHeader?: PageHeaderComponentConfig
 }
