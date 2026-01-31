@@ -5,9 +5,15 @@ import { Portal } from '@hi-ui/portal'
 import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useScrollLock } from '@hi-ui/use-scroll-lock'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import {
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -38,6 +44,8 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       role = 'preview',
       className,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       visible = false,
       current,
       defaultCurrent,
@@ -54,7 +62,24 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const { preview: previewConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      PreviewSemanticClassNames,
+      PreviewSemanticStyles,
+      PreviewProps
+    >({
+      classNamesList: [previewConfig?.classNames, classNamesProp],
+      stylesList: [previewConfig?.styles, stylesProp],
+      info: {
+        props: {
+          visible,
+          src,
+          disabledDownload,
+          title: titleProp,
+        },
+      },
+    })
+    const cls = cx(prefixCls, className, classNames?.root)
     const maskElRef = useRef<HTMLDivElement>(null)
 
     const globalContainer = usePortalContext()?.container
@@ -272,7 +297,12 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
 
     return (
       <Portal container={container} disabled={disabledPortal}>
-        <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
+        <div
+          ref={ref}
+          role={role}
+          className={cls}
+          style={{ ...style, ...styles?.root, display: 'none' }}
+        >
           <CSSTransition
             appear
             classNames={`${prefixCls}__mask--transition`}
@@ -295,60 +325,91 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
               ele.style.display = 'none'
             }}
           >
-            <div className={`${prefixCls}__mask`} ref={maskElRef} />
+            <div
+              className={cx(`${prefixCls}__mask`, classNames?.mask)}
+              style={styles?.mask}
+              ref={maskElRef}
+            />
           </CSSTransition>
           {visible && (
             <>
-              <div className={`${prefixCls}__header`}>
-                <div className={`${prefixCls}__title`}>{title}</div>
-                <i className={`${prefixCls}__close-btn`} onClick={handleClose} />
+              <div
+                className={cx(`${prefixCls}__header`, classNames?.header)}
+                style={styles?.header}
+              >
+                <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+                  {title}
+                </div>
+                <i
+                  className={cx(`${prefixCls}__close-btn`, classNames?.close)}
+                  style={styles?.close}
+                  onClick={handleClose}
+                />
               </div>
               <div
-                className={`${prefixCls}__container`}
+                className={cx(`${prefixCls}__container`, classNames?.container)}
+                style={styles?.container}
                 onClick={onClickContainer}
                 tabIndex={-1}
                 onWheel={handleWheel}
                 ref={previewRef}
-                // onMouseMove={onMoving}
                 onKeyDown={handleKeyDown}
               >
                 <div
-                  className={`${prefixCls}__img-wrapper`}
+                  className={cx(`${prefixCls}__img-wrapper`, classNames?.imgWrapper)}
                   ref={(e) => {
                     setWatermarkContainer(e)
                   }}
                   style={{
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
+                    ...styles?.imgWrapper,
                   }}
                 >
                   <img
                     ref={imgRef}
                     onError={onError}
-                    // onMouseDown={onMoveStart}
-                    // onMouseUp={onMoveEnd}
                     onClick={handleClick}
                     onContextMenu={disabledDownload ? handleContextMenu : undefined}
                     src={Array.isArray(src) ? src[active] : src}
-                    className={`${prefixCls}__image`}
+                    className={cx(`${prefixCls}__image`, classNames?.image)}
+                    style={styles?.image}
                   />
                 </div>
-                <div className={`${prefixCls}__toolbar`}>
+                <div
+                  className={cx(`${prefixCls}__toolbar`, classNames?.toolbar)}
+                  style={styles?.toolbar}
+                >
                   {isMultiple && (
                     <>
-                      <div className={`${prefixCls}__toolbar-action`} onClick={selectPrev}>
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={selectPrev}
+                      >
                         <LeftOutlined />
                       </div>
-                      <span className={`${prefixCls}__toolbar-index`}>
+                      <span
+                        className={cx(`${prefixCls}__toolbar-index`, classNames?.toolbarIndex)}
+                        style={styles?.toolbarIndex}
+                      >
                         {active + 1}/{src.length}
                       </span>
-                      <div className={`${prefixCls}__toolbar-action`} onClick={selectNext}>
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={selectNext}
+                      >
                         <RightOutlined />
                       </div>
-                      <i className={`${prefixCls}__toolbar-divider`} />
+                      <i
+                        className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                        style={styles?.toolbarDivider}
+                      />
                     </>
                   )}
                   <div
-                    className={`${prefixCls}__toolbar-action`}
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
                     onClick={() => {
                       if (imgTransform.scale >= 0.25) {
                         handleZoom('zoomOut')
@@ -357,35 +418,55 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
                   >
                     <ZoomOutOutlined />
                   </div>
-                  <span className={`${prefixCls}__toolbar-scale`}>
+                  <span
+                    className={cx(`${prefixCls}__toolbar-scale`, classNames?.toolbarScale)}
+                    style={styles?.toolbarScale}
+                  >
                     {(imgTransform.scale * 100).toFixed(0)}%
                   </span>
                   <div
-                    className={`${prefixCls}__toolbar-action`}
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
                     onClick={() => handleZoom('zoomIn')}
                   >
                     <ZoomInOutlined />
                   </div>
-                  <div className={`${prefixCls}__toolbar-action`} onClick={handleZoomTo1}>
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
+                    onClick={handleZoomTo1}
+                  >
                     <Scale1Icon />
                   </div>
-                  <i className={`${prefixCls}__toolbar-divider`} />
+                  <i
+                    className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                    style={styles?.toolbarDivider}
+                  />
                   <div
-                    className={`${prefixCls}__toolbar-action`}
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
                     onClick={() => handleRotate('right')}
                   >
                     <RotateRightOutlined />
                   </div>
                   <div
-                    className={`${prefixCls}__toolbar-action`}
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
                     onClick={() => handleRotate('left')}
                   >
                     <RotateLeftOutlined />
                   </div>
                   {!disabledDownload && (
                     <>
-                      <i className={`${prefixCls}__toolbar-divider`} />
-                      <div className={`${prefixCls}__toolbar-action`} onClick={handleDownload}>
+                      <i
+                        className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                        style={styles?.toolbarDivider}
+                      />
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={handleDownload}
+                      >
                         <DownloadOutlined />
                       </div>
                     </>
@@ -403,7 +484,25 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
   }
 )
 
-export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
+export type PreviewSemanticName =
+  | 'root'
+  | 'mask'
+  | 'header'
+  | 'title'
+  | 'close'
+  | 'container'
+  | 'imgWrapper'
+  | 'image'
+  | 'toolbar'
+  | 'toolbarAction'
+  | 'toolbarIndex'
+  | 'toolbarScale'
+  | 'toolbarDivider'
+export type PreviewSemanticClassNames = SemanticClassNamesType<PreviewProps, PreviewSemanticName>
+export type PreviewSemanticStyles = SemanticStylesType<PreviewProps, PreviewSemanticName>
+export type PreviewSemantic = ComponentSemantic<PreviewSemanticClassNames, PreviewSemanticStyles>
+
+export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'>, PreviewSemantic {
   /**
    * 是否显示预览窗体
    */
