@@ -7,6 +7,7 @@ export * from './dot.stories'
 export * from './custom-icon.stories'
 export * from './item-layout.stories'
 export * from './placement.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Navigation/Stepper',
