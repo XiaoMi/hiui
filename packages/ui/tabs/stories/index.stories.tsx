@@ -17,6 +17,7 @@ export * from './extra.stories'
 export * from './with-icon.stories'
 export * from './nested.stories'
 export * from './unmount-on-inactive.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Navigation/Tabs',

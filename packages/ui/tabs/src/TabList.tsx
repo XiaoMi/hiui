@@ -9,6 +9,12 @@ import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } f
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
 import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { useResizeObserver } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNextTabId } from './utils'
@@ -24,6 +30,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       data,
       className,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       activeId,
       defaultActiveId,
       onChange,
@@ -53,13 +61,38 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tabList?: { classNames?: any; styles?: any }
+    }
+    const { size: globalSize } = globalContext
+    const tabListConfig = globalContext.tabList
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {
       size = 'sm'
     }
 
     const direction = placement ?? directionProp ?? 'horizontal'
+
+    const { classNames, styles } = useMergeSemantic<
+      TabListSemanticClassNames,
+      TabListSemanticStyles,
+      TabListProps
+    >({
+      classNamesList: [tabListConfig?.classNames, classNamesProp],
+      stylesList: [tabListConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          placement: direction,
+          type,
+          size,
+          showDivider,
+          editable,
+          draggable,
+        },
+      },
+    })
 
     const [activeTabId, setActiveTabId] = useUncontrolledState(
       () => {
@@ -281,9 +314,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     return (
       <div
-        style={style}
+        ref={ref}
+        style={{ ...style, ...styles?.root }}
         className={cx(
           `${prefixCls}__list`,
+          classNames?.root,
           `${prefixCls}__list--placement-${direction}`,
           { [`${prefixCls}__list--type-${type}`]: type },
           { [`${prefixCls}__list--size-${size}`]: size },
@@ -291,12 +326,15 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           { [`${prefixCls}__list--editable`]: editable },
           className
         )}
-        ref={ref}
         {...rest}
       >
         {showScrollBtn ? (
           <IconButton
-            className={showHorizontal ? `${prefixCls}__left-btn` : `${prefixCls}__up-btn`}
+            className={cx(
+              showHorizontal ? `${prefixCls}__left-btn` : `${prefixCls}__up-btn`,
+              classNames?.prevBtn
+            )}
+            style={styles?.prevBtn}
             effect
             disabled={translatePos === 0}
             icon={showHorizontal ? <LeftOutlined /> : <UpOutlined />}
@@ -313,20 +351,25 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           />
         ) : null}
 
-        <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerElement}>
+        <div
+          className={cx(`${prefixCls}__list--inner`, classNames?.inner)}
+          style={styles?.inner}
+          ref={setInnerElement}
+        >
           <div
-            className={cx(`${prefixCls}__list--scroll`)}
+            className={cx(`${prefixCls}__list--scroll`, classNames?.scroll)}
             ref={setScrollElement}
-            style={
-              showScrollBtn
+            style={{
+              ...(showScrollBtn
                 ? {
                     transform:
                       direction === 'horizontal'
                         ? `translateX(${translatePos}px)`
                         : `translateY(${translatePos}px)`,
                   }
-                : undefined
-            }
+                : undefined),
+              ...styles?.scroll,
+            }}
           >
             {showData.map((item, index) => (
               <TabItem
@@ -390,7 +433,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         {showScrollBtn ? (
           <IconButton
             effect
-            className={showHorizontal ? `${prefixCls}__right-btn` : `${prefixCls}__down-btn`}
+            className={cx(
+              showHorizontal ? `${prefixCls}__right-btn` : `${prefixCls}__down-btn`,
+              classNames?.nextBtn
+            )}
+            style={styles?.nextBtn}
             disabled={translateBoundPos === -translatePos}
             icon={showHorizontal ? <RightOutlined /> : <DownOutlined />}
             onClick={() => {
@@ -407,8 +454,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           />
         ) : null}
         {editable ? (
-          <div className={`${prefixCls}__add-btn-wrap`}>
-            <div className={`${prefixCls}__add-btn`}>
+          <div
+            className={cx(`${prefixCls}__add-btn-wrap`, classNames?.addBtnWrap)}
+            style={styles?.addBtnWrap}
+          >
+            <div className={cx(`${prefixCls}__add-btn`, classNames?.addBtn)} style={styles?.addBtn}>
               <IconButton effect icon={<PlusOutlined />} onClick={handleAdd} />
             </div>
           </div>
@@ -419,11 +469,25 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   }
 )
 
+export type TabListSemanticName =
+  | 'root'
+  | 'prevBtn'
+  | 'inner'
+  | 'scroll'
+  | 'addInput'
+  | 'nextBtn'
+  | 'addBtnWrap'
+  | 'addBtn'
+export type TabListSemanticClassNames = SemanticClassNamesType<TabListProps, TabListSemanticName>
+export type TabListSemanticStyles = SemanticStylesType<TabListProps, TabListSemanticName>
+export type TabListSemantic = ComponentSemantic<TabListSemanticClassNames, TabListSemanticStyles>
+
 export interface TabListProps
   extends Omit<
-    HiBaseHTMLProps<'div'>,
-    'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
-  > {
+      HiBaseHTMLProps<'div'>,
+      'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+    >,
+    TabListSemantic {
   /**
    * tabs 面板数据
    */
