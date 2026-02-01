@@ -109,6 +109,10 @@ export interface TreeNodeRequiredProps {
   selected: boolean
   loading: boolean
   focused: boolean
+  /** 语义化 classNames，由 Tree 透传 */
+  classNames?: Record<string, any>
+  /** 语义化 styles，由 Tree 透传 */
+  styles?: Record<string, any>
 }
 
 export interface TreeNodeEventData extends FlattedTreeNodeData, TreeNodeRequiredProps {}
