@@ -5,7 +5,13 @@ import { TabPaneProps } from './TabPane'
 import { TabList } from './TabList'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isUndef } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { EditActions } from './TabItem'
 
 const _role = 'tabs'
@@ -20,6 +26,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       defaultActiveId,
       activeId,
@@ -38,7 +47,6 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onDragOver,
       onDragEnd,
       onDrop,
-      style,
       type = 'line',
       size = 'md',
       showDivider,
@@ -73,15 +81,30 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onChange
     )
 
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tabs?: { classNames?: any; styles?: any }
+    }
+    const { tabs: tabsConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      TabsSemanticClassNames,
+      TabsSemanticStyles,
+      TabsProps
+    >({
+      classNamesList: [tabsConfig?.classNames, classNamesProp],
+      stylesList: [tabsConfig?.styles, stylesProp],
+      info: { props: { ...rest, placement, type, size } },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       placement && `${prefixCls}--placement-${placement}`,
       type && `${prefixCls}--type-${type}`
     )
 
     return (
-      <div ref={ref} role={role} className={cls} style={style} {...rest}>
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
         <TabList
           prefixCls={prefixCls}
           data={tabList}
@@ -106,8 +129,10 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onDragStart={onDragStart}
           extra={extra}
           maxTabTitleWidth={maxTabTitleWidth}
+          className={classNames?.list}
+          style={styles?.list}
         />
-        <div className={`${_prefix}__content`}>
+        <div className={cx(`${_prefix}__content`, classNames?.content)} style={styles?.content}>
           {React.Children.map(children, (child) => {
             return child
               ? React.cloneElement(child, {
@@ -123,11 +148,17 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
   }
 )
 
+export type TabsSemanticName = 'root' | 'list' | 'content'
+export type TabsSemanticClassNames = SemanticClassNamesType<TabsProps, TabsSemanticName>
+export type TabsSemanticStyles = SemanticStylesType<TabsProps, TabsSemanticName>
+export type TabsSemantic = ComponentSemantic<TabsSemanticClassNames, TabsSemanticStyles>
+
 export interface TabsProps
   extends Omit<
-    HiBaseHTMLProps<'div'>,
-    'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
-  > {
+      HiBaseHTMLProps<'div'>,
+      'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+    >,
+    TabsSemantic {
   /**
    * 是否可拖拽
    */
