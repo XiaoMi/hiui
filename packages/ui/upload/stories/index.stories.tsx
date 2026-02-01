@@ -12,6 +12,7 @@ export * from './avatar.stories'
 export * from './custom-upload.stories'
 export * from './action-render.stories'
 export * from './async-upload-action.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Upload',

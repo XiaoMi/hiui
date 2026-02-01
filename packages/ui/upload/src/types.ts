@@ -2,6 +2,11 @@ import React from 'react'
 import { ReactCropperProps } from 'react-cropper'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { PreviewProps } from '@hi-ui/preview'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 export interface UploadFileItem extends Partial<File> {
   /**
@@ -37,6 +42,8 @@ export interface UploadFileList {
   actionRender?: (props: ActionRenderProps) => React.ReactNode
   disabled?: boolean
   size?: 'xs' | 'md' | 'lg'
+  className?: string
+  style?: React.CSSProperties
 }
 
 export interface UploadRequestOption {
@@ -57,7 +64,52 @@ export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
 
 export type UploadTypeEnum = 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
 
-export interface UploadProps extends HiBaseHTMLProps<'div'> {
+export type UploadSemanticName =
+  | 'root'
+  | 'normalUpload'
+  | 'normalUploadTrigger'
+  | 'normalUploadTips'
+  | 'normalUploadList'
+  | 'dragUpload'
+  | 'dragUploadDropArea'
+  | 'dragUploadDropDesc'
+  | 'dragUploadDropTitle'
+  | 'dragUploadTips'
+  | 'dragUploadList'
+  | 'pictureListUpload'
+  | 'pictureListUploadTrigger'
+  | 'pictureListUploadTips'
+  | 'pictureListUploadList'
+  | 'pictureUpload'
+  | 'pictureUploadList'
+  | 'pictureUploadItem'
+  | 'pictureUploadUploadTrigger'
+  | 'avatarUpload'
+  | 'avatarUploadList'
+  | 'avatarUploadItem'
+  | 'avatarUploadUploadTrigger'
+  | 'avatarUploadCropper'
+  | 'avatarUploadCropperToolbar'
+export type UploadSemanticClassNames = SemanticClassNamesType<UploadProps, UploadSemanticName>
+export type UploadSemanticStyles = SemanticStylesType<UploadProps, UploadSemanticName>
+export type UploadSemantic = ComponentSemantic<UploadSemanticClassNames, UploadSemanticStyles>
+
+/** 语义化合并后的 classNames 对象类型，子组件内使用 */
+export type UploadSemanticClassNamesResolved = Partial<Record<UploadSemanticName, string>>
+/** 语义化合并后的 styles 对象类型，子组件内使用 */
+export type UploadSemanticStylesResolved = Partial<Record<UploadSemanticName, React.CSSProperties>>
+
+export interface UploadProps
+  extends HiBaseHTMLProps<'div'>,
+    Omit<UploadSemantic, 'classNames' | 'styles'> {
+  /**
+   * 语义化 classNames（支持对象或函数，子组件内为合并后的对象）
+   */
+  classNames?: UploadSemanticClassNames | UploadSemanticClassNamesResolved
+  /**
+   * 语义化 styles（支持对象或函数，子组件内为合并后的对象）
+   */
+  styles?: UploadSemanticStyles | UploadSemanticStylesResolved
   /**
    * 上传组件类型
    */
