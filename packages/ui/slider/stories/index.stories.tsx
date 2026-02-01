@@ -11,6 +11,7 @@ export * from './disabled.stories'
 export * from './tip.stories'
 export * from './custom-color.stories'
 export * from './mark.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Slider',
