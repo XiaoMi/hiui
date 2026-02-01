@@ -2,6 +2,12 @@ import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
 import { HiBaseFieldNames, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { flattenTreeData } from './utils'
 import {
   useExpand,
@@ -42,6 +48,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       prefixCls = treePrefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       data,
       // expand or collapse
@@ -94,7 +103,11 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tree?: { classNames?: any; styles?: any }
+    }
+    const { size: globalSize } = globalContext
+    const treeConfig = globalContext.tree
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'
@@ -155,6 +168,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           selected: selectedId === id,
           loading: isLoadingId(id),
           focused: focusedId === id,
+          classNames,
+          styles,
         }
       }
     )
@@ -247,7 +262,17 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       scrollTo: listRef.current?.scrollTo,
     }))
 
-    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+    const { classNames, styles } = useMergeSemantic<
+      TreeSemanticClassNames,
+      TreeSemanticStyles,
+      TreeProps
+    >({
+      classNamesList: [treeConfig?.classNames, classNamesProp],
+      stylesList: [treeConfig?.styles, stylesProp],
+      info: { props: { ...rest, size, selectable, checkable, draggable, data } },
+    })
+
+    const cls = cx(prefixCls, className, classNames?.root, `${prefixCls}--size-${size}`)
 
     return (
       <TreeProvider value={providedValue}>
@@ -255,6 +280,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           ref={ref}
           role={role}
           className={cls}
+          style={{ ...style, ...styles?.root }}
           tabIndex={0}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
@@ -293,7 +319,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 // eslint-disable-next-line no-redeclare
 export type Tree = typeof Tree
 
-export interface TreeProps {
+export type TreeSemanticName = 'root' | 'item' | 'itemContent' | 'itemIcon' | 'itemTitle'
+export type TreeSemanticClassNames = SemanticClassNamesType<TreeProps, TreeSemanticName>
+export type TreeSemanticStyles = SemanticStylesType<TreeProps, TreeSemanticName>
+export type TreeSemantic = ComponentSemantic<TreeSemanticClassNames, TreeSemanticStyles>
+
+export interface TreeProps extends TreeSemantic {
   /**
    * 组件默认的选择器类
    */
