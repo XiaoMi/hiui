@@ -77,6 +77,26 @@ export type RatingComponentConfig = ComponentStyleConfig
 
 export type ResultComponentConfig = ComponentStyleConfig
 
+export type SliderComponentConfig = ComponentStyleConfig
+
+export type StepperComponentConfig = ComponentStyleConfig
+
+export type SwitchComponentConfig = ComponentStyleConfig
+
+export type TextareaComponentConfig = ComponentStyleConfig
+
+export type TabsComponentConfig = ComponentStyleConfig
+
+export type TabListComponentConfig = ComponentStyleConfig
+
+export type TimelineComponentConfig = ComponentStyleConfig
+
+export type TransferComponentConfig = ComponentStyleConfig
+
+export type TreeComponentConfig = ComponentStyleConfig
+
+export type UploadComponentConfig = ComponentStyleConfig
+
 export interface ConfigComponentProps {
   alert?: AlertComponentConfig
   anchor?: AnchorComponentConfig
@@ -106,4 +126,14 @@ export interface ConfigComponentProps {
   radioGroup?: RadioGroupComponentConfig
   rating?: RatingComponentConfig
   result?: ResultComponentConfig
+  slider?: SliderComponentConfig
+  stepper?: StepperComponentConfig
+  switch?: SwitchComponentConfig
+  textarea?: TextareaComponentConfig
+  tabs?: TabsComponentConfig
+  tabList?: TabListComponentConfig
+  timeline?: TimelineComponentConfig
+  transfer?: TransferComponentConfig
+  tree?: TreeComponentConfig
+  upload?: UploadComponentConfig
 }

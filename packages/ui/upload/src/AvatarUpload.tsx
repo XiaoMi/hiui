@@ -1,7 +1,12 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps, UploadFileItem } from './types'
+import type {
+  UploadProps,
+  UploadFileItem,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import {
   PlusOutlined,
@@ -52,6 +57,8 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       timeout,
       content,
       size = 'md',
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -66,6 +73,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       disabled && `${prefixCls}--disabled`,
       className
     )
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -245,10 +258,20 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <ul className={`${prefixCls}__list ${prefixCls}__list--size-${size}`}>
+        <ul
+          className={cx(
+            `${prefixCls}__list`,
+            `${prefixCls}__list--size-${size}`,
+            cn?.avatarUploadList
+          )}
+          style={st?.avatarUploadList}
+        >
           {!!file &&
             (file.uploadState === 'loading' ? (
-              <li className={`${prefixCls}__item`}>
+              <li
+                className={cx(`${prefixCls}__item`, cn?.avatarUploadItem)}
+                style={st?.avatarUploadItem}
+              >
                 <img src={file.url} className={`${prefixCls}__thumb`} />
                 <div className={`${prefixCls}__percent`}>
                   <p className={`${prefixCls}__loading-text`}>
@@ -266,9 +289,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               </li>
             ) : (
               <li
-                className={cx(`${prefixCls}__item`, {
+                className={cx(`${prefixCls}__item`, cn?.avatarUploadItem, {
                   [`${prefixCls}__item--error`]: file.uploadState === 'error',
                 })}
+                style={st?.avatarUploadItem}
                 tabIndex={0}
                 onClick={() => previewImage(file.url || '')}
                 onKeyDown={(e) => {
@@ -326,7 +350,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             >
               {children === undefined ? (
                 <li
-                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--upload`)}
+                  className={cx(
+                    `${prefixCls}__item`,
+                    `${prefixCls}__item--upload`,
+                    cn?.avatarUploadUploadTrigger
+                  )}
+                  style={st?.avatarUploadUploadTrigger}
                   ref={uploadRef}
                   tabIndex={0}
                   onKeyDown={handleUploadKeydown}
@@ -352,7 +381,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             setCropperVisible(false)
           }}
         >
-          <div className={`${prefixCls}-cropper__container`}>
+          <div
+            className={cx(`${prefixCls}-cropper__container`, cn?.avatarUploadCropper)}
+            style={st?.avatarUploadCropper}
+          >
             <Cropper
               src={cropperFile?.url || ''}
               aspectRatio={aspectRatio}
@@ -365,7 +397,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               rotatable={rotatable}
               {...restAvatarOptions}
             />
-            <div className={`${prefixCls}-cropper__toolbar`}>
+            <div
+              className={cx(`${prefixCls}-cropper__toolbar`, cn?.avatarUploadCropperToolbar)}
+              style={st?.avatarUploadCropperToolbar}
+            >
               <span onClick={zoomOut} className={`${prefixCls}-cropper__toolbar-btn`}>
                 <ZoomOutOutlined />
               </span>
