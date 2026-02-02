@@ -92,6 +92,7 @@ export const ExtraRender = () => {
         <TreeSelect
           data={data}
           renderExtraHeader={() => <div style={{ padding: '10px 14px' }}>custom header</div>}
+          renderExtraFooter={() => <div>custom footer</div>}
         />
       </div>
     </>
