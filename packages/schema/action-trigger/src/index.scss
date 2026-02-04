@@ -1,0 +1,47 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+.unified-actions {
+  &__more-trigger {
+    font-size: 18px;
+    color: #5f6a7a;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__more-overlay {
+    .#{with-prefix(dropdown-menu)} {
+      &-item {
+        &__trigger {
+          padding: 0;
+
+          & > button {
+            padding: 7px 8px;
+          }
+
+          & > span {
+            padding: 8px;
+          }
+
+          & > button,
+          & > span {
+            width: 100%;
+            text-align: start;
+          }
+        }
+      }
+    }
+  }
+}
+
+.actions-bar {
+  // height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0; // 总高56px
+
+  & svg {
+    color: #5f6a7a;
+    cursor: pointer;
+  }
+}
