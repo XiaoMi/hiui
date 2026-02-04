@@ -749,6 +749,8 @@ export const useTable = ({
     onHighlightedCol,
     innerRef,
     virtualListRef,
+    sticky,
+    stickyTop,
   }
 }
 
