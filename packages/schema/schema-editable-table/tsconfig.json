@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      // types
+      "@hi-ui/utility-types/global",
+      "@hi-ui/schema-types"
+    ]
+  },
+  "include": ["./src", "./type.d.ts"]
+}

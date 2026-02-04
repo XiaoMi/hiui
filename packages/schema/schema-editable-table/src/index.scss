@@ -1,0 +1,793 @@
+@import '~@hi-ui/core-css/lib/common/version';
+// TODO 有部分覆写样式，待确认是否还需要
+// @use '~@/common/style/scroll-bar.scss' as *;
+// @use '~@/common/style/index.scss' as common-index;
+
+$border-color: #f0f0f0 !default;
+$border: 1px solid $border-color !default;
+
+.editable-schema-table {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    max-height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    position: relative;
+    // display: flex;
+    // flex-direction: column;
+    overflow: auto;
+    // overflow: hidden;
+    box-sizing: border-box;
+
+    // @include scroll-bar; // TODO
+  }
+
+  &__bottom-container {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    // 底部容器为空时，隐藏
+    &[data-is-bottom-empty='true'] {
+      display: none;
+    }
+
+    // &-left {
+    //   // flex: 1;
+    // }
+
+    &-right {
+      // flex: 4;
+
+      .#{with-prefix(pagination)} {
+        justify-content: flex-end;
+
+        &__btn button {
+          padding: 0;
+        }
+
+        &__total,
+        &__list,
+        &__jumper {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  &__bottom-container &__row-selection-indicator {
+    font-size: 14px;
+    color: use-var('color-gray-600', '#5f6a7a');
+  }
+
+  & table {
+    flex: 1;
+    width: 100%;
+    font-size: 14px;
+    border-spacing: 0;
+    table-layout: fixed;
+
+    & th,
+    & td {
+      box-sizing: border-box;
+    }
+
+    // 选择列
+    &[data-is-selection],
+    // 操作列
+    &[data-is-operation] {
+      position: sticky;
+      z-index: 3;
+    }
+
+    // 选择列
+    &[data-is-selection] {
+      left: 0;
+      flex: 0 0 50px;
+      width: 50px;
+    }
+
+    // 操作列
+    &[data-is-operation] {
+      right: 0;
+      flex: 0 0;
+    }
+  }
+
+  &__header-wrapper,
+  &__body-wrapper,
+  &__footer-wrapper {
+    display: inline-flex;
+    vertical-align: top; // 添加这行来消除空隙
+    width: fit-content; // 宽度由内容撑开
+    min-width: 100%; // 但最小宽度也应为父容器的100%
+  }
+
+  &__header-wrapper,
+  &__footer-wrapper {
+    &--sticky {
+      position: sticky;
+      z-index: 4;
+    }
+  }
+
+  &__header-wrapper {
+    background: #fff;
+    // flex-shrink: 0;
+    // overflow: hidden;
+
+    &--sticky {
+      top: 0;
+    }
+  }
+
+  // &__body-wrapper {} // 暂时没有样式
+  &[data-is-empty='true'] &__body-wrapper {
+    flex: 1; // 数据为空时，body占据剩余空间
+    position: sticky; // 同时始终展示在正中间
+    left: 0;
+    right: 0;
+  }
+
+  // 表头样式
+  &__header {
+    // border-bottom: 1px solid #e8e8e8; // 给表头和表体一个明显的分界
+
+    &-row {
+      height: 40px;
+      background: #fafafa;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+
+    & &-cell {
+      position: relative;
+      border-bottom-color: #e8e8e8;
+
+      div {
+        font-weight: 500;
+        color: use-var('color-gray-700', '#1f2733');
+      }
+
+      &[colspan='0'] {
+        display: none;
+      }
+    }
+
+    &-cell-content {
+      position: relative;
+      display: flex;
+      height: 24px;
+      line-height: 24px;
+      box-sizing: border-box;
+
+      &-title {
+        flex: 0 1 auto;
+        min-width: 0;
+      }
+
+      &-actions {
+        display: inline-flex;
+        height: 100%;
+        flex: 0 0 auto;
+        position: absolute;
+        right: 0;
+      }
+
+      // 按表头操作按钮的数量生成样式，暂时支持到5个
+      @for $i from 1 through 5 {
+        // 不用这么复杂了，直接根据表头操作按钮的数量生成样式
+        // div[role='ellipsis-tooltip'][data-tooltip-available='true'] // 这行复杂的的选择器，留着供参考吧
+        &[data-actions-count='#{$i}'] {
+          padding-right: #{$i * 20 + 4}px;
+        }
+      }
+
+      // 必填列的表头增加红色 * 号
+      &[data-is-required='true'] {
+        &::before {
+          content: '*';
+          color: use-var(color-danger-500, use-var(color-red-500, #ff5959));
+          margin-right: use-var(spacing-2, 4px);
+        }
+      }
+
+      // 表头操作按钮的相关样式
+      &-actions > span {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 24px;
+        box-sizing: border-box;
+        padding: 4px 2px;
+        color: rgba(0, 0, 0, 45%);
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.2s;
+        border-radius: 2px;
+      }
+
+      &-actions > span:hover {
+        color: rgba(0, 0, 0, 88%);
+        background-color: rgba(0, 0, 0, 6%);
+      }
+
+      &-actions > span[data-active='true'] {
+        color: #237ffa;
+      }
+    }
+
+    // hoverOnly
+    // 仅在 hover 时显示表头操作
+    /* stylelint-disable no-descending-specificity */
+    &-cell {
+      &-content[data-hover-only='true'] &-content-actions {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      &[data-hovering='true'] &-content-actions {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  // 表体样式
+  &__body {
+    &-row {
+      height: 40px;
+      transition: all 0.2s;
+      background-color: #fff;
+
+      &:hover,
+      &[data-hovering] {
+        background-color: #f5f5f5;
+      }
+
+      // 斑马纹
+      &:nth-child(even) {
+        background-color: #fafafa;
+      }
+    }
+
+    & &-cell {
+      color: use-var('color-gray-700', '#1f2733');
+      transition: background-color 0.2s;
+
+      // 鼠标悬停时的单元格效果
+      &:hover {
+        background-color: #e6f7ff;
+      }
+
+      &[rowspan='0'] {
+        display: none;
+      }
+    }
+    // 第一行移除顶部border
+    &-row:first-child &-cell {
+      border-top: none;
+    }
+
+    // 有错误时，行背景色增加错误底色
+    &-row[data-has-error] {
+      background-color: #fef0f0;
+    }
+    // 有错误时，单元格hover时颜色加深一点
+    &-row[data-has-error] &-cell:hover {
+      background-color: #f9e5e5;
+    }
+  }
+
+  // 树形数据时，展开按钮相关的样式
+  /* stylelint-disable no-duplicate-selectors */
+  &__body-cell_expanding {
+    display: flex;
+    align-items: center;
+
+    --editable-schema-table-body-cell-expanding-indent: 14px;
+
+    & {
+      &[data-text-align='center'] {
+        justify-content: center;
+
+        --editable-schema-table-body-cell-expanding-indent: 28px;
+      }
+
+      &[data-text-align='right'] {
+        justify-content: flex-end;
+
+        --editable-schema-table-body-cell-expanding-indent: 28px;
+      }
+
+      &[data-text-align='right'] &-wrapper {
+        flex: 1;
+      }
+    }
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 4px;
+    }
+
+    &-indent {
+      display: inline-block;
+      height: 10px; // 搞高一点，方便debug
+    }
+
+    &-icon {
+      display: inline-flex;
+      align-items: center;
+      width: 16px;
+      height: 24px;
+      font-size: 16px;
+      color: use-var(color-gray-500, #929aa6);
+      cursor: pointer;
+
+      & svg {
+        user-select: none;
+        transition: transform 0.3s;
+      }
+
+      &[data-is-expanded='true'] svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  // 表尾样式
+  &__footer {
+    &-wrapper {
+      background: #fff;
+
+      &--sticky {
+        bottom: 0;
+      }
+    }
+
+    &-row {
+      height: 40px;
+      background: #fafafa;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+
+    & &-cell {
+      position: relative;
+      border-top-color: #e8e8e8;
+
+      div {
+        font-weight: 500;
+        color: use-var('color-gray-700', '#1f2733');
+      }
+
+      // 鼠标悬停时的单元格效果
+      &:hover {
+        background-color: #e6f7ff;
+      }
+    }
+  }
+
+  // 表头和表体的固定列样式
+  & &__cell {
+    &--fixed-left,
+    &--fixed-right {
+      position: sticky;
+      z-index: 2;
+      // 继承原本的背景色
+      background-color: inherit;
+    }
+  }
+}
+
+// 只读case时，内置组件的渲染样式
+.editable-schema-table__body .editable-schema-table__body-cell {
+  span[data-case='readonly'] {
+    &[data-field-type='image'] {
+      height: 38px;
+      align-items: center;
+    }
+
+    .image-preview {
+      &,
+      &__item-wrapper,
+      img {
+        height: 30px;
+      }
+    }
+  }
+}
+
+// 文本对齐相关样式的集合
+.editable-schema-table {
+  & table {
+    & th,
+    & td {
+      padding: 0 12px;
+      white-space: nowrap;
+
+      &[data-text-align='left'] {
+        text-align: left;
+
+        span[data-case='readonly'] {
+          justify-content: flex-start;
+        }
+      }
+
+      &[data-text-align='center'] {
+        text-align: center;
+
+        span[data-case='readonly'] {
+          justify-content: center;
+        }
+      }
+
+      &[data-text-align='right'] {
+        text-align: right;
+
+        span[data-case='readonly'] {
+          justify-content: flex-end;
+        }
+      }
+    }
+
+    & th[data-has-children='true'] {
+      text-align: center;
+    }
+  }
+
+  &__header {
+    // & &-cell {
+    //   //
+    // }
+
+    &-cell-content {
+      // 表头需在此处处理文本对齐
+      // 有子列时，表头居中
+      // 但有显式声明的对齐时，以显式对齐为准
+      &[data-has-children='true'] {
+        justify-content: center;
+      }
+
+      &[data-text-align='left'] {
+        justify-content: flex-start;
+      }
+
+      &[data-text-align='center'] {
+        justify-content: center;
+      }
+
+      &[data-text-align='right'] {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  &__body {
+    & &-cell {
+      padding: 0;
+
+      &:not(:has(*)),
+      & > span[data-case='simple'],
+      // 上面两种场景其实是同一个，但是 :has 的兼容性不好
+      // 仅作为用户偶然渲染的仅包含纯文本的单元格的样式兜底
+      // 内部的纯文本单元格，仍然使用 span[data-case='simple'] 来选中
+      & > span[data-case='default'] {
+        padding: 0 12px;
+      }
+
+      & > span[data-case='readonly'] {
+        display: inline-flex;
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+      }
+
+      & > span[data-case='expanding'] {
+        padding: 0 12px;
+      }
+
+      // 其他需要覆写的HiUI组件的对齐样式
+      &[data-text-align='left'] {
+        // 普通文本输入框 和 disabled 时的数字输入框
+        .#{with-prefix(input__text)},
+        // 数字输入框
+        .#{with-prefix(number-input__input)} {
+          text-align: left;
+        }
+
+        // 日期选择器
+        .#{with-prefix(date-picker__input-selector)} {
+          justify-content: flex-start;
+        }
+      }
+
+      &[data-text-align='center'] {
+        .#{with-prefix(input__text)},
+        .#{with-prefix(number-input__input)} {
+          text-align: center;
+        }
+
+        .#{with-prefix(date-picker__input-selector)} {
+          justify-content: center;
+        }
+
+        .#{with-prefix(select)} .#{with-prefix(mock-input__value)} {
+          padding-right: 4px;
+        }
+      }
+
+      &[data-text-align='right'] {
+        .#{with-prefix(input__text)},
+        .#{with-prefix(number-input__input)} {
+          text-align: right;
+        }
+
+        .#{with-prefix(date-picker__input-selector)} {
+          justify-content: flex-end;
+        }
+
+        .#{with-prefix(select)} .#{with-prefix(mock-input__value)} {
+          padding-right: 4px;
+        }
+      }
+
+      // 添加input样式
+      // 占位元素和编辑状态都需要
+      .#{with-prefix(input)},
+      .#{with-prefix(number-input)} {
+        height: 39px;
+        border: none;
+        background-color: unset;
+
+        &__inner {
+          border: none;
+          background-color: unset;
+        }
+
+        // 精确设置 padding
+        // 避免占位元素和真实元素切换时的抖动
+        &__text {
+          padding: 4px 12px;
+          font-family: inherit;
+        }
+
+        // number-input 才有
+        &__input {
+          font-family: inherit;
+          font-size: 14px;
+        }
+      }
+
+      & > div[data-case='editing'] {
+        // Input
+        .#{with-prefix(input__inner)} {
+          background-color: unset;
+        }
+
+        // Number-Input
+        .#{with-prefix(number-input)} {
+          &__suffix {
+            position: static;
+          }
+        }
+
+        // Select
+        @mixin select-cell-style {
+          height: 39px;
+
+          .#{with-prefix(mock-input)} {
+            height: 39px;
+            box-sizing: border-box;
+            padding: 0 11px 0 12px;
+            border: none;
+            background-color: unset;
+          }
+        }
+
+        // Check-Select
+        @mixin check-select-cell-style {
+          height: 39px;
+
+          .#{with-prefix(tag-input-mock)} {
+            height: 100%;
+            border: none;
+            background-color: unset;
+
+            &__tags {
+              height: auto;
+            }
+          }
+        }
+
+        // Select
+        .#{with-prefix(select)} {
+          @include select-cell-style;
+        }
+
+        // Check-Select
+        .#{with-prefix(check-select)} {
+          @include check-select-cell-style;
+        }
+
+        // Cascader
+        .#{with-prefix(cascader)} {
+          @include select-cell-style;
+        }
+
+        // Check-Cascader
+        .#{with-prefix(check-cascader)} {
+          @include check-select-cell-style;
+        }
+
+        // Tree-Select
+        .#{with-prefix(tree-select)} {
+          @include select-cell-style;
+        }
+
+        // Check-Tree-Select
+        .#{with-prefix(check-tree-select)} {
+          @include check-select-cell-style;
+        }
+
+        // DatePicker
+        .#{with-prefix(date-picker)} {
+          &__picker {
+            border: none;
+            height: 39px;
+          }
+
+          // 精确设置 padding
+          // 避免占位元素和真实元素切换时的抖动
+          &__input-selector {
+            padding: 0 8px 0 7px;
+          }
+
+          // 避免右侧图标抖动
+          & .hi-icon {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  // &__footer {
+  //   // & &-cell {
+  //   //   //
+  //   // }
+  // }
+}
+
+// 边框相关样式
+.editable-schema-table {
+  // 默认仅开启底部边框
+  & table {
+    border-collapse: separate;
+
+    & th,
+    & td {
+      border-bottom: $border;
+    }
+  }
+
+  // 有边框时，增加左侧边框 // 看起来就都有边框了
+  &[data-is-bordered='true'],
+  &[data-has-nest-header='true'] {
+    table th,
+    table td {
+      border-left: $border;
+    }
+  }
+
+  // 有边框时，容器增加顶部和右侧边框 // 单元格只加了左侧的，这里要补上顶部和右侧的
+  &[data-is-bordered='true'] &__container,
+  &[data-has-nest-header='true'] &__container {
+    border-top: $border;
+    border-right: $border;
+  }
+
+  // 存在粘性表尾时，增加表尾的顶部边框
+  &[data-has-sticky-footer='true'] &__footer-wrapper {
+    td {
+      border-top: $border;
+    }
+  }
+
+  // 存在粘性表尾时，去除表体最后一行的底边边框 // 否则会跟表尾的顶部边框重叠
+  &[data-has-sticky-footer='true'] &__body-wrapper {
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  // 数据为空时，表格的边框样式 // 此时左侧和底部没有边框了，直接给容器加上
+  &[data-is-empty='true'][data-is-bordered='true'] &__container,
+  &[data-is-empty='true'][data-has-nest-header='true'] &__container {
+    border: $border;
+
+    // 第一列去除左边框 // 因为会和容器的左边框重叠
+    & table:first-child tr th:first-child {
+      border-left: none;
+    }
+  }
+}
+
+// 滚动时阴影相关样式的集合
+.editable-schema-table {
+  // 通用阴影容器mixin
+  @mixin shadow-container {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    pointer-events: none;
+    transition: box-shadow 0.3s;
+  }
+
+  // 左侧阴影容器mixin（用于右边缘）
+  @mixin left-shadow-container {
+    @include shadow-container;
+
+    right: -30px;
+  }
+
+  // 右侧阴影容器mixin（用于左边缘）
+  @mixin right-shadow-container {
+    @include shadow-container;
+
+    left: -30px;
+  }
+
+  // 为左侧固定列添加阴影容器
+  &__cell--last-fixed-left::after,
+  // 为选择列添加阴影容器（仅在没有对应固定列时）
+  &[data-has-selection='true'][data-has-left-fixed='false'] &__mock-selection::after {
+    @include left-shadow-container;
+  }
+
+  // 为右侧固定列添加阴影容器
+  &__cell--first-fixed-right::after,
+  // 为操作列添加阴影容器（仅在没有对应固定列时）
+  &[data-has-operation='true'][data-has-right-fixed='false'] &__mock-operation::before {
+    @include right-shadow-container;
+  }
+
+  // 滚动时的阴影效果
+  // 向左滚动时的右侧阴影
+  &--scrolling-left &__cell--first-fixed-right::after,
+  &[data-has-operation='true'][data-has-right-fixed='false']
+    &--scrolling-left
+    &__mock-operation::before {
+    box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 15%);
+  }
+
+  // 向右滚动时的左侧阴影
+  &--scrolling-right &__cell--last-fixed-left::after,
+  &[data-has-selection='true'][data-has-left-fixed='false']
+    &--scrolling-right
+    &__mock-selection::after {
+    box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 15%);
+  }
+}
