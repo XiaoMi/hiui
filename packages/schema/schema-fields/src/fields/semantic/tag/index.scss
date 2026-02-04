@@ -1,0 +1,7 @@
+// Tag 样式
+// table 和 description 都适用
+.pro-tag {
+  &--bordered {
+    border: 0.5px solid #dfe2e8;
+  }
+}
