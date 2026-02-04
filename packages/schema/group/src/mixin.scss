@@ -1,0 +1,11 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+@mixin has-bordered() {
+  border: 1px solid use-var(color-gray-200, #ebedf0);
+  border-radius: use-var(border-radius-lg, 6px);
+}
+
+@mixin no-bordered() {
+  border: none;
+  border-radius: unset;
+}
