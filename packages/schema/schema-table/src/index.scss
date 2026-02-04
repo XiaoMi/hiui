@@ -1,0 +1,32 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+.schema-table {
+  &.#{with-prefix('table--size-sm')} {
+    tr.#{with-prefix('table-row')} td.#{with-prefix('table-cell')} {
+      height: 40px;
+      box-sizing: border-box;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    td.#{with-prefix('table-cell')} {
+      span[data-case='readonly'] {
+        display: inline-flex;
+
+        // 图片预览字段
+        &[data-field-type='image'] {
+          height: 38px;
+          align-items: center;
+
+          .image-preview {
+            &,
+            &__item-wrapper,
+            img {
+              height: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
