@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { get, isNil } from 'lodash-es'
-import { GridHelper, type BasicGridOptsType } from '@hi-ui/auto-grid'
+import { GridHelper, type BasicGridOptsType } from '@hi-ui/schema-auto-grid'
 import { FieldCreatorHelper, type FieldConfigType } from '@hi-ui/schema-core'
 import { useSubscribe } from '@hi-ui/use-subscription'
 import { useReadonlyRef, useDeepCompareMemo } from '@hi-ui/schema-hooks'

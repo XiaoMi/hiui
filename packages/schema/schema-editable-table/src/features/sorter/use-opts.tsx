@@ -1,6 +1,6 @@
 import { getSortedRowModel } from '@tanstack/react-table'
 import type { SortingState, TableOptions, SortingColumnDef } from '@tanstack/react-table'
-import type { TableSorterProps } from '@hi-ui/table-extensions'
+import type { TableSorterProps } from '@hi-ui/schema-table-extensions'
 import { ensureStateFields, type OnChangeFnCtxType } from '../../utils'
 import type { InnerRefType, PropsRefType } from '../../ctx'
 import type { StaticOptsRefType } from '../../hooks/use-global-static'

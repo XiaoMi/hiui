@@ -1,5 +1,5 @@
 import React from 'react'
-import { Actions, type ActionsProps } from '@hi-ui/action-trigger'
+import { Actions, type ActionsProps } from '@hi-ui/schema-action-trigger'
 import { getGetterValue } from '@hi-ui/schema-utils'
 import { useEditTableCtx } from '../ctx'
 import { Pagination } from '../features/pagination'

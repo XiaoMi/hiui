@@ -1,7 +1,7 @@
 import React from 'react'
 import Checkbox, { type CheckboxGroupProps } from '@hi-ui/checkbox'
 import { getPrefixCls } from '@hi-ui/classname'
-import { GridHelper, type BasicGridOptsType } from '@hi-ui/auto-grid'
+import { GridHelper, type BasicGridOptsType } from '@hi-ui/schema-auto-grid'
 import { getBoolConfig, type BoolConfig } from '@hi-ui/schema-utils'
 import { ProField } from '../../../base'
 import type { ProFieldRenderFormItemCtx } from '../../../base'

@@ -1,6 +1,6 @@
 import React from 'react'
 import Switch, { type SwitchProps } from '@hi-ui/switch'
-import { InterruptInjector } from '@hi-ui/interrupt-injector'
+import { InterruptInjector } from '@hi-ui/schema-interrupt-injector'
 import { ProField } from '../../../base'
 import type { ProFieldRenderFormItemCtx } from '../../../base'
 

@@ -46,7 +46,7 @@
     "@hi-ui/schema-core": ">=4.0.0-beta.0",
     "@hi-ui/schema-fields": ">=4.0.0-beta.0",
     "@hi-ui/schema-utils": ">=4.0.0-beta.0",
-    "@hi-ui/table-extensions": ">=4.0.0-beta.0",
+    "@hi-ui/schema-table-extensions": ">=4.0.0-beta.0",
     "lodash-es": "^4.17.23"
   },
   "peerDependencies": {

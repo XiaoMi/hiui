@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import type { FieldConfigType } from '@hi-ui/schema-core'
-import type { TableColumn, TableSettingProps } from '@hi-ui/table-extensions'
+import type { TableColumn, TableSettingProps } from '@hi-ui/schema-table-extensions'
 import type { TableCtxRefType } from '../table'
 
 /**

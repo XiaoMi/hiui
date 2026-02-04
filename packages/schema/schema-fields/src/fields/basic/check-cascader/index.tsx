@@ -1,8 +1,8 @@
 import React from 'react'
 import CheckCascader from '@hi-ui/check-cascader'
 import type { CheckCascaderProps as HiUICheckCascaderProps } from '@hi-ui/check-cascader'
-import { AsyncOptsDataInjector } from '@hi-ui/option-injector'
-import type { WithAsyncOptsDataProps } from '@hi-ui/option-injector'
+import { AsyncOptsDataInjector } from '@hi-ui/schema-option-injector'
+import type { WithAsyncOptsDataProps } from '@hi-ui/schema-option-injector'
 import { ProSelectableField } from '../../../extensible/selectable'
 import type { ProFieldRenderFormItemCtx } from '../../../base'
 

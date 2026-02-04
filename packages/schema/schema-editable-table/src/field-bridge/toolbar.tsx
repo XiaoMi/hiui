@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSchemaFormCtx } from '@hi-ui/schema-form'
-import { TableToolbar } from '@hi-ui/action-trigger'
+import { TableToolbar } from '@hi-ui/schema-action-trigger'
 import { NOOP_SUBSCRIPTION } from '@hi-ui/use-subscription'
 import { useSubscribeTickState } from '@hi-ui/schema-hooks'
 import { getGetterValue } from '@hi-ui/schema-utils'
@@ -8,7 +8,7 @@ import type {
   ActionConfigType,
   TableToolbarCtxType,
   TableToolbarProps,
-} from '@hi-ui/action-trigger'
+} from '@hi-ui/schema-action-trigger'
 
 export type FormEditTableToolbarCtxType = TableToolbarCtxType & {
   readonly?: boolean

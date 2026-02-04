@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import type { InterruptConfigType as InterruptConfigTypeImpl } from '@hi-ui/interrupt-injector'
+import type { InterruptConfigType as InterruptConfigTypeImpl } from '@hi-ui/schema-interrupt-injector'
 import type {
   CustomFilterProps as CustomFilterPropsImpl,
   FilterExtraOptsType as FilterExtraOptsTypeImpl,
   // FilterType as FilterTypeImpl,
   TableSorterProps as TableSorterPropsImpl,
-} from '@hi-ui/table-extensions'
+} from '@hi-ui/schema-table-extensions'
 import type {
   EnhancedRenderersType as EnhancedRenderersTypeImpl,
   FieldRendererType as FieldRendererTypeImpl,
@@ -75,9 +75,9 @@ import type {
   ProEditTableProps as ProEditTablePropsImpl,
 } from '@hi-ui/schema-editable-table'
 
-import type { TableToolbarCtxType as TableToolbarCtxTypeImpl } from '@hi-ui/action-trigger'
+import type { TableToolbarCtxType as TableToolbarCtxTypeImpl } from '@hi-ui/schema-action-trigger'
 
-import { GridHelperProps as GridHelperPropsImpl } from '@hi-ui/auto-grid'
+import { GridHelperProps as GridHelperPropsImpl } from '@hi-ui/schema-auto-grid'
 
 // import { BuiltInSortingFn as BuiltInSortingFnImpl } from '@/renderers/editable-table/features/sorter/get-sorter-config'
 

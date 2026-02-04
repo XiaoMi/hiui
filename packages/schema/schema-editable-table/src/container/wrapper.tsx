@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Empty } from '@hi-ui/table-extensions'
+import { Empty } from '@hi-ui/schema-table-extensions'
 
 import { useEditableSchemaTableCtx } from '../ctx'
 import { RowSelection } from '../features/row-selection/wrapper'

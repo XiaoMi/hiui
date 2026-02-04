@@ -1,6 +1,6 @@
 import type { BuiltInFilterFn as TanStackBuiltInFilterFn } from '@tanstack/react-table'
 import type { FieldConfigType, ValueTypePresets, FieldFilterConfigType } from '@hi-ui/schema-core'
-import type { FilterType } from '@hi-ui/table-extensions'
+import type { FilterType } from '@hi-ui/schema-table-extensions'
 import { mergeValues } from '@hi-ui/schema-utils'
 
 export type BuiltInFilterFn = TanStackBuiltInFilterFn | 'inDateRange'

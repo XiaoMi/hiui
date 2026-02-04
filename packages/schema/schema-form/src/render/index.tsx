@@ -1,5 +1,5 @@
 import React from 'react'
-import { GridHelper, DynamicColumnCountInjector, extractGridProps } from '@hi-ui/auto-grid'
+import { GridHelper, DynamicColumnCountInjector, extractGridProps } from '@hi-ui/schema-auto-grid'
 import { GroupContainer, GroupPanel } from '@hi-ui/group'
 import { groupPredicates } from '@hi-ui/schema-core'
 import type { GroupConfigType } from '@hi-ui/schema-core'

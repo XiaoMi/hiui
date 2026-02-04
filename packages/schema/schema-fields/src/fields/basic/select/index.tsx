@@ -1,8 +1,8 @@
 import React from 'react'
 import Select, { type SelectProps } from '@hi-ui/select'
-import { AsyncOptsDataInjector } from '@hi-ui/option-injector'
-import { InterruptInjector } from '@hi-ui/interrupt-injector'
-import type { WithAsyncOptsDataProps } from '@hi-ui/option-injector'
+import { AsyncOptsDataInjector } from '@hi-ui/schema-option-injector'
+import { InterruptInjector } from '@hi-ui/schema-interrupt-injector'
+import type { WithAsyncOptsDataProps } from '@hi-ui/schema-option-injector'
 import { ProSelectableField, type RefillPlaceholderProps } from '../../../extensible/selectable'
 import type {
   ProFieldRenderCtx,

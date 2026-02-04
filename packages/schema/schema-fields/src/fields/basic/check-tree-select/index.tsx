@@ -1,7 +1,7 @@
 import React from 'react'
 import CheckTreeSelect, { type CheckTreeSelectProps } from '@hi-ui/check-tree-select'
-import { AsyncOptsDataInjector } from '@hi-ui/option-injector'
-import type { WithAsyncOptsDataProps } from '@hi-ui/option-injector'
+import { AsyncOptsDataInjector } from '@hi-ui/schema-option-injector'
+import type { WithAsyncOptsDataProps } from '@hi-ui/schema-option-injector'
 import { ProSelectableField } from '../../../extensible/selectable'
 import type {
   ProFieldRenderCtx,

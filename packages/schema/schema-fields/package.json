@@ -43,11 +43,11 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/auto-grid": ">=4.0.0-beta.0",
+    "@hi-ui/schema-auto-grid": ">=4.0.0-beta.0",
     "@hi-ui/dumb-wrapper": ">=4.0.0-beta.0",
-    "@hi-ui/interrupt-injector": ">=4.0.0-beta.0",
+    "@hi-ui/schema-interrupt-injector": ">=4.0.0-beta.0",
     "@hi-ui/number-range": ">=4.0.0-beta.0",
-    "@hi-ui/option-injector": ">=4.0.0-beta.0",
+    "@hi-ui/schema-option-injector": ">=4.0.0-beta.0",
     "@hi-ui/schema-core": ">=4.0.0-beta.0",
     "@hi-ui/schema-hooks": ">=4.0.0-beta.0",
     "@hi-ui/schema-utils": ">=4.0.0-beta.0",

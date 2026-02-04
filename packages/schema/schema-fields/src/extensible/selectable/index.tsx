@@ -5,7 +5,7 @@ import {
   AsyncOptsDataGetter,
   getSelectedOptionTitle,
   WithAsyncOptsDataProps,
-} from '@hi-ui/option-injector'
+} from '@hi-ui/schema-option-injector'
 import { SELECTED_OPTION_RAW } from '@hi-ui/schema-core'
 import { isInvalidValue, filterCascaderSelfReferenceOpts } from '@hi-ui/schema-utils'
 import { ProField } from '../../base'

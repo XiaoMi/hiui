@@ -43,7 +43,6 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/schema-utils": ">=4.0.0-beta.0",
     "ahooks": "^3.9.6",
     "lodash-es": "^4.17.23"
   },

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import type { HeaderContext } from '@tanstack/react-table'
-import { TableSorter } from '@hi-ui/table-extensions'
+import { TableSorter } from '@hi-ui/schema-table-extensions'
 import { useSubscribe } from '@hi-ui/use-subscription'
 import { mergeProps, getBoolConfig } from '@hi-ui/schema-utils'
 import type { FieldConfigType, FieldSorterConfigType } from '@hi-ui/schema-core'
-import type { SortDirection } from '@hi-ui/table-extensions'
+import type { SortDirection } from '@hi-ui/schema-table-extensions'
 import { useEditTableCtx } from '../../ctx'
 
 export type TableSorterBridgeProps<TData extends AnyObject> = {

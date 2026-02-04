@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import type { HeaderContext } from '@tanstack/react-table'
-import { TableFilter } from '@hi-ui/table-extensions'
+import { TableFilter } from '@hi-ui/schema-table-extensions'
 import { mergeProps, rawToItems, type RawItemType } from '@hi-ui/schema-utils'
 import type { FieldConfigType, FieldFilterConfigType } from '@hi-ui/schema-core'
-import type { FilterValueType, SelectFilterOptions } from '@hi-ui/table-extensions'
+import type { FilterValueType, SelectFilterOptions } from '@hi-ui/schema-table-extensions'
 import { useEditableSchemaTableCtx, type EditTableCtxType } from '../../ctx'
 
 type TableFilterBridgeProps<TData extends AnyObject> = {
