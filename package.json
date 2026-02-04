@@ -23,6 +23,7 @@
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "build": "turbo run build",
+    "build:schema": "turbo run build --filter='./packages/schema/*...'",
     "type-check": "turbo run build:types",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
@@ -47,6 +48,7 @@
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/react": "^6.3.12",
+    "@types/lodash-es": "^4.17.12",
     "@typescript-eslint/eslint-plugin": "~4.10.0",
     "@typescript-eslint/parser": "^4.16.1",
     "autoprefixer": "^8.5.0",
@@ -115,12 +117,15 @@
     "eslint-plugin-standard": "~4.0.2",
     "husky": "~4.3.0",
     "lint-staged": "~10.5.1",
-    "prettier": "~2.1.2",
+    "prettier": "~2.7.1",
     "semver": "~7.3.2",
     "stylelint": "~13.7.2",
     "stylelint-config-recommended-scss": "~4.2.0",
     "stylelint-config-standard": "~20.0.0",
     "stylelint-scss": "~3.18.0"
+  },
+  "resolutions": {
+    "@types/lodash": "4.17.5"
   },
   "engines": {
     "node": ">=12.22.1 <=14.21.3"
@@ -138,5 +143,11 @@
       "stylelint --config .stylelintrc  --fix",
       "git add"
     ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "es5",
+    "printWidth": 100
   }
 }

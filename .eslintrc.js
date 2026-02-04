@@ -48,15 +48,7 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        semi: false,
-        printWidth: 100,
-        trailingComma: 'es5',
-      },
-    ],
+    'prettier/prettier': ['error', require('./package.json').prettier],
     'no-use-before-define': 0,
     '@typescript-eslint/no-use-before-define': 0,
     'react/prop-types': 0,
