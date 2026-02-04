@@ -1,0 +1,7 @@
+{
+  "extends": "../../../tsconfig.json",
+  "include": ["./src"],
+  "compilerOptions": {
+    "types": ["@hi-ui/utility-types/global"]
+  }
+}
