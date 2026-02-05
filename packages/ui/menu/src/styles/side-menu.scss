@@ -38,7 +38,8 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
         background-color: use-color-static('white');
       }
 
-      .#{$side-menu-prefix}-item__icon {
+      .#{$side-menu-prefix}-item__icon,
+      .#{$side-menu-prefix}-item__title {
         color: use-color-mode('primary');
       }
     }

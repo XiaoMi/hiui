@@ -23,7 +23,7 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
       border-radius: use-border-radius('lg');
       font-size: use-text-size('normal');
       line-height: use-text-lineheight('normal');
-      color: use-color('gray', 800);
+      color: use-color('gray', 800, 0.8);
     }
 
     &:not(&--parent):not(&--disabled) {
@@ -75,7 +75,8 @@ $group-menu-prefix: '#{$component-prefix}-group-menu' !default;
 
     > .#{$group-menu-prefix}-item__content {
       height: use-height-size(7);
-      color: use-color('gray', 600);
+      font-weight: use-text-weight('medium');
+      color: use-color('gray', 800);
 
       .#{$group-menu-prefix}-item__title {
         font-size: use-text-size('sm');
