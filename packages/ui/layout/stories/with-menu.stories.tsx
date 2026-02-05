@@ -1,6 +1,4 @@
 import React from 'react'
-import Menu from '@hi-ui/menu'
-import Scrollbar from '@hi-ui/scrollbar'
 import {
   AppStoreFilled,
   QuestionCircleFilled,
@@ -10,12 +8,8 @@ import {
   EllipsisOutlined,
   PlusOutlined,
 } from '@hi-ui/icons'
+import { Button, Avatar, PageHeader, Space, Dropdown, Menu, Scrollbar } from '@hi-ui/hiui'
 import Layout, { Sider, Content, SearchTrigger, ProfilePopover, ActionItem } from '../src'
-import Button from '@hi-ui/button'
-import Avatar from '@hi-ui/avatar'
-import PageHeader from '@hi-ui/page-header'
-import Space from '@hi-ui/space'
-import Dropdown from '@hi-ui/dropdown'
 
 /**
  * @title 侧边栏带普通菜单
@@ -36,7 +30,7 @@ export const WithMenu = () => {
       icon: <AppStoreFilled />,
     },
     {
-      title: '小米电视',
+      title: '电视',
       id: 2,
       icon: <MonitorFilled />,
     },
@@ -47,16 +41,16 @@ export const WithMenu = () => {
       children: [
         {
           title: '小米',
-          id: 666,
+          id: 'xiaomi',
         },
         {
           title: '红米',
-          id: 'hongmi',
+          id: 'redmi',
         },
       ],
     },
     {
-      title: '小米平板',
+      title: '平板',
       id: 4,
       icon: <PadFilled />,
     },
@@ -198,7 +192,8 @@ export const WithMenu = () => {
             <div
               style={{
                 flex: 1,
-                borderRadius: 12,
+                borderStartStartRadius: 12,
+                borderStartEndRadius: 12,
                 backgroundColor: '#fff',
                 boxShadow: '0 0 4px rgba(92, 94, 102, 0.06)',
               }}

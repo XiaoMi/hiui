@@ -1,5 +1,4 @@
 import React from 'react'
-import { MenuDataItem, GroupMenu, SideMenu, useSideMenuCascade } from '@hi-ui/menu'
 import {
   AppStoreFilled,
   MonitorFilled,
@@ -10,8 +9,19 @@ import {
   PlusOutlined,
   QuestionCircleFilled,
 } from '@hi-ui/icons'
-import Button from '@hi-ui/button'
-import IconButton from '@hi-ui/icon-button'
+import {
+  MenuDataItem,
+  GroupMenu,
+  SideMenu,
+  useSideMenuCascade,
+  Button,
+  IconButton,
+  Avatar,
+  PageHeader,
+  EllipsisTooltip,
+  Space,
+  Dropdown,
+} from '@hi-ui/hiui'
 import Layout, {
   Sider,
   Content,
@@ -21,11 +31,6 @@ import Layout, {
   ProfilePopover,
   ActionItem,
 } from '../src'
-import PageHeader from '@hi-ui/page-header'
-import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
-import Space from '@hi-ui/space'
-import Dropdown from '@hi-ui/dropdown'
-import Avatar from '@hi-ui/avatar'
 
 /**
  * @title 侧边栏带浮动菜单
@@ -78,7 +83,7 @@ export const FloatMenu = () => {
       children: [
         {
           title: '小米',
-          id: 666,
+          id: 'xiaomi',
           children: [
             {
               title: '小米10',
@@ -180,11 +185,9 @@ export const FloatMenu = () => {
   console.log('submenuData', submenuData)
 
   // 浮动菜单是否显示
-  const [floatContainerVisible, setFloatContainerVisible] = React.useState(submenuData.length > 0)
+  const [floatContainerVisible, setFloatContainerVisible] = React.useState(false)
   // 浮动菜单是否折叠
-  const [floatContainerCollapsed, setFloatContainerCollapsed] = React.useState(
-    submenuData.length === 0
-  )
+  const [floatContainerCollapsed, setFloatContainerCollapsed] = React.useState(true)
 
   // 应用列表是否显示
   const [appListPopoverVisible, setAppListPopoverVisible] = React.useState(false)
@@ -521,7 +524,8 @@ export const FloatMenu = () => {
             <div
               style={{
                 flex: 1,
-                borderRadius: 12,
+                borderStartStartRadius: 12,
+                borderStartEndRadius: 12,
                 backgroundColor: '#fff',
                 boxShadow: '0 0 4px rgba(92, 94, 102, 0.06)',
               }}
