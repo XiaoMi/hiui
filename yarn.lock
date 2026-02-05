@@ -2585,14 +2585,14 @@
 
 "@dnd-kit/accessibility@^3.1.1":
   version "3.1.1"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@dnd-kit/accessibility/-/accessibility-3.1.1.tgz#3b4202bd6bb370a0730f6734867785919beac6af"
+  resolved "https://registry.npmjs.org/@dnd-kit/accessibility/-/accessibility-3.1.1.tgz#3b4202bd6bb370a0730f6734867785919beac6af"
   integrity sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==
   dependencies:
     tslib "^2.0.0"
 
 "@dnd-kit/core@^6.3.1":
   version "6.3.1"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@dnd-kit/core/-/core-6.3.1.tgz#4c36406a62c7baac499726f899935f93f0e6d003"
+  resolved "https://registry.npmjs.org/@dnd-kit/core/-/core-6.3.1.tgz#4c36406a62c7baac499726f899935f93f0e6d003"
   integrity sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==
   dependencies:
     "@dnd-kit/accessibility" "^3.1.1"
@@ -2601,7 +2601,7 @@
 
 "@dnd-kit/sortable@^10.0.0":
   version "10.0.0"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@dnd-kit/sortable/-/sortable-10.0.0.tgz#1f9382b90d835cd5c65d92824fa9dafb78c4c3e8"
+  resolved "https://registry.npmjs.org/@dnd-kit/sortable/-/sortable-10.0.0.tgz#1f9382b90d835cd5c65d92824fa9dafb78c4c3e8"
   integrity sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==
   dependencies:
     "@dnd-kit/utilities" "^3.2.2"
@@ -2609,7 +2609,7 @@
 
 "@dnd-kit/utilities@^3.2.2":
   version "3.2.2"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@dnd-kit/utilities/-/utilities-3.2.2.tgz#5a32b6af356dc5f74d61b37d6f7129a4040ced7b"
+  resolved "https://registry.npmjs.org/@dnd-kit/utilities/-/utilities-3.2.2.tgz#5a32b6af356dc5f74d61b37d6f7129a4040ced7b"
   integrity sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==
   dependencies:
     tslib "^2.0.0"
@@ -3919,7 +3919,7 @@
 
 "@remix-run/router@1.23.2":
   version "1.23.2"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@remix-run/router/-/router-1.23.2.tgz#156c4b481c0bee22a19f7924728a67120de06971"
+  resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.23.2.tgz#156c4b481c0bee22a19f7924728a67120de06971"
   integrity sha512-Ic6m2U/rMjTkhERIa/0ZtXJP17QUi2CbWE7cqx4J58M8aA3QTfW+2UlQ4psvTX9IO1RfNVhK3pcpdjej7L+t2w==
 
 "@rollup/plugin-babel@^5.3.1":
@@ -4862,7 +4862,7 @@
 
 "@tanstack/react-table@^8.21.3":
   version "8.21.3"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@tanstack/react-table/-/react-table-8.21.3.tgz#2c38c747a5731c1a07174fda764b9c2b1fb5e91b"
+  resolved "https://registry.npmjs.org/@tanstack/react-table/-/react-table-8.21.3.tgz#2c38c747a5731c1a07174fda764b9c2b1fb5e91b"
   integrity sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==
   dependencies:
     "@tanstack/table-core" "8.21.3"
@@ -4876,7 +4876,7 @@
 
 "@tanstack/table-core@8.21.3":
   version "8.21.3"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/@tanstack/table-core/-/table-core-8.21.3.tgz#2977727d8fc8dfa079112d9f4d4c019110f1732c"
+  resolved "https://registry.npmjs.org/@tanstack/table-core/-/table-core-8.21.3.tgz#2977727d8fc8dfa079112d9f4d4c019110f1732c"
   integrity sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==
 
 "@tanstack/virtual-core@3.13.18":
@@ -8146,7 +8146,7 @@ decimal.js@^10.2.1:
 
 decimal.js@^10.6.0:
   version "10.6.0"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/decimal.js/-/decimal.js-10.6.0.tgz#e649a43e3ab953a72192ff5983865e509f37ed9a"
+  resolved "https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz#e649a43e3ab953a72192ff5983865e509f37ed9a"
   integrity sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==
 
 decode-named-character-reference@^1.0.0:
@@ -8601,7 +8601,7 @@ emittery@^0.8.1:
 
 emittery@^1.2.0:
   version "1.2.0"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/emittery/-/emittery-1.2.0.tgz#466edb32bada8d9b35f779c3ee8c514ac2df8dc0"
+  resolved "https://registry.npmjs.org/emittery/-/emittery-1.2.0.tgz#466edb32bada8d9b35f779c3ee8c514ac2df8dc0"
   integrity sha512-KxdRyyFcS85pH3dnU8Y5yFUm2YJdaHwcBZWrfG8o89ZY9a13/f9itbN+YG3ELbBo9Pg5zvIozstmuV8bX13q6g==
 
 "emoji-regex@>=6.0.0 <=6.1.1":
@@ -10636,12 +10636,12 @@ immer@8.0.1:
 
 immer@^11.1.3:
   version "11.1.3"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/immer/-/immer-11.1.3.tgz#78681e1deb6cec39753acf04eb16d7576c04f4d6"
+  resolved "https://registry.npmjs.org/immer/-/immer-11.1.3.tgz#78681e1deb6cec39753acf04eb16d7576c04f4d6"
   integrity sha512-6jQTc5z0KJFtr1UgFpIL3N9XSC3saRaI9PwWtzM2pSqkNGtiNkYY2OSwkOGDK2XcTRcLb1pi/aNkKZz0nxVH4Q==
 
 immer@^8.0.1:
   version "8.0.4"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/immer/-/immer-8.0.4.tgz#3a21605a4e2dded852fb2afd208ad50969737b7a"
+  resolved "https://registry.npmjs.org/immer/-/immer-8.0.4.tgz#3a21605a4e2dded852fb2afd208ad50969737b7a"
   integrity sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==
 
 immutable@^4.0.0:
@@ -12276,7 +12276,7 @@ locate-path@^6.0.0:
 
 lodash-es@^4.17.23:
   version "4.17.23"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/lodash-es/-/lodash-es-4.17.23.tgz#58c4360fd1b5d33afc6c0bbd3d1149349b1138e0"
+  resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.23.tgz#58c4360fd1b5d33afc6c0bbd3d1149349b1138e0"
   integrity sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==
 
 lodash._reinterpolate@^3.0.0:
@@ -15891,7 +15891,7 @@ react-resize-detector@^7.0.0:
 
 react-router-dom@^6.30.3:
   version "6.30.3"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/react-router-dom/-/react-router-dom-6.30.3.tgz#42ae6dc4c7158bfb0b935f162b9621b29dddf740"
+  resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.30.3.tgz#42ae6dc4c7158bfb0b935f162b9621b29dddf740"
   integrity sha512-pxPcv1AczD4vso7G4Z3TKcvlxK7g7TNt3/FNGMhfqyntocvYKj+GCatfigGDjbLozC4baguJ0ReCigoDJXb0ag==
   dependencies:
     "@remix-run/router" "1.23.2"
@@ -15899,7 +15899,7 @@ react-router-dom@^6.30.3:
 
 react-router@6.30.3:
   version "6.30.3"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/react-router/-/react-router-6.30.3.tgz#994b3ccdbe0e81fe84d4f998100f62584dfbf1cf"
+  resolved "https://registry.npmjs.org/react-router/-/react-router-6.30.3.tgz#994b3ccdbe0e81fe84d4f998100f62584dfbf1cf"
   integrity sha512-XRnlbKMTmktBkjCLE8/XcZFlnHvr2Ltdr1eJX4idL55/9BbORzyZEaIkBFDhFGCEWBBItsVrDxwx3gnisMitdw==
   dependencies:
     "@remix-run/router" "1.23.2"

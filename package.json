@@ -25,6 +25,7 @@
     "build": "turbo run build",
     "build:schema": "turbo run build --filter='./packages/schema/*...'",
     "type-check": "turbo run build:types",
+    "type-check:schema": "turbo run build:types --filter='./packages/schema/*...'",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "fix": "standard --fix && stylelint --config .stylelintrc 'components/**/*.scss' --fix",

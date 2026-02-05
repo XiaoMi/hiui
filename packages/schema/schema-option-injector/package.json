@@ -53,7 +53,6 @@
     "@hi-ui/check-select": ">=4.0.0",
     "@hi-ui/check-tree-select": ">=4.0.0",
     "@hi-ui/picker": ">=4.0.0",
-    "@hi-ui/schema-fields": ">=4.0.0-beta.0",
     "@hi-ui/schema-types": ">=4.0.0-beta.0",
     "@hi-ui/select": ">=4.0.0",
     "@hi-ui/tree-select": ">=4.0.0",
@@ -62,8 +61,16 @@
     "react": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/cascader": ">=4.0.0",
+    "@hi-ui/check-cascader": ">=4.0.0",
+    "@hi-ui/check-select": ">=4.0.0",
+    "@hi-ui/check-tree-select": ">=4.0.0",
+    "@hi-ui/picker": ">=4.0.0",
     "@hi-ui/schema-types": ">=4.0.0-beta.0",
+    "@hi-ui/select": ">=4.0.0",
+    "@hi-ui/tree-select": ">=4.0.0",
     "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "ahooks": "^3.9.6",
     "react": "^17.0.2"
   },
   "volta": {

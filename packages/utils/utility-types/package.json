@@ -34,9 +34,10 @@
     "test": "echo 'do nothing'",
     "clean": "rimraf lib global.d.ts",
     "prebuild": "yarn clean",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build:global": "node scripts/generate-global-d.ts.mjs",
-    "build": "yarn build:types && yarn build:global"
+    "gen:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "gen:global": "node scripts/generate-global-d.ts.mjs",
+    "build:types": "yarn gen:types && yarn gen:global",
+    "build": "yarn build:types"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
