@@ -37,10 +37,10 @@ $prefix: '#{$component-prefix}-input' !default;
     color: use-color('gray', 800);
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
 

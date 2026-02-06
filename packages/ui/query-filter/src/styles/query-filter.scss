@@ -29,6 +29,10 @@ $query-filter-form-gap: use-spacing(4) !default;
         }
       }
     }
+
+    .#{$component-prefix}-button--type-default.#{$component-prefix}-button--appearance-line {
+      color: use-color('gray', 700);
+    }
   }
 }
 
@@ -69,6 +73,13 @@ $query-filter-form-gap: use-spacing(4) !default;
     [class*='__inner'],
     [class*='__inner--focused'] {
       background-color: use-color('gray', 100) !important;
+    }
+  }
+
+  .#{$component-prefix}-input {
+    &__prefix,
+    &__suffix {
+      color: use-color('gray', 700);
     }
   }
 }

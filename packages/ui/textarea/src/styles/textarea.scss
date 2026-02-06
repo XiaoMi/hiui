@@ -33,10 +33,10 @@ $prefix: '#{$component-prefix}-textarea' !default;
     word-break: break-all;
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
 
       .#{$prefix}--appearance-unset & {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
 

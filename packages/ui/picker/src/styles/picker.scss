@@ -15,7 +15,7 @@ $prefix: '#{$component-prefix}-picker' !default;
     cursor: pointer;
 
     &__suffix {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 

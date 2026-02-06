@@ -39,7 +39,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     height: 50%;
     padding: 0 use-spacing(3);
     font-size: use-text-size('md');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     // @animation
     transition-property: background-color, color, box-shadow;
@@ -56,7 +56,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
     &.disabled {
       cursor: not-allowed;
-      color: use-color('gray', 600);
+      color: use-color('gray', 500);
     }
   }
 
@@ -82,7 +82,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
     white-space: nowrap;
 
     &::placeholder {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
