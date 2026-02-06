@@ -150,7 +150,7 @@ export const AllFilter = () => {
       <div className="query-filter-all-filter__wrap">
         <QueryFilterProvider>
           <QueryFilter
-            prepend={<SearchInput />}
+            prepend={<SearchInput placeholder="姓名/手机号" />}
             append={[
               <FilterButton key="all-filter" count={filteredCount} onClick={() => setVisible(true)}>
                 全部筛选

@@ -90,7 +90,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$prefix}__function-button {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 
@@ -184,7 +184,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
   }
 
   &--disabled {
