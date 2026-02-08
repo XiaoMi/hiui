@@ -16,6 +16,7 @@ module.exports = {
     AnyArray: 'readonly',
     UnknownObject: 'readonly',
     AnyFn: 'readonly',
+    AnyClass: 'readonly',
     AnyComponent: 'readonly',
     PipeFn: 'readonly',
     ArrayToUnion: 'readonly',

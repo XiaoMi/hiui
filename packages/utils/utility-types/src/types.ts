@@ -8,6 +8,7 @@ export type AnyObject = Record<string, any>
 export type AnyArray = any[]
 export type UnknownObject = Record<string, unknown>
 export type AnyFn = (...args: any[]) => any
+export type AnyClass = new (...args: AnyType[]) => AnyType
 export type AnyComponent = React.ComponentType<AnyType>
 export type PipeFn<T, Extra = AnyObject> = (value: T, extra?: Extra) => T
 
