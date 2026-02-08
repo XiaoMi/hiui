@@ -1,5 +1,16 @@
 # @hi-ui/schema-option-injector
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 6b975e515: 处理 packages/schema 中多个包的依赖缺失问题
+- Updated dependencies [ef3969a08]
+- Updated dependencies [6b975e515]
+  - @hi-ui/schema-core@4.0.0-experimental.2
+  - @hi-ui/utility-types@4.0.0-experimental.2
+  - @hi-ui/schema-utils@4.0.0-experimental.2
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/schema-utils",
-  "version": "4.0.0-experimental.1",
+  "version": "4.0.0-experimental.2",
   "description": "A sub-package for @hi-ui/schema.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -51,13 +51,13 @@
   "peerDependencies": {
     "@hi-ui/cascader": "^4.5.2",
     "@hi-ui/check-cascader": "^4.5.2",
-    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/utility-types": ">=4.0.0-experimental.2",
     "react": ">=16.8.6"
   },
   "devDependencies": {
     "@hi-ui/cascader": "^4.5.2",
     "@hi-ui/check-cascader": "^4.5.2",
-    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/utility-types": ">=4.0.0-experimental.2",
     "react": "^17.0.2"
   },
   "volta": {
