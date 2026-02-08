@@ -42,15 +42,25 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "devDependencies": {},
-  "volta": {
-    "node": "14.21.3"
-  },
   "dependencies": {
-    "@hi-ui/classname": "^5.0.0-experimental.0",
-    "@hi-ui/utility-types": "4.0.0-experimental.1",
+    "@hi-ui/classname": "^4.0.5",
     "decimal.js": "^10.6.0",
     "lodash-es": "^4.17.23",
     "react": "^17.0.2"
+  },
+  "peerDependencies": {
+    "@hi-ui/cascader": "^4.5.2",
+    "@hi-ui/check-cascader": "^4.5.2",
+    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "react": ">=16.8.6"
+  },
+  "devDependencies": {
+    "@hi-ui/cascader": "^4.5.2",
+    "@hi-ui/check-cascader": "^4.5.2",
+    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "react": "^17.0.2"
+  },
+  "volta": {
+    "node": "14.21.3"
   }
 }

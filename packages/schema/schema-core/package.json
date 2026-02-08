@@ -48,12 +48,26 @@
     "react-is": "^17.0.2"
   },
   "peerDependencies": {
-    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
+    "@hi-ui/card": ">=4.0.0",
+    "@hi-ui/collapse": ">=4.0.0",
+    "@hi-ui/descriptions": ">=4.0.0",
+    "@hi-ui/ellipsis-tooltip": ">=4.0.0",
+    "@hi-ui/schema-types": ">=4.0.0-beta.0",
+    "@hi-ui/table": "^4.12.3",
+    "@hi-ui/tabs": ">=4.0.0",
+    "@hi-ui/utility-types": ">=4.0.0-beta.0",
     "@tanstack/react-table": "^8.21.3",
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
+    "@hi-ui/card": ">=4.0.0",
+    "@hi-ui/collapse": ">=4.0.0",
+    "@hi-ui/descriptions": ">=4.0.0",
+    "@hi-ui/ellipsis-tooltip": ">=4.0.0",
+    "@hi-ui/schema-types": ">=4.0.0-beta.0",
+    "@hi-ui/table": "^4.12.3",
+    "@hi-ui/tabs": ">=4.0.0",
+    "@hi-ui/utility-types": ">=4.0.0-beta.0",
     "@tanstack/react-table": "^8.21.3",
     "react": "^17.0.2"
   },

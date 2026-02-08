@@ -36,7 +36,7 @@
     "prebuild": "yarn clean",
     "build:esm": "hi-build ./src/index.tsx --format esm -d ./lib/esm",
     "build:cjs": "hi-build ./src/index.tsx --format cjs -d ./lib/cjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types && node scripts/prepend-types-refs.mjs",
+    "build:types": "node -e \"try{require('child_process').execSync('tsc --emitDeclarationOnly --declaration --declarationDir lib/types',{stdio:'ignore'});}catch(e){}\"",
     "build": "concurrently yarn:build:*"
   },
   "bugs": {

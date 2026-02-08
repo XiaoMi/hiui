@@ -1,6 +1,7 @@
 /// <reference types="@hi-ui/utility-types/global" />
 
 export * from './const'
+export * from './extends'
 export * from './interface'
 
 // @index('./{field,group,action}/*', f => `export * from '${f.path}'`)
