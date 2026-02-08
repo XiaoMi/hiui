@@ -1,5 +1,11 @@
 # @hi-ui/schema-utils
 
+## 4.0.0-experimental.3
+
+### Patch Changes
+
+- 修改依赖版本号
+
 ## 4.0.0-experimental.2
 
 ### Patch Changes

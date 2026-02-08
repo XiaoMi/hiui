@@ -1,5 +1,14 @@
 # @hi-ui/schema-option-injector
 
+## 4.0.0-experimental.3
+
+### Patch Changes
+
+- 修改依赖版本号
+- Updated dependencies
+  - @hi-ui/schema-core@4.0.0-experimental.3
+  - @hi-ui/schema-utils@4.0.0-experimental.3
+
 ## 4.0.0-experimental.2
 
 ### Patch Changes

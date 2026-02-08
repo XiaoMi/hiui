@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/schema-core",
-  "version": "4.0.0-experimental.2",
+  "version": "4.0.0-experimental.3",
   "description": "A sub-package for @hi-ui/schema.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,30 +43,30 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/schema-utils": ">=4.0.0-experimental.2",
+    "@hi-ui/schema-utils": ">=4.0.0-experimental.3",
     "lodash-es": "^4.17.23",
     "react-is": "^17.0.2"
   },
   "peerDependencies": {
-    "@hi-ui/card": ">=4.0.0",
-    "@hi-ui/collapse": ">=4.0.0",
-    "@hi-ui/descriptions": ">=4.0.0",
-    "@hi-ui/ellipsis-tooltip": ">=4.0.0",
+    "@hi-ui/card": ">=5.0.0-experimental.0",
+    "@hi-ui/collapse": ">=5.0.0-experimental.0",
+    "@hi-ui/descriptions": ">=5.0.0-experimental.0",
+    "@hi-ui/ellipsis-tooltip": ">=5.0.0-experimental.0",
     "@hi-ui/schema-types": ">=4.0.0-beta.0",
-    "@hi-ui/table": "^4.12.3",
-    "@hi-ui/tabs": ">=4.0.0",
+    "@hi-ui/table": ">=5.0.0-experimental.0",
+    "@hi-ui/tabs": ">=5.0.0-experimental.0",
     "@hi-ui/utility-types": ">=4.0.0-experimental.2",
     "@tanstack/react-table": "^8.21.3",
     "react": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/card": ">=4.0.0",
-    "@hi-ui/collapse": ">=4.0.0",
-    "@hi-ui/descriptions": ">=4.0.0",
-    "@hi-ui/ellipsis-tooltip": ">=4.0.0",
+    "@hi-ui/card": ">=5.0.0-experimental.0",
+    "@hi-ui/collapse": ">=5.0.0-experimental.0",
+    "@hi-ui/descriptions": ">=5.0.0-experimental.0",
+    "@hi-ui/ellipsis-tooltip": ">=5.0.0-experimental.0",
     "@hi-ui/schema-types": ">=4.0.0-beta.0",
-    "@hi-ui/table": "^4.12.3",
-    "@hi-ui/tabs": ">=4.0.0",
+    "@hi-ui/table": ">=5.0.0-experimental.0",
+    "@hi-ui/tabs": ">=5.0.0-experimental.0",
     "@hi-ui/utility-types": ">=4.0.0-experimental.2",
     "@tanstack/react-table": "^8.21.3",
     "react": "^17.0.2"
