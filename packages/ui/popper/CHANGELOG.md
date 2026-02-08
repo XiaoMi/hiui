@@ -1,5 +1,49 @@
 # @hi-ui/popper
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- 277c5033a: style(dropdown): 下拉框带边框&圆角改为 6px&size 改为只有 md 尺寸 (5.0)
+
+### Minor Changes
+
+- f2be367e9: feat(popper): 增加 PopperOverlayProps 的新事件处理属性 onEnter, onEntered, onExit (5.0)
+- 1972fd16a: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+
+### Patch Changes
+
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 1662753e0: style: fix ui bug (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- a0f0c9d6b: style: 修改 UI 问题 (5.0)
+- 86910f5e2: style: 修改 UI (5.0)
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e3dea9be5]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-lazy-render@5.0.0-experimental.0
+  - @hi-ui/use-merge-refs@5.0.0-experimental.0
+  - @hi-ui/use-outside-click@5.0.0-experimental.0
+  - @hi-ui/use-toggle@5.0.0-experimental.0
+  - @hi-ui/portal@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/dom-utils@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/react-utils@5.0.0-experimental.0
+  - @hi-ui/react-compat@5.0.0-experimental.0
+
 ## 4.1.7
 
 ### Patch Changes

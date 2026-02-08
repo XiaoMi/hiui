@@ -1,5 +1,148 @@
 # @hi-ui/table
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- df301c0dc: feat(table): 普通表格支持 scrollTo 方法 (5.0)
+- 95e65eecd: feat(table): 支持远程排序 (5.0)
+- aebefd73e: feat(table): add onScroll api (5.0)
+- 9f4268ee3: feat(table): TableColumnItem 支持泛型 (5.0)
+- d51de8acc: feat(table): add stretchHeight api (5.0)
+
+### Patch Changes
+
+- 4a31cea53: style: 统一调整组件 shadow (5.0)
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 1662753e0: style: fix ui bug (5.0)
+- e5964c571: style(table): 修复虚拟表格中多选列没有居中问题 (5.0)
+- d2cdb2537: fix(table): 修复在 stretchHeight 模式下，冻结列表头和单元格层级问题 (5.0)
+- 619e031ab: style(table): update hover and striped row background colors for improved visibility (5.0)
+- 76cfe571b: style(table): 修复虚拟表格下 align 设置无效问题 (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- ea9d00628: fix(table): 修复表头分组数据为空时表头显示异常问题，当 data 为空时，使用双表格 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- fc7f381ff: perf(table): add cell class prefix to TbodyContent and adjust useColWidth debounce timing (5.0)
+- 71fc15e5c: style: 修改样式问题 (5.0)
+- b6a389ac1: perf(table): 优化表格列宽更新逻辑，当内容宽度没有超出时再更新列宽 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- e2f69cb62: refactor(table): stretchHeight 模式不再使用双表格结构，使用 sticky 实现 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- eb718e940: fix: 修改组件问题 (5.0)
+- 150e813bf: fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+- ac15c6141: <br />
+  - fix(table): 修改表格在外层是 scale 时导致列宽计算有误的问题 (5.0)
+  - fix(loading): 修改 loading size 类型，移除 xs 尺寸 (5.0)
+- e2d184e74: style: 修改 UI 问题 (5.0)
+- 6ac7e8eb2: chore(table): export SettingDrawer types (5.0)
+- ded9bb6d6: <br>
+  - perf(table): 优化列宽更新逻辑，当 columns 长度和 dataKey、width 发生变化时，重新计算列宽 (5.0)
+  - fix(table): 用于计算真实列宽的行节点，考虑单元格合并的场景 (5.0)
+  - fix(table): 修复 stretchHeight 模式下高度变化时虚拟表格高度没有更新问题 (5.0)
+- 11b7699f6: <br>
+  - fix(table): 标题去掉背景，头部加上边框 (5.0)
+  - fix(table): 单元格间距调整 & 设置最小高度 (5.0)
+  - fix(table): 不同尺寸修改 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 478b51050: fix(table): 修复标题过长时，列头宽度拉宽后无法缩小的问题 (5.0)
+- a0f0c9d6b: style: 修改 UI 问题 (5.0)
+- e3a854122: refactor(table): 调整列宽计算逻辑，兼容表头分组和单元格合并场景 (5.0)
+- Updated dependencies [20aac2a2f]
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [b9989e482]
+- Updated dependencies [6167ad50b]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [cf89262c7]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [95dd766b9]
+- Updated dependencies [423aab762]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [08b9d0ecf]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [b6a389ac1]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [eb718e940]
+- Updated dependencies [277c5033a]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [1429eced2]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [de8d058dc]
+- Updated dependencies [5210770d9]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [2f850ad84]
+- Updated dependencies [3457a6f7d]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+- Updated dependencies [dd60555d3]
+- Updated dependencies [f9c4afd14]
+  - @hi-ui/radio@5.0.0-experimental.0
+  - @hi-ui/pagination@5.0.0-experimental.0
+  - @hi-ui/drawer@5.0.0-experimental.0
+  - @hi-ui/loading@5.0.0-experimental.0
+  - @hi-ui/popper@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/select@5.0.0-experimental.0
+  - @hi-ui/empty-state@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/icon-button@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-cache@5.0.0-experimental.0
+  - @hi-ui/use-check@5.0.0-experimental.0
+  - @hi-ui/use-check-state@5.0.0-experimental.0
+  - @hi-ui/use-drag-sorter@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-toggle@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/use-update-effect@5.0.0-experimental.0
+  - @hi-ui/checkbox@5.0.0-experimental.0
+  - @hi-ui/scrollbar@5.0.0-experimental.0
+  - @hi-ui/spinner@5.0.0-experimental.0
+  - @hi-ui/array-utils@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/dom-utils@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/func-utils@5.0.0-experimental.0
+  - @hi-ui/object-utils@5.0.0-experimental.0
+  - @hi-ui/react-utils@5.0.0-experimental.0
+  - @hi-ui/times@5.0.0-experimental.0
+  - @hi-ui/tree-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.12.3
 
 ### Patch Changes

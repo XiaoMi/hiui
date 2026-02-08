@@ -1,5 +1,41 @@
 # @hi-ui/ellipsis-tooltip
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- be5a59325: style: 修改样式问题 (5.0)
+- fa5a60b56: <br>
+  - fix(ellipsis-tooltip): 修复设置 numberOfLines 无效问题 & 兼容 children 为空情况 (5.0)
+  - feat(ellipsis-tooltip): 增强 children 处理逻辑，支持 ReactNode 类型并优化 tooltip 显示 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 0f4794deb: fix(ellipsis-tooltip): 兼容 number 类型展示 (5.0)
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [c021539a3]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [d021b4fa6]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [33da3144e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+  - @hi-ui/tooltip@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+
 ## 4.2.0
 
 ### Minor Changes

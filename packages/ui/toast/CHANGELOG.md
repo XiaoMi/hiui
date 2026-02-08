@@ -1,5 +1,37 @@
 # @hi-ui/toast
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 7f08a4e4f: chore(modal&toast): 使用 react-compat 提供的 React 渲染方法 (5.0)
+
+### Patch Changes
+
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e3dea9be5]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-id@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/container@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/react-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+  - @hi-ui/react-compat@5.0.0-experimental.0
+
 ## 4.1.0
 
 ### Minor Changes

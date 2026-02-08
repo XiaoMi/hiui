@@ -1,5 +1,63 @@
 # @hi-ui/input
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- da2e63a14: feat(input&number-input): add styles and classNames api (5.0)
+- f1ab51725: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 6dca7795c: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 77d969c2e: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- 1662753e0: style: fix ui bug (5.0)
+- 41552be0b: <br>
+  - style(time-picker): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(tag-input): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(input): 增加溢出处理和文本省略样式 (5.0)
+  - style(number-input): 增加溢出处理和文本省略样式 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- f4fc0ef30: style: 修改样式问题 (5.0)
+- ec4c7faa2: fix(input): 使用 cx 函数优化样式类名的拼接 (5.0)
+- 29cae09ea: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 6fcda9bf2: chore: 优化 Input 和 TagInput label 显示逻辑 (5.0)
+- 99801c2d1: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-merge-refs@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/dom-utils@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/func-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.4.0
 
 ### Minor Changes

@@ -1,5 +1,33 @@
 # @hi-ui/empty-state
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 6167ad50b: refactor(empty-state): deprecate COLOURFUL components (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- b6a389ac1: perf(table): 优化表格列宽更新逻辑，当内容宽度没有超出时再更新列宽 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- f9c4afd14: style(empty-state): 新版图标替换 & 修改彩色图标命名 (5.0)
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.1.1
 
 ### Patch Changes

@@ -1,5 +1,64 @@
 # @hi-ui/drawer
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 08b9d0ecf: feat(drawer): add styles api (5.0)
+
+### Patch Changes
+
+- 4a31cea53: style: 统一调整组件 shadow (5.0)
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 2f850ad84: fix(drawer): 样式修改 (5.0)
+- 3457a6f7d: style(drawer): 修改投影 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- Updated dependencies [1e226cd66]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e2b5c3628]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [95abba983]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [feab0390b]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [3e31bb724]
+  - @hi-ui/modal@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/icon-button@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-merge-refs@5.0.0-experimental.0
+  - @hi-ui/use-scroll-lock@5.0.0-experimental.0
+  - @hi-ui/use-toggle@5.0.0-experimental.0
+  - @hi-ui/portal@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.3.2
 
 ### Patch Changes

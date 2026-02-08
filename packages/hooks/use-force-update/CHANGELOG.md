@@ -1,5 +1,18 @@
 # @hi-ui/use-force-update
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [33da3144e]
+  - @hi-ui/use-unmount-effect@5.0.0-experimental.0
+
 ## 4.0.4
 
 ### Patch Changes

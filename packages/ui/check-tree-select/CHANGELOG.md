@@ -1,5 +1,110 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- b9989e482: feat(picker): 增加 clearSearchOnClosed api 默认是 false (5.0)
+- f1ab51725: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 6dca7795c: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 77d969c2e: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- 1662753e0: style: fix ui bug (5.0)
+- cf89262c7: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- cb9d8f6db: fix(tag-input): 修复 contained 模式下 displayRender 设置无效问题 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- eb718e940: fix: 修改组件问题 (5.0)
+- de8d058dc: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- 5210770d9: feat(picker): add header api (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- e7b64347e: style(tag-input): 增加 flex-wrap 属性以优化标签换行展示 (5.0)
+- 0a4e90dbd: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- 99801c2d1: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [cce71cdfa]
+- Updated dependencies [b9989e482]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [cb9d8f6db]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [277c5033a]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [95abba983]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [98df634ac]
+- Updated dependencies [976ec929d]
+- Updated dependencies [223bd1397]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [7b956b1eb]
+- Updated dependencies [5210770d9]
+- Updated dependencies [e2d184e74]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [9ecf354ba]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [e7b64347e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1fae66f2d]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+  - @hi-ui/picker@5.0.0-experimental.0
+  - @hi-ui/tree@5.0.0-experimental.0
+  - @hi-ui/popper@5.0.0-experimental.0
+  - @hi-ui/tag-input@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-check@5.0.0-experimental.0
+  - @hi-ui/use-data-source@5.0.0-experimental.0
+  - @hi-ui/use-search-mode@5.0.0-experimental.0
+  - @hi-ui/use-toggle@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/checkbox@5.0.0-experimental.0
+  - @hi-ui/highlighter@5.0.0-experimental.0
+  - @hi-ui/array-utils@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/func-utils@5.0.0-experimental.0
+  - @hi-ui/tree-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.7.6
 
 ### Patch Changes

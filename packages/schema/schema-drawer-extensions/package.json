@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/schema-drawer-extensions",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-experimental.1",
   "description": "A sub-package for @hi-ui/schema.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -43,23 +43,23 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/button": ">=4.0.0",
-    "@hi-ui/classname": ">=4.0.0",
-    "@hi-ui/container": ">=4.0.0",
-    "@hi-ui/drawer": ">=4.0.0",
-    "@hi-ui/icons": ">=4.0.0",
-    "@hi-ui/schema-utils": ">=4.0.0-beta.0",
-    "@hi-ui/use-id": "^4.0.4",
+    "@hi-ui/button": ">=5.0.0-experimental.0",
+    "@hi-ui/classname": ">=5.0.0-experimental.0",
+    "@hi-ui/container": ">=5.0.0-experimental.0",
+    "@hi-ui/drawer": ">=5.0.0-experimental.0",
+    "@hi-ui/icons": ">=5.0.0-experimental.0",
+    "@hi-ui/schema-utils": ">=4.0.0-experimental.1",
+    "@hi-ui/use-id": "^5.0.0-experimental.0",
     "ahooks": "^3.9.6",
     "lodash-es": "^4.17.23"
   },
   "peerDependencies": {
-    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

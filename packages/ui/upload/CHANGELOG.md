@@ -1,5 +1,90 @@
 # @hi-ui/upload
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- bd8454f85: feat(upload): Upload 组件 type 为 avatar 时展示图片裁剪工具栏 (5.0)
+- 24216019a: feat(upload): add timeout option to upload components and types (#3469)
+- f03f60ebd: <br>
+  - feat(preview): title 参数支持传入函数返回自定义内容 (5.0)
+  - fix(preview): 修复禁止下载时下载按钮没有隐藏问题 (5.0)
+- 9a98a3330: feat(upload): 新增上传成功后显示成功 icon (5.0)
+
+### Patch Changes
+
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 1662753e0: style: fix ui bug (5.0)
+- 9a98a3330: <br>
+  - feat(upload): 新版样式 (5.0)
+  - feat(upload): 增加 size 参数 (5.0)
+  - feat(upload): 上传按钮改为线性 (5.0)
+  - feat(upload): 照片墙上传按钮支持配置文案 (5.0)
+- c021539a3: style: fix ui bug (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 2b6cfd655: style: fix ui bug (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 401c7e55e: style(upload): 处理文本超出的情况 (5.0)
+- a0f0c9d6b: style: 修改 UI 问题 (5.0)
+- 4a31cea53: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [8c47b7ae0]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [44deb7265]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e2b5c3628]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [1429eced2]
+- Updated dependencies [f03f60ebd]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [934e1aecf]
+- Updated dependencies [feab0390b]
+- Updated dependencies [d2ccdc691]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [5cf3f8930]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [3e31bb724]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+  - @hi-ui/message@5.0.0-experimental.0
+  - @hi-ui/modal@5.0.0-experimental.0
+  - @hi-ui/preview@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-id@5.0.0-experimental.0
+  - @hi-ui/use-timeout@5.0.0-experimental.0
+  - @hi-ui/file-select@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+
 ## 4.2.5
 
 ### Patch Changes
