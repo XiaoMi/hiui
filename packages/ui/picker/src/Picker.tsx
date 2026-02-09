@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useState, useRef } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useState,
+  useRef,
+  useMemo,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
@@ -31,6 +38,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       clearSearchOnClosed = false,
       scrollable = true,
       creatableInSearch = false,
+      creatableInSearchVisible,
       createTitle: createTitleProp,
       onCreate,
       visible,
@@ -150,6 +158,42 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       (HTMLDivElement & { update: () => void; forceUpdate: () => void }) | null
     >(null)
 
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示 creator
+    const showCreator =
+      creatableInSearch &&
+      !!searchValue &&
+      (creatableInSearchVisible === undefined || creatableInSearchVisible === true)
+
+    const renderContent = useMemo(() => {
+      if (!children && !creatableInSearch && showEmpty) {
+        return <span className={`${prefixCls}__empty`}>{emptyContent}</span>
+      }
+
+      if (creatableInSearch && searchValue && showCreator) {
+        return (
+          <>
+            {children}
+            <div className={`${prefixCls}__creator`} onClick={() => onCreate?.(searchValue)}>
+              <span className={`${prefixCls}__creator-title`}>{createTitle}</span>
+              <span className={`${prefixCls}__creator-value`}>{searchValue}</span>
+            </div>
+          </>
+        )
+      }
+
+      return children
+    }, [
+      children,
+      creatableInSearch,
+      createTitle,
+      emptyContent,
+      onCreate,
+      prefixCls,
+      searchValue,
+      showEmpty,
+      showCreator,
+    ])
+
     useImperativeHandle(innerRef, () => ({
       clearSearch: () => {
         keywordProp === undefined && clearSearch()
@@ -240,15 +284,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                   <Loading size="sm" />
                 </div>
               ) : (
-                children ||
-                (creatableInSearch && searchValue ? (
-                  <div className={`${prefixCls}__creator`} onClick={() => onCreate?.(searchValue)}>
-                    <span className={`${prefixCls}__creator-title`}>{createTitle}</span>
-                    <span className={`${prefixCls}__creator-value`}>{searchValue}</span>
-                  </div>
-                ) : showEmpty ? (
-                  <span className={`${prefixCls}__empty`}>{emptyContent}</span>
-                ) : null)
+                renderContent
               )}
             </div>
             {footer ? (
@@ -309,6 +345,12 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 在搜索状态下是否可创建选项
    */
   creatableInSearch?: boolean
+  /**
+   * 是否显示「创建选项」入口。为 false 时不显示。
+   * 不传（undefined）时保持兼容：只要有搜索词即显示创建入口。
+   * Select/CheckSelect 会传入此 prop，实现「仅当无结果或关键字与结果无全匹配时显示」。
+   */
+  creatableInSearchVisible?: boolean
   /**
    * 创建选项时展示的标题
    */

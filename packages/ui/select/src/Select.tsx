@@ -205,6 +205,17 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       return nextData.filter((item) => !('groupTitle' in item))
     }, [flattedData, selectedItems])
 
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示创建入口
+    const creatableInSearchVisible = useMemo(() => {
+      if (!creatableInSearch || !searchValue?.trim()) return false
+      const optionItems = showData.filter((item: any) => !('groupTitle' in item))
+      if (optionItems.length === 0) return true
+      const hasFullMatch = optionItems.some(
+        (item: SelectDataItem) => String(item.title).trim() === searchValue.trim()
+      )
+      return !hasFullMatch
+    }, [creatableInSearch, searchValue, showData])
+
     // ************************** 回车选中处理 ************************* //
 
     const defaultIndex = showData.findIndex((item: SelectDataItem) => !item.disabled)
@@ -298,6 +309,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
           creatableInSearch={creatableInSearch}
+          creatableInSearchVisible={creatableInSearchVisible}
           onCreate={handleCreate}
           header={renderExtraHeader?.()}
           trigger={
