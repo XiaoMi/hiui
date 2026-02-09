@@ -93,6 +93,8 @@ export type TimelineComponentConfig = ComponentStyleConfig
 
 export type TransferComponentConfig = ComponentStyleConfig
 
+export type TableComponentConfig = ComponentStyleConfig
+
 export type TreeComponentConfig = ComponentStyleConfig
 
 export type UploadComponentConfig = ComponentStyleConfig
@@ -133,6 +135,7 @@ export interface ConfigComponentProps {
   tabs?: TabsComponentConfig
   tabList?: TabListComponentConfig
   timeline?: TimelineComponentConfig
+  table?: TableComponentConfig
   transfer?: TransferComponentConfig
   tree?: TreeComponentConfig
   upload?: UploadComponentConfig

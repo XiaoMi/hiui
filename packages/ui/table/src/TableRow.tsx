@@ -51,6 +51,8 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       colWidths,
       virtual,
       cellClassName,
+      semanticClassNames,
+      semanticStyles,
     } = useTableContext()
 
     const { raw: rowData, id: rowId } = rowDataProp
@@ -181,6 +183,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
 
     const cls = cx(
       `${prefixCls}-row`,
+      semanticClassNames?.bodyRow,
       showRowHighlight && `${prefixCls}-row--hover`,
       striped && (rowIndex & 1) === 0 && `${prefixCls}-row--striped`,
       hasError && `${prefixCls}-row--error`,
@@ -193,6 +196,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
       virtual && `${prefixCls}-row--virtual`,
       className
     )
+    const bodyRowStyle = semanticStyles?.bodyRow
 
     const firstColumn = flattedColumnsWithoutChildren.find((item) => {
       return item.dataKey !== SELECTION_DATA_KEY && item.dataKey !== EMBED_DATA_KEY
@@ -222,7 +226,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
               }
               onHighlightedRowChange(rowDataProp, !highlighted)
             }}
-            style={{ ...rowExtraProps.style, width: rowWidth }}
+            style={{ ...bodyRowStyle, ...rowExtraProps.style, width: rowWidth }}
           >
             {/* 表格列数据 */}
             {flattedColumnsWithoutChildren.map((column, idx) => {
@@ -251,6 +255,7 @@ export const TableRow = forwardRef<HTMLTableRowElement | null, TableRowProps>(
           className={cls}
           key="row"
           {...rowExtraProps}
+          style={{ ...bodyRowStyle, ...rowExtraProps.style }}
           onDoubleClick={(evt) => {
             if (rowExtraProps.onDoubleClick) {
               rowExtraProps.onDoubleClick(evt)
