@@ -79,6 +79,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     onItemClick: onItemClickProp,
     showIndicator = true,
     renderExtraHeader,
+    changeOnSelect,
     ...rest
   } = props
   const { size: globalSize } = useGlobalContext()
@@ -143,7 +144,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data: cascaderData,
     flattedData: flattedData,
     enabled: searchableProp,
-    exclude: (node: any) => node.disabled || node.children,
+    exclude: (node: any) => node.disabled || (changeOnSelect ? false : node.children),
     // exclude: (option: FlattedCascaderDataItem) => {
     //   return checkCanLoadChildren(option, onLoadChildren)
     // },
@@ -202,6 +203,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     cascaderData,
     setCascaderData,
     flattedData,
+    changeOnSelect,
   })
 
   const { value, tryChangeValue, reset, clear, menuList, getItemRequiredProps } = context
