@@ -56,6 +56,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onResizeStop,
       fixedToRow,
       onScroll,
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -243,7 +245,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
         const doubleTableContent = (
           <>
-            <div {...restTableHeaderProps} style={{ ...style, overflow: undefined }}>
+            <div
+              {...restTableHeaderProps}
+              className={classNames?.content}
+              style={{ ...style, ...styles?.content, overflow: undefined }}
+            >
               <TableHeader />
 
               {/* 不跟随内部 header 横向滚动，固定到右侧 */}
@@ -264,7 +270,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       const tableContent = (
         <table
           ref={bodyTableRef}
-          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+          className={classNames?.table}
+          style={{
+            width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%',
+            ...styles?.table,
+          }}
         >
           <ColGroupContent />
           <TheadContent />
@@ -274,17 +284,17 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
       const singleTableContent = (
         <div
-          className={`${prefixCls}-content`}
-          {...(!scrollbar
-            ? {
-                ref: scrollBodyElementRef,
-                onScroll: onTableBodyScroll,
-                style: {
+          className={cx(`${prefixCls}-content`, classNames?.content)}
+          style={{
+            ...styles?.content,
+            ...(!scrollbar
+              ? {
                   // 表格宽度大于div宽度才出现横向滚动条
                   overflowX: canScroll ? 'scroll' : undefined,
-                },
-              }
-            : {})}
+                }
+              : {}),
+          }}
+          {...(!scrollbar ? { ref: scrollBodyElementRef, onScroll: onTableBodyScroll } : {})}
         >
           {!scrollbar ? (
             tableContent
@@ -308,14 +318,22 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         <>
           {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && leftFrozenColKeys.length > 0 ? (
             <div
-              className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
-              style={{ width: leftFixedColumnsWidth + 'px' }}
+              className={cx(
+                `${prefixCls}-freeze-shadow`,
+                `${prefixCls}-freeze-shadow--left`,
+                classNames?.freezeShadowLeft
+              )}
+              style={{ width: leftFixedColumnsWidth + 'px', ...styles?.freezeShadowLeft }}
             />
           ) : null}
           {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
             <div
-              className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
-              style={{ width: rightFixedColumnsWidth + 'px' }}
+              className={cx(
+                `${prefixCls}-freeze-shadow`,
+                `${prefixCls}-freeze-shadow--right`,
+                classNames?.freezeShadowRight
+              )}
+              style={{ width: rightFixedColumnsWidth + 'px', ...styles?.freezeShadowRight }}
             />
           ) : null}
         </>
@@ -324,15 +342,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const tableFooter = (
       <div
-        className={`${prefixCls}-footer`}
-        style={
-          stickyFooter
-            ? {
-                position: 'sticky',
-                bottom: stickyFooterBottom,
-              }
-            : undefined
-        }
+        className={cx(`${prefixCls}-footer`, classNames?.footer)}
+        style={{
+          ...(stickyFooter ? { position: 'sticky' as const, bottom: stickyFooterBottom } : {}),
+          ...styles?.footer,
+        }}
       >
         {isFunction(footerRender) ? footerRender(<>{extraFooter}</>) : extraFooter}
       </div>
@@ -341,6 +355,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       hasBorder && `${prefixCls}--bordered`,
       (hasScrollToLeft || hasLeftFixedColumns) &&
         data.length > 0 &&
@@ -354,13 +369,15 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rootProps}>
+      <div ref={ref} role={role} className={cls} {...rootProps} style={styles?.root}>
         <div
           ref={wrapperRef}
           className={cx(
             `${prefixCls}__wrapper`,
+            classNames?.wrapper,
             isTableContentExceedWrapperHeight && `${prefixCls}--exceed-wrapper-height`
           )}
+          style={styles?.wrapper}
         >
           <TableProvider
             value={{
@@ -381,6 +398,8 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               onScroll,
               onResizeStop,
               fixedToRow,
+              semanticClassNames: classNames,
+              semanticStyles: styles,
             }}
           >
             {renderTable()}
@@ -398,6 +417,14 @@ export interface BaseTableProps
   extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
     UseTableProps,
     UseEmbedExpandProps {
+  /**
+   * 语义化 classNames（由 Table 透传）
+   */
+  classNames?: any
+  /**
+   * 语义化 styles（由 Table 透传）
+   */
+  styles?: any
   /**
    * 覆盖 header 的setting icon 和 footer 的 pagination。暂不对外暴露
    * @private

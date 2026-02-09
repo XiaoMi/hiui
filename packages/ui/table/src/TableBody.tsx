@@ -35,10 +35,13 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
     rowClassName,
     stretchHeight,
     onScroll,
+    semanticClassNames,
+    semanticStyles,
   } = useTableContext()
   const virtualListWrapperRef = useRef(null)
 
-  const cls = cx(`${prefixCls}-body`)
+  const cls = cx(`${prefixCls}-body`, semanticClassNames?.body)
+  const bodyStyle = semanticStyles?.body
 
   const getRequiredProps = useLatestCallback(
     (id: React.ReactText): TableRowRequiredProps => {
@@ -107,7 +110,7 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
         onScroll={onTableBodyScroll}
         onWheel={onTableBodyScrollMock}
         style={{
-          // 表格宽度大于div宽度才出现横向滚动条
+          ...bodyStyle,
           overflowX: canScroll ? 'scroll' : undefined,
           overflowY: 'hidden',
         }}
@@ -193,9 +196,7 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
   const scrollBodyProps = {
     ref: scrollBodyElementRef,
     onScroll: onTableBodyScroll,
-    style: {
-      maxHeight,
-    },
+    style: { ...bodyStyle, maxHeight },
   }
 
   return !scrollbar ? (
@@ -203,7 +204,7 @@ export const TableBody = ({ prefixCls = _prefix, emptyContent }: TableBodyProps)
       {bodyContent}
     </div>
   ) : (
-    <div className={cls}>
+    <div className={cls} style={bodyStyle}>
       <Scrollbar {...scrollBodyProps} {...(isObject(scrollbar) ? scrollbar : null)}>
         {bodyContent}
       </Scrollbar>
