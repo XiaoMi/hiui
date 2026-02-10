@@ -28,7 +28,11 @@ export function getFieldProps<FieldProps extends AnyObject>(
     ? wrapFormBinding(ctx.formBinding, fieldProps)
     : ({} as FieldProps)
 
-  return mergeProps(fieldProps, formBindingProps as FieldProps)
+  const { value, onChange, onBlur, invalid, ...restProps } = formBindingProps
+  const coreProps = { value, onChange, onBlur, invalid } as unknown as FieldProps
+
+  // 优先级：注入的普通属性 < 字段本身的属性 < formBinding 的核心属性
+  return mergeProps(restProps as FieldProps, fieldProps, coreProps)
 }
 
 export function getWrapperProps<WrapperProps extends AnyObject>(
