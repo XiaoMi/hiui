@@ -1,59 +1,26 @@
 import { useCallback } from 'react'
-import type { ColumnFiltersState, SortingState } from '@tanstack/react-table'
 import { getPipeGetterValue, type PipeGetter } from '@hi-ui/schema-utils'
+import type {
+  GetDataSourceBasicParamsType,
+  GetDataSourceParamsType,
+  GetDataSourceResType,
+  GetDataSourceType,
+  InnerGetDataSourceType,
+} from '@hi-ui/schema-core'
 import type { InnerRefType } from '../../ctx'
-import type { GetPageDataCtxType } from '../pagination/component'
 import { validateResData } from './getter'
+
+export type {
+  GetDataSourceBasicParamsType,
+  GetDataSourceParamsType,
+  GetDataSourceResType,
+  GetDataSourceType,
+  InnerGetDataSourceType,
+}
 
 export type GetDataSourceCtxType<TData extends AnyObject> = {
   innerRef: InnerRefType<TData>
 }
-
-export type GetDataSourceBasicParamsType = {
-  /**
-   * 分页信息
-   * @desc 启用分页时，分页信息必然存在
-   */
-  pagination?: GetPageDataCtxType
-  /**
-   * 表头筛选信息
-   * @desc 启用远程筛选时，表头筛选信息必然存在
-   */
-  filters?: ColumnFiltersState
-  /**
-   * 表头排序信息
-   * @desc 启用远程排序时，表头排序信息必然存在
-   */
-  sorters?: SortingState
-}
-
-export type GetDataSourceParamsType = AnyObject &
-  GetDataSourceBasicParamsType & {
-    /**
-     * 原始参数
-     * - 默认为空，可由上层组件自行决定参数类型
-     */
-    raw?: GetDataSourceBasicParamsType
-  }
-
-/**
- * 异步数据源的返回类型
- * @desc 请注意，启用分页时，返回类型中必须包含 total/pageSize/current 字段
- */
-export type GetDataSourceResType<TData extends AnyObject = AnyObject> = {
-  list: TData[]
-  total?: number
-  pageSize?: number
-  current?: number
-}
-
-export type GetDataSourceType<TData extends AnyObject> = (
-  params: GetDataSourceParamsType
-) => Promise<GetDataSourceResType<TData>>
-
-export type InnerGetDataSourceType<TData extends AnyObject> = (
-  customParams?: PipeGetter<GetDataSourceParamsType>
-) => Promise<GetDataSourceResType<TData>>
 
 export type InnerUpdateDataSourceType = (
   customParams?: PipeGetter<GetDataSourceParamsType>
