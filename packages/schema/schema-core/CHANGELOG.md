@@ -1,5 +1,11 @@
 # @hi-ui/schema-core
 
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- 949ff301b: 调整获取列表数据函数的类型定义的导出位置
+
 ## 4.0.0-experimental.3
 
 ### Patch Changes

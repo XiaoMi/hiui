@@ -1,5 +1,13 @@
 # @hi-ui/schema-editable-table
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 949ff301b: 调整获取列表数据函数的类型定义的导出位置
+- Updated dependencies [949ff301b]
+  - @hi-ui/schema-core@4.0.0-experimental.4
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes
