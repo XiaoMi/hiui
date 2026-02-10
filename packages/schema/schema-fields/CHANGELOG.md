@@ -1,5 +1,11 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.3
+
+### Patch Changes
+
+- b3a90f8f4: 优化 getFieldProps 工具函数中属性合并的优先级
+
 ## 4.0.0-experimental.2
 
 ### Patch Changes
