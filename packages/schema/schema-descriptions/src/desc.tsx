@@ -18,7 +18,7 @@ export function DescriptionsRender(props: DescriptionsRenderProps) {
 
   const fieldMap = useFieldMap(props)
 
-  return props.fields.map((field) => {
+  return (props.fields ?? []).map((field) => {
     const FieldClass = matchFieldClass({ name: 'SchemaDescriptions', field, fieldMap })
 
     const fieldRenderer = new FieldClass()

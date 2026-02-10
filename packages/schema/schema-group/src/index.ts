@@ -1,1 +1,2 @@
-export * from '@hi-ui/group'
+export * from './group-context'
+export * from './group'

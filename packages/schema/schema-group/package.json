@@ -11,16 +11,46 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "lib",
+    "form.js",
+    "form.d.ts",
+    "table.js",
+    "table.d.ts",
+    "descriptions.js",
+    "descriptions.d.ts",
+    "edit-table.js",
+    "edit-table.d.ts",
+    "bundle.js",
+    "bundle.d.ts"
   ],
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "lib/types/index.d.ts",
-  "typings": "lib/types/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/cjs/index.js",
-      "default": "./lib/esm/index.js"
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./bundle": {
+      "default": "./bundle.js",
+      "types": "./bundle.d.ts"
+    },
+    "./form": {
+      "default": "./form.js",
+      "types": "./form.d.ts"
+    },
+    "./table": {
+      "default": "./table.js",
+      "types": "./table.d.ts"
+    },
+    "./descriptions": {
+      "default": "./descriptions.js",
+      "types": "./descriptions.d.ts"
+    },
+    "./edit-table": {
+      "default": "./edit-table.js",
+      "types": "./edit-table.d.ts"
     }
   },
   "publishConfig": {
@@ -32,26 +62,42 @@
   },
   "scripts": {
     "test": "jest",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib form.* table.* descriptions.* edit-table.* bundle.*",
     "prebuild": "yarn clean",
-    "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
-    "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build": "concurrently yarn:build:*"
+    "build:esm": "hi-build ./src/index.ts --format esm -d ./lib",
+    "build:bundle:esm": "hi-build ./src/group-context/bundle.tsx --format esm -d ./lib",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir ./lib",
+    "build-alias": "node scripts/build-alias.mjs",
+    "build": "concurrently yarn:build:* && yarn build-alias"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
+    "@hi-ui/card": ">=4.0.0",
+    "@hi-ui/classname": ">=4.0.0",
     "@hi-ui/group": ">=4.0.0-beta.0",
-    "@hi-ui/schema-utils": ">=4.0.0-beta.0"
+    "@hi-ui/schema-action-trigger": ">=4.0.0-beta.0",
+    "@hi-ui/schema-auto-grid": ">=4.0.0-beta.0",
+    "@hi-ui/schema-descriptions": ">=4.0.0-beta.0",
+    "@hi-ui/schema-editable-table": ">=4.0.0-beta.0",
+    "@hi-ui/schema-form": ">=4.0.0-beta.0",
+    "@hi-ui/schema-table": ">=4.0.0-beta.0",
+    "@hi-ui/schema-utils": ">=4.0.0-beta.0",
+    "@hi-ui/tabs": ">=4.0.0",
+    "ahooks": "^3.9.6",
+    "lodash-es": "^4.17.23"
   },
   "peerDependencies": {
+    "@hi-ui/schema-core": ">=4.0.0-beta.0",
     "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/use-ref-state": ">=4.0.0-beta.0",
     "react": ">=16.8.6"
   },
   "devDependencies": {
+    "@hi-ui/schema-core": ">=4.0.0-beta.0",
     "@hi-ui/utility-types": ">=4.0.0-beta.0",
+    "@hi-ui/use-ref-state": ">=4.0.0-beta.0",
     "react": "^17.0.2"
   },
   "volta": {
