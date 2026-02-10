@@ -1,5 +1,6 @@
 import React from 'react'
 import type { FieldConfigType } from '@hi-ui/schema-core'
+import type { ProField, EnhancedRenderersType } from './base'
 import { ProText } from './fields/semantic/text'
 import type { ProFieldMapType } from '.'
 
@@ -48,6 +49,21 @@ export function matchFieldClass(opts: MatchFieldClassOpts) {
   }
 
   return FieldClass
+}
+
+export function getFieldRenderFn<TKey extends keyof EnhancedRenderersType>(
+  Class: typeof ProField,
+  renderKey: TKey
+) {
+  const renderer = new Class()
+  return renderer[renderKey].bind(renderer) as ProField[TKey]
+}
+
+export function matchFieldRenderFn<TKey extends keyof EnhancedRenderersType>(
+  opts: MatchFieldClassOpts & { renderKey: TKey }
+) {
+  const FieldClass = matchFieldClass(opts)
+  return getFieldRenderFn(FieldClass, opts.renderKey)
 }
 
 export type UseMatchFieldClassOpts = Omit<MatchFieldClassOpts, 'fieldMap'> & {
