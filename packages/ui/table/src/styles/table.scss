@@ -639,16 +639,16 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-sorter {
     display: inline-flex;
     flex-direction: column;
-    height: use-height-size(5);
+    height: 100%;
     vertical-align: middle;
-    margin-inline-start: use-spacing(3);
+    align-items: center;
 
     &__icon {
-      display: inline-block;
-      height: use-height-size(2);
+      display: inline-flex;
+      height: 15px;
+      padding-inline-start: use-spacing(3);
       cursor: pointer;
       overflow: hidden;
-      // font-size: 16px;
       font-weight: use-text-weight('normal');
       color: use-color('gray', 600);
 
@@ -658,7 +658,18 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
       svg {
         position: relative;
-        inset-block-start: -5px;
+      }
+
+      &:first-child {
+        svg {
+          inset-block-end: -3px;
+        }
+      }
+
+      &:last-child {
+        svg {
+          inset-block-start: -3px;
+        }
       }
 
       &--active {
