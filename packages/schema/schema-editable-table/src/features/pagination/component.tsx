@@ -4,8 +4,6 @@ import { mergeProps, Schedular } from '@hi-ui/schema-utils'
 import type { PaginationProps as HiUIPaginationProps } from '@hi-ui/pagination'
 import { useEditableSchemaTableCtx } from '../../ctx'
 
-export type GetPageDataCtxType = { current: number; pageSize: number }
-
 export type PaginationProps = Omit<Partial<HiUIPaginationProps>, 'current' | 'total'> & {
   /** 总条数 */
   total?: HiUIPaginationProps['total']

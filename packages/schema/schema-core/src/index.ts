@@ -21,3 +21,14 @@ export * from './group/index'
 export * from './group/type'
 export * from './group/utils'
 // @endindex
+
+export type {
+  PaginationStateType,
+  FiltersStateType,
+  SortingStateType,
+  GetDataSourceBasicParamsType,
+  GetDataSourceParamsType,
+  GetDataSourceResType,
+  GetDataSourceType,
+  InnerGetDataSourceType,
+} from './types/async-data'
