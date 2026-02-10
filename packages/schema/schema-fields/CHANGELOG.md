@@ -1,5 +1,11 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- 47171f350: 新增 matchFieldRenderFn 工具函数
+
 ## 4.0.0-experimental.3
 
 ### Patch Changes
