@@ -28,9 +28,7 @@ export type { BuiltinFieldMapType, ProFieldMapType } from './bundle'
 export * from './base'
 export * from './components/span'
 export * from './ctx'
-export * from './utils' // TODO 待拆分
-export * from './components/image-preview' // TODO 待拆分
-export * from './components/upload-bridge' // TODO 待拆分
+export * from './utils'
 export { DumbInput } from './fields/semantic/text'
 export { colorPreset, ColorEnumPreset } from './fields/semantic/tag'
 

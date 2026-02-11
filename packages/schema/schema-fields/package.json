@@ -54,7 +54,7 @@
     "build:bundle:esm": "hi-build ./src/bundle.tsx --format esm -d ./lib",
     "build:types": "node -e \"try{require('child_process').execSync('tsc --emitDeclarationOnly --declaration --declarationDir ./lib',{stdio:'ignore'});}catch(e){}\"",
     "build-alias": "node scripts/build-alias.mjs",
-    "build": "concurrently yarn:build:* && yarn build-alias"
+    "build": "yarn build:bundle:esm && yarn build:esm && yarn build:types && yarn build-alias"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
