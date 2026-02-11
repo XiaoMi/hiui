@@ -30,6 +30,6 @@ export * from './components/span'
 export * from './ctx'
 export * from './utils'
 export { DumbInput } from './fields/semantic/text'
-export { colorPreset, ColorEnumPreset } from './fields/semantic/tag'
+export { colorPreset, ColorEnumPreset } from './fields/semantic/tag/preset'
 
 export * from './editable'
