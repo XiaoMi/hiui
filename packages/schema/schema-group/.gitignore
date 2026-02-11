@@ -1,0 +1,16 @@
+# 构建后输出在根目录的别名文件
+
+bundle.d.ts
+bundle.js
+form.d.ts
+form.js
+table.d.ts
+table.js
+descriptions.d.ts
+descriptions.js
+edit-table.d.ts
+edit-table.js
+
+# pack
+*.tgz
+package

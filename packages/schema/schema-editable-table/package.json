@@ -23,7 +23,7 @@
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     },
-    "type": {
+    "./type": {
       "types": "./type.d.ts"
     }
   },
