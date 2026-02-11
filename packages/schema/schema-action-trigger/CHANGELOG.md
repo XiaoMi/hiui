@@ -1,5 +1,11 @@
 # @hi-ui/schema-action-trigger
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 80f7c3bc7: 调整全局类型配置,处理构建错误问题
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

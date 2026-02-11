@@ -1,5 +1,13 @@
 # @hi-ui/schema-descriptions
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 00945d217: 更新@hi-ui/schema-group
+- Updated dependencies [ffaaeeeb1]
+  - @hi-ui/schema-fields@4.0.0-experimental.5
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

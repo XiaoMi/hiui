@@ -1,5 +1,11 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.5
+
+### Patch Changes
+
+- ffaaeeeb1: 调整 schema-fields 的导出方式,优化主入口的 bundle 尺寸
+
 ## 4.0.0-experimental.4
 
 ### Patch Changes

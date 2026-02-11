@@ -1,5 +1,18 @@
 # @hi-ui/schema-group
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 00945d217: 更新@hi-ui/schema-group
+- Updated dependencies [00945d217]
+- Updated dependencies [80f7c3bc7]
+  - @hi-ui/group@4.0.0-experimental.2
+  - @hi-ui/schema-descriptions@4.0.0-experimental.2
+  - @hi-ui/schema-editable-table@4.0.0-experimental.3
+  - @hi-ui/schema-form@4.0.0-experimental.2
+  - @hi-ui/schema-action-trigger@4.0.0-experimental.2
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes
