@@ -424,7 +424,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     &--striped {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 100, 0.6);
+        background-color: use-color-static('bgColor');
       }
     }
 
