@@ -1,5 +1,13 @@
 # @hi-ui/schema-table
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 12f103d61: TableColumnMapper 支持递归处理 children 字段
+- Updated dependencies [4b68d6762]
+  - @hi-ui/schema-core@4.0.0-experimental.5
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

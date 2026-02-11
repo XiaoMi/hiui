@@ -1,5 +1,11 @@
 # @hi-ui/schema-core
 
+## 4.0.0-experimental.5
+
+### Patch Changes
+
+- 4b68d6762: 调整 Children 的实现位置
+
 ## 4.0.0-experimental.4
 
 ### Patch Changes
