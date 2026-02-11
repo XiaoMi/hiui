@@ -11,16 +11,32 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "lib",
+    "fields",
+    "components",
+    "bundle.js",
+    "bundle.d.ts"
   ],
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "lib/types/index.d.ts",
-  "typings": "lib/types/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/cjs/index.js",
-      "default": "./lib/esm/index.js"
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./bundle": {
+      "default": "./bundle.js",
+      "types": "./bundle.d.ts"
+    },
+    "./fields/*": {
+      "default": "./fields/*.js",
+      "types": "./fields/*.d.ts"
+    },
+    "./components/*": {
+      "default": "./components/*.js",
+      "types": "./components/*.d.ts"
     }
   },
   "publishConfig": {
@@ -32,12 +48,13 @@
   },
   "scripts": {
     "test": "jest",
-    "clean": "rimraf lib",
+    "clean": "rimraf lib fields components bundle.*",
     "prebuild": "yarn clean",
-    "build:esm": "hi-build ./src/index.tsx --format esm -d ./lib/esm",
-    "build:cjs": "hi-build ./src/index.tsx --format cjs -d ./lib/cjs",
-    "build:types": "node -e \"try{require('child_process').execSync('tsc --emitDeclarationOnly --declaration --declarationDir lib/types',{stdio:'ignore'});}catch(e){}\"",
-    "build": "concurrently yarn:build:*"
+    "build:esm": "hi-build ./src/index.tsx --format esm -d ./lib",
+    "build:bundle:esm": "hi-build ./src/bundle.tsx --format esm -d ./lib",
+    "build:types": "node -e \"try{require('child_process').execSync('tsc --emitDeclarationOnly --declaration --declarationDir ./lib',{stdio:'ignore'});}catch(e){}\"",
+    "build-alias": "node scripts/build-alias.mjs",
+    "build": "concurrently yarn:build:* && yarn build-alias"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"

@@ -1,0 +1,9 @@
+# 构建后输出在包根的别名目录与文件
+fields/
+components/
+bundle.js
+bundle.d.ts
+
+# pack
+*.tgz
+package
