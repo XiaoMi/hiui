@@ -3,15 +3,17 @@ import { omit } from 'lodash-es'
 import { matchFieldClass, useFieldMap } from '@hi-ui/schema-fields'
 import { mergeProps } from '@hi-ui/schema-utils'
 import type { TableColumnItem } from '@hi-ui/table'
-import type { ProFieldRenderCellCtx } from '@hi-ui/schema-core'
+import type { FieldConfigType, ProFieldRenderCellCtx } from '@hi-ui/schema-core'
 import type { SchemaTableProps } from './table'
+import type { ProFieldMapType } from '@hi-ui/schema-fields'
 
 export type TableColumnMapperOpts = Pick<SchemaTableProps, 'fields' | 'fieldMap'>
 
 export function TableColumnMapper(props: TableColumnMapperOpts) {
-  const fieldMap = useFieldMap(props)
-
-  return props.fields.map((field) => {
+  function mapFieldToColumn(
+    field: FieldConfigType<AnyObject, Partial<TableColumnItem>>,
+    fieldMap: ProFieldMapType
+  ): TableColumnItem {
     const baseProps: TableColumnItem = {
       title: field.title,
       dataKey: field.dataIndex,
@@ -39,7 +41,19 @@ export function TableColumnMapper(props: TableColumnMapperOpts) {
       },
     }
 
-    const wrapperProps = omit(field.wrapperProps || {}, ['title', 'dataKey']) as TableColumnItem
+    // 存在嵌套字段时递归处理
+    if (field.children?.length) {
+      baseProps.children = field.children.map((child) => mapFieldToColumn(child, fieldMap))
+    }
+
+    const wrapperProps = omit(field.wrapperProps || {}, [
+      'title',
+      'dataKey',
+      'children',
+    ]) as TableColumnItem
     return mergeProps(baseProps, wrapperProps)
-  })
+  }
+
+  const fieldMap = useFieldMap(props)
+  return props.fields.map((field) => mapFieldToColumn(field, fieldMap))
 }
