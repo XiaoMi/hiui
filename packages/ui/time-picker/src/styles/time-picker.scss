@@ -5,6 +5,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
+  width: 100%;
   border: use-border-size('normal') transparent;
   border-radius: use-border-radius('lg');
   box-shadow: 0 0 0 2px transparent;
