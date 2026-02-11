@@ -51,7 +51,7 @@ export interface DPContextData extends ExtendsType {
   prefixCls: string
   i18n: UseLocaleContext
   outDate: (moment.Moment | null)[]
-  onPick: (dates: (moment.Moment | null)[], isShowPanel?: boolean) => void
+  onPick: (dates: (moment.Moment | Date | null)[], isShowPanel?: boolean) => void
   realFormat: string
   altCalendarPresetData: any
   dateMarkPresetData: any
