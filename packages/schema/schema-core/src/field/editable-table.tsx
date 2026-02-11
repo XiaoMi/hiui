@@ -9,7 +9,6 @@ import type {
 } from '../interface'
 import { EditableFieldCreator } from './editable'
 import type {
-  FieldConfigType,
   FieldControlType,
   FieldFilterConfigType,
   FieldGroupingConfigType,
@@ -34,10 +33,6 @@ export class EditableTableFieldCreator<
 
   Number(opts?: ProNumberProps) {
     return super.Number({ autoFocus: true, ...opts })
-  }
-
-  Children(fields: FieldConfigType[]) {
-    return this._mergeVal({ children: fields })
   }
 
   /**

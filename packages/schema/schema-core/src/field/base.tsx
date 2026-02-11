@@ -50,7 +50,7 @@ export class FieldCreator<FieldProps = AnyObject, WrapperProps = AnyObject> {
 
   protected _setPipeGetter<
     Field extends 'fieldProps' | 'formItemProps',
-    Getter extends FieldConfigType<FieldProps, WrapperProps>[Field],
+    Getter extends FieldConfigType<FieldProps, WrapperProps>[Field]
   >(field: Field, getter?: Getter) {
     if (!getter) return this
 
@@ -86,6 +86,14 @@ export class FieldCreator<FieldProps = AnyObject, WrapperProps = AnyObject> {
   VT(type: ValueType) {
     this._setVal('valueType', type)
     return this
+  }
+
+  /**
+   * 设置嵌套字段列表
+   * - 如何呈现取决于渲染器的具体实现
+   */
+  Children(fields: FieldConfigType[]) {
+    return this._mergeVal({ children: fields })
   }
 
   /**
@@ -338,7 +346,7 @@ export class FieldCreatorHelper<TCustomClass extends typeof FieldCreator = typeo
 
   public setPipeGetter<
     Field extends 'fieldProps' | 'formItemProps',
-    Getter extends FieldConfigType[Field],
+    Getter extends FieldConfigType[Field]
   >(field: Field, getter?: Getter) {
     // @ts-expect-error 私有属性
     return this.instance._setPipeGetter(field, getter)
