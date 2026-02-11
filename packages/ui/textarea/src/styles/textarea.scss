@@ -68,6 +68,12 @@ $prefix: '#{$component-prefix}-textarea' !default;
     }
   }
 
+  &.#{$prefix}-wrapper--show-count {
+    .#{$prefix}__inner {
+      padding-block-end: use-spacing(13);
+    }
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -306,7 +312,7 @@ $prefix: '#{$component-prefix}-textarea' !default;
         pointer-events: none;
         position: absolute;
         inset-inline-end: use-spacing(5);
-        inset-block-end: use-spacing(1);
+        inset-block-end: use-spacing(3);
         z-index: calc(#{use-zindex('absolute')} + 1);
 
         &-value {
