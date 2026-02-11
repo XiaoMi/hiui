@@ -51,12 +51,12 @@
     "@hi-ui/schema-utils": ">=4.0.0-experimental.1",
     "@hi-ui/space": ">=5.0.0-experimental.0",
     "@hi-ui/schema-table-extensions": ">=4.0.0-experimental.1",
+    "ahooks": "^3.9.6",
     "react-is": "^17.0.2"
   },
   "peerDependencies": {
     "@hi-ui/schema-types": ">=4.0.0-experimental.1",
     "@hi-ui/utility-types": ">=4.0.0-experimental.1",
-    "ahooks": "^3.9.6",
     "react": ">=16.8.6"
   },
   "devDependencies": {

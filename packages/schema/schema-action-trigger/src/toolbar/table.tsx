@@ -37,6 +37,7 @@ export type TableToolbarCtxType = {
   tableFields: BuiltinActionsType.SettingProps['fields']
   tableCtxRef: BuiltinActionsType.SettingProps['tableRef']
   fullscreenElRef: BuiltinActionsType.FullscreenProps['elRef']
+  // @ts-ignore 构建工具不识别此处的类型
   formRef?: SchemaFormProps['formRef']
 }
 
