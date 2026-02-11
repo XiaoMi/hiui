@@ -1,5 +1,11 @@
 # @hi-ui/schema-group
 
+## 4.0.0-experimental.3
+
+### Patch Changes
+
+- 3d8f049b9: 处理构建顺序错误导致的产物丢失问题
+
 ## 4.0.0-experimental.2
 
 ### Patch Changes
