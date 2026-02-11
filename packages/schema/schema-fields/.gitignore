@@ -1,6 +1,6 @@
-# 构建后输出在包根的别名目录与文件
-fields/
-components/
+# 构建后输出在包根的别名目录与文件（/ 表示仅匹配包根，不忽略 src/fields、src/components）
+/fields/
+/components/
 bundle.js
 bundle.d.ts
 
