@@ -1,5 +1,11 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- 346113bd3: 处理 ProTag 产物丢失问题
+
 ## 4.0.0-experimental.6
 
 ### Patch Changes
