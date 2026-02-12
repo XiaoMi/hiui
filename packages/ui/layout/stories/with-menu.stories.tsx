@@ -17,7 +17,7 @@ import Layout, { Sider, Content, SearchTrigger, ProfilePopover, ActionItem } fro
  */
 export const WithMenu = () => {
   // 侧边栏导航是否折叠
-  const [collapsed, setCollapsed] = React.useState(false)
+  const [collapsed, setCollapsed] = React.useState(true)
   const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>(1)
 
   const [profileVisible, setProfileVisible] = React.useState(false)
