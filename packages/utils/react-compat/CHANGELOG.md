@@ -1,5 +1,11 @@
 # @hi-ui/react-compat
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 3e5e409c5: 补充多处 package.json 中缺少的 exports.types 字段
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

@@ -1,5 +1,14 @@
 # @hi-ui/schema-interrupt-injector
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 3e5e409c5: 补充多处 package.json 中缺少的 exports.types 字段
+- Updated dependencies [3e5e409c5]
+  - @hi-ui/schema-modal-extensions@4.0.0-experimental.2
+  - @hi-ui/schema-utils@4.0.0-experimental.4
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

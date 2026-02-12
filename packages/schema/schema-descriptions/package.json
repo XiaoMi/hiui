@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/schema-descriptions",
-  "version": "4.0.0-experimental.2",
+  "version": "4.0.0-experimental.3",
   "description": "A sub-package for @hi-ui/schema.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -45,9 +45,9 @@
   },
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-experimental.0",
-    "@hi-ui/schema-core": ">=4.0.0-experimental.1",
+    "@hi-ui/schema-core": ">=4.0.0-experimental.6",
     "@hi-ui/schema-fields": ">=4.0.0-experimental.5",
-    "@hi-ui/schema-utils": ">=4.0.0-experimental.1"
+    "@hi-ui/schema-utils": ">=4.0.0-experimental.4"
   },
   "peerDependencies": {
     "@hi-ui/descriptions": ">=5.0.0-experimental.0",

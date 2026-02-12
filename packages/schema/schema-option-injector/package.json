@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/schema-option-injector",
-  "version": "4.0.0-experimental.3",
+  "version": "4.0.0-experimental.4",
   "description": "A sub-package for @hi-ui/schema.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -44,8 +44,8 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/schema-core": ">=4.0.0-experimental.3",
-    "@hi-ui/schema-utils": ">=4.0.0-experimental.3",
+    "@hi-ui/schema-core": ">=4.0.0-experimental.6",
+    "@hi-ui/schema-utils": ">=4.0.0-experimental.4",
     "lodash-es": "^4.17.23"
   },
   "peerDependencies": {
