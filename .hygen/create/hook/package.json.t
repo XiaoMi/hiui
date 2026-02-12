@@ -22,6 +22,7 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
