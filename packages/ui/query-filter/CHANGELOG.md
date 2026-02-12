@@ -1,5 +1,14 @@
 # @hi-ui/query-filter
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [900c6c2f0]
+  - @hi-ui/input@5.0.0-canary.18
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

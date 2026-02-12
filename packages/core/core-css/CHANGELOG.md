@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- dad50a380: style(core-css): add bgColor token (5.0)
+
 ## 5.0.0-canary.9
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.19
+
+### Patch Changes
+
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- fe579e212: style(tree): update class names for tree node elements in SCSS (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [fe579e212]
+  - @hi-ui/picker@5.0.0-canary.15
+  - @hi-ui/tag-input@5.0.0-canary.21
+  - @hi-ui/tree@5.0.0-canary.12
+
 ## 5.0.0-canary.18
 
 ### Patch Changes

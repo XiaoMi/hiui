@@ -1,5 +1,16 @@
 # @hi-ui/table
 
+## 5.0.0-canary.30
+
+### Patch Changes
+
+- dad50a380: style(table): 修改斑马纹颜色为 bgColor token (5.0)
+- 18a876ca6: style(table): 扩大排序按钮点击区域 (5.0)
+- cfdc94dbc: fix(table): 计算每列 top 值优化，只有在需要 sticky 的场景下才设置该值 (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+  - @hi-ui/select@5.0.0-canary.16
+
 ## 5.0.0-canary.29
 
 ### Patch Changes

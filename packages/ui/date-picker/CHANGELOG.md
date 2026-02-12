@@ -1,5 +1,17 @@
 # @hi-ui/date-picker
 
+## 5.0.0-canary.31
+
+### Patch Changes
+
+- 8dc3817cf: fix(date-picker): footerRender 中的 onPick 参数支持 Date 类型 (5.0)
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [f8321b72f]
+  - @hi-ui/time-picker@5.0.0-canary.19
+
 ## 5.0.0-canary.30
 
 ### Patch Changes

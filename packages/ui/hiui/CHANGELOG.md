@@ -1,5 +1,54 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.49
+
+### Minor Changes
+
+- b27483796: feat(picker, select, check-select): add creatableInSearchVisible prop to control visibility of creation entry based on search results (5.0)
+
+### Patch Changes
+
+- 8dc3817cf: fix(date-picker): footerRender 中的 onPick 参数支持 Date 类型 (5.0)
+- dad50a380: style(table): 修改斑马纹颜色为 bgColor token (5.0)
+- 18a876ca6: style(table): 扩大排序按钮点击区域 (5.0)
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- ec6005193: style(layout,menu): 样式和示例调整 (5.0)
+- f8321b72f: fix(time-picker): 修复清空后无法选中 00:00:00 问题 & 设置默认宽度 100% (5.0)
+- fe579e212: style(tree): update class names for tree node elements in SCSS (5.0)
+- 8561492d5: fix(cascader): 在平铺搜索模式下，当设置了 changeOnSelect 则搜索结果中展示父节点 (5.0)
+- cfdc94dbc: fix(table): 计算每列 top 值优化，只有在需要 sticky 的场景下才设置该值 (5.0)
+- Updated dependencies [8dc3817cf]
+- Updated dependencies [dad50a380]
+- Updated dependencies [18a876ca6]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [ec6005193]
+- Updated dependencies [f8321b72f]
+- Updated dependencies [fe579e212]
+- Updated dependencies [8561492d5]
+- Updated dependencies [cfdc94dbc]
+  - @hi-ui/date-picker@5.0.0-canary.31
+  - @hi-ui/table@5.0.0-canary.30
+  - @hi-ui/cascader@5.0.0-canary.23
+  - @hi-ui/check-cascader@5.0.0-canary.25
+  - @hi-ui/check-select@5.0.0-canary.19
+  - @hi-ui/check-tree-select@5.0.0-canary.19
+  - @hi-ui/input@5.0.0-canary.18
+  - @hi-ui/number-input@5.0.0-canary.16
+  - @hi-ui/picker@5.0.0-canary.15
+  - @hi-ui/query-filter@5.0.0-canary.5
+  - @hi-ui/select@5.0.0-canary.16
+  - @hi-ui/tag-input@5.0.0-canary.21
+  - @hi-ui/textarea@5.0.0-canary.14
+  - @hi-ui/time-picker@5.0.0-canary.19
+  - @hi-ui/tree-select@5.0.0-canary.15
+  - @hi-ui/counter@5.0.0-canary.8
+  - @hi-ui/layout@5.0.0-canary.18
+  - @hi-ui/menu@5.0.0-canary.19
+  - @hi-ui/tree@5.0.0-canary.12
+
 ## 5.0.0-canary.48
 
 ### Patch Changes

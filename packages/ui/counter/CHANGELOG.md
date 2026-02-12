@@ -1,5 +1,11 @@
 # @hi-ui/counter
 
+## 5.0.0-canary.8
+
+### Patch Changes
+
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+
 ## 5.0.0-canary.7
 
 ### Patch Changes

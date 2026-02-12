@@ -1,5 +1,16 @@
 # @hi-ui/menu
 
+## 5.0.0-canary.19
+
+### Patch Changes
+
+- ec6005193: style(layout,menu): 样式和示例调整 (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies [900c6c2f0]
+  - @hi-ui/input@5.0.0-canary.18
+  - @hi-ui/picker@5.0.0-canary.15
+
 ## 5.0.0-canary.18
 
 ### Patch Changes
