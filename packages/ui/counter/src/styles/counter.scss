@@ -141,20 +141,20 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
       border: use-border-size('normal') use-color-static('white');
       border-block-start: none;
       border-block-end: none;
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 100);
     }
 
     .#{$minus-class},
     .#{$plus-class} {
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 100);
       color: use-color('gray', 800);
 
       &:hover {
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 200);
       }
 
       &.disabled {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
         color: use-color('gray', 500);
       }
     }

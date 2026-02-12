@@ -129,7 +129,7 @@ $prefix: '#{$component-prefix}-input' !default;
   &__append {
     position: relative;
     color: use-color('gray', 800);
-    background-color: use-color('gray', 200);
+    background-color: use-color('gray', 100);
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -315,13 +315,13 @@ $prefix: '#{$component-prefix}-input' !default;
       }
 
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
       }
     }
 
     &-filled {
       .#{$prefix}__inner {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
 
         &:not(.#{$prefix}__inner--disabled):hover {
           background-color: use-color-static('white');

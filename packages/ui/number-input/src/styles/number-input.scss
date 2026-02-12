@@ -157,7 +157,7 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
     &-filled {
       border: use-border-size('normal') use-color('gray', 200);
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 100);
 
       &:not(#{$this}--disabled):hover {
         background-color: use-color-static('white');
@@ -169,7 +169,6 @@ $prefix:  '#{$component-prefix}-number-input' !default;
 
       &#{$this}--disabled {
         color: use-color('gray', 600);
-        background-color: use-color('gray', 300);
       }
     }
   }

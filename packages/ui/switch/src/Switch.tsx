@@ -97,7 +97,7 @@ export interface SwitchProps extends HiBaseHTMLProps<'div'> {
    */
   defaultChecked?: boolean
   /**
-   * 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的
+   * 开关状态内容，用法：['开', '关']
    */
   content?: [React.ReactNode, React.ReactNode]
   /**

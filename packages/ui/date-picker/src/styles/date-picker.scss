@@ -97,17 +97,17 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--appearance-filled {
-      background: use-color('gray', 200);
+      background: use-color('gray', 100);
 
       &:hover {
-        background: use-color('gray', 300);
+        background: use-color('gray', 200);
       }
     }
 
     &--appearance-unset {
       &:hover,
       &.#{$prefix}__picker--focus {
-        background: use-color('gray', 200);
+        background: use-color('gray', 100);
       }
 
       .#{$prefix}__picker__input-container {

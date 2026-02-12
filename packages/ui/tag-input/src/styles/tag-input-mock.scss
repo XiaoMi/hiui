@@ -380,7 +380,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       &:not(.#{$tag-input-mock-prefix}--disabled):hover,
       &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color-static('white');
@@ -412,7 +412,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
 
     &-filled {
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 100);
 
       .#{$tag-input-mock-prefix}__tag {
         background-color: use-color-static('white');
