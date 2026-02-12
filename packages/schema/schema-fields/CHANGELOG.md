@@ -1,5 +1,33 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.9
+
+### Patch Changes
+
+- Updated dependencies [8dc3817cf]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies
+- Updated dependencies [f8321b72f]
+- Updated dependencies [fe579e212]
+- Updated dependencies [8561492d5]
+  - @hi-ui/date-picker@5.0.0-experimental.1
+  - @hi-ui/cascader@5.0.0-experimental.1
+  - @hi-ui/check-cascader@5.0.0-experimental.1
+  - @hi-ui/check-select@5.0.0-experimental.1
+  - @hi-ui/check-tree-select@5.0.0-experimental.1
+  - @hi-ui/input@5.0.0-experimental.1
+  - @hi-ui/number-input@5.0.0-experimental.1
+  - @hi-ui/select@5.0.0-experimental.1
+  - @hi-ui/textarea@5.0.0-experimental.1
+  - @hi-ui/time-picker@5.0.0-experimental.1
+  - @hi-ui/tree-select@5.0.0-experimental.1
+  - @hi-ui/counter@5.0.0-experimental.1
+  - @hi-ui/schema-option-injector@4.0.0-experimental.5
+  - @hi-ui/schema-types@4.0.0-experimental.2
+  - @hi-ui/schema-core@4.0.0-experimental.7
+
 ## 4.0.0-experimental.7
 
 ### Patch Changes

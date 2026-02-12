@@ -1,5 +1,22 @@
 # @hi-ui/select
 
+## 5.0.0-experimental.1
+
+### Minor Changes
+
+- b27483796: feat(picker, select, check-select): add creatableInSearchVisible prop to control visibility of creation entry based on search results (5.0)
+
+### Patch Changes
+
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- 发布 hiui experimental 版本
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies
+  - @hi-ui/input@5.0.0-experimental.1
+  - @hi-ui/picker@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

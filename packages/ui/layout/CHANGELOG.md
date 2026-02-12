@@ -1,5 +1,15 @@
 # @hi-ui/layout
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- ec6005193: style(layout,menu): 样式和示例调整 (5.0)
+- 发布 hiui experimental 版本
+- Updated dependencies [ec6005193]
+- Updated dependencies
+  - @hi-ui/menu@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

@@ -1,5 +1,13 @@
 # @hi-ui/schema-types
 
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- @hi-ui/schema-fields@4.0.0-experimental.9
+- @hi-ui/schema-action-trigger@4.0.0-experimental.4
+- @hi-ui/schema-editable-table@4.0.0-experimental.5
+
 ## 4.0.0-experimental.1
 
 ### Patch Changes

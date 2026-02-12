@@ -1,5 +1,12 @@
 # @hi-ui/counter
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- 发布 hiui experimental 版本
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

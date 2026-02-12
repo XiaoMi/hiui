@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- dad50a380: style(core-css): add bgColor token (5.0)
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

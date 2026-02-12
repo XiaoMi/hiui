@@ -1,5 +1,19 @@
 # @hi-ui/table
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- dad50a380: style(table): 修改斑马纹颜色为 bgColor token (5.0)
+- 18a876ca6: style(table): 扩大排序按钮点击区域 (5.0)
+- 发布 hiui experimental 版本
+- 3d84a04aa: fix(table): 修复 stretchHeight+bordered 模式下数据为空时左右边框未显示问题 (5.0)
+- cfdc94dbc: fix(table): 计算每列 top 值优化，只有在需要 sticky 的场景下才设置该值 (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [b27483796]
+- Updated dependencies
+  - @hi-ui/select@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

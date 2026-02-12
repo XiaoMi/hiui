@@ -1,5 +1,16 @@
 # @hi-ui/tree
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 发布 hiui experimental 版本
+- fe579e212: style(tree): update class names for tree node elements in SCSS (5.0)
+- Updated dependencies [8f23e9322]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies
+  - @hi-ui/input@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

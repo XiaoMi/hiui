@@ -1,5 +1,14 @@
 # @hi-ui/time-picker
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- 发布 hiui experimental 版本
+- f8321b72f: fix(time-picker): 修复清空后无法选中 00:00:00 问题 & 设置默认宽度 100% (5.0)
+
 ## 5.0.0-experimental.0
 
 ### Major Changes
