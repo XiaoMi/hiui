@@ -1,5 +1,79 @@
 # @hi-ui/time-picker
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 2f5e5ce4d: feat(time-picker): appearance 增加 contained 类型，以及最新风格的样式修改 (5.0)
+- 6dca7795c: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- 1662753e0: style: fix ui bug (5.0)
+- 41552be0b: <br>
+  - style(time-picker): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(tag-input): 为占位符增加溢出处理和文本省略样式 (5.0)
+  - style(input): 增加溢出处理和文本省略样式 (5.0)
+  - style(number-input): 增加溢出处理和文本省略样式 (5.0)
+- f4fc0ef30: style: 修改样式问题 (5.0)
+- 29cae09ea: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 3b989bb78: fix(time-picker): update notifyOutside callback to handle single value case (5.0)
+- 4a31cea53: style: 下拉框间距改为 4px (5.0)
+- a5327c316: style(date-picker, time-picker): 修改禁用时的样式 (5.0)
+- c74ed73f3: fix(time-picker): 修改 notifyOutside 回调逻辑，修复清空要点击 2 次才生效问题 (5.0)
+- 934e1aecf: style: 修改样式问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 0a8cc07a7: style: 修改样式 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 4a31cea53: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- 99801c2d1: fix: 修复 UI 问题 (5.0)
+- 86910f5e2: style: 修改 UI (5.0)
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [277c5033a]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [1429eced2]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+  - @hi-ui/popper@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-merge-refs@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+
 ## 4.1.2
 
 ### Patch Changes

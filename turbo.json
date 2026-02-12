@@ -6,6 +6,11 @@
         "^build"
       ]
     },
+    "build:types": {
+      "dependsOn": [
+        "^build:types"
+      ]
+    },
     "clean": {
       "cache": false
     },

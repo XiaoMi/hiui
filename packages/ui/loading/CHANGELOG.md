@@ -1,5 +1,49 @@
 # @hi-ui/loading
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 4006b2c8c: feat(loading): 默认效果改为 spin 类型 & 增加 contentPosition、size 和 color 参数 (5.0)
+
+### Patch Changes
+
+- 0f7aac2f3: fix(loading): rename wrapper class to content-wrapper and adjust styles for better layout (5.0)
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- ac15c6141: <br />
+  - fix(table): 修改表格在外层是 scale 时导致列宽计算有误的问题 (5.0)
+  - fix(loading): 修改 loading size 类型，移除 xs 尺寸 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e3dea9be5]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-id@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/portal@5.0.0-experimental.0
+  - @hi-ui/spinner@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/container@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/func-utils@5.0.0-experimental.0
+  - @hi-ui/react-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+  - @hi-ui/react-compat@5.0.0-experimental.0
+
 ## 4.3.0
 
 ### Minor Changes

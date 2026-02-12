@@ -1,0 +1,48 @@
+{
+  "name": "@hi-ui/utility-types",
+  "version": "4.0.0-experimental.2",
+  "description": "A sub-package for @hi-ui/utils.",
+  "keywords": [],
+  "author": "HiUI <mi-hiui@xiaomi.com>",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/utils/utility-types#readme",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib",
+    "global.d.ts"
+  ],
+  "types": "lib/types/index.d.ts",
+  "typings": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts"
+    },
+    "./global": {
+      "types": "./global.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "echo 'do nothing'",
+    "clean": "rimraf lib global.d.ts",
+    "prebuild": "yarn clean",
+    "gen:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "gen:global": "node scripts/generate-global-d.ts.mjs",
+    "build:types": "yarn gen:types && yarn gen:global",
+    "build": "yarn build:types"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "peerDependencies": {
+    "@types/react": ">=17.0.2"
+  }
+}

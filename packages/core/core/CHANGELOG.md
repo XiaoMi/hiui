@@ -1,5 +1,47 @@
 # @hi-ui/core
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- f1ab51725: feat(core): 尺寸类型增加 xs 枚举 (5.0)
+
+### Minor Changes
+
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+
+### Patch Changes
+
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- fd4c20bbd: chore(locale-context): Transfer 组件增加文案 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [4a31cea53]
+- Updated dependencies [3457a6f7d]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [eb718e940]
+- Updated dependencies [95abba983]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [67dbef4ee]
+- Updated dependencies [e2d184e74]
+- Updated dependencies [c498f0c9d]
+- Updated dependencies [eea29eade]
+- Updated dependencies [3ff6c519b]
+- Updated dependencies [33da3144e]
+- Updated dependencies [cb7b794d0]
+  - @hi-ui/core-css@5.0.0-experimental.0
+  - @hi-ui/global-context@4.0.1-experimental.0
+  - @hi-ui/locale-context@5.0.0-experimental.0
+  - @hi-ui/portal-context@5.0.0-experimental.0
+
 ## 4.0.12
 
 ### Patch Changes

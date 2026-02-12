@@ -1,0 +1,19 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+.pro-time-picker {
+  &.#{with-prefix('time-picker')},
+  .#{with-prefix('time-picker__input-wrapper')},
+  .#{with-prefix('time-picker__input__wrapper')} {
+    width: 100%;
+  }
+
+  .#{with-prefix('time-picker')} {
+    &__input-wrapper {
+      justify-content: space-between;
+    }
+
+    &__input {
+      flex: 1;
+    }
+  }
+}

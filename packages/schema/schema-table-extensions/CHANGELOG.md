@@ -1,0 +1,121 @@
+# @hi-ui/schema-table-extensions
+
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 3e5e409c5: 补充多处 package.json 中缺少的 exports.types 字段
+- Updated dependencies [3e5e409c5]
+  - @hi-ui/schema-utils@4.0.0-experimental.4
+
+## 4.0.0-experimental.1
+
+### Patch Changes
+
+- 5c9fb824d: 迁入 schema-components 相关组件
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [3457a6f7d]
+- Updated dependencies [da2e63a14]
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [b9989e482]
+- Updated dependencies [6167ad50b]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1662753e0]
+- Updated dependencies [b8d3e7a73]
+- Updated dependencies [9f5d129f6]
+- Updated dependencies [693bf9b46]
+- Updated dependencies [ae8dcbce8]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [cf89262c7]
+- Updated dependencies [d64eaca73]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [c021539a3]
+- Updated dependencies [b28c4f745]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [08b9d0ecf]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [b6a389ac1]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [1f20567ca]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [eb718e940]
+- Updated dependencies [795b2346e]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [e28c72493]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [1429eced2]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [aff25dbeb]
+- Updated dependencies [9caea419e]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [976ec929d]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [63fe6aae6]
+- Updated dependencies [d021b4fa6]
+- Updated dependencies [6f4b13151]
+- Updated dependencies [99155ed2b]
+- Updated dependencies [67dbef4ee]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [de8d058dc]
+- Updated dependencies [5210770d9]
+- Updated dependencies [a5327c316]
+- Updated dependencies [e2d184e74]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [c498f0c9d]
+- Updated dependencies [eea29eade]
+- Updated dependencies [3ff6c519b]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [934e1aecf]
+- Updated dependencies [2f850ad84]
+- Updated dependencies [3457a6f7d]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [542076e55]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [b01ae679c]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [e46b1ec03]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [b7a2d0d11]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+- Updated dependencies [5c9fb824d]
+- Updated dependencies [f9c4afd14]
+  - @hi-ui/number-input@5.0.0-experimental.0
+  - @hi-ui/tooltip@5.0.0-experimental.0
+  - @hi-ui/core-css@5.0.0-experimental.0
+  - @hi-ui/drawer@5.0.0-experimental.0
+  - @hi-ui/input@5.0.0-experimental.0
+  - @hi-ui/loading@5.0.0-experimental.0
+  - @hi-ui/popover@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/select@5.0.0-experimental.0
+  - @hi-ui/empty-state@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/date-picker@5.0.0-experimental.0
+  - @hi-ui/checkbox@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/schema-utils@4.0.0-experimental.1
+  - @hi-ui/utility-types@4.0.0-experimental.1

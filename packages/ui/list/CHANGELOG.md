@@ -1,5 +1,47 @@
 # @hi-ui/list
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 6fb223e3a: style: fix ui bug (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 700b46802: <br />
+  - style(list): 新版样式 (5.0)
+  - feat(list): 新增列表头部支持 (5.0)
+  - style(list): 默认不显示边框 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [6167ad50b]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [423aab762]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [b6a389ac1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [13836d63e]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [dd60555d3]
+- Updated dependencies [f9c4afd14]
+  - @hi-ui/pagination@5.0.0-experimental.0
+  - @hi-ui/empty-state@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/avatar@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+
 ## 4.1.0
 
 ### Minor Changes

@@ -1,0 +1,144 @@
+@use './mixin.scss' as *;
+@import '~@hi-ui/core-css/lib/common/version';
+
+@mixin set-padding-bottom($value) {
+  & > .#{with-prefix(card__body)},
+  & > .#{with-prefix(collapse-panel__content-wrapper)} > .#{with-prefix(collapse-panel__content)} {
+    padding-bottom: $value;
+  }
+}
+
+@mixin add-padding-bottom() {
+  @include set-padding-bottom(use-var(spacing-10, 20px));
+}
+
+@mixin remove-padding-bottom() {
+  @include set-padding-bottom(unset);
+}
+
+.group-container {
+  // --group-panel-gap: 20px; // 由外部自行设置，默认12px
+  display: flex;
+  flex-direction: column;
+
+  &[data-bordered='true'] {
+    gap: var(--group-panel-gap, 12px);
+
+    .group-panel {
+      @include has-bordered();
+      @include add-padding-bottom();
+
+      &[data-group-type='simple'],
+      &[data-group-type='form'] {
+        @include set-padding-bottom(unset);
+      }
+
+      // 组只读时，给表单元素增加内边距
+      &[data-readonly='true'][data-group-type='simple'],
+      &[data-readonly='true'][data-group-type='form'] {
+        @include add-padding-bottom();
+      }
+
+      &[data-group-type='descriptions'] {
+        @include set-padding-bottom(8px);
+      }
+
+      // 标签页组下的嵌套子组，不设置间距，因为tab元素中的组元素都没有边框
+      &[data-group-type='tabs'] {
+        .group-container {
+          gap: 0;
+        }
+      }
+    }
+  }
+
+  &[data-bordered='false'] {
+    .group-panel {
+      @include no-bordered();
+      @include remove-padding-bottom();
+    }
+  }
+
+  /* stylelint-disable no-descending-specificity */
+  .group-panel {
+    .#{with-prefix(collapse-panel__head)} {
+      padding: 14px 20px;
+    }
+
+    // 横向超出时允许滚动
+    .#{with-prefix(card__body)} {
+      overflow-x: auto;
+    }
+
+    &[data-bordered='true'] {
+      @include has-bordered();
+      @include add-padding-bottom();
+    }
+
+    &[data-bordered='false'] {
+      @include no-bordered();
+      @include remove-padding-bottom();
+    }
+
+    &[role='collapse-panel'] {
+      &::after {
+        display: none;
+      }
+
+      // 折叠面板的子元素，内边距比 Card 的内边距小，统一成20px
+      &
+        > .#{with-prefix(collapse-panel__content-wrapper)}
+        > .#{with-prefix(collapse-panel__content)} {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    &[data-group-type='tabs'] {
+      & > .#{with-prefix(card__body)} {
+        padding: 0;
+
+        .#{with-prefix(tabs)} {
+          // 标签页顶部的边距要移除
+          &__content {
+            padding-top: unset;
+          }
+
+          // 标签页内的组，外底边距、边框和圆角要移除
+          &-tab-pane > .group-container > .group-panel {
+            border: unset;
+            border-radius: unset;
+          }
+        }
+      }
+    }
+
+    &[data-group-type='grid'] {
+      & > .#{with-prefix(card__body)} {
+        & .#{with-prefix(grid-col)} {
+          .group-container,
+          .group-panel {
+            height: 100%;
+          }
+
+          .group-container[data-el-type='multiple'] > .group-panel {
+            height: auto;
+          }
+        }
+      }
+    }
+
+    // Tabs 的右侧 extra 元素
+    // extra 在【组】内渲染时，跟外部容器边缘差了 20px，在此处补齐
+    &_tabs-extra {
+      margin-right: 20px;
+    }
+
+    // 标题行右侧存在操作按钮时，会导致行高变为32px
+    // 此时在 Tabs 中切换，视觉上会出现抖动，因此此处限制高度为24
+    .#{with-prefix(card__head)},
+    .#{with-prefix(collapse-panel__title-container)} {
+      max-height: 24px;
+    }
+  }
+}

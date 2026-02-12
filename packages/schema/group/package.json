@@ -1,0 +1,66 @@
+{
+  "name": "@hi-ui/group",
+  "version": "4.0.0-experimental.3",
+  "description": "A sub-package for @hi-ui/schema.",
+  "keywords": [],
+  "author": "HiUI <mi-hiui@xiaomi.com>",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/schema/group#readme",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
+  "typings": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "clean": "rimraf lib",
+    "prebuild": "yarn clean",
+    "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
+    "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "build:copy": "copyfiles -u 1 src/mixin.scss lib",
+    "build": "concurrently yarn:build:*"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "dependencies": {
+    "@hi-ui/schema-action-trigger": ">=4.0.0-experimental.3",
+    "@hi-ui/schema-core": ">=4.0.0-experimental.6",
+    "@hi-ui/schema-utils": ">=4.0.0-experimental.4"
+  },
+  "peerDependencies": {
+    "@hi-ui/card": ">=5.0.0-experimental.0",
+    "@hi-ui/classname": ">=5.0.0-experimental.0",
+    "@hi-ui/collapse": ">=5.0.0-experimental.0",
+    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
+    "react": ">=16.8.6"
+  },
+  "devDependencies": {
+    "@hi-ui/utility-types": ">=4.0.0-experimental.1",
+    "react": "^17.0.2"
+  },
+  "volta": {
+    "node": "14.21.3"
+  }
+}

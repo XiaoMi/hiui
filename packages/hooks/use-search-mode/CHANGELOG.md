@@ -1,5 +1,33 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 7b956b1eb: fix(use-search-mode): 优化首次触发搜索逻辑 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [be5a59325]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [33da3144e]
+  - @hi-ui/loading@5.0.0-experimental.0
+  - @hi-ui/use-data-source@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/dom-utils@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/func-utils@5.0.0-experimental.0
+  - @hi-ui/tree-utils@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.2.3
 
 ### Patch Changes

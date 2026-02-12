@@ -1,0 +1,26 @@
+@import '~@hi-ui/group/lib/mixin.scss';
+
+.schema-group {
+  &__title {
+    margin-bottom: 12px;
+
+    &[data-bordered='true'] {
+      @include has-bordered();
+    }
+
+    &[data-bordered='false'] {
+      @include no-bordered();
+    }
+  }
+
+  // .group-panel {
+  // }
+
+  &__panel {
+    // Tabs 的右侧 extra 元素
+    // extra 在【组】内渲染时，跟外部容器边缘差了 20px，在此处补齐
+    &_tabs-extra {
+      margin-right: 20px;
+    }
+  }
+}

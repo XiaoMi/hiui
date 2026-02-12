@@ -1,0 +1,101 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+$checkbox: with-prefix('checkbox') !default;
+
+@mixin scroll-bar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+}
+
+// 两个联用，提高选择器权重
+.table-filter__popover.table-filter__popover {
+  padding: 8px;
+}
+
+.table-filter {
+  &__container {
+    width: 200px;
+    background: #fff;
+    font-weight: normal;
+  }
+
+  // &__search {
+  // }
+
+  &__content {
+    max-height: 300px;
+    padding: 4px 0;
+
+    @include scroll-bar;
+  }
+
+  &__option {
+    height: 36px;
+    padding: 4px 0;
+    box-sizing: border-box;
+
+    .#{$checkbox} {
+      width: 100%;
+      height: 100%;
+      padding: 0 8px;
+      border-radius: 4px;
+      color: inherit;
+      transition: background-color 0.3s;
+    }
+
+    &:hover .#{$checkbox} {
+      background: #e2f3fe;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0 0;
+    border-top: 1px solid #f0f0f0;
+    background: #fff;
+
+    // &-left {
+    // }
+
+    &-right {
+      display: flex;
+    }
+  }
+
+  &__container[data-filter-type='text'] &__footer,
+  &__container[data-filter-type='number'] &__footer,
+  &__container[data-filter-type='date'] &__footer {
+    border-top: none;
+    padding-top: 4px;
+  }
+
+  &__container[data-filter-type='select'] &__content {
+    overflow-y: auto;
+  }
+
+  &__container[data-filter-type='select'] &__footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  // 增加日期筛选器的宽度
+  &__container[data-filter-type='date'] {
+    width: 250px;
+  }
+
+  &__trigger {
+    cursor: pointer;
+  }
+}

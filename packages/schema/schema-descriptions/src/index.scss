@@ -1,0 +1,32 @@
+@import '~@hi-ui/core-css/lib/common/version';
+
+.schema-descriptions {
+  &.#{with-prefix('descriptions')} {
+    td.#{with-prefix('descriptions-item__content')} {
+      span[data-case='readonly'] {
+        display: inline-flex;
+      }
+    }
+
+    // Chrome105
+    tr.#{with-prefix('descriptions-row')}:has(.image-preview-cell) {
+      th,
+      td {
+        vertical-align: top;
+      }
+    }
+
+    // 图片预览字段
+    td.#{with-prefix('descriptions-item__content')}.image-preview-cell {
+      padding-bottom: 5px;
+
+      .image-preview {
+        &,
+        &__item-wrapper,
+        img {
+          height: 32px;
+        }
+      }
+    }
+  }
+}

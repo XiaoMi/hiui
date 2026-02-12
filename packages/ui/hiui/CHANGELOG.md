@@ -1,5 +1,552 @@
 # @hi-ui/hiui
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- e8fd3543d: feat(layout): 添加 AppListPopover 组件并更新布局样式和示例 (5.0)
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- 277c5033a: style(dropdown): 下拉框带边框&圆角改为 6px&size 改为只有 md 尺寸 (5.0)
+- 95e868bed: feat(query-filter): 新增 QueryFilter 组件 (5.0)
+- dd60555d3: feat(pagination): 优化 pagination 组件，加入 padding 和自定义 total 总数展示样式（5.0）
+
+### Minor Changes
+
+- bd8454f85: feat(upload): Upload 组件 type 为 avatar 时展示图片裁剪工具栏 (5.0)
+- 2f5e5ce4d: feat(time-picker): appearance 增加 contained 类型，以及最新风格的样式修改 (5.0)
+- 723c21c92: feat: hiui 整包中暴露 Spinner 组件 (5.0)
+- 8c47b7ae0: feat(message): 支持自定义图标 (5.0)
+- da2e63a14: feat(input&number-input): add styles and classNames api (5.0)
+- 7929cd254: feat(notification): 支持自定义弹出位置 (5.0)
+- eea29eade: <br>
+  - feat(button): 样式更新到 5.0 (5.0)
+  - feat(button): 增加 text 类型 (5.0)
+  - feat(button): 参数 icon 支持数组类型 (5.0)
+- b9989e482: feat(picker): 增加 clearSearchOnClosed api 默认是 false (5.0)
+- ae8dcbce8: feat(date-picker): add showWeek api (5.0)
+- 14d353747: feat(progress): 新版样式调整 & 增加 MiniProgress 组件(5.0)
+- f1ab51725: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 0b34e1c15: feat(tabs): 支持拖拽 (5.0)
+- c91b57c00: feat(search-trigger): 继承 MenuSearch 组件参数 (5.0)
+- 5828ae8ab: feat(layout): 增加 FloatMenuContainer 组件 (5.0)
+- 95dd766b9: feat(scrollbar): 增加 bordered 参数，和改造新版样式 (5.0)
+- dd5033f60: feat(form): 增加 autoRegister 参数,支持动态添加和删除表单时,数据同步更新 (5.0)
+- 423aab762: <br>
+  - feat(pagination): 改为线性样式 (5.0)
+  - feat(pagination): 增加 xs 尺寸，默认使用 sm 尺寸 (5.0)
+- a0fdb0ad1: <br>
+  - feat(tabs): 增加 size 参数 (5.0)
+  - feat(tabs): 修改标签选中下标样式 (5.0)
+- 08b9d0ecf: feat(drawer): add styles api (5.0)
+- 6bb4d999c: feat(tabs): 支持编辑功能和设置最大标题宽度 (5.0)
+- 120f6b15a: feat(tabs): add editRender api (5.0)
+- f8acad4e1: feat(check-cascader): 增加 checkbox 级联禁用功能和相关样式调整 (5.0)
+- ffea3d7af: feat(hiui): 增加组件导出 IconButton Picker Popper Portal TagInput (5.0)
+- 3e1d3608f: feat(cascader): add onItemClick api (5.0)
+- 795b2346e: feat(date-picker): add onClear api (5.0)
+- df301c0dc: feat(table): 普通表格支持 scrollTo 方法 (5.0)
+- 8a92ec660: feat(button): appearance 参数增加 solid 类型 (5.0)
+- 9b34d99bc: feat(tag): 增加 type 值 (5.0)
+- 24216019a: feat(upload): add timeout option to upload components and types (#3469)
+- aff25dbeb: - fix(date-picker): 显示框圆角改为 6px (5.0)
+  - feat(date-picker): 增加 xs 尺寸 (5.0)
+- 95e65eecd: feat(table): 支持远程排序 (5.0)
+- a4c48b19e: feat(check-cascader): add showOnlyShowChecked api (5.0)
+- 9caea419e: feat(number-input): add suffix api (5.0)
+- f03f60ebd: <br>
+  - feat(preview): title 参数支持传入函数返回自定义内容 (5.0)
+  - fix(preview): 修复禁止下载时下载按钮没有隐藏问题 (5.0)
+- a769a14e7: feat(timeline): dataItem 增加 dotColor 和 dotType 参数 (5.0)
+- df8232a61: feat(layout): 增加 Profile 组件 (5.0)
+- 2e56529f7: feat(grid): add align api (5.0)
+- 13836d63e: feat(avatar): 增加 AvatarGroup 组件 & 新版样式调整 (5.0)
+- 22ef60263: feat(layout): 新增 Layout 组件 (5.0)
+- aebefd73e: feat(table): add onScroll api (5.0)
+- 63fe6aae6: feat(date-picker): needConfirm 支持日期范围选择场景 (5.0)
+- 4223c3dc0: feat(slider): 增加范围选择功能 (5.0)
+- 6dca7795c: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 4006b2c8c: feat(loading): 默认效果改为 spin 类型 & 增加 contentPosition、size 和 color 参数 (5.0)
+- 6fcda9bf2: feat(date-picker): appearance 参数增加 contained 类型 (5.0)
+- 5828ae8ab: feat(menu): 增加 GroupMenu 和 SideMenu 组件 (5.0)
+- 0b34e1c15: feat(modal): 支持根据滚动位置来控制头尾部边框的显示 (5.0)
+- 9b34d99bc: feat(tabs): 增加 showDivider 参数 (5.0)
+- 3c3e077b9: feat(layout): 增加 Header 和 Footer 组件 & 完善示例 (5.0)
+- 77d969c2e: feat: 下拉选择类组件 appearance 参数增加 contained 类型 (5.0)
+- 25cea5f36: feat(layout): Sider 组件增加 maxWidth 参数 & FloatMenuContainer 组件增加 zIndex 参数 (5.0)
+- fd4c20bbd: <br />
+  - style(transfer): 新版样式 (5.0)
+  - feat(transfer): 增加 FastTransfer 组件 (5.0)
+- feab0390b: feat(modal): add styles and classNames api (5.0)
+- 9a98a3330: feat(upload): 新增上传成功后显示成功 icon (5.0)
+- 9d855a6c5: feat(Skeleton): New Component Skeleton 新增组件骨架屏 (5.0)
+- 542076e55: feat(popover): 暴露 update 方法，支持调用刷新校准弹窗位置 (5.0)
+- d7b42d456: feat(dropdown): update onClick callback to include item data (5.0)
+- 9f4268ee3: feat(table): TableColumnItem 支持泛型 (5.0)
+- c38e6e4bf: feat(menu): GroupMenu 组件增加 titleRender 参数 (5.0)
+- d51de8acc: feat(table): add stretchHeight api (5.0)
+- a5937df94: feat(menu): add showTitleOnMini api (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+- e46b1ec03: feat(date-picker): 增加 defaultPickerValue 参数，支持配置默认的面板显示日期 (#3473)
+- f2be367e9: feat(popper): 增加 PopperOverlayProps 的新事件处理属性 onEnter, onEntered, onExit (5.0)
+- 1fae66f2d: feat(tree): add shouldShowSwitcher prop for custom switcher display logic (#3471)
+- 1972fd16a: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+- cb7b794d0: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+- bfc1cb7c8: chore(menu): 增加变更记录文件 (5.0)
+
+### Patch Changes
+
+- 0b34e1c15: styles: 修改样式问题 (5.0)
+- 20aac2a2f: style(radio): 新版样式调整 (5.0)
+- 6fb223e3a: style: fix ui bug (5.0)
+- 4a31cea53: style: 统一调整组件 shadow (5.0)
+- 4390a8518: fix(tag): 修复添加保存时抖动问题 (5.0)
+- 03f04676b: fix(textarea): 修复更新 maxRows 无效的问题 (5.0)
+- 0f7aac2f3: fix(loading): rename wrapper class to content-wrapper and adjust styles for better layout (5.0)
+- 54e254b54: fix(breadcrumb): 修复 separator 设置无效问题 (5.0)
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- cce71cdfa: style(tag-input): 调整 total 的内边距和最小宽度 (5.0)
+- 231ac15f1: style(slider): 新版样式调整 (5.0)
+- 6167ad50b: refactor(empty-state): deprecate COLOURFUL components (5.0)
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 1662753e0: style: fix ui bug (5.0)
+- b8d3e7a73: style(number-input): NumberInput 组件新版样式 (5.0)
+- 9f5d129f6: fix(date-picker): 加强 valueAdapter 逻辑处理，当值是数组并且是范围类型时，再做转换 (5.0)
+- 693bf9b46: perf(date-picker): 优化 contained 模式下的点击事件交互&范围选择的交互优化 (5.0)
+- e5964c571: style(table): 修复虚拟表格中多选列没有居中问题 (5.0)
+- d2cdb2537: fix(table): 修复在 stretchHeight 模式下，冻结列表头和单元格层级问题 (5.0)
+- e785237b1: <br />
+  - perf(layout): 优化导航菜单交互体验 (5.0)
+  - perf(menu): 优化搜索菜单组件的样式和交互逻辑 & 修改分组菜单样式问题 (5.0)
+- 619e031ab: style(table): update hover and striped row background colors for improved visibility (5.0)
+- 76cfe571b: style(table): 修复虚拟表格下 align 设置无效问题 (5.0)
+- cf89262c7: style(picker): 移除 picker 组件中的 \_\_text 样式定义 (5.0)
+- dd83a83bc: fix(form): 修复 FormList 字段变化时没有触发 onValuesChange 回调的问题 (5.0)
+- d64eaca73: fix(date-picker): 修复 onSelect 回调没有处理 utcOffset 的问题 (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 3a20f5556: style(descriptions): 更新描述组件样式，调整标签颜色为灰色 600，并增加行高设置 (5.0)
+- 68dccedb1: fix(check-cascader): 修复非平铺展示搜索结果时显示出层级问题 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- 1dbc23ca5: feat(check-cascader): 增加全选功能
+- c73e96874: fix(tag): editable 为 true 时才能触发双击事件 (5.0)
+- 9a98a3330: <br>
+  - feat(upload): 新版样式 (5.0)
+  - feat(upload): 增加 size 参数 (5.0)
+  - feat(upload): 上传按钮改为线性 (5.0)
+  - feat(upload): 照片墙上传按钮支持配置文案 (5.0)
+- f4fc0ef30: style: 修改样式问题 (5.0)
+- c021539a3: style: fix ui bug (5.0)
+- cb9d8f6db: fix(tag-input): 修复 contained 模式下 displayRender 设置无效问题 (5.0)
+- b28c4f745: fix(date-picker): 修复在 showTime 模式下，选择时间后没有触发 onSelect 回调的问题 (5.0)
+- 44deb7265: style(preview): 新版样式调整 (5.0)
+- ea9d00628: fix(table): 修复表头分组数据为空时表头显示异常问题，当 data 为空时，使用双表格 (5.0)
+- ec4c7faa2: fix(input): 使用 cx 函数优化样式类名的拼接 (5.0)
+- 29cae09ea: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- 4c767623f: fix(layout&page-header): add types export to package.json for layout and page-header
+- be5a59325: style: 修改样式问题 (5.0)
+- fc7f381ff: perf(table): add cell class prefix to TbodyContent and adjust useColWidth debounce timing (5.0)
+- 71fc15e5c: style: 修改样式问题 (5.0)
+- b6a389ac1: perf(table): 优化表格列宽更新逻辑，当内容宽度没有超出时再更新列宽 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- e2b5c3628: chore(modal): ModalApiProps 暴露更多 Modal 组件参数 (5.0)
+- 1f20567ca: fix(date-picker): 修复周选择模式下 2026 年第一周显示为 2025-W53 问题 (5.0)
+- e2f69cb62: refactor(table): stretchHeight 模式不再使用双表格结构，使用 sticky 实现 (5.0)
+- fa5a60b56: <br>
+  - fix(ellipsis-tooltip): 修复设置 numberOfLines 无效问题 & 兼容 children 为空情况 (5.0)
+  - feat(ellipsis-tooltip): 增强 children 处理逻辑，支持 ReactNode 类型并优化 tooltip 显示 (5.0)
+- 2b6cfd655: style: fix ui bug (5.0)
+- 7eb0d3aaf: style(switch): Switch 组件新版样式 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- eb718e940: fix: 修改组件问题 (5.0)
+- 4e0ed3a31: <br>
+  - fix(checkbox): 修改边框大小为 6px (5.0)
+  - fix(checkbox): 去掉 focus 时的阴影样式 (5.0)
+- e28c72493: style(date-picker): 增加日期选择器输入框的溢出处理和文本省略样式 (5.0)
+- 3b989bb78: fix(time-picker): update notifyOutside callback to handle single value case (5.0)
+- 150e813bf: fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- 4a31cea53: style: 下拉框间距改为 4px (5.0)
+- 67c80bdd5: style(alert): 新版样式调整 (5.0)
+- 961aaf5ab: style(badge): 调整新版样式 (5.0)
+- 8a14ae85f: style(rating): 更新星星和表情图标的 SVG 设计 (5.0)
+- 539749951: <br>
+  - fix(form): 错误提示字号改为 12px (5.0)
+  - fix(form): 必填星号调整为显示在右侧 (5.0)
+  - fix(form): 标题和控件间距改为 6px (5.0)
+  - fix(form): 包裹控件容器设置最小高度 32px (5.0)
+  - fix(form): 默认不显示标题冒号 (5.0)
+- 1429eced2: style(button): 为按钮组件的图标添加行高设置 (5.0)
+- 9b34d99bc: style(tooltip): 去掉背景色透明度 (5.0)
+- f3bf08f27: fix(cascader): 平铺搜索结果时不再展示不可点击的父节点 (5.0)
+- c2e765ada: style(layout): 修改 Sider 收起时宽度为 60px & 增加 width 参数 (5.0)
+- ecca3edc4: style(pop-confirm): 新版样式修改 (5.0)
+- 98df634ac: fix(tree): 修复在可勾选模式下搜索结果中父节点勾选状态不正确的问题，更新相关数据处理逻辑 (5.0)
+- ac15c6141: <br />
+  - fix(table): 修改表格在外层是 scale 时导致列宽计算有误的问题 (5.0)
+  - fix(loading): 修改 loading size 类型，移除 xs 尺寸 (5.0)
+- 43881b626: style(breadcrumb): 新版样式调整 (5.0)
+- 52d25f630: perf(layout&menu): 优化 FloatMenuContainer 组件的折叠逻辑 & 修改 SideMenu 组件 hover 样式 (5.0)
+- 223bd1397: fix(tree): onSelect 第二个参数固定返回当前操作的节点对象 (5.0)
+- d021b4fa6: feat: add onOpen callback trigger on visibility change (5.0)
+- 6f4b13151: perf(popover): 优化通过方法调用组件时的渲染和打开方式 (5.0)
+- 99155ed2b: perf(date-picker): 优化跨月范围选择交互体验，选择跨月日期时，自动切换面板月份 (5.0)
+- de8d058dc: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- 5210770d9: feat(picker): add header api (5.0)
+- a5327c316: style(date-picker, time-picker): 修改禁用时的样式 (5.0)
+- e2d184e74: style: 修改 UI 问题 (5.0)
+- 1b824c9ad: style(menu): 优化 GroupMenu 组件的样式和交互逻辑 (5.0)
+- c74ed73f3: fix(time-picker): 修改 notifyOutside 回调逻辑，修复清空要点击 2 次才生效问题 (5.0)
+- 4aef40b75: style(stepper): Stepper 组件新版样式 (5.0)
+- 9b34d99bc: style(message): 增加边框 (5.0)
+- 3ff6c519b: style(color-css): 更新颜色 Token (5.0)
+- 55e0301a1: style(card): 新版样式调整 (5.0)
+- 424700fc5: style(cascader&check-cascader): 调整下拉框样式，增加搜索框宽度设置 (5.0)
+- 934e1aecf: style: 修改样式问题 (5.0)
+- 6ac7e8eb2: chore(table): export SettingDrawer types (5.0)
+- ded9bb6d6: <br>
+  - perf(table): 优化列宽更新逻辑，当 columns 长度和 dataKey、width 发生变化时，重新计算列宽 (5.0)
+  - fix(table): 用于计算真实列宽的行节点，考虑单元格合并的场景 (5.0)
+  - fix(table): 修复 stretchHeight 模式下高度变化时虚拟表格高度没有更新问题 (5.0)
+- 2f850ad84: fix(drawer): 样式修改 (5.0)
+- 3457a6f7d: style(drawer): 修改投影 (5.0)
+- 468837564: style(result): 新版样式 (5.0)
+- 0bcd0b514: style(collapse): 新版样式 (5.0)
+- 5d50840af: perf(textarea): 优化高度自适应交互体验，解决换行时抖动问题 (5.0)
+- 700b46802: <br />
+  - style(list): 新版样式 (5.0)
+  - feat(list): 新增列表头部支持 (5.0)
+  - style(list): 默认不显示边框 (5.0)
+- d2ccdc691: fix(preview): 兼容 src 内容为空的情况 & 优化预览图片的展示 (5.0)
+- 4006b2c8c: style(button): loading 改为使用 Spinner 组件 (5.0)
+- 0b9ea115d: style(dropdown): 增加下拉菜单的最大高度和垂直溢出处理 (5.0)
+- 4b2596538: <br>
+  - style(cascader&check-cascader): 增加 white-space: nowrap; 样式以防止文本换行 (5.0)
+  - style(cascader&check-cascader): 调整搜索框默认宽度为 100px (5.0)
+  - feat(check-cascader): 增加 flattedSearchResult 属性，用于控制搜索结果的展现形式 (5.0)
+  - fix(cascader): 修复当搜索结果为空时，下拉框没有显示空状态问题 (5.0)
+- 11b7699f6: <br>
+  - fix(table): 标题去掉背景，头部加上边框 (5.0)
+  - fix(table): 单元格间距调整 & 设置最小高度 (5.0)
+  - fix(table): 不同尺寸修改 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 0a8cc07a7: style: 修改样式 (5.0)
+- e7b64347e: style(tag-input): 增加 flex-wrap 属性以优化标签换行展示 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 401c7e55e: style(upload): 处理文本超出的情况 (5.0)
+- 478b51050: fix(table): 修复标题过长时，列头宽度拉宽后无法缩小的问题 (5.0)
+- 0a4e90dbd: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- b01ae679c: fix(date-picker): 修复 weekOffset 设置不为 0 的值时会选中 2 周的问题 (5.0)
+- 872761f65: style(layout): 在折叠状态下为 FloatMenuContainer 组件添加 z-index 属性 (5.0)
+- 5cf3f8930: fix(preview): 修复滚轮缩放缺乏边界&外部滚动锁定问题 (5.0)
+- a0f0c9d6b: style: 修改 UI 问题 (5.0)
+- 79739ed82: <br>
+  - fix(cascader): 处理当 value 为空时清空选项的选中态(5.0)
+  - style(cascader&check-cascader): 调整选项容器最小宽度为 160px (5.0)
+  - style(cascader&check-cascader): 优化下拉框宽度，让内容和搜索框默认宽度对齐 (5.0)
+  - perf(cascader&check-cascader): 优化 customRender 函数，支持传递选中项和当前值 (5.0)
+- 3f24a97c3: chore(dropdown): 点击选项时阻止 click 事件冒泡 (5.0)
+- 4a31cea53: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- e3a854122: refactor(table): 调整列宽计算逻辑，兼容表头分组和单元格合并场景 (5.0)
+- 3e31bb724: fix(modal): 样式修改 (5.0)
+- 0f4794deb: fix(ellipsis-tooltip): 兼容 number 类型展示 (5.0)
+- b12cd78a3: fix(form): 修复当 initialValues 为 {} 时无法正常重置表单问题 (#3475)
+- 72f5dada0: style(layout): Sider 组件默认宽度改为 180px (5.0)
+- b7a2d0d11: fix(date-picker): 修复 weekOffset 设置为 3、4、5、6 时显示 2 周选中的问题 (5.0)
+- 99801c2d1: fix: 修复 UI 问题 (5.0)
+- 86910f5e2: style: 修改 UI (5.0)
+- 9b34d99bc: chore(textarea): 设置最小高度 32px (5.0)
+- f9c4afd14: style(empty-state): 新版图标替换 & 修改彩色图标命名 (5.0)
+- d7b42d456: style(anchor): add overflow hidden and adjust ink positioning for improved layout (5.0)
+- 1c2b3c1a7: fix: 修改 Space 和 Result 组件 size 类型 (5.0)
+- Updated dependencies [bd8454f85]
+- Updated dependencies [2f5e5ce4d]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [20aac2a2f]
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [2c1694f56]
+- Updated dependencies [4390a8518]
+- Updated dependencies [03f04676b]
+- Updated dependencies [8c47b7ae0]
+- Updated dependencies [da2e63a14]
+- Updated dependencies [7929cd254]
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [54e254b54]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [cce71cdfa]
+- Updated dependencies [231ac15f1]
+- Updated dependencies [eea29eade]
+- Updated dependencies [b9989e482]
+- Updated dependencies [6167ad50b]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1662753e0]
+- Updated dependencies [b8d3e7a73]
+- Updated dependencies [9f5d129f6]
+- Updated dependencies [693bf9b46]
+- Updated dependencies [ae8dcbce8]
+- Updated dependencies [e5964c571]
+- Updated dependencies [e8fd3543d]
+- Updated dependencies [d2cdb2537]
+- Updated dependencies [e785237b1]
+- Updated dependencies [619e031ab]
+- Updated dependencies [76cfe571b]
+- Updated dependencies [14d353747]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [cf89262c7]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [dd83a83bc]
+- Updated dependencies [d64eaca73]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [3a20f5556]
+- Updated dependencies [68dccedb1]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1dbc23ca5]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [c91b57c00]
+- Updated dependencies [5828ae8ab]
+- Updated dependencies [c73e96874]
+- Updated dependencies [9a98a3330]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [c021539a3]
+- Updated dependencies [cb9d8f6db]
+- Updated dependencies [b28c4f745]
+- Updated dependencies [44deb7265]
+- Updated dependencies [ea9d00628]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [95dd766b9]
+- Updated dependencies [dd5033f60]
+- Updated dependencies [423aab762]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [a0fdb0ad1]
+- Updated dependencies [08b9d0ecf]
+- Updated dependencies [4c767623f]
+- Updated dependencies [6bb4d999c]
+- Updated dependencies [be5a59325]
+- Updated dependencies [120f6b15a]
+- Updated dependencies [fc7f381ff]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [b6a389ac1]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [e2b5c3628]
+- Updated dependencies [1f20567ca]
+- Updated dependencies [e2f69cb62]
+- Updated dependencies [fa5a60b56]
+- Updated dependencies [2b6cfd655]
+- Updated dependencies [7eb0d3aaf]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3e1d3608f]
+- Updated dependencies [eb718e940]
+- Updated dependencies [277c5033a]
+- Updated dependencies [795b2346e]
+- Updated dependencies [df301c0dc]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [e28c72493]
+- Updated dependencies [3b989bb78]
+- Updated dependencies [150e813bf]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [67c80bdd5]
+- Updated dependencies [961aaf5ab]
+- Updated dependencies [8a14ae85f]
+- Updated dependencies [539749951]
+- Updated dependencies [1429eced2]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [24216019a]
+- Updated dependencies [f3bf08f27]
+- Updated dependencies [c2e765ada]
+- Updated dependencies [aff25dbeb]
+- Updated dependencies [ecca3edc4]
+- Updated dependencies [98df634ac]
+- Updated dependencies [95e65eecd]
+- Updated dependencies [a4c48b19e]
+- Updated dependencies [9caea419e]
+- Updated dependencies [f03f60ebd]
+- Updated dependencies [a769a14e7]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [df8232a61]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [43881b626]
+- Updated dependencies [13836d63e]
+- Updated dependencies [22ef60263]
+- Updated dependencies [aebefd73e]
+- Updated dependencies [52d25f630]
+- Updated dependencies [63fe6aae6]
+- Updated dependencies [223bd1397]
+- Updated dependencies [d021b4fa6]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6f4b13151]
+- Updated dependencies [4223c3dc0]
+- Updated dependencies [99155ed2b]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [de8d058dc]
+- Updated dependencies [5210770d9]
+- Updated dependencies [a5327c316]
+- Updated dependencies [e2d184e74]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [1b824c9ad]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [5828ae8ab]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [c74ed73f3]
+- Updated dependencies [4aef40b75]
+- Updated dependencies [3c3e077b9]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [3ff6c519b]
+- Updated dependencies [55e0301a1]
+- Updated dependencies [424700fc5]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [934e1aecf]
+- Updated dependencies [25cea5f36]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [6ac7e8eb2]
+- Updated dependencies [9ecf354ba]
+- Updated dependencies [feab0390b]
+- Updated dependencies [ded9bb6d6]
+- Updated dependencies [2f850ad84]
+- Updated dependencies [95abba983]
+- Updated dependencies [95e868bed]
+- Updated dependencies [3457a6f7d]
+- Updated dependencies [9a98a3330]
+- Updated dependencies [468837564]
+- Updated dependencies [0bcd0b514]
+- Updated dependencies [5d50840af]
+- Updated dependencies [700b46802]
+- Updated dependencies [d2ccdc691]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [0b9ea115d]
+- Updated dependencies [4b2596538]
+- Updated dependencies [9d855a6c5]
+- Updated dependencies [11b7699f6]
+- Updated dependencies [542076e55]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [d7b42d456]
+- Updated dependencies [54e254b54]
+- Updated dependencies [e7b64347e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [401c7e55e]
+- Updated dependencies [478b51050]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [9f4268ee3]
+- Updated dependencies [c38e6e4bf]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [b01ae679c]
+- Updated dependencies [d51de8acc]
+- Updated dependencies [a5937df94]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [872761f65]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [5cf3f8930]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [79739ed82]
+- Updated dependencies [3f24a97c3]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [e3a854122]
+- Updated dependencies [3e31bb724]
+- Updated dependencies [0f4794deb]
+- Updated dependencies [e46b1ec03]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1fae66f2d]
+- Updated dependencies [b12cd78a3]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [72f5dada0]
+- Updated dependencies [b7a2d0d11]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+- Updated dependencies [dd60555d3]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [f9c4afd14]
+- Updated dependencies [bfc1cb7c8]
+- Updated dependencies [d7b42d456]
+- Updated dependencies [1c2b3c1a7]
+  - @hi-ui/upload@5.0.0-experimental.0
+  - @hi-ui/time-picker@5.0.0-experimental.0
+  - @hi-ui/message@5.0.0-experimental.0
+  - @hi-ui/number-input@5.0.0-experimental.0
+  - @hi-ui/picker@5.0.0-experimental.0
+  - @hi-ui/stepper@5.0.0-experimental.0
+  - @hi-ui/switch@5.0.0-experimental.0
+  - @hi-ui/radio@5.0.0-experimental.0
+  - @hi-ui/carousel@5.0.0-experimental.0
+  - @hi-ui/cascader@5.0.0-experimental.0
+  - @hi-ui/check-cascader@5.0.0-experimental.0
+  - @hi-ui/list@5.0.0-experimental.0
+  - @hi-ui/menu@5.0.0-experimental.0
+  - @hi-ui/pagination@5.0.0-experimental.0
+  - @hi-ui/tag@5.0.0-experimental.0
+  - @hi-ui/tooltip@5.0.0-experimental.0
+  - @hi-ui/transfer@5.0.0-experimental.0
+  - @hi-ui/card@5.0.0-experimental.0
+  - @hi-ui/drawer@5.0.0-experimental.0
+  - @hi-ui/notification@5.0.0-experimental.0
+  - @hi-ui/table@5.0.0-experimental.0
+  - @hi-ui/tree@5.0.0-experimental.0
+  - @hi-ui/pop-confirm@5.0.0-experimental.0
+  - @hi-ui/textarea@5.0.0-experimental.0
+  - @hi-ui/input@5.0.0-experimental.0
+  - @hi-ui/loading@5.0.0-experimental.0
+  - @hi-ui/breadcrumb@5.0.0-experimental.0
+  - @hi-ui/modal@5.0.0-experimental.0
+  - @hi-ui/popover@5.0.0-experimental.0
+  - @hi-ui/popper@5.0.0-experimental.0
+  - @hi-ui/preview@5.0.0-experimental.0
+  - @hi-ui/tag-input@5.0.0-experimental.0
+  - @hi-ui/slider@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/check-select@5.0.0-experimental.0
+  - @hi-ui/check-tree-select@5.0.0-experimental.0
+  - @hi-ui/select@5.0.0-experimental.0
+  - @hi-ui/tree-select@5.0.0-experimental.0
+  - @hi-ui/empty-state@5.0.0-experimental.0
+  - @hi-ui/back-top@5.0.0-experimental.0
+  - @hi-ui/descriptions@5.0.0-experimental.0
+  - @hi-ui/grid@5.0.0-experimental.0
+  - @hi-ui/progress@5.0.0-experimental.0
+  - @hi-ui/provider@5.0.0-experimental.0
+  - @hi-ui/collapse@5.0.0-experimental.0
+  - @hi-ui/counter@5.0.0-experimental.0
+  - @hi-ui/form@5.0.0-experimental.0
+  - @hi-ui/icon-button@5.0.0-experimental.0
+  - @hi-ui/layout@5.0.0-experimental.0
+  - @hi-ui/page-header@5.0.0-experimental.0
+  - @hi-ui/rating@5.0.0-experimental.0
+  - @hi-ui/search@5.0.0-experimental.0
+  - @hi-ui/tabs@5.0.0-experimental.0
+  - @hi-ui/date-picker@5.0.0-experimental.0
+  - @hi-ui/alert@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/dropdown@5.0.0-experimental.0
+  - @hi-ui/result@5.0.0-experimental.0
+  - @hi-ui/anchor@5.0.0-experimental.0
+  - @hi-ui/avatar@5.0.0-experimental.0
+  - @hi-ui/badge@5.0.0-experimental.0
+  - @hi-ui/checkbox@5.0.0-experimental.0
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.0
+  - @hi-ui/filter@5.0.0-experimental.0
+  - @hi-ui/highlighter@5.0.0-experimental.0
+  - @hi-ui/input-group@5.0.0-experimental.0
+  - @hi-ui/portal@5.0.0-experimental.0
+  - @hi-ui/scrollbar@5.0.0-experimental.0
+  - @hi-ui/space@5.0.0-experimental.0
+  - @hi-ui/spinner@5.0.0-experimental.0
+  - @hi-ui/svg-icon@5.0.0-experimental.0
+  - @hi-ui/timeline@5.0.0-experimental.0
+  - @hi-ui/watermark@5.0.0-experimental.0
+  - @hi-ui/zen-mode@5.0.0-experimental.0
+  - @hi-ui/query-filter@5.0.0-experimental.0
+  - @hi-ui/skeleton@5.0.0-experimental.0
+
 ## 4.17.5
 
 ### Patch Changes

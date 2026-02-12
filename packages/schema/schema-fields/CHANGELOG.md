@@ -1,0 +1,191 @@
+# @hi-ui/schema-fields
+
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- 346113bd3: 处理 ProTag 产物丢失问题
+
+## 4.0.0-experimental.6
+
+### Patch Changes
+
+- 3d8f049b9: 处理构建顺序错误导致的产物丢失问题
+
+## 4.0.0-experimental.5
+
+### Patch Changes
+
+- ffaaeeeb1: 调整 schema-fields 的导出方式,优化主入口的 bundle 尺寸
+
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- 47171f350: 新增 matchFieldRenderFn 工具函数
+
+## 4.0.0-experimental.3
+
+### Patch Changes
+
+- b3a90f8f4: 优化 getFieldProps 工具函数中属性合并的优先级
+
+## 4.0.0-experimental.2
+
+### Patch Changes
+
+- 6b975e515: 处理 packages/schema 中多个包的依赖缺失问题
+- Updated dependencies [ef3969a08]
+- Updated dependencies [6b975e515]
+  - @hi-ui/schema-core@4.0.0-experimental.2
+  - @hi-ui/utility-types@4.0.0-experimental.2
+  - @hi-ui/schema-option-injector@4.0.0-experimental.2
+  - @hi-ui/schema-utils@4.0.0-experimental.2
+
+## 4.0.0-experimental.1
+
+### Patch Changes
+
+- 5c9fb824d: 迁入 schema-components 相关组件
+- Updated dependencies [bd8454f85]
+- Updated dependencies [2f5e5ce4d]
+- Updated dependencies [0b34e1c15]
+- Updated dependencies [20aac2a2f]
+- Updated dependencies [6fb223e3a]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [4390a8518]
+- Updated dependencies [03f04676b]
+- Updated dependencies [8c47b7ae0]
+- Updated dependencies [da2e63a14]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [231ac15f1]
+- Updated dependencies [b9989e482]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1662753e0]
+- Updated dependencies [b8d3e7a73]
+- Updated dependencies [9f5d129f6]
+- Updated dependencies [693bf9b46]
+- Updated dependencies [ae8dcbce8]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [cf89262c7]
+- Updated dependencies [d64eaca73]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [68dccedb1]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [1dbc23ca5]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [c73e96874]
+- Updated dependencies [9a98a3330]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [c021539a3]
+- Updated dependencies [cb9d8f6db]
+- Updated dependencies [b28c4f745]
+- Updated dependencies [44deb7265]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [1f20567ca]
+- Updated dependencies [fa5a60b56]
+- Updated dependencies [2b6cfd655]
+- Updated dependencies [7eb0d3aaf]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3e1d3608f]
+- Updated dependencies [eb718e940]
+- Updated dependencies [795b2346e]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [e28c72493]
+- Updated dependencies [3b989bb78]
+- Updated dependencies [95abba983]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8a14ae85f]
+- Updated dependencies [24216019a]
+- Updated dependencies [f3bf08f27]
+- Updated dependencies [aff25dbeb]
+- Updated dependencies [a4c48b19e]
+- Updated dependencies [9caea419e]
+- Updated dependencies [f03f60ebd]
+- Updated dependencies [976ec929d]
+- Updated dependencies [63fe6aae6]
+- Updated dependencies [4223c3dc0]
+- Updated dependencies [99155ed2b]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [de8d058dc]
+- Updated dependencies [5210770d9]
+- Updated dependencies [a5327c316]
+- Updated dependencies [e2d184e74]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [c74ed73f3]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [424700fc5]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [934e1aecf]
+- Updated dependencies [9ecf354ba]
+- Updated dependencies [9a98a3330]
+- Updated dependencies [5d50840af]
+- Updated dependencies [d2ccdc691]
+- Updated dependencies [4b2596538]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [e7b64347e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [401c7e55e]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [b01ae679c]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [5cf3f8930]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [79739ed82]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [0f4794deb]
+- Updated dependencies [e46b1ec03]
+- Updated dependencies [1fae66f2d]
+- Updated dependencies [b7a2d0d11]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [5c9fb824d]
+- Updated dependencies [1c2b3c1a7]
+  - @hi-ui/upload@5.0.0-experimental.0
+  - @hi-ui/time-picker@5.0.0-experimental.0
+  - @hi-ui/message@5.0.0-experimental.0
+  - @hi-ui/number-input@5.0.0-experimental.0
+  - @hi-ui/switch@5.0.0-experimental.0
+  - @hi-ui/radio@5.0.0-experimental.0
+  - @hi-ui/cascader@5.0.0-experimental.0
+  - @hi-ui/check-cascader@5.0.0-experimental.0
+  - @hi-ui/tag@5.0.0-experimental.0
+  - @hi-ui/textarea@5.0.0-experimental.0
+  - @hi-ui/input@5.0.0-experimental.0
+  - @hi-ui/preview@5.0.0-experimental.0
+  - @hi-ui/slider@5.0.0-experimental.0
+  - @hi-ui/check-select@5.0.0-experimental.0
+  - @hi-ui/check-tree-select@5.0.0-experimental.0
+  - @hi-ui/select@5.0.0-experimental.0
+  - @hi-ui/tree-select@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/counter@5.0.0-experimental.0
+  - @hi-ui/rating@5.0.0-experimental.0
+  - @hi-ui/date-picker@5.0.0-experimental.0
+  - @hi-ui/checkbox@5.0.0-experimental.0
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.0
+  - @hi-ui/space@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/dumb-wrapper@4.0.0-experimental.1
+  - @hi-ui/number-range@4.0.0-experimental.1
+  - @hi-ui/schema-auto-grid@4.0.0-experimental.1
+  - @hi-ui/schema-core@4.0.0-experimental.1
+  - @hi-ui/schema-hooks@4.0.0-experimental.1
+  - @hi-ui/schema-interrupt-injector@4.0.0-experimental.1
+  - @hi-ui/schema-option-injector@4.0.0-experimental.1
+  - @hi-ui/schema-types@4.0.0-experimental.1
+  - @hi-ui/schema-utils@4.0.0-experimental.1
+  - @hi-ui/utility-types@4.0.0-experimental.1

@@ -10,6 +10,7 @@ module.exports = {
     uiDir: (to) => resolveApp('packages/ui', to),
     utilsDir: (to) => resolveApp('packages/utils', to),
     hooksDir: (to) => resolveApp('packages/hooks', to),
+    schemaDir: (to) => resolveApp('packages/schema', to),
     camelCase: (function () {
       const cache = {}
       return function (str) {

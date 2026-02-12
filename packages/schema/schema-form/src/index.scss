@@ -1,0 +1,274 @@
+@import '~@hi-ui/core-css/lib/common/version';
+// TODO 有部分覆写样式，待确认是否还需要
+// @use '~@/common/style/index.scss' as common-index;
+
+$label: with-prefix('form-label') !default;
+$label-content: with-prefix('form-label__content') !default;
+$label-content-text: with-prefix('form-label__content__text') !default;
+$label-content-control: with-prefix('form-label__content__control') !default;
+
+.schema-form {
+  // 子元素为空的GridCol，直接隐藏
+  .#{with-prefix('grid-col')} {
+    &:empty {
+      display: none;
+    }
+  }
+
+  // 表单项必选时的红色*号异常，在此处重置
+  /* stylelint-disable no-duplicate-selectors */
+  .#{with-prefix('form-label')} {
+    $cls-prefix: with-prefix('form-label') !default;
+
+    &__content__text {
+      display: flex;
+    }
+
+    &.#{$cls-prefix}--placement-left {
+      & > .#{$cls-prefix}__content {
+        & > .#{$cls-prefix}__content__text {
+          justify-content: left;
+        }
+      }
+    }
+    &.#{$cls-prefix}--placement-right {
+      & > .#{$cls-prefix}__content {
+        & > .#{$cls-prefix}__content__text {
+          justify-content: right;
+        }
+      }
+    }
+  }
+
+  // 必须单独一组的表单项，隐藏 label 并强制占满宽度
+  .#{with-prefix('form-label')} {
+    // 可编辑表
+    &[data-must-in-group='true'][data-field-type='edit-table'] {
+      .#{with-prefix('form-label__content__indent')} {
+        display: none;
+      }
+      .#{with-prefix('form-label__content__control')} {
+        width: 100% !important;
+      }
+      .#{with-prefix('form-message')} {
+        display: none;
+      }
+    }
+  }
+
+  // 上传组件 label 位置调整，与普通字段保持对齐
+  .#{with-prefix('form-label')} {
+    &[data-field-type='upload'],
+    &[data-field-type='image'] {
+      .#{with-prefix('form-label__content')} {
+        align-items: flex-start !important;
+      }
+    }
+  }
+
+  // 隐藏 label 的表单项，text 内容隐藏
+  .#{with-prefix('form-label')} {
+    &[data-hide-label='true'] {
+      // 只选中当前 label 的直接子元素
+      & > div > .#{with-prefix('form-label__content__text')} {
+        display: none;
+      }
+      & > div > .#{with-prefix('form-label__content__control')} {
+        width: 100% !important;
+      }
+    }
+  }
+
+  .pro-edit-table {
+    background-color: #fff;
+
+    &[data-fullscreen='true'] {
+      padding: 12px;
+    }
+
+    &__toolbar {
+      padding-top: 0;
+    }
+  }
+}
+
+// 只读表单项样式
+.schema-form {
+  // 只读模式下的 FormLabel 样式
+  .#{with-prefix('form-label')} {
+    // 只读内容的控制区域
+    .#{with-prefix('form-label__content__control')} {
+      // 只读内容垂直居中
+      & > span[data-case='default'],
+      & > span[data-case='readonly'] {
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+        min-height: 32px; // 与表单控件高度保持一致
+      }
+    }
+  }
+}
+
+// 复杂字段的样式逻辑
+.schema-form {
+  // 表单对象组件样式
+  &__object-field {
+    .#{with-prefix('form-label__content')} {
+      align-items: flex-start !important;
+    }
+
+    // &__grid {
+    // // 留个占位
+    // }
+
+    // 带边框的样式
+    &[data-bordered='true'] &__grid {
+      border: 1px solid #dfe2e8;
+      border-radius: 4px;
+      padding: 12px 4px 0;
+      margin-bottom: 24px;
+    }
+  }
+
+  // 表单列表组件样式
+  &__list-field {
+    .#{with-prefix('form-label__content')} {
+      align-items: flex-start !important;
+    }
+
+    // 列表项样式
+    &__item {
+      position: relative;
+      display: flex;
+      // margin-bottom: 12px;
+      padding: 0 12px;
+      border-radius: 4px;
+
+      // 索引元素
+      // 暂时没有找到好的位置放它，先注释掉
+      // &-index {
+      //   position: absolute;
+      //   top: -10px;
+      //   left: -10px;
+      //   width: 24px;
+      //   height: 24px;
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      //   background-color: var(--hi-v4-color-gray-100, #f2f4f7);
+      //   color: var(--hi-v4-color-gray-700, #1f2733);
+      //   border-radius: 50%;
+      //   font-size: 12px;
+      //   font-weight: bold;
+      // }
+
+      &-grid {
+        flex: 1;
+      }
+
+      &-actions {
+        &-wrapper {
+          padding-left: 12px;
+          margin-bottom: 12px;
+          // margin-left: 12px;
+          // border-left: 1px solid #eee;
+        }
+
+        .#{with-prefix('button')}.#{with-prefix('button')} {
+          border: none !important;
+          background-color: transparent;
+
+          &,
+          &-icon {
+            color: #5f6a7a;
+          }
+        }
+      }
+    }
+
+    // 列表项底部操作按钮组
+    &__field-actions {
+      &-wrapper {
+        margin-bottom: 12px;
+      }
+    }
+
+    // 存在侧边元素时增加默认样式
+    &__content {
+      &[data-has-extra='true'] {
+        position: relative;
+      }
+
+      &[data-has-extra='true'] > &-extra {
+        position: absolute;
+      }
+    }
+
+    // 以下是层次背景相关的样式处理
+
+    // 注意：三层DIV结构若发生变更，需同步修改以下样式
+    // hi-v4-form-label__content
+    // hi-v4-form-label__content__control
+    // schema-form__list-field__content
+    &[data-tiered-bg='true'] > div > div > div > &__item,
+    &[data-bordered='true'] > div > div > div > &__item {
+      margin-bottom: 12px;
+      padding: 12px 12px 0;
+    }
+
+    &[data-bordered='true'] > div > div > div > &__item {
+      border: 1px solid #dfe2e8;
+      border-radius: 4px;
+    }
+
+    &[data-tiered-bg='true'] > div > div > &__field-actions-wrapper,
+    &[data-bordered='true'] > div > div > &__field-actions-wrapper {
+      margin-top: 12px;
+    }
+
+    // 暂时预定义四层的颜色
+    // 参照HiUI色彩的基础色一节，使用更柔和的灰阶
+    // https://infra.mioffice.cn/hiui/design/color/
+    &[data-nest-level='1'][data-tiered-bg='true'] &__item {
+      background-color: #f7f9fc;
+    }
+
+    &[data-nest-level='2'][data-tiered-bg='true'] &__item {
+      background-color: #f5f7fa;
+    }
+
+    &[data-nest-level='3'][data-tiered-bg='true'] &__item {
+      background-color: #f2f4f7;
+    }
+
+    &[data-nest-level='4'][data-tiered-bg='true'] &__item {
+      background-color: #ebedf0;
+
+      // 第四层的按钮hover时颜色要更深一点
+      &-actions-wrapper .#{with-prefix('button')}:hover {
+        background-color: #dfe2e8;
+      }
+    }
+  }
+
+  // 【表单对象】组件和【表单列表】
+  &__object-field.#{with-prefix('form-label--placement-top')},
+  &__list-field.#{with-prefix('form-label--placement-top')} {
+    // Label 统一添加 12px 底边距
+    & > .#{with-prefix('form-label__content')} > label {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+// 组渲染的样式逻辑
+.schema-form {
+  & &__group-panel {
+    // Tabs 的右侧 extra 元素
+    // extra 在【组】内渲染时，跟外部容器边缘差了 20px，在此处补齐
+    &_tabs-extra {
+      margin-right: 20px;
+    }
+  }
+}

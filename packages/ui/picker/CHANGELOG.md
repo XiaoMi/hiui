@@ -1,5 +1,87 @@
 # @hi-ui/picker
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- b9989e482: feat(picker): 增加 clearSearchOnClosed api 默认是 false (5.0)
+- f1ab51725: <br>
+  - feat(picker): 下拉选择类组件增加 xs 尺寸 (5.0)
+  - feat(input): 输入框组件增加 xs 尺寸 (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+- 1972fd16a: feat(picker&popper): 增加 styles 和 classNames 属性以支持自定义样式 & Picker 增加 gutterGap api (5.0)
+- cb7b794d0: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
+### Patch Changes
+
+- 0b34e1c15: styles: 修改样式问题 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- f4fc0ef30: style: 修改样式问题 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 71fc15e5c: style: 修改样式问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- 4a31cea53: style: 下拉框间距改为 4px (5.0)
+- 5210770d9: feat(picker): add header api (5.0)
+- e2d184e74: style: 修改 UI 问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 7f3abee55: style: fix ui bug (5.0)
+- 0a4e90dbd: <br>
+  - style(tag-input): 间距调整 (5.0)
+  - style(select): 选择类组件选项圆角改为 4px (5.0)
+  - style(picker): 搜索框样式调整 (5.0)
+- Updated dependencies [da2e63a14]
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [277c5033a]
+- Updated dependencies [95abba983]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+  - @hi-ui/input@5.0.0-experimental.0
+  - @hi-ui/loading@5.0.0-experimental.0
+  - @hi-ui/popper@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-toggle@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/dom-utils@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.1.8
 
 ### Patch Changes

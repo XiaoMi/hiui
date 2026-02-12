@@ -25,6 +25,7 @@ export const useAsyncData = <T = Record<string, any>[]>({
 
         if (isUndefined(resultMayBePromise)) {
           setStatus('rejected')
+          // @ts-expect-error 在赋值前使用了变量“resultMayBePromise”
           reject(resultMayBePromise)
           return
         }

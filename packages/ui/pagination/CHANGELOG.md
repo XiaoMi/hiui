@@ -1,5 +1,82 @@
 # @hi-ui/pagination
 
+## 5.0.0-experimental.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- dd60555d3: feat(pagination): 优化 pagination 组件，加入 padding 和自定义 total 总数展示样式（5.0）
+
+### Minor Changes
+
+- 423aab762: <br>
+  - feat(pagination): 改为线性样式 (5.0)
+  - feat(pagination): 增加 xs 尺寸，默认使用 sm 尺寸 (5.0)
+
+### Patch Changes
+
+- 6fb223e3a: style: fix ui bug (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- be5a59325: style: 修改样式问题 (5.0)
+- 71fc15e5c: style: 修改样式问题 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [da2e63a14]
+- Updated dependencies [eea29eade]
+- Updated dependencies [b9989e482]
+- Updated dependencies [1662753e0]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [cf89262c7]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [f4fc0ef30]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [be5a59325]
+- Updated dependencies [71fc15e5c]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [eb718e940]
+- Updated dependencies [95abba983]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [1429eced2]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [de8d058dc]
+- Updated dependencies [5210770d9]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [0a8cc07a7]
+- Updated dependencies [7f3abee55]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [0a4e90dbd]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [a0f0c9d6b]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [99801c2d1]
+- Updated dependencies [86910f5e2]
+- Updated dependencies [cb7b794d0]
+  - @hi-ui/input@5.0.0-experimental.0
+  - @hi-ui/button@5.0.0-experimental.0
+  - @hi-ui/select@5.0.0-experimental.0
+  - @hi-ui/icons@5.0.0-experimental.0
+  - @hi-ui/counter@5.0.0-experimental.0
+  - @hi-ui/core@5.0.0-experimental.0
+  - @hi-ui/use-latest@5.0.0-experimental.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-experimental.0
+  - @hi-ui/classname@5.0.0-experimental.0
+  - @hi-ui/env@5.0.0-experimental.0
+  - @hi-ui/type-assertion@5.0.0-experimental.0
+
 ## 4.2.0
 
 ### Minor Changes

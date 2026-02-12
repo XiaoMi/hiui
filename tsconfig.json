@@ -20,9 +20,11 @@
     "noEmit": false,
     "jsx": "react",
     "paths": {
-      "@hi-ui/locale-context/locale/*": ["packages/ui/locale-context/src/locale/*"]
+      "@hi-ui/locale-context/locale/*": [
+        "packages/ui/locale-context/src/locale/*"
+      ]
     }
   },
   "include": ["packages"],
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules", "lib", "jest.config.js"]
 }
