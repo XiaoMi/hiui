@@ -26,6 +26,22 @@ export const Appearance = () => {
         ></Input>
         <br />
         <br />
+        <h2>filled</h2>
+        <Input size="md" appearance="filled" placeholder="请输入内容"></Input>
+        <br />
+        <br />
+        <Input
+          size="md"
+          appearance="filled"
+          clearable
+          placeholder="请输入"
+          prepend={<ExpressionOutlined />}
+          prefix={<MessageOutlined />}
+          suffix={<AudioOutlined />}
+          append={<div>Send</div>}
+        ></Input>
+        <br />
+        <br />
         <h2>unset</h2>
         <Input size="md" appearance="unset" placeholder="请输入内容"></Input>
         <br />

@@ -39,6 +39,9 @@ const TableContext = createContext<
           bottom?: number | ((rowData: TableRowEventData, index: number) => boolean)
         }
         onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
+        sticky?: boolean
+        stickyTop?: number
+        stickyFooter?: boolean
       })
   | null
 >(null)

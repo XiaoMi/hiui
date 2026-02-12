@@ -1,9 +1,6 @@
 import React from 'react'
 import { SearchOutlined, BellOutlined, AppStoreFilled, MenuOutlined } from '@hi-ui/icons'
-import Button from '@hi-ui/button'
-import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
-import Avatar from '@hi-ui/avatar'
-import { TabList } from '@hi-ui/tabs'
+import { Button, Avatar, EllipsisTooltip, TabList } from '@hi-ui/hiui'
 import Layout, { Header, Content, AppListPopover, ProfilePopover } from '../src'
 
 /**

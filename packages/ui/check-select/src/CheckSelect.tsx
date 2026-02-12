@@ -198,6 +198,17 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       return uniqBy(nextData, 'id')
     }, [checkedItems, flattedData])
 
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示创建入口
+    const creatableInSearchVisible = useMemo(() => {
+      if (!creatableInSearch || !searchValue?.trim()) return false
+      const optionItems = showData.filter((item: any) => !('groupTitle' in item))
+      if (optionItems.length === 0) return true
+      const hasFullMatch = optionItems.some(
+        (item: CheckSelectDataItem) => String(item.title).trim() === searchValue.trim()
+      )
+      return !hasFullMatch
+    }, [creatableInSearch, searchValue, showData])
+
     const mergedCheckedItems = useMemo(() => {
       if (typeof customRender !== 'function') {
         return []
@@ -367,6 +378,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderDefaultFooter()}
           creatableInSearch={creatableInSearch}
+          creatableInSearchVisible={creatableInSearchVisible}
           onCreate={handleCreate}
           header={renderExtraHeader?.()}
           trigger={
@@ -719,17 +731,4 @@ export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
 if (__DEV__) {
   CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
-}
-
-/**
- * 渲染空白占位
- */
-const renderIndent = (prefixCls: string, depth: number) => {
-  return times(depth, (index: number) => {
-    return (
-      <span key={index} style={{ alignSelf: 'stretch' }}>
-        <span className={cx(`${prefixCls}__indent`)} />
-      </span>
-    )
-  })
 }

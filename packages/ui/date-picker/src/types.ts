@@ -293,7 +293,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   footerRender?: (
     actionContents: React.ReactElement,
-    onPick: (dates: (Moment | null)[], isShowPanel?: boolean) => void
+    onPick: (dates: (Moment | Date | null)[], isShowPanel?: boolean) => void
   ) => React.ReactNode
   /**
    * 跨月选择模式

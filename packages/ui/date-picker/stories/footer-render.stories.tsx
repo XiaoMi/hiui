@@ -1,7 +1,6 @@
 import React from 'react'
 import DatePicker from '../src'
 import Button from '@hi-ui/button'
-import moment from 'moment'
 
 /**
  * @title 自定义渲染页脚
@@ -31,7 +30,7 @@ export const FooterRender = () => {
                 <Button
                   type="secondary"
                   appearance="link"
-                  onClick={() => onPick([moment()], false)}
+                  onClick={() => onPick([new Date()], false)}
                 >
                   今天
                 </Button>
@@ -47,7 +46,7 @@ export const FooterRender = () => {
           }}
           showTime
           onSelect={console.log}
-          footerRender={(sureActionContent) => (
+          footerRender={(sureActionContent, onPick) => (
             <div
               style={{
                 display: 'flex',
@@ -56,8 +55,12 @@ export const FooterRender = () => {
                 width: '100%',
               }}
             >
-              <Button type="secondary" appearance="link">
-                自定义操作
+              <Button
+                type="secondary"
+                appearance="link"
+                onClick={() => onPick([new Date()], false)}
+              >
+                今天
               </Button>
               {sureActionContent}
             </div>
@@ -71,7 +74,7 @@ export const FooterRender = () => {
             console.log('onChange', date, dateStr)
           }}
           onSelect={console.log}
-          footerRender={() => (
+          footerRender={(action, onPick) => (
             <div
               style={{
                 display: 'flex',
@@ -80,8 +83,14 @@ export const FooterRender = () => {
                 width: '100%',
               }}
             >
-              <Button type="secondary" appearance="link">
-                自定义操作
+              <Button
+                type="secondary"
+                appearance="link"
+                onClick={() =>
+                  onPick([new Date(), new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)], false)
+                }
+              >
+                未来一周
               </Button>
             </div>
           )}
@@ -91,7 +100,7 @@ export const FooterRender = () => {
           style={{ width: 240 }}
           type="daterange"
           showTime
-          footerRender={(sureActionContent) => (
+          footerRender={(sureActionContent, onPick) => (
             <div
               style={{
                 display: 'flex',
@@ -100,8 +109,14 @@ export const FooterRender = () => {
                 width: '100%',
               }}
             >
-              <Button type="secondary" appearance="link">
-                自定义操作
+              <Button
+                type="secondary"
+                appearance="link"
+                onClick={() =>
+                  onPick([new Date(), new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)], false)
+                }
+              >
+                未来一周
               </Button>
               {sureActionContent}
             </div>

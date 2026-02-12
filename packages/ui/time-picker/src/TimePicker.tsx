@@ -229,7 +229,22 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
               if (validChecker(cacheValue)) {
                 if (cacheValue.join('') !== value.join('')) {
                   onChange([...cacheValue])
+                } else if (cacheValue.join('') === '' && value.join('') === '') {
+                  // 清空后打开面板时，面板会显示 00:00:00（getFormatDefault），但 cacheValue 仍为空；
+                  // 用户点击确定时应应用面板当前显示的默认时间
+                  let defaultValue: string[]
+                  if (['HH', 'mm', 'ss'].includes(format)) {
+                    defaultValue = ['00']
+                  } else if (['HH:mm', 'mm:ss'].includes(format)) {
+                    defaultValue = ['00:00']
+                  } else {
+                    defaultValue = ['00:00:00']
+                  }
+                  onChange(type === 'single' ? defaultValue : [defaultValue[0], defaultValue[0]])
                 } else if (
+                  // 仅当当前值为空时才应用默认时间，避免「此刻」选中后再次打开点确定被置为 00:00:00
+                  cacheValue.join('') === '' &&
+                  value.join('') === '' &&
                   (controlledValue === undefined || controlledValue === null) &&
                   (uncontrolledValue === undefined || uncontrolledValue === null)
                 ) {

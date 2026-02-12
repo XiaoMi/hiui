@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import { Resizable } from 'react-resizable'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
@@ -24,10 +24,18 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       showColMenu,
       setHeaderTableElement,
       onResizeStop,
+      maxHeight,
+      sticky,
+      stickyTop,
+      stickyFooter,
+      stretchHeight,
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
     const trRefs = useRef<HTMLTableRowElement[]>([])
+    const needSticky = useMemo(() => {
+      return sticky || stickyTop || stickyFooter || stretchHeight || maxHeight
+    }, [maxHeight, sticky, stickyFooter, stickyTop, stretchHeight])
 
     return (
       <thead {...rest}>
@@ -76,9 +84,11 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     {...stickyColProps}
                     style={{
                       ...stickyColProps.style,
-                      insetBlockStart: trRefs.current[colsIndex]?.offsetTop,
                       // 表头合并场景下，被合并的表头需要隐藏
                       display: col?.colSpan === 0 ? 'none' : undefined,
+                      insetBlockStart: needSticky
+                        ? trRefs.current[colsIndex]?.offsetTop
+                        : undefined,
                     }}
                     className={cx(
                       `${prefixCls}-cell`,

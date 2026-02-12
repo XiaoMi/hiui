@@ -1,11 +1,15 @@
 import React from 'react'
 import Form, { FormHelpers, FormRules } from '../src'
-import Input from '@hi-ui/input'
-import NumberInput from '@hi-ui/number-input'
-import { Select } from '@hi-ui/select'
-import { Cascader } from '@hi-ui/cascader'
-import Radio from '@hi-ui/radio'
-import Button from '@hi-ui/button'
+import {
+  Input,
+  NumberInput,
+  Select,
+  Cascader,
+  Radio,
+  Button,
+  DatePicker,
+  TimePicker,
+} from '@hi-ui/hiui'
 
 /**
  * @title 表单校验
@@ -91,6 +95,8 @@ export const Validate = () => {
             count: '',
             count2: null,
             store: '',
+            date: new Date(),
+            time: '12:00:00',
           }}
         >
           <FormItem
@@ -132,6 +138,33 @@ export const Validate = () => {
                 { id: 'shanghai', title: '上海' },
               ]}
             />
+          </FormItem>
+          <FormItem
+            label="日期"
+            field="date"
+            valueType="date"
+            rules={[
+              {
+                required: true,
+                message: '请选择日期',
+              },
+            ]}
+          >
+            <DatePicker />
+          </FormItem>
+
+          <FormItem
+            label="时间"
+            field="time"
+            valueType="string"
+            rules={[
+              {
+                required: true,
+                message: '请选择时间',
+              },
+            ]}
+          >
+            <TimePicker />
           </FormItem>
 
           <FormItem>

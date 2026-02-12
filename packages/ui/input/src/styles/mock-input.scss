@@ -39,14 +39,14 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &__suffix {
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     &:has(> *) {
       padding-left: use-spacing(4);
     }
 
     .#{$mock-input-prefix}--appearance-unset & {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 
@@ -60,10 +60,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
 
     .#{$mock-input-prefix}--appearance-unset & {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -75,7 +75,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     height: 16px;
     font-size: use-text-size('lg');
     text-align: center;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     flex-shrink: 0;
     cursor: pointer;
     visibility: hidden;
@@ -207,7 +207,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
         &:not(.disabled):hover,
         &:not(.disabled).focused {
-          background-color: use-color('gray', 200);
+          background-color: use-color('gray', 100);
         }
 
         &:not(.disabled).invalid {
@@ -226,7 +226,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
     &-filled {
       &.#{$mock-input-prefix} {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
 
         &:not(.disabled):hover {
           background-color: use-color-static('white');
@@ -272,11 +272,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         .#{$mock-input-prefix}__label,
         .#{$mock-input-prefix}__value,
         .#{$mock-input-prefix}__suffix {
-          color: use-color-mode('primary', 600);
+          color: use-color-mode('primary', 700);
         }
 
         .#{$mock-input-prefix}__clear {
-          color: use-color-mode('primary', 600);
+          color: use-color-mode('primary', 700);
 
           &:hover {
             color: use-color-mode('primary', 800);
@@ -286,9 +286,12 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
       &.disabled {
         .#{$mock-input-prefix}__label,
-        .#{$mock-input-prefix}__value,
-        .#{$mock-input-prefix}__suffix {
+        .#{$mock-input-prefix}__value {
           color: use-color('gray', 600);
+        }
+
+        .#{$mock-input-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }
@@ -297,10 +300,13 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     &-unset,
     &-filled {
       &.disabled {
-        &.#{$mock-input-prefix},
-        .#{$mock-input-prefix}__placeholder,
-        .#{$mock-input-prefix}__suffix {
+        .#{$mock-input-prefix}__placeholder {
           color: use-color('gray', 600);
+        }
+
+        &.#{$mock-input-prefix},
+        .#{$mock-input-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }

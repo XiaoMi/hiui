@@ -55,7 +55,7 @@ $app-list-prefix: '#{$component-prefix}-app-list' !default;
 
     &__checked {
       display: none;
-      font-size: use-text-size('normal');
+      font-size: use-text-size('lg');
       color: use-color-mode('primary');
     }
 

@@ -71,7 +71,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     width: use-height-size(4);
     height: use-height-size(4);
     font-size: use-text-size('lg');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     text-align: center;
     flex-shrink: 0;
     cursor: pointer;
@@ -141,10 +141,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
   }
 
   &__suffix {
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     .#{$tag-input-mock-prefix}--appearance-unset & {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 
@@ -152,10 +152,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
 
     .#{$tag-input-mock-prefix}--appearance-unset & {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -197,7 +197,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       margin-inline-start: use-spacing(2);
       font-size: use-text-size('sm');
       box-sizing: border-box;
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
       cursor: pointer;
 
       &:hover {
@@ -206,10 +206,10 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       #{$this}--disabled & {
         cursor: not-allowed;
-        color: use-color('gray', 600);
+        color: use-color('gray', 500);
 
         &:hover {
-          color: use-color('gray', 600);
+          color: use-color('gray', 500);
         }
       }
     }
@@ -380,7 +380,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       &:not(.#{$tag-input-mock-prefix}--disabled):hover,
       &:not(.#{$tag-input-mock-prefix}--disabled).focused {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
 
         .#{$tag-input-mock-prefix}__tag {
           background-color: use-color-static('white');
@@ -412,7 +412,7 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
     }
 
     &-filled {
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 100);
 
       .#{$tag-input-mock-prefix}__tag {
         background-color: use-color-static('white');
@@ -548,9 +548,12 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
 
       &.#{$tag-input-mock-prefix}--disabled {
         .#{$tag-input-mock-prefix}__label,
-        .#{$tag-input-mock-prefix}__value,
-        .#{$tag-input-mock-prefix}__suffix {
+        .#{$tag-input-mock-prefix}__value {
           color: use-color('gray', 600);
+        }
+
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 500);
         }
 
         .#{$tag-input-mock-prefix}__tag--total {
@@ -576,9 +579,12 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
           }
         }
 
-        .#{$tag-input-mock-prefix}__placeholder,
-        .#{$tag-input-mock-prefix}__suffix {
+        .#{$tag-input-mock-prefix}__placeholder {
           color: use-color('gray', 600);
+        }
+
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }
@@ -597,9 +603,12 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
           }
         }
 
-        .#{$tag-input-mock-prefix}__placeholder,
-        .#{$tag-input-mock-prefix}__suffix {
+        .#{$tag-input-mock-prefix}__placeholder {
           color: use-color('gray', 600);
+        }
+
+        .#{$tag-input-mock-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }

@@ -366,16 +366,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     const onPick = useCallback(
-      (dates: (moment.Moment | null)[], isShowPanel = false) => {
+      (dates: (moment.Moment | Date | null)[], isShowPanel = false) => {
         setTimeout(() => {
           setShowPanel(isShowPanel)
         }, 0)
+        const _dates = dates.map((date) => (date && date instanceof Date ? moment(date) : date))
         if (!isShowPanel) {
           setInputFocus(false)
-          callback(dates)
+          callback(_dates)
           onClose?.()
         }
-        changeOutDate([...dates])
+        changeOutDate([..._dates])
       },
       [callback, changeOutDate, onClose]
     )

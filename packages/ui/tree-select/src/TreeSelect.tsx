@@ -85,6 +85,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       label,
       showIndicator = true,
       renderExtraHeader,
+      renderExtraFooter,
       ...rest
     },
     ref
@@ -285,6 +286,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         clearSearchOnClosed={clearSearchOnClosed}
         loading={rest.loading !== undefined ? rest.loading : loading}
         header={renderExtraHeader?.()}
+        footer={rest.footer ?? renderExtraFooter?.()}
         trigger={
           customRender ? (
             customRenderContent
@@ -484,6 +486,10 @@ export interface TreeSelectProps
    * 自定义下拉菜单顶部渲染
    */
   renderExtraHeader?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 if (__DEV__) {

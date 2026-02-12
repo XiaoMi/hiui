@@ -5,6 +5,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
+  width: 100%;
   border: use-border-size('normal') transparent;
   border-radius: use-border-radius('lg');
   box-shadow: 0 0 0 2px transparent;
@@ -37,17 +38,17 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-filled {
-    background: use-color('gray', 200);
+    background: use-color('gray', 100);
 
     &:not(.#{$prefix}--disabled):hover {
-      background: use-color('gray', 300);
+      background: use-color('gray', 200);
     }
   }
 
   &--appearance-unset {
     &:not(.#{$prefix}--disabled):hover,
     &.#{$prefix}--active {
-      background: use-color('gray', 200);
+      background: use-color('gray', 100);
     }
   }
 
@@ -90,7 +91,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     }
 
     .#{$prefix}__function-button {
-      color: use-color('gray', 600);
+      color: use-color('gray', 700);
     }
   }
 
@@ -184,7 +185,7 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
     cursor: pointer;
     display: flex;
     align-items: center;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
   }
 
   &--disabled {
