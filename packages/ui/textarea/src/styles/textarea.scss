@@ -171,13 +171,13 @@ $prefix: '#{$component-prefix}-textarea' !default;
       }
 
       &:not(.#{$prefix}__inner--disabled) .#{$prefix}__inner:hover {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
       }
     }
 
     &-filled {
       .#{$prefix}__inner {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 100);
 
         &:not(.#{$prefix}__inner--disabled):hover {
           background-color: use-color-static('white');

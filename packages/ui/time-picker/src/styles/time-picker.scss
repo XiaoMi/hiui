@@ -38,17 +38,17 @@ $input-wrapper-class: '#{$prefix}__input-wrapper' !default;
   }
 
   &--appearance-filled {
-    background: use-color('gray', 200);
+    background: use-color('gray', 100);
 
     &:not(.#{$prefix}--disabled):hover {
-      background: use-color('gray', 300);
+      background: use-color('gray', 200);
     }
   }
 
   &--appearance-unset {
     &:not(.#{$prefix}--disabled):hover,
     &.#{$prefix}--active {
-      background: use-color('gray', 200);
+      background: use-color('gray', 100);
     }
   }
 
