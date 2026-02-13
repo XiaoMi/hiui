@@ -58,7 +58,7 @@ export function AsyncOptsDataInjector(props: React.PropsWithChildren<AsyncOptsDa
     ...pureProps,
     loading,
     data,
-    searchable: request ? true : rest.searchable,
+    searchable: rest.searchable ?? !!request,
     onSearch: (keyword: string) => {
       keywordRef.current = keyword
       run(keyword)
