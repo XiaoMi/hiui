@@ -97,6 +97,8 @@ export type RatingComponentConfig = ComponentStyleConfig
 
 export type ResultComponentConfig = ComponentStyleConfig
 
+export type SelectComponentConfig = ComponentStyleConfig
+
 export type SliderComponentConfig = ComponentStyleConfig
 
 export type StepperComponentConfig = ComponentStyleConfig
@@ -160,6 +162,7 @@ export interface ConfigComponentProps {
   radioGroup?: RadioGroupComponentConfig
   rating?: RatingComponentConfig
   result?: ResultComponentConfig
+  select?: SelectComponentConfig
   slider?: SliderComponentConfig
   stepper?: StepperComponentConfig
   switch?: SwitchComponentConfig
