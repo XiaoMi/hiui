@@ -21,6 +21,7 @@ export * from './custom-render.stories'
 export * from './addon.stories'
 export * from './only-checked.stories'
 export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/CheckTreeSelect',
