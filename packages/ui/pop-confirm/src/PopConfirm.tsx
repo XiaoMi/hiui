@@ -1,12 +1,17 @@
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { usePopConfirm, UsePopConfirmProps } from './use-pop-confirm'
 import Button from '@hi-ui/button'
-import Popper from '@hi-ui/popper'
+import Popper, { PopperSemanticName } from '@hi-ui/popper'
 import { defaultTipIcon } from './icons'
-
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { isUndef } from '@hi-ui/type-assertion'
 
 export const POP_CONFIRM_PREFIX = getPrefixCls('pop-confirm')
@@ -28,11 +33,43 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
       cancelText: cancelTextProp,
       confirmText: confirmTextProp,
       footer,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
     const i18n = useLocaleContext()
+    const { popConfirm: popConfirmConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      PopConfirmSemanticClassNames,
+      PopConfirmSemanticStyles,
+      PopConfirmProps
+    >({
+      classNamesList: [popConfirmConfig?.classNames, classNamesProp],
+      stylesList: [popConfirmConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          title,
+          content,
+          icon,
+          footer,
+        },
+      },
+    })
+    const popperClassNames = {
+      root: classNames?.root,
+      container: classNames?.container,
+      arrow: classNames?.arrow,
+      content: classNames?.content,
+    }
+    const popperStyles = {
+      root: styles?.root,
+      container: styles?.container,
+      arrow: styles?.arrow,
+      content: styles?.content,
+    }
 
     const cancelText = isUndef(cancelTextProp) ? i18n.get('popConfirm.cancelText') : cancelTextProp
     const confirmText = isUndef(confirmTextProp)
@@ -70,23 +107,51 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
               getTriggerProps(children.props, children.ref)
             )
           : null}
-        <Popper {...getPopperProps()}>
-          <div ref={ref} className={cls} {...rootProps}>
-            <section className={`${prefixCls}__content`}>
-              {icon ? <span className={`${prefixCls}__content-icon`}>{icon}</span> : null}
-              <div className={`${prefixCls}__content-title`}>{title}</div>
+        <Popper {...getPopperProps()} classNames={popperClassNames} styles={popperStyles}>
+          <div
+            ref={ref}
+            className={cx(cls, classNames?.wrapper)}
+            style={styles?.wrapper}
+            {...rootProps}
+          >
+            <section
+              className={cx(`${prefixCls}__content`, classNames?.contentSection)}
+              style={styles?.contentSection}
+            >
+              {icon ? (
+                <span
+                  className={cx(`${prefixCls}__content-icon`, classNames?.contentIcon)}
+                  style={styles?.contentIcon}
+                >
+                  {icon}
+                </span>
+              ) : null}
+              <div
+                className={cx(`${prefixCls}__content-title`, classNames?.contentTitle)}
+                style={styles?.contentTitle}
+              >
+                {title}
+              </div>
             </section>
 
-            {content ? <div className={`${prefixCls}__body`}>{content}</div> : null}
+            {content ? (
+              <div className={cx(`${prefixCls}__body`, classNames?.body)} style={styles?.body}>
+                {content}
+              </div>
+            ) : null}
 
             {hasFooter ? (
-              <footer className={`${prefixCls}__footer`}>
+              <footer
+                className={cx(`${prefixCls}__footer`, classNames?.footer)}
+                style={styles?.footer}
+              >
                 {footer === undefined
                   ? [
                       hasCancel ? (
                         <Button
                           key="1"
-                          className={`${prefixCls}__btn-cancel`}
+                          className={cx(`${prefixCls}__btn-cancel`, classNames?.btnCancel)}
+                          style={styles?.btnCancel}
                           type="default"
                           appearance="line"
                           size="sm"
@@ -98,7 +163,8 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
                       hasConfirm ? (
                         <Button
                           key="2"
-                          className={`${prefixCls}__btn-confirm`}
+                          className={cx(`${prefixCls}__btn-confirm`, classNames?.btnConfirm)}
+                          style={styles?.btnConfirm}
                           type="primary"
                           size="sm"
                           onClick={onConfirm}
@@ -117,7 +183,30 @@ export const PopConfirm = forwardRef<HTMLDivElement | null, PopConfirmProps>(
   }
 )
 
-export interface PopConfirmProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UsePopConfirmProps {
+export type PopConfirmSemanticName =
+  | PopperSemanticName
+  | 'wrapper'
+  | 'contentSection'
+  | 'contentIcon'
+  | 'contentTitle'
+  | 'body'
+  | 'footer'
+  | 'btnCancel'
+  | 'btnConfirm'
+export type PopConfirmSemanticClassNames = SemanticClassNamesType<
+  PopConfirmProps,
+  PopConfirmSemanticName
+>
+export type PopConfirmSemanticStyles = SemanticStylesType<PopConfirmProps, PopConfirmSemanticName>
+export type PopConfirmSemantic = ComponentSemantic<
+  PopConfirmSemanticClassNames,
+  PopConfirmSemanticStyles
+>
+
+export interface PopConfirmProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'title'>,
+    UsePopConfirmProps,
+    PopConfirmSemantic {
   innerRef?: React.Ref<{ open: () => void; close: () => void }>
   /**
    * 确认框标题

@@ -75,6 +75,8 @@ export type PaginationComponentConfig = ComponentStyleConfig
 
 export type PopperComponentConfig = ComponentStyleConfig
 
+export type PopConfirmComponentConfig = ComponentStyleConfig
+
 export type PreviewComponentConfig = ComponentStyleConfig
 
 export type ProgressComponentConfig = ComponentStyleConfig
@@ -137,6 +139,7 @@ export interface ConfigComponentProps {
   pageHeader?: PageHeaderComponentConfig
   pagination?: PaginationComponentConfig
   popper?: PopperComponentConfig
+  popConfirm?: PopConfirmComponentConfig
   preview?: PreviewComponentConfig
   progress?: ProgressComponentConfig
   radio?: RadioComponentConfig
