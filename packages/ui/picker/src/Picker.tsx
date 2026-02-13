@@ -8,13 +8,19 @@ import React, {
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext, useLocaleContext } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 import { isUndef } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -60,15 +66,38 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       footer,
       onOverlayScroll,
       innerRef,
-      styles,
-      classNames,
+      styles: stylesProp,
+      classNames: classNamesProp,
       gutterGap = 4,
       header,
+      style,
       ...rest
     },
     ref
   ) => {
     const i18n = useLocaleContext()
+    const { picker: pickerConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      PickerSemanticClassNames,
+      PickerSemanticStyles,
+      PickerProps
+    >({
+      classNamesList: [pickerConfig?.classNames, classNamesProp],
+      stylesList: [pickerConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          trigger,
+          disabled,
+          searchable,
+          loading,
+          visible,
+          creatableInSearch,
+          showEmpty,
+        },
+      },
+    })
 
     const searchPlaceholder = isUndef(searchPlaceholderProp)
       ? creatableInSearch
@@ -152,7 +181,12 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const [searchInputElement, setSearchInputElement] = useState<HTMLInputElement | null>(null)
 
-    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--${menuVisible ? 'open' : 'closed'}`
+    )
 
     const popperRef = useRef<
       (HTMLDivElement & { update: () => void; forceUpdate: () => void }) | null
@@ -211,6 +245,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         ref={ref}
         role={role}
         className={cls}
+        style={{ ...style, ...styles?.root }}
         tabIndex={0}
         onKeyDown={mockDefaultHandlers(onKeyDown, onEscClose)}
         {...rest}
@@ -250,9 +285,19 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
             className={cx(`${prefixCls}__panel`, classNames?.panel)}
             style={{ minWidth: optionWidth, width: optionWidth, ...styles?.panel }}
           >
-            {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
+            {header ? (
+              <div
+                className={cx(`${prefixCls}__header`, classNames?.header)}
+                style={styles?.header}
+              >
+                {header}
+              </div>
+            ) : null}
             {searchable ? (
-              <div className={`${prefixCls}__search`}>
+              <div
+                className={cx(`${prefixCls}__search`, classNames?.search)}
+                style={styles?.search}
+              >
                 <Input
                   ref={setSearchInputElement}
                   appearance="underline"
@@ -279,7 +324,10 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
               onScroll={onOverlayScroll}
             >
               {loading ? (
-                <div className={`${prefixCls}__loading`}>
+                <div
+                  className={cx(`${prefixCls}__loading`, classNames?.loading)}
+                  style={styles?.loading}
+                >
                   {loadingContent}
                   <Loading size="sm" />
                 </div>
@@ -308,7 +356,22 @@ export interface PickerHelper {
   forceUpdate: () => void
 }
 
-export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
+export type PickerSemanticName =
+  | 'root'
+  | 'container'
+  | 'panel'
+  | 'header'
+  | 'search'
+  | 'body'
+  | 'footer'
+  | 'loading'
+  | 'empty'
+  | 'creator'
+export type PickerSemanticClassNames = SemanticClassNamesType<PickerProps, PickerSemanticName>
+export type PickerSemanticStyles = SemanticStylesType<PickerProps, PickerSemanticName>
+export type PickerSemantic = ComponentSemantic<PickerSemanticClassNames, PickerSemanticStyles>
+
+export interface PickerProps extends HiBaseHTMLFieldProps<'div'>, PickerSemantic {
   /**
    * 是否禁用
    */
@@ -423,18 +486,6 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<PickerHelper>
-  styles?: {
-    container?: React.CSSProperties
-    panel?: React.CSSProperties
-    body?: React.CSSProperties
-    footer?: React.CSSProperties
-  }
-  classNames?: {
-    container?: string
-    panel?: string
-    body?: string
-    footer?: string
-  }
   /**
    * 自定义下拉菜单顶部渲染
    */

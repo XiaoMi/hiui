@@ -73,6 +73,8 @@ export type PageHeaderComponentConfig = ComponentStyleConfig
 
 export type PaginationComponentConfig = ComponentStyleConfig
 
+export type PickerComponentConfig = ComponentStyleConfig
+
 export type PopperComponentConfig = ComponentStyleConfig
 
 export type PopConfirmComponentConfig = ComponentStyleConfig
@@ -142,6 +144,7 @@ export interface ConfigComponentProps {
   numberInput?: NumberInputComponentConfig
   pageHeader?: PageHeaderComponentConfig
   pagination?: PaginationComponentConfig
+  picker?: PickerComponentConfig
   popper?: PopperComponentConfig
   popConfirm?: PopConfirmComponentConfig
   popover?: PopoverComponentConfig
