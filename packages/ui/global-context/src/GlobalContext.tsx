@@ -111,6 +111,8 @@ export type TableComponentConfig = ComponentStyleConfig
 
 export type TreeComponentConfig = ComponentStyleConfig
 
+export type TooltipComponentConfig = ComponentStyleConfig
+
 export type UploadComponentConfig = ComponentStyleConfig
 
 export interface ConfigComponentProps {
@@ -158,6 +160,7 @@ export interface ConfigComponentProps {
   timeline?: TimelineComponentConfig
   table?: TableComponentConfig
   transfer?: TransferComponentConfig
+  tooltip?: TooltipComponentConfig
   tree?: TreeComponentConfig
   upload?: UploadComponentConfig
 }
