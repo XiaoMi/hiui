@@ -9,6 +9,7 @@ export * from './controlled.stories'
 export * from './gutter-gap.stories'
 export * from './content.stories'
 export * from './with-api.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Popover',
