@@ -55,6 +55,14 @@ export type LoadingComponentConfig = ComponentStyleConfig
 
 export type MessageComponentConfig = ComponentStyleConfig
 
+export type MenuComponentConfig = ComponentStyleConfig
+
+export type GroupMenuComponentConfig = ComponentStyleConfig
+
+export type SideMenuComponentConfig = ComponentStyleConfig
+
+export type MenuSearchComponentConfig = ComponentStyleConfig
+
 export type ModalComponentConfig = ComponentStyleConfig
 
 export type NotificationComponentConfig = ComponentStyleConfig
@@ -117,6 +125,10 @@ export interface ConfigComponentProps {
   list?: ListComponentConfig
   loading?: LoadingComponentConfig
   message?: MessageComponentConfig
+  menu?: MenuComponentConfig
+  groupMenu?: GroupMenuComponentConfig
+  sideMenu?: SideMenuComponentConfig
+  menuSearch?: MenuSearchComponentConfig
   modal?: ModalComponentConfig
   notification?: NotificationComponentConfig
   numberInput?: NumberInputComponentConfig

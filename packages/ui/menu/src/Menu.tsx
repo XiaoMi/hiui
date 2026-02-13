@@ -18,6 +18,12 @@ import {
   useLocaleContext,
   useGlobalContext,
 } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import Tooltip from '@hi-ui/tooltip'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { getTreeNodesWithChildren } from '@hi-ui/tree-utils'
@@ -47,6 +53,9 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
       prefixCls = MENU_PREFIX,
       role = 'menu',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       data = NOOP_ARRAY,
       fieldNames,
       placement = 'vertical',
@@ -79,11 +88,34 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const [activeId, updateActiveId] = useUncontrolledState(defaultActiveId, activeIdProp, onClick)
 
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, menu: menuConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'lg'
     if (size === 'xs') {
       size = 'sm'
     }
+    const { classNames, styles } = useMergeSemantic<
+      MenuSemanticClassNames,
+      MenuSemanticStyles,
+      MenuProps
+    >({
+      classNamesList: [menuConfig?.classNames, classNamesProp],
+      stylesList: [menuConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          placement,
+          size: sizeProp ?? globalSize ?? 'lg',
+          showCollapse,
+          expandedType,
+          showAllSubMenus,
+          defaultExpandAll,
+          defaultCollapsed,
+          collapsed,
+          showTitleOnMini,
+        },
+      },
+    })
 
     const [activeParents, updateActiveParents] = useState(() => getAncestorIds(activeId, data))
 
@@ -239,7 +271,11 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
 
     const renderFooter = () => {
       const collapseNode = canToggle ? (
-        <div className={cx(`${prefixCls}__toggle`)} onClick={() => miniToggleAction.not()}>
+        <div
+          className={cx(`${prefixCls}__toggle`, classNames?.toggle)}
+          style={styles?.toggle}
+          onClick={() => miniToggleAction.not()}
+        >
           {mini ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </div>
       ) : null
@@ -268,6 +304,7 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--${placement}`,
       `${prefixCls}--size-${size}`,
       mini && `${prefixCls}--mini`,
@@ -276,7 +313,13 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
     )
 
     return (
-      <div ref={useMergeRefs(ref, setContainerElement)} role={role} className={cls} {...rest}>
+      <div
+        ref={useMergeRefs(ref, setContainerElement)}
+        role={role}
+        className={cls}
+        style={{ ...style, ...styles?.root }}
+        {...rest}
+      >
         {extraHeader}
 
         <MenuContext.Provider
@@ -294,9 +337,11 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             activeId: activeId,
             expandedIds: expandedIds,
             overlayClassName,
+            semanticClassNames: classNames as Record<string, string | undefined>,
+            semanticStyles: styles as Record<string, React.CSSProperties | undefined>,
           }}
         >
-          <ul className={cx(`${prefixCls}__wrapper`)}>
+          <ul className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)} style={styles?.wrapper}>
             {mergedTagList.map((item, index) => {
               return showMini ? (
                 <Tooltip title={item.title} key={item.id} placement="right">
@@ -324,14 +369,31 @@ export const Menu = forwardRef<HTMLDivElement | null, MenuProps>(
             )}
           </ul>
 
-          <div className={`${prefixCls}__footer`}>{renderFooter()}</div>
+          <div className={cx(`${prefixCls}__footer`, classNames?.footer)} style={styles?.footer}>
+            {renderFooter()}
+          </div>
         </MenuContext.Provider>
       </div>
     )
   }
 )
 
-export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'> {
+export type MenuSemanticName =
+  | 'root'
+  | 'wrapper'
+  | 'footer'
+  | 'toggle'
+  | 'item'
+  | 'itemInner'
+  | 'itemIcon'
+  | 'itemContent'
+  | 'itemArrow'
+  | 'submenu'
+  | 'popmenu'
+export type MenuSemanticClassNames = SemanticClassNamesType<MenuProps, MenuSemanticName>
+export type MenuSemanticStyles = SemanticStylesType<MenuProps, MenuSemanticName>
+export type MenuSemantic = ComponentSemantic<MenuSemanticClassNames, MenuSemanticStyles>
+export interface MenuProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, MenuSemantic {
   /**
    * 菜单项数据列表
    */

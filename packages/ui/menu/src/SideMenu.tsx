@@ -1,7 +1,13 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import Tooltip from '@hi-ui/tooltip'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -20,6 +26,9 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
       prefixCls = SIDE_MENU_PREFIX,
       role = 'side-menu',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       defaultActiveId = null,
       activeId: activeIdProp,
       selectedId: selectedIdProp,
@@ -33,7 +42,26 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, {
+    const { sideMenu: sideMenuConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      SideMenuSemanticClassNames,
+      SideMenuSemanticStyles,
+      SideMenuProps
+    >({
+      classNamesList: [sideMenuConfig?.classNames, classNamesProp],
+      stylesList: [sideMenuConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          mini,
+          defaultActiveId,
+          activeId: activeIdProp,
+          selectedId: selectedIdProp,
+        },
+      },
+    })
+    const cls = cx(prefixCls, className, classNames?.root, {
       [`${prefixCls}--mini`]: mini,
     })
 
@@ -64,14 +92,20 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <Scrollbar onlyScrollVisible axes="y">
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
+        <Scrollbar
+          onlyScrollVisible
+          axes="y"
+          className={classNames?.wrapper}
+          style={styles?.wrapper}
+        >
           {data.map((item) => {
             const { id, title, icon } = item
             return (
               <div
                 key={id}
-                className={cx(`${prefixCls}-item-wrapper`)}
+                className={cx(`${prefixCls}-item-wrapper`, classNames?.itemWrapper)}
+                style={styles?.itemWrapper}
                 onClick={(evt) => handleClick(evt, id, item)}
                 onMouseEnter={(evt) => {
                   const currentTarget = evt.currentTarget as HTMLDivElement
@@ -97,14 +131,29 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                 }}
               >
                 <div
-                  className={cx(`${prefixCls}-item`, {
-                    [`${prefixCls}-item--active`]: activeId === id,
-                    [`${prefixCls}-item--mini`]: mini,
-                    [`${prefixCls}-item--selected`]: selectedIdProp === id,
-                  })}
+                  className={cx(
+                    `${prefixCls}-item`,
+                    {
+                      [`${prefixCls}-item--active`]: activeId === id,
+                      [`${prefixCls}-item--mini`]: mini,
+                      [`${prefixCls}-item--selected`]: selectedIdProp === id,
+                    },
+                    classNames?.item
+                  )}
+                  style={styles?.item}
                 >
-                  <div className={cx(`${prefixCls}-item__icon`)}>{icon}</div>
-                  <div className={cx(`${prefixCls}-item__title`)}>{title}</div>
+                  <div
+                    className={cx(`${prefixCls}-item__icon`, classNames?.itemIcon)}
+                    style={styles?.itemIcon}
+                  >
+                    {icon}
+                  </div>
+                  <div
+                    className={cx(`${prefixCls}-item__title`, classNames?.itemTitle)}
+                    style={styles?.itemTitle}
+                  >
+                    {title}
+                  </div>
                 </div>
               </div>
             )
@@ -115,8 +164,19 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
   }
 )
 
+export type SideMenuSemanticName =
+  | 'root'
+  | 'wrapper'
+  | 'itemWrapper'
+  | 'item'
+  | 'itemIcon'
+  | 'itemTitle'
+export type SideMenuSemanticClassNames = SemanticClassNamesType<SideMenuProps, SideMenuSemanticName>
+export type SideMenuSemanticStyles = SemanticStylesType<SideMenuProps, SideMenuSemanticName>
+export type SideMenuSemantic = ComponentSemantic<SideMenuSemanticClassNames, SideMenuSemanticStyles>
 export interface SideMenuProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onClick' | 'onMouseEnter' | 'onMouseLeave'> {
+  extends Omit<HiBaseHTMLProps<'div'>, 'onClick' | 'onMouseEnter' | 'onMouseLeave'>,
+    SideMenuSemantic {
   /**
    * 侧边菜单宽度
    */

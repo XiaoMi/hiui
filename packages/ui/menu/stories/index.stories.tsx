@@ -15,6 +15,7 @@ export * from './show-title-on-mini.stories'
 export * from './side-menu.stories'
 export * from './group-menu.stories'
 export * from './menu-search.stories'
+export * from './semantic.stories'
 // export * from './sidebar.stories'
 
 export default {
