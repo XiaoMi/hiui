@@ -42,7 +42,7 @@ export const Semantic = () => {
           <Col span={18}>
             <Dropdown
               data={list}
-              title="鼠标悬停"
+              title="鼠标点击"
               trigger="click"
               onClick={console.log}
               classNames={{
