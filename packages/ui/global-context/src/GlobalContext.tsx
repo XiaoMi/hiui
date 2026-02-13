@@ -47,6 +47,8 @@ export type CollapsePanelComponentConfig = ComponentStyleConfig
 
 export type CounterComponentConfig = ComponentStyleConfig
 
+export type DatePickerComponentConfig = ComponentStyleConfig
+
 export type DescriptionsComponentConfig = ComponentStyleConfig
 
 export type DrawerComponentConfig = ComponentStyleConfig
@@ -143,6 +145,7 @@ export interface ConfigComponentProps {
   checkTreeSelect?: CheckTreeSelectComponentConfig
   collapsePanel?: CollapsePanelComponentConfig
   counter?: CounterComponentConfig
+  datePicker?: DatePickerComponentConfig
   descriptions?: DescriptionsComponentConfig
   drawer?: DrawerComponentConfig
   dropdown?: DropdownComponentConfig

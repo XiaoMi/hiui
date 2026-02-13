@@ -1,5 +1,11 @@
 import React from 'react'
-import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
+import {
+  CalendarItemV3,
+  DatePickerProps,
+  DatePickerValueV3,
+  DatePickerSemanticClassNamesResolved,
+  DatePickerSemanticStylesResolved,
+} from './types'
 import moment from 'moment'
 import type { UseLocaleContext } from '@hi-ui/core'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
@@ -69,5 +75,7 @@ export interface DPContextData extends ExtendsType {
   defaultPickerValue?: DatePickerValueV3
   focusIndex?: 0 | 1
   setFocusIndex?: React.Dispatch<React.SetStateAction<0 | 1>>
+  classNames?: DatePickerSemanticClassNamesResolved
+  styles?: DatePickerSemanticStylesResolved
 }
 export default DPContext
