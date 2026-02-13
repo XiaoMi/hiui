@@ -25,10 +25,16 @@ export const CheckCascaderMenu = ({
   data: menu,
   getCascaderItemRequiredProps,
 }: CheckCascaderMenuProps) => {
-  const { virtual } = useCheckCascaderContext()
+  const { virtual, classNames, styles } = useCheckCascaderContext()
 
   const isCheckableMenu = menu.some(({ checkable }) => checkable)
-  const cls = cx(prefixCls, className, isCheckableMenu && `${prefixCls}--checkable`)
+  const cls = cx(
+    prefixCls,
+    className,
+    classNames?.menu,
+    isCheckableMenu && `${prefixCls}--checkable`
+  )
+  const menuStyle = { ...style, ...styles?.menu }
 
   const virtualListProps = {
     virtual,
@@ -38,7 +44,7 @@ export const CheckCascaderMenu = ({
   }
 
   return (
-    <ul className={cls} style={style} role={role}>
+    <ul className={cls} style={menuStyle} role={role}>
       {virtual ? (
         <VirtualList itemKey={'id'} fullHeight={false} {...virtualListProps}>
           {(option: any) => (
@@ -83,6 +89,8 @@ const MenuItem = forwardRef<
     onCheck,
     onSelect,
     titleRender,
+    classNames,
+    styles,
   } = useCheckCascaderContext()
 
   const renderTitle = useCallback(
@@ -125,7 +133,8 @@ const MenuItem = forwardRef<
     // 不存在子节点，如不是可勾选item，则可以展现勾选态
     selected && (option.children?.length || !option.checkable) && `${prefixCls}-option--selected`,
     loading && `${prefixCls}-option--loading`,
-    disabled && `${prefixCls}-option--disabled`
+    disabled && `${prefixCls}-option--disabled`,
+    classNames?.option
   )
 
   return (
@@ -138,6 +147,7 @@ const MenuItem = forwardRef<
     >
       <div
         className={optionCls}
+        style={styles?.option}
         onClick={(evt) => {
           if (disabled) return
 

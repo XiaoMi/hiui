@@ -37,6 +37,8 @@ export type CascaderComponentConfig = ComponentStyleConfig
 
 export type CheckboxComponentConfig = ComponentStyleConfig
 
+export type CheckCascaderComponentConfig = ComponentStyleConfig
+
 export type CollapsePanelComponentConfig = ComponentStyleConfig
 
 export type CounterComponentConfig = ComponentStyleConfig
@@ -128,6 +130,7 @@ export interface ConfigComponentProps {
   card?: CardComponentConfig
   cascader?: CascaderComponentConfig
   checkbox?: CheckboxComponentConfig
+  checkCascader?: CheckCascaderComponentConfig
   collapsePanel?: CollapsePanelComponentConfig
   counter?: CounterComponentConfig
   descriptions?: DescriptionsComponentConfig
