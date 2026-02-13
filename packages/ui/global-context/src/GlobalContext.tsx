@@ -117,6 +117,8 @@ export type TabsComponentConfig = ComponentStyleConfig
 
 export type TabListComponentConfig = ComponentStyleConfig
 
+export type TimePickerComponentConfig = ComponentStyleConfig
+
 export type TimelineComponentConfig = ComponentStyleConfig
 
 export type TransferComponentConfig = ComponentStyleConfig
@@ -180,6 +182,7 @@ export interface ConfigComponentProps {
   textarea?: TextareaComponentConfig
   tabs?: TabsComponentConfig
   tabList?: TabListComponentConfig
+  timePicker?: TimePickerComponentConfig
   timeline?: TimelineComponentConfig
   table?: TableComponentConfig
   transfer?: TransferComponentConfig
