@@ -48,6 +48,8 @@ const RangePanel = () => {
     weekOffset,
     needConfirm,
     onConfirm,
+    classNames,
+    styles,
   } = useContext(DPContext)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -441,7 +443,8 @@ const RangePanel = () => {
     type.includes('range') && `${prefixCls}__panel--range`,
     type === 'timeperiod' && `${prefixCls}__panel--timeperiod`,
     (showTime || type === 'timeperiod' || footerRender || needConfirm) &&
-      `${prefixCls}__panel--noshadow`
+      `${prefixCls}__panel--noshadow`,
+    classNames?.panel
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -449,9 +452,12 @@ const RangePanel = () => {
 
   return (
     <React.Fragment>
-      <div className={panelCls} onMouseLeave={onMouseLeave}>
+      <div className={panelCls} style={styles?.panel} onMouseLeave={onMouseLeave}>
         {renderShortcut()}
-        <div className={`${prefixCls}__panel--left`}>
+        <div
+          className={cx(`${prefixCls}__panel--left`, classNames?.panelLeft)}
+          style={styles?.panelLeft}
+        >
           {calRenderDates[0] && (
             <React.Fragment>
               <Header

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useContext } from 'react'
 import { cx } from '@hi-ui/classname'
 import { CloseCircleFilled, TimeOutlined, CalendarOutlined } from '@hi-ui/icons'
 import { DatePickerTypeEnum } from '../types'
+import DPContext from '../context'
 
 const PickerIcon = ({
   focus,
@@ -20,6 +21,7 @@ const PickerIcon = ({
   onClick: (status: boolean) => void
   showIndicator?: boolean
 }) => {
+  const { classNames, styles } = useContext(DPContext)
   const cls = cx(
     'hi-icon',
     disabled && 'hi-icon--disabled',
@@ -47,7 +49,8 @@ const PickerIcon = ({
 
   return (
     <MatchIcon
-      className={cls}
+      className={cx(cls, classNames?.triggerIcon)}
+      style={styles?.triggerIcon}
       onClick={(evt) => {
         evt.stopPropagation()
 
