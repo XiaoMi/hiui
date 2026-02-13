@@ -9,6 +9,7 @@ export * from './toggle.stories'
 export * from './portal.stories'
 export * from './container.stories'
 export * from './hook.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Private（暂不对外）/Popper',
