@@ -23,6 +23,8 @@ interface CheckCascaderContext {
     item: FlattedCheckCascaderDataItem
   ) => CheckCascaderDataItemRequiredProps
   virtual?: boolean
+  classNames?: Partial<Record<string, string>>
+  styles?: Partial<Record<string, React.CSSProperties>>
 }
 
 const checkCascaderContext = createContext<CheckCascaderContext>({})
