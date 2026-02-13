@@ -1,5 +1,11 @@
 # @hi-ui/schema-option-injector
 
+## 4.0.0-experimental.6
+
+### Patch Changes
+
+- 57389c2f5: 调整 searchable 属性注入时的取值优先级
+
 ## 4.0.0-experimental.5
 
 ### Patch Changes
