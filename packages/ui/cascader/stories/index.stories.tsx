@@ -20,6 +20,7 @@ export * from './visible.stories'
 export * from './custom-render.stories'
 export * from './virtual.stories'
 export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Cascader',

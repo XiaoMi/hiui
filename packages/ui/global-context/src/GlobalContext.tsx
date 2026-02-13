@@ -33,6 +33,8 @@ export type ButtonComponentConfig = ComponentStyleConfig
 
 export type CardComponentConfig = ComponentStyleConfig
 
+export type CascaderComponentConfig = ComponentStyleConfig
+
 export type CheckboxComponentConfig = ComponentStyleConfig
 
 export type CollapsePanelComponentConfig = ComponentStyleConfig
@@ -124,6 +126,7 @@ export interface ConfigComponentProps {
   breadcrumb?: BreadcrumbComponentConfig
   button?: ButtonComponentConfig
   card?: CardComponentConfig
+  cascader?: CascaderComponentConfig
   checkbox?: CheckboxComponentConfig
   collapsePanel?: CollapsePanelComponentConfig
   counter?: CounterComponentConfig
