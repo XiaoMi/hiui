@@ -11,6 +11,7 @@ import { getRange } from './utils/getRange'
 import { Panel } from './Panel'
 import { analysisFormat } from './utils/analysisFormat'
 import { getFormatDefault } from './utils/getFormatDefault'
+import { cx } from '@hi-ui/classname'
 import { timePickerPrefix } from './TimePicker'
 import { useFilter } from './hooks/useFilter'
 
@@ -26,6 +27,8 @@ interface PopContentProps extends ExtendType {
   // itemHeight: number
   // fullDisplayItemNumber: number
   style?: React.CSSProperties
+  /** 语义化：根节点类名 */
+  className?: string
 }
 
 const DefaultDisabledFunc = () => []
@@ -47,6 +50,7 @@ export const PopContent: FC<PopContentProps> = (props) => {
     disabledSeconds: originalDisabledSeconds = DefaultDisabledFunc,
     disabledMinutes: originalDisabledMinutes = DefaultDisabledFunc,
     style,
+    className: classNameProp,
   } = props
 
   // 将值统一转化为函数
@@ -222,7 +226,7 @@ export const PopContent: FC<PopContentProps> = (props) => {
   )
 
   return (
-    <div className={componentClass} style={style}>
+    <div className={cx(componentClass, classNameProp)} style={style}>
       {renderPanel(0)}
       {type === 'range' && <div className={`${componentClass}__separator`} />}
       {type === 'range' && renderPanel(1)}

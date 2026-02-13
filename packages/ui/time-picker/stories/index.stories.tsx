@@ -10,6 +10,7 @@ export * from './range.stories'
 export * from './format.stories'
 export * from './custom-disabled.stories'
 export * from './addon.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/TimePicker',
