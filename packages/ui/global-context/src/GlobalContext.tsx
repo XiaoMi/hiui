@@ -41,6 +41,8 @@ export type CheckCascaderComponentConfig = ComponentStyleConfig
 
 export type CheckSelectComponentConfig = ComponentStyleConfig
 
+export type CheckTreeSelectComponentConfig = ComponentStyleConfig
+
 export type CollapsePanelComponentConfig = ComponentStyleConfig
 
 export type CounterComponentConfig = ComponentStyleConfig
@@ -138,6 +140,7 @@ export interface ConfigComponentProps {
   checkbox?: CheckboxComponentConfig
   checkCascader?: CheckCascaderComponentConfig
   checkSelect?: CheckSelectComponentConfig
+  checkTreeSelect?: CheckTreeSelectComponentConfig
   collapsePanel?: CollapsePanelComponentConfig
   counter?: CounterComponentConfig
   descriptions?: DescriptionsComponentConfig
