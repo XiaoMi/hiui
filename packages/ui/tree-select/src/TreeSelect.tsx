@@ -5,7 +5,13 @@ import { TreeSelectDataItem, TreeSelectAppearanceEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
@@ -86,14 +92,36 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       showIndicator = true,
       renderExtraHeader,
       renderExtraFooter,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, treeSelect: treeSelectConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      TreeSelectSemanticClassNames,
+      TreeSelectSemanticStyles,
+      TreeSelectProps
+    >({
+      classNamesList: [treeSelectConfig?.classNames, classNamesProp],
+      stylesList: [treeSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -267,11 +295,38 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       }
     }, [menuVisible, treeProps.expandedIds])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
       <Picker
         ref={ref}
         innerRef={pickerInnerRef}
         className={cls}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         visible={menuVisible}
         disabled={disabled}
@@ -316,7 +371,8 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
-            className={`${prefixCls}__tree`}
+            className={cx(`${prefixCls}__tree`, classNames?.tree)}
+            style={styles?.tree}
             selectable
             selectedId={value}
             onSelect={onSelect}
@@ -336,8 +392,23 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   }
 )
 
+export type TreeSelectSemanticName = PickerSemanticName | 'tree'
+export type TreeSelectSemanticClassNames = SemanticClassNamesType<
+  TreeSelectProps,
+  TreeSelectSemanticName
+>
+export type TreeSelectSemanticStyles = SemanticStylesType<TreeSelectProps, TreeSelectSemanticName>
+export type TreeSelectSemantic = ComponentSemantic<
+  TreeSelectSemanticClassNames,
+  TreeSelectSemanticStyles
+>
+
 export interface TreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header'> {
+  extends Omit<
+      PickerProps,
+      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'classNames' | 'styles'
+    >,
+    TreeSelectSemantic {
   /**
    * 展示数据
    */
