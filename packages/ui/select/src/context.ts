@@ -1,8 +1,14 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 
 import { UseSelectReturn } from './use-select'
 
-const selectContext = createContext<Omit<UseSelectReturn, 'rootProps'> | null>(null)
+const selectContext = createContext<
+  | (Omit<UseSelectReturn, 'rootProps'> & {
+      classNames?: Partial<Record<string, string>>
+      styles?: Partial<Record<string, React.CSSProperties>>
+    })
+  | null
+>(null)
 
 export const SelectProvider = selectContext.Provider
 

@@ -25,6 +25,7 @@ export * from './tip.stories'
 export * from './addon.stories'
 export * from './custom-render.stories'
 export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Select',
