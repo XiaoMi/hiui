@@ -2,8 +2,12 @@ import React, { createRef, createElement } from 'react'
 import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
+import { __DEV__ } from '@hi-ui/env'
 
 import { modalPrefix, Modal, ModalProps } from './Modal'
+
+const STATIC_CONTEXT_WARNING =
+  'Static API `Modal.confirm` creates a new React root and cannot access React Context (e.g. theme, i18n). Prefer `Modal.useModal()` and place the returned contextHolder under your providers.'
 
 const prefixCls = modalPrefix
 const selector = `.${prefixCls}-wrapper`
@@ -14,6 +18,9 @@ const modalInstanceCache: {
 
 // TODO： 抽离合并到 Toast API
 const open = ({ key, onConfirm, onCancel, content, width = 400, ...rest }: ModalApiProps = {}) => {
+  if (__DEV__) {
+    console.warn(STATIC_CONTEXT_WARNING)
+  }
   if (!key) {
     key = uuid()
   }
@@ -22,7 +29,7 @@ const open = ({ key, onConfirm, onCancel, content, width = 400, ...rest }: Modal
   let container: any = Container.getContainer(selectorId)
   let mockUnmount: any = null
 
-  const toastManagerRef = createRef<any>()
+  const toastManagerRef: NonNullable<ModalProps['innerRef']> = createRef<any>()
 
   const ClonedModal = createElement(Modal, {
     width,
@@ -96,6 +103,14 @@ export interface ModalApiProps extends Omit<ModalProps, 'visible' | 'innerRef'> 
   key?: string
 }
 
+export const staticApis = {
+  confirm: open,
+  // 新增 open 方法暴露，与其他组件的静态 api 保持一致
+  open,
+  close,
+}
+
+// 其实内部没再使用了，保持导出以维持兼容性
 export function withModal(instance: typeof Modal) {
   return Object.assign(instance, { confirm: open, close })
 }
