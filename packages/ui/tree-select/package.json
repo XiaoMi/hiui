@@ -57,6 +57,7 @@
     "@hi-ui/tree-utils": "^4.1.4",
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-data-source": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-search-mode": "^4.1.4",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"

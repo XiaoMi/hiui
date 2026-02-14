@@ -47,7 +47,6 @@
     "@hi-ui/button": "^4.0.10",
     "@hi-ui/checkbox": "^4.0.10",
     "@hi-ui/classname": "^4.0.5",
-    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/env": "^4.0.5",
     "@hi-ui/highlighter": "^4.1.2",
     "@hi-ui/icons": "^4.0.19",
@@ -58,6 +57,7 @@
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-check": "^4.0.5",
     "@hi-ui/use-id": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
   "peerDependencies": {

@@ -50,6 +50,7 @@
     "@hi-ui/type-assertion": "^4.0.4",
     "@hi-ui/use-check": "^4.0.5",
     "@hi-ui/use-latest": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-uncontrolled-state": "^4.0.4"
   },
   "peerDependencies": {
