@@ -131,18 +131,18 @@ export const AllFilter = () => {
   }, [filterFields])
 
   // 判断是否为空值
-  const isEmptyValue = (value: any) => {
+  const isEmptyValue = React.useCallback((value: any) => {
     return (
       value === undefined ||
       value === '' ||
       value === null ||
       (Array.isArray(value) && value.length === 0)
     )
-  }
+  }, [])
 
   const filteredCount = React.useMemo(() => {
     return Object.values(formData).filter((value) => !isEmptyValue(value)).length
-  }, [formData])
+  }, [formData, isEmptyValue])
 
   return (
     <>
