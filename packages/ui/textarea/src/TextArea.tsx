@@ -101,7 +101,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       info: {
         props: {
           ...rest,
-          size,
+          size: size as TextAreaProps['size'],
           appearance,
           header,
           invalid,
