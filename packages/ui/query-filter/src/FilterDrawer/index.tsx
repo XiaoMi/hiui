@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocaleContext } from '@hi-ui/core'
-import { getPrefixCls } from '@hi-ui/classname'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import Drawer, { DrawerProps } from '@hi-ui/drawer'
 import { Button } from '@hi-ui/button'
 import {
@@ -10,22 +10,41 @@ import {
   updateSelectedCacheData,
 } from '../FilterForm'
 import { useFilterContext } from '../context'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const prefixCls = getPrefixCls('query-filter-drawer')
 
-export const FilterDrawer: React.FC<
-  Omit<FilterFormProps, 'onChange' | 'placement'> & {
-    onChange?: (formData: Record<string, unknown>, fields: FilterFieldProps[]) => void
-    sureText?: React.ReactNode
-    cancelText?: React.ReactNode
-  } & DrawerProps & {
-      onSelect?: (
-        val: Record<string, unknown>,
-        allVals: Record<string, unknown>,
-        filterField?: FilterFieldProps
-      ) => void
-    }
-> = ({
+export type FilterDrawerSemanticName = 'root' | 'footer'
+export type FilterDrawerSemanticClassNames = SemanticClassNamesType<
+  FilterDrawerProps,
+  FilterDrawerSemanticName
+>
+export type FilterDrawerSemanticStyles = SemanticStylesType<
+  FilterDrawerProps,
+  FilterDrawerSemanticName
+>
+export type FilterDrawerSemantic = ComponentSemantic<
+  FilterDrawerSemanticClassNames,
+  FilterDrawerSemanticStyles
+>
+export type FilterDrawerProps = Omit<FilterFormProps, 'onChange' | 'placement'> & {
+  onChange?: (formData: Record<string, unknown>, fields: FilterFieldProps[]) => void
+  sureText?: React.ReactNode
+  cancelText?: React.ReactNode
+} & DrawerProps & {
+    onSelect?: (
+      val: Record<string, unknown>,
+      allVals: Record<string, unknown>,
+      filterField?: FilterFieldProps
+    ) => void
+  } & FilterDrawerSemantic
+
+export const FilterDrawer: React.FC<FilterDrawerProps> = ({
   filterFields: propsFilterFields,
   formData: propsFormData,
   onChange,
@@ -38,8 +57,28 @@ export const FilterDrawer: React.FC<
   pinTexts,
   onClose,
   customFieldProps,
+  classNames: classNamesProp,
+  styles: stylesProp,
   ...restProps
 }) => {
+  const { filterDrawer: filterDrawerConfig } = useGlobalContext()
+  const { classNames, styles } = useMergeSemantic<
+    FilterDrawerSemanticClassNames,
+    FilterDrawerSemanticStyles,
+    FilterDrawerProps
+  >({
+    classNamesList: [filterDrawerConfig?.classNames, classNamesProp],
+    stylesList: [filterDrawerConfig?.styles, stylesProp],
+    info: {
+      props: {
+        ...restProps,
+        title,
+        visible: visibleProp,
+        filterFields: propsFilterFields,
+        formData: propsFormData,
+      },
+    },
+  })
   const [formData, setFormData] = useState(propsFormData)
   const [visible, setVisible] = useState(visibleProp)
   const [filterFields, setFilterFields] = useState(propsFilterFields)
@@ -111,9 +150,14 @@ export const FilterDrawer: React.FC<
   return (
     <Drawer
       className={prefixCls}
+      classNames={{ root: classNames?.root, footer: classNames?.footer }}
+      styles={{ root: styles?.root, footer: styles?.footer }}
       title={title}
       footer={
-        <div className={`${prefixCls}-footer`} style={{ textAlign: 'right' }}>
+        <div
+          className={cx(`${prefixCls}-footer`, classNames?.footer)}
+          style={{ textAlign: 'right', ...styles?.footer }}
+        >
           <Button appearance="line" onClick={handleClose}>
             {cancelText || i18n.get('modal.cancelText')}
           </Button>

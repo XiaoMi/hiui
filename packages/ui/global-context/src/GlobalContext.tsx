@@ -99,6 +99,10 @@ export type PreviewComponentConfig = ComponentStyleConfig
 
 export type ProgressComponentConfig = ComponentStyleConfig
 
+export type QueryFilterComponentConfig = ComponentStyleConfig
+
+export type FilterDrawerComponentConfig = ComponentStyleConfig
+
 export type RadioComponentConfig = ComponentStyleConfig
 
 export type RadioGroupComponentConfig = ComponentStyleConfig
@@ -177,6 +181,8 @@ export interface ConfigComponentProps {
   popover?: PopoverComponentConfig
   preview?: PreviewComponentConfig
   progress?: ProgressComponentConfig
+  queryFilter?: QueryFilterComponentConfig
+  filterDrawer?: FilterDrawerComponentConfig
   radio?: RadioComponentConfig
   radioGroup?: RadioGroupComponentConfig
   rating?: RatingComponentConfig
