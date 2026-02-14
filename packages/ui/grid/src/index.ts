@@ -12,3 +12,5 @@ export default Grid
 export * from './Grid'
 
 export * from './types'
+
+export * from './auto-grid'
