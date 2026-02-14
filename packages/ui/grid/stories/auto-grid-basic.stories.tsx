@@ -1,13 +1,11 @@
 import React from 'react'
-import Grid from '../src'
+import { AutoGrid } from '../src'
 
 /**
  * @title AutoGrid 基础
  * @desc children / columnCount / data-span / gutter 用法
  */
 export const AutoGridBasic = () => {
-  const { AutoGrid } = Grid
-
   const blockStyle: React.CSSProperties = {
     width: '100%',
     padding: '16px 0',

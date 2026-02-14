@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import Grid from '../src'
+import { DynamicGrid } from '../src'
 
 /**
  * @title DynamicGrid 基础
  * @desc 可拖拽容器调整宽度，根据 breakpoints 自动调整列数，onColumnCountChange 回调当前列数
  */
 export const DynamicGridBasic = () => {
-  const { DynamicGrid } = Grid
   const [count, setCount] = useState<number>(0)
 
   const blockStyle: React.CSSProperties = {

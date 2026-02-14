@@ -1,13 +1,11 @@
 import React from 'react'
-import Grid from '../src'
+import { AutoGrid } from '../src'
 
 /**
  * @title AutoGrid Nodes API
  * @desc 使用 nodes 替代 children，支持 props 对象或函数
  */
 export const AutoGridNodes = () => {
-  const { AutoGrid } = Grid
-
   const blockStyle: React.CSSProperties = {
     width: '100%',
     padding: '16px 0',
