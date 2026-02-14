@@ -63,6 +63,7 @@
     "@hi-ui/use-id": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
     "@hi-ui/use-merge-refs": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-outside-click": "^4.0.4",
     "@hi-ui/use-resize-observer": "^4.0.4",
     "@hi-ui/use-toggle": "^4.0.4",

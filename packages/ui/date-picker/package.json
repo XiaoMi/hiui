@@ -51,10 +51,10 @@
     "@hi-ui/object-utils": "^4.0.4",
     "@hi-ui/popper": "^4.1.7",
     "@hi-ui/time-picker": "^4.1.2",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "axios": "^1.5.0",
     "moment": "^2.29.4",
-    "react-transition-group": "^4.4.2",
-    "@hi-ui/use-merge-semantic": "^4.0.0"
+    "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.9",
