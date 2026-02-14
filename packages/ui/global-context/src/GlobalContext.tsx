@@ -10,8 +10,8 @@ export const useGlobalContext = () => {
 
 export interface UseGlobalContext extends ConfigComponentProps {
   size?: 'xs' | 'sm' | 'md' | 'lg'
-  prefix?: string
-  customThemeClassName?: string
+  // prefix?: string
+  utcOffset?: number
 }
 
 export interface ComponentStyleConfig {

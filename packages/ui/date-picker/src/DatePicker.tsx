@@ -67,7 +67,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledDate = DEFAULT_DISABLED_DATE,
       maxDate: max = null,
       minDate: min = null,
-      utcOffset,
+      utcOffset: utcOffsetProp,
       onSelect: propsOnSelectOriginal,
       onPanelChange,
       theme,
@@ -99,7 +99,12 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     ref
   ) => {
     const globalContext = useGlobalContext()
-    const { size: globalSize, datePicker: datePickerConfig } = globalContext
+    const {
+      size: globalSize,
+      datePicker: datePickerConfig,
+      utcOffset: utcOffsetGlobal,
+    } = globalContext
+    const utcOffset = utcOffsetProp ?? utcOffsetGlobal
     const { classNames, styles } = useMergeSemantic<
       DatePickerSemanticClassNames,
       DatePickerSemanticStyles,
