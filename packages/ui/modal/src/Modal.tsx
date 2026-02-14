@@ -437,10 +437,14 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps, Modal
    * @private
    */
   timeout?: number
-  /** 。暂不对外暴露
+  /**
+   * 暂不对外暴露
    * @private
    */
-  innerRef?: React.Ref<{ close: () => void }>
+  innerRef?: React.Ref<{
+    close: () => void
+    updateConfirmLoading: (loading: boolean) => void
+  }>
   /**
    * 关闭动画退出时回调。暂不对外暴露
    * @private
