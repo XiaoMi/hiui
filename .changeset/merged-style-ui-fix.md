@@ -1,8 +1,9 @@
 ---
-"@hi-ui/core-css": patch
 "@hi-ui/alert": patch
 "@hi-ui/anchor": patch
 "@hi-ui/avatar": patch
+"@hi-ui/back-top": patch
+"@hi-ui/badge": patch
 "@hi-ui/breadcrumb": patch
 "@hi-ui/button": patch
 "@hi-ui/card": patch
@@ -13,6 +14,7 @@
 "@hi-ui/check-tree-select": patch
 "@hi-ui/checkbox": patch
 "@hi-ui/collapse": patch
+"@hi-ui/core-css": patch
 "@hi-ui/counter": patch
 "@hi-ui/date-picker": patch
 "@hi-ui/descriptions": patch
@@ -21,9 +23,11 @@
 "@hi-ui/ellipsis-tooltip": patch
 "@hi-ui/empty-state": patch
 "@hi-ui/filter": patch
+"@hi-ui/form": patch
 "@hi-ui/highlighter": patch
 "@hi-ui/hiui": patch
 "@hi-ui/icon-button": patch
+"@hi-ui/icons": patch
 "@hi-ui/input": patch
 "@hi-ui/layout": patch
 "@hi-ui/list": patch
@@ -69,4 +73,4 @@
 "@hi-ui/zen-mode": patch
 ---
 
-style: 修改样式问题 (5.0)
+style: 修复 UI/样式问题 (5.0)
