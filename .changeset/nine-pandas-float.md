@@ -1,4 +1,5 @@
 ---
+"@hi-ui/hiui": patch
 "@hi-ui/use-patch-element": patch
 "@hi-ui/modal": patch
 ---
