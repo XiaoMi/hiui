@@ -57,6 +57,10 @@ export type DropdownComponentConfig = ComponentStyleConfig
 
 export type EmptyStateComponentConfig = ComponentStyleConfig
 
+export type FormComponentConfig = ComponentStyleConfig
+
+export type FormItemComponentConfig = ComponentStyleConfig
+
 export type InputComponentConfig = ComponentStyleConfig
 
 export type ListComponentConfig = ComponentStyleConfig
@@ -152,6 +156,8 @@ export interface ConfigComponentProps {
   drawer?: DrawerComponentConfig
   dropdown?: DropdownComponentConfig
   emptyState?: EmptyStateComponentConfig
+  form?: FormComponentConfig
+  formItem?: FormItemComponentConfig
   input?: InputComponentConfig
   list?: ListComponentConfig
   loading?: LoadingComponentConfig

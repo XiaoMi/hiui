@@ -14,6 +14,7 @@ export * from './render.stories'
 export * from './nested-field.stories'
 export * from './list.stories'
 export * from './cascade.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Form',
