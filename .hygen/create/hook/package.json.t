@@ -3,7 +3,7 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
 ---
 {
   "name": "@hi-ui/<%= name %>",
-  "version": "4.0.0-beta.0",
+  "version": "5.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
