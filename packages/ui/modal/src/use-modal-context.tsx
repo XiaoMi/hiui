@@ -21,7 +21,7 @@ export interface UseModalContextModalApiProps extends Omit<ModalProps, 'visible'
 
 export interface ModalInstance {
   /** 主动关闭当前弹框并从 React 树中移除 */
-  destroy: () => void
+  close: () => void
   /**
    * Promise 风格：用户点击「确定」时 resolve(true)，点击「取消」或关闭时 resolve(false)
    * - 用于在用户选择后再执行后续逻辑，如 `modal.confirm({...}).then(ok => { if (ok) ... })`
@@ -118,6 +118,7 @@ HookModal.displayName = 'HookModal'
 
 // ---------- 步骤 3：Hook 暴露 confirm + contextHolder；confirm 时 patch 到 holder，关闭时通过 afterClose 卸载 ----------
 export interface UseModalContextModalApi {
+  open: (config: UseModalContextModalApiProps) => ModalInstance
   confirm: (config: UseModalContextModalApiProps) => ModalInstance
 }
 
@@ -163,12 +164,12 @@ export function useModalContext(): [UseModalContextModalApi, React.ReactElement]
     const closeFunc = holderRef.current?.patchElement(modal)
 
     const instance: ModalInstance = {
-      destroy: () => {
-        const destroyAction = () => hookModalRef.current?.close()
+      close: () => {
+        const closeAction = () => hookModalRef.current?.close()
         if (hookModalRef.current) {
-          destroyAction()
+          closeAction()
         } else {
-          setActionQueue((prev) => [...prev, destroyAction])
+          setActionQueue((prev) => [...prev, closeAction])
         }
       },
       then: (resolve) => promise.then(resolve),
@@ -177,8 +178,8 @@ export function useModalContext(): [UseModalContextModalApi, React.ReactElement]
     return instance
   }, [])
 
-  const modalApi = React.useMemo(() => ({ confirm }), [confirm])
+  const modalApi = React.useMemo(() => ({ confirm, open: confirm }), [confirm])
 
   // contextHolder 必须由调用方放在需要消费 Context 的 Provider 下方
-  return [modalApi, <ElementsHolder key="modal-context-holder" ref={holderRef} />] as const
+  return [modalApi, <ElementsHolder key="modal-context-holder" ref={holderRef} />]
 }

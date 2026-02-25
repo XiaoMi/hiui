@@ -164,8 +164,6 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       `${prefixCls}--size-${size}`
     )
 
-    console.log('bodyWidth', bodyWidth)
-
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
