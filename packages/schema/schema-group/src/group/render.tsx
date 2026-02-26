@@ -80,9 +80,10 @@ export function SchemaGroupRender(props: SchemaGroupRenderProps) {
         className={className}
         dataSet={{ nestLevel }}
       >
+        {/* @ts-expect-error MatchedGroupRenderer 的类型定义不完整 */}
         <MatchedGroupRenderer
           dataIndex={group.dataIndex}
-          // @ts-expect-error FieldConfigType 在不同场景下类型有细微不同，忽略
+          // FieldConfigType 在不同场景下类型有细微不同，忽略
           fields={config.fields}
           {...config.props}
         />

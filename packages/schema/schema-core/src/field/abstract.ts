@@ -65,7 +65,7 @@ export type ProFieldRenderEditableCtx<FieldProps = AnyObject, WrapperProps = Any
 
 export type ProFieldRenderEditCellCtx<
   FieldProps = AnyObject,
-  WrapperProps = AnyObject,
+  WrapperProps = AnyObject
 > = ProFieldRenderFormItemCtx<FieldProps, WrapperProps> & {
   /** 表格行数据 */
   rowData: AnyObject

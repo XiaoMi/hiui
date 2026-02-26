@@ -121,7 +121,7 @@ export class EditableFieldCreator<
    * - 仅在表单中有效
    */
   Span(span: number) {
-    this.MWP(({ span } as FormItemWrapperProps) as WrapperProps)
+    this.MWP({ span } as FormItemWrapperProps as WrapperProps)
     return this
   }
 
@@ -186,7 +186,7 @@ export class EditableFieldCreator<
    */
   Fields(fields: FieldConfigType | FieldConfigType[]) {
     return this.Span(24)._mergeVal({
-      fieldProps: ({ fields } as FormObjectConfigType | FormListConfigType) as FieldProps,
+      fieldProps: { fields } as FormObjectConfigType | FormListConfigType as FieldProps,
     })
   }
 
@@ -317,7 +317,7 @@ export class EditableFieldCreator<
   EditTable(opts?: ProEditTableProps) {
     // @ts-expect-error 忽略类型检查
     this.MFP('edit-table', opts)
-    this.MWP(({ span: 24 } as FormItemWrapperProps) as WrapperProps)
+    this.MWP({ span: 24 } as FormItemWrapperProps as WrapperProps)
     this._mergeVal({
       extra: { mustInGroup: true },
     })

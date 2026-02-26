@@ -34,9 +34,9 @@ export class GroupCreator<T extends GroupType> {
   }
 
   Type<Type extends GroupType>(type: Type) {
-    return (this._mergeVal({
-      type: (type as unknown) as T,
-    }) as unknown) as GroupCreator<Type>
+    return this._mergeVal({
+      type: type as unknown as T,
+    }) as unknown as GroupCreator<Type>
   }
 
   Config(type: T, config: GroupRendererConfigType[T]) {
@@ -206,13 +206,11 @@ export class GroupCreator<T extends GroupType> {
    * @desc 用来在单个嵌套组（例如 Tab、Grid.Col）中渲染多个子组
    */
   ChildGroups(groups: GroupConfigType<GroupType>[]) {
-    return this._mergeVal(({
+    return this._mergeVal({
       type: 'child-groups',
       groups,
       config: {},
-    } as Partial<GroupConfigType<'child-groups'>>) as GroupConfigType<T>) as GroupCreator<
-      'child-groups'
-    >
+    } as Partial<GroupConfigType<'child-groups'>> as GroupConfigType<T>) as GroupCreator<'child-groups'>
   }
 
   /**
