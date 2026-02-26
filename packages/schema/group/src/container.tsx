@@ -41,7 +41,7 @@ export function GroupContainer(props: React.PropsWithChildren<GroupContainerProp
   if (enableCollapse) {
     const collapseProps = mergeProps(
       {
-        size: 'sm',
+        // size: 'sm', // v5中 sm 的尺寸缩小为12px，此处改为默认的 md
         bordered: false, // 是给折叠面板的容器加的边框，默认隐藏
       },
       props.collapseProps
