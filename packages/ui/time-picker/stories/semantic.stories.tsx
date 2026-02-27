@@ -37,6 +37,8 @@ export const Semantic = () => {
                   ? { [selected]: { outline: '2px solid #ffbe0a', outlineOffset: 2 } }
                   : {}),
               }}
+              // @ts-ignore
+              overlay={{ flip: false }}
             />
           </Col>
           <Col span={6}>
