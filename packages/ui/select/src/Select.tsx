@@ -17,7 +17,13 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import type { ListRef } from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
@@ -88,14 +94,36 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       creatableInSearch,
       onItemCreate,
       renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, select: selectConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      SelectSemanticClassNames,
+      SelectSemanticStyles,
+      SelectProps
+    >({
+      classNamesList: [selectConfig?.classNames, classNamesProp],
+      stylesList: [selectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data: dataProp,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
     const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
@@ -289,12 +317,39 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       }
     }, [menuVisible, showData])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
-      <SelectProvider value={context}>
+      <SelectProvider value={{ ...context, classNames, styles }}>
         <Picker
           ref={ref}
           innerRef={pickerInnerRef}
           className={cls}
+          classNames={pickerClassNames}
+          styles={pickerStyles}
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
@@ -382,9 +437,18 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   }
 )
 
+export type SelectSemanticName = PickerSemanticName | 'option' | 'optionGroup'
+export type SelectSemanticClassNames = SemanticClassNamesType<SelectProps, SelectSemanticName>
+export type SelectSemanticStyles = SemanticStylesType<SelectProps, SelectSemanticName>
+export type SelectSemantic = ComponentSemantic<SelectSemanticClassNames, SelectSemanticStyles>
+
 export interface SelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer'>,
-    UseSelectProps {
+  extends Omit<
+      PickerProps,
+      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    UseSelectProps,
+    SelectSemantic {
   /**
    * 选项数据
    */

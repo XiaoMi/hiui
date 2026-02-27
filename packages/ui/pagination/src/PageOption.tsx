@@ -14,13 +14,15 @@ export const PageOption: React.FC<PageOptionProps> = ({
   onPageSizeChange,
   pageSize,
   size = 'md',
+  className,
+  style,
 }) => {
-  const cls = cx(`${prefixCls}__option`)
+  const cls = cx(`${prefixCls}__option`, className)
 
   return (
     <Select
       className={cls}
-      style={{ width: 'auto' }}
+      style={{ width: 'auto', ...style }}
       optionWidth={'auto'}
       data={pageSizeOptions}
       value={pageSize}
@@ -61,6 +63,14 @@ export interface PageOptionProps {
    * 设置尺寸
    */
   size?: 'xs' | 'sm' | 'md'
+  /**
+   * 自定义类名
+   */
+  className?: string
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties
 }
 
 if (__DEV__) {

@@ -78,6 +78,25 @@ export const Size = () => {
             此处展示卡片内容
           </div>
         </Card>
+
+        <h2>不同尺寸嵌套</h2>
+        <Card title="大尺寸" size="lg">
+          <Card title="常规">
+            <Card title="紧凑" size="sm">
+              <div
+                style={{
+                  height: 80,
+                  backgroundColor: '#F5F8FC',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                此处展示卡片内容
+              </div>
+            </Card>
+          </Card>
+        </Card>
       </div>
     </>
   )

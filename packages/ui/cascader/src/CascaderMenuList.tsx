@@ -14,12 +14,13 @@ const menuListPrefix = getPrefixCls('cascader-menu-list')
 
 export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuListProps>(
   ({ prefixCls = menuListPrefix, className, ...rest }, ref) => {
-    const { flatted, menuList, dropdownColumnRender } = useCascaderContext()
+    const { flatted, menuList, dropdownColumnRender, classNames, styles } = useCascaderContext()
 
-    const cls = cx(prefixCls, className, flatted && `${prefixCls}--flatted`)
+    const cls = cx(prefixCls, className, classNames?.menuList, flatted && `${prefixCls}--flatted`)
+    const rootStyle = styles?.menuList
 
     return (
-      <div ref={ref} className={cls} {...rest}>
+      <div ref={ref} className={cls} style={rootStyle} {...rest}>
         {menuList.map((menu, menuIndex) => {
           return isArrayNonEmpty(menu) ? (
             isFunction(dropdownColumnRender) ? (
@@ -49,9 +50,10 @@ export const CascaderMenu = ({
   style,
   data: menu,
 }: CascaderMenuProps) => {
-  const { virtual } = useCascaderContext()
+  const { virtual, classNames, styles } = useCascaderContext()
 
-  const cls = cx(prefixCls, className)
+  const cls = cx(prefixCls, className, classNames?.menu)
+  const menuStyle = { ...style, ...styles?.menu }
 
   const virtualListProps = {
     virtual,
@@ -61,7 +63,7 @@ export const CascaderMenu = ({
   }
 
   return (
-    <ul className={cls} style={style} role={role}>
+    <ul className={cls} style={menuStyle} role={role}>
       {isArrayNonEmpty(menu) ? (
         virtual ? (
           <VirtualList itemKey={'id'} fullHeight={false} {...virtualListProps}>
@@ -96,6 +98,8 @@ const MenuItem = forwardRef<
     titleRender,
     onLoadChildren,
     getItemRequiredProps,
+    classNames,
+    styles,
   } = useCascaderContext()
 
   const eventOption = getItemEventData(option, getItemRequiredProps(option))
@@ -108,7 +112,8 @@ const MenuItem = forwardRef<
     active && `${prefixCls}-option--active`,
     loading && `${prefixCls}-option--loading`,
     disabled && `${prefixCls}-option--disabled`,
-    selected && `${prefixCls}-option--selected`
+    selected && `${prefixCls}-option--selected`,
+    classNames?.option
   )
 
   return (
@@ -121,6 +126,7 @@ const MenuItem = forwardRef<
     >
       <div
         className={optionCls}
+        style={styles?.option}
         onClick={(evt) => {
           if (disabled) return
           onItemClick(eventOption)

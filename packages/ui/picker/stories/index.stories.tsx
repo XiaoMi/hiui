@@ -3,6 +3,7 @@ import Picker from '../src'
 
 export * from './basic.stories'
 export * from './creatable.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Private（暂不对外）/Picker',

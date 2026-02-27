@@ -49,6 +49,7 @@
     "@hi-ui/icons": "^5.0.0-canary.8",
     "@hi-ui/react-utils": "^5.0.0-canary.2",
     "@hi-ui/toast": "^5.0.0-canary.6",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {

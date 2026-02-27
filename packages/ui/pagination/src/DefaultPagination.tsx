@@ -11,6 +11,11 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isFunction } from '@hi-ui/type-assertion'
 import { PopperOverlayProps } from '@hi-ui/popper'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -24,6 +29,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
       role = _role,
       onChange,
       className,
+      classNames: classNamesProp,
+      styles: stylesProp,
       current: currentProp,
       defaultCurrent = 1,
       pageSizeOptions,
@@ -45,6 +52,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     ref
   ) => {
     const i18n = useLocaleContext()
+    const classNames = classNamesProp as PaginationSemanticClassNamesResolved | undefined
+    const styles = stylesProp as PaginationSemanticStylesResolved | undefined
 
     const totalText = i18n.get('pagination.total')
     const itemText = i18n.get('pagination.item')
@@ -116,13 +125,25 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
         leftBuffer = current - max
         rightBuffer = current + max
       }
+      const pagerClassName = classNames?.pager
+      const pagerStyle = styles?.pager
       if (leftBuffer !== 1) {
         pagers.push(
-          <Pager page={1} active={current === 1} key={1} onClick={onClick} prefixCls={prefixCls} />
+          <Pager
+            page={1}
+            active={current === 1}
+            key={1}
+            onClick={onClick}
+            prefixCls={prefixCls}
+            className={pagerClassName}
+            style={pagerStyle}
+          />
         )
       }
       if (leftBuffer > 2) {
-        pagers.push(<Pager page={'...'} key={'break-1'} />)
+        pagers.push(
+          <Pager page={'...'} key={'break-1'} className={pagerClassName} style={pagerStyle} />
+        )
       }
       for (let index = leftBuffer; index <= rightBuffer; index++) {
         pagers.push(
@@ -132,11 +153,15 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             key={index}
             onClick={onClick}
             prefixCls={prefixCls}
+            className={pagerClassName}
+            style={pagerStyle}
           />
         )
       }
       if (rightBuffer < maxPage - 1) {
-        pagers.push(<Pager page={'...'} key={'break-2'} />)
+        pagers.push(
+          <Pager page={'...'} key={'break-2'} className={pagerClassName} style={pagerStyle} />
+        )
       }
       if (rightBuffer !== maxPage) {
         pagers.push(
@@ -146,11 +171,13 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             key={maxPage}
             onClick={onClick}
             prefixCls={prefixCls}
+            className={pagerClassName}
+            style={pagerStyle}
           />
         )
       }
       return pagers
-    }, [current, maxPage, max, onClick, prefixCls])
+    }, [current, maxPage, max, onClick, prefixCls, classNames?.pager, styles?.pager])
 
     const disabled = maxPage === 0
 
@@ -163,13 +190,13 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         {showTotal ? (
-          <div className={`${prefixCls}__total`}>
+          <div className={cx(`${prefixCls}__total`, classNames?.total)} style={styles?.total}>
             {renderTotal ? renderTotal(total) : `${totalText[0]} ${total} ${totalText[1]}`}
           </div>
         ) : null}
 
         {showPagers ? (
-          <ul className={`${prefixCls}__list`}>
+          <ul className={cx(`${prefixCls}__list`, classNames?.list)} style={styles?.list}>
             <PagerButton
               type="prev"
               prefixCls={prefixCls}
@@ -177,6 +204,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               onChange={onClick}
               current={current}
               size={size}
+              className={classNames?.prevButton}
+              style={styles?.prevButton}
             />
             {renderPagers()}
             <PagerButton
@@ -186,6 +215,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
               current={current}
               size={size}
               disabled={disabled || current === maxPage}
+              className={classNames?.nextButton}
+              style={styles?.nextButton}
             />
           </ul>
         ) : null}
@@ -196,6 +227,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             pageSizeOptionsOverlay={pageSizeOptionsOverlay}
             onPageSizeChange={trySetPageSize}
             size={size}
+            className={classNames?.pageOption}
+            style={styles?.pageOption}
           />
         ) : null}
         {showJumper ? (
@@ -208,6 +241,8 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
             }}
             maxJump={calculatePageCount(total, pageSize)}
             size={size}
+            className={classNames?.jumper}
+            style={styles?.jumper}
           />
         ) : null}
       </div>
@@ -215,7 +250,32 @@ export const DefaultPagination = forwardRef<HTMLDivElement | null, PaginationPro
   }
 )
 
-export interface PaginationProps extends HiBaseHTMLProps<'div'> {
+export type PaginationSemanticName =
+  | 'root'
+  | 'total'
+  | 'list'
+  | 'prevButton'
+  | 'nextButton'
+  | 'pager'
+  | 'pageOption'
+  | 'jumper'
+/** 已解析的语义化类名（组件内部使用） */
+export type PaginationSemanticClassNamesResolved = Partial<Record<PaginationSemanticName, string>>
+/** 已解析的语义化样式（组件内部使用） */
+export type PaginationSemanticStylesResolved = Partial<
+  Record<PaginationSemanticName, React.CSSProperties>
+>
+export type PaginationSemanticClassNames = SemanticClassNamesType<
+  PaginationProps,
+  PaginationSemanticName
+>
+export type PaginationSemanticStyles = SemanticStylesType<PaginationProps, PaginationSemanticName>
+export type PaginationSemantic = ComponentSemantic<
+  PaginationSemanticClassNames,
+  PaginationSemanticStyles
+>
+
+export interface PaginationProps extends HiBaseHTMLProps<'div'>, PaginationSemantic {
   /**
    * 当前页码
    */

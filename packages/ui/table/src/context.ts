@@ -42,6 +42,10 @@ const TableContext = createContext<
         sticky?: boolean
         stickyTop?: number
         stickyFooter?: boolean
+        /** 语义化 classNames（由 BaseTable 透传） */
+        semanticClassNames?: Record<string, any>
+        /** 语义化 styles（由 BaseTable 透传） */
+        semanticStyles?: Record<string, any>
       })
   | null
 >(null)

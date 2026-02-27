@@ -4,7 +4,13 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import * as Icons from './icons'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import Tooltip from '@hi-ui/tooltip'
 import { useDidMount } from '@hi-ui/use-did-mount'
 
@@ -22,6 +28,8 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       className,
       children,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       disabled = false,
       readOnly = false,
       count = 5,
@@ -164,20 +172,48 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       onKeyDown?.(evt)
     }
 
+    const globalContext = useGlobalContext()
+    const { rating: ratingConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      RatingSemanticClassNames,
+      RatingSemanticStyles,
+      RatingProps
+    >({
+      classNamesList: [ratingConfig?.classNames, classNamesProp],
+      stylesList: [ratingConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          disabled,
+          readOnly,
+          count,
+          value,
+          allowHalf,
+          halfPlacement,
+          useEmoji,
+        },
+      },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       focus && `${prefixCls}--focus`,
       disabled && `${prefixCls}--disabled`,
       readOnly && `${prefixCls}--readonly`
     )
-    const starCls = `${prefixCls}__star`
+    const starCls = cx(`${prefixCls}__star`, classNames?.star)
     const halfStarCls = `${prefixCls}__star__half`
     const starIconCls = `${prefixCls}__icon`
 
     const isVertical = halfPlacement === 'vertical'
 
-    const rootStyle = useMemo(() => ({ ...style, color, fill: color }), [style, color])
+    const rootStyle = useMemo(() => ({ ...style, color, fill: color, ...styles?.root }), [
+      style,
+      color,
+      styles?.root,
+    ])
 
     const stars = useMemo(() => Array(count).fill(undefined), [count])
 
@@ -204,7 +240,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
             const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
 
             return (
-              <li className={starCls} key={indexValue}>
+              <li className={starCls} style={styles?.star} key={indexValue}>
                 <ToolTipWrapper title={tooltips[idx]}>
                   {/* HalfStar 1 */}
                   <div
@@ -255,13 +291,22 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
             )
           })}
         </ul>
-        {descRender ? <div className={`${prefixCls}__desc`}>{descRender(displayValue)}</div> : null}
+        {descRender ? (
+          <div className={cx(`${prefixCls}__desc`, classNames?.desc)} style={styles?.desc}>
+            {descRender(displayValue)}
+          </div>
+        ) : null}
       </>
     )
   }
 )
 
-export interface RatingProps extends HiBaseHTMLFieldProps<'ul'> {
+export type RatingSemanticName = 'root' | 'star' | 'desc'
+export type RatingSemanticClassNames = SemanticClassNamesType<RatingProps, RatingSemanticName>
+export type RatingSemanticStyles = SemanticStylesType<RatingProps, RatingSemanticName>
+export type RatingSemantic = ComponentSemantic<RatingSemanticClassNames, RatingSemanticStyles>
+
+export interface RatingProps extends HiBaseHTMLFieldProps<'ul'>, RatingSemantic {
   /**
    * 禁用，无法进行交互,鼠标禁用交互效果
    */

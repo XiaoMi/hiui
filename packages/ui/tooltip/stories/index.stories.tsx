@@ -7,6 +7,7 @@ export * from './placement.stories'
 export * from './break-word.stories'
 export * from './with-api.stories'
 export * from './gutter-gap.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Tooltip',

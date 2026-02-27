@@ -23,6 +23,12 @@ import {
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType, ModalTypeEnum } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 import { isUndef } from '@hi-ui/type-assertion'
 
@@ -74,13 +80,23 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       unmountOnClose = false,
       visible = false,
       innerRef,
-      styles,
-      classNames,
+      styles: stylesProp,
+      classNames: classNamesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, modal: modalConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      ModalSemanticClassNames,
+      ModalSemanticStyles,
+      ModalProps
+    >({
+      classNamesList: [modalConfig?.classNames, classNamesProp],
+      stylesList: [modalConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, type, size: sizeProp ?? globalSize ?? 'md', closeable } },
+    })
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {
       size = 'sm'
@@ -201,8 +217,17 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           // 参考：https://github.com/reactjs/react-transition-group/issues/918
           nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getModalProps(rootProps, [ref, transitionNodeRef])}>
-            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
+          <div
+            className={cx(cls, classNames?.root)}
+            style={{ ...styles?.root }}
+            {...getModalProps(rootProps, [ref, transitionNodeRef])}
+          >
+            {showMask ? (
+              <div
+                className={cx(`${prefixCls}__overlay`, classNames?.overlay)}
+                style={styles?.overlay}
+              />
+            ) : null}
             <div
               className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)}
               style={{
@@ -230,14 +255,20 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                       style={styles?.title}
                     >
                       {type && modalIconMap[type] ? (
-                        <span className={`${prefixCls}__icon`}>{modalIconMap[type]}</span>
+                        <span
+                          className={cx(`${prefixCls}__icon`, classNames?.icon)}
+                          style={styles?.icon}
+                        >
+                          {modalIconMap[type]}
+                        </span>
                       ) : null}
                       {title}
                     </div>
                   ) : null}
                   {closeable ? (
                     <IconButton
-                      className={`${prefixCls}__close-button`}
+                      className={cx(`${prefixCls}__close-button`, classNames?.closeButton)}
+                      style={styles?.closeButton}
                       effect
                       icon={closeIcon}
                       onClick={onClose ?? onRequestCloseLatest}
@@ -300,7 +331,21 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
 
 export type ModalSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
-export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
+export type ModalSemanticName =
+  | 'root'
+  | 'overlay'
+  | 'wrapper'
+  | 'header'
+  | 'title'
+  | 'icon'
+  | 'closeButton'
+  | 'body'
+  | 'footer'
+export type ModalSemanticClassNames = SemanticClassNamesType<ModalProps, ModalSemanticName>
+export type ModalSemanticStyles = SemanticStylesType<ModalProps, ModalSemanticName>
+export type ModalSemantic = ComponentSemantic<ModalSemanticClassNames, ModalSemanticStyles>
+
+export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps, ModalSemantic {
   /**
    * 模态框尺寸
    */
@@ -392,10 +437,14 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * @private
    */
   timeout?: number
-  /** 。暂不对外暴露
+  /**
+   * 暂不对外暴露
    * @private
    */
-  innerRef?: React.Ref<{ close: () => void }>
+  innerRef?: React.Ref<{
+    close: () => void
+    updateConfirmLoading: (loading: boolean) => void
+  }>
   /**
    * 关闭动画退出时回调。暂不对外暴露
    * @private
@@ -410,26 +459,6 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * 确认框类型
    */
   type?: ModalTypeEnum
-  /**
-   * 自定义模态框样式
-   */
-  styles?: {
-    wrapper?: React.CSSProperties
-    header?: React.CSSProperties
-    title?: React.CSSProperties
-    body?: React.CSSProperties
-    footer?: React.CSSProperties
-  }
-  /**
-   * 自定义模态框类名
-   */
-  classNames?: {
-    wrapper?: string
-    header?: string
-    title?: string
-    body?: string
-    footer?: string
-  }
 }
 
 if (__DEV__) {

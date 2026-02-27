@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import {
   CloseCircleFilled,
@@ -9,6 +9,12 @@ import {
   ExclamationCircleFilled,
   InfoCircleFilled,
 } from '@hi-ui/icons'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'message'
 export const _prefix = getPrefixCls(_role)
@@ -29,6 +35,9 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       icon,
       title,
@@ -42,6 +51,18 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
     },
     ref
   ) => {
+    const { message: messageConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      MessageSemanticClassNames,
+      MessageSemanticStyles,
+      MessageProps
+    >({
+      classNamesList: [messageConfig?.classNames, classNamesProp],
+      stylesList: [messageConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, type } },
+    })
+
     const [transitionVisible, setTransitionVisible] = useState(false)
 
     const timerRef = useRef(0)
@@ -83,7 +104,7 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
       })
     }, [])
 
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
+    const cls = cx(prefixCls, className, classNames?.root, `${prefixCls}--type-${type}`)
 
     return (
       <CSSTransition
@@ -101,9 +122,19 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
         nodeRef={motionElRef}
       >
         <div ref={motionElRef} className={`${prefixCls}-container`}>
-          <div ref={ref} role={role} className={cls} {...rest}>
-            <div className={`${prefixCls}__icon`}>{icon ?? messageIconMap[type]}</div>
-            {title}
+          <div
+            ref={ref}
+            role={role}
+            className={cls}
+            style={{ ...style, ...styles?.root }}
+            {...rest}
+          >
+            <div className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
+              {icon ?? messageIconMap[type]}
+            </div>
+            <span className={cx(classNames?.title)} style={styles?.title}>
+              {title}
+            </span>
           </div>
         </div>
       </CSSTransition>
@@ -111,7 +142,12 @@ export const Message = forwardRef<HTMLDivElement | null, MessageProps>(
   }
 )
 
-export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'> {
+export type MessageSemanticName = 'root' | 'icon' | 'title'
+export type MessageSemanticClassNames = SemanticClassNamesType<MessageProps, MessageSemanticName>
+export type MessageSemanticStyles = SemanticStylesType<MessageProps, MessageSemanticName>
+export type MessageSemantic = ComponentSemantic<MessageSemanticClassNames, MessageSemanticStyles>
+
+export interface MessageProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, MessageSemantic {
   /**
    * 开启可见
    */

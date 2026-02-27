@@ -1,7 +1,11 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './types'
+import type {
+  UploadProps,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import useUpload from './hooks/use-upload'
@@ -41,6 +45,8 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       method,
       timeout,
       actionRender,
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -50,6 +56,12 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const buttonText = i18n.get('upload.buttonText')
 
     const cls = cx(prefixCls, `${prefixCls}--picture-card`, className)
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -83,6 +95,8 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               appearance="line"
               disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
               loading={loading}
+              className={cn?.pictureListUploadTrigger}
+              style={st?.pictureListUploadTrigger}
             >
               {content || buttonText}
             </Button>
@@ -90,7 +104,14 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             children
           )}
         </FileSelect>
-        {tips && <div className={`${prefixCls}__tips`}>{tips}</div>}
+        {tips && (
+          <div
+            className={cx(`${prefixCls}__tips`, cn?.pictureListUploadTips)}
+            style={st?.pictureListUploadTips}
+          >
+            {tips}
+          </div>
+        )}
         {showUploadList && _fileList.length > 0 && (
           <FileList
             fileList={_fileList}
@@ -100,6 +121,8 @@ export const PictureListUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             prefixCls={prefixCls}
             disabled={disabled}
             actionRender={actionRender}
+            className={cn?.pictureListUploadList}
+            style={st?.pictureListUploadList}
           />
         )}
       </div>

@@ -13,6 +13,8 @@ const cascaderContext = createContext<
         event: React.MouseEvent<HTMLDivElement>,
         option: CascaderItemEventData
       ) => void
+      classNames?: Partial<Record<string, string>>
+      styles?: Partial<Record<string, React.CSSProperties>>
     })
   | null
 >(null)

@@ -17,7 +17,7 @@ $prefix: '#{$component-prefix}-card' !default;
 
   &--size {
     &-sm {
-      .#{$prefix} {
+      > .#{$prefix} {
         &__header {
           padding: calc(#{use-spacing(5)} - 1px) use-spacing(8);
           font-size: use-text-size('normal');
@@ -27,11 +27,11 @@ $prefix: '#{$component-prefix}-card' !default;
             inset-inline-start: use-spacing(8);
             inset-inline-end: use-spacing(8);
           }
-        }
 
-        &__subhead {
-          font-size: use-text-size('sm');
-          line-height: use-text-lineheight('sm');
+          .#{$prefix}__subhead {
+            font-size: use-text-size('sm');
+            line-height: use-text-lineheight('sm');
+          }
         }
 
         &__body {
@@ -41,7 +41,7 @@ $prefix: '#{$component-prefix}-card' !default;
     }
 
     &-md {
-      .#{$prefix} {
+      > .#{$prefix} {
         &__header {
           padding: calc(#{use-spacing(7)} - 1px) use-spacing(10);
           font-size: use-text-size('normal');
@@ -51,11 +51,11 @@ $prefix: '#{$component-prefix}-card' !default;
             inset-inline-start: use-spacing(10);
             inset-inline-end: use-spacing(10);
           }
-        }
 
-        &__subhead {
-          font-size: use-text-size('sm');
-          line-height: use-text-lineheight('sm');
+          .#{$prefix}__subhead {
+            font-size: use-text-size('sm');
+            line-height: use-text-lineheight('sm');
+          }
         }
 
         &__body {
@@ -65,7 +65,7 @@ $prefix: '#{$component-prefix}-card' !default;
     }
 
     &-lg {
-      .#{$prefix} {
+      > .#{$prefix} {
         &__header {
           padding: use-spacing(9) use-spacing(10);
           font-size: use-text-size('lg');
@@ -75,11 +75,11 @@ $prefix: '#{$component-prefix}-card' !default;
             inset-inline-start: use-spacing(10);
             inset-inline-end: use-spacing(10);
           }
-        }
 
-        &__subhead {
-          font-size: use-text-size('normal');
-          line-height: use-text-lineheight('normal');
+          .#{$prefix}__subhead {
+            font-size: use-text-size('normal');
+            line-height: use-text-lineheight('normal');
+          }
         }
 
         &__body {

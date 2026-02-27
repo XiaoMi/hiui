@@ -11,6 +11,9 @@ export * from './container.stories'
 export * from './nested.stories'
 export * from './extra.stories'
 export * from './placement.stories'
+export * from './semantic.stories'
+export * from './with-api.stories'
+export * from './context.stories'
 
 export default {
   title: 'FeedBack/Drawer',

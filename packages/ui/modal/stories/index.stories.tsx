@@ -12,6 +12,8 @@ export * from './nested.stories'
 // export * from './lock-scroll.stories'
 export * from './container.stories'
 export * from './with-api.stories'
+export * from './semantic.stories'
+export * from './context.stories'
 
 export default {
   title: 'FeedBack/Modal',

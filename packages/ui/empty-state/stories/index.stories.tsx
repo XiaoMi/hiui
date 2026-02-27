@@ -6,6 +6,7 @@ export * from './size.stories'
 export * from './with-content.stories'
 export * from './custom.stories'
 export * from './colorful.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/EmptyState',

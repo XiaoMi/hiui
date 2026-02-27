@@ -1,12 +1,31 @@
 import React from 'react'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TimelineDataItem } from './types'
 import { DotIcon } from './DotIcon'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const _prefix = getPrefixCls('timeline-item')
 
-export const CrossItem: React.FC<TimelineDataItem> = ({
+export interface CrossItemSemanticProps {
+  classNames?: {
+    item?: string
+    itemTime?: string
+    itemLine?: string
+    itemDot?: string
+    itemTitle?: string
+    itemContent?: string
+  }
+  styles?: {
+    item?: React.CSSProperties
+    itemTime?: React.CSSProperties
+    itemLine?: React.CSSProperties
+    itemDot?: React.CSSProperties
+    itemTitle?: React.CSSProperties
+    itemContent?: React.CSSProperties
+  }
+}
+
+export const CrossItem: React.FC<TimelineDataItem & CrossItemSemanticProps> = ({
   prefixCls = _prefix,
   title,
   content,
@@ -16,21 +35,47 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
   dotColor,
   dotType,
   children,
+  classNames: classNamesProp,
+  styles: stylesProp,
 }) => {
-  return isArrayNonEmpty(children) ? (
-    <>
-      <div className={prefixCls}>
-        <div className={`${prefixCls}--left`}>
-          <div className={`${prefixCls}__time`}>{timestamp}</div>
-          <div className={`${prefixCls}__extra`}>{extraTime}</div>
+  const itemEl = (
+    <div className={cx(prefixCls, classNamesProp?.item)} style={stylesProp?.item}>
+      <div className={`${prefixCls}--left`}>
+        <div
+          className={cx(`${prefixCls}__time`, classNamesProp?.itemTime)}
+          style={stylesProp?.itemTime}
+        >
+          {timestamp}
         </div>
+        <div className={`${prefixCls}__extra`}>{extraTime}</div>
+      </div>
+      <div className={cx(classNamesProp?.itemDot)} style={stylesProp?.itemDot}>
         <DotIcon prefixCls={prefixCls} icon={icon} color={dotColor} type={dotType} />
-        <div className={`${prefixCls}__line`} />
-        <div className={`${prefixCls}--right`}>
-          <div className={`${prefixCls}__title`}>{title}</div>
-          <div className={`${prefixCls}__content`}>{content}</div>
+      </div>
+      <div
+        className={cx(`${prefixCls}__line`, classNamesProp?.itemLine)}
+        style={stylesProp?.itemLine}
+      />
+      <div className={`${prefixCls}--right`}>
+        <div
+          className={cx(`${prefixCls}__title`, classNamesProp?.itemTitle)}
+          style={stylesProp?.itemTitle}
+        >
+          {title}
+        </div>
+        <div
+          className={cx(`${prefixCls}__content`, classNamesProp?.itemContent)}
+          style={stylesProp?.itemContent}
+        >
+          {content}
         </div>
       </div>
+    </div>
+  )
+
+  return isArrayNonEmpty(children) ? (
+    <>
+      {itemEl}
       <div className={`${prefixCls}__collapse`}>
         {children.map((child, idx) => (
           <CrossItem
@@ -38,22 +83,13 @@ export const CrossItem: React.FC<TimelineDataItem> = ({
             {...child}
             dotType={child.dotType || 'solid'}
             dotColor={child.dotColor}
+            classNames={classNamesProp}
+            styles={stylesProp}
           />
         ))}
       </div>
     </>
   ) : (
-    <div className={prefixCls}>
-      <div className={`${prefixCls}--left`}>
-        <div className={`${prefixCls}__time`}>{timestamp}</div>
-        <div className={`${prefixCls}__extra`}>{extraTime}</div>
-      </div>
-      <DotIcon prefixCls={prefixCls} icon={icon} color={dotColor} type={dotType} />
-      <div className={`${prefixCls}__line`} />
-      <div className={`${prefixCls}--right`}>
-        <div className={`${prefixCls}__title`}>{title}</div>
-        <div className={`${prefixCls}__content`}>{content}</div>
-      </div>
-    </div>
+    itemEl
   )
 }

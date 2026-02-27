@@ -59,6 +59,7 @@
     "@hi-ui/type-assertion": "^5.0.0-canary.2",
     "@hi-ui/use-check": "^5.0.0-canary.2",
     "@hi-ui/use-data-source": "^5.0.0-canary.2",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-search-mode": "^5.0.0-canary.5",
     "@hi-ui/use-toggle": "^5.0.0-canary.2",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"

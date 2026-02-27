@@ -9,6 +9,7 @@ export * from './group.stories'
 export * from './card-content.stories'
 export * from './custom-icon.stories'
 export * from './placement.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Timeline',

@@ -52,6 +52,8 @@ const Root = ({
     strideSelectMode,
     setFocusIndex,
     showIndicator,
+    classNames,
+    styles,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
@@ -162,16 +164,24 @@ const Root = ({
       {customRenderContent}
     </div>
   ) : (
-    <div className={_cls} ref={setAttachEl}>
+    <div className={cx(_cls, classNames?.picker)} style={styles?.picker} ref={setAttachEl}>
       <div
-        className={`${prefixCls}__picker__wrapper`}
+        className={cx(`${prefixCls}__picker__wrapper`, classNames?.pickerWrapper)}
+        style={styles?.pickerWrapper}
         {...(appearance === 'contained' && !inputData[0]
           ? { onClick: () => onPickerClickEvent(0) }
           : {})}
       >
-        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
+        {prefix ? (
+          <span className={cx(`${prefixCls}__prefix`, classNames?.prefix)} style={styles?.prefix}>
+            {prefix}
+          </span>
+        ) : null}
         {appearance === 'contained' && label && (
-          <span className={`${prefixCls}__picker__label`}>
+          <span
+            className={cx(`${prefixCls}__picker__label`, classNames?.pickerLabel)}
+            style={styles?.pickerLabel}
+          >
             {label}
             {inputData[0] && '：'}
           </span>
@@ -187,8 +197,10 @@ const Root = ({
                 isInDateRangeTimeMode &&
                   showPanel &&
                   dateRangeTimePanelNow === 0 &&
-                  `${prefixCls}__input-selector--active`
+                  `${prefixCls}__input-selector--active`,
+                classNames?.inputSelector
               )}
+              style={styles?.inputSelector}
               onClick={(evt) => {
                 evt.stopPropagation()
                 onPickerClickEvent(0)
@@ -204,7 +216,12 @@ const Root = ({
             </div>
             {renderRange && (
               <React.Fragment>
-                <span className={`${prefixCls}__input--connection`}>-</span>
+                <span
+                  className={cx(`${prefixCls}__input--connection`, classNames?.inputConnection)}
+                  style={styles?.inputConnection}
+                >
+                  -
+                </span>
                 <div
                   className={cx(
                     `${prefixCls}__input-selector`,
@@ -214,8 +231,10 @@ const Root = ({
                     isInDateRangeTimeMode &&
                       showPanel &&
                       dateRangeTimePanelNow === 1 &&
-                      `${prefixCls}__input-selector--active`
+                      `${prefixCls}__input-selector--active`,
+                    classNames?.inputSelector
                   )}
+                  style={styles?.inputSelector}
                   onClick={(evt) => {
                     evt.stopPropagation()
                     onPickerClickEvent(1)

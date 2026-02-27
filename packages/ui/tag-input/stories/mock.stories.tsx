@@ -376,6 +376,76 @@ export const Mock = () => {
           <br />
           <br />
         </div>
+
+        <div>
+          <h2>Contained</h2>
+          <TagInputMock
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="xs"
+            appearance="contained"
+            clearable
+            label="服务类型"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="sm"
+            appearance="contained"
+            focused
+            clearable
+            label="服务类型"
+            value={value}
+            data={data}
+            suffix={<DownOutlined />}
+          />
+          <br />
+          <br />
+          <TagInputMock
+            size="md"
+            appearance="contained"
+            focused
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            invalid
+            focused
+            appearance="contained"
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+          <TagInputMock
+            size="lg"
+            appearance="contained"
+            disabled
+            label="服务类型"
+            suffix={<DownOutlined />}
+          ></TagInputMock>
+          <br />
+          <br />
+        </div>
       </div>
     </>
   )

@@ -1,6 +1,13 @@
 import React, { forwardRef, Fragment, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
+import { useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import Pagination from '@hi-ui/pagination'
 import {
   TableColumnItem,
@@ -80,10 +87,24 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
       extra,
       data = DEFAULT_DATA,
       onScroll,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const globalContext = useGlobalContext()
+    const { table: tableConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      TableSemanticClassNames,
+      TableSemanticStyles,
+      TableProps
+    >({
+      classNamesList: [tableConfig?.classNames, classNamesProp],
+      stylesList: [tableConfig?.styles, stylesProp],
+      info: { props: { ...rest, standard, loading: loadingProp } },
+    })
+
     // 是否需要双表格
     const needDoubleTable = DOUBLE_TABLE_SCENE.some((prop) => !!rest[prop])
 
@@ -364,6 +385,8 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
           virtual={virtual}
           onScroll={onScroll}
           needDoubleTable={needDoubleTable}
+          classNames={classNames}
+          styles={styles}
           extra={{
             header: setting ? (
               <TableSettingMenu
@@ -406,7 +429,26 @@ export const Table = forwardRef<HTMLDivElement | null, TableProps>(
   }
 )
 
-export interface TableProps extends BaseTableProps {
+export type TableSemanticName =
+  | 'root'
+  | 'wrapper'
+  | 'content'
+  | 'table'
+  | 'header'
+  | 'headerRow'
+  | 'headerCell'
+  | 'body'
+  | 'bodyRow'
+  | 'bodyCell'
+  | 'cell'
+  | 'footer'
+  | 'freezeShadowLeft'
+  | 'freezeShadowRight'
+export type TableSemanticClassNames = SemanticClassNamesType<TableProps, TableSemanticName>
+export type TableSemanticStyles = SemanticStylesType<TableProps, TableSemanticName>
+export type TableSemantic = ComponentSemantic<TableSemanticClassNames, TableSemanticStyles>
+
+export interface TableProps extends Omit<BaseTableProps, 'classNames' | 'styles'>, TableSemantic {
   /**
    * 加载中状态
    */

@@ -7,7 +7,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { HiBaseHTMLFieldProps } from '@hi-ui/core'
 import { CheckboxPlacementEnum, CheckboxDataItem } from './types'
 import { checkDefault } from '@hi-ui/use-check'
-import { Checkbox } from './Checkbox'
+import { Checkbox, CheckboxSemanticClassNames, CheckboxSemanticStyles } from './Checkbox'
 import { isArrayNonEmpty } from '@hi-ui/type-assertion'
 
 const _role = 'checkbox-group'
@@ -33,6 +33,8 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
       onChange,
       data = NOOP_ARRAY,
       children,
+      checkboxClassNames,
+      checkboxStyles,
       ...rest
     },
     ref
@@ -70,6 +72,8 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
           disabled={disabled}
           checked={value.includes(id)}
           className={`${prefixCls}__item`}
+          classNames={checkboxClassNames}
+          styles={checkboxStyles}
         >
           {title}
         </Checkbox>
@@ -122,6 +126,14 @@ export interface CheckboxGroupProps extends HiBaseHTMLFieldProps<'div'> {
    * 值变化时的回调
    */
   onChange?: (checkedIds: React.ReactText[]) => void
+  /**
+   * 复选框的语义化类名
+   */
+  checkboxClassNames?: CheckboxSemanticClassNames
+  /**
+   * 复选框的语义化样式
+   */
+  checkboxStyles?: CheckboxSemanticStyles
 }
 
 if (__DEV__) {

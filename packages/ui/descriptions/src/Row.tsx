@@ -2,6 +2,7 @@ import * as React from 'react'
 import { DescriptionsItemProps } from './DescriptionsItem'
 import { Cell } from './Cell'
 import { ContentPosition } from './types'
+import type { DescriptionsSemanticName } from './Descriptions'
 
 export const Row: React.FC<RowProps> = (props) => {
   const { prefixCls, vertical, row, index, bordered, noBackground } = props
@@ -39,6 +40,11 @@ export const Row: React.FC<RowProps> = (props) => {
   )
 }
 
+import type {
+  DescriptionsSemanticClassNames,
+  DescriptionsSemanticStyles,
+} from './Descriptions'
+
 export interface RowProps {
   prefixCls: string
   vertical: boolean
@@ -52,6 +58,10 @@ export interface RowProps {
   rootLabelWidth?: React.ReactText
   cellColumnGap?: React.ReactText
   contentPosition?: ContentPosition
+  // AIGC START
+  cellClassNames?: Partial<Record<DescriptionsSemanticName, string>>
+  cellStyles?: Partial<Record<DescriptionsSemanticName, React.CSSProperties>>
+  // AIGC END
 }
 
 interface CellConfig {
@@ -70,6 +80,8 @@ function renderCols(
     rootLabelWidth,
     cellColumnGap,
     contentPosition,
+    cellClassNames,
+    cellStyles,
   }: RowProps,
   { component, type, showLabel, showContent }: CellConfig
 ) {
@@ -108,6 +120,8 @@ function renderCols(
             labelWidth={labelWidth ?? rootLabelWidth}
             cellColumnGap={index === items.length - 1 ? 0 : cellColumnGap}
             contentPosition={contentPosition}
+            cellClassNames={cellClassNames}
+            cellStyles={cellStyles}
             {...rest}
           />
         )
@@ -126,6 +140,8 @@ function renderCols(
           label={label}
           labelWidth={labelWidth ?? rootLabelWidth}
           contentPosition={contentPosition}
+          cellClassNames={cellClassNames}
+          cellStyles={cellStyles}
           {...rest}
         />,
         <Cell
@@ -139,6 +155,8 @@ function renderCols(
           bordered={bordered}
           content={children}
           contentPosition={contentPosition}
+          cellClassNames={cellClassNames}
+          cellStyles={cellStyles}
           {...rest}
         />,
       ]

@@ -10,6 +10,12 @@ import Button, { ButtonGroup } from '@hi-ui/button'
 import { DownOutlined } from '@hi-ui/icons'
 import { DropdownDataItem } from './types'
 import { transformData } from './utils'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'dropdown'
 const _prefix = getPrefixCls(_role)
@@ -24,6 +30,9 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children: triggerButton,
       data = DEFAULT_DATA,
       fieldNames,
@@ -49,13 +58,23 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
       menuVisibleAction,
     } = providedValue
 
-    const cls = cx(prefixCls, className, disabled && `${prefixCls}--disabled`)
-
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, dropdown: dropdownConfig } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {
       size = 'sm'
     }
+
+    const { classNames, styles } = useMergeSemantic<
+      DropdownSemanticClassNames,
+      DropdownSemanticStyles,
+      DropdownProps
+    >({
+      classNamesList: [dropdownConfig?.classNames, classNamesProp],
+      stylesList: [dropdownConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, type, size, disabled } },
+    })
+
+    const cls = cx(prefixCls, className, classNames?.root, disabled && `${prefixCls}--disabled`)
 
     const dig = (treeData: DropdownDataItem[]) => {
       return treeData.map((item: any) => {
@@ -77,6 +96,8 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
             target={item.target}
             value={item.id}
             menu={menu}
+            className={classNames?.menuItem}
+            style={styles?.menuItem}
             onClick={(evt) => {
               evt.stopPropagation()
               if (item.disabled) return
@@ -93,14 +114,34 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
     }
 
     const renderButton = () => {
-      if (triggerButton) {
+      if (triggerButton && React.isValidElement(triggerButton)) {
         // @ts-ignore
-        return cloneElement(triggerButton, getTriggerProps(triggerButton.props, triggerButton.ref))
+        return cloneElement(
+          triggerButton,
+          // @ts-ignore
+          getTriggerProps(
+            {
+              // @ts-ignore
+              ...triggerButton.props,
+              // @ts-ignore
+              className: cx(triggerButton.props.className, classNames?.trigger),
+              // @ts-ignore
+              style: { ...triggerButton.props.style, ...styles?.trigger },
+            },
+            // @ts-ignore
+            triggerButton.ref
+          )
+        )
       }
 
       if (type === 'text' || type === 'button') {
         return (
-          <Button {...getTriggerProps()} appearance={type === 'button' ? 'line' : 'link'}>
+          <Button
+            {...getTriggerProps()}
+            appearance={type === 'button' ? 'line' : 'link'}
+            className={cx(classNames?.trigger)}
+            style={styles?.trigger}
+          >
             {title}
             <DownOutlined
               style={{
@@ -117,7 +158,12 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
           <ButtonGroup>
             <Button onClick={onButtonClick}>{title}</Button>
             <Button
-              className={cx(`${prefixCls}__icon`, `${prefixCls}__icon-btn-wrap`)}
+              className={cx(
+                `${prefixCls}__icon`,
+                `${prefixCls}__icon-btn-wrap`,
+                classNames?.trigger
+              )}
+              style={styles?.trigger}
               {...getTriggerProps()}
               icon={
                 <DownOutlined style={{ transform: menuVisible ? 'rotate(180deg)' : 'rotate(0)' }} />
@@ -132,7 +178,13 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
 
     return (
       <DropDownProvider value={providedValue}>
-        <div ref={ref} role={role} className={cls} {...rootProps}>
+        <div
+          ref={ref}
+          role={role}
+          className={cls}
+          style={{ ...style, ...styles?.root }}
+          {...rootProps}
+        >
           {renderButton()}
 
           {isArrayNonEmpty(transformedData) ? (
@@ -140,11 +192,13 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
               {...getMenuProps({
                 overlay: {
                   disabledPortal: false,
-                  className: overlayClassName,
+                  className: cx(overlayClassName, classNames?.menu),
                   gutterGap: 4,
                 },
               })}
               size={size}
+              className={cx(classNames?.menu)}
+              style={styles?.menu}
             >
               {dig(transformedData)}
             </DropdownMenu>
@@ -155,7 +209,15 @@ export const Dropdown = forwardRef<HTMLDivElement | null, DropdownProps>(
   }
 )
 
-export interface DropdownProps extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>, UseDropdownProps {
+export type DropdownSemanticName = 'root' | 'trigger' | 'menu' | 'menuItem'
+export type DropdownSemanticClassNames = SemanticClassNamesType<DropdownProps, DropdownSemanticName>
+export type DropdownSemanticStyles = SemanticStylesType<DropdownProps, DropdownSemanticName>
+export type DropdownSemantic = ComponentSemantic<DropdownSemanticClassNames, DropdownSemanticStyles>
+
+export interface DropdownProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'onClick'>,
+    UseDropdownProps,
+    DropdownSemantic {
   /**
    * 下拉菜单显示标题的内容
    */

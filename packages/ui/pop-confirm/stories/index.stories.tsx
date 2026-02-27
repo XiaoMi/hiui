@@ -9,6 +9,7 @@ export * from './async.stories'
 export * from './gutter-gap.stories'
 export * from './placement.stories'
 export * from './with-api.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/PopConfirm',
