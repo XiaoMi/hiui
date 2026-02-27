@@ -127,6 +127,8 @@ export const Semantic = () => {
               }}
               renderExtraHeader={() => <div style={{ padding: '10px 14px' }}>custom header</div>}
               renderExtraFooter={() => 'custom footer'}
+              // @ts-ignore
+              overlay={{ flip: false }}
             />
           </Col>
           <Col span={6}>

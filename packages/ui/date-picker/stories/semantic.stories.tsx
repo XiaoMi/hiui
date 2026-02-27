@@ -22,6 +22,8 @@ export const Semantic = () => {
               visible
               showTime
               type="daterange"
+              // @ts-ignore
+              overlay={{ flip: false }}
               classNames={{
                 root: 'my-date-picker__root',
                 popper: 'my-date-picker__popper',

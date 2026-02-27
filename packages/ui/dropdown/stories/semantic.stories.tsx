@@ -56,6 +56,8 @@ export const Semantic = () => {
                   outline: '1px solid #ffbe0a',
                 },
               }}
+              // @ts-ignore
+              overlay={{ flip: false }}
             />
           </Col>
           <Col span={6}>
