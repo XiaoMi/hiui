@@ -44,7 +44,7 @@ export const FloatMenu = () => {
       icon: <AppStoreFilled />,
     },
     {
-      title: '电视',
+      title: 'Hello World',
       id: 2,
       icon: <MonitorFilled />,
       children: [
@@ -77,7 +77,7 @@ export const FloatMenu = () => {
       ],
     },
     {
-      title: '手机',
+      title: 'Hello World Hello World',
       id: 3,
       icon: <MobileFilled />,
       children: [
