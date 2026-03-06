@@ -8,7 +8,16 @@ import {
   EllipsisOutlined,
   PlusOutlined,
 } from '@hi-ui/icons'
-import { Button, Avatar, PageHeader, Space, Dropdown, Menu, Scrollbar } from '@hi-ui/hiui'
+import {
+  Button,
+  Avatar,
+  PageHeader,
+  Space,
+  Dropdown,
+  Menu,
+  Scrollbar,
+  EllipsisTooltip,
+} from '@hi-ui/hiui'
 import Layout, { Sider, Content, SearchTrigger, ProfilePopover, ActionItem } from '../src'
 
 /**
@@ -82,7 +91,11 @@ export const WithMenu = () => {
                   backgroundColor: 'rgba(124, 135, 166, 0.12)',
                 }}
               ></div>
-              {collapsed ? null : <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>}
+              {collapsed ? null : (
+                <div style={{ flex: 1, overflow: 'hidden', fontWeight: 500, color: '#1a1d26' }}>
+                  <EllipsisTooltip>系统名称</EllipsisTooltip>
+                </div>
+              )}
             </div>
             <SearchTrigger mini={collapsed} data={data} />
             <Scrollbar>
