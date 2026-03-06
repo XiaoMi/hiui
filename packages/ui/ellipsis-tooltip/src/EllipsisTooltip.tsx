@@ -1,13 +1,4 @@
-import React, {
-  FC,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  ReactNode,
-  isValidElement,
-} from 'react'
+import React, { FC, useRef, useState, useCallback, useMemo, ReactNode, isValidElement } from 'react'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -55,7 +46,7 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   maxTextCount = 0,
   tooltipProps,
 }) => {
-  const [disableTooltip, setDisableTooltip] = useState(true)
+  const [tooltipVisible, setTooltipVisible] = useState(tooltipProps?.visible ?? false)
   const contentRef = useRef<HTMLDivElement | null>(null)
 
   const stringChildren = useMemo(() => {
@@ -81,11 +72,11 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
         const { height } = rect
         const lineHeight = style.lineHeight === 'normal' ? style.fontSize : style.lineHeight
         const textLines = Math.round(height / parseFloat(lineHeight))
-        setDisableTooltip(textLines <= numberOfLines)
+        setTooltipVisible(textLines > numberOfLines)
       } else {
         // 单行超出
         const parentRect = (contentRef.current?.parentNode as HTMLElement)?.getBoundingClientRect()
-        setDisableTooltip(rect?.width <= parentRect.width)
+        setTooltipVisible(rect?.width > parentRect.width)
       }
     }
   }, [numberOfLines])
@@ -93,29 +84,11 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
   const update = useCallback(() => {
     // 当文字字数超出有配置时，单独处理
     if (maxTextCount > 0 && maxTextCount < stringChildren?.length) {
-      setDisableTooltip(false)
+      setTooltipVisible(true)
     } else {
       handleCheckEllipsis()
     }
   }, [handleCheckEllipsis, maxTextCount, stringChildren?.length])
-
-  useEffect(() => {
-    update()
-
-    const observer = new ResizeObserver(() => {
-      // fix: https://github.com/XiaoMi/hiui/issues/2764
-      // 在有动画(300ms)的的组件中使用该组件会导致计算有误，此处做兼容处理
-      setTimeout(() => {
-        update()
-      }, 300)
-    })
-
-    contentRef.current?.parentNode && observer.observe(contentRef.current.parentNode as Element)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [update])
 
   const cls = cx(
     prefixCls,
@@ -125,17 +98,21 @@ export const EllipsisTooltip: FC<EllipsisTooltipProps> = ({
       [`${prefixCls}--single`]: maxTextCount === 0 && (!numberOfLines || numberOfLines <= 1),
       [`${prefixCls}--multiple`]: numberOfLines > 1,
     },
-    `${prefixCls}--${disableTooltip ? 'disabled' : 'available'}`
+    `${prefixCls}--${tooltipVisible ? 'available' : 'disabled'}`
   )
 
   return (
-    <Tooltip disabled={disableTooltip} {...{ title: stringChildren, ...tooltipProps }}>
+    <Tooltip visible={tooltipVisible} {...{ title: stringChildren, ...tooltipProps }}>
       <div
         role={role}
         className={cls}
         style={{ WebkitLineClamp: numberOfLines > 1 ? numberOfLines : undefined }}
       >
-        <span ref={contentRef}>
+        <span
+          ref={contentRef}
+          onMouseEnter={() => update()}
+          onMouseLeave={() => setTooltipVisible(false)}
+        >
           {React.isValidElement(childrenProp)
             ? childrenProp
             : formatChildText(stringChildren, maxTextCount)}
