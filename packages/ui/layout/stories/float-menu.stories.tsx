@@ -228,7 +228,7 @@ export const FloatMenu = () => {
               ></div>
               {collapsed ? null : (
                 <div style={{ flex: 1, overflow: 'hidden', fontWeight: 500, color: '#1a1d26' }}>
-                  <EllipsisTooltip>系统名称系统名称系统名称系统名称</EllipsisTooltip>
+                  <EllipsisTooltip>系统名称</EllipsisTooltip>
                 </div>
               )}
               <AppListPopover
