@@ -1,5 +1,12 @@
 # @hi-ui/toast
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- Updated dependencies [eb17c4697]
+  - @hi-ui/core@5.0.0-canary.7
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

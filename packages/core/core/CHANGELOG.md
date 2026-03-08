@@ -1,5 +1,19 @@
 # @hi-ui/core
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- eb17c4697: feat(global-context): 增加全局组件配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [569d26655]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+  - @hi-ui/global-context@5.0.0-canary.3
+  - @hi-ui/core-css@5.0.0-canary.11
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

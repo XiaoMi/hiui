@@ -1,5 +1,12 @@
 # @hi-ui/global-context
 
+## 5.0.0-canary.3
+
+### Minor Changes
+
+- 569d26655: feat(global-context): add utcOffset api (5.0)
+- eb17c4697: feat(global-context): 增加全局组件配置 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

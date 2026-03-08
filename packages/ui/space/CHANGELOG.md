@@ -1,5 +1,12 @@
 # @hi-ui/space
 
+## 5.0.0-canary.5
+
+### Patch Changes
+
+- Updated dependencies [eb17c4697]
+  - @hi-ui/core@5.0.0-canary.7
+
 ## 5.0.0-canary.4
 
 ### Patch Changes

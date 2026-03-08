@@ -1,5 +1,13 @@
 # @hi-ui/filter
 
+## 5.0.0-canary.7
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [eb17c4697]
+  - @hi-ui/core@5.0.0-canary.7
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

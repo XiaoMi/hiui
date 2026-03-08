@@ -1,5 +1,14 @@
 # @hi-ui/icons
 
+## 5.0.0-canary.10
+
+### Patch Changes
+
+- 7f204c892: chore(icons): 增加图标 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [eb17c4697]
+  - @hi-ui/core@5.0.0-canary.7
+
 ## 5.0.0-canary.9
 
 ### Minor Changes

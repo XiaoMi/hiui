@@ -1,5 +1,36 @@
 # @hi-ui/table
 
+## 5.0.0-canary.31
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+- Updated dependencies [ec647a5ee]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-canary.10
+  - @hi-ui/core@5.0.0-canary.7
+  - @hi-ui/button@5.0.0-canary.14
+  - @hi-ui/checkbox@5.0.0-canary.8
+  - @hi-ui/drawer@5.0.0-canary.10
+  - @hi-ui/empty-state@5.0.0-canary.10
+  - @hi-ui/icon-button@5.0.0-canary.9
+  - @hi-ui/loading@5.0.0-canary.10
+  - @hi-ui/pagination@5.0.0-canary.11
+  - @hi-ui/popper@5.0.0-canary.13
+  - @hi-ui/radio@5.0.0-canary.9
+  - @hi-ui/scrollbar@5.0.0-canary.8
+  - @hi-ui/select@5.0.0-canary.17
+  - @hi-ui/use-merge-semantic@5.0.0-canary.0
+  - @hi-ui/spinner@5.0.0-canary.6
+
 ## 5.0.0-canary.30
 
 ### Patch Changes

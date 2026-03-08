@@ -1,5 +1,26 @@
 https://infra.mioffice.cn/hiui/# @hi-ui/picker
 
+## 5.0.0-canary.16
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-canary.10
+  - @hi-ui/core@5.0.0-canary.7
+  - @hi-ui/input@5.0.0-canary.19
+  - @hi-ui/loading@5.0.0-canary.10
+  - @hi-ui/popper@5.0.0-canary.13
+  - @hi-ui/use-merge-semantic@5.0.0-canary.0
+
 ## 5.0.0-canary.15
 
 ### Minor Changes

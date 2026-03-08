@@ -779,6 +779,10 @@ export interface CheckTreeSelectProps
    * 自定义下拉菜单顶部渲染
    */
   renderExtraHeader?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 if (__DEV__) {

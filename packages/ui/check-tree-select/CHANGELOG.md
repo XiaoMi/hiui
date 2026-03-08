@@ -1,5 +1,29 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-canary.20
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-canary.10
+  - @hi-ui/core@5.0.0-canary.7
+  - @hi-ui/checkbox@5.0.0-canary.8
+  - @hi-ui/highlighter@5.0.0-canary.5
+  - @hi-ui/picker@5.0.0-canary.16
+  - @hi-ui/popper@5.0.0-canary.13
+  - @hi-ui/tag-input@5.0.0-canary.22
+  - @hi-ui/tree@5.0.0-canary.13
+  - @hi-ui/use-merge-semantic@5.0.0-canary.0
+
 ## 5.0.0-canary.19
 
 ### Patch Changes

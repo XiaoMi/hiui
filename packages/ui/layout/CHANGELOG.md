@@ -1,5 +1,21 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.19
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [45f59fb86]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-canary.10
+  - @hi-ui/core@5.0.0-canary.7
+  - @hi-ui/menu@5.0.0-canary.20
+  - @hi-ui/popover@5.0.0-canary.12
+  - @hi-ui/popper@5.0.0-canary.13
+
 ## 5.0.0-canary.18
 
 ### Patch Changes

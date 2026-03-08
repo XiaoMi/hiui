@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/switch",
-  "version": "5.0.0-canary.8",
+  "version": "5.0.0-canary.9",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -47,17 +47,17 @@
     "@hi-ui/classname": "^5.0.0-canary.2",
     "@hi-ui/dom-utils": "^5.0.0-canary.2",
     "@hi-ui/env": "^5.0.0-canary.2",
-    "@hi-ui/use-merge-semantic": "^4.0.0",
+    "@hi-ui/use-merge-semantic": "^5.0.0-canary.0",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-canary.2"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-canary.6",
+    "@hi-ui/core": ">=5.0.0-canary.7",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-canary.6",
-    "@hi-ui/core-css": "^5.0.0-canary.9",
+    "@hi-ui/core": "^5.0.0-canary.7",
+    "@hi-ui/core-css": "^5.0.0-canary.11",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
