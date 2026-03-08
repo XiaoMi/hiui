@@ -1,5 +1,22 @@
 # @hi-ui/schema-option-injector
 
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/cascader@5.0.0-experimental.2
+  - @hi-ui/check-cascader@5.0.0-experimental.2
+  - @hi-ui/check-select@5.0.0-experimental.2
+  - @hi-ui/check-tree-select@5.0.0-experimental.2
+  - @hi-ui/picker@5.0.0-experimental.2
+  - @hi-ui/select@5.0.0-experimental.2
+  - @hi-ui/tree-select@5.0.0-experimental.2
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-types@4.0.0-experimental.3
+
 ## 4.0.0-experimental.6
 
 ### Patch Changes

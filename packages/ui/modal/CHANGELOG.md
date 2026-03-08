@@ -1,5 +1,27 @@
 # @hi-ui/modal
 
+## 5.0.0-experimental.1
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- ec647a5ee: 调整 useModalContext 的返回值,与静态 Api 保持一致
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 25f3cb496: Modal 新增 useModal 函数,用以解决静态 api 调用时,内容元素无法获取上下文的问题
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/button@5.0.0-experimental.1
+  - @hi-ui/icon-button@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+  - @hi-ui/portal@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

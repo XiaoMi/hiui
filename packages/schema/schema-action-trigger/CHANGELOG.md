@@ -1,5 +1,20 @@
 # @hi-ui/schema-action-trigger
 
+## 4.0.0-experimental.5
+
+### Patch Changes
+
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/button@5.0.0-experimental.1
+  - @hi-ui/dropdown@5.0.0-experimental.1
+  - @hi-ui/space@5.0.0-experimental.1
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-types@4.0.0-experimental.3
+
 ## 4.0.0-experimental.4
 
 ### Patch Changes

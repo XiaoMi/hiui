@@ -1,5 +1,27 @@
 # @hi-ui/schema-form
 
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c6197357f]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/grid@5.0.0-experimental.1
+  - @hi-ui/button@5.0.0-experimental.1
+  - @hi-ui/form@5.0.0-experimental.1
+  - @hi-ui/tabs@5.0.0-experimental.1
+  - @hi-ui/tooltip@5.0.0-experimental.1
+  - @hi-ui/schema-fields@4.0.0-experimental.10
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/group@4.0.0-experimental.4
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-action-trigger@4.0.0-experimental.5
+
 ## 4.0.0-experimental.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hi-ui/core-css
 
+## 5.0.0-experimental.2
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+
 ## 5.0.0-experimental.1
 
 ### Patch Changes

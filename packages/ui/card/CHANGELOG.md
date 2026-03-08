@@ -1,5 +1,19 @@
 # @hi-ui/card
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 53bfdf88b: 处理不同尺寸卡片嵌套时的样式异常
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+- Updated dependencies [59cef699f]
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/loading@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

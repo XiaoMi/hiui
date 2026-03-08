@@ -1,5 +1,17 @@
 # @hi-ui/group
 
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- Updated dependencies [53bfdf88b]
+- Updated dependencies [eb17c4697]
+  - @hi-ui/card@5.0.0-experimental.1
+  - @hi-ui/collapse@5.0.0-experimental.1
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-action-trigger@4.0.0-experimental.5
+
 ## 4.0.0-experimental.3
 
 ### Patch Changes

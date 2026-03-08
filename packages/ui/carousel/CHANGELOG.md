@@ -1,5 +1,19 @@
 # @hi-ui/carousel
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 62b72c03a: fix(carousel): 修复设置 defaultActive 后图片显示异常问题 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

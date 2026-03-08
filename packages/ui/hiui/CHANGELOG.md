@@ -1,5 +1,112 @@
 # @hi-ui/hiui
 
+## 5.0.0-experimental.2
+
+### Minor Changes
+
+- 569d26655: feat(global-context): add utcOffset api (5.0)
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 53bfdf88b: 处理不同尺寸卡片嵌套时的样式异常
+- 66bc9c3e2: perf(ellipsis-tooltip): 修改为鼠标 hover 时再计算是否展示 Tooltip 以提升性能 (5.0)
+- 62b72c03a: fix(carousel): 修复设置 defaultActive 后图片显示异常问题 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 25f3cb496: Modal 新增 useModal 函数,用以解决静态 api 调用时,内容元素无法获取上下文的问题
+- 45f59fb86: fix(popover): 给 onOpen 方法包裹 useLatestCallback，防止频繁触发 (5.0)
+- ec647a5ee: Drawer 新增静态 Api 唤起支持
+- Updated dependencies [569d26655]
+- Updated dependencies [53bfdf88b]
+- Updated dependencies [66bc9c3e2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c6197357f]
+- Updated dependencies [62b72c03a]
+- Updated dependencies [ec647a5ee]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [25f3cb496]
+- Updated dependencies [45f59fb86]
+- Updated dependencies [c407744fe]
+- Updated dependencies [ec647a5ee]
+- Updated dependencies [59cef699f]
+  - @hi-ui/date-picker@5.0.0-experimental.2
+  - @hi-ui/card@5.0.0-experimental.1
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.1
+  - @hi-ui/provider@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/grid@5.0.0-experimental.1
+  - @hi-ui/carousel@5.0.0-experimental.1
+  - @hi-ui/modal@5.0.0-experimental.1
+  - @hi-ui/alert@5.0.0-experimental.1
+  - @hi-ui/anchor@5.0.0-experimental.1
+  - @hi-ui/avatar@5.0.0-experimental.1
+  - @hi-ui/back-top@5.0.0-experimental.1
+  - @hi-ui/badge@5.0.0-experimental.1
+  - @hi-ui/breadcrumb@5.0.0-experimental.1
+  - @hi-ui/button@5.0.0-experimental.1
+  - @hi-ui/cascader@5.0.0-experimental.2
+  - @hi-ui/check-cascader@5.0.0-experimental.2
+  - @hi-ui/check-select@5.0.0-experimental.2
+  - @hi-ui/check-tree-select@5.0.0-experimental.2
+  - @hi-ui/checkbox@5.0.0-experimental.1
+  - @hi-ui/collapse@5.0.0-experimental.1
+  - @hi-ui/counter@5.0.0-experimental.2
+  - @hi-ui/descriptions@5.0.0-experimental.1
+  - @hi-ui/drawer@5.0.0-experimental.1
+  - @hi-ui/dropdown@5.0.0-experimental.1
+  - @hi-ui/empty-state@5.0.0-experimental.1
+  - @hi-ui/filter@5.0.0-experimental.1
+  - @hi-ui/form@5.0.0-experimental.1
+  - @hi-ui/highlighter@5.0.0-experimental.1
+  - @hi-ui/icon-button@5.0.0-experimental.1
+  - @hi-ui/input@5.0.0-experimental.2
+  - @hi-ui/layout@5.0.0-experimental.2
+  - @hi-ui/list@5.0.0-experimental.1
+  - @hi-ui/loading@5.0.0-experimental.1
+  - @hi-ui/menu@5.0.0-experimental.2
+  - @hi-ui/message@5.0.0-experimental.1
+  - @hi-ui/notification@5.0.0-experimental.1
+  - @hi-ui/number-input@5.0.0-experimental.2
+  - @hi-ui/page-header@5.0.0-experimental.1
+  - @hi-ui/pagination@5.0.0-experimental.1
+  - @hi-ui/picker@5.0.0-experimental.2
+  - @hi-ui/pop-confirm@5.0.0-experimental.1
+  - @hi-ui/popover@5.0.0-experimental.1
+  - @hi-ui/popper@5.0.0-experimental.1
+  - @hi-ui/preview@5.0.0-experimental.1
+  - @hi-ui/progress@5.0.0-experimental.1
+  - @hi-ui/query-filter@5.0.0-experimental.2
+  - @hi-ui/radio@5.0.0-experimental.1
+  - @hi-ui/rating@5.0.0-experimental.1
+  - @hi-ui/result@5.0.0-experimental.1
+  - @hi-ui/scrollbar@5.0.0-experimental.1
+  - @hi-ui/search@5.0.0-experimental.1
+  - @hi-ui/select@5.0.0-experimental.2
+  - @hi-ui/slider@5.0.0-experimental.1
+  - @hi-ui/stepper@5.0.0-experimental.1
+  - @hi-ui/switch@5.0.0-experimental.1
+  - @hi-ui/table@5.0.0-experimental.2
+  - @hi-ui/tabs@5.0.0-experimental.1
+  - @hi-ui/tag@5.0.0-experimental.1
+  - @hi-ui/tag-input@5.0.0-experimental.2
+  - @hi-ui/textarea@5.0.0-experimental.2
+  - @hi-ui/time-picker@5.0.0-experimental.2
+  - @hi-ui/timeline@5.0.0-experimental.1
+  - @hi-ui/tooltip@5.0.0-experimental.1
+  - @hi-ui/transfer@5.0.0-experimental.1
+  - @hi-ui/tree@5.0.0-experimental.2
+  - @hi-ui/tree-select@5.0.0-experimental.2
+  - @hi-ui/upload@5.0.0-experimental.1
+  - @hi-ui/zen-mode@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+  - @hi-ui/input-group@5.0.0-experimental.1
+  - @hi-ui/portal@5.0.0-experimental.1
+  - @hi-ui/skeleton@5.0.0-experimental.1
+  - @hi-ui/space@5.0.0-experimental.1
+  - @hi-ui/spinner@5.0.0-experimental.1
+  - @hi-ui/svg-icon@5.0.0-experimental.1
+  - @hi-ui/watermark@5.0.0-experimental.1
+
 ## 5.0.0-experimental.1
 
 ### Minor Changes

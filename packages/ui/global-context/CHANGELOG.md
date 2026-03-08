@@ -1,5 +1,17 @@
 # @hi-ui/global-context
 
+## 4.1.0-experimental.1
+
+### Minor Changes
+
+- 569d26655: feat(global-context): add utcOffset api (5.0)
+- eb17c4697: feat(global-context): 增加全局组件配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [c407744fe]
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 4.0.1-experimental.0
 
 ### Patch Changes

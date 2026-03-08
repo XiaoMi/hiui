@@ -1,5 +1,21 @@
 # @hi-ui/avatar
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [45f59fb86]
+- Updated dependencies [c407744fe]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/popover@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

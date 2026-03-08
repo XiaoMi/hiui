@@ -1,5 +1,23 @@
 # @hi-ui/message
 
+## 5.0.0-experimental.1
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [7f204c892]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+  - @hi-ui/toast@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

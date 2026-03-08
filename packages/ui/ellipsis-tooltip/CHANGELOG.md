@@ -1,5 +1,19 @@
 # @hi-ui/ellipsis-tooltip
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- 66bc9c3e2: perf(ellipsis-tooltip): 修改为鼠标 hover 时再计算是否展示 Tooltip 以提升性能 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+- Updated dependencies [59cef699f]
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/tooltip@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

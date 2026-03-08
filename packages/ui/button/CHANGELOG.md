@@ -1,5 +1,16 @@
 # @hi-ui/button
 
+## 5.0.0-experimental.1
+
+### Patch Changes
+
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- Updated dependencies [eb17c4697]
+- Updated dependencies [c407744fe]
+  - @hi-ui/core@5.0.0-experimental.1
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+  - @hi-ui/spinner@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

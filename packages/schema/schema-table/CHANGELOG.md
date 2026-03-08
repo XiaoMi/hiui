@@ -1,5 +1,16 @@
 # @hi-ui/schema-table
 
+## 4.0.0-experimental.4
+
+### Patch Changes
+
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/table@5.0.0-experimental.2
+  - @hi-ui/schema-fields@4.0.0-experimental.10
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+
 ## 4.0.0-experimental.3
 
 ### Patch Changes

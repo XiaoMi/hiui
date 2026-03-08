@@ -1,5 +1,21 @@
 # @hi-ui/core
 
+## 5.0.0-experimental.1
+
+### Minor Changes
+
+- eb17c4697: feat(global-context): 增加全局组件配置 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [569d26655]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [eb17c4697]
+  - @hi-ui/global-context@4.1.0-experimental.1
+  - @hi-ui/core-css@5.0.0-experimental.2
+  - @hi-ui/locale-context@5.0.0-experimental.1
+  - @hi-ui/portal-context@5.0.0-experimental.1
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

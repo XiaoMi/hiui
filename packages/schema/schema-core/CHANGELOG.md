@@ -1,5 +1,22 @@
 # @hi-ui/schema-core
 
+## 4.0.0-experimental.8
+
+### Patch Changes
+
+- Updated dependencies [53bfdf88b]
+- Updated dependencies [66bc9c3e2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/card@5.0.0-experimental.1
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.1
+  - @hi-ui/collapse@5.0.0-experimental.1
+  - @hi-ui/descriptions@5.0.0-experimental.1
+  - @hi-ui/table@5.0.0-experimental.2
+  - @hi-ui/tabs@5.0.0-experimental.1
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-types@4.0.0-experimental.3
+
 ## 4.0.0-experimental.7
 
 ### Patch Changes

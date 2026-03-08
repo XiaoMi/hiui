@@ -1,5 +1,16 @@
 # @hi-ui/hooks
 
+## 5.0.0-experimental.1
+
+### Minor Changes
+
+- c407744fe: feat(use-merge-semantic): add use-merge-semantic hook (5.0)
+
+### Patch Changes
+
+- Updated dependencies [c407744fe]
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.0
+
 ## 5.0.0-experimental.0
 
 ### Major Changes

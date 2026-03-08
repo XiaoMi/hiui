@@ -1,5 +1,29 @@
 # @hi-ui/schema-editable-table
 
+## 4.0.0-experimental.6
+
+### Patch Changes
+
+- Updated dependencies [7f204c892]
+- Updated dependencies [66bc9c3e2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.1
+  - @hi-ui/button@5.0.0-experimental.1
+  - @hi-ui/checkbox@5.0.0-experimental.1
+  - @hi-ui/pagination@5.0.0-experimental.1
+  - @hi-ui/radio@5.0.0-experimental.1
+  - @hi-ui/switch@5.0.0-experimental.1
+  - @hi-ui/tag@5.0.0-experimental.1
+  - @hi-ui/schema-fields@4.0.0-experimental.10
+  - @hi-ui/schema-form@4.0.0-experimental.4
+  - @hi-ui/space@5.0.0-experimental.1
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-types@4.0.0-experimental.3
+  - @hi-ui/schema-action-trigger@4.0.0-experimental.5
+
 ## 4.0.0-experimental.5
 
 ### Patch Changes

@@ -1,5 +1,43 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.10
+
+### Patch Changes
+
+- Updated dependencies [7f204c892]
+- Updated dependencies [569d26655]
+- Updated dependencies [66bc9c3e2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [59cef699f]
+  - @hi-ui/icons@5.0.0-experimental.1
+  - @hi-ui/date-picker@5.0.0-experimental.2
+  - @hi-ui/ellipsis-tooltip@5.0.0-experimental.1
+  - @hi-ui/cascader@5.0.0-experimental.2
+  - @hi-ui/check-cascader@5.0.0-experimental.2
+  - @hi-ui/check-select@5.0.0-experimental.2
+  - @hi-ui/check-tree-select@5.0.0-experimental.2
+  - @hi-ui/checkbox@5.0.0-experimental.1
+  - @hi-ui/counter@5.0.0-experimental.2
+  - @hi-ui/input@5.0.0-experimental.2
+  - @hi-ui/message@5.0.0-experimental.1
+  - @hi-ui/number-input@5.0.0-experimental.2
+  - @hi-ui/preview@5.0.0-experimental.1
+  - @hi-ui/radio@5.0.0-experimental.1
+  - @hi-ui/rating@5.0.0-experimental.1
+  - @hi-ui/select@5.0.0-experimental.2
+  - @hi-ui/slider@5.0.0-experimental.1
+  - @hi-ui/switch@5.0.0-experimental.1
+  - @hi-ui/tag@5.0.0-experimental.1
+  - @hi-ui/textarea@5.0.0-experimental.2
+  - @hi-ui/time-picker@5.0.0-experimental.2
+  - @hi-ui/tree-select@5.0.0-experimental.2
+  - @hi-ui/upload@5.0.0-experimental.1
+  - @hi-ui/space@5.0.0-experimental.1
+  - @hi-ui/schema-option-injector@4.0.0-experimental.7
+  - @hi-ui/schema-utils@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.8
+  - @hi-ui/schema-types@4.0.0-experimental.3
+
 ## 4.0.0-experimental.9
 
 ### Patch Changes
