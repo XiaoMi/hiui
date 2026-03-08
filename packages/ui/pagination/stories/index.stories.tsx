@@ -7,6 +7,7 @@ export * from './simple.stories'
 export * from './mini-input.stories'
 export * from './custom.stories'
 export * from './size.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Navigation/Pagination',

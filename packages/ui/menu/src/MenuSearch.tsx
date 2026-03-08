@@ -7,19 +7,23 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { __DEV__ } from '@hi-ui/env'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { SearchOutlined, CloseOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@hi-ui/icons'
 import IconButton from '@hi-ui/icon-button'
 import Button from '@hi-ui/button'
-import Picker from '@hi-ui/picker'
 import Input from '@hi-ui/input'
 import Highlighter from '@hi-ui/highlighter'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import EllipsisTooltip from '@hi-ui/ellipsis-tooltip'
-import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { MenuDataItem } from './types'
 import { EnterIcon } from './EnterIcon'
 import { searchMenuWithPath } from './util'
@@ -33,6 +37,8 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
       innerRef,
       prefixCls = _prefix,
       className,
+      classNames: classNamesProp,
+      styles: stylesProp,
       clearText,
       placeholder,
       notFoundContent,
@@ -53,6 +59,26 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
     ref
   ) => {
     const i18n = useLocaleContext()
+    const { menuSearch: menuSearchConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      MenuSearchSemanticClassNames,
+      MenuSearchSemanticStyles,
+      MenuSearchProps
+    >({
+      classNamesList: [menuSearchConfig?.classNames, classNamesProp],
+      stylesList: [menuSearchConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          placeholder,
+          width,
+          visible: visibleProp,
+          defaultValue,
+          value: valueProp,
+        },
+      },
+    })
 
     const [visible, visibleAction] = useUncontrolledToggle({
       visible: visibleProp,
@@ -217,12 +243,12 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
       }
     })
 
-    const cls = cx(prefixCls, className, {
+    const cls = cx(prefixCls, className, classNames?.root, {
       [`${prefixCls}--open`]: visible,
     })
 
     return (
-      <div className={cls} style={style}>
+      <div className={cls} style={{ ...style, ...styles?.root }}>
         <MenuSearchInput
           width={width}
           prefixCls={prefixCls}
@@ -233,15 +259,23 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
           onClose={handleClose}
           onKeyDown={handleKeyDown}
           inputRef={setInputRef}
+          semanticClassNames={classNames}
+          semanticStyles={styles}
         />
         <div
-          className={cx(`${prefixCls}__content`, {
-            [`${prefixCls}__content--visible`]: visible,
-          })}
+          className={cx(
+            `${prefixCls}__content`,
+            { [`${prefixCls}__content--visible`]: visible },
+            classNames?.content
+          )}
+          style={styles?.content}
         >
           {resultMemo?.length > 0 ? (
             <>
-              <div className={`${prefixCls}__header`}>
+              <div
+                className={cx(`${prefixCls}__header`, classNames?.header)}
+                style={styles?.header}
+              >
                 <Highlighter keyword={String(resultMemo?.length ?? 0)}>
                   {i18n.get('menuSearch.searchResult', {
                     count: resultMemo?.length ?? 0,
@@ -250,7 +284,8 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
                 </Highlighter>
               </div>
               <div
-                className={`${prefixCls}__list`}
+                className={cx(`${prefixCls}__list`, classNames?.list)}
+                style={styles?.list}
                 ref={listRef}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
@@ -259,12 +294,18 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
                   return (
                     <div
                       key={item.id}
-                      className={cx(`${prefixCls}__list-item`, {
-                        [`${prefixCls}__list-item--selected`]: currentIndex === index,
-                      })}
+                      className={cx(
+                        `${prefixCls}__list-item`,
+                        { [`${prefixCls}__list-item--selected`]: currentIndex === index },
+                        classNames?.listItem
+                      )}
+                      style={styles?.listItem}
                       onClick={() => handleSelect(item.id, item, index)}
                     >
-                      <div className={`${prefixCls}__list-item__title`}>
+                      <div
+                        className={cx(`${prefixCls}__list-item__title`, classNames?.listItemTitle)}
+                        style={styles?.listItemTitle}
+                      >
                         <EllipsisTooltip
                           tooltipProps={{
                             style: {
@@ -285,33 +326,62 @@ export const MenuSearch = forwardRef<HTMLDivElement | null, MenuSearchProps>(
               </div>
             </>
           ) : (
-            <div className={`${prefixCls}__empty`}>
+            <div className={cx(`${prefixCls}__empty`, classNames?.empty)} style={styles?.empty}>
               <div>{i18n.menuSearch.searchEmptyResult}</div>
             </div>
           )}
         </div>
         {resultMemo?.length > 0 && (
-          <div className={`${prefixCls}__footer`}>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>
+          <div className={cx(`${prefixCls}__footer`, classNames?.footer)} style={styles?.footer}>
+            <div
+              className={cx(`${prefixCls}__footer-item`, classNames?.footerItem)}
+              style={styles?.footerItem}
+            >
+              <div
+                className={cx(`${prefixCls}__footer-item__icon`, classNames?.footerItemIcon)}
+                style={styles?.footerItemIcon}
+              >
                 <ArrowUpOutlined />
                 <ArrowDownOutlined />
               </div>
-              <span className={`${prefixCls}__footer-item__text`}>
+              <span
+                className={cx(`${prefixCls}__footer-item__text`, classNames?.footerItemText)}
+                style={styles?.footerItemText}
+              >
                 {i18n.menuSearch.moveCursor}
               </span>
             </div>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>
+            <div
+              className={cx(`${prefixCls}__footer-item`, classNames?.footerItem)}
+              style={styles?.footerItem}
+            >
+              <div
+                className={cx(`${prefixCls}__footer-item__icon`, classNames?.footerItemIcon)}
+                style={styles?.footerItemIcon}
+              >
                 <EnterIcon />
               </div>
-              <span className={`${prefixCls}__footer-item__text`}>
+              <span
+                className={cx(`${prefixCls}__footer-item__text`, classNames?.footerItemText)}
+                style={styles?.footerItemText}
+              >
                 {i18n.menuSearch.confirmSelect}
               </span>
             </div>
-            <div className={`${prefixCls}__footer-item`}>
-              <div className={`${prefixCls}__footer-item__icon`}>esc</div>
-              <span className={`${prefixCls}__footer-item__text`}>
+            <div
+              className={cx(`${prefixCls}__footer-item`, classNames?.footerItem)}
+              style={styles?.footerItem}
+            >
+              <div
+                className={cx(`${prefixCls}__footer-item__icon`, classNames?.footerItemIcon)}
+                style={styles?.footerItemIcon}
+              >
+                esc
+              </div>
+              <span
+                className={cx(`${prefixCls}__footer-item__text`, classNames?.footerItemText)}
+                style={styles?.footerItemText}
+              >
                 {i18n.menuSearch.hideWindow}
               </span>
             </div>
@@ -332,7 +402,32 @@ export interface MenuSearchHelper {
   focus: () => void
 }
 
-export interface MenuSearchProps extends HiBaseHTMLProps<'div'> {
+export type MenuSearchSemanticName =
+  | 'root'
+  | 'inputWrapper'
+  | 'input'
+  | 'inputClear'
+  | 'close'
+  | 'content'
+  | 'header'
+  | 'list'
+  | 'listItem'
+  | 'listItemTitle'
+  | 'empty'
+  | 'footer'
+  | 'footerItem'
+  | 'footerItemIcon'
+  | 'footerItemText'
+export type MenuSearchSemanticClassNames = SemanticClassNamesType<
+  MenuSearchProps,
+  MenuSearchSemanticName
+>
+export type MenuSearchSemanticStyles = SemanticStylesType<MenuSearchProps, MenuSearchSemanticName>
+export type MenuSearchSemantic = ComponentSemantic<
+  MenuSearchSemanticClassNames,
+  MenuSearchSemanticStyles
+>
+export interface MenuSearchProps extends HiBaseHTMLProps<'div'>, MenuSearchSemantic {
   innerRef?: React.RefObject<MenuSearchHelper>
   clearText?: React.ReactNode
   placeholder?: string
@@ -362,6 +457,8 @@ export const MenuSearchInput = forwardRef<
     onClear?: () => void
     onClose?: () => void
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    semanticClassNames?: Record<string, string | undefined>
+    semanticStyles?: Record<string, React.CSSProperties | undefined>
   }
 >(
   (
@@ -375,6 +472,8 @@ export const MenuSearchInput = forwardRef<
       onClose,
       onKeyDown,
       inputRef,
+      semanticClassNames,
+      semanticStyles,
       ...rest
     },
     ref
@@ -382,10 +481,15 @@ export const MenuSearchInput = forwardRef<
     const i18n = useLocaleContext()
 
     return (
-      <div ref={ref} className={`${prefixCls}__input-wrapper`} style={{ width }}>
+      <div
+        ref={ref}
+        className={cx(`${prefixCls}__input-wrapper`, semanticClassNames?.inputWrapper)}
+        style={{ width, ...semanticStyles?.inputWrapper }}
+      >
         <Input
           ref={inputRef}
-          className={`${prefixCls}__input`}
+          className={cx(`${prefixCls}__input`, semanticClassNames?.input)}
+          style={semanticStyles?.input}
           classNames={{
             prefix: `${prefixCls}__input-prefix`,
           }}
@@ -394,7 +498,8 @@ export const MenuSearchInput = forwardRef<
           prefix={<SearchOutlined />}
           suffix={
             <Button
-              className={`${prefixCls}__input-clear`}
+              className={cx(`${prefixCls}__input-clear`, semanticClassNames?.inputClear)}
+              style={semanticStyles?.inputClear}
               appearance="link"
               size="xs"
               onClick={onClear}
@@ -407,7 +512,10 @@ export const MenuSearchInput = forwardRef<
           onKeyDown={onKeyDown}
           {...rest}
         />
-        <span className={`${prefixCls}__close`}>
+        <span
+          className={cx(`${prefixCls}__close`, semanticClassNames?.close)}
+          style={semanticStyles?.close}
+        >
           <IconButton icon={<CloseOutlined />} effect onClick={onClose} />
         </span>
       </div>

@@ -118,7 +118,8 @@
     "@hi-ui/tree-select": "^5.0.0-experimental.1",
     "@hi-ui/upload": "^5.0.0-experimental.0",
     "@hi-ui/watermark": "^5.0.0-experimental.0",
-    "@hi-ui/zen-mode": "^5.0.0-experimental.0"
+     "@hi-ui/zen-mode": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

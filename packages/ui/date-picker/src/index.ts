@@ -6,6 +6,7 @@ export type {
   DatePickerOnChange,
   DatePickerTypeEnum,
   DatePickerValue,
+  DatePickerSemanticName,
 } from './types'
 
 export { DatePicker }

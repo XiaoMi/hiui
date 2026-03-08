@@ -8,6 +8,7 @@ export * from './controlled.stories'
 export * from './auto-focus.stories'
 export * from './step.stories'
 export * from './Wheel.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Counter',

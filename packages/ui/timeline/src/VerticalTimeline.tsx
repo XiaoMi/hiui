@@ -25,6 +25,9 @@ export const VerticalTimeline = forwardRef<HTMLDivElement | null, VerticalTimeli
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames,
+      styles,
       children,
       type = 'default',
       data = NOOP_ARRAY,
@@ -32,21 +35,45 @@ export const VerticalTimeline = forwardRef<HTMLDivElement | null, VerticalTimeli
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className, `${prefixCls}--type-${type}`)
+    const cls = cx(prefixCls, className, classNames?.root, `${prefixCls}--type-${type}`)
 
     const renderItem = useCallback(
       (item: TimelineDataItem, index: number) => {
         if (type === 'default') {
-          return <CrossItem {...item} key={index} prefixCls={`${prefixCls}-item`} />
+          return (
+            <CrossItem
+              {...item}
+              key={index}
+              prefixCls={`${prefixCls}-item`}
+              classNames={classNames}
+              styles={styles}
+            />
+          )
         }
         if (type === 'right') {
-          return <RightItem {...item} key={index} prefixCls={`${prefixCls}-item`} />
+          return (
+            <RightItem
+              {...item}
+              key={index}
+              prefixCls={`${prefixCls}-item`}
+              classNames={classNames}
+              styles={styles}
+            />
+          )
         }
         if (type === 'cross') {
-          return <RightItem {...item} key={index} prefixCls={`${prefixCls}-item`} />
+          return (
+            <RightItem
+              {...item}
+              key={index}
+              prefixCls={`${prefixCls}-item`}
+              classNames={classNames}
+              styles={styles}
+            />
+          )
         }
       },
-      [prefixCls, type]
+      [prefixCls, type, classNames, styles]
     )
 
     const renderGroup = useCallback(
@@ -74,7 +101,7 @@ export const VerticalTimeline = forwardRef<HTMLDivElement | null, VerticalTimeli
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
         {data.map((item, index) => {
           if ('groupTitle' in item) {
             return renderGroup(item as TimelineGroupDataItem, index)
@@ -96,6 +123,14 @@ export interface VerticalTimelineProps extends HiBaseHTMLProps<'div'> {
    * 时间轴类型，仅在 placement="vertical" 时有效
    */
   type?: TimelineTypeEnum
+  /**
+   * 语义化 classNames（由 Timeline 传入）
+   */
+  classNames?: Record<string, string | undefined>
+  /**
+   * 语义化 styles（由 Timeline 传入）
+   */
+  styles?: Record<string, React.CSSProperties | undefined>
 }
 
 if (__DEV__) {

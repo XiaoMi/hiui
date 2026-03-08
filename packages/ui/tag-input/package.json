@@ -53,7 +53,8 @@
     "@hi-ui/use-merge-refs": "^5.0.0-experimental.0",
     "@hi-ui/use-outside-click": "^5.0.0-experimental.0",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
-    "react-resize-detector": "^6.7.6"
+     "react-resize-detector": "^6.7.6",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

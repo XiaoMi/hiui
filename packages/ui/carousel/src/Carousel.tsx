@@ -82,6 +82,13 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     [isVertical]
   )
 
+  // 根据 defaultActive 设置内容区初始位移，保证首屏显示对应下标的那一页
+  useEffect(() => {
+    if (contentRef.current && defaultActive > 0) {
+      contentRef.current.style.transform = calcToIndexNeedPercentage(defaultActive)
+    }
+  }, [defaultActive, calcToIndexNeedPercentage])
+
   const toIndex = useCallback(
     (newIndex: number, leftToRight: boolean) => {
       if (newIndex === activeIndex) {

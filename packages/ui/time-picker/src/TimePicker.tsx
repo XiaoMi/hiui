@@ -2,6 +2,12 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import {
   TimePickerStep,
   TimePickerType,
@@ -46,6 +52,9 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       prefixCls = timePickerPrefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       value: controlledValue,
       // itemHeight = 24,
       // fullDisplayItemNumber = 7,
@@ -73,8 +82,28 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, timePicker: timePickerConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
+
+    const { classNames, styles } = useMergeSemantic<
+      TimePickerSemanticClassNames,
+      TimePickerSemanticStyles,
+      TimePickerProps
+    >({
+      classNamesList: [timePickerConfig?.classNames, classNamesProp],
+      stylesList: [timePickerConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...restProps,
+          type,
+          format,
+          appearance,
+          disabled,
+          size,
+          invalid,
+        },
+      },
+    })
 
     const i18n = useLocaleContext()
 
@@ -208,19 +237,29 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
 
     const [focus, setFocus] = useState(false)
 
-    const cls = cx(prefixCls, className, `${prefixCls}--appearance-${appearance}`, {
-      [`${prefixCls}--active`]: showPopper && !disabled,
-      [`${prefixCls}--disabled`]: disabled,
-      [`${prefixCls}--input-not-valid`]: !isInputValid || invalid,
-      [`${prefixCls}--size-${size}`]: true,
-      [`${prefixCls}--has-value`]: cacheValue[0],
-    })
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--appearance-${appearance}`,
+      {
+        [`${prefixCls}--active`]: showPopper && !disabled,
+        [`${prefixCls}--disabled`]: disabled,
+        [`${prefixCls}--input-not-valid`]: !isInputValid || invalid,
+        [`${prefixCls}--size-${size}`]: true,
+        [`${prefixCls}--has-value`]: cacheValue[0],
+      }
+    )
 
     const functionButtons = useMemo(() => {
       return (
-        <div className={`${prefixCls}__pop-function-buttons`}>
+        <div
+          className={cx(`${prefixCls}__pop-function-buttons`, classNames?.popFunctionButtons)}
+          style={styles?.popFunctionButtons}
+        >
           <Button
-            className={`${prefixCls}__pop-confirm-btn`}
+            className={cx(`${prefixCls}__pop-confirm-btn`, classNames?.popConfirmBtn)}
+            style={styles?.popConfirmBtn}
             type={'primary'}
             size={'sm'}
             disabled={!isInputValid}
@@ -267,7 +306,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           </Button>
           {type === 'single' && !isInSingleValueFormat && (
             <Button
-              className={`${prefixCls}__pop-now-btn`}
+              className={cx(`${prefixCls}__pop-now-btn`, classNames?.popNowBtn)}
+              style={styles?.popNowBtn}
               appearance="text"
               type="primary"
               size="sm"
@@ -285,6 +325,12 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
       )
     }, [
       prefixCls,
+      classNames?.popFunctionButtons,
+      classNames?.popConfirmBtn,
+      classNames?.popNowBtn,
+      styles?.popFunctionButtons,
+      styles?.popConfirmBtn,
+      styles?.popNowBtn,
       isInputValid,
       confirmText,
       type,
@@ -305,6 +351,7 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
         ref={useMergeRefs(ref, setAttachEl)}
         role={role}
         className={cls}
+        style={{ ...style, ...styles?.root }}
         {...restProps}
         onMouseEnter={() => {
           setFocus(true)
@@ -313,11 +360,19 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           setFocus(false)
         }}
       >
-        <div className={`${prefixCls}__input-wrapper`}>
-          {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
+        <div
+          className={cx(`${prefixCls}__input-wrapper`, classNames?.inputWrapper)}
+          style={styles?.inputWrapper}
+        >
+          {prefix ? (
+            <span className={cx(`${prefixCls}__prefix`, classNames?.prefix)} style={styles?.prefix}>
+              {prefix}
+            </span>
+          ) : null}
           {appearance === 'contained' && label ? (
             <div
-              className={`${prefixCls}__label`}
+              className={cx(`${prefixCls}__label`, classNames?.label)}
+              style={styles?.label}
               onClick={() => {
                 showPopperRef.current = !showPopperRef.current
                 setShowPopper((pre) => !pre)
@@ -329,6 +384,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           ) : null}
           {appearance !== 'contained' || (appearance === 'contained' && cacheValue[0]) ? (
             <Input
+              className={classNames?.input}
+              style={styles?.input}
               size={size}
               isFitContent={appearance === 'unset'}
               ref={inputRef}
@@ -353,7 +410,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
             />
           ) : null}
           <div
-            className={`${prefixCls}__function-button`}
+            className={cx(`${prefixCls}__function-button`, classNames?.functionButton)}
+            style={styles?.functionButton}
             onClick={() => {
               showPopperRef.current = !showPopperRef.current
               setShowPopper((pre) => !pre)
@@ -361,7 +419,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           >
             {showPopper || (focus && cacheValue[0]) ? (
               <CloseCircleFilled
-                className={`${prefixCls}__close-button`}
+                className={cx(`${prefixCls}__close-button`, classNames?.closeButton)}
+                style={styles?.closeButton}
                 onClick={(evt) => {
                   evt.stopPropagation()
                   onCacheChange(type === 'single' ? [''] : ['', ''])
@@ -391,6 +450,8 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
           preload
         >
           <PopContent
+            className={classNames?.popContent}
+            style={styles?.popContent}
             // itemHeight={itemHeight}
             // fullDisplayItemNumber={fullDisplayItemNumber}
             type={type}
@@ -426,7 +487,29 @@ export const TimePicker = forwardRef<HTMLDivElement | null, TimePickerProps>(
 type ExtendType = Omit<HiBaseHTMLProps<'div'>, 'placeholder' | 'value' | 'onChange'> &
   TimePickerFilterProps &
   TimePickerStep
-export interface TimePickerProps extends ExtendType {
+export type TimePickerSemanticName =
+  | 'root'
+  | 'inputWrapper'
+  | 'prefix'
+  | 'label'
+  | 'input'
+  | 'functionButton'
+  | 'closeButton'
+  | 'popContent'
+  | 'popFunctionButtons'
+  | 'popConfirmBtn'
+  | 'popNowBtn'
+export type TimePickerSemanticClassNames = SemanticClassNamesType<
+  TimePickerProps,
+  TimePickerSemanticName
+>
+export type TimePickerSemanticStyles = SemanticStylesType<TimePickerProps, TimePickerSemanticName>
+export type TimePickerSemantic = ComponentSemantic<
+  TimePickerSemanticClassNames,
+  TimePickerSemanticStyles
+>
+
+export interface TimePickerProps extends ExtendType, TimePickerSemantic {
   /**
    * 选择器类型
    * @default 'single'

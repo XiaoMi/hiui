@@ -9,12 +9,25 @@ const _prefix = getPrefixCls('table-header')
 
 export const TableHeader = forwardRef<HTMLDivElement | null, TableHeaderProps>(
   ({ prefixCls = _prefix, className }, ref) => {
-    const { onTableBodyScrollMock, scrollHeaderElementRef, getTableHeaderProps } = useTableContext()
+    const {
+      onTableBodyScrollMock,
+      scrollHeaderElementRef,
+      getTableHeaderProps,
+      semanticClassNames,
+      semanticStyles,
+    } = useTableContext()
 
-    const cls = cx(prefixCls, className)
+    const headerProps = getTableHeaderProps()
+    const cls = cx(prefixCls, className, semanticClassNames?.header)
+    const headerStyle = semanticStyles?.header
 
     return (
-      <div className={cls} ref={scrollHeaderElementRef} {...getTableHeaderProps()}>
+      <div
+        {...headerProps}
+        className={cls}
+        ref={scrollHeaderElementRef}
+        style={{ ...headerProps?.style, ...headerStyle }}
+      >
         {/* header 内置 table，利用 table colgroup 特性，实现单独表头的分组 */}
         <table style={{ width: '100%', position: 'relative' }}>
           <ColGroupContent />

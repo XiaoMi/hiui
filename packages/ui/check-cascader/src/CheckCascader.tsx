@@ -12,8 +12,14 @@ import {
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
   matchStrategy,
@@ -94,14 +100,37 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       showCheckAll,
       showIndicator = true,
       renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, checkCascader: checkCascaderConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckCascaderSemanticClassNames,
+      CheckCascaderSemanticStyles,
+      CheckCascaderProps
+    >({
+      classNamesList: [checkCascaderConfig?.classNames, classNamesProp],
+      stylesList: [checkCascaderConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+          expandTrigger,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -332,12 +361,39 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       }
     }, [menuVisible])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
       <Picker
         ref={ref}
         innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
         overlay={{ matchWidth: false, ...rest.overlay }}
@@ -448,6 +504,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           <CheckCascaderMenuList
             disabled={disabled}
             value={value}
+            classNames={classNames}
+            styles={styles}
             // @ts-ignore
             onChange={proxyOnChange}
             expandTrigger={expandTrigger}
@@ -473,8 +531,26 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   }
 )
 
+export type CheckCascaderSemanticName = PickerSemanticName | 'menuList' | 'menu' | 'option'
+export type CheckCascaderSemanticClassNames = SemanticClassNamesType<
+  CheckCascaderProps,
+  CheckCascaderSemanticName
+>
+export type CheckCascaderSemanticStyles = SemanticStylesType<
+  CheckCascaderProps,
+  CheckCascaderSemanticName
+>
+export type CheckCascaderSemantic = ComponentSemantic<
+  CheckCascaderSemanticClassNames,
+  CheckCascaderSemanticStyles
+>
+
 export interface CheckCascaderProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'> {
+  extends Omit<
+      PickerProps,
+      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    CheckCascaderSemantic {
   /**
    * 设置选择项数据源
    */

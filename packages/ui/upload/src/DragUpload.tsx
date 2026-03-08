@@ -1,7 +1,11 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './types'
+import type {
+  UploadProps,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
@@ -41,6 +45,8 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       method,
       timeout,
       actionRender,
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -50,6 +56,12 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const dragText = i18n.get('upload.drag')
 
     const cls = cx(prefixCls, className)
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -101,6 +113,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const dragCls = cx(
       `${prefixCls}`,
       `${prefixCls}--drag`,
+      cn?.dragUploadDropArea,
       dragging && !nonInteractive && 'drop-over',
       nonInteractive && `${prefixCls}--disabled`,
       _fileList.length > 0 && `${prefixCls}--nohover`
@@ -125,6 +138,7 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           {children === undefined ? (
             <div
               className={dragCls}
+              style={st?.dragUploadDropArea}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
@@ -132,13 +146,26 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               ref={dragRef}
               onKeyDown={handleContainerKeyDown}
             >
-              <div className={'drag-upload__desc'}>
-                <span className={'drag-upload__title'}>
+              <div
+                className={cx('drag-upload__desc', cn?.dragUploadDropDesc)}
+                style={st?.dragUploadDropDesc}
+              >
+                <span
+                  className={cx('drag-upload__title', cn?.dragUploadDropTitle)}
+                  style={st?.dragUploadDropTitle}
+                >
                   <CloudUploadOutlined />
                   {content || dragText}
                 </span>
                 {tips && (
-                  <span className={`${prefixCls}__tips ${prefixCls}__tips--single-line`}>
+                  <span
+                    className={cx(
+                      `${prefixCls}__tips`,
+                      `${prefixCls}__tips--single-line`,
+                      cn?.dragUploadTips
+                    )}
+                    style={st?.dragUploadTips}
+                  >
                     {tips}
                   </span>
                 )}
@@ -156,6 +183,8 @@ export const DragUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             prefixCls={prefixCls}
             disabled={disabled}
             actionRender={actionRender}
+            className={cn?.dragUploadList}
+            style={st?.dragUploadList}
           />
         )}
       </div>

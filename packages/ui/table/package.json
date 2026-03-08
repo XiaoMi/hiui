@@ -76,7 +76,8 @@
     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
     "@hi-ui/use-update-effect": "^5.0.0-experimental.0",
     "axios": "^1.5.0",
-    "react-resizable": "^3.0.4"
+     "react-resizable": "^3.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

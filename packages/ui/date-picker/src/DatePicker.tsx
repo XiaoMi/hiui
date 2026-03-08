@@ -22,6 +22,8 @@ import {
   DatePickerOnChangeDateString,
   DatePickerOnChangeDate,
 } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type { DatePickerSemanticClassNames, DatePickerSemanticStyles } from './types'
 import { getBelongWeek, getBelongWeekYear, formatWeekByTemplate } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
@@ -39,6 +41,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       prefixCls = DATE_PICKER_PREFIX,
       role = 'date-picker',
       className,
+      style,
       type: propType = 'date',
       value: controlledValue,
       defaultValue: uncontrolledValue,
@@ -64,7 +67,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledDate = DEFAULT_DISABLED_DATE,
       maxDate: max = null,
       minDate: min = null,
-      utcOffset,
+      utcOffset: utcOffsetProp,
       onSelect: propsOnSelectOriginal,
       onPanelChange,
       theme,
@@ -89,11 +92,41 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       label,
       showIndicator = true,
       showWeek,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...otherProps
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const globalContext = useGlobalContext()
+    const {
+      size: globalSize,
+      datePicker: datePickerConfig,
+      utcOffset: utcOffsetGlobal,
+    } = globalContext
+    const utcOffset = utcOffsetProp ?? utcOffsetGlobal
+    const { classNames, styles } = useMergeSemantic<
+      DatePickerSemanticClassNames,
+      DatePickerSemanticStyles,
+      DatePickerProps
+    >({
+      classNamesList: [
+        datePickerConfig?.classNames as DatePickerSemanticClassNames | undefined,
+        classNamesProp,
+      ],
+      stylesList: [datePickerConfig?.styles as DatePickerSemanticStyles | undefined, stylesProp],
+      info: {
+        props: {
+          ...otherProps,
+          type: propType,
+          disabled,
+          appearance,
+          size: sizeProp,
+          invalid,
+          showTime,
+        },
+      },
+    })
     const size = sizeProp ?? globalSize ?? 'md'
 
     const i18n = useLocaleContext()
@@ -462,7 +495,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
 
       return (
-        <div className={popperCls}>
+        <div className={cx(popperCls, classNames?.popper)} style={styles?.popper}>
           {type.includes('range') || type === 'timeperiod' ? (
             <RangePanel />
           ) : (
@@ -486,12 +519,16 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       needConfirm,
       onConfirm,
       dateRangeTimePanelNow,
+      classNames?.popper,
+      styles?.popper,
     ])
 
     return (
       <DPContext.Provider
         value={{
           ...otherProps,
+          classNames,
+          styles,
           locale,
           appearance,
           i18n,
@@ -546,7 +583,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         }}
       >
         <div
-          className={cx(prefixCls, className)}
+          className={cx(prefixCls, className, classNames?.root)}
+          style={{ ...style, ...styles?.root }}
           {...otherProps}
           onMouseEnter={() => {
             if (outDate[0]) {

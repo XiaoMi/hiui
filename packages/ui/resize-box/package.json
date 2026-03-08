@@ -49,7 +49,8 @@
     "@hi-ui/icons": "^5.0.0-experimental.0",
     "@hi-ui/use-merge-refs": "^5.0.0-experimental.0",
     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
-    "react-resizable": "^3.0.5"
+     "react-resizable": "^3.0.5",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

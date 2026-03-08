@@ -46,7 +46,8 @@
   "dependencies": {
     "@hi-ui/classname": "^5.0.0-experimental.0",
     "@hi-ui/env": "^5.0.0-experimental.0",
-    "@hi-ui/use-merge-refs": "^5.0.0-experimental.0"
+     "@hi-ui/use-merge-refs": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

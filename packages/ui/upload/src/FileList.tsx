@@ -47,11 +47,17 @@ export const FileList = forwardRef<HTMLUListElement | null, UploadFileList>(
       actionRender,
       disabled,
       size = 'md',
+      className,
+      style,
     },
     ref
   ) => {
     return (
-      <ul className={`${prefixCls}__list ${prefixCls}__list--size-${size}`} ref={ref}>
+      <ul
+        className={cx(`${prefixCls}__list`, `${prefixCls}__list--size-${size}`, className)}
+        style={style}
+        ref={ref}
+      >
         {fileList.map((file, index) => {
           return (
             <FileItem

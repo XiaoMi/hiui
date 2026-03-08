@@ -212,24 +212,25 @@ export const FloatMenu = () => {
               style={{
                 padding: '16px',
                 display: 'flex',
+                gap: 8,
                 flexWrap: 'wrap',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 6,
-                    backgroundColor: 'rgba(124, 135, 166, 0.12)',
-                  }}
-                ></div>
-                {collapsed ? null : (
-                  <div style={{ fontWeight: 500, color: '#1a1d26' }}>系统名称</div>
-                )}
-              </div>
+              <div
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 6,
+                  backgroundColor: 'rgba(124, 135, 166, 0.12)',
+                }}
+              ></div>
+              {collapsed ? null : (
+                <div style={{ flex: 1, overflow: 'hidden', fontWeight: 500, color: '#1a1d26' }}>
+                  <EllipsisTooltip>系统名称</EllipsisTooltip>
+                </div>
+              )}
               <AppListPopover
                 visible={appListPopoverVisible}
                 activeId={activeAppId}
@@ -391,7 +392,21 @@ export const FloatMenu = () => {
                 header={
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <Avatar size="lg" />
-                    用户名
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontSize: 16, lineHeight: '22px', fontWeight: 500 }}>
+                        用户名
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 14,
+                          lineHeight: '22px',
+                          fontWeight: 400,
+                          color: '#91959e',
+                        }}
+                      >
+                        admin@example.com
+                      </span>
+                    </div>
                   </div>
                 }
                 footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}

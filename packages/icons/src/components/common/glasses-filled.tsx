@@ -1,0 +1,23 @@
+
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { IconProps } from '../../@types/props'
+
+const _prefix = getPrefixCls('icon-glasses-filled')
+
+export const GlassesFilled = forwardRef<SVGSVGElement | null, IconProps>(
+  ({ prefixCls = _prefix, className, children, size, style: styleProp, ...rest }, ref) => {
+    const cls = cx(prefixCls, className)
+    const style = { fontSize: size, ...styleProp }
+
+    return (
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10908"  ><path d="M360.874667 201.813333c-38.72-27.242667-95.424-18.048-120.298667 26.133334L66.56 537.301333l34.197333 205.205334a115.2 115.2 0 0 0 113.642667 96.234666h125.866667a115.2 115.2 0 0 0 113.642666-96.234666l17.066667-102.421334c11.690667-70.208-42.453333-134.122667-113.642667-134.122666H172.309333l135.210667-240.341334a4.544 4.544 0 0 1 3.306667-2.261333 7.573333 7.573333 0 0 1 5.866666 1.28c11.648 8.213333 21.824 15.146667 43.328 32.362667a38.4 38.4 0 1 0 47.957334-59.946667c-23.381333-18.730667-35.093333-26.794667-47.104-35.242667zM663.36 201.493333a81.066667 81.066667 0 0 1 119.317333 25.109334l174.762667 310.698666-34.197333 205.205334a115.2 115.2 0 0 1-113.642667 96.234666h-125.866667a115.2 115.2 0 0 1-113.642666-96.234666l-17.066667-102.421334c-11.690667-70.208 42.453333-134.122667 113.642667-134.122666h185.024l-135.957334-241.706667a4.266667 4.266667 0 0 0-6.293333-1.322667l-46.4 34.816a38.4 38.4 0 0 1-46.08-61.44l46.4-34.816z" p-id="10909"></path><path d="M430.826667 573.994667a181.525333 181.525333 0 0 1 162.346666 0l-34.346666 68.693333a104.746667 104.746667 0 0 0-93.653334 0l-34.346666-68.693333z" p-id="10910"></path></svg>
+    )
+  }
+)
+
+if (__DEV__) {
+  GlassesFilled.displayName = 'GlassesFilled'
+}
+  

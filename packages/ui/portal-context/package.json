@@ -44,7 +44,8 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/env": "^5.0.0-experimental.0"
+     "@hi-ui/env": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

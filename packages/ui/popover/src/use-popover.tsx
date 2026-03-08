@@ -35,11 +35,13 @@ export const usePopover = ({
     },
   })
 
+  const onOpenLatestCallback = useLatestCallback(onOpen)
+
   useEffect(() => {
     if (visible) {
-      onOpen?.()
+      onOpenLatestCallback?.()
     }
-  }, [visible, onOpen])
+  }, [visible, onOpenLatestCallback])
 
   const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
     visibleAction.on()

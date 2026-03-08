@@ -51,7 +51,8 @@
     "@hi-ui/use-did-mount": "^5.0.0-experimental.0",
     "@hi-ui/use-latest": "^5.0.0-experimental.0",
     "@hi-ui/use-scroll": "^5.0.0-experimental.0",
-    "@tweenjs/tween.js": "^18.6.4"
+     "@tweenjs/tween.js": "^18.6.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

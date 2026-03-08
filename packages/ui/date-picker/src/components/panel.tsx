@@ -5,7 +5,7 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext, { DPContextData } from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import { getView, genNewDates, toUtcTime, parseValue } from '../utils'
+import { getView, genNewDates, parseValue } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
@@ -32,9 +32,7 @@ const Panel = (props: PanelProps) => {
     panelIndex = 0,
   } = props
   const {
-    // outDate,
     type,
-    // onPick,
     i18n,
     showTime,
     theme,
@@ -54,6 +52,8 @@ const Panel = (props: PanelProps) => {
     footerRender,
     utcOffset,
     defaultPickerValue,
+    classNames,
+    styles,
   } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
@@ -164,7 +164,8 @@ const Panel = (props: PanelProps) => {
   const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
-    (showTime || needFooter) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
+    (showTime || needFooter) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`,
+    classNames?.panel
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
@@ -203,24 +204,25 @@ const Panel = (props: PanelProps) => {
 
   return (
     <>
-      <div className={panelCls}>
-        <div className={`${prefixCls}__panel--left`}>
+      <div className={panelCls} style={styles?.panel}>
+        <div
+          className={cx(`${prefixCls}__panel--left`, classNames?.panelLeft)}
+          style={styles?.panelLeft}
+        >
           {calRenderDates[0] && (
             <React.Fragment>
-              <Header
-                renderDate={calRenderDates[0]}
-                // 疑问：尚未找到这个 props
-                // renderDates={calRenderDates}
-                changeView={() => setView('year')}
-                onArrowEvent={onArrowEvent}
-                i18n={i18n}
-                view={view}
-                panelPosition={0}
-                // 疑问：尚未找到这个 props
-                // type={type}
-                locale={locale}
-                prefixCls={prefixCls}
-              />
+              <div className={classNames?.panelHeader} style={styles?.panelHeader}>
+                <Header
+                  renderDate={calRenderDates[0]}
+                  changeView={() => setView('year')}
+                  onArrowEvent={onArrowEvent}
+                  i18n={i18n}
+                  view={view}
+                  panelPosition={0}
+                  locale={locale}
+                  prefixCls={prefixCls}
+                />
+              </div>
               <Calendar
                 renderDate={calRenderDates[0]}
                 originDate={outDate[0]}
@@ -228,15 +230,25 @@ const Panel = (props: PanelProps) => {
                 view={view}
                 disabledDate={disabledDate}
                 range={range}
-                // panelPosition="left"
               />
             </React.Fragment>
           )}
         </div>
         {showTime && (
-          <div className={`${prefixCls}__panel__time-container`}>
-            <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
-            <div className={`${prefixCls}__panel__time-content`}>
+          <div
+            className={cx(`${prefixCls}__panel__time-container`, classNames?.panelTimeContainer)}
+            style={styles?.panelTimeContainer}
+          >
+            <div
+              className={cx(`${prefixCls}__panel__time-header`, classNames?.panelTimeHeader)}
+              style={styles?.panelTimeHeader}
+            >
+              {timePickerData[0]}
+            </div>
+            <div
+              className={cx(`${prefixCls}__panel__time-content`, classNames?.panelTimeContent)}
+              style={styles?.panelTimeContent}
+            >
               <TimePickerPopContent
                 onChange={onTimeChange}
                 value={timePickerData}

@@ -47,7 +47,8 @@
     "@hi-ui/classname": "^5.0.0-experimental.0",
     "@hi-ui/dom-utils": "^5.0.0-experimental.0",
     "@hi-ui/env": "^5.0.0-experimental.0",
-    "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0"
+     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

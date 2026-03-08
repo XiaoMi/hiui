@@ -59,7 +59,8 @@
     "@hi-ui/use-data-source": "^5.0.0-experimental.0",
     "@hi-ui/use-search-mode": "^5.0.0-experimental.0",
     "@hi-ui/use-toggle": "^5.0.0-experimental.0",
-    "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0"
+     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

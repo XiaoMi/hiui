@@ -8,6 +8,7 @@ export * from './visible.stories'
 export * from './mask.stories'
 export * from './type.stories'
 export * from './with-toast.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/Loading',

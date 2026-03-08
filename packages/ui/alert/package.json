@@ -49,6 +49,7 @@
     "@hi-ui/env": "^5.0.0-experimental.0",
     "@hi-ui/icons": "^5.0.0-experimental.0",
     "@hi-ui/use-latest": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-timeout": "^5.0.0-experimental.0"
   },
   "peerDependencies": {

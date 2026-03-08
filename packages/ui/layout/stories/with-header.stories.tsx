@@ -135,7 +135,21 @@ export const WithHeader = () => {
                 header={
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <Avatar size="lg" />
-                    用户名
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontSize: 16, lineHeight: '22px', fontWeight: 500 }}>
+                        用户名
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 14,
+                          lineHeight: '22px',
+                          fontWeight: 400,
+                          color: '#91959e',
+                        }}
+                      >
+                        admin@example.com
+                      </span>
+                    </div>
                   </div>
                 }
                 footer={<div onClick={() => setProfileVisible(false)}>退出登录</div>}

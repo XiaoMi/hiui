@@ -8,6 +8,12 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import Spinner from '@hi-ui/spinner'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { useLoading } from './use-loading'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'loading'
 export const _prefix = getPrefixCls('loading')
@@ -17,6 +23,7 @@ export const Loading = forwardRef<null, LoadingProps>(
     {
       prefixCls = _prefix,
       className,
+      style,
       children,
       role = _role,
       container: containerProp,
@@ -36,11 +43,13 @@ export const Loading = forwardRef<null, LoadingProps>(
       showMask = true,
       wrapperClassName,
       wrapperStyle,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...restProps
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, loading: loadingConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     const { internalVisible, setInternalVisible } = useLoading({ visible, delay })
@@ -52,9 +61,22 @@ export const Loading = forwardRef<null, LoadingProps>(
       close: () => setInternalVisible(false),
     }))
 
+    const { classNames, styles } = useMergeSemantic<
+      LoadingSemanticClassNames,
+      LoadingSemanticStyles,
+      LoadingProps
+    >({
+      classNamesList: [loadingConfig?.classNames, classNamesProp],
+      stylesList: [loadingConfig?.styles, stylesProp],
+      info: {
+        props: { ...restProps, content, contentPosition, visible, full, size, type, showMask },
+      },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       size && `${prefixCls}--size-${size}`,
       !full && (part || !!children) && `${prefixCls}--part`,
       full && `${prefixCls}--full`,
@@ -70,13 +92,13 @@ export const Loading = forwardRef<null, LoadingProps>(
       switch (type) {
         case 'spin':
           return (
-            <div className={`${prefixCls}__icon`}>
+            <div className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
               <Spinner size={size} color={color} />
             </div>
           )
         default:
           return (
-            <div className={`${prefixCls}__icon`}>
+            <div className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
               <div />
               <div />
             </div>
@@ -94,11 +116,29 @@ export const Loading = forwardRef<null, LoadingProps>(
         // 参考：https://github.com/reactjs/react-transition-group/issues/918
         nodeRef={transitionNodeRef}
       >
-        <div ref={mergeRefs(ref, transitionNodeRef)} role={role} className={cls} {...restProps}>
-          {showMask && <div className={`${prefixCls}__mask`} />}
-          <div className={`${prefixCls}__content-wrapper`}>
+        <div
+          ref={mergeRefs(ref, transitionNodeRef)}
+          role={role}
+          className={cls}
+          style={{ ...style, ...styles?.root }}
+          {...restProps}
+        >
+          {showMask && (
+            <div className={cx(`${prefixCls}__mask`, classNames?.mask)} style={styles?.mask} />
+          )}
+          <div
+            className={cx(`${prefixCls}__content-wrapper`, classNames?.contentWrapper)}
+            style={styles?.contentWrapper}
+          >
             {getIndicator()}
-            {content ? <span className={`${prefixCls}__content`}>{content}</span> : null}
+            {content ? (
+              <span
+                className={cx(`${prefixCls}__content`, classNames?.content)}
+                style={styles?.content}
+              >
+                {content}
+              </span>
+            ) : null}
           </div>
         </div>
       </CSSTransition>
@@ -109,7 +149,10 @@ export const Loading = forwardRef<null, LoadingProps>(
         {children ? (
           // 可以测量 children margin，实现按内容位置偏移，排除 margin 影响
           // 暂时不考虑，如果有需要，完全可以把 margin 设置到加到父节点
-          <div className={cx(`${prefixCls}__wrapper`, wrapperClassName)} style={wrapperStyle}>
+          <div
+            className={cx(`${prefixCls}__wrapper`, wrapperClassName, classNames?.wrapper)}
+            style={{ ...wrapperStyle, ...styles?.wrapper }}
+          >
             {children}
             {loadingComponent}
           </div>
@@ -123,7 +166,18 @@ export const Loading = forwardRef<null, LoadingProps>(
 
 export type LoadingSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
-export interface LoadingProps extends HiBaseHTMLProps<'div'> {
+export type LoadingSemanticName =
+  | 'root'
+  | 'mask'
+  | 'contentWrapper'
+  | 'icon'
+  | 'content'
+  | 'wrapper'
+export type LoadingSemanticClassNames = SemanticClassNamesType<LoadingProps, LoadingSemanticName>
+export type LoadingSemanticStyles = SemanticStylesType<LoadingProps, LoadingSemanticName>
+export type LoadingSemantic = ComponentSemantic<LoadingSemanticClassNames, LoadingSemanticStyles>
+
+export interface LoadingProps extends HiBaseHTMLProps<'div'>, LoadingSemantic {
   /**
    * 	自定义加载中状态的文案
    */

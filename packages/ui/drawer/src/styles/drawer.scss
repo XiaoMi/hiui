@@ -282,6 +282,12 @@ $prefix: '#{$component-prefix}-drawer' !default;
       border-block-start: use-border-size('normal') use-color('gray', 300);
     }
 
+    &--has-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
     // &::before {
     //   position: absolute;
     //   top: 0;

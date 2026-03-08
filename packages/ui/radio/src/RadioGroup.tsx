@@ -1,7 +1,13 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { useRadioGroup, UseRadioGroupProps } from './use-radio-group'
 import { RadioGroupProvider } from './context'
 import { RadioDataItem, RadioGroupTypeEnum, RadioGroupPlacementEnum } from './types'
@@ -18,6 +24,9 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
     {
       prefixCls = RADIO_GROUP_PREFIX,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       data,
       type = RadioGroupTypeEnum.DEFAULT,
@@ -28,6 +37,18 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
     ref
   ) => {
     const { rootProps, name, value, onChange, isChecked, disabled } = useRadioGroup(rest)
+
+    const globalContext = useGlobalContext()
+    const { radioGroup: radioGroupConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      RadioGroupSemanticClassNames,
+      RadioGroupSemanticStyles,
+      RadioGroupProps
+    >({
+      classNamesList: [radioGroupConfig?.classNames, classNamesProp],
+      stylesList: [radioGroupConfig?.styles, stylesProp],
+      info: { props: { ...rest, type, placement, autoWidth } },
+    })
 
     const providedValue = useMemo(
       () => ({
@@ -63,6 +84,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--placement-${placement}`,
       autoWidth && type === RadioGroupTypeEnum.BUTTON && `${prefixCls}--auto-width`,
       `${prefixCls}--type-${type}`,
@@ -71,7 +93,7 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
 
     return (
       <RadioGroupProvider value={providedValue}>
-        <div ref={ref} className={cls} {...rootProps}>
+        <div ref={ref} className={cls} style={{ ...style, ...styles?.root }} {...rootProps}>
           {children}
         </div>
       </RadioGroupProvider>
@@ -79,7 +101,21 @@ export const RadioGroup = forwardRef<HTMLDivElement | null, RadioGroupProps>(
   }
 )
 
-export interface RadioGroupProps extends HiBaseHTMLFieldProps<'div'>, UseRadioGroupProps {
+export type RadioGroupSemanticName = 'root'
+export type RadioGroupSemanticClassNames = SemanticClassNamesType<
+  RadioGroupProps,
+  RadioGroupSemanticName
+>
+export type RadioGroupSemanticStyles = SemanticStylesType<RadioGroupProps, RadioGroupSemanticName>
+export type RadioGroupSemantic = ComponentSemantic<
+  RadioGroupSemanticClassNames,
+  RadioGroupSemanticStyles
+>
+
+export interface RadioGroupProps
+  extends HiBaseHTMLFieldProps<'div'>,
+    RadioGroupSemantic,
+    UseRadioGroupProps {
   /**
    *   指定可选项
    */

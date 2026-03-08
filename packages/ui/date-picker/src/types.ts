@@ -4,6 +4,11 @@ import { PopperOverlayProps } from '@hi-ui/popper'
 import { TimePickerPanelType } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
 import { Moment } from 'moment'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 export type CalendarViewEnum = 'date' | 'year' | 'month' | 'quarter'
 
@@ -110,7 +115,9 @@ export type DisabledDate = (
   panelIndex?: number
 ) => boolean
 
-export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'> {
+export interface DatePickerProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'>,
+    DatePickerSemantic {
   /**
    * 选择器类型
    */
@@ -337,3 +344,50 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   showWeek?: boolean
 }
+
+/** DatePicker 语义化元素名称 */
+export type DatePickerSemanticName =
+  | 'root'
+  | 'popper'
+  | 'picker'
+  | 'pickerWrapper'
+  | 'prefix'
+  | 'pickerLabel'
+  | 'inputSelector'
+  | 'inputConnection'
+  | 'inputContainer'
+  | 'input'
+  | 'inputShadow'
+  | 'triggerIcon'
+  | 'panel'
+  | 'panelLeft'
+  | 'panelHeader'
+  | 'panelTimeContainer'
+  | 'panelTimeHeader'
+  | 'panelTimeContent'
+  | 'footer'
+  // calendar 语义
+  | 'calendarWrap'
+  | 'calendar'
+  | 'calendarHead'
+  | 'calendarRow'
+  | 'calendarCell'
+  | 'calendarCellText'
+  | 'calendarCellNum'
+  | 'calendarHoliday'
+  | 'calendarHolidayText'
+
+export type DatePickerSemanticClassNames = SemanticClassNamesType<
+  DatePickerProps,
+  DatePickerSemanticName
+>
+export type DatePickerSemanticStyles = SemanticStylesType<DatePickerProps, DatePickerSemanticName>
+/** 语义化 classNames/styles 的解析结果类型，用于 context 等内部传递 */
+export type DatePickerSemanticClassNamesResolved = Partial<Record<DatePickerSemanticName, string>>
+export type DatePickerSemanticStylesResolved = Partial<
+  Record<DatePickerSemanticName, React.CSSProperties>
+>
+export type DatePickerSemantic = ComponentSemantic<
+  DatePickerSemanticClassNames,
+  DatePickerSemanticStyles
+>

@@ -52,7 +52,8 @@
     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
     "@hi-ui/use-scroll-lock": "^5.0.0-experimental.0",
     "@hi-ui/watermark": "^5.0.0-experimental.0",
-    "react-transition-group": "^4.4.5"
+     "react-transition-group": "^4.4.5",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

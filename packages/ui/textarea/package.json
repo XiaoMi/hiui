@@ -50,7 +50,8 @@
     "@hi-ui/input": "^5.0.0-experimental.1",
     "@hi-ui/use-latest": "^5.0.0-experimental.0",
     "@hi-ui/use-merge-refs": "^5.0.0-experimental.0",
-    "react-resize-detector": "^7.0.0"
+     "react-resize-detector": "^7.0.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

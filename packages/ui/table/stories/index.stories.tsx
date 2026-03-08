@@ -42,6 +42,7 @@ export * from './scrollbar.stories'
 export * from './loading.stories'
 export * from './empty.stories'
 export * from './virtual.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Display/Table',

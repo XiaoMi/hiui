@@ -57,7 +57,8 @@
     "@hi-ui/type-assertion": "^5.0.0-experimental.0",
     "@hi-ui/use-check": "^5.0.0-experimental.0",
     "@hi-ui/use-id": "^5.0.0-experimental.0",
-    "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0"
+     "@hi-ui/use-uncontrolled-state": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

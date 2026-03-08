@@ -51,7 +51,8 @@
     "@hi-ui/form": "^5.0.0-experimental.0",
     "@hi-ui/tooltip": "^5.0.0-experimental.0",
     "@hi-ui/icons": "^5.0.0-experimental.0",
-    "@hi-ui/input": "^5.0.0-experimental.1"
+     "@hi-ui/input": "^5.0.0-experimental.1",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

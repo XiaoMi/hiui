@@ -10,7 +10,13 @@ import {
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { baseFlattenTree, filterTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
@@ -102,14 +108,36 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       showIndicator = true,
       renderExtraHeader,
       renderExtraFooter,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, checkTreeSelect: checkTreeSelectConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
 
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckTreeSelectSemanticClassNames,
+      CheckTreeSelectSemanticStyles,
+      CheckTreeSelectProps
+    >({
+      classNamesList: [checkTreeSelectConfig?.classNames, classNamesProp],
+      stylesList: [checkTreeSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -386,11 +414,38 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       }
     }, [menuVisible, treeProps.expandedIds])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
       <Picker
         ref={ref}
         innerRef={pickerInnerRef}
         className={cls}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         visible={menuVisible}
         onOpen={() => {
@@ -505,7 +560,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           // 只做渲染，不做逻辑处理（比如搜索过滤后，check操作的是对过滤后的data操作，这是不符合预期的）
           <Tree
             size={'md'}
-            className={`${prefixCls}__tree`}
+            className={cx(`${prefixCls}__tree`, classNames?.tree)}
+            style={styles?.tree}
             selectable={false}
             checkable
             checkOnSelect
@@ -526,11 +582,34 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
   }
 )
 
+export type CheckTreeSelectSemanticName = PickerSemanticName | 'tree'
+export type CheckTreeSelectSemanticClassNames = SemanticClassNamesType<
+  CheckTreeSelectProps,
+  CheckTreeSelectSemanticName
+>
+export type CheckTreeSelectSemanticStyles = SemanticStylesType<
+  CheckTreeSelectProps,
+  CheckTreeSelectSemanticName
+>
+export type CheckTreeSelectSemantic = ComponentSemantic<
+  CheckTreeSelectSemanticClassNames,
+  CheckTreeSelectSemanticStyles
+>
+
 export interface CheckTreeSelectProps
   extends Omit<
-    PickerProps,
-    'data' | 'onChange' | 'value' | 'trigger' | 'scrollable' | 'header' | 'footer'
-  > {
+      PickerProps,
+      | 'data'
+      | 'onChange'
+      | 'value'
+      | 'trigger'
+      | 'scrollable'
+      | 'header'
+      | 'footer'
+      | 'classNames'
+      | 'styles'
+    >,
+    CheckTreeSelectSemantic {
   /**
    * 展示数据
    */

@@ -15,6 +15,7 @@ export * from './default-expand-all.stories'
 export * from './virtual-list.stories'
 export * from './custom-render.stories'
 export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/TreeSelect',

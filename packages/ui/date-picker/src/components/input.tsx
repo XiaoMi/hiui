@@ -32,6 +32,8 @@ const Input = ({
     weekOffset,
     locale,
     prefixCls,
+    classNames,
+    styles,
   } = useContext(DPContext)
 
   const cacheValues = useRef<string | null>(null)
@@ -93,7 +95,11 @@ const Input = ({
   }
 
   return (
-    <div className={`${prefixCls}__picker__input-container`} title={value || placeholder}>
+    <div
+      className={cx(`${prefixCls}__picker__input-container`, classNames?.inputContainer)}
+      style={styles?.inputContainer}
+      title={value || placeholder}
+    >
       <input
         type="text"
         placeholder={placeholder}
@@ -102,8 +108,10 @@ const Input = ({
         readOnly={!!(hourStep !== 1 || minuteStep !== 1 || secondStep !== 1 || inputReadOnly)}
         className={cx(
           disabled ? `${prefixCls}__picker__input--disabled` : '',
-          `${prefixCls}__picker__input`
+          `${prefixCls}__picker__input`,
+          classNames?.input
         )}
+        style={styles?.input}
         disabled={disabled}
         onChange={inputChangeEvent}
         onFocus={onFocus}
@@ -114,7 +122,12 @@ const Input = ({
           }
         }}
       />
-      <div className={`${prefixCls}__picker__input-shadow`}>{value || placeholder}</div>
+      <div
+        className={cx(`${prefixCls}__picker__input-shadow`, classNames?.inputShadow)}
+        style={styles?.inputShadow}
+      >
+        {value || placeholder}
+      </div>
     </div>
   )
 }

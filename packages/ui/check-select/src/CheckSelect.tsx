@@ -16,7 +16,13 @@ import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { times, uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
@@ -89,12 +95,33 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       label,
       showIndicator = true,
       renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
-    const { size: globalSize } = useGlobalContext()
+    const { size: globalSize, checkSelect: checkSelectConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckSelectSemanticClassNames,
+      CheckSelectSemanticStyles,
+      CheckSelectProps
+    >({
+      classNamesList: [checkSelectConfig?.classNames, classNamesProp],
+      stylesList: [checkSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
 
     // ************************** 国际化 ************************* //
 
@@ -358,12 +385,39 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
     }, [menuVisible, showData])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
-      <CheckSelectProvider value={context}>
+      <CheckSelectProvider value={{ ...context, classNames, styles }}>
         <Picker
           ref={ref}
           innerRef={pickerInnerRef}
           className={cls}
+          classNames={pickerClassNames}
+          styles={pickerStyles}
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
@@ -482,9 +536,27 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
   }
 )
 
+export type CheckSelectSemanticName = PickerSemanticName | 'option' | 'optionGroup'
+export type CheckSelectSemanticClassNames = SemanticClassNamesType<
+  CheckSelectProps,
+  CheckSelectSemanticName
+>
+export type CheckSelectSemanticStyles = SemanticStylesType<
+  CheckSelectProps,
+  CheckSelectSemanticName
+>
+export type CheckSelectSemantic = ComponentSemantic<
+  CheckSelectSemanticClassNames,
+  CheckSelectSemanticStyles
+>
+
 export interface CheckSelectProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable' | 'header' | 'footer'>,
-    UseCheckSelectProps {
+  extends Omit<
+      PickerProps,
+      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    UseCheckSelectProps,
+    CheckSelectSemantic {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
@@ -638,7 +710,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     },
     ref
   ) => {
-    const { isCheckedId, onSelect } = useCheckSelectContext()
+    const { isCheckedId, onSelect, classNames, styles } = useCheckSelectContext()
 
     const { id, disabled = false } = option
     const checked = isCheckedId(id)
@@ -653,6 +725,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     const cls = cx(
       prefixCls,
       className,
+      classNames?.option,
       checked && `${prefixCls}--checked`,
       disabled && `${prefixCls}--disabled`,
       focused && `${prefixCls}--focused`
@@ -687,7 +760,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     )
 
     return (
-      <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
+      <div ref={ref} className={cls} style={styles?.option} {...rest} onClick={handleOptionCheck}>
         {renderTitle(eventNodeRef.current, titleRender)}
       </div>
     )
@@ -708,12 +781,15 @@ export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
 >(({ prefixCls = optionGroupPrefix, className, label, depth, ...rest }, ref) => {
-  const cls = cx(prefixCls, className)
+  const { classNames, styles } = useCheckSelectContext()
+
+  const cls = cx(prefixCls, className, classNames?.optionGroup)
+  const groupStyle = styles?.optionGroup
 
   return (
     <>
       <div className={`${prefixCls}__divider`} />
-      <div ref={ref} className={cls} {...rest}>
+      <div ref={ref} className={cls} style={groupStyle} {...rest}>
         <span>{label}</span>
       </div>
     </>

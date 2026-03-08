@@ -13,6 +13,7 @@ export * from './loading.stories'
 export * from './disabled.stories'
 export * from './group.stories'
 export * from './shape.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Basic/Button',

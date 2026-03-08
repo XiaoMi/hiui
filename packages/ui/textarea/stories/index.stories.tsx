@@ -6,6 +6,7 @@ export * from './auto-size.stories'
 export * from './show-count.stories'
 export * from './disabled.stories'
 export * from './header.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Textarea',

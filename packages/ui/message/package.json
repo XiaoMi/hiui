@@ -49,7 +49,8 @@
     "@hi-ui/icons": "^5.0.0-experimental.0",
     "@hi-ui/react-utils": "^5.0.0-experimental.0",
     "@hi-ui/toast": "^5.0.0-experimental.0",
-    "react-transition-group": "^4.4.5"
+     "react-transition-group": "^4.4.5",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

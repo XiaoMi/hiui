@@ -24,7 +24,7 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
     },
     ref
   ) => {
-    const { onSelect, getSelectItemEventData } = useSelectContext()
+    const { onSelect, getSelectItemEventData, classNames, styles } = useSelectContext()
 
     const eventDataRef = useLatestRef(getSelectItemEventData(option))
     const { selected, disabled } = eventDataRef.current
@@ -37,13 +37,14 @@ export const SelectOption = forwardRef<HTMLDivElement | null, SelectOptionProps>
     const cls = cx(
       prefixCls,
       className,
+      classNames?.option,
       selected && `${prefixCls}--selected`,
       disabled && `${prefixCls}--disabled`,
       focused && `${prefixCls}--focused`
     )
 
     return (
-      <div ref={ref} className={cls} onClick={handleClick} {...rest}>
+      <div ref={ref} className={cls} style={styles?.option} onClick={handleClick} {...rest}>
         {renderTitle(prefixCls, eventDataRef.current, titleRender)}
       </div>
     )

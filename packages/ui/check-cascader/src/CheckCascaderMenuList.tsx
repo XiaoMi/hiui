@@ -46,6 +46,8 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
       checkedMode = 'ALL',
       virtual,
       onMenuListChange,
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -94,6 +96,8 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         onLoadChildren,
         disabled,
         virtual,
+        classNames,
+        styles,
       }),
       [
         expandTrigger,
@@ -105,6 +109,8 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
         onLoadChildren,
         disabled,
         virtual,
+        classNames,
+        styles,
       ]
     )
 
@@ -122,13 +128,15 @@ export const CheckCascaderMenuList = forwardRef<HTMLDivElement | null, CascaderM
     const cls = cx(
       prefixCls,
       className,
+      classNames?.menuList,
       flatted && `${prefixCls}--flatted`,
       changeOnSelect && `${prefixCls}--selectchange`
     )
+    const rootStyle = styles?.menuList
 
     return (
       <CheckCascaderProvider value={providedValue}>
-        <div ref={ref} role={role} className={cls} {...rest}>
+        <div ref={ref} role={role} className={cls} style={rootStyle} {...rest}>
           {filteredMenus.map((menu, menuIndex) => {
             const menuContent = (
               <CheckCascaderMenu
@@ -250,6 +258,14 @@ export interface CascaderMenusProps {
    * 菜单列表改变时的回调
    */
   onMenuListChange?: (menuList: FlattedCheckCascaderDataItem[][]) => void
+  /**
+   * 语义化 classNames（由 CheckCascader 传入，用于 menuList/menu/option）
+   */
+  classNames?: Partial<Record<string, string>>
+  /**
+   * 语义化 styles（由 CheckCascader 传入，用于 menuList/menu/option）
+   */
+  styles?: Partial<Record<string, React.CSSProperties>>
 }
 
 if (__DEV__) {

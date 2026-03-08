@@ -48,7 +48,8 @@
     "@hi-ui/env": "^5.0.0-experimental.0",
     "@hi-ui/icons": "^5.0.0-experimental.0",
     "@hi-ui/popover": "^5.0.0-experimental.0",
-    "@hi-ui/use-latest": "^5.0.0-experimental.0"
+     "@hi-ui/use-latest": "^5.0.0-experimental.0",
+    "@hi-ui/use-merge-semantic": "^4.0.0"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.0",

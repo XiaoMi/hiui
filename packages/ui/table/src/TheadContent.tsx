@@ -29,6 +29,8 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       stickyTop,
       stickyFooter,
       stretchHeight,
+      semanticClassNames,
+      semanticStyles,
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
@@ -52,6 +54,8 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   }
                 }
               }}
+              className={semanticClassNames?.headerRow}
+              style={semanticStyles?.headerRow}
             >
               {cols.map((col, colIndex) => {
                 const { dataKey, title, raw } = col || {}
@@ -85,6 +89,8 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     style={{
                       ...stickyColProps.style,
                       // 表头合并场景下，被合并的表头需要隐藏
+                      ...semanticStyles?.headerCell,
+                      ...semanticStyles?.cell,
                       display: col?.colSpan === 0 ? 'none' : undefined,
                       insetBlockStart: needSticky
                         ? trRefs.current[colsIndex]?.offsetTop
@@ -93,6 +99,8 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     className={cx(
                       `${prefixCls}-cell`,
                       raw.className,
+                      semanticClassNames?.headerCell,
+                      semanticClassNames?.cell,
                       isHighlightedCol(dataKey!) && `${prefixCls}-cell__col--highlight`,
                       isHoveredHighlightCol(dataKey!) &&
                         `${prefixCls}-cell__col--hovered-highlight`,
