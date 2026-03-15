@@ -4,6 +4,7 @@ $profile-prefix: '#{$component-prefix}-profile' !default;
 
 .#{$profile-prefix} {
   width: 240px;
+  background: linear-gradient(180deg, #f3f8ff 0%, #fff 28.48%);
 
   &__header {
     padding: use-spacing(8) use-spacing(8) use-spacing(4);

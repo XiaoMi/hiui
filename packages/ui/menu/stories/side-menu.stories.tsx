@@ -113,7 +113,7 @@ export const SideMenuDemo = () => {
   ])
   const [selectId, setSelectId] = React.useState<React.ReactText>('')
   const [activeId, setActiveId] = React.useState<React.ReactText>('xiaomi3')
-  const [width, setWidth] = React.useState(180)
+  const [width, setWidth] = React.useState(60)
 
   const { submenuData, activeParentId } = useSideMenuCascade({
     data,
