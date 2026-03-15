@@ -4,6 +4,7 @@ import CheckSelect from '@hi-ui/check-select'
 import Cascader from '@hi-ui/cascader'
 import DatePicker from '@hi-ui/date-picker'
 import Button from '@hi-ui/button'
+import { ClearOutlined } from '@hi-ui/icons'
 import QueryFilter, {
   FilterFieldProps,
   FilterDrawer,
@@ -155,9 +156,13 @@ export const AllFilter = () => {
               <FilterButton key="all-filter" count={filteredCount} onClick={() => setVisible(true)}>
                 全部筛选
               </FilterButton>,
-              <Button key="reset" onClick={() => setFormData(defaultFormData)}>
-                重置
-              </Button>,
+              <React.Fragment key="clear-filter">
+                {filteredCount > 0 ? (
+                  <Button icon={<ClearOutlined />} onClick={() => setFormData(defaultFormData)}>
+                    清空
+                  </Button>
+                ) : null}
+              </React.Fragment>,
             ]}
             filterFields={showedFields}
             formData={formData}

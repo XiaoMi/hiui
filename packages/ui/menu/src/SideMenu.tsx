@@ -112,9 +112,14 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                   const titleElement = currentTarget.querySelector(
                     `.${prefixCls}-item__title`
                   ) as HTMLDivElement
-                  const { scrollWidth, clientWidth } = titleElement
-
-                  if (scrollWidth > clientWidth) {
+                  if (!titleElement) {
+                    handleMouseEnter(evt, id, item)
+                    return
+                  }
+                  const { scrollWidth, clientWidth, scrollHeight, clientHeight } = titleElement
+                  // 单行溢出：scrollWidth > clientWidth；多行（如 mini 2 行）溢出：scrollHeight > clientHeight
+                  const isOverflow = scrollWidth > clientWidth || scrollHeight > clientHeight
+                  if (isOverflow) {
                     Tooltip.open(currentTarget, {
                       key: `side-menu-tooltip-${id}`,
                       title,
@@ -122,7 +127,6 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                       zIndex: 2001,
                     })
                   }
-
                   handleMouseEnter(evt, id, item)
                 }}
                 onMouseLeave={(evt) => {
@@ -151,6 +155,19 @@ export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
                   <div
                     className={cx(`${prefixCls}-item__title`, classNames?.itemTitle)}
                     style={styles?.itemTitle}
+                    ref={(el) => {
+                      if (el) {
+                        if (mini) {
+                          if (el.clientHeight > 28) {
+                            el.style.marginBlockEnd = '-28px'
+                          } else {
+                            el.style.marginBlockEnd = ''
+                          }
+                        } else {
+                          el.style.marginBlockEnd = ''
+                        }
+                      }
+                    }}
                   >
                     {title}
                   </div>
