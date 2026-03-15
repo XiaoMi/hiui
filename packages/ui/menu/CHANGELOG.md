@@ -1,5 +1,16 @@
 # @hi-ui/menu
 
+## 5.0.0-experimental.3
+
+### Minor Changes
+
+- d49302358: feat(menu): title 支持显示 2 行 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [3a7186e4b]
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.1
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes

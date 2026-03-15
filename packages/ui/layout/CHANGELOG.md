@@ -1,5 +1,15 @@
 # @hi-ui/layout
 
+## 5.0.0-experimental.3
+
+### Patch Changes
+
+- 5561e8e2b: style(layout): Sider 中 menu-item 加上间距 & Profile 加渐变背景 (5.0)
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [d49302358]
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.1
+  - @hi-ui/menu@5.0.0-experimental.3
+
 ## 5.0.0-experimental.2
 
 ### Patch Changes

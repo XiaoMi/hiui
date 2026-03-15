@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "5.0.0-experimental.2",
+  "version": "5.0.0-experimental.3",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -73,10 +73,10 @@
     "@hi-ui/icon-button": "^5.0.0-experimental.1",
     "@hi-ui/input": "^5.0.0-experimental.2",
     "@hi-ui/input-group": "^5.0.0-experimental.1",
-    "@hi-ui/layout": "^5.0.0-experimental.2",
+    "@hi-ui/layout": "^5.0.0-experimental.3",
     "@hi-ui/list": "^5.0.0-experimental.1",
     "@hi-ui/loading": "^5.0.0-experimental.1",
-    "@hi-ui/menu": "^5.0.0-experimental.2",
+    "@hi-ui/menu": "^5.0.0-experimental.3",
     "@hi-ui/message": "^5.0.0-experimental.1",
     "@hi-ui/modal": "^5.0.0-experimental.1",
     "@hi-ui/notification": "^5.0.0-experimental.1",
@@ -119,7 +119,7 @@
     "@hi-ui/upload": "^5.0.0-experimental.1",
     "@hi-ui/watermark": "^5.0.0-experimental.1",
     "@hi-ui/zen-mode": "^5.0.0-experimental.1",
-    "@hi-ui/use-merge-semantic": "^5.0.0-experimental.0"
+    "@hi-ui/use-merge-semantic": "^5.0.0-experimental.1"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=5.0.0-experimental.1",

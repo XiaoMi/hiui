@@ -1,5 +1,21 @@
 # @hi-ui/hiui
 
+## 5.0.0-experimental.3
+
+### Minor Changes
+
+- d49302358: feat(menu): title 支持显示 2 行 (5.0)
+
+### Patch Changes
+
+- 5561e8e2b: style(layout): Sider 中 menu-item 加上间距 & Profile 加渐变背景 (5.0)
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [d49302358]
+- Updated dependencies [5561e8e2b]
+  - @hi-ui/use-merge-semantic@5.0.0-experimental.1
+  - @hi-ui/menu@5.0.0-experimental.3
+  - @hi-ui/layout@5.0.0-experimental.3
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes
