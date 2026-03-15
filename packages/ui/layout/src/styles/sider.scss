@@ -102,14 +102,6 @@ $siderPrimaryColor: #2b64ff !default;
           color: #60636b;
         }
       }
-
-      .#{$menu-prefix}-submenu {
-        .#{$menu-prefix}-item {
-          &__inner {
-            margin-block-end: 0 !important;
-          }
-        }
-      }
     }
   }
 }
