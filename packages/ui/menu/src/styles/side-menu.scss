@@ -11,7 +11,6 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
   &-item {
     display: flex;
     align-items: center;
-    height: use-height-size(8);
     padding: 0 use-spacing(4) 0 use-spacing(6);
     font-size: use-text-size('normal');
     line-height: use-text-lineheight('normal');
@@ -23,6 +22,17 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
     &:hover,
     &--selected {
       background-color: rgba(#7c87a6, 0.15);
+    }
+
+    &:not(&--mini) {
+      height: use-height-size(8);
+
+      .#{$side-menu-prefix}-item__title {
+        min-width: 1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     &-wrapper {
@@ -51,34 +61,39 @@ $side-menu-prefix: '#{$component-prefix}-side-menu' !default;
       color: #7c87a6;
     }
 
-    &__title {
-      min-width: 1px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     &--mini {
       box-sizing: border-box;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: use-spacing(3) use-spacing(3) 0;
+      padding: use-spacing(3);
       width: 52px;
-      height: 48px;
+      max-height: 64px;
       color: use-color('gray', 700);
 
       .#{$side-menu-prefix}-item__icon {
         margin-inline-end: 0;
+        margin-block-end: use-spacing(3);
         font-size: use-text-size('xl');
       }
 
       .#{$side-menu-prefix}-item__title {
-        width: 200%;
-        font-size: calc(#{use-text-size('xl')} + 2px);
+        font-size: 20px;
+        line-height: 28px;
         text-align: center;
         text-indent: 0;
         transform: scale(0.5);
+        width: 200%;
+        margin-block-end: -14px;
+        transform-origin: top;
+        white-space: normal;
+        display: -webkit-box; // stylelint-disable-line
+        -webkit-box-orient: vertical; // stylelint-disable-line
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        word-break: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
