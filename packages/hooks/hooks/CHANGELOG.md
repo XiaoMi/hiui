@@ -1,5 +1,13 @@
 # @hi-ui/hooks
 
+## 5.0.0-canary.4
+
+### Patch Changes
+
+- 3a7186e4b: fix: 给 package.json 中的"exports"配置补充"types"配置 (5.0)
+- Updated dependencies [3a7186e4b]
+  - @hi-ui/use-merge-semantic@5.0.0-canary.1
+
 ## 5.0.0-canary.3
 
 ### Minor Changes

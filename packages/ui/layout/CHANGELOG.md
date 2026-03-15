@@ -1,5 +1,13 @@
 # @hi-ui/layout
 
+## 5.0.0-canary.20
+
+### Patch Changes
+
+- 5561e8e2b: style(layout): Sider 中 menu-item 加上间距 & Profile 加渐变背景 (5.0)
+- Updated dependencies [d49302358]
+  - @hi-ui/menu@5.0.0-canary.21
+
 ## 5.0.0-canary.19
 
 ### Patch Changes

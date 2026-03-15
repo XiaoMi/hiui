@@ -1,5 +1,11 @@
 # @hi-ui/utils
 
+## 5.0.0-canary.3
+
+### Patch Changes
+
+- 3a7186e4b: fix: 给 package.json 中的"exports"配置补充"types"配置 (5.0)
+
 ## 5.0.0-canary.2
 
 ### Patch Changes

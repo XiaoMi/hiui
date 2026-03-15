@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/menu",
-  "version": "5.0.0-canary.20",
+  "version": "5.0.0-canary.21",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -63,7 +63,7 @@
     "@hi-ui/use-id": "^5.0.0-canary.2",
     "@hi-ui/use-latest": "^5.0.0-canary.2",
     "@hi-ui/use-merge-refs": "^5.0.0-canary.2",
-    "@hi-ui/use-merge-semantic": "^5.0.0-canary.0",
+    "@hi-ui/use-merge-semantic": "^5.0.0-canary.1",
     "@hi-ui/use-outside-click": "^5.0.0-canary.2",
     "@hi-ui/use-resize-observer": "^5.0.0-canary.2",
     "@hi-ui/use-toggle": "^5.0.0-canary.2",

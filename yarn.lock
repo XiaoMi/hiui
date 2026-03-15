@@ -2680,13 +2680,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hi-ui/classname@^4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@hi-ui/classname/-/classname-4.0.5.tgz#e98d550065a12f250e0b5b92f7a7578f75455dc3"
-  integrity sha512-pYrWNOzTEIoI65GY+apvLWcEnwdiIiB0TCL82ib/Y8mR3oQHaF0IK+EpHTtEUH0KfWi/29e3idGanOzMN9xBAQ==
-  dependencies:
-    classnames "^2.3.1"
-
 "@hi-ui/hi-build@4.1.2":
   version "4.1.2"
   resolved "https://registry.npmjs.org/@hi-ui/hi-build/-/hi-build-4.1.2.tgz#0125cac22a7b53a92146a405fe0eb3c33da08a0e"
