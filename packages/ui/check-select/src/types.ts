@@ -58,3 +58,15 @@ export interface CheckSelectItemEventData
     CheckSelectRequiredProps {}
 
 export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined
+
+/**
+ * CheckSelect 通过 innerRef 暴露的辅助方法
+ */
+export interface CheckSelectHelper {
+  /** 全选当前列表中的可选项 */
+  checkAll: () => void
+  /** 仅显示已选项（并打开下拉，需 showOnlyShowChecked 为 true 时才有意义） */
+  showOnlyChecked: () => void
+  /** 显示全部选项（关闭“仅显示已选”的筛选） */
+  showAll: () => void
+}

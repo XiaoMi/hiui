@@ -1,4 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useImperativeHandle,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
@@ -10,6 +18,7 @@ import {
   CheckSelectDataItem,
   CheckSelectItemEventData,
   CheckSelectMergedItem,
+  CheckSelectHelper,
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
@@ -24,7 +33,7 @@ import type {
   SemanticStylesType,
 } from '@hi-ui/use-merge-semantic'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { times, uniqBy } from '@hi-ui/array-utils'
+import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -97,6 +106,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       renderExtraHeader,
       classNames: classNamesProp,
       styles: stylesProp,
+      innerRef,
       ...rest
     },
     ref
@@ -340,6 +350,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               indeterminate={showIndeterminate}
               checked={showAllChecked}
               onChange={toggleCheckAll}
+              disabled={!dropdownItems?.length}
             >
               {i18n.get('checkSelect.checkAll')}
             </Checkbox>
@@ -409,6 +420,40 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
       return acc
     }, {} as Record<string, React.CSSProperties>)
+
+    useImperativeHandle(innerRef, () => {
+      return {
+        checkAll: () => {
+          if (!showAllChecked) {
+            toggleCheckAll()
+          }
+        },
+        showOnlyChecked: () => {
+          if (!showOnlyShowChecked) return
+          if (disabled) return
+
+          setFilterItems(() => {
+            return mergedData.filter((item) => {
+              return value.includes(item.id)
+            })
+          })
+
+          menuVisibleAction.on()
+          expandedViewRef.current = 'onlyChecked'
+        },
+        showAll: () => {
+          if (!showOnlyShowChecked) return
+          if (disabled) return
+
+          if (filterItems) {
+            setFilterItems(null)
+          }
+
+          menuVisibleAction.on()
+          expandedViewRef.current = 'normal'
+        },
+      }
+    })
 
     return (
       <CheckSelectProvider value={{ ...context, classNames, styles }}>
@@ -553,7 +598,7 @@ export type CheckSelectSemantic = ComponentSemantic<
 export interface CheckSelectProps
   extends Omit<
       PickerProps,
-      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles' | 'innerRef'
     >,
     UseCheckSelectProps,
     CheckSelectSemantic {
@@ -685,6 +730,10 @@ export interface CheckSelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 提供辅助方法的内部引用
+   */
+  innerRef?: React.Ref<CheckSelectHelper>
 }
 
 // @ts-ignore
