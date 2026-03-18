@@ -423,34 +423,30 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
 
     useImperativeHandle(innerRef, () => {
       return {
-        checkAll: () => {
-          if (!showAllChecked) {
-            toggleCheckAll()
+        checkAll: (checked = true) => {
+          if (checked) {
+            if (!showAllChecked) toggleCheckAll()
+          } else {
+            if (showAllChecked) toggleCheckAll()
           }
         },
-        showOnlyChecked: () => {
+        showOnlyChecked: (onlyChecked = true) => {
           if (!showOnlyShowChecked) return
           if (disabled) return
 
-          setFilterItems(() => {
-            return mergedData.filter((item) => {
-              return value.includes(item.id)
+          if (onlyChecked) {
+            setFilterItems(() => {
+              return mergedData.filter((item) => value.includes(item.id))
             })
-          })
 
-          menuVisibleAction.on()
-          expandedViewRef.current = 'onlyChecked'
-        },
-        showAll: () => {
-          if (!showOnlyShowChecked) return
-          if (disabled) return
+            menuVisibleAction.on()
+            expandedViewRef.current = 'onlyChecked'
+          } else {
+            if (filterItems) setFilterItems(null)
 
-          if (filterItems) {
-            setFilterItems(null)
+            menuVisibleAction.on()
+            expandedViewRef.current = 'normal'
           }
-
-          menuVisibleAction.on()
-          expandedViewRef.current = 'normal'
         },
       }
     })
