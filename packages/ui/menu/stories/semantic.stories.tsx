@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Menu, { GroupMenu, SideMenu, MenuSearch } from '../src'
-import type {
+import Menu, {
+  GroupMenu,
+  SideMenu,
+  MenuSearch,
   MenuSemanticName,
   GroupMenuSemanticName,
   SideMenuSemanticName,

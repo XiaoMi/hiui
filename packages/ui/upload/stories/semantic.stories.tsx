@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Upload from '../src'
-import type { UploadSemanticName, UploadFileItem } from '../src'
+import Upload, { UploadSemanticName, UploadFileItem } from '../src'
 
 /**
  * @title 自定义样式

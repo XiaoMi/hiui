@@ -1,9 +1,7 @@
-// AIGC START
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import EmptyState from '../src'
-import type { EmptyStateSemanticName } from '../src'
+import EmptyState, { EmptyStateSemanticName } from '../src'
 
 /**
  * @title 自定义样式
@@ -77,4 +75,3 @@ export const Semantic = () => {
     </>
   )
 }
-// AIGC END

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import PageHeader from '../src'
-import type { PageHeaderSemanticName } from '../src'
+import PageHeader, { PageHeaderSemanticName } from '../src'
 
 /**
  * @title 自定义样式
