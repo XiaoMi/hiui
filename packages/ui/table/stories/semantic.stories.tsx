@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import List from '@hi-ui/list'
-import Table from '../src'
-import type { TableSemanticName } from '../src'
+import Table, { TableSemanticName } from '../src'
 
 /**
  * @title 语义化 classNames / styles

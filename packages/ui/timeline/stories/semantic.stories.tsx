@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Timeline from '../src'
-import type { TimelineSemanticName } from '../src'
+import Timeline, { TimelineSemanticName } from '../src'
 
 /**
  * @title 自定义样式

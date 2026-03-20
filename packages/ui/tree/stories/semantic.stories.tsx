@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Tree from '../src'
-import type { TreeSemanticName } from '../src'
+import Tree, { TreeSemanticName } from '../src'
 
 const treeData = [
   {

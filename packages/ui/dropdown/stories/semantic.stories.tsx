@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Dropdown from '../src'
-import type { DropdownSemanticName } from '../src'
+import Dropdown, { DropdownSemanticName } from '../src'
 
 /**
  * @title 自定义样式
