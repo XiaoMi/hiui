@@ -33,6 +33,7 @@ import VirtualList, { ListRef } from '@hi-ui/virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { PopperProps } from '@hi-ui/popper'
 
 const _role = 'tree'
 export const treePrefix = getPrefixCls(_role)
@@ -533,6 +534,10 @@ export interface TreeProps extends TreeSemantic {
    * 自定义切换器显示逻辑
    */
   shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  /**
+   * 编辑树模式下操作菜单 Popper 配置
+   */
+  actionMenuPopper?: Omit<PopperProps, 'visible' | 'attachEl'>
 }
 
 if (__DEV__) {
