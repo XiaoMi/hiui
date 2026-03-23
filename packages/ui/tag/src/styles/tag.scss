@@ -230,6 +230,36 @@ $shape-round: '#{$prefix}--shape-round' !default;
     }
   }
 
+  &--appearance-dot {
+    .#{$prefix}__content-wrapper {
+      padding: 0 !important;
+    }
+
+    .#{$prefix}__dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .#{$prefix}__content {
+      display: inline-flex;
+      align-items: center;
+      gap: use-spacing(4);
+      font-size: use-text-size('md');
+      line-height: use-text-lineheight('md');
+      color: use-color('gray', 800);
+    }
+
+    @each $key, $value in $solid-color-map {
+      &.#{$prefix}--type-#{$key} {
+        .#{$prefix}__dot {
+          background: map-get($value, 'normal');
+        }
+      }
+    }
+  }
+
   &--size-sm {
     height: use-height-size(5);
     font-size: use-text-size('sm');
