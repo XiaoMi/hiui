@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Drawer from '../src'
+import Drawer, { DrawerSemanticName } from '../src'
 import Button from '@hi-ui/button'
-import type { DrawerSemanticName } from '../src'
 
 /**
  * @title 自定义样式

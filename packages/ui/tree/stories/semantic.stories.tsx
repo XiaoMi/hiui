@@ -1,20 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Tree from '../src'
-import type { TreeSemanticName } from '../src'
-
-const treeData = [
-  {
-    id: '1',
-    title: '节点一',
-    children: [
-      { id: '1-1', title: '子节点 1-1' },
-      { id: '1-2', title: '子节点 1-2' },
-    ],
-  },
-  { id: '2', title: '节点二' },
-]
+import Tree, { TreeSemanticName } from '../src'
 
 /**
  * @title 自定义样式
@@ -22,6 +9,18 @@ const treeData = [
  */
 export const Semantic = () => {
   const [selected, setSelected] = useState<TreeSemanticName>()
+
+  const treeData = [
+    {
+      id: '1',
+      title: '节点一',
+      children: [
+        { id: '1-1', title: '子节点 1-1' },
+        { id: '1-2', title: '子节点 1-2' },
+      ],
+    },
+    { id: '2', title: '节点二' },
+  ]
 
   return (
     <>

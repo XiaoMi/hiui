@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import List from '@hi-ui/list'
-import Table from '../src'
-import type { TableSemanticName } from '../src'
+import Table, { TableSemanticName } from '../src'
 
 /**
- * @title 语义化 classNames / styles
- * @desc 通过 classNames 和 styles 对表格各区域进行细粒度样式控制，悬停右侧列表项可高亮对应区域
+ * @title 自定义样式
+ * @desc 通过 classNames 和 styles 对表格各区域进行细粒度样式控制
  */
 export const Semantic = () => {
   const [columns] = useState([

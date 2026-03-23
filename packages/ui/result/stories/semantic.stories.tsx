@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Result from '../src'
-import type { ResultSemanticName } from '../src'
+import Result, { ResultSemanticName } from '../src'
 import Button from '@hi-ui/button'
 
 /**

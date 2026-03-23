@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Descriptions from '../src'
-import type { DescriptionsSemanticName } from '../src'
+import Descriptions, { DescriptionsSemanticName } from '../src'
 
 /**
  * @title 自定义样式
