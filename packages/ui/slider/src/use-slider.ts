@@ -262,7 +262,7 @@ export const useSlider = (
 
       setInMoving(true)
       setActiveHandleIndex(handleIndex)
-      isDraggingRef.current = true // AIGC: 标记开始拖动
+      isDraggingRef.current = true
 
       // 点击 handler 滑动器时保持值不变，不触发修改
       const isHandle1 = handleElementRef.current && handleElementRef.current.contains(evt.target)

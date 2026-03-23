@@ -7,9 +7,6 @@ export * from './icon.stories'
 export * from './close.stories'
 export * from './auto-close.stories'
 export * from './custom.stories'
-// AIGC START
-export * from './semantic.stories'
-// AIGC END
 
 export default {
   title: 'FeedBack/Message',
