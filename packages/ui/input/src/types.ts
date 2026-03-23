@@ -1,6 +1,6 @@
 import { HiBaseAppearanceEnum } from '@hi-ui/core'
 
-export type InputAppearanceEnum = HiBaseAppearanceEnum | 'underline'
+export type InputAppearanceEnum = HiBaseAppearanceEnum | 'underline' | 'contained'
 
 export type InputTypeEnum =
   | 'text'

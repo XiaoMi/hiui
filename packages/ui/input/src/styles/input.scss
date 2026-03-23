@@ -416,6 +416,63 @@ $prefix: '#{$component-prefix}-input' !default;
       }
     }
 
+    &-contained {
+      .#{$prefix}__inner {
+        background-color: use-color('gray', 100);
+        border: none;
+      }
+
+      &.#{$prefix} {
+        width: auto;
+      }
+
+      .#{$prefix}__label,
+      .#{$prefix}__suffix {
+        color: use-color('gray', 700);
+      }
+
+      .#{$prefix}__label {
+        display: inline-flex;
+        align-items: center;
+        font-size: inherit;
+        text-align: center;
+        padding: 0 0 0 $input-padding-width;
+        flex-shrink: 0;
+      }
+
+      &.#{$prefix}--has-value,
+      &:not(.disabled):hover {
+        .#{$prefix}__inner {
+          background-color: use-color-mode('primary', 50);
+        }
+
+        .#{$prefix}__label,
+        .#{$prefix}__value,
+        .#{$prefix}__suffix {
+          color: use-color-mode('primary', 700);
+        }
+
+        .#{$prefix}__clear {
+          color: use-color-mode('primary', 700);
+
+          &:hover {
+            color: use-color-mode('primary', 800);
+          }
+        }
+      }
+
+      &.disabled {
+        .#{$prefix}__label,
+        .#{$prefix}__value {
+          color: use-color('gray', 600);
+        }
+
+        .#{$prefix}__suffix {
+          color: use-color('gray', 500);
+        }
+      }
+    }
+
     &-line,
     &-filled {
       .#{$prefix}__inner {

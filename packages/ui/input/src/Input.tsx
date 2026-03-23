@@ -27,6 +27,7 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       style,
       size: sizeProp,
       appearance = 'line',
+      label,
       prepend,
       append,
       prefix,
@@ -143,7 +144,8 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
       prefixCls,
       className,
       `${prefixCls}--size-${size}`,
-      `${prefixCls}--appearance-${appearance}`
+      `${prefixCls}--appearance-${appearance}`,
+      value && `${prefixCls}--has-value`
     )
 
     const outerCls = cx(
@@ -195,6 +197,13 @@ export const Input = forwardRef<HTMLInputElement | null, InputProps>(
                 style={styles?.prefix}
               >
                 {prefix}
+              </span>
+            ) : null}
+
+            {appearance === 'contained' && label ? (
+              <span className={`${prefixCls}__label`}>
+                {label}
+                {value && '：'}
               </span>
             ) : null}
 
@@ -327,6 +336,10 @@ export interface InputProps extends HiBaseHTMLFieldProps<'input'>, InputSemantic
    * 其中 `underline` 内部使用，不对外提供支持（风格去线型化：由线性过渡到面性）
    */
   appearance?: InputAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置尺寸
    */

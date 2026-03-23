@@ -90,6 +90,27 @@ export const Appearance = () => {
         ></Input>
         <br />
         <br />
+        <h2>contained</h2>
+        <Input
+          size="md"
+          appearance="contained"
+          clearable
+          label="员工工号"
+          placeholder="请输入内容"
+        ></Input>
+        <br />
+        <br />
+        <Input
+          appearance="contained"
+          size="md"
+          clearable
+          label="员工工号"
+          placeholder="请输入"
+          prepend={<ExpressionOutlined />}
+          prefix={<MessageOutlined />}
+          suffix={<AudioOutlined />}
+          append={<div>Send</div>}
+        ></Input>
       </div>
     </>
   )
