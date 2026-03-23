@@ -3,24 +3,24 @@ import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
 import Tree, { TreeSemanticName } from '../src'
 
-const treeData = [
-  {
-    id: '1',
-    title: '节点一',
-    children: [
-      { id: '1-1', title: '子节点 1-1' },
-      { id: '1-2', title: '子节点 1-2' },
-    ],
-  },
-  { id: '2', title: '节点二' },
-]
-
 /**
  * @title 自定义样式
  * @desc 通过 classNames 和 styles 属性，可以对组件进行更细粒度的样式控制
  */
 export const Semantic = () => {
   const [selected, setSelected] = useState<TreeSemanticName>()
+
+  const treeData = [
+    {
+      id: '1',
+      title: '节点一',
+      children: [
+        { id: '1-1', title: '子节点 1-1' },
+        { id: '1-2', title: '子节点 1-2' },
+      ],
+    },
+    { id: '2', title: '节点二' },
+  ]
 
   return (
     <>

@@ -7,7 +7,7 @@ import { useToggle, UseToggleAction } from '@hi-ui/use-toggle'
 import { useLatestRef } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import Input from '@hi-ui/input'
-import Popper from '@hi-ui/popper'
+import Popper, { PopperProps } from '@hi-ui/popper'
 import { CheckOutlined, CloseOutlined } from '@hi-ui/icons'
 import { TreeProps, Tree, treePrefix } from './Tree'
 import {
@@ -74,6 +74,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
     editPlaceholder: placeholder,
     fieldNames,
     actionRender,
+    actionMenuPopper,
     ...nativeTreeProps
   } = props
   const [treeData, setTreeData] = useCache(data)
@@ -124,6 +125,7 @@ export const useTreeEditProps = <T extends EditableTreeProps>(
         onExpand={tryToggleExpandedIds}
         actionRender={actionRender}
         onEditStatusChange={setEditing}
+        actionMenuPopper={actionMenuPopper}
       />
     )
   }
@@ -237,6 +239,7 @@ interface EditableTreeNodeTitleProps {
   focusTree: () => void
   actionRender?: (node: FlattedTreeNodeData, editActions: TreeEditActions) => React.ReactNode | null
   onEditStatusChange?: (editing: boolean) => void
+  actionMenuPopper?: Omit<PopperProps, 'visible' | 'attachEl'>
 }
 
 const EditableNodeMenu = (props: EditableNodeMenuProps) => {
@@ -251,6 +254,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
     onExpand,
     menuOptions: menuOptionsProp,
     actionRender,
+    actionMenuPopper,
   } = props
 
   const [menuVisible, menuVisibleAction] = useToggle(false)
@@ -345,6 +349,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
             visible={!!menuOptions && menuVisible}
             onClose={menuVisibleAction.off}
             attachEl={targetElRef}
+            {...actionMenuPopper}
           >
             <ul className={`${prefixCls}-action`}>
               {menuOptions.map((option, idx) => (
@@ -370,6 +375,7 @@ const EditableNodeMenu = (props: EditableNodeMenuProps) => {
 
 interface EditableNodeMenuProps extends EditableTreeNodeTitleProps {
   editingAction: UseToggleAction
+  actionMenuPopper?: Omit<PopperProps, 'visible' | 'attachEl'>
 }
 
 /**
