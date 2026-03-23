@@ -342,7 +342,17 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
     }, [defaultIndex, menuVisible])
 
     const renderDefaultFooter = () => {
-      const extra = renderExtraFooter ? renderExtraFooter() : null
+      const CheckAllNode = (
+        <Checkbox
+          indeterminate={showIndeterminate}
+          checked={showAllChecked}
+          onChange={toggleCheckAll}
+          disabled={!dropdownItems?.length}
+        >
+          {i18n.get('checkSelect.checkAll')}
+        </Checkbox>
+      )
+      const extra = renderExtraFooter ? renderExtraFooter(CheckAllNode) : null
       if (showCheckAll) {
         return (
           <>
@@ -669,7 +679,7 @@ export interface CheckSelectProps
   /**
    * 自定义下拉菜单底部渲染
    */
-  renderExtraFooter?: () => React.ReactNode
+  renderExtraFooter?: (CheckAllNode?: React.ReactNode) => React.ReactNode
   /**
    * 自定义下拉菜单顶部渲染
    */
