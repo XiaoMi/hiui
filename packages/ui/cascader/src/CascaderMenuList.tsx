@@ -63,6 +63,27 @@ export const CascaderMenu = ({
     itemHeight: 32,
   }
 
+  const activeNodeRef = useRef<HTMLLIElement>()
+  const [activeNode, setActiveNode] = useState<HTMLLIElement | null>(null)
+  const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (activeNode) {
+      timeoutId.current = setTimeout(() => {
+        scrollIntoView(activeNode!, {
+          scrollMode: 'if-needed',
+          block: 'center',
+        })
+      }, 100)
+    }
+
+    return () => {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current)
+      }
+    }
+  }, [activeNode, activeNodeRef, virtual])
+
   return (
     <ul className={cls} style={menuStyle} role={role}>
       {isArrayNonEmpty(menu) ? (
@@ -74,7 +95,14 @@ export const CascaderMenu = ({
           </VirtualList>
         ) : (
           menu.map((option) => {
-            return <MenuItem key={option.id} option={option} prefixCls={prefixCls} />
+            return (
+              <MenuItem
+                key={option.id}
+                option={option}
+                prefixCls={prefixCls}
+                setActiveNode={setActiveNode}
+              />
+            )
           })
         )
       ) : null}
@@ -87,8 +115,9 @@ const MenuItem = forwardRef<
   {
     option: FlattedCascaderDataItem
     prefixCls: string
+    setActiveNode?: React.Dispatch<React.SetStateAction<HTMLLIElement | null>>
   }
->(({ option, prefixCls }, ref) => {
+>(({ option, prefixCls, setActiveNode }, ref) => {
   const {
     flatted,
     disabled: disabledContext,
@@ -119,7 +148,11 @@ const MenuItem = forwardRef<
 
   return (
     <li
-      ref={ref}
+      ref={(node) => {
+        if (node && active) {
+          setActiveNode?.(node)
+        }
+      }}
       key={option.id}
       role="menu-item"
       className={`${prefixCls}-item`}
