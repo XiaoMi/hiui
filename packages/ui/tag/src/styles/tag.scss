@@ -118,7 +118,7 @@ $line-color-map: (
 $filled-color-map: (
   'primary': (
     'color': use-color-mode('primary', 800),
-    'background':use-color-mode('primary', 200),
+    'background':use-color-mode('primary', 100),
     'hover-background':use-color-mode('primary', 100),
     'divider': use-color-mode('primary', 50)
   ),
