@@ -16,6 +16,8 @@ export const Editable = () => {
         <ActionTree
           expandOnSelect
           editPlaceholder="请填写菜单"
+          // 操作菜单 Popper 配置
+          actionMenuPopper={{}}
           menuOptions={[
             {
               type: 'addChildNode',

@@ -22,7 +22,15 @@ export const ExtraRender = () => {
           clearable={false}
           data={data}
           renderExtraHeader={() => <div style={{ padding: '10px 14px' }}>custom header</div>}
-          renderExtraFooter={() => 'custom footer'}
+          renderExtraFooter={(CheckAllNode) => {
+            return (
+              <div>
+                <div>custom title</div>
+                {CheckAllNode}
+                <div>custom footer</div>
+              </div>
+            )
+          }}
         />
       </div>
     </>

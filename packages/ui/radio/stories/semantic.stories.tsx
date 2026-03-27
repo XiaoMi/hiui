@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Radio from '../src'
-import type { RadioSemanticName } from '../src'
+import Radio, { RadioSemanticName } from '../src'
 
 /**
  * @title 自定义样式

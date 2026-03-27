@@ -40,11 +40,6 @@ export const Row: React.FC<RowProps> = (props) => {
   )
 }
 
-import type {
-  DescriptionsSemanticClassNames,
-  DescriptionsSemanticStyles,
-} from './Descriptions'
-
 export interface RowProps {
   prefixCls: string
   vertical: boolean
@@ -58,10 +53,8 @@ export interface RowProps {
   rootLabelWidth?: React.ReactText
   cellColumnGap?: React.ReactText
   contentPosition?: ContentPosition
-  // AIGC START
   cellClassNames?: Partial<Record<DescriptionsSemanticName, string>>
   cellStyles?: Partial<Record<DescriptionsSemanticName, React.CSSProperties>>
-  // AIGC END
 }
 
 interface CellConfig {

@@ -108,6 +108,39 @@ export const Appearance = () => {
           玫瑰红
         </Tag>
       </div>
+      <h2>dot 点状</h2>
+      <div style={{ display: 'flex', gap: 12 }}>
+        <Tag type="default" appearance="dot">
+          默认色
+        </Tag>
+        <Tag type="primary" appearance="dot">
+          主题色
+        </Tag>
+        <Tag type="success" appearance="dot">
+          成功色
+        </Tag>
+        <Tag type="warning" appearance="dot">
+          警告色
+        </Tag>
+        <Tag type="danger" appearance="dot">
+          危险色
+        </Tag>
+        <Tag type="yellow" appearance="dot">
+          黄色
+        </Tag>
+        <Tag type="ultramarine" appearance="dot">
+          深蓝色
+        </Tag>
+        <Tag type="skyblue" appearance="dot">
+          天蓝色
+        </Tag>
+        <Tag type="purple" appearance="dot">
+          紫色
+        </Tag>
+        <Tag type="rosered" appearance="dot">
+          玫瑰红
+        </Tag>
+      </div>
     </>
   )
 }

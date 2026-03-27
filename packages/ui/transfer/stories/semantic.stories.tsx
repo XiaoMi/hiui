@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Transfer from '../src'
-import type { TransferSemanticName } from '../src'
+import Transfer, { TransferSemanticName } from '../src'
 
 const data = [
   { id: '1', title: '选项一' },

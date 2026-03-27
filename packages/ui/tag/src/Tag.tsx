@@ -169,6 +169,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
               ref={contentRef}
               onDoubleClick={editable ? handleDoubleClick : undefined}
             >
+              {appearance === 'dot' ? <i className={`${prefixCls}__dot`} /> : null}
               {isInEdit ? editValueCache : render(children as React.ReactText, triggerEdit)}
             </div>
             {editable && isInEdit && (
@@ -225,7 +226,7 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * 外观
    * @default 'solid'
    */
-  appearance?: 'line' | 'solid' | 'filled'
+  appearance?: 'line' | 'solid' | 'filled' | 'dot'
   /**
    * 形状
    * @default 'square'

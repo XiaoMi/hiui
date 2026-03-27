@@ -640,6 +640,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     display: inline-flex;
     flex-direction: column;
     height: 100%;
+    justify-content: center;
     vertical-align: middle;
     align-items: center;
 
@@ -662,13 +663,13 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
       &:first-child {
         svg {
-          inset-block-end: -3px;
+          inset-block-end: -4px;
         }
       }
 
       &:last-child {
         svg {
-          inset-block-start: -3px;
+          inset-block-start: -4px;
         }
       }
 

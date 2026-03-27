@@ -122,6 +122,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       showCount && `${prefixCls}-wrapper--show-count`
     )
 
+    const textareaProps = getTextareaProps(rest, ref)
+
     const textareaNode = (
       <div className={cls} style={{ ...style, ...styles?.root }}>
         <div
@@ -141,9 +143,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
             </div>
           ) : null}
           <textarea
-            {...getTextareaProps(rest, ref)}
+            {...textareaProps}
             className={cx(`${prefixCls}__text`, classNames?.text)}
-            style={styles?.text}
+            style={{ ...styles?.text, ...textareaProps.style }}
           />
         </div>
         <div className={cx(`${prefixCls}__count`, classNames?.count)} style={styles?.count}>
