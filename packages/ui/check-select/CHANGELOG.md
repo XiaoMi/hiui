@@ -1,5 +1,12 @@
 # @hi-ui/check-select
 
+## 5.0.0-canary.21
+
+### Minor Changes
+
+- dc780205a: feat(check-select): 添加辅助方法 (5.0)
+- ebabba8fd: feat(check-select): renderExtraFooter 回调返回 CheckAllNode 参数 (5.0)
+
 ## 5.0.0-canary.20
 
 ### Minor Changes

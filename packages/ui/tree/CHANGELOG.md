@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.14
+
+### Minor Changes
+
+- e25399be4: feat(tree): add actionMenuPopper api (5.0)
+
 ## 5.0.0-canary.13
 
 ### Minor Changes

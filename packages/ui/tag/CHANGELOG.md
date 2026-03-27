@@ -1,5 +1,11 @@
 # @hi-ui/tag
 
+## 5.0.0-canary.14
+
+### Minor Changes
+
+- 97c34c951: feat(tag): add dot appearance (5.0)
+
 ## 5.0.0-canary.13
 
 ### Patch Changes

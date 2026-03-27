@@ -1,5 +1,33 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.52
+
+### Minor Changes
+
+- dc780205a: feat(check-select): 添加辅助方法 (5.0)
+- e25399be4: feat(tree): add actionMenuPopper api (5.0)
+- 97c34c951: feat(tag): add dot appearance (5.0)
+- ebabba8fd: feat(check-select): renderExtraFooter 回调返回 CheckAllNode 参数 (5.0)
+- bf1174ed8: feat(cascader): 每次打开选择面板时自动定位到已选节点位置 (5.0)
+
+### Patch Changes
+
+- 96aeb5a9a: fix(table): fix sorter ui bug (5.0)
+- ebee14cb8: fix(textarea): 修复设置 minRows 无效问题 (5.0)
+- Updated dependencies [dc780205a]
+- Updated dependencies [e25399be4]
+- Updated dependencies [97c34c951]
+- Updated dependencies [ebabba8fd]
+- Updated dependencies [96aeb5a9a]
+- Updated dependencies [ebee14cb8]
+- Updated dependencies [bf1174ed8]
+  - @hi-ui/check-select@5.0.0-canary.21
+  - @hi-ui/tree@5.0.0-canary.14
+  - @hi-ui/tag@5.0.0-canary.14
+  - @hi-ui/table@5.0.0-canary.32
+  - @hi-ui/textarea@5.0.0-canary.16
+  - @hi-ui/cascader@5.0.0-canary.25
+
 ## 5.0.0-canary.51
 
 ### Minor Changes

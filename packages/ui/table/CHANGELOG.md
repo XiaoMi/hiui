@@ -1,5 +1,11 @@
 # @hi-ui/table
 
+## 5.0.0-canary.32
+
+### Patch Changes
+
+- 96aeb5a9a: fix(table): fix sorter ui bug (5.0)
+
 ## 5.0.0-canary.31
 
 ### Minor Changes

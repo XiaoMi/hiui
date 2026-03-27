@@ -1,5 +1,11 @@
 # @hi-ui/cascader
 
+## 5.0.0-canary.25
+
+### Minor Changes
+
+- bf1174ed8: feat(cascader): 每次打开选择面板时自动定位到已选节点位置 (5.0)
+
 ## 5.0.0-canary.24
 
 ### Minor Changes

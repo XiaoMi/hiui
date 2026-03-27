@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -8,6 +8,7 @@ import { useCascaderContext } from './context'
 import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from './types'
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
+import scrollIntoView from 'scroll-into-view-if-needed'
 import VirtualList from '@hi-ui/virtual-list'
 
 const menuListPrefix = getPrefixCls('cascader-menu-list')
