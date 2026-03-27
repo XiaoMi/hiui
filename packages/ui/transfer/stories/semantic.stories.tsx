@@ -25,7 +25,7 @@ export const Semantic = () => {
           <Col span={18}>
             <Transfer
               data={data}
-              defaultTargetIds={['2']}
+              targetIds={['2']}
               title={['源', '目标']}
               classNames={{
                 root: 'my-transfer__root',

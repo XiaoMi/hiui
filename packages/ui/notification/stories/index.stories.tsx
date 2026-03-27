@@ -10,7 +10,6 @@ export * from './action.stories'
 export * from './size.stories'
 export * from './custom.stories'
 export * from './direction.stories'
-export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/Notification',
