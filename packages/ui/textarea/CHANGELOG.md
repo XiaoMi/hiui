@@ -1,5 +1,11 @@
 # @hi-ui/textarea
 
+## 5.0.0-experimental.3
+
+### Patch Changes
+
+- ebee14cb8: fix(textarea): 修复设置 minRows 无效问题 (5.0)
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes

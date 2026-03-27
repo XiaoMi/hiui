@@ -1,5 +1,11 @@
 # @hi-ui/tree
 
+## 5.0.0-experimental.3
+
+### Minor Changes
+
+- e25399be4: feat(tree): add actionMenuPopper api (5.0)
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes

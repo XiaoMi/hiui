@@ -1,5 +1,17 @@
 # @hi-ui/schema-editable-table
 
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- Updated dependencies [97c34c951]
+  - @hi-ui/tag@5.0.0-experimental.2
+  - @hi-ui/schema-fields@4.0.0-experimental.11
+  - @hi-ui/schema-utils@4.0.0-experimental.6
+  - @hi-ui/schema-types@4.0.0-experimental.4
+  - @hi-ui/schema-core@4.0.0-experimental.9
+  - @hi-ui/schema-action-trigger@4.0.0-experimental.6
+
 ## 4.0.0-experimental.6
 
 ### Patch Changes

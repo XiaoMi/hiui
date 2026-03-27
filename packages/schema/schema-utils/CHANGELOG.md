@@ -1,5 +1,12 @@
 # @hi-ui/schema-utils
 
+## 4.0.0-experimental.6
+
+### Patch Changes
+
+- Updated dependencies [bf1174ed8]
+  - @hi-ui/cascader@5.0.0-experimental.3
+
 ## 4.0.0-experimental.5
 
 ### Patch Changes
