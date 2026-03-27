@@ -118,7 +118,7 @@ $line-color-map: (
 $filled-color-map: (
   'primary': (
     'color': use-color-mode('primary', 800),
-    'background':use-color-mode('primary', 200),
+    'background':use-color-mode('primary', 100),
     'hover-background':use-color-mode('primary', 100),
     'divider': use-color-mode('primary', 50)
   ),
@@ -225,6 +225,36 @@ $shape-round: '#{$prefix}--shape-round' !default;
         &.#{$prefix}--hover-enable:hover {
           color: map-get($value, 'text-hover');
           border-color: map-get($value, 'border-hover');
+        }
+      }
+    }
+  }
+
+  &--appearance-dot {
+    .#{$prefix}__content-wrapper {
+      padding: 0 !important;
+    }
+
+    .#{$prefix}__dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .#{$prefix}__content {
+      display: inline-flex;
+      align-items: center;
+      gap: use-spacing(4);
+      font-size: use-text-size('md');
+      line-height: use-text-lineheight('md');
+      color: use-color('gray', 800);
+    }
+
+    @each $key, $value in $solid-color-map {
+      &.#{$prefix}--type-#{$key} {
+        .#{$prefix}__dot {
+          background: map-get($value, 'normal');
         }
       }
     }
