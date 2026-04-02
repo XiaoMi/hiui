@@ -179,6 +179,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             flattedNode.title = getKeyFields(raw, 'title')
             flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
             flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+            flattedNode.checkable = raw.checkable !== false
 
             return flattedNode
           },
@@ -338,18 +339,17 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         tryChangeValue(
           flattedData
             .filter((item) => {
-              if (!item.disabled) {
-                // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
-                if (checkedMode === 'CHILD') {
-                  return !item.children
-                }
-                if (checkedMode === 'PARENT') {
-                  return item.depth === 0
-                }
-                return true
+              if (item.disabled || item.checkable === false) {
+                return false
               }
-
-              return false
+              // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
+              if (checkedMode === 'CHILD') {
+                return !item.children
+              }
+              if (checkedMode === 'PARENT') {
+                return item.depth === 0
+              }
+              return true
             })
             .map(({ id }: any) => id),
           null,
@@ -469,7 +469,9 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             customRenderContent
           ) : (
             <TagInputMock
-              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
+              style={{
+                maxWidth: appearance === 'contained' ? '360px' : undefined,
+              }}
               {...tagInputProps}
               size={size}
               label={label}

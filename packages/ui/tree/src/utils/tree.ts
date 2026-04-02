@@ -32,6 +32,7 @@ export const flattenTreeData = (treeData: TreeDataItem[], fieldNames: any = EMPT
       node.title = getKeyFields(raw, 'title')
       node.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
       node.disabled = getKeyFields(raw, 'disabled') ?? false
+      node.checkable = raw.checkable !== false
 
       // 祖先节点顺序由下至上
       return node

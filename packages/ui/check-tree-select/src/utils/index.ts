@@ -173,11 +173,21 @@ export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[
     }
   })
 
+  const nonCheckableCount = flattedData.filter((item) => item.disabled || item.checkable === false)
+    .length
+
+  const onlyNonCheckableLeft =
+    treeIdsSet.size > 0 &&
+    [...treeIdsSet].every((id) => {
+      const n = flattedData.find((item) => item.id === id)
+      return n && (n.disabled || n.checkable === false)
+    })
+
   return [
-    hasValue && treeIdsSet.size === 0,
-    hasValue && treeIdsSet.size > 0,
+    hasValue && (treeIdsSet.size === 0 || onlyNonCheckableLeft),
+    hasValue && treeIdsSet.size > 0 && !onlyNonCheckableLeft,
     // 该值用来判断剩余未选中的节点是否都是 disabled 的
     // 如果为 true 则表示可选值都已选中
-    treeIdsSet.size === flattedData.filter((item) => item.disabled).length,
+    treeIdsSet.size === nonCheckableCount,
   ]
 }
