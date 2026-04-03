@@ -141,13 +141,21 @@ function fillCheck(
       if (visitedIds.has(id)) return
 
       if (isArrayNonEmpty(children)) {
-        const shouldChecked = !children.some((child: any) => {
+        // 可勾选子节点需在 checkedIds；disabled / checkable:false 但有子树时走 visitedIds；
+        // checkable:false 且无子节点（纯展示叶）不阻塞父级全选
+        const childFails = (child: any) => {
+          if (!allowCheck(child)) {
+            if (isArrayNonEmpty(child.children)) {
+              return visitedIds.has(child.id) ? !visitedIds.get(child.id) : true
+            }
+            return false
+          }
           if (visitedIds.has(child.id)) {
             return !visitedIds.get(child.id)
           }
-
           return !checkedIdsSet.has(child.id)
-        })
+        }
+        const shouldChecked = !children.some(childFails)
 
         visitedIds.set(id, shouldChecked)
 
