@@ -129,6 +129,22 @@ export const genNewDates = (currentDates: moment.Moment[], newDate: moment.Momen
 }
 
 /**
+ * 日历格返回的日期多为 00:00:00；showTime 下切换日期时应保留面板上已有的时分秒
+ */
+export const mergeCalendarDateKeepTime = (
+  calendarDate: moment.Moment,
+  timeSource: moment.Moment | null | undefined
+): moment.Moment => {
+  if (!timeSource || !timeSource.isValid()) return calendarDate.clone()
+  return calendarDate.clone().set({
+    hour: timeSource.hour(),
+    minute: timeSource.minute(),
+    second: timeSource.second(),
+    millisecond: timeSource.millisecond(),
+  })
+}
+
+/**
  * 生成 renderDates 用于 Calender(Range) 渲染时的基础时间
  * @param {Array} dates 原始数据
  * @param {String} type 选择器类型

@@ -6,7 +6,14 @@ import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { getView, parseRenderDates, genNewDates, toUtcTime, parseValue } from '../utils'
+import {
+  getView,
+  parseRenderDates,
+  genNewDates,
+  mergeCalendarDateKeepTime,
+  toUtcTime,
+  parseValue,
+} from '../utils'
 import { getBelongWeekBoundary } from '../utils/week'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
@@ -14,6 +21,11 @@ import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import { CalendarViewEnum } from '../types'
+import {
+  getShowTimeDefaultMoment,
+  getShowTimeDefaultOpenValue,
+  isShowTimeEnabled,
+} from '../utils/showTime'
 import { Footer } from './footer'
 
 const RangePanel = () => {
@@ -51,10 +63,21 @@ const RangePanel = () => {
     classNames,
     styles,
   } = useContext(DPContext)
+  const showTimeEnabled = isShowTimeEnabled(showTime)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState<CalendarViewEnum[]>([getView(type), getView(type)])
   const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
+  const getDateWithTime = useCallback(
+    (date: moment.Moment, index: number) => {
+      if (!showTimeEnabled) return date
+      const source = outDate[index]
+        ? calRenderDates[index]
+        : getShowTimeDefaultMoment(showTime, index) || calRenderDates[index]
+      return source ? mergeCalendarDateKeepTime(date, source) : date
+    },
+    [calRenderDates, outDate, showTime, showTimeEnabled]
+  )
   const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,
     end: null,
@@ -135,16 +158,13 @@ const RangePanel = () => {
   /**
    * Header 部分点击事件
    */
-  const changeViewEvent = useCallback(
-    (uIndex) => {
-      setViews((pre) => {
-        const p = [...pre]
-        p[uIndex] = 'year'
-        return p
-      })
-    },
-    [type]
-  )
+  const changeViewEvent = (uIndex: number) => {
+    setViews((pre) => {
+      const p = [...pre]
+      p[uIndex] = 'year'
+      return p
+    })
+  }
 
   const setRanges = (date: moment.Moment, panelIndex: number = 0) => {
     const newRange = { ...range }
@@ -211,18 +231,18 @@ const RangePanel = () => {
               ? endOfMonth
               : endOfWeek
 
-          onPick([rangeStart, rangeEnd], showTime)
+          onPick([rangeStart, rangeEnd], showTimeEnabled)
         } else {
           onPick(
             [
               getBelongWeekBoundary(newRange.start!, weekOffset, true),
               getBelongWeekBoundary(newRange.end!, weekOffset, false),
             ],
-            showTime
+            showTimeEnabled
           )
         }
       } else {
-        onPick([newRange.start, newRange.end], needConfirm || showTime)
+        onPick([newRange.start, newRange.end], needConfirm || showTimeEnabled)
       }
     } else {
       newRange.selecting = true
@@ -247,7 +267,9 @@ const RangePanel = () => {
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
     if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
-      setRanges(date, uIndex)
+      const dateForRange =
+        showTimeEnabled && views[uIndex] === 'date' ? getDateWithTime(date, uIndex) : date
+      setRanges(dateForRange, uIndex)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)
@@ -357,7 +379,8 @@ const RangePanel = () => {
     )
   }
   const onArrowEvent = (date: moment.Moment, index: number) => {
-    const _innerDates = genNewDates(calRenderDates, date, index)
+    const dateToApply = showTimeEnabled ? getDateWithTime(date, index) : date
+    const _innerDates = genNewDates(calRenderDates, dateToApply, index)
     if (type.includes('range') && _innerDates[0].isSameOrAfter(_innerDates[1], 'month')) {
       return
     }
@@ -442,13 +465,18 @@ const RangePanel = () => {
     `theme__${theme}`,
     type.includes('range') && `${prefixCls}__panel--range`,
     type === 'timeperiod' && `${prefixCls}__panel--timeperiod`,
-    (showTime || type === 'timeperiod' || footerRender || needConfirm) &&
+    (showTimeEnabled || type === 'timeperiod' || footerRender || needConfirm) &&
       `${prefixCls}__panel--noshadow`,
     classNames?.panel
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
-  const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
+  const timePickerData = useTimePickerData(
+    calRenderDates,
+    timePickerFormat,
+    outDate,
+    getShowTimeDefaultOpenValue(showTime)
+  )
 
   return (
     <React.Fragment>
@@ -531,7 +559,7 @@ const RangePanel = () => {
         </div>
       </div>
       {/* 目前不会执行到该逻辑 */}
-      {type === 'daterange' && showTime && (
+      {type === 'daterange' && showTimeEnabled && (
         <div
           className={`${prefixCls}-old ${
             !isDisableFooter ? `${prefixCls}__footer-old--disable` : ''
@@ -571,7 +599,7 @@ const RangePanel = () => {
         <Footer
           disabled={!outDate[0]}
           onConfirmButtonClick={() => {
-            onPick([range.start, range.end], needConfirm ? false : showTime)
+            onPick([range.start, range.end], needConfirm ? false : showTimeEnabled)
             onConfirm?.([range.start, range.end].map((item) => item?.toDate()) as Date[])
           }}
         />
