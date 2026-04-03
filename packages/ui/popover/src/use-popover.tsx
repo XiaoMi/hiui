@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { PopoverTriggerActionEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { omitPopperOverlayProps, PopperJS, PopperOverlayProps } from '@hi-ui/popper'
@@ -25,23 +25,25 @@ export const usePopover = ({
   // TODO: 移除 popper，使用 hook 重写
   const [popper, rest] = omitPopperOverlayProps(restProps) as any
 
+  /** 为 true 表示本次打开/关闭已由 visibleAction / useUncontrolledToggle 路径触发过回调，避免与 prop 同步 effect 重复调用 */
+  const openFromActionRef = useRef(false)
+  const closeFromActionRef = useRef(false)
+  const onOpenLatest = useLatestCallback(onOpen)
+  const onCloseLatest = useLatestCallback(onClose)
+
   const [visible, visibleAction] = useUncontrolledToggle({
     defaultVisible: false,
     visible: visibleProp,
-    onOpen,
+    onOpen: () => {
+      openFromActionRef.current = true
+      onOpenLatest()
+    },
     onClose: () => {
       clearToggleTimer()
-      onClose?.()
+      closeFromActionRef.current = true
+      onCloseLatest()
     },
   })
-
-  const onOpenLatestCallback = useLatestCallback(onOpen)
-
-  useEffect(() => {
-    if (visible) {
-      onOpenLatestCallback?.()
-    }
-  }, [visible, onOpenLatestCallback])
 
   const { start: startOpenTimer, clear: clearOpenTimer } = useTimeout(() => {
     visibleAction.on()
@@ -56,6 +58,32 @@ export const usePopover = ({
     clearOpenTimer()
     clearCloseTimer()
   }, [clearOpenTimer, clearCloseTimer])
+
+  /** null 表示尚未跑过同步 effect，用于首屏 visible===true 时仍能触发 onOpen */
+  const prevVisibleRef = useRef<boolean | null>(null)
+
+  /** 非受控时 visible 只可能由 visibleAction 更新，onOpen/onClose 已由 useUncontrolledToggle 触发；此处仅补受控下「只改 prop」的同步 */
+  const isControlled = visibleProp !== undefined
+
+  useEffect(() => {
+    const prev = prevVisibleRef.current
+    if (prev !== true && visible === true) {
+      if (openFromActionRef.current) {
+        openFromActionRef.current = false
+      } else if (isControlled) {
+        onOpenLatest()
+      }
+    }
+    if (prev === true && visible === false) {
+      if (closeFromActionRef.current) {
+        closeFromActionRef.current = false
+      } else if (isControlled) {
+        clearToggleTimer()
+        onCloseLatest()
+      }
+    }
+    prevVisibleRef.current = visible
+  }, [visible, isControlled, clearToggleTimer, onOpenLatest, onCloseLatest])
 
   useUnmountEffect(clearToggleTimer)
 
