@@ -64,5 +64,8 @@ const allowCheck = (targetItem: TreeNodeEventData) => {
   if (targetItem.disabled) {
     return false
   }
+  if (targetItem.checkable === false) {
+    return false
+  }
   return true
 }

@@ -23,6 +23,11 @@ export interface CheckTreeSelectDataItem extends HiBaseDataItem {
    * 是否为叶子节点，当 children 为空数组也表示为叶子结点
    */
   isLeaf?: boolean
+  /**
+   * 节点是否展示复选框；为 `false` 时不展示复选框，且该节点不可被勾选（常用于仅作分组/展开的节点）
+   * @default true
+   */
+  checkable?: boolean
 }
 
 export interface FlattedCheckTreeSelectDataItem extends CheckTreeSelectDataItem {
@@ -79,6 +84,11 @@ export interface CheckTreeSelectDataSource<T = any> {
   transformResponse?: (response: object) => T
 }
 
-export interface CheckTreeSelectItemEventData extends TreeNodeEventData {}
+export interface CheckTreeSelectItemEventData extends TreeNodeEventData {
+  /**
+   * 节点是否展示复选框（与数据项 `checkable` 一致，由 Tree 扁平化后透传）
+   */
+  checkable?: boolean
+}
 
 export type CheckTreeSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined

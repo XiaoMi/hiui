@@ -34,6 +34,10 @@ $prefix: '#{$component-prefix}-tree' !default;
     margin: 0 use-spacing(1);
   }
 
+  &--no-checkbox:not(&--disabled) {
+    cursor: default;
+  }
+
   // 用于节点选中涂色
   &__wrap {
     display: flex;
