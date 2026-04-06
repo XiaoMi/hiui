@@ -38,7 +38,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
   } = props
   const {
     draggable = false,
-    checkable = false,
+    checkable: treeCheckable = false,
     checkOnSelect,
     onSelect,
     onExpand,
@@ -239,6 +239,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     [prefixCls, classNames?.itemTitle, styles?.itemTitle]
   )
 
+  const isNodeCheckable = node.checkable !== false
+
   const cls = cx(
     prefixCls,
     className,
@@ -252,7 +254,8 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     semiChecked && `${prefixCls}--checkbox-indeterminate`,
     loading && `${prefixCls}--loading`,
     isLeaf && `${prefixCls}--leaf`,
-    !isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
+    !isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`,
+    treeCheckable && !isNodeCheckable && `${prefixCls}--no-checkbox`
   )
 
   return (
@@ -272,8 +275,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         tabIndex={0}
         onFocus={() => onFocus?.(eventNodeRef.current)}
         onClick={(evt) => {
+          const canToggleCheckOnSelect = eventNodeRef.current.checkable !== false
           onSelect?.(eventNodeRef.current)
-          if (checkOnSelect) {
+          if (checkOnSelect && canToggleCheckOnSelect) {
             onCheck?.(eventNodeRef.current, !checked)
           }
           if (expandOnSelect) {
@@ -301,7 +305,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
 
         {renderCheckbox(
           eventNodeRef.current,
-          checkable,
+          treeCheckable,
           prefixCls,
           disabled,
           checked,
@@ -420,14 +424,22 @@ const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
  */
 const renderCheckbox = (
   node: TreeNodeEventData,
-  checkable: boolean,
+  treeCheckable: boolean,
   prefixCls: string,
   disabled?: boolean,
   checked?: boolean,
   semiChecked?: boolean,
   onCheck?: (checkedNode: TreeNodeEventData, checked: boolean) => void
 ) => {
-  return checkable ? (
+  const isNodeCheckable = node.checkable !== false
+  if (!treeCheckable) {
+    return null
+  }
+  // 节点 checkable 为 false 时不占复选框列，避免隐藏 Checkbox 仍占位
+  if (!isNodeCheckable) {
+    return null
+  }
+  return (
     <Checkbox
       indeterminate={semiChecked}
       checked={checked}
@@ -439,7 +451,7 @@ const renderCheckbox = (
       }}
       className={`${prefixCls}__checkbox`}
     />
-  ) : null
+  )
 }
 
 /**

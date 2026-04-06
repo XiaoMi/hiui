@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import { Pagination } from '../src'
-import type { PaginationSemanticName } from '../src/DefaultPagination'
+import { Pagination, PaginationSemanticName } from '../src'
 
 /**
  * @title 自定义样式

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Input from '../src'
-import type { InputSemanticName } from '../src/Input'
+import Input, { InputSemanticName } from '../src'
 
 /**
  * @title 自定义样式
