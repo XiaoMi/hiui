@@ -1,7 +1,7 @@
 import React from 'react'
 import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { PopperOverlayProps } from '@hi-ui/popper'
-import { TimePickerPanelType } from '@hi-ui/time-picker'
+import { TimePickerPanelType, TimePickerValue } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
 import { Moment } from 'moment'
 import type {
@@ -163,10 +163,11 @@ export interface DatePickerProps
    */
   clearable?: boolean
   /**
-   * 是否在日期选择器中显示时间选择器，在使用时请注意 format 的设置
+   * 是否在日期选择器中显示时间选择器，在使用时请注意 format 的设置。
+   * 传入对象时等价于开启时间选择，且可通过 `defaultOpenValue` 在未选择日期时指定时间列的默认展示（与 `defaultPickerValue` 独立，仅影响时间滚轮）。
    * @default false
    */
-  showTime?: boolean
+  showTime?: boolean | { defaultOpenValue?: TimePickerValue[] | TimePickerValue }
   /**
    * 时间段的间隔，以分钟为单位
    * @default 240

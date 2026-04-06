@@ -163,13 +163,19 @@ function fillCheck(
       if (visitedIds.has(id)) return
 
       if (isArrayNonEmpty(children)) {
-        const shouldChecked = !children.some((child: any) => {
+        const childFails = (child: any) => {
+          if (!allowCheck(child)) {
+            if (isArrayNonEmpty(child.children)) {
+              return visitedIds.has(child.id) ? !visitedIds.get(child.id) : true
+            }
+            return false
+          }
           if (visitedIds.has(child.id)) {
             return !visitedIds.get(child.id)
           }
-
           return !checkedIdsSet.has(child.id)
-        })
+        }
+        const shouldChecked = !children.some(childFails)
 
         visitedIds.set(id, shouldChecked)
 

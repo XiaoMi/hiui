@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col } from '@hi-ui/grid'
 import List from '@hi-ui/list'
-import Modal from '../src'
-import type { ModalSemanticName } from '../src/Modal'
+import Modal, { ModalSemanticName } from '../src'
 
 /**
  * @title 自定义样式
