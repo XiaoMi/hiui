@@ -5,6 +5,7 @@ import PickerIcon from './picker-icon'
 import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
+import { isShowTimeEnabled } from '../utils/showTime'
 import moment from 'moment'
 
 const Root = ({
@@ -59,7 +60,7 @@ const Root = ({
 
   const placeholders = usePlaceholder({
     type,
-    showTime,
+    showTime: isShowTimeEnabled(showTime),
     placeholder,
     i18n,
   })
@@ -139,7 +140,7 @@ const Root = ({
     `${prefixCls}__picker--size-${size}`,
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
-    showTime && `${prefixCls}__picker--hastime`,
+    isShowTimeEnabled(showTime) && `${prefixCls}__picker--hastime`,
     (invalid || !isValueValid) && `${prefixCls}__picker--invalid`,
     outDate[0] && `${prefixCls}__picker--has-value`
   )
@@ -256,7 +257,7 @@ const Root = ({
         <PickerIcon
           focus={inputFocus}
           type={type}
-          showTime={showTime}
+          showTime={isShowTimeEnabled(showTime)}
           disabled={disabled}
           clearable={clearable}
           onClick={pickerIconClick}

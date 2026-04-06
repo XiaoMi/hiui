@@ -28,6 +28,7 @@ import { getBelongWeek, getBelongWeekYear, formatWeekByTemplate } from './utils/
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
+import { isShowTimeEnabled } from './utils/showTime'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -142,7 +143,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const needConfirm = useMemo(() => {
       // 如果是日期时间范围选择，则默认返回 true
-      if (type === 'daterange' && showTime) {
+      if (type === 'daterange' && isShowTimeEnabled(showTime)) {
         return true
       }
       return needConfirmProp
@@ -275,7 +276,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     })
     const realFormat = useFormat({
       type,
-      showTime,
+      showTime: isShowTimeEnabled(showTime),
       format: typeof format === 'function' ? undefined : format,
       locale,
     })
@@ -385,7 +386,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         if (
           _dates.slice(0, compareNumber).some((od: moment.Moment | null, index: number) => {
             return od
-              ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
+              ? !od.isSame(
+                  cacheDate.current![index],
+                  isShowTimeEnabled(showTime) ? 'second' : GranularityMap[type]
+                )
               : // 如果 新数据为空，则，进入以下比较
                 // 如果 旧数据也为空，则，视作，相等，旧数据存在，视作改变（此处是考虑到 null undefined 共存的情况）
                 od || cacheDate.current![index]
@@ -473,7 +477,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const popperCls = cx(
       `${prefixCls}__popper`,
-      type === 'date' && showTime && `${prefixCls}__popper--time`,
+      type === 'date' && isShowTimeEnabled(showTime) && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
       type === 'timeperiod' && `${prefixCls}__popper--timeperiod`,
       shortcuts && `${prefixCls}__popper--shortcuts`
@@ -481,7 +485,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 
-    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
+    const isInDateRangeTimeMode = useMemo(
+      () => type === 'daterange' && isShowTimeEnabled(showTime),
+      [type, showTime]
+    )
 
     const popContent = useMemo(() => {
       // 日期时间范围选择器特殊处理
