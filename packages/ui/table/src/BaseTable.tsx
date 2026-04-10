@@ -238,6 +238,13 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bodyTableRef.current &&
       wrapperRef.current &&
       bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
+    const tableHeaderHeight =
+      wrapperRef.current?.querySelector(`.${prefixCls}-header`)?.getBoundingClientRect?.().height ??
+      0
+    const freezeShadowHeightStyle =
+      stretchHeight && !isTableContentExceedWrapperHeight && bodyTableRef.current
+        ? { height: `${bodyTableRef.current.offsetHeight + tableHeaderHeight}px` }
+        : null
 
     const renderTable = () => {
       if (needDoubleTable) {
@@ -323,7 +330,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
                 `${prefixCls}-freeze-shadow--left`,
                 classNames?.freezeShadowLeft
               )}
-              style={{ width: leftFixedColumnsWidth + 'px', ...styles?.freezeShadowLeft }}
+              style={{
+                width: leftFixedColumnsWidth + 'px',
+                ...freezeShadowHeightStyle,
+                ...styles?.freezeShadowLeft,
+              }}
             />
           ) : null}
           {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
@@ -333,7 +344,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
                 `${prefixCls}-freeze-shadow--right`,
                 classNames?.freezeShadowRight
               )}
-              style={{ width: rightFixedColumnsWidth + 'px', ...styles?.freezeShadowRight }}
+              style={{
+                width: rightFixedColumnsWidth + 'px',
+                ...freezeShadowHeightStyle,
+                ...styles?.freezeShadowRight,
+              }}
             />
           ) : null}
         </>
