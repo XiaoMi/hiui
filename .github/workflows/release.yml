@@ -7,6 +7,12 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+  actions: read
+
 jobs:
   if_merged:
     if: startsWith(github.head_ref, 'release/') && github.event.pull_request.merged == true
@@ -17,7 +23,11 @@ jobs:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Test
-        run: echo $HOME ${{ github.ref }} ${{ github.head_ref }} ${{ github.event.pull_request.merged }}
+        env:
+          REF: ${{ github.ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
+        run: echo $HOME $REF $HEAD_REF $PR_MERGED
 
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -31,7 +41,9 @@ jobs:
           cache: 'yarn'
 
       - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
 
       - name: Install dependencies
         run: |
