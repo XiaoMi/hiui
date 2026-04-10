@@ -238,13 +238,18 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       bodyTableRef.current &&
       wrapperRef.current &&
       bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
-    const tableHeaderHeight =
-      wrapperRef.current?.querySelector(`.${prefixCls}-header`)?.getBoundingClientRect?.().height ??
-      0
-    const freezeShadowHeightStyle =
-      stretchHeight && !isTableContentExceedWrapperHeight && bodyTableRef.current
-        ? { height: `${bodyTableRef.current.offsetHeight + tableHeaderHeight}px` }
-        : null
+    let tableHeaderHeight = 0
+    let freezeShadowHeightStyle = null
+
+    if (stretchHeight && rest.fixedToColumn) {
+      tableHeaderHeight =
+        wrapperRef.current?.querySelector(`.${prefixCls}-header`)?.getBoundingClientRect?.()
+          .height ?? 0
+      freezeShadowHeightStyle =
+        !isTableContentExceedWrapperHeight && bodyTableRef.current
+          ? { height: `${bodyTableRef.current.offsetHeight + tableHeaderHeight}px` }
+          : null
+    }
 
     const renderTable = () => {
       if (needDoubleTable) {
