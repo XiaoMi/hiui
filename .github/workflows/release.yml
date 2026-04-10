@@ -8,7 +8,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: read
   statuses: write
   actions: read
