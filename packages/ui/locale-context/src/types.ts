@@ -26,6 +26,7 @@ export interface LocaleLanguage {
   tag: Record<string, any>
   backTop: Record<string, any>
   menuSearch: Record<string, any>
+  queryFilter: Record<string, any>
 }
 
 export const LocaleEnum = {

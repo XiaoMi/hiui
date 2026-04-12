@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: 'Başa dön',
   },
+  menuSearch: {
+    placeholder: 'Arama içeriğini girin',
+    search: 'Ara',
+    clear: 'Temizle',
+    searchResult: '"{{keyword}}" ile ilgili {{count}} öğe bulundu',
+    searchEmptyResult: 'İlgili sonuç bulunamadı',
+    moveCursor: 'İmleci taşı',
+    confirmSelect: 'Onayla',
+    hideWindow: 'Gizle',
+  },
+  queryFilter: {
+    pin: 'Listenin üstüne sabitle',
+    unpin: 'Sabitlemeyi kaldır',
+  },
 }

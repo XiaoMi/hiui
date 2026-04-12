@@ -176,4 +176,18 @@ export default {
   backTop: {
     backToTop: 'Trở lại đầu trang',
   },
+  menuSearch: {
+    placeholder: 'Nhập nội dung tìm kiếm',
+    search: 'Tìm kiếm',
+    clear: 'Xóa',
+    searchResult: 'Tìm thấy {{count}} mục liên quan đến "{{keyword}}"',
+    searchEmptyResult: 'Không tìm thấy kết quả',
+    moveCursor: 'Di chuyển con trỏ',
+    confirmSelect: 'Xác nhận',
+    hideWindow: 'Ẩn cửa sổ',
+  },
+  queryFilter: {
+    pin: 'Ghim lên đầu danh sách',
+    unpin: 'Bỏ ghim',
+  },
 }

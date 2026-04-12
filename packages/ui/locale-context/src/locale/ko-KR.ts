@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: '맨 위로',
   },
+  menuSearch: {
+    placeholder: '검색어를 입력하세요',
+    search: '검색',
+    clear: '지우기',
+    searchResult: '"{{keyword}}"와(과) 관련된 {{count}}개 항목을 찾았습니다',
+    searchEmptyResult: '관련 결과가 없습니다',
+    moveCursor: '커서 이동',
+    confirmSelect: '확인',
+    hideWindow: '숨기기',
+  },
+  queryFilter: {
+    pin: '목록 상단에 고정',
+    unpin: '고정 해제',
+  },
 }

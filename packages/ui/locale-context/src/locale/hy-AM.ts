@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Վեր գետալ բարգավ',
   },
+  menuSearch: {
+    placeholder: 'Մուտքագրեք որոնման տեքստը',
+    search: 'Որոնել',
+    clear: 'Մաքրել',
+    searchResult: 'Գտնվել է {{count}} կապակցված «{{keyword}}» տարր',
+    searchEmptyResult: 'Արդյունքներ չկան',
+    moveCursor: 'Տեղափոխել կուրսորը',
+    confirmSelect: 'Հաստատել',
+    hideWindow: 'Թաքցնել',
+  },
+  queryFilter: {
+    pin: 'Կապել ցանկի վերևում',
+    unpin: 'Ապակապել',
+  },
 }

@@ -201,4 +201,18 @@ export default {
   backTop: {
     backToTop: 'กลับไปด้านบน',
   },
+  menuSearch: {
+    placeholder: 'กรอกคำค้นหา',
+    search: 'ค้นหา',
+    clear: 'ล้าง',
+    searchResult: 'พบ {{count}} รายการที่เกี่ยวข้องกับ "{{keyword}}"',
+    searchEmptyResult: 'ไม่พบผลลัพธ์ที่เกี่ยวข้อง',
+    moveCursor: 'ย้ายเคอร์เซอร์',
+    confirmSelect: 'ยืนยัน',
+    hideWindow: 'ซ่อนหน้าต่าง',
+  },
+  queryFilter: {
+    pin: 'ปักหมุดไว้ด้านบนของรายการ',
+    unpin: 'ยกเลิกการปักหมุด',
+  },
 }
