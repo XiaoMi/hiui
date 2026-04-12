@@ -1,5 +1,13 @@
 # @hi-ui/popover
 
+## 5.0.0-canary.13
+
+### Patch Changes
+
+- 1afb72ae0: fix(popover): 修复设置 visible 后,关闭时没有触发 onClose 问题 (5.0)
+- Updated dependencies [95d930354]
+  - @hi-ui/core@5.0.0-canary.8
+
 ## 5.0.0-canary.12
 
 ### Minor Changes

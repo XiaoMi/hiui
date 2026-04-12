@@ -1,5 +1,11 @@
 # @hi-ui/locale-context
 
+## 5.0.0-canary.7
+
+### Minor Changes
+
+- 95d930354: feat(locale-context): 增加 mrege 方法 & 增加更多国家语言 (5.0)
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

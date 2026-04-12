@@ -1,5 +1,28 @@
 # @hi-ui/hiui
 
+## 5.0.0-canary.53
+
+### Minor Changes
+
+- 2fd15e136: feat(date-picker): 支持设置选择面板默认展示时间 (5.0)
+- 07a57b9c1: feat(check-tree-select): 支持设置 checkable (5.0)
+
+### Patch Changes
+
+- 1afb72ae0: fix(popover): 修复设置 visible 后,关闭时没有触发 onClose 问题 (5.0)
+- ebd1a6e7a: fix(table): 修复 stretchHeight 模式下冻结列阴影样式问题 (5.0)
+- Updated dependencies [2fd15e136]
+- Updated dependencies [1afb72ae0]
+- Updated dependencies [ebd1a6e7a]
+- Updated dependencies [07a57b9c1]
+- Updated dependencies [95d930354]
+  - @hi-ui/date-picker@5.0.0-canary.33
+  - @hi-ui/popover@5.0.0-canary.13
+  - @hi-ui/table@5.0.0-canary.33
+  - @hi-ui/check-tree-select@5.0.0-canary.21
+  - @hi-ui/tree@5.0.0-canary.15
+  - @hi-ui/core@5.0.0-canary.8
+
 ## 5.0.0-canary.52
 
 ### Minor Changes

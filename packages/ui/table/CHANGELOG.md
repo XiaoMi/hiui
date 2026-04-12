@@ -1,5 +1,13 @@
 # @hi-ui/table
 
+## 5.0.0-canary.33
+
+### Patch Changes
+
+- ebd1a6e7a: fix(table): 修复 stretchHeight 模式下冻结列阴影样式问题 (5.0)
+- Updated dependencies [95d930354]
+  - @hi-ui/core@5.0.0-canary.8
+
 ## 5.0.0-canary.32
 
 ### Patch Changes

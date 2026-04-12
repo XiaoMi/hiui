@@ -1,5 +1,16 @@
 # @hi-ui/tree
 
+## 5.0.0-canary.15
+
+### Minor Changes
+
+- 07a57b9c1: feat(check-tree-select): 支持设置 checkable (5.0)
+
+### Patch Changes
+
+- Updated dependencies [95d930354]
+  - @hi-ui/core@5.0.0-canary.8
+
 ## 5.0.0-canary.14
 
 ### Minor Changes
