@@ -1,5 +1,18 @@
 # @hi-ui/check-tree-select
 
+## 5.0.0-experimental.3
+
+### Minor Changes
+
+- 07a57b9c1: feat(check-tree-select): 支持设置 checkable (5.0)
+
+### Patch Changes
+
+- Updated dependencies [07a57b9c1]
+- Updated dependencies [95d930354]
+  - @hi-ui/tree@5.0.0-experimental.4
+  - @hi-ui/core@5.0.0-experimental.2
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes

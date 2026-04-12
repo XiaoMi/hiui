@@ -1,5 +1,13 @@
 # @hi-ui/core
 
+## 5.0.0-experimental.2
+
+### Patch Changes
+
+- 95d930354: feat(locale-context): 增加 mrege 方法 & 增加更多国家语言 (5.0)
+- Updated dependencies [95d930354]
+  - @hi-ui/locale-context@5.0.0-experimental.2
+
 ## 5.0.0-experimental.1
 
 ### Minor Changes

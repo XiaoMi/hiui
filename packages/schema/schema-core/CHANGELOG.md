@@ -1,5 +1,11 @@
 # @hi-ui/schema-core
 
+## 4.0.0-experimental.10
+
+### Patch Changes
+
+- @hi-ui/schema-types@4.0.0-experimental.5
+
 ## 4.0.0-experimental.9
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @hi-ui/date-picker
 
+## 5.0.0-experimental.3
+
+### Minor Changes
+
+- 2fd15e136: feat(date-picker): 支持设置选择面板默认展示时间 (5.0)
+
+### Patch Changes
+
+- Updated dependencies [95d930354]
+  - @hi-ui/core@5.0.0-experimental.2
+
 ## 5.0.0-experimental.2
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @hi-ui/schema-group
 
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- @hi-ui/schema-action-trigger@4.0.0-experimental.7
+- @hi-ui/schema-core@4.0.0-experimental.10
+- @hi-ui/schema-editable-table@4.0.0-experimental.8
+
 ## 4.0.0-experimental.6
 
 ### Patch Changes

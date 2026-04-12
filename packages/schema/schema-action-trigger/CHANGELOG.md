@@ -1,5 +1,12 @@
 # @hi-ui/schema-action-trigger
 
+## 4.0.0-experimental.7
+
+### Patch Changes
+
+- @hi-ui/schema-types@4.0.0-experimental.5
+- @hi-ui/schema-core@4.0.0-experimental.10
+
 ## 4.0.0-experimental.6
 
 ### Patch Changes

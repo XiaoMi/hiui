@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/check-tree-select",
-  "version": "5.0.0-experimental.2",
+  "version": "5.0.0-experimental.3",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -54,7 +54,7 @@
     "@hi-ui/picker": "^5.0.0-experimental.2",
     "@hi-ui/popper": "^5.0.0-experimental.1",
     "@hi-ui/tag-input": "^5.0.0-experimental.2",
-    "@hi-ui/tree": "^5.0.0-experimental.2",
+    "@hi-ui/tree": "^5.0.0-experimental.4",
     "@hi-ui/tree-utils": "^5.0.0-experimental.0",
     "@hi-ui/type-assertion": "^5.0.0-experimental.0",
     "@hi-ui/use-check": "^5.0.0-experimental.0",
@@ -65,12 +65,12 @@
     "@hi-ui/use-merge-semantic": "^5.0.0-experimental.0"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-experimental.1",
+    "@hi-ui/core": ">=5.0.0-experimental.2",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-experimental.1",
+    "@hi-ui/core": "^5.0.0-experimental.2",
     "@hi-ui/core-css": "^5.0.0-experimental.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

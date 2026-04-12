@@ -1,5 +1,5 @@
 ---
-"@hi-ui/core": minor
+"@hi-ui/core": patch
 "@hi-ui/locale-context": minor
 ---
 

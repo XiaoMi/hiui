@@ -1,5 +1,14 @@
 # @hi-ui/schema-option-injector
 
+## 4.0.0-experimental.9
+
+### Patch Changes
+
+- Updated dependencies [07a57b9c1]
+  - @hi-ui/check-tree-select@5.0.0-experimental.3
+  - @hi-ui/schema-types@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.10
+
 ## 4.0.0-experimental.8
 
 ### Patch Changes

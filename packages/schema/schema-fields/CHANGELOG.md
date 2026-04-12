@@ -1,5 +1,17 @@
 # @hi-ui/schema-fields
 
+## 4.0.0-experimental.12
+
+### Patch Changes
+
+- Updated dependencies [2fd15e136]
+- Updated dependencies [07a57b9c1]
+  - @hi-ui/date-picker@5.0.0-experimental.3
+  - @hi-ui/check-tree-select@5.0.0-experimental.3
+  - @hi-ui/schema-option-injector@4.0.0-experimental.9
+  - @hi-ui/schema-types@4.0.0-experimental.5
+  - @hi-ui/schema-core@4.0.0-experimental.10
+
 ## 4.0.0-experimental.11
 
 ### Patch Changes
