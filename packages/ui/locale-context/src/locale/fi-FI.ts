@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Takaisin ylös',
   },
+  menuSearch: {
+    placeholder: 'Kirjoita hakusana',
+    search: 'Haku',
+    clear: 'Tyhjennä',
+    searchResult: 'Löytyi {{count}} kohdetta, jotka liittyvät hakusanaan «{{keyword}}»',
+    searchEmptyResult: 'Ei tuloksia',
+    moveCursor: 'Siirrä kohdistin',
+    confirmSelect: 'Vahvista',
+    hideWindow: 'Piilota',
+  },
+  queryFilter: {
+    pin: 'Kiinnitä listan alkuun',
+    unpin: 'Irrota',
+  },
 }

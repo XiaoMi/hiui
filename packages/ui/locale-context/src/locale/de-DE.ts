@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Zurück nach oben',
   },
+  menuSearch: {
+    placeholder: 'Suchbegriff eingeben',
+    search: 'Suchen',
+    clear: 'Leeren',
+    searchResult: '{{count}} Einträge zu „{{keyword}}“ gefunden',
+    searchEmptyResult: 'Keine Ergebnisse gefunden',
+    moveCursor: 'Cursor bewegen',
+    confirmSelect: 'Bestätigen',
+    hideWindow: 'Ausblenden',
+  },
+  queryFilter: {
+    pin: 'Oben in der Liste anheften',
+    unpin: 'Lösen',
+  },
 }

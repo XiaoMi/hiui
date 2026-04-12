@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: 'Terug naar boven',
   },
+  menuSearch: {
+    placeholder: 'Voer zoektekst in',
+    search: 'Zoeken',
+    clear: 'Wissen',
+    searchResult: '{{count}} items gevonden gerelateerd aan "{{keyword}}"',
+    searchEmptyResult: 'Geen resultaten gevonden',
+    moveCursor: 'Cursor verplaatsen',
+    confirmSelect: 'Bevestigen',
+    hideWindow: 'Verbergen',
+  },
+  queryFilter: {
+    pin: 'Bovenaan de lijst vastzetten',
+    unpin: 'Losmaken',
+  },
 }
