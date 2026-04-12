@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/table",
-  "version": "5.0.0-experimental.3",
+  "version": "5.0.0-experimental.4",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -80,12 +80,12 @@
     "@hi-ui/use-merge-semantic": "^5.0.0-experimental.0"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-experimental.1",
+    "@hi-ui/core": ">=5.0.0-experimental.3",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-experimental.1",
+    "@hi-ui/core": "^5.0.0-experimental.3",
     "@hi-ui/core-css": "^5.0.0-experimental.2",
     "@types/react-resizable": "^1.7.4",
     "react": "^17.0.1",

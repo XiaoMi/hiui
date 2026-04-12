@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "5.0.0-experimental.5",
+  "version": "5.0.0-experimental.6",
   "description": "The root-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -105,7 +105,7 @@
     "@hi-ui/stepper": "^5.0.0-experimental.1",
     "@hi-ui/svg-icon": "^5.0.0-experimental.1",
     "@hi-ui/switch": "^5.0.0-experimental.1",
-    "@hi-ui/table": "^5.0.0-experimental.3",
+    "@hi-ui/table": "^5.0.0-experimental.4",
     "@hi-ui/tabs": "^5.0.0-experimental.1",
     "@hi-ui/tag": "^5.0.0-experimental.2",
     "@hi-ui/tag-input": "^5.0.0-experimental.2",
@@ -122,12 +122,12 @@
     "@hi-ui/use-merge-semantic": "^5.0.0-experimental.1"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=5.0.0-experimental.2",
+    "@hi-ui/core": ">=5.0.0-experimental.3",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^5.0.0-experimental.2",
+    "@hi-ui/core": "^5.0.0-experimental.3",
     "@hi-ui/core-css": "^5.0.0-experimental.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

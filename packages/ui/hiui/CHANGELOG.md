@@ -1,5 +1,15 @@
 # @hi-ui/hiui
 
+## 5.0.0-experimental.6
+
+### Patch Changes
+
+- ebd1a6e7a: fix(table): 修复 stretchHeight 模式下冻结列阴影样式问题 (5.0)
+- Updated dependencies [ebd1a6e7a]
+- Updated dependencies [d91a8bb0f]
+  - @hi-ui/table@5.0.0-experimental.4
+  - @hi-ui/core@5.0.0-experimental.3
+
 ## 5.0.0-experimental.5
 
 ### Minor Changes
