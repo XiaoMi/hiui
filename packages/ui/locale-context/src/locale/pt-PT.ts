@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: 'Voltar ao topo',
   },
+  menuSearch: {
+    placeholder: 'Introduza o conteúdo de pesquisa',
+    search: 'Pesquisar',
+    clear: 'Limpar',
+    searchResult: 'Foram encontrados {{count}} itens relacionados com "{{keyword}}"',
+    searchEmptyResult: 'Nenhum resultado encontrado',
+    moveCursor: 'Mover cursor',
+    confirmSelect: 'Confirmar',
+    hideWindow: 'Ocultar',
+  },
+  queryFilter: {
+    pin: 'Fixar no topo da lista',
+    unpin: 'Desafixar',
+  },
 }

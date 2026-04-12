@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Zpět nahoru',
   },
+  menuSearch: {
+    placeholder: 'Zadejte hledaný text',
+    search: 'Hledat',
+    clear: 'Vymazat',
+    searchResult: 'Nalezeno {{count}} položek souvisejících s „{{keyword}}“',
+    searchEmptyResult: 'Žádné výsledky',
+    moveCursor: 'Posunout kurzor',
+    confirmSelect: 'Potvrdit',
+    hideWindow: 'Skrýt',
+  },
+  queryFilter: {
+    pin: 'Připnout nahoru v seznamu',
+    unpin: 'Odepnout',
+  },
 }

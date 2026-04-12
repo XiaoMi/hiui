@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Torna in cima',
   },
+  menuSearch: {
+    placeholder: 'Inserisci il testo di ricerca',
+    search: 'Cerca',
+    clear: 'Cancella',
+    searchResult: 'Trovati {{count}} elementi relativi a "{{keyword}}"',
+    searchEmptyResult: 'Nessun risultato trovato',
+    moveCursor: 'Sposta cursore',
+    confirmSelect: 'Conferma',
+    hideWindow: 'Nascondi',
+  },
+  queryFilter: {
+    pin: 'Fissa in cima all\'elenco',
+    unpin: 'Rimuovi fissaggio',
+  },
 }

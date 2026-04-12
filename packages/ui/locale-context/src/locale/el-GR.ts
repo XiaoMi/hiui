@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Πίσω στην κορυφή',
   },
+  menuSearch: {
+    placeholder: 'Εισαγάγετε κείμενο αναζήτησης',
+    search: 'Αναζήτηση',
+    clear: 'Εκκαθάριση',
+    searchResult: 'Βρέθηκαν {{count}} στοιχεία σχετικά με «{{keyword}}»',
+    searchEmptyResult: 'Δεν βρέθηκαν αποτελέσματα',
+    moveCursor: 'Μετακίνηση δρομέα',
+    confirmSelect: 'Επιβεβαίωση',
+    hideWindow: 'Απόκρυψη',
+  },
+  queryFilter: {
+    pin: 'Καρφίτσωμα στην κορυφή της λίστας',
+    unpin: 'Ξεκαρφίτσωμα',
+  },
 }

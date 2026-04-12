@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'უკან ზედა',
   },
+  menuSearch: {
+    placeholder: 'შეიყვანეთ საძიებო ტექსტი',
+    search: 'ძებნა',
+    clear: 'გასუფთავება',
+    searchResult: 'ნაპოვნია {{count}} ელემენტი, რომელიც ეხება „{{keyword}}"-ს',
+    searchEmptyResult: 'შედეგები ვერ მოიძებნა',
+    moveCursor: 'კურსორის გადაადგილება',
+    confirmSelect: 'დადასტურება',
+    hideWindow: 'დამალვა',
+  },
+  queryFilter: {
+    pin: 'სიის ზედა ნაწილში მიმაგრება',
+    unpin: 'მიმაგრების მოხსნა',
+  },
 }

@@ -186,4 +186,18 @@ export default {
   backTop: {
     backToTop: 'Yuxarıya qayıt',
   },
+  menuSearch: {
+    placeholder: 'Axtarış mətnini daxil edin',
+    search: 'Axtarış',
+    clear: 'Təmizlə',
+    searchResult: '«{{keyword}}» ilə əlaqəli {{count}} element tapıldı',
+    searchEmptyResult: 'Nəticə tapılmadı',
+    moveCursor: 'Kursoru köçür',
+    confirmSelect: 'Təsdiqlə',
+    hideWindow: 'Gizlət',
+  },
+  queryFilter: {
+    pin: 'Siyahının yuxarısına bağla',
+    unpin: 'Bağlamanı ləğv et',
+  },
 }

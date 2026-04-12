@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Tilbage til toppen',
   },
+  menuSearch: {
+    placeholder: 'Indtast søgetekst',
+    search: 'Søg',
+    clear: 'Ryd',
+    searchResult: 'Fandt {{count}} elementer relateret til «{{keyword}}»',
+    searchEmptyResult: 'Ingen resultater fundet',
+    moveCursor: 'Flyt markør',
+    confirmSelect: 'Bekræft',
+    hideWindow: 'Skjul',
+  },
+  queryFilter: {
+    pin: 'Fastgør øverst på listen',
+    unpin: 'Frigør',
+  },
 }

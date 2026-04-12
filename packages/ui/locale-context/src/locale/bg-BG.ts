@@ -174,4 +174,18 @@ export default {
   backTop: {
     backToTop: 'Назад към началото',
   },
+  menuSearch: {
+    placeholder: 'Въведете текст за търсене',
+    search: 'Търсене',
+    clear: 'Изчисти',
+    searchResult: 'Намерени са {{count}} елемента, свързани с „{{keyword}}“',
+    searchEmptyResult: 'Няма резултати',
+    moveCursor: 'Премести курсора',
+    confirmSelect: 'Потвърди',
+    hideWindow: 'Скрий',
+  },
+  queryFilter: {
+    pin: 'Закачи в горната част на списъка',
+    unpin: 'Откачи',
+  },
 }

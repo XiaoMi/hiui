@@ -202,4 +202,18 @@ export default {
   backTop: {
     backToTop: 'اوپر کی طرف واپس',
   },
+  menuSearch: {
+    placeholder: 'تلاش کا مواد درج کریں',
+    search: 'تلاش',
+    clear: 'صاف کریں',
+    searchResult: '"{{keyword}}" سے متعلق {{count}} مینو ملے',
+    searchEmptyResult: 'کوئی نتیجہ نہیں ملا',
+    moveCursor: 'کرسر حرکت کریں',
+    confirmSelect: 'تصدیق',
+    hideWindow: 'ونڈو چھپائیں',
+  },
+  queryFilter: {
+    pin: 'فہرست کے اوپر پن کریں',
+    unpin: 'ان پن کریں',
+  },
 }
