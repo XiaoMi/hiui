@@ -239,7 +239,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       wrapperRef.current &&
       bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
     let tableHeaderHeight = 0
-    let freezeShadowHeightStyle = null
+    let freezeShadowHeightStyle: React.CSSProperties | null = null
 
     if (stretchHeight && rest.fixedToColumn) {
       tableHeaderHeight =
