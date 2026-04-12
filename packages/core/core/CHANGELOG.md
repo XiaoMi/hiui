@@ -1,5 +1,13 @@
 # @hi-ui/core
 
+## 5.0.0-canary.9
+
+### Patch Changes
+
+- d91a8bb0f: chore(locale-context): 补充多语言内容 (5.0)
+- Updated dependencies [d91a8bb0f]
+  - @hi-ui/locale-context@5.0.0-canary.8
+
 ## 5.0.0-canary.8
 
 ### Patch Changes
