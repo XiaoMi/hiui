@@ -1,12 +1,8 @@
 import Path from 'path'
 import { heading, html, text } from 'mdast-builder'
-import {
-  markdownRender,
-  outputPath,
-  writeFileAsync,
-  appendFileAsync,
-  cleanCreateDir,
-} from './utils/index.mjs'
+import { markdownRender, outputPath, writeFileAsync, cleanCreateDir } from './utils/index.mjs'
+
+const siteBaseUrl = 'https://xiaomi.github.io/hiui/'
 
 export async function mergeDocs(components) {
   // const pkgs = components
@@ -17,20 +13,32 @@ export async function mergeDocs(components) {
 
   // console.log(Array.from(new Set(pkgs)))
 
-  return await Promise.all(
-    components.map(async (info) => {
+  await cleanCreateDir(outputPath)
+
+  const mergedHiuiMarkdown = new Array(components.length)
+  const componentMarkdownMap = new Map()
+
+  await Promise.all(
+    components.map(async (info, idx) => {
       // 元信息合并
       let markdown = info.readme
       markdown = mergePropsIntoReadme(markdown, info.props)
       const markdownMd = mergeStoriesCodeIntoReadme(info.name, markdown, info.stories)
-      // await writeReadmeAsync(info, markdownMd)
-      await appendReadmeAsync(info, markdownMd)
+
+      const mergedReadmeBlock = getReadmeBlockMarkdown(markdownMd)
+      if (info.name !== 'hiui') {
+        mergedHiuiMarkdown[idx] = mergedReadmeBlock
+        componentMarkdownMap.set(info.name, mergedReadmeBlock)
+      }
+
       markdown = transformJSX(markdown)
       markdown = mergeStoriesIntoReadme(info.name, markdown, info.stories)
       // 写入
       await writeDocs(info, markdown)
     })
   ).catch(console.error)
+
+  await writeKnowledgeFiles(components, mergedHiuiMarkdown, componentMarkdownMap)
 
   // 1 DONE
   // 同步迁移
@@ -49,21 +57,67 @@ export async function mergeDocs(components) {
   // README.zh-CN.md 自动生成
 }
 
-function getStoriesImport(stories) {
-  const pkgs = stories
-    .map((story) => {
-      const reg = story.content.matchAll(/import\s.+\sfrom\s(.+)/g)
-      const pkgs = Array.from(reg).map((item) => item[1])
-      return pkgs
-    })
-    .flat()
+async function writeKnowledgeFiles(components, mergedHiuiMarkdown, componentMarkdownMap) {
+  const knowledgePath = Path.join(outputPath, 'knowledge')
+  const componentsPath = Path.join(knowledgePath, 'llms')
+  const componentNames = Array.from(new Set(components.map((item) => item.name)))
+    .filter((name) => name && name !== 'hiui')
+    .sort()
+  const componentLinks = componentNames.map((name) => `- ${siteBaseUrl}components/${name}.md`)
+  const sitemapLinks = [
+    siteBaseUrl,
+    `${siteBaseUrl}docs/quick-start`,
+    `${siteBaseUrl}components`,
+    ...componentNames.map((name) => `${siteBaseUrl}components/${name}/`),
+  ]
 
-  const uniqPkgs = Array.from(new Set(pkgs)).filter((item) => {
-    if (item === `'react'`) return false
-    // if (['@hi-ui'].some((v) => item.includes(v))) return false
-    return true
-  })
-  return uniqPkgs
+  const llmsTxt = [
+    '# HiUI LLM Index',
+    '',
+    `- Home: ${siteBaseUrl}`,
+    `- Quick Start: ${siteBaseUrl}docs/quick-start`,
+    `- Components: ${siteBaseUrl}components`,
+    '',
+    '## Component Docs',
+    ...componentLinks,
+    '',
+    'Use this file as a short entry point for HiUI knowledge.',
+    '',
+  ].join('\n')
+
+  const llmsFullHeader = [
+    '# Ant Design Component Documentation',
+    '',
+    'This file contains usage examples and parameters for all components.',
+    '',
+    '',
+  ].join('\n')
+  const llmsFullTxt = llmsFullHeader + mergedHiuiMarkdown.filter(Boolean).join('\n\n')
+  const sitemapXml = buildSitemapXml(sitemapLinks)
+
+  const componentDocsWrites = componentNames.map((name) =>
+    writeFileAsync(Path.join(componentsPath, `${name}.md`), componentMarkdownMap.get(name) || '')
+  )
+
+  await Promise.all([
+    writeFileAsync(Path.join(knowledgePath, 'llms.txt'), llmsTxt),
+    writeFileAsync(Path.join(knowledgePath, 'llms-full.txt'), llmsFullTxt),
+    writeFileAsync(Path.join(knowledgePath, 'sitemap.xml'), sitemapXml),
+    ...componentDocsWrites,
+  ])
+}
+
+function buildSitemapXml(urls) {
+  const uniqueUrls = Array.from(new Set(urls))
+  const lines = uniqueUrls.map((url) => `  <url>\n    <loc>${url}</loc>\n  </url>`)
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...lines,
+    '</urlset>',
+    '',
+  ].join('\n')
 }
 
 function mergeStoriesIntoReadme(name, readmeMarkdown, stories) {
@@ -112,23 +166,10 @@ async function writeDocs(info, markdown) {
   ])
 }
 
-async function writeReadmeAsync(info, markdown) {
-  await cleanCreateDir(outputPath)
-  await Promise.all([
-    // 写入markdown
-    // writeFileAsync(Path.join(outputPath, `./readme/${info.name}.md`), markdown),
-    writeFileAsync(Path.join(outputPath, 'readme', `${info.name}.md`), markdown),
-  ])
-}
-
-async function appendReadmeAsync(info, markdown) {
-  markdown =
-    '\n\n###@###\n\n' +
-    markdown
-      .replace(/ {2,}|\n\s*\/\*\*[\s\S]*?\*\/|\n\s*<h1>.*?<\/h1>/g, ' ')
-      // .replace('## Props', `###@###\n\n# ${info.title}\n\n## Props`)
-      .replace(/## 何时使用[\s\S]*?## 使用示例/g, '## 使用示例')
-  await Promise.all([appendFileAsync(Path.join(outputPath, 'hiui.md'), info.name, markdown)])
+function getReadmeBlockMarkdown(markdown) {
+  return markdown
+    .replace(/ {2,}|\n\s*\/\*\*[\s\S]*?\*\/|\n\s*<h1>.*?<\/h1>/g, ' ')
+    .replace(/## 何时使用[\s\S]*?## 使用示例/g, '## 使用示例')
 }
 
 function storiesRender(name, stories) {

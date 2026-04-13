@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "generate-docs": "node ./src/main.mjs"
+    "generate-docs": "node -e \"require('fs-extra').removeSync('./lib')\" && node ./src/main.mjs"
   },
   "directories": {
     "lib": "lib",
