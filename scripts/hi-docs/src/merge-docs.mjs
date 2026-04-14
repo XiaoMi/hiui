@@ -2,7 +2,7 @@ import Path from 'path'
 import { heading, html, text } from 'mdast-builder'
 import { markdownRender, outputPath, writeFileAsync, cleanCreateDir } from './utils/index.mjs'
 
-const siteBaseUrl = 'https://xiaomi.github.io/hiui5/'
+const siteBaseUrl = 'https://xiaomi.github.io/hiui/'
 
 export async function mergeDocs(components) {
   // const pkgs = components
