@@ -1,0 +1,6 @@
+---
+"@hi-ui/hiui": patch
+"@hi-ui/modal": patch
+---
+
+chore(modal): confirm 方法中的 onConfirm reject 时不关闭弹窗 (5.0)

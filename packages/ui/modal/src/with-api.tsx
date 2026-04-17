@@ -54,7 +54,7 @@ const open = ({ key, onConfirm, onCancel, content, width = 400, ...rest }: Modal
       try {
         await onConfirm?.()
       } catch (error) {
-        console.log('onConfirm error', error)
+        return
       } finally {
         toastManagerRef.current?.updateConfirmLoading(false)
       }
