@@ -209,7 +209,6 @@ export const Search = () => {
         <Cascader
           style={{ width: 240 }}
           placeholder="请选择品类"
-          searchPlaceholder="请输入搜索内容"
           data={data}
           searchable
           onChange={console.log}
@@ -219,7 +218,6 @@ export const Search = () => {
         <Cascader
           style={{ width: 240 }}
           placeholder="请选择品类"
-          searchPlaceholder="请输入搜索内容"
           data={data}
           searchable
           flattedSearchResult={false}

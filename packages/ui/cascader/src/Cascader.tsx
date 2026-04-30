@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useMemo, useEffect, useRef } from 'react'
-import type { HiBaseAppearanceEnum, HiBaseSizeEnum } from '@hi-ui/core'
+import type { HiBaseSizeEnum } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -9,15 +9,31 @@ import type { PopperOverlayProps } from '@hi-ui/popper'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { flattenTreeData, getItemEventData, getFilteredMenuList } from './utils'
 import { CascaderProvider } from './context'
-import { CascaderExpandTriggerEnum, FlattedCascaderDataItem, CascaderItemEventData } from './types'
+import {
+  CascaderExpandTriggerEnum,
+  FlattedCascaderDataItem,
+  CascaderItemEventData,
+  CascaderAppearanceEnum,
+} from './types'
 import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
-import { useSearchMode, useTreeCustomSearch, useTreeUpMatchSearch } from '@hi-ui/use-search-mode'
+import { Picker, PickerProps, PickerHelper, PickerSemanticName } from '@hi-ui/picker'
+import {
+  matchStrategy,
+  useSearchMode,
+  useTreeCustomSearch,
+  useTreeUpMatchSearch,
+} from '@hi-ui/use-search-mode'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCache } from '@hi-ui/use-cache'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { CascaderMenuList } from './CascaderMenuList'
 import Highlighter from '@hi-ui/highlighter'
 
@@ -48,12 +64,13 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     searchable: searchableProp,
     keyword: keywordProp,
     onSearch: onSearchProp,
+    clearSearchOnClosed,
     render: titleRender,
     overlayClassName,
     data = NOOP_ARRAY,
     flattedSearchResult = true,
     visible,
-    size = 'md',
+    size: sizeProp,
     prefix,
     suffix,
     onOpen,
@@ -63,9 +80,40 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     dropdownColumnRender,
     closeOnSelect = true,
     customRender,
+    label,
+    virtual,
+    onItemClick: onItemClickProp,
+    showIndicator = true,
+    renderExtraHeader,
+    changeOnSelect,
+    classNames: classNamesProp,
+    styles: stylesProp,
     ...rest
   } = props
+  const { size: globalSize, cascader: cascaderConfig } = useGlobalContext()
+  const size = sizeProp ?? globalSize ?? 'md'
+
   const i18n = useLocaleContext()
+
+  const { classNames, styles } = useMergeSemantic<
+    CascaderSemanticClassNames,
+    CascaderSemanticStyles,
+    CascaderProps
+  >({
+    classNamesList: [cascaderConfig?.classNames, classNamesProp],
+    stylesList: [cascaderConfig?.styles, stylesProp],
+    info: {
+      props: {
+        ...rest,
+        disabled,
+        searchable: searchableProp,
+        visible,
+        size,
+        appearance,
+        expandTrigger,
+      },
+    },
+  })
 
   const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -124,7 +172,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     data: cascaderData,
     flattedData: flattedData,
     enabled: searchableProp,
-    exclude: (node: any) => node.disabled,
+    exclude: (node: any) => node.disabled || (changeOnSelect ? false : node.children),
     // exclude: (option: FlattedCascaderDataItem) => {
     //   return checkCanLoadChildren(option, onLoadChildren)
     // },
@@ -183,9 +231,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     cascaderData,
     setCascaderData,
     flattedData,
+    changeOnSelect,
   })
 
-  const { value, tryChangeValue, reset, menuList, getItemRequiredProps } = context
+  const { value, tryChangeValue, reset, clear, menuList, getItemRequiredProps } = context
 
   const showData = useMemo(() => {
     if (shouldUseSearch) {
@@ -215,6 +264,18 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     return flattedData
   }, [selectedItem, flattedData])
 
+  const mergedDataSelectedItem = useMemo(() => {
+    return mergedData.find((d) => d.id === value[value.length - 1]) as CascaderItemEventData
+  }, [mergedData, value])
+
+  const customRenderContent = useMemo(() => {
+    return customRender
+      ? typeof customRender === 'function'
+        ? customRender(mergedDataSelectedItem, value)
+        : customRender
+      : null
+  }, [customRender, mergedDataSelectedItem, value])
+
   const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
 
   useEffect(() => {
@@ -224,6 +285,37 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
     }
   }, [menuVisible, showData])
 
+  useEffect(() => {
+    if (!value || value.length === 0) {
+      clear()
+    }
+  }, [value, clear])
+
+  const pickerSemanticKeys: PickerSemanticName[] = [
+    'root',
+    'container',
+    'panel',
+    'header',
+    'search',
+    'body',
+    'footer',
+    'loading',
+    'empty',
+    'creator',
+  ]
+  const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+    if (classNames?.[key as keyof typeof classNames] !== undefined) {
+      acc[key] = classNames[key as keyof typeof classNames] as string
+    }
+    return acc
+  }, {} as Record<string, string>)
+  const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+    if (styles?.[key as keyof typeof styles]) {
+      acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+    }
+    return acc
+  }, {} as Record<string, React.CSSProperties>)
+
   return (
     <CascaderProvider
       value={{
@@ -232,6 +324,10 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         titleRender: proxyTitleRender,
         menuList: showData,
         dropdownColumnRender,
+        virtual,
+        onItemClickProp,
+        classNames,
+        styles,
       }}
     >
       <Picker
@@ -239,6 +335,8 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rootProps}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
         overlay={{ matchWidth: false, ...rest.overlay }}
@@ -251,21 +349,21 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
         footer={isFunction(renderExtraFooter) && renderExtraFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(selectedItem)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <MockInput
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               size={size}
               clearable={clearable}
               onClear={onClear}
               placeholder={placeholder}
               displayRender={displayRender as any}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value[value.length - 1]}
@@ -275,6 +373,7 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
               data={mergedData}
               invalid={invalid}
               appearance={appearance}
+              label={label}
             />
           )
         }
@@ -285,9 +384,18 @@ export const Cascader = forwardRef<HTMLDivElement | null, CascaderProps>((props,
   )
 })
 
+export type CascaderSemanticName = PickerSemanticName | 'menuList' | 'menu' | 'option'
+export type CascaderSemanticClassNames = SemanticClassNamesType<CascaderProps, CascaderSemanticName>
+export type CascaderSemanticStyles = SemanticStylesType<CascaderProps, CascaderSemanticName>
+export type CascaderSemantic = ComponentSemantic<CascaderSemanticClassNames, CascaderSemanticStyles>
+
 export interface CascaderProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
-    UseCascaderProps {
+  extends Omit<
+      PickerProps,
+      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    UseCascaderProps,
+    CascaderSemantic {
   /**
    * 将 check 子项拍平展示。暂不对外暴露
    * @private
@@ -341,7 +449,11 @@ export interface CascaderProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CascaderAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 搜索结果拍平展示
    */
@@ -350,6 +462,10 @@ export interface CascaderProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单每列渲染
    */
@@ -369,11 +485,28 @@ export interface CascaderProps
   /**
    * 自定义触发器
    */
-  customRender?: React.ReactNode | ((selectedItem: CascaderItemEventData | null) => React.ReactNode)
+  customRender?:
+    | React.ReactNode
+    | ((selectedItem: CascaderItemEventData | null, value?: React.ReactText[]) => React.ReactNode)
   /**
    * 点击关闭按钮时触发
    */
   onClear?: () => void
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean
+  /**
+   * 点击选项时触发
+   */
+  onItemClick?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    eventOption: CascaderItemEventData
+  ) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {
@@ -390,7 +523,7 @@ const renderHighlightTitle = (
   if (title !== true) return title
 
   return (
-    <Highlighter key={option.id} keyword={keyword}>
+    <Highlighter key={option.id} keyword={new RegExp(keyword, 'ig')}>
       {option.title}
     </Highlighter>
   )
@@ -427,18 +560,19 @@ const renderHighlightTitles = (
           if (typeof title !== 'string') return raw
           if (found) return raw
 
-          const index = title.indexOf(keyword)
+          const index = matchStrategy(title, keyword)
           if (index === -1) return raw
 
           found = true
 
           const beforeStr = title.substr(0, index)
+          const matchedStr = title.substr(index, keyword.length)
           const afterStr = title.substr(index + keyword.length)
 
           return (
             <span key={id} className="title__text--col">
               {beforeStr}
-              <span className="title__text--matched">{keyword}</span>
+              <span className="title__text--matched">{matchedStr}</span>
               {afterStr}
             </span>
           )

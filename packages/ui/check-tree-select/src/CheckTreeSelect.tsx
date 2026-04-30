@@ -10,14 +10,20 @@ import {
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { baseFlattenTree, filterTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { UpOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import Checkbox from '@hi-ui/checkbox'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -74,6 +80,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // emptyContent,
       // ********* popper ********* //
       // optionWidth,
@@ -93,16 +100,44 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       showCheckAll,
       showOnlyShowChecked = false,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       customRender,
       prefix,
       suffix,
+      label,
+      showIndicator = true,
+      renderExtraHeader,
       renderExtraFooter,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, checkTreeSelect: checkTreeSelectConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckTreeSelectSemanticClassNames,
+      CheckTreeSelectSemanticStyles,
+      CheckTreeSelectProps
+    >({
+      classNamesList: [checkTreeSelectConfig?.classNames, classNamesProp],
+      stylesList: [checkTreeSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -144,6 +179,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
             flattedNode.title = getKeyFields(raw, 'title')
             flattedNode.disabled = getKeyFields(raw, 'disabled') ?? false
             flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
+            flattedNode.checkable = raw.checkable !== false
 
             return flattedNode
           },
@@ -259,7 +295,14 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         const highlight =
           !!searchValue && (searchMode === 'highlight' || searchMode === 'filter' || dataSource)
 
-        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+        const ret = highlight ? (
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
+        ) : (
+          true
+        )
 
         return ret
       },
@@ -296,18 +339,17 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         tryChangeValue(
           flattedData
             .filter((item) => {
-              if (!item.disabled) {
-                // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
-                if (checkedMode === 'CHILD') {
-                  return !item.children
-                }
-                if (checkedMode === 'PARENT') {
-                  return item.depth === 0
-                }
-                return true
+              if (item.disabled || item.checkable === false) {
+                return false
               }
-
-              return false
+              // 根据 checkedMode 类型过滤出已选项，保证全选操作下 onChange 回调的值是符合 checkedMode 的规则
+              if (checkedMode === 'CHILD') {
+                return !item.children
+              }
+              if (checkedMode === 'PARENT') {
+                return item.depth === 0
+              }
+              return true
             })
             .map(({ id }: any) => id),
           null,
@@ -345,6 +387,14 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       return extra
     }
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(checkedNodes)
+          : customRender
+        : null
+    }, [customRender, checkedNodes])
+
     const cls = cx(prefixCls, className)
 
     // 过滤掉未选中的数据
@@ -364,11 +414,38 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
       }
     }, [menuVisible, treeProps.expandedIds])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
       <Picker
         ref={ref}
         innerRef={pickerInnerRef}
         className={cls}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         visible={menuVisible}
         onOpen={() => {
@@ -383,19 +460,21 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         footer={renderDefaultFooter()}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(checkedNodes)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <TagInputMock
+              style={{
+                maxWidth: appearance === 'contained' ? '360px' : undefined,
+              }}
               {...tagInputProps}
               size={size}
+              label={label}
               // ref={targetElementRef}
               // onClick={openMenu}
               // disabled={disabled}
@@ -405,6 +484,7 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
               // @ts-ignore
               displayRender={displayRender}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
@@ -482,7 +562,8 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
           // 只做渲染，不做逻辑处理（比如搜索过滤后，check操作的是对过滤后的data操作，这是不符合预期的）
           <Tree
             size={'md'}
-            className={`${prefixCls}__tree`}
+            className={cx(`${prefixCls}__tree`, classNames?.tree)}
+            style={styles?.tree}
             selectable={false}
             checkable
             checkOnSelect
@@ -503,8 +584,34 @@ export const CheckTreeSelect = forwardRef<HTMLDivElement | null, CheckTreeSelect
   }
 )
 
+export type CheckTreeSelectSemanticName = PickerSemanticName | 'tree'
+export type CheckTreeSelectSemanticClassNames = SemanticClassNamesType<
+  CheckTreeSelectProps,
+  CheckTreeSelectSemanticName
+>
+export type CheckTreeSelectSemanticStyles = SemanticStylesType<
+  CheckTreeSelectProps,
+  CheckTreeSelectSemanticName
+>
+export type CheckTreeSelectSemantic = ComponentSemantic<
+  CheckTreeSelectSemanticClassNames,
+  CheckTreeSelectSemanticStyles
+>
+
 export interface CheckTreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'value' | 'trigger' | 'scrollable'> {
+  extends Omit<
+      PickerProps,
+      | 'data'
+      | 'onChange'
+      | 'value'
+      | 'trigger'
+      | 'scrollable'
+      | 'header'
+      | 'footer'
+      | 'classNames'
+      | 'styles'
+    >,
+    CheckTreeSelectSemantic {
   /**
    * 展示数据
    */
@@ -626,6 +733,10 @@ export interface CheckTreeSelectProps
    */
   appearance?: CheckTreeSelectAppearanceEnum
   /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
+  /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
    */
@@ -667,6 +778,14 @@ export interface CheckTreeSelectProps
    * 选择框后置内容
    */
   suffix?: React.ReactNode
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 自定义下拉菜单底部渲染
    */

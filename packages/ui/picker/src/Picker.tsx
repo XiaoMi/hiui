@@ -1,14 +1,26 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useState, useRef } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useState,
+  useRef,
+  useMemo,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLFieldProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLFieldProps, useGlobalContext, useLocaleContext } from '@hi-ui/core'
 import Input from '@hi-ui/input'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { PopperOverlayProps, Popper } from '@hi-ui/popper'
 import { SearchOutlined } from '@hi-ui/icons'
-import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import Loading from '@hi-ui/loading'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 import { isUndef } from '@hi-ui/type-assertion'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -29,7 +41,12 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       clearable = false,
       searchable = false,
       keyword: keywordProp,
+      clearSearchOnClosed = false,
       scrollable = true,
+      creatableInSearch = false,
+      creatableInSearchVisible,
+      createTitle: createTitleProp,
+      onCreate,
       visible,
       onOpen,
       onClose,
@@ -49,14 +66,43 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       footer,
       onOverlayScroll,
       innerRef,
+      styles: stylesProp,
+      classNames: classNamesProp,
+      gutterGap = 4,
+      header,
+      style,
       ...rest
     },
     ref
   ) => {
     const i18n = useLocaleContext()
+    const { picker: pickerConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      PickerSemanticClassNames,
+      PickerSemanticStyles,
+      PickerProps
+    >({
+      classNamesList: [pickerConfig?.classNames, classNamesProp],
+      stylesList: [pickerConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          trigger,
+          disabled,
+          searchable,
+          loading,
+          visible,
+          creatableInSearch,
+          showEmpty,
+        },
+      },
+    })
 
     const searchPlaceholder = isUndef(searchPlaceholderProp)
-      ? i18n.get('picker.searchPlaceholder')
+      ? creatableInSearch
+        ? i18n.get('picker.createPlaceholder')
+        : i18n.get('picker.searchPlaceholder')
       : searchPlaceholderProp
     const loadingContent = isUndef(loadingContentProp)
       ? i18n.get('picker.loadingContent')
@@ -64,6 +110,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const emptyContent = isUndef(emptyContentProp)
       ? i18n.get('picker.emptyContent')
       : emptyContentProp
+    const createTitle = isUndef(createTitleProp) ? i18n.get('picker.createTitle') : createTitleProp
 
     // *********************** 搜索管理 ********************** //
 
@@ -73,11 +120,6 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       onSearch,
       Object.is
     )
-    // const inSearch = searchable && !!searchValue
-    // const isEmpty = inSearch && showEmpty
-    const resetSearchOnClosed = keywordProp === undefined
-
-    const onSearchLatest = useLatestCallback(onSearch)
 
     const handleChange = useCallback(
       (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +132,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
       [searchable, setSearchValue]
     )
 
-    const resetSearch = useCallback(() => {
+    const clearSearch = useCallback(() => {
       setSearchValue('')
     }, [setSearchValue])
 
@@ -120,8 +162,8 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
     const hideMenu = useCallback(() => {
       if (disabled) return
       menuVisibleAction.off()
-      resetSearchOnClosed && resetSearch()
-    }, [resetSearchOnClosed, disabled, menuVisibleAction, resetSearch])
+      clearSearchOnClosed && clearSearch()
+    }, [clearSearch, clearSearchOnClosed, disabled, menuVisibleAction])
 
     const onEscClose = useCallback(
       (evt: React.KeyboardEvent) => {
@@ -139,15 +181,56 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 
     const [searchInputElement, setSearchInputElement] = useState<HTMLInputElement | null>(null)
 
-    const cls = cx(prefixCls, className, `${prefixCls}--${menuVisible ? 'open' : 'closed'}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--${menuVisible ? 'open' : 'closed'}`
+    )
 
     const popperRef = useRef<
       (HTMLDivElement & { update: () => void; forceUpdate: () => void }) | null
     >(null)
 
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示 creator
+    const showCreator =
+      creatableInSearch &&
+      !!searchValue &&
+      (creatableInSearchVisible === undefined || creatableInSearchVisible === true)
+
+    const renderContent = useMemo(() => {
+      if (!children && !creatableInSearch && showEmpty) {
+        return <span className={`${prefixCls}__empty`}>{emptyContent}</span>
+      }
+
+      if (creatableInSearch && searchValue && showCreator) {
+        return (
+          <>
+            {children}
+            <div className={`${prefixCls}__creator`} onClick={() => onCreate?.(searchValue)}>
+              <span className={`${prefixCls}__creator-title`}>{createTitle}</span>
+              <span className={`${prefixCls}__creator-value`}>{searchValue}</span>
+            </div>
+          </>
+        )
+      }
+
+      return children
+    }, [
+      children,
+      creatableInSearch,
+      createTitle,
+      emptyContent,
+      onCreate,
+      prefixCls,
+      searchValue,
+      showEmpty,
+      showCreator,
+    ])
+
     useImperativeHandle(innerRef, () => ({
-      resetSearch: () => {
-        resetSearchOnClosed && resetSearch()
+      clearSearch: () => {
+        keywordProp === undefined && clearSearch()
       },
       update: () => {
         popperRef.current?.update()
@@ -162,6 +245,7 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         ref={ref}
         role={role}
         className={cls}
+        style={{ ...style, ...styles?.root }}
         tabIndex={0}
         onKeyDown={mockDefaultHandlers(onKeyDown, onEscClose)}
         {...rest}
@@ -173,9 +257,15 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
         })}
         <Popper
           ref={popperRef}
+          styles={{
+            container: styles?.container,
+          }}
+          classNames={{
+            container: classNames?.container,
+          }}
           matchWidth={optionWidth === undefined}
           matchWidthStrictly
-          gutterGap={2}
+          gutterGap={gutterGap}
           // @DesignToken zIndex: overlay
           zIndex={1050}
           {...overlay}
@@ -192,14 +282,26 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
           attachEl={targetElement}
         >
           <div
-            className={`${prefixCls}__panel`}
-            style={{ minWidth: optionWidth, width: optionWidth }}
+            className={cx(`${prefixCls}__panel`, classNames?.panel)}
+            style={{ minWidth: optionWidth, width: optionWidth, ...styles?.panel }}
           >
+            {header ? (
+              <div
+                className={cx(`${prefixCls}__header`, classNames?.header)}
+                style={styles?.header}
+              >
+                {header}
+              </div>
+            ) : null}
             {searchable ? (
-              <div className={`${prefixCls}__search`}>
+              <div
+                className={cx(`${prefixCls}__search`, classNames?.search)}
+                style={styles?.search}
+              >
                 <Input
                   ref={setSearchInputElement}
                   appearance="underline"
+                  size="lg"
                   // TODO: Why not take effect
                   // autoFocus
                   prefix={<SearchOutlined />}
@@ -217,21 +319,30 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
                 4. 动态搜索无结果
             */}
             <div
-              className={`${prefixCls}__body`}
-              style={{ overflowY: scrollable ? 'auto' : 'hidden' }}
+              className={cx(`${prefixCls}__body`, classNames?.body)}
+              style={{ overflowY: scrollable ? 'auto' : 'hidden', ...styles?.body }}
               onScroll={onOverlayScroll}
             >
               {loading ? (
-                <div className={`${prefixCls}__loading`}>
+                <div
+                  className={cx(`${prefixCls}__loading`, classNames?.loading)}
+                  style={styles?.loading}
+                >
                   {loadingContent}
                   <Loading size="sm" />
                 </div>
               ) : (
-                children ||
-                (showEmpty ? <span className={`${prefixCls}__empty`}>{emptyContent}</span> : null)
+                renderContent
               )}
             </div>
-            {footer ? <div className={`${prefixCls}__footer`}>{footer}</div> : null}
+            {footer ? (
+              <div
+                className={cx(`${prefixCls}__footer`, classNames?.footer)}
+                style={styles?.footer}
+              >
+                {footer}
+              </div>
+            ) : null}
           </div>
         </Popper>
       </div>
@@ -240,12 +351,27 @@ export const Picker = forwardRef<HTMLDivElement | null, PickerProps>(
 )
 
 export interface PickerHelper {
-  resetSearch: () => void
+  clearSearch: () => void
   update: () => void
   forceUpdate: () => void
 }
 
-export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
+export type PickerSemanticName =
+  | 'root'
+  | 'container'
+  | 'panel'
+  | 'header'
+  | 'search'
+  | 'body'
+  | 'footer'
+  | 'loading'
+  | 'empty'
+  | 'creator'
+export type PickerSemanticClassNames = SemanticClassNamesType<PickerProps, PickerSemanticName>
+export type PickerSemanticStyles = SemanticStylesType<PickerProps, PickerSemanticName>
+export type PickerSemantic = ComponentSemantic<PickerSemanticClassNames, PickerSemanticStyles>
+
+export interface PickerProps extends HiBaseHTMLFieldProps<'div'>, PickerSemantic {
   /**
    * 是否禁用
    */
@@ -265,7 +391,7 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
   /**
    * 自定义下拉选项宽度
    */
-  optionWidth?: number
+  optionWidth?: React.CSSProperties['width']
   /**
    * 下拉根元素的类名称
    */
@@ -279,9 +405,31 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    */
   keyword?: string
   /**
+   * 在搜索状态下是否可创建选项
+   */
+  creatableInSearch?: boolean
+  /**
+   * 是否显示「创建选项」入口。为 false 时不显示。
+   * 不传（undefined）时保持兼容：只要有搜索词即显示创建入口。
+   * Select/CheckSelect 会传入此 prop，实现「仅当无结果或关键字与结果无全匹配时显示」。
+   */
+  creatableInSearchVisible?: boolean
+  /**
+   * 创建选项时展示的标题
+   */
+  createTitle?: string
+  /**
+   * 创建选项时触发回调
+   */
+  onCreate?: (keyword: string) => void
+  /**
    * 搜索时触发回调
    */
   onSearch?: (keyword: string) => void
+  /**
+   * 是否在关闭时清除搜索
+   */
+  clearSearchOnClosed?: boolean
   /**
    * 是否可清空
    */
@@ -322,15 +470,26 @@ export interface PickerProps extends HiBaseHTMLFieldProps<'div'> {
    * 下拉列表滚动时的回调
    */
   onOverlayScroll?: () => void
+  /**
+   * 触发器
+   */
   trigger: any
   /**
    * 开启内容区域可滚动
    */
   scrollable?: boolean
   /**
+   * 气泡卡片与触发器的间距
+   */
+  gutterGap?: number
+  /**
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<PickerHelper>
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  header?: React.ReactNode
 }
 
 if (__DEV__) {

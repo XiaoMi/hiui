@@ -6,13 +6,26 @@ import moment from 'moment'
 import DPContext from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { getView, parseRenderDates, genNewDates, toUtcTime, parseValue } from '../utils'
+import {
+  getView,
+  parseRenderDates,
+  genNewDates,
+  mergeCalendarDateKeepTime,
+  toUtcTime,
+  parseValue,
+} from '../utils'
+import { getBelongWeekBoundary } from '../utils/week'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { useTimePickerData } from '../hooks/useTimePickerData'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import TimePeriodPanel from './time-period-panel'
 import { CalenderSelectedRange } from '../hooks/useCalenderData'
 import { CalendarViewEnum } from '../types'
+import {
+  getShowTimeDefaultMoment,
+  getShowTimeDefaultOpenValue,
+  isShowTimeEnabled,
+} from '../utils/showTime'
 import { Footer } from './footer'
 
 const RangePanel = () => {
@@ -27,7 +40,6 @@ const RangePanel = () => {
     shortcuts,
     theme,
     locale,
-    weekOffset,
     onSelect,
     onPanelChange,
     hourStep,
@@ -44,11 +56,28 @@ const RangePanel = () => {
     footerRender,
     utcOffset,
     defaultPickerValue,
+    focusIndex,
+    weekOffset,
+    needConfirm,
+    onConfirm,
+    classNames,
+    styles,
   } = useContext(DPContext)
+  const showTimeEnabled = isShowTimeEnabled(showTime)
   const calendarClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState<CalendarViewEnum[]>([getView(type), getView(type)])
   const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
+  const getDateWithTime = useCallback(
+    (date: moment.Moment, index: number) => {
+      if (!showTimeEnabled) return date
+      const source = outDate[index]
+        ? calRenderDates[index]
+        : getShowTimeDefaultMoment(showTime, index) || calRenderDates[index]
+      return source ? mergeCalendarDateKeepTime(date, source) : date
+    },
+    [calRenderDates, outDate, showTime, showTimeEnabled]
+  )
   const [range, setRange] = useState<CalenderSelectedRange>({
     start: null,
     end: null,
@@ -129,19 +158,38 @@ const RangePanel = () => {
   /**
    * Header 部分点击事件
    */
-  const changeViewEvent = useCallback(
-    (uIndex) => {
-      setViews((pre) => {
-        const p = [...pre]
-        p[uIndex] = 'year'
-        return p
-      })
-    },
-    [type]
-  )
+  const changeViewEvent = (uIndex: number) => {
+    setViews((pre) => {
+      const p = [...pre]
+      p[uIndex] = 'year'
+      return p
+    })
+  }
 
   const setRanges = (date: moment.Moment, panelIndex: number = 0) => {
     const newRange = { ...range }
+
+    // 检查是否需要自动切换面板月份
+    if (type.includes('range')) {
+      const currentPanelDate = calRenderDates[panelIndex]
+      if (currentPanelDate) {
+        const selectedMonth = date.clone().startOf('month')
+        const panelMonth = currentPanelDate.clone().startOf('month')
+
+        // 左边面板：如果选择的日期是上个月的，自动定位到上个月
+        if (panelIndex === 0 && selectedMonth.isBefore(panelMonth, 'month')) {
+          const newDates = genNewDates(calRenderDates, date.clone().startOf('month'), 0)
+          setCalRenderDates(newDates)
+          onPanelChange?.(date.toDate())
+        }
+        // 右边面板：如果选择的日期是下个月的，自动定位到下个月
+        else if (panelIndex === 1 && selectedMonth.isAfter(panelMonth, 'month')) {
+          const newDates = genNewDates(calRenderDates, date.clone().startOf('month'), 1)
+          setCalRenderDates(newDates)
+          onPanelChange?.(date.toDate())
+        }
+      }
+    }
 
     if (newRange.start && range.selecting) {
       if (date.isSameOrBefore(newRange.start)) {
@@ -158,10 +206,10 @@ const RangePanel = () => {
         // 固定模式下，即使跨月选择了日期，仍然显示当前月的日期选择面板
         if (strideSelectMode === 'fixed') {
           const { start, end } = newRange
-          // 开始周周一日期
-          const startOfWeek = start.clone()!.startOf('week')
-          // 结束周周日日期
-          const endOfWeek = end!.clone()!.endOf('week')
+          // 开始周的第一天日期（考虑 weekOffset）
+          const startOfWeek = getBelongWeekBoundary(start.clone()!, weekOffset, true)
+          // 结束周的最后一天日期（考虑 weekOffset）
+          const endOfWeek = getBelongWeekBoundary(end!.clone()!, weekOffset, false)
           // 当月最后一天
           const endOfMonth = end!.clone().endOf('month')
           // 重新计算出的开始日期，逻辑：（开始周日期不能是上个月的日期）
@@ -183,12 +231,18 @@ const RangePanel = () => {
               ? endOfMonth
               : endOfWeek
 
-          onPick([rangeStart, rangeEnd], showTime)
+          onPick([rangeStart, rangeEnd], showTimeEnabled)
         } else {
-          onPick([newRange.start!.startOf('week'), newRange.end!.endOf('week')], showTime)
+          onPick(
+            [
+              getBelongWeekBoundary(newRange.start!, weekOffset, true),
+              getBelongWeekBoundary(newRange.end!, weekOffset, false),
+            ],
+            showTimeEnabled
+          )
         }
       } else {
-        onPick([newRange.start, newRange.end], showTime)
+        onPick([newRange.start, newRange.end], needConfirm || showTimeEnabled)
       }
     } else {
       newRange.selecting = true
@@ -213,11 +267,14 @@ const RangePanel = () => {
     }
     // V4修改：type === 'weekrange' -> views[uIndex] === 'date' （修正，周模式下，无法使用年份月份快捷切换面板BUG）
     if (type.includes(views[uIndex]) || (type === 'weekrange' && views[uIndex] === 'date')) {
-      setRanges(date, uIndex)
+      const dateForRange =
+        showTimeEnabled && views[uIndex] === 'date' ? getDateWithTime(date, uIndex) : date
+      setRanges(dateForRange, uIndex)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)
     }
+
     const _views = cloneDeep(views)
     if (views[uIndex] === 'month' && !type.includes('month')) {
       _views[uIndex] = 'date'
@@ -228,6 +285,7 @@ const RangePanel = () => {
     if (views[uIndex] === 'year' && type.includes('quarter')) {
       _views[uIndex] = 'quarter'
     }
+
     setViews(_views)
   }
 
@@ -248,13 +306,45 @@ const RangePanel = () => {
     ) {
       setRange((range) => {
         const newRange = { ...range }
-        newRange.end = outDate[1]
-        if (newRange.end?.isBefore(newRange.start)) {
-          const temp = newRange.start
-          newRange.start = newRange.end
-          newRange.end = temp
+        const oldStart = outDate[0]
+        const oldEnd = outDate[1]
+        const newStart = newRange.start
+
+        // 处理只选中一个值关闭弹窗时的范围取值
+        if (focusIndex === 0) {
+          // 当焦点在第一个输入框时
+          if (newStart?.isBefore(oldStart)) {
+            // 如果新选择的日期在原始开始日期之前
+            newRange.start = newStart
+            newRange.end = oldEnd
+          } else if (newStart?.isAfter(oldStart) && newStart?.isBefore(oldEnd)) {
+            // 如果新选择的日期在原始开始和结束日期之间
+            newRange.start = newStart
+            newRange.end = oldEnd
+          } else if (newStart?.isAfter(oldEnd)) {
+            // 如果新选择的日期在原始结束日期之后
+            newRange.start = oldEnd
+            newRange.end = newStart
+          }
+        } else {
+          // 当焦点在第二个输入框时
+          if (newStart?.isBefore(oldEnd) && newStart?.isAfter(oldStart)) {
+            // 如果新选择的日期在原始开始和结束日期之间
+            newRange.start = oldStart
+            newRange.end = newStart
+          } else if (newStart?.isAfter(oldEnd)) {
+            // 如果新选择的日期在原始结束日期之后
+            newRange.start = oldStart
+            newRange.end = newStart
+          } else if (newStart?.isBefore(oldStart)) {
+            // 如果新选择的日期在原始开始日期之前
+            newRange.start = newStart
+            newRange.end = oldStart
+          }
         }
+
         rangeRef.current = newRange
+
         return newRange
       })
     }
@@ -289,7 +379,8 @@ const RangePanel = () => {
     )
   }
   const onArrowEvent = (date: moment.Moment, index: number) => {
-    const _innerDates = genNewDates(calRenderDates, date, index)
+    const dateToApply = showTimeEnabled ? getDateWithTime(date, index) : date
+    const _innerDates = genNewDates(calRenderDates, dateToApply, index)
     if (type.includes('range') && _innerDates[0].isSameOrAfter(_innerDates[1], 'month')) {
       return
     }
@@ -374,17 +465,27 @@ const RangePanel = () => {
     `theme__${theme}`,
     type.includes('range') && `${prefixCls}__panel--range`,
     type === 'timeperiod' && `${prefixCls}__panel--timeperiod`,
-    (showTime || type === 'timeperiod' || footerRender) && `${prefixCls}__panel--noshadow`
+    (showTimeEnabled || type === 'timeperiod' || footerRender || needConfirm) &&
+      `${prefixCls}__panel--noshadow`,
+    classNames?.panel
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
-  const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
+  const timePickerData = useTimePickerData(
+    calRenderDates,
+    timePickerFormat,
+    outDate,
+    getShowTimeDefaultOpenValue(showTime)
+  )
 
   return (
     <React.Fragment>
-      <div className={panelCls} onMouseLeave={onMouseLeave}>
+      <div className={panelCls} style={styles?.panel} onMouseLeave={onMouseLeave}>
         {renderShortcut()}
-        <div className={`${prefixCls}__panel--left`}>
+        <div
+          className={cx(`${prefixCls}__panel--left`, classNames?.panelLeft)}
+          style={styles?.panelLeft}
+        >
           {calRenderDates[0] && (
             <React.Fragment>
               <Header
@@ -458,7 +559,7 @@ const RangePanel = () => {
         </div>
       </div>
       {/* 目前不会执行到该逻辑 */}
-      {type === 'daterange' && showTime && (
+      {type === 'daterange' && showTimeEnabled && (
         <div
           className={`${prefixCls}-old ${
             !isDisableFooter ? `${prefixCls}__footer-old--disable` : ''
@@ -494,7 +595,15 @@ const RangePanel = () => {
           />
         </React.Fragment>
       )}
-      {footerRender && <Footer />}
+      {(footerRender || needConfirm) && (
+        <Footer
+          disabled={!outDate[0]}
+          onConfirmButtonClick={() => {
+            onPick([range.start, range.end], needConfirm ? false : showTimeEnabled)
+            onConfirm?.([range.start, range.end].map((item) => item?.toDate()) as Date[])
+          }}
+        />
+      )}
     </React.Fragment>
   )
 }

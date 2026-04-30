@@ -47,14 +47,8 @@ export const ValidateField = () => {
           labelWidth="100"
           labelPlacement="right"
           innerRef={formRef}
-          initialValues={{
-            phone: '',
-            passwordConfirm: '',
-            password: '',
-            code: '',
-          }}
+          initialValues={formData}
           onValuesChange={(changedValues, allValues) => {
-            console.log('onValuesChange', changedValues, allValues)
             setFormData(allValues)
           }}
         >
@@ -87,19 +81,10 @@ export const ValidateField = () => {
                 label="验证码"
                 field="code"
                 valueType="string"
-                validateTrigger="onChange"
                 rules={[
                   {
-                    validator: (rule, value, callback) => {
-                      const telReg = /^[0-9]{6}$/
-                      if (!value) {
-                        callback(new Error('请输入手机号'))
-                      } else if (!telReg.test(value)) {
-                        callback(new Error('请输入正确的验证码'))
-                      } else {
-                        callback()
-                      }
-                    },
+                    required: true,
+                    message: '请输入验证码',
                   },
                 ]}
               >
@@ -111,9 +96,7 @@ export const ValidateField = () => {
                 type="primary"
                 disabled={codeDisabled && countDown <= 60 && countDown >= 0}
                 onClick={() => {
-                  console.log(1113)
-
-                  formRef.current.validateField('phone').then((values) => {
+                  formRef.current?.validateField('phone').then((values) => {
                     console.log('values', values)
                     setCodeDisabled(true)
                     getCode()
@@ -124,69 +107,13 @@ export const ValidateField = () => {
               </Button>
             </Col>
           </Row>
-          <FormItem
-            label="密码"
-            field="password"
-            valueType="string"
-            validateTrigger="onChange"
-            rules={[
-              {
-                validator: (rule, value, callback) => {
-                  const telReg = /^(?![^a-zA-Z]+$)(?!\D+$).{8,16}$/
-                  if (!value) {
-                    callback(new Error('请输入密码'))
-                  } else if (!telReg.test(value)) {
-                    callback(new Error('请输入包括数字和字母、长度8到16位的密码组合'))
-                  } else {
-                    callback()
-                  }
-                },
-              },
-            ]}
-          >
-            <Input type="password" placeholder="请输入" style={{ width: 240 }} />
-          </FormItem>
 
-          <FormItem
-            label="确认密码"
-            field="passwordConfirm"
-            valueType="string"
-            validateTrigger="onChange"
-            rules={[
-              {
-                validator: (rule, value, callback) => {
-                  console.log(value, formData.password)
-
-                  if (value !== formData.password) {
-                    callback(new Error('两次密码不同'))
-                  } else {
-                    callback()
-                  }
-                },
-              },
-            ]}
-          >
-            <Input type="password" placeholder="请再次输入密码" style={{ width: 240 }} />
-          </FormItem>
-
-          <FormItem valueType={null} field={null}>
+          <FormItem valueType={undefined} field={undefined}>
             <>
-              <FormSubmit
-                type="primary"
-                onClick={() => {
-                  console.log('Get form value:', formRef.current.getFieldsValue())
-                }}
-              >
-                提交
-              </FormSubmit>
-              <FormReset
-                type="default"
-                onClick={() => {
-                  console.log('reset form')
-                }}
-              >
+              <FormReset type="default" appearance="line">
                 重置
               </FormReset>
+              <FormSubmit type="primary">提交</FormSubmit>
             </>
           </FormItem>
         </Form>

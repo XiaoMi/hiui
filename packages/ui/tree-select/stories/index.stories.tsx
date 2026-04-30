@@ -4,6 +4,7 @@ import TreeSelect from '../src'
 export * from './basic.stories'
 export * from './controlled.stories'
 export * from './uncontrolled.stories'
+export * from './disabled.stories'
 export * from './appearance.stories'
 export * from './size.stories'
 export * from './clearable.stories'
@@ -13,6 +14,8 @@ export * from './default-expand-all.stories'
 // export * from './async.stories'
 export * from './virtual-list.stories'
 export * from './custom-render.stories'
+export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/TreeSelect',

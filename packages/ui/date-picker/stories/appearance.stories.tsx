@@ -32,6 +32,31 @@ export const Appearance = () => {
             console.log('onChange', date, dateStr)
           }}
         />
+        <h2>borderless</h2>
+        <DatePicker
+          style={{ width: 240 }}
+          appearance={'borderless'}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+        <h2>contained</h2>
+        <DatePicker
+          style={{ width: 'auto', marginBottom: 16 }}
+          appearance="contained"
+          label="日期"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
+        <DatePicker
+          appearance="contained"
+          label="日期范围"
+          type="daterange"
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+          }}
+        />
       </div>
     </>
   )

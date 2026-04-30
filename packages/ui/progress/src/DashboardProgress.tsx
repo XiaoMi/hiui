@@ -13,9 +13,9 @@ const sizeMap = {
 }
 
 const strokeWidthMap = {
-  sm: 2,
+  sm: 4,
   md: 4,
-  lg: 8,
+  lg: 4,
 }
 
 export const DashboardProgress = forwardRef<HTMLDivElement | null, DashboardProgressProps>(

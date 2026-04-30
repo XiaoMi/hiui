@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
 import { withDefaultProps, mergeRefs } from '@hi-ui/react-utils'
@@ -14,6 +14,7 @@ export const usePopConfirm = ({
   onConfirm: onConfirmProp,
   onOpen,
   onClose,
+  attachEl,
   ...restProps
 }: UsePopConfirmProps) => {
   // TODO: 移除 popper，使用 hook 重写
@@ -25,6 +26,12 @@ export const usePopConfirm = ({
     onOpen,
     onClose,
   })
+
+  useEffect(() => {
+    if (visible) {
+      onOpen?.()
+    }
+  }, [visible, onOpen])
 
   const onCancelLatest = useLatestCallback(onCancelProp)
 
@@ -61,16 +68,16 @@ export const usePopConfirm = ({
       arrow: true,
       placement: 'top',
       // @DesignToken 10
-      gutterGap: 14,
+      gutterGap: 10,
     })
 
     return {
       ...popperProps,
       visible,
-      attachEl: targetEl,
+      attachEl: attachEl ?? targetEl,
       onClose: visibleAction.off,
     }
-  }, [visible, targetEl, popper, visibleAction])
+  }, [visible, attachEl, targetEl, popper, visibleAction])
 
   const rootProps = {
     role: 'alert-dialog',
@@ -83,6 +90,7 @@ export const usePopConfirm = ({
     getPopperProps,
     onCancel,
     onConfirm,
+    visibleAction,
   }
 }
 
@@ -121,6 +129,10 @@ export interface UsePopConfirmProps extends PopperOverlayProps {
    * 设置基于 reference 元素的间隙偏移量
    */
   gutterGap?: number
+  /**
+   * 吸附的元素
+   */
+  attachEl?: HTMLElement
   /**
    * 是否开启禁用。暂不对外暴露
    * @private

@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'Nazad na vrh',
   },
+  menuSearch: {
+    placeholder: 'Unesite sadržaj pretrage',
+    search: 'Pretraži',
+    clear: 'Obriši',
+    searchResult: 'Pronađeno {{count}} stavki povezanih sa „{{keyword}}“',
+    searchEmptyResult: 'Nema rezultata',
+    moveCursor: 'Pomjeri kursor',
+    confirmSelect: 'Potvrdi',
+    hideWindow: 'Sakrij',
+  },
+  queryFilter: {
+    pin: 'Zakači na vrh liste',
+    unpin: 'Otkači',
+  },
 }

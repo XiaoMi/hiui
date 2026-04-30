@@ -18,8 +18,9 @@ export const WithAPI = () => {
               type: 'error',
               title: '错误',
               content: '操作失败，请联系管理员！',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '我知道了',
+              closeable: false,
             })
           }
         >
@@ -27,15 +28,17 @@ export const WithAPI = () => {
         </Button>
         <Button
           type="default"
+          appearance="solid"
           onClick={() =>
             Modal.confirm({
               type: 'warning',
               title: '警告',
               content: '执行该操作后将无法撤销，是否确定继续？',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
               closeOnEsc: false,
               maskClosable: false,
+              closeable: false,
             })
           }
         >
@@ -50,8 +53,9 @@ export const WithAPI = () => {
               title: '成功',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
+              closeable: false,
             })
           }
         >
@@ -59,15 +63,16 @@ export const WithAPI = () => {
         </Button>
 
         <Button
-          type="secondary"
+          type="primary"
           onClick={() =>
             Modal.confirm({
               type: 'info',
               title: '普通',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
+              closeable: false,
             })
           }
         >
@@ -82,14 +87,12 @@ export const WithAPI = () => {
               title: '普通',
               content:
                 '这是信息提示对话框的描述，这是信息提示对话框的描述，这是信息提示对话框的描述',
-              cancelText: null,
+              cancelText: '取消',
               confirmText: '确定',
               onConfirm: async () => {
                 return new Promise((resolve) => setTimeout(resolve, 1000))
               },
-              // onConfirm: () => {
-              //   console.log('onConfirm')
-              // },
+              closeable: false,
             })
           }
         >

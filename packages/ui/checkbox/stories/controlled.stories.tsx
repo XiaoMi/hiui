@@ -14,6 +14,7 @@ export const Controlled = () => {
       <div className="checkbox-controlled__wrap">
         <Button onClick={() => setChecked((prev) => !prev)}>Toggle</Button>
         <br />
+        <br />
         <Checkbox
           checked={checked}
           onChange={(evt) => {

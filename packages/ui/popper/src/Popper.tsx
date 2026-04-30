@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import * as PopperJS from '@popperjs/core'
@@ -8,6 +8,13 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { usePopper, UsePopperProps } from './use-popper'
 import { Portal } from '@hi-ui/portal'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
+import { ArrowIcon } from './ArrowIcon'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 export { PopperJS }
 
@@ -52,10 +59,31 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       container,
       animationType = 'scale',
       disabledPortal = false,
+      styles: stylesProp,
+      classNames: classNamesProp,
       ...rest
     },
     ref
   ) => {
+    const { popper: popperConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      PopperSemanticClassNames,
+      PopperSemanticStyles,
+      PopperProps
+    >({
+      classNamesList: [popperConfig?.classNames, classNamesProp],
+      stylesList: [popperConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          attachEl,
+          visible: visibleProp,
+          arrow,
+          placement,
+          animationType,
+        },
+      },
+    })
     const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
       defaultVisible: false,
       visible: visibleProp,
@@ -112,7 +140,11 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       onExited?.()
     })
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, classNames?.root)
+    const popperRest = {
+      ...rest,
+      style: { ...style, ...styles?.root },
+    }
 
     useImperativeHandle(ref, () => ({
       ...((ref as any)?.current || {}),
@@ -120,6 +152,7 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
       forceUpdate,
     }))
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
@@ -134,11 +167,28 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
           onExit={onExit}
           onEntered={onEnteredLatest}
           onExited={onExitedLatest}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getPopperProps(rest, ref)}>
-            <div className={`${prefixCls}__container`}>
-              {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
-              <div className={`${prefixCls}__content`}>{children}</div>
+          <div className={cls} {...getPopperProps(popperRest, [ref, transitionNodeRef])}>
+            <div
+              className={cx(`${prefixCls}__container`, classNames?.container)}
+              style={styles?.container}
+            >
+              {arrow ? (
+                <div
+                  className={cx(`${prefixCls}__arrow`, classNames?.arrow)}
+                  {...getArrowProps({ style: styles?.arrow })}
+                >
+                  <ArrowIcon />
+                </div>
+              ) : null}
+              <div
+                className={cx(`${prefixCls}__content`, classNames?.content)}
+                style={styles?.content}
+              >
+                {children}
+              </div>
             </div>
           </div>
         </CSSTransition>
@@ -147,7 +197,12 @@ export const Popper = forwardRef<HTMLDivElement | null, PopperProps>(
   }
 )
 
-export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps {
+export type PopperSemanticName = 'root' | 'container' | 'arrow' | 'content'
+export type PopperSemanticClassNames = SemanticClassNamesType<PopperProps, PopperSemanticName>
+export type PopperSemanticStyles = SemanticStylesType<PopperProps, PopperSemanticName>
+export type PopperSemantic = ComponentSemantic<PopperSemanticClassNames, PopperSemanticStyles>
+
+export interface PopperProps extends HiBaseHTMLProps<'div'>, UsePopperProps, PopperSemantic {
   /**
    * 是否展示箭头
    */

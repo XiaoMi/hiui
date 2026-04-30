@@ -10,6 +10,8 @@ export * from './Wheel.stories'
 export * from './invalid.stories'
 export * from './formatter.stories'
 export * from './addon.stories'
+export * from './styles.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/NumberInput',

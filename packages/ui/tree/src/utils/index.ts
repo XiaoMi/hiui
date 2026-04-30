@@ -34,10 +34,11 @@ export function getTreeNodeEventData(
 export const processCheckedIds = (
   type: string,
   checkedIds: React.ReactText[],
-  flattenData: any
+  flattenData: any,
+  allowCheck: (node: any) => boolean
 ) => {
   const keySet = new Set(checkedIds)
-  const flattedDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
+  const flattedDataMap = new Map(flattenData.map((item: any) => [item.id, item]))
 
   switch (type) {
     case 'CHILD':
@@ -48,11 +49,7 @@ export const processCheckedIds = (
           const { children } = node
 
           if (isArrayNonEmpty(children)) {
-            if (
-              children
-                .filter((node: any) => !node.disabled)
-                .every((node: any) => keySet.has(node.id))
-            ) {
+            if (children.filter(allowCheck).every((node: any) => keySet.has(node.id))) {
               return false
             }
           }
@@ -88,12 +85,13 @@ export const processCheckedIds = (
 export const parseCheckDataDirty = (
   type: string,
   checkedIds: React.ReactText[],
-  flattenData: any
+  flattenData: any,
+  allowCheck?: (node: any) => boolean
 ) => {
   switch (type) {
     case 'CHILD':
     case 'PARENT':
-      return dirtyCheck(checkedIds, flattenData, (node: any) => !node.disabled)
+      return dirtyCheck(checkedIds, flattenData, allowCheck)
   }
 
   return checkedIds
@@ -165,13 +163,19 @@ function fillCheck(
       if (visitedIds.has(id)) return
 
       if (isArrayNonEmpty(children)) {
-        const shouldChecked = !children.some((child: any) => {
+        const childFails = (child: any) => {
+          if (!allowCheck(child)) {
+            if (isArrayNonEmpty(child.children)) {
+              return visitedIds.has(child.id) ? !visitedIds.get(child.id) : true
+            }
+            return false
+          }
           if (visitedIds.has(child.id)) {
             return !visitedIds.get(child.id)
           }
-
           return !checkedIdsSet.has(child.id)
-        })
+        }
+        const shouldChecked = !children.some(childFails)
 
         visitedIds.set(id, shouldChecked)
 

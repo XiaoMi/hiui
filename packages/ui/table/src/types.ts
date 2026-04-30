@@ -106,7 +106,7 @@ export interface TableColumnItemRenderReturn {
 
 export type TableColumnSortOrder = 'ascend' | 'descend' | null
 
-export type TableColumnItem = {
+export type TableColumnItem<T extends Record<string, any> = any> = {
   /**
    * 列标题
    */
@@ -140,9 +140,9 @@ export type TableColumnItem = {
    */
   defaultSortOrder?: TableColumnSortOrder
   /**
-   * 列排序函数
+   * 列排序函数，当设置为 true 时，需结合 sortOrder 和 onChange 使用，一般用于服务端排序
    */
-  sorter?: (a: any, b: any) => number
+  sorter?: boolean | ((a: any, b: any) => number)
   /**
    * 该列是否支持平均值
    */
@@ -154,7 +154,7 @@ export type TableColumnItem = {
   /**
    * 多级表头
    */
-  children?: TableColumnItem[]
+  children?: TableColumnItem<T>[]
   /**
    * 表头列合并，设置为 0 时，不渲染
    */
@@ -164,7 +164,7 @@ export type TableColumnItem = {
    */
   render?: (
     text: any,
-    rowItem: Record<string, any>,
+    rowItem: T,
     rowIndex: number,
     dataKey: string
   ) => React.ReactNode | TableColumnItemRenderReturn
@@ -195,12 +195,12 @@ export type TableColumnItem = {
   /**
    * 自定义筛选下拉选项显示状态改变时的回调方法
    */
-  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem) => void
+  onFilterDropdownVisibleChange?: (filterDropdownVisible: boolean, item: TableColumnItem<T>) => void
   /**
    * 自定义筛选菜单，此函数只负责渲染图层，需要自行编写各种交互
    */
   filterDropdown?: (props: {
-    columnData: TableColumnItem
+    columnData: TableColumnItem<T>
     setFilterDropdownVisible: Function
   }) => React.ReactNode
 }
@@ -334,5 +334,10 @@ export type TableVirtualScrollConfig =
     }
 
 export interface TableHelper {
-  scrollTo?: (arg: number | TableVirtualScrollConfig) => void
+  scrollTo?: {
+    // 虚拟表格场景：使用 number 或 TableVirtualScrollConfig
+    (arg: number | TableVirtualScrollConfig): void
+    // 普通表格场景：使用 ScrollToOptions 对象
+    (options: { top?: number; left?: number; behavior?: 'auto' | 'smooth' }): void
+  }
 }

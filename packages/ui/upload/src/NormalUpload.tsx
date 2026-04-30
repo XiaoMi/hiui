@@ -1,7 +1,11 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './types'
+import type {
+  UploadProps,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import { Button } from '@hi-ui/button'
 import { UploadOutlined } from '@hi-ui/icons'
@@ -43,6 +47,9 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       actionRender,
       method,
       timeout,
+      size = 'md',
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -52,6 +59,12 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const buttonText = i18n.get('upload.buttonText')
 
     const cls = cx(prefixCls, className)
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -75,7 +88,7 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
         <FileSelect
-          style={{ display: 'inline-block' }}
+          style={{ display: 'inline-flex' }}
           onSelect={uploadFiles}
           multiple={multiple}
           disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
@@ -83,10 +96,12 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
         >
           {children === undefined ? (
             <Button
-              type="secondary"
+              appearance="line"
               disabled={disabled || (!!maxCount && _fileList.length >= maxCount)}
               loading={loading}
               icon={icon ?? <UploadOutlined />}
+              className={cn?.normalUploadTrigger}
+              style={st?.normalUploadTrigger}
             >
               {content || buttonText}
             </Button>
@@ -94,7 +109,14 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             children
           )}
         </FileSelect>
-        {tips && <div className={`${prefixCls}__tips`}>{tips}</div>}
+        {tips && (
+          <div
+            className={cx(`${prefixCls}__tips`, cn?.normalUploadTips)}
+            style={st?.normalUploadTips}
+          >
+            {tips}
+          </div>
+        )}
         {showUploadList && _fileList.length > 0 && (
           <FileList
             fileList={_fileList}
@@ -103,6 +125,9 @@ export const NormalUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             prefixCls={prefixCls}
             actionRender={actionRender}
             disabled={disabled}
+            size={size}
+            className={cn?.normalUploadList}
+            style={st?.normalUploadList}
           />
         )}
       </div>

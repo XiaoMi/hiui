@@ -8,6 +8,13 @@ const cascaderContext = createContext<
       expandTrigger: CascaderExpandTriggerEnum
       titleRender: (item: CascaderItemEventData) => React.ReactNode
       dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
+      virtual?: boolean
+      onItemClickProp?: (
+        event: React.MouseEvent<HTMLDivElement>,
+        option: CascaderItemEventData
+      ) => void
+      classNames?: Partial<Record<string, string>>
+      styles?: Partial<Record<string, React.CSSProperties>>
     })
   | null
 >(null)

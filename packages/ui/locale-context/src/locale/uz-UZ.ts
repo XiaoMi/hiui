@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: 'Yuqoriga qaytish',
   },
+  menuSearch: {
+    placeholder: 'Qidiruv matnini kiriting',
+    search: 'Qidirish',
+    clear: 'Tozalash',
+    searchResult: '"{{keyword}}" bo\'yicha {{count}} ta element topildi',
+    searchEmptyResult: 'Natija topilmadi',
+    moveCursor: 'Kursorni siljitish',
+    confirmSelect: 'Tasdiqlash',
+    hideWindow: 'Yashirish',
+  },
+  queryFilter: {
+    pin: 'Ro\'yxat boshiga yopishtirish',
+    unpin: 'Yopishtirishni bekor qilish',
+  },
 }

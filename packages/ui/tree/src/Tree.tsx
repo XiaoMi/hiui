@@ -1,7 +1,13 @@
 import React, { forwardRef, useMemo, useRef, useImperativeHandle } from 'react'
-import { HiBaseFieldNames, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { flattenTreeData } from './utils'
 import {
   useExpand,
@@ -27,6 +33,7 @@ import VirtualList, { ListRef } from '@hi-ui/virtual-list'
 import { MotionTreeNode } from './MotionTreeNode'
 import { TreeNode } from './TreeNode'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { PopperProps } from '@hi-ui/popper'
 
 const _role = 'tree'
 export const treePrefix = getPrefixCls(_role)
@@ -42,6 +49,9 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       prefixCls = treePrefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       data,
       // expand or collapse
@@ -87,20 +97,38 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       fieldNames,
       checkedMode = 'ALL',
       expandOnSelect,
-      size = 'lg',
+      size: sizeProp,
       innerRef,
       shouldShowSwitcher,
       ...rest
     },
     ref
   ) => {
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tree?: { classNames?: any; styles?: any }
+    }
+    const { size: globalSize } = globalContext
+    const treeConfig = globalContext.tree
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const [treeData, setTreeData] = useCache(data)
 
-    const flattedData = useMemo(() => flattedDataProp || flattenTreeData(treeData, fieldNames), [
-      treeData,
-      flattedDataProp,
-      fieldNames,
-    ])
+    const flattedShowData = useMemo(() => {
+      const _flattedShowData = flattenTreeData(treeData, fieldNames)
+      if (checkable && flattedDataProp && flattedDataProp.length > 0) {
+        // 加这段处理是为了解决在 checkable 为 true 时，在搜索结果中选中子节点时，父节点勾选状态不正确的问题
+        // 原因是 treeData 是过滤后的数据，所以无法保证完整的父子节点关系，需要基于原始的 flattedDataProp 数据再进行过滤
+        return (
+          flattedDataProp?.filter((item) =>
+            _flattedShowData.some((_item) => _item.id === item.id)
+          ) || []
+        )
+      }
+      return _flattedShowData
+    }, [treeData, fieldNames, checkable, flattedDataProp])
 
     const [selectedId, onNodeSelect] = useSelect(
       !selectable,
@@ -112,14 +140,14 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     const [onNodeCheck, isCheckedId, isSemiCheckedId] = useCheck(
       checkedMode,
       !checkable,
-      flattedData,
+      flattedShowData,
       defaultCheckedIds,
       checkedIdsProp,
       onCheck
     )
 
     const [transitionData, onNodeToggleStart, onNodeToggleEnd, isExpandedId] = useExpand(
-      flattedData,
+      flattedShowData,
       defaultExpandedIds,
       expandedIds,
       onExpand,
@@ -141,6 +169,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           selected: selectedId === id,
           loading: isLoadingId(id),
           focused: focusedId === id,
+          classNames,
+          styles,
         }
       }
     )
@@ -149,7 +179,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
     const dropTree = useTreeDrop(
       getTreeNodeRequiredProps,
       treeData,
-      flattedData,
+      flattedShowData,
       setTreeData,
       onDrop,
       onDropEnd
@@ -233,7 +263,17 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       scrollTo: listRef.current?.scrollTo,
     }))
 
-    const cls = cx(prefixCls, className, `${prefixCls}--size-${size}`)
+    const { classNames, styles } = useMergeSemantic<
+      TreeSemanticClassNames,
+      TreeSemanticStyles,
+      TreeProps
+    >({
+      classNamesList: [treeConfig?.classNames, classNamesProp],
+      stylesList: [treeConfig?.styles, stylesProp],
+      info: { props: { ...rest, size, selectable, checkable, draggable, data } },
+    })
+
+    const cls = cx(prefixCls, className, classNames?.root, `${prefixCls}--size-${size}`)
 
     return (
       <TreeProvider value={providedValue}>
@@ -241,6 +281,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
           ref={ref}
           role={role}
           className={cls}
+          style={{ ...style, ...styles?.root }}
           tabIndex={0}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
@@ -279,7 +320,12 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
 // eslint-disable-next-line no-redeclare
 export type Tree = typeof Tree
 
-export interface TreeProps {
+export type TreeSemanticName = 'root' | 'item' | 'itemContent' | 'itemIcon' | 'itemTitle'
+export type TreeSemanticClassNames = SemanticClassNamesType<TreeProps, TreeSemanticName>
+export type TreeSemanticStyles = SemanticStylesType<TreeProps, TreeSemanticName>
+export type TreeSemantic = ComponentSemantic<TreeSemanticClassNames, TreeSemanticStyles>
+
+export interface TreeProps extends TreeSemantic {
   /**
    * 组件默认的选择器类
    */
@@ -479,7 +525,7 @@ export interface TreeProps {
   /**
    * 设置大小
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
   /**
    * 提供辅助方法的内部引用
    */
@@ -488,6 +534,10 @@ export interface TreeProps {
    * 自定义切换器显示逻辑
    */
   shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  /**
+   * 编辑树模式下操作菜单 Popper 配置
+   */
+  actionMenuPopper?: Omit<PopperProps, 'visible' | 'attachEl'>
 }
 
 if (__DEV__) {

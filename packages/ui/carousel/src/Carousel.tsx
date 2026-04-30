@@ -18,13 +18,20 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
     showArrows = true,
     arrowSize = 'md',
     dotPlacement = 'bottom',
-    dotType = 'slider',
+    dotType = 'line',
     showDots = true,
     showPages = false,
     onIndexChange,
     ...rest
   } = props
-  const cls = cx(prefixCls, className, dotPlacement === 'outer' && `${prefixCls}--dot-outer`)
+  // 判断是否为垂直方向（当 dotPlacement 为 left 或 right 时）
+  const isVertical = dotPlacement === 'left' || dotPlacement === 'right'
+  const cls = cx(
+    prefixCls,
+    className,
+    dotPlacement === 'outer' && `${prefixCls}--dot-outer`,
+    isVertical && `${prefixCls}--vertical`
+  )
 
   // 当前活跃下标
   const [activeIndex, setActiveIndex] = useState(defaultActive)
@@ -66,9 +73,21 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
 
   // 计算跳转到对应下标索引所需百分比位移
   const calcToIndexNeedPercentage = useCallback(
-    (targetIndex: number) => `${-targetIndex * 100}%`,
-    []
+    (targetIndex: number) => {
+      if (isVertical) {
+        return `translateY(${-targetIndex * 100}%)`
+      }
+      return `translateX(${-targetIndex * 100}%)`
+    },
+    [isVertical]
   )
+
+  // 根据 defaultActive 设置内容区初始位移，保证首屏显示对应下标的那一页
+  useEffect(() => {
+    if (contentRef.current && defaultActive > 0) {
+      contentRef.current.style.transform = calcToIndexNeedPercentage(defaultActive)
+    }
+  }, [defaultActive, calcToIndexNeedPercentage])
 
   const toIndex = useCallback(
     (newIndex: number, leftToRight: boolean) => {
@@ -77,47 +96,39 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
       }
 
       if (contentRef.current) {
-        // 新下标为0，并且希望从左往右，此情况为：已经到了最后一个item，点击了next按钮操作，或者自动跳转到下一个
+        // 新下标为0，并且希望从左往右（或从上往下），此情况为：已经到了最后一个item，点击了next按钮操作，或者自动跳转到下一个
         // 跳转到默认额外添加的第一个item copy上
         if (newIndex === 0 && leftToRight) {
-          contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(
-            childCount
-          )})`
+          contentRef.current.style.transform = calcToIndexNeedPercentage(childCount)
         }
-        // 旧下标为0，并且希望从左往右，此时，我们需要保证，我们的 content 位于的是第一个 item，而非 copy 上
+        // 旧下标为0，并且希望从左往右（或从上往下），此时，我们需要保证，我们的 content 位于的是第一个 item，而非 copy 上
         else if (activeIndex === 0 && leftToRight) {
           // 禁用动画，先执行一次重定位
           contentRef.current.style.transition = 'none'
-          contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(0)})`
+          contentRef.current.style.transform = calcToIndexNeedPercentage(0)
           // 等待下一帧，渲染完成，我们恢复动画，并且跳转到对应位置
           setTimeout(() => {
             if (contentRef.current) {
               contentRef.current.style.transition = null as any
-              contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(
-                newIndex
-              )})`
+              contentRef.current.style.transform = calcToIndexNeedPercentage(newIndex)
             }
           }, 0)
         }
-        // 旧下标为0，并且希望从右往左，此情况为：已经到了最开始一个item，点击了last按钮操作
+        // 旧下标为0，并且希望从右往左（或从下往上），此情况为：已经到了最开始一个item，点击了last按钮操作
         // 我们需要保证，content 位于 第一个 item copy 上，然后执行跳转
         else if (activeIndex === 0 && !leftToRight) {
           // 禁用动画，先执行一次重定位
           contentRef.current.style.transition = 'none'
-          contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(
-            childCount
-          )})`
+          contentRef.current.style.transform = calcToIndexNeedPercentage(childCount)
           // 等待下一帧，渲染完成，我们恢复动画，并且跳转到对应位置
           setTimeout(() => {
             if (contentRef.current) {
               contentRef.current.style.transition = null as any
-              contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(
-                newIndex
-              )})`
+              contentRef.current.style.transform = calcToIndexNeedPercentage(newIndex)
             }
           })
         } else {
-          contentRef.current.style.transform = `translateX(${calcToIndexNeedPercentage(newIndex)})`
+          contentRef.current.style.transform = calcToIndexNeedPercentage(newIndex)
         }
       }
 
@@ -182,6 +193,11 @@ export const Carousel = forwardRef<HTMLDivElement | null, CarouselProps>((props,
             onClick={arrowOnClick}
             prefixCls={prefixCls}
             inAnimation={isInAnimation}
+            direction={
+              dotPlacement === 'top' || dotPlacement === 'bottom' || dotPlacement === 'outer'
+                ? 'horizontal'
+                : 'vertical'
+            }
           />
         )}
         {showPages && (

@@ -3,13 +3,9 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from '@hi-ui/array-utils'
 import Checkbox from '@hi-ui/checkbox'
-import {
-  defaultLoadingIcon,
-  defaultCollapseIcon,
-  defaultExpandIcon,
-  defaultLeafIcon,
-} from './icons'
-import { IconButton } from './IconButton'
+import Spinner from '@hi-ui/spinner'
+import IconButton from '@hi-ui/icon-button'
+import { defaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
 import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
 import { getTreeNodeEventData } from './utils'
@@ -35,11 +31,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     collapsedIcon: collapseIconProp = defaultCollapseIcon,
     expandedIcon: expandIconProp = defaultExpandIcon,
     leafIcon: leafIconProp = defaultLeafIcon,
+    classNames,
+    styles,
+    style,
     ...rest
   } = props
   const {
     draggable = false,
-    checkable = false,
+    checkable: treeCheckable = false,
     checkOnSelect,
     onSelect,
     onExpand,
@@ -224,7 +223,11 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
       const title = titleRender ? titleRender(node) : true
 
       return (
-        <div ref={treeNodeTitleRef} className={`${prefixCls}__title`}>
+        <div
+          ref={treeNodeTitleRef}
+          className={cx(`${prefixCls}__title`, classNames?.itemTitle)}
+          style={styles?.itemTitle}
+        >
           {title === true ? (
             <span className={`${prefixCls}__title-text`}>{node.title}</span>
           ) : (
@@ -233,12 +236,15 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         </div>
       )
     },
-    [prefixCls]
+    [prefixCls, classNames?.itemTitle, styles?.itemTitle]
   )
+
+  const isNodeCheckable = node.checkable !== false
 
   const cls = cx(
     prefixCls,
     className,
+    classNames?.item,
     showLine && `${prefixCls}--linear`,
     direction && `${prefixCls}--drag-${direction}`,
     focused && `${prefixCls}--focused`,
@@ -248,13 +254,15 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     semiChecked && `${prefixCls}--checkbox-indeterminate`,
     loading && `${prefixCls}--loading`,
     isLeaf && `${prefixCls}--leaf`,
-    !isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`
+    !isLeaf && `${prefixCls}--${expanded ? 'open' : 'closed'}`,
+    treeCheckable && !isNodeCheckable && `${prefixCls}--no-checkbox`
   )
 
   return (
-    <li ref={ref} role={role} className={cls} {...rest}>
+    <li ref={ref} role={role} className={cls} style={{ ...style, ...styles?.item }} {...rest}>
       <div
-        className={cx(`${prefixCls}__wrap`, isDragging && 'dragging')}
+        className={cx(`${prefixCls}__wrap`, classNames?.itemContent, isDragging && 'dragging')}
+        style={styles?.itemContent}
         draggable={enableDraggable}
         onDragStart={enableDraggable ? onDragStart : undefined}
         onDragEnd={enableDraggable ? onDragEnd : undefined}
@@ -267,8 +275,9 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
         tabIndex={0}
         onFocus={() => onFocus?.(eventNodeRef.current)}
         onClick={(evt) => {
+          const canToggleCheckOnSelect = eventNodeRef.current.checkable !== false
           onSelect?.(eventNodeRef.current)
-          if (checkOnSelect) {
+          if (checkOnSelect && canToggleCheckOnSelect) {
             onCheck?.(eventNodeRef.current, !checked)
           }
           if (expandOnSelect) {
@@ -289,12 +298,14 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
           onNodeExpand,
           onLoadChildren,
           iconRender,
-          shouldShowSwitcher
+          shouldShowSwitcher,
+          classNames?.itemIcon,
+          styles?.itemIcon
         )}
 
         {renderCheckbox(
           eventNodeRef.current,
-          checkable,
+          treeCheckable,
           prefixCls,
           disabled,
           checked,
@@ -369,6 +380,14 @@ export interface TreeNodeProps {
    * 该节点被 focus
    */
   focused?: boolean
+  /**
+   * 语义化 classNames（由 Tree 透传）
+   */
+  classNames?: Record<string, any>
+  /**
+   * 语义化 styles（由 Tree 透传）
+   */
+  styles?: Record<string, any>
 }
 
 if (__DEV__) {
@@ -405,14 +424,22 @@ const renderIndent = (prefixCls: string, node: FlattedTreeNodeData) => {
  */
 const renderCheckbox = (
   node: TreeNodeEventData,
-  checkable: boolean,
+  treeCheckable: boolean,
   prefixCls: string,
   disabled?: boolean,
   checked?: boolean,
   semiChecked?: boolean,
   onCheck?: (checkedNode: TreeNodeEventData, checked: boolean) => void
 ) => {
-  return checkable ? (
+  const isNodeCheckable = node.checkable !== false
+  if (!treeCheckable) {
+    return null
+  }
+  // 节点 checkable 为 false 时不占复选框列，避免隐藏 Checkbox 仍占位
+  if (!isNodeCheckable) {
+    return null
+  }
+  return (
     <Checkbox
       indeterminate={semiChecked}
       checked={checked}
@@ -424,7 +451,7 @@ const renderCheckbox = (
       }}
       className={`${prefixCls}__checkbox`}
     />
-  ) : null
+  )
 }
 
 /**
@@ -441,13 +468,17 @@ const renderSwitcher = (
   onNodeExpand: (evt: React.MouseEvent) => Promise<void>,
   onLoadChildren?: (node: TreeNodeEventData) => void | Promise<any>,
   iconRender?: (node: TreeNodeEventData) => React.ReactNode,
-  shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  shouldShowSwitcher?: (node: TreeNodeEventData) => boolean,
+  itemIconClassName?: string,
+  itemIconStyle?: React.CSSProperties
 ) => {
+  const switcherCls = (extra?: string) => cx(`${prefixCls}__switcher`, extra, itemIconClassName)
   if (iconRender) {
     return (
       <IconButton
         tabIndex={-1}
-        className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--noop`)}
+        className={switcherCls(`${prefixCls}__switcher--noop`)}
+        style={itemIconStyle}
         icon={iconRender(node)}
       />
     )
@@ -457,8 +488,9 @@ const renderSwitcher = (
     return (
       <IconButton
         tabIndex={-1}
-        className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--loading`)}
-        icon={defaultLoadingIcon}
+        className={switcherCls(`${prefixCls}__switcher--loading`)}
+        style={itemIconStyle}
+        icon={<Spinner size="sm" />}
       />
     )
   }
@@ -472,10 +504,10 @@ const renderSwitcher = (
     return (
       <IconButton
         tabIndex={-1}
-        className={cx(
-          `${prefixCls}__switcher`,
+        className={switcherCls(
           expanded ? `${prefixCls}__switcher--expanded` : `${prefixCls}__switcher--collapse`
         )}
+        style={itemIconStyle}
         icon={expanded ? expandedIcon : collapsedIcon}
         onClick={onNodeExpand}
       />
@@ -486,7 +518,8 @@ const renderSwitcher = (
     <IconButton
       tabIndex={-1}
       icon={leafIcon}
-      className={cx(`${prefixCls}__switcher`, `${prefixCls}__switcher--noop`)}
+      className={switcherCls(`${prefixCls}__switcher--noop`)}
+      style={itemIconStyle}
     />
   )
 }

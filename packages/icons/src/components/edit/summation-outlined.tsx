@@ -12,7 +12,7 @@ export const SummationOutlined = forwardRef<SVGSVGElement | null, IconProps>(
     const style = { fontSize: size, ...styleProp }
 
     return (
-      <svg className={cls} ref={ref} role="icon" style={style} {...rest}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"><path d="M896 149.333333a42.666667 42.666667 0 1 1 0 85.333334H232.234667l247.168 247.168a42.666667 42.666667 0 0 1 2.496 57.621333l-2.496 2.709333L232.213333 789.333333H896a42.666667 42.666667 0 1 1 0 85.333334H128a42.666667 42.666667 0 0 1-23.509333-78.272L388.885333 512 104.490667 227.605333A42.666667 42.666667 0 0 1 128 149.333333h768z" p-id="45016"></path></svg>
+      <svg className={cls} ref={ref} role="icon" style={style} {...rest}   viewBox="0 0 1045 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9751"  ><path d="M209.962667 870.4c-51.968 0-79.146667-61.781333-44.053334-100.096L402.709333 512l-236.8-258.304C130.816 215.381333 157.994667 153.6 209.962667 153.6h634.154666a38.4 38.4 0 1 1 0 76.8H248.768l233.002667 254.208a40.533333 40.533333 0 0 1 0 54.784L248.746667 793.6h595.349333a38.4 38.4 0 1 1 0 76.8H209.962667z" p-id="9752"></path></svg>
     )
   }
 )

@@ -12,8 +12,8 @@ $pop-content-prefix: '#{$component-prefix}-time-picker__pop-content' !default;
 
   &__separator {
     width: 1px;
-    background-color: use-color('gray', 100);
-    border-left: none;
-    border-right: none;
+    background-color: use-color('gray', 200);
+    border-inline-start: none;
+    border-inline-end: none;
   }
 }

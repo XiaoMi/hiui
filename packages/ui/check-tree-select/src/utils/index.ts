@@ -141,13 +141,21 @@ function fillCheck(
       if (visitedIds.has(id)) return
 
       if (isArrayNonEmpty(children)) {
-        const shouldChecked = !children.some((child: any) => {
+        // 可勾选子节点需在 checkedIds；disabled / checkable:false 但有子树时走 visitedIds；
+        // checkable:false 且无子节点（纯展示叶）不阻塞父级全选
+        const childFails = (child: any) => {
+          if (!allowCheck(child)) {
+            if (isArrayNonEmpty(child.children)) {
+              return visitedIds.has(child.id) ? !visitedIds.get(child.id) : true
+            }
+            return false
+          }
           if (visitedIds.has(child.id)) {
             return !visitedIds.get(child.id)
           }
-
           return !checkedIdsSet.has(child.id)
-        })
+        }
+        const shouldChecked = !children.some(childFails)
 
         visitedIds.set(id, shouldChecked)
 
@@ -173,11 +181,21 @@ export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[
     }
   })
 
+  const nonCheckableCount = flattedData.filter((item) => item.disabled || item.checkable === false)
+    .length
+
+  const onlyNonCheckableLeft =
+    treeIdsSet.size > 0 &&
+    [...treeIdsSet].every((id) => {
+      const n = flattedData.find((item) => item.id === id)
+      return n && (n.disabled || n.checkable === false)
+    })
+
   return [
-    hasValue && treeIdsSet.size === 0,
-    hasValue && treeIdsSet.size > 0,
+    hasValue && (treeIdsSet.size === 0 || onlyNonCheckableLeft),
+    hasValue && treeIdsSet.size > 0 && !onlyNonCheckableLeft,
     // 该值用来判断剩余未选中的节点是否都是 disabled 的
     // 如果为 true 则表示可选值都已选中
-    treeIdsSet.size === flattedData.filter((item) => item.disabled).length,
+    treeIdsSet.size === nonCheckableCount,
   ]
 }

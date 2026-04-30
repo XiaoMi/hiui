@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -49,7 +50,8 @@
     "@hi-ui/icons": "^4.0.19",
     "@hi-ui/react-utils": "^4.0.4",
     "@hi-ui/toast": "^4.1.0",
-    "react-transition-group": "^4.4.2"
+    "@hi-ui/use-merge-semantic": "^4.0.0",
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",

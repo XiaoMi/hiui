@@ -7,7 +7,6 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     &__input {
       &:focus + .#{$prefix}__icon {
         border-color: $color;
-        box-shadow: 0 0 0 2px use-color-mode('primary', 100);
       }
     }
 
@@ -43,6 +42,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
   align-items: center;
   vertical-align: middle;
   box-sizing: border-box;
+  line-height: use-text-lineheight('normal');
 
   &:not(&--disabled):hover {
     .#{$prefix}__icon {
@@ -54,11 +54,11 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     cursor: not-allowed;
 
     .#{$prefix}__icon {
-      border-color: use-color('gray', 300);
+      border-color: use-color('gray', 400);
       background-color: use-color('gray', 100);
 
       &::after {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
       }
 
       &--indeterminate {
@@ -68,7 +68,8 @@ $prefix: '#{$component-prefix}-checkbox' !default;
       }
     }
 
-    .#{$prefix}__icon--checked {
+    .#{$prefix}__icon--checked,
+    .#{$prefix}__icon--indeterminate {
       border-color: use-color-mode('primary');
       background-color: use-color-mode('primary');
       opacity: 0.4;
@@ -79,7 +80,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     }
 
     .#{$prefix}__text {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -97,13 +98,12 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     box-sizing: border-box;
     display: inline-block;
     vertical-align: middle;
-    width: 16px;
-    height: 16px;
-    border: 1px solid use-color('gray', 300);
+    width: use-height-size(4);
+    height: use-height-size(4);
+    border: use-border-size('normal') use-color('gray', 400);
     margin: 0;
-    border-radius: use-border-radius('sm');
+    border-radius: use-border-radius('md');
     transition: 0.3s ease-out;
-    line-height: 1;
     flex: none;
     background-color: use-color-static('white');
 
@@ -115,10 +115,10 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         content: '';
         border: none;
         border-bottom: 2px solid use-color-static('white');
-        height: 8px;
-        left: 6px;
+        height: use-height-size(2);
+        inset-inline-start: use-spacing(3);
         position: absolute;
-        top: 2px;
+        inset-block-start: use-spacing(1);
         width: 2px;
         transform-origin: center;
       }
@@ -131,12 +131,12 @@ $prefix: '#{$component-prefix}-checkbox' !default;
         box-sizing: content-box;
         content: '';
         border: 2px solid use-color-static('white');
-        border-left: 0;
-        border-top: 0;
+        border-inline-start: 0;
+        border-block-start: 0;
         height: 7px;
-        left: 4px;
+        inset-inline-start: 4px;
         position: absolute;
-        top: 1px;
+        inset-block-start: 1px;
         width: 4px;
         transform-origin: center;
       }
@@ -147,8 +147,7 @@ $prefix: '#{$component-prefix}-checkbox' !default;
     padding: 0;
     margin-inline-start: use-spacing(4);
     margin-inline-end: 0;
-    line-height: unset;
-    color: use-color('gray', 700);
+    color: use-color('gray', 800);
   }
 
   // Using for theme mixin

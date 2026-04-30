@@ -17,13 +17,19 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__popper {
     display: flex;
     flex-direction: column;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('xl');
     overflow: hidden;
     width: 100%;
   }
 
   &__root {
     display: inline-flex;
+  }
+
+  &__input {
+    &--connection {
+      padding: 0 use-spacing(6);
+    }
   }
 
   &__picker {
@@ -38,22 +44,44 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     border: use-border-size('normal') transparent;
     cursor: pointer;
 
-    &--size-sm {
+    &--size-xs {
       line-height: use-height-size(6);
       font-size: use-text-size('sm');
       height: use-height-size(6);
+
+      &:not(.#{$prefix}__picker--appearance-borderless) {
+        padding: 0 use-spacing(4);
+      }
+    }
+
+    &--size-sm {
+      line-height: use-height-size(7);
+      font-size: use-text-size('sm');
+      height: use-height-size(7);
+
+      &:not(.#{$prefix}__picker--appearance-borderless) {
+        padding: 0 use-spacing(4);
+      }
     }
 
     &--size-md {
       line-height: use-height-size(8);
       font-size: use-text-size('normal');
       height: use-height-size(8);
+
+      &:not(.#{$prefix}__picker--appearance-borderless) {
+        padding: 0 use-spacing(6);
+      }
     }
 
     &--size-lg {
       line-height: use-height-size(10);
       font-size: use-text-size('lg');
       height: use-height-size(10);
+
+      &:not(.#{$prefix}__picker--appearance-borderless) {
+        padding: 0 use-spacing(8);
+      }
     }
 
     $line: '#{&}--appearance-line';
@@ -61,7 +89,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     $unset: '#{&}--appearance-unset';
 
     &--appearance-line {
-      border: use-border-size('normal') use-color('gray', 300);
+      border: use-border-size('normal') use-color('gray', 400);
 
       &:hover {
         border-color: use-color-mode('primary');
@@ -77,7 +105,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--appearance-unset {
-      &:hover {
+      &:hover,
+      &.#{$prefix}__picker--focus {
         background: use-color('gray', 100);
       }
 
@@ -86,19 +115,60 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       }
     }
 
-    &--focus {
-      &#{$line},
-      &#{$filled},
-      &#{$unset} {
-        border-color: use-color-mode('primary');
+    &--appearance-borderless {
+      border: none;
+    }
+
+    &.#{$prefix}__picker--appearance-contained {
+      width: auto;
+      background-color: use-color('gray', 100);
+
+      &.#{$prefix}__picker--has-value,
+      &:not(.#{$prefix}__picker--disabled):hover {
+        background-color: use-color-mode('primary', 50);
+
+        .#{$prefix}__picker__label,
+        .#{$prefix}__picker__input,
+        .hi-icon {
+          color: use-color-mode('primary', 600);
+        }
+
+        .hi-icon {
+          color: use-color-mode('primary', 700);
+
+          &:hover {
+            color: use-color-mode('primary', 700);
+          }
+        }
       }
 
-      &:hover {
-        background: transparent;
+      &.#{$prefix}__picker--disabled {
+        .#{$prefix}__picker__label {
+          color: use-color('gray', 600);
+        }
+      }
+
+      .#{$prefix}__picker__label {
+        white-space: nowrap;
+        color: use-color('gray', 700);
+      }
+
+      .#{$prefix}__input-selector {
+        align-items: center;
+      }
+    }
+
+    &--focus {
+      &#{$line},
+      &#{$filled} {
+        border-color: use-color-mode('primary');
+
+        &:hover {
+          background: transparent;
+        }
       }
 
       background: transparent;
-      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
     }
 
     &--invalid,
@@ -107,17 +177,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       border: use-border-size('normal') use-color-mode('danger', 500);
     }
 
-    &--invalid#{&}--focus {
-      box-shadow: 0 0 0 2px use-color-mode('danger', 100);
-    }
-
     &--disabled {
       cursor: not-allowed;
-      background: use-color('gray', 100);
+      background-color: use-color('gray', 100);
 
       &:hover {
-        background: use-color('gray', 100);
-        border-color: transparent;
+        background-color: use-color('gray', 100) !important;
+        border-color: use-color('gray', 400);
       }
     }
 
@@ -132,9 +198,11 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         text-align: center;
       }
 
-      &.#{$prefix}__picker--hastime {
-        width: 400px;
-      }
+      // &:not(.#{$prefix}__picker--appearance-contained) {
+      //   &.#{$prefix}__picker--hastime {
+      //     width: 400px;
+      //   }
+      // }
     }
 
     &--timeperiod {
@@ -154,21 +222,31 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     .hi-icon {
-      margin-right: 8px;
-      font-size: 16px;
+      margin-inline-start: use-spacing(6);
+      font-size: use-text-size('lg');
       cursor: pointer;
       display: block;
       flex-shrink: 0;
-      color: use-color('gray', 500);
+      color: use-color('gray', 700);
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
+
+        &:hover {
+          color: use-color('gray', 500) !important;
+        }
+      }
+
+      &.clear {
+        &:hover {
+          color: use-color-mode('primary');
+        }
       }
     }
 
     //.icon-close-circle {
-    //  color: use-color('gray', 300);
+    //  color: use-color('gray', 400);
     //}
     //
     //.icon-close-circle:hover {
@@ -179,7 +257,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       position: relative;
       z-index: 0;
       height: 100%;
-      line-height: 24px;
+      line-height: use-height-size(6);
       width: auto;
     }
 
@@ -201,24 +279,24 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       font-family: inherit;
       position: absolute;
       z-index: 1;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      inset-inline-start: 0;
+      inset-block-start: 50%;
+      transform: translate(0, -50%);
       background: transparent;
       padding: 0;
       margin: 0;
 
       &::placeholder {
-        color: use-color('gray', 400);
+        color: use-color('gray', 600);
 
         .#{$prefix}__picker--appearance-unset & {
-          color: use-color('gray', 500);
+          color: use-color('gray', 600);
         }
       }
 
       &--disabled {
         cursor: not-allowed;
-        color: use-color('gray', 400);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -230,16 +308,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     border-radius: use-border-radius('normal');
-    color: use-color('gray', 700);
-    overflow: hidden;
+    color: use-color('gray', 800);
+    // overflow: hidden;
   }
 
   &__prefix {
     display: inline-flex;
-    margin-left: use-spacing(6);
+    margin-inline-end: use-spacing(6);
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 700);
+    color: use-color('gray', 800);
     font-size: inherit;
     text-align: center;
   }
@@ -248,12 +326,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     display: flex;
     border-radius: use-border-radius('normal');
     width: 100%;
-    height: calc(100% - 4px);
-    padding: 0 8px;
-    margin: 0 4px;
-    overflow: hidden;
+    height: 100%;
+    // overflow: hidden;
 
     &--date-time-range {
+      padding: 0 use-spacing(3);
+      margin-inline-start: calc(#{use-spacing(3)} * -1);
+      margin-inline-end: calc(#{use-spacing(3)} * -1);
+
       &:hover {
         background: use-color-mode('primary', 50);
       }
@@ -264,12 +344,26 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
   }
 
+  &__picker:not(&__picker--appearance-contained):not(&__picker--appearance-unset) {
+    .#{$prefix}__input-selector {
+      overflow: hidden;
+    }
+
+    .#{$prefix}__picker__input {
+      text-overflow: ellipsis;
+
+      &-container {
+        overflow: hidden;
+      }
+    }
+  }
+
   &__panel {
     // width: 288px;
     width: 100%;
     // height: 296px;
     background: use-color-static('white');
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: use-shadow('normal');
     display: flex;
 
     //.#{$prefix}__panel--left {
@@ -282,14 +376,16 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     //}
 
     &__time-container {
-      border-left: 1px solid use-color('gray', 200);
+      border-inline-start: use-border-size('normal') use-color('gray', 300);
       display: flex;
       flex-direction: column;
     }
 
     &__time-header {
-      border-bottom: 1px solid use-color('gray', 200);
-      line-height: 40px;
+      box-sizing: border-box;
+      border-block-end: use-border-size('normal') use-color('gray', 300);
+      height: use-height-size(10);
+      line-height: use-height-size(10);
       text-align: center;
       font-size: use-text-size('normal');
     }
@@ -307,20 +403,20 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__header {
-    border-bottom: 1px solid use-color('gray', 200);
+    border-block-end: use-border-size('normal') use-color('gray', 300);
     display: flex;
     justify-content: space-between;
-    height: 40px;
+    height: use-height-size(10);
     box-sizing: border-box;
     align-items: center;
-    padding: 0 8px;
+    padding: 0 use-spacing(4);
     user-select: text;
 
     &-btns {
       width: 50px;
       display: flex;
       justify-content: space-around;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       user-select: none;
     }
 
@@ -329,10 +425,10 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
+      width: use-height-size(6);
+      height: use-height-size(6);
       border-radius: 50%;
-      font-size: 14px;
+      font-size: use-text-size('normal');
 
       &:hover {
         color: use-color-mode('primary');
@@ -342,19 +438,20 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &-text {
       cursor: pointer;
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
       font-size: use-text-size('normal');
     }
   }
 
   &__calendar-wrap {
     box-sizing: border-box;
-    padding: 8px;
+    padding: use-spacing(4);
 
     &--md {
       width: 240px; // https://github.com/XiaoMi/hiui/issues/2400
 
-      &.#{$prefix}__calendar-wrap--type-week, &.#{$prefix}__calendar-wrap--type-weekrange {
+      &.#{$prefix}__calendar-wrap--type-week, &.#{$prefix}__calendar-wrap--type-weekrange,
+      &.#{$prefix}__calendar-wrap--show-week {
         width: 280px;
       }
     }
@@ -362,17 +459,30 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     &--lg {
       width: 338px; // https://github.com/XiaoMi/hiui/issues/2428
     }
+
+    &.#{$prefix}__calendar-wrap--show-week {
+      .#{$prefix}__cell--weekNum {
+        cursor: default;
+        pointer-events: none;
+
+        &:hover {
+          .#{$prefix}__cell-text {
+            background: transparent;
+          }
+        }
+      }
+    }
   }
 
   &__calendar {
     width: 100%;
     height: 100%;
-    font-size: 14px;
-    border-spacing: 0 4px;
+    font-size: use-text-size('normal');
+    border-spacing: 0 use-spacing(2);
 
     thead th {
-      height: 32px;
-      width: 32px;
+      height: use-height-size(8);
+      width: use-height-size(8);
       font-weight: normal;
       padding: 0;
     }
@@ -403,8 +513,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__cell {
     text-align: center;
-    width: 32px;
-    height: 32px;
+    width: use-height-size(8);
+    height: use-height-size(8);
     cursor: pointer;
     color: rgb(51, 51, 51);
     position: relative;
@@ -412,34 +522,34 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     padding: 0;
 
     &--weekNum {
-      width: 40px;
-      color: use-color('gray', 400);
+      width: use-height-size(10);
+      color: use-color('gray', 500);
     }
 
     &-text,
     &-week-indicator {
-      width: 28px;
-      border-radius: 14px;
+      width: use-height-size(7);
+      border-radius: use-border-radius('full');
       display: inline-block;
-      height: 28px;
-      line-height: 28px;
+      height: use-height-size(7);
+      line-height: use-height-size(7);
       box-sizing: border-box;
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      inset-inline-start: 50%;
+      inset-block-start: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &:first-child {
       .#{$prefix}__cell-week-indicator {
-        margin-left: 2px;
-        border-radius: 14px 0 0 14px;
+        margin-inline-start: use-spacing(1);
+        border-radius: use-border-radius('full') 0 0 use-border-radius('full');
       }
     }
 
     &:last-child {
       .#{$prefix}__cell-week-indicator {
-        margin-left: -2px;
+        margin-inline-start: calc(#{use-spacing(1)} * -1);
         border-radius: 0 14px 14px 0;
       }
     }
@@ -457,23 +567,15 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--out {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
       .#{$prefix}__lunar {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
 
     &--today {
-      &::after {
-        content: '';
-        background: use-color-mode('primary');
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        position: absolute;
+      .#{$prefix}__cell-text {
+        border: use-border-size('normal') use-color-mode('primary');
       }
     }
 
@@ -482,12 +584,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--disabled {
-      color: use-color('gray', 400);
+      color: use-color('gray', 600);
       cursor: not-allowed;
-      background: use-color('gray', 100);
+      background: use-color('gray', 200);
 
       .#{$prefix}__lunar {
-        color: use-color('gray', 400);
+        color: use-color('gray', 600);
       }
       //&::before {
       //  content: '';
@@ -541,13 +643,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     }
 
     &--range-start {
-      border-bottom-left-radius: 16px;
-      border-top-left-radius: 16px;
+      border-end-start-radius: use-height-size(4);
+      border-start-start-radius: use-height-size(4);
     }
 
     &--range-end {
-      border-bottom-right-radius: 16px;
-      border-top-right-radius: 16px;
+      border-end-end-radius: use-height-size(4);
+      border-start-end-radius: use-height-size(4);
     }
 
     &--large {
@@ -555,13 +657,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       height: $calendar-large-indicator-size + $calendar-large-diff;
 
       &.#{$cell-class}--range-start {
-        border-bottom-left-radius: $calendar-large-background-border-radius;
-        border-top-left-radius: $calendar-large-background-border-radius;
+        border-end-start-radius: $calendar-large-background-border-radius;
+        border-start-start-radius: $calendar-large-background-border-radius;
       }
 
       &.#{$cell-class}--range-end {
-        border-bottom-right-radius: $calendar-large-background-border-radius;
-        border-top-right-radius: $calendar-large-background-border-radius;
+        border-end-end-radius: $calendar-large-background-border-radius;
+        border-start-end-radius: $calendar-large-background-border-radius;
       }
 
       .#{$cell-class} {
@@ -574,7 +676,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          line-height: 16px;
+          line-height: use-text-size('lg');
           box-sizing: border-box;
         }
 
@@ -585,14 +687,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
       &:first-child {
         .#{$cell-class}-week-indicator {
-          margin-left: $calendar-large-diff*0.5;
+          margin-inline-start: $calendar-large-diff*0.5;
           border-radius: $calendar-large-indicator-border-radius 0 0 $calendar-large-indicator-border-radius;
         }
       }
 
       &:last-child {
         .#{$cell-class}-week-indicator {
-          margin-left: -$calendar-large-diff*0.5;
+          margin-inline-start: -$calendar-large-diff*0.5;
           border-radius: 0 $calendar-large-indicator-border-radius $calendar-large-indicator-border-radius 0;
         }
       }
@@ -600,7 +702,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__row {
-    margin-top: 4px;
+    margin-block-start: use-spacing(2);
     padding: 0;
 
     &#{&}--week-mode-select {
@@ -650,13 +752,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         }
 
         &:first-child {
-          border-bottom-left-radius: 16px;
-          border-top-left-radius: 16px;
+          border-end-start-radius: use-height-size(4);
+          border-start-start-radius: use-height-size(4);
         }
 
         &--large:first-child {
-          border-bottom-left-radius: $calendar-large-background-border-radius;
-          border-top-left-radius: $calendar-large-background-border-radius;
+          border-end-start-radius: $calendar-large-background-border-radius;
+          border-start-start-radius: $calendar-large-background-border-radius;
         }
       }
     }
@@ -670,13 +772,13 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
         }
 
         &:last-child {
-          border-bottom-right-radius: 16px;
-          border-top-right-radius: 16px;
+          border-end-end-radius: use-height-size(4);
+          border-start-end-radius: use-height-size(4);
         }
 
         &--large:last-child {
-          border-bottom-right-radius: $calendar-large-background-border-radius;
-          border-top-right-radius: $calendar-large-background-border-radius;
+          border-end-end-radius: $calendar-large-background-border-radius;
+          border-start-end-radius: $calendar-large-background-border-radius;
         }
       }
     }
@@ -689,10 +791,15 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__lunar {
     font-size: use-text-size('sm');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     transform: scale(0.8);
-    line-height: 16px;
-    margin-bottom: -8px;
+    line-height: use-text-lineheight('lg');
+    margin-block-end: calc(#{use-spacing(4)} * -1);
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     &--highlight {
       color: use-color-mode('primary');
@@ -712,14 +819,14 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   }
 
   &__footer-old {
-    height: 48px;
-    border-top: 1px solid use-color('gray', 100);
+    height: use-height-size(12);
+    border-block-start: use-border-size('normal') use-color('gray', 200);
     box-sizing: border-box;
-    line-height: 48px;
+    line-height: use-height-size(12);
     text-align: center;
     cursor: pointer;
     position: relative;
-    font-size: 14px;
+    font-size: use-text-size('normal');
     width: 100%;
 
     &:not(.#{$prefix}__footer-old--disable):hover {
@@ -728,7 +835,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &--disable {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
@@ -737,54 +844,54 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     position: absolute;
-    top: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
   }
 
   &__timetext {
     position: absolute;
     width: 148px;
-    height: 32px;
+    height: use-height-size(8);
     border-radius: 2px;
-    left: 50%;
-    top: 8px;
-    transform: translateX(-50%);
+    inset-inline-start: 50%;
+    inset-block-start: use-spacing(4);
+    transform: translate(-50%, 0%);
     background: use-color-static('white');
     z-index: 2;
-    line-height: 32px;
+    line-height: use-height-size(8);
   }
 
   &__time-period {
     //width: 144px;
-    border-left: 1px solid use-color('gray', 200);
+    border-inline-start: use-border-size('normal') use-color('gray', 300);
     text-align: center;
     box-sizing: border-box;
     font-size: use-text-size('normal');
-    color: use-color('gray', 700);
+    color: use-color('gray', 800);
   }
 
   &__period-header {
-    line-height: 40px;
-    height: 40px;
-    border-bottom: 1px solid use-color('gray', 200);
+    line-height: use-height-size(10);
+    height: use-height-size(10);
+    border-block-end: use-border-size('normal') use-color('gray', 300);
     box-sizing: border-box;
   }
 
   &__period-list {
     list-style: none;
-    margin: 8px 0;
+    margin: use-spacing(4) 0;
     padding: 0;
     overflow: auto;
     height: 250px;
   }
 
   &__period-item {
-    padding: 0 12px;
+    padding: 0 use-spacing(6);
     cursor: pointer;
-    margin: 4px 8px;
-    line-height: 32px;
+    margin: use-spacing(2) use-spacing(4);
+    line-height: use-height-size(8);
     font-size: use-text-size('normal');
-    border-radius: 16px;
+    border-radius: use-border-radius('full');
 
     &:hover {
       background: use-color('gray', 100);
@@ -798,7 +905,7 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__shortcuts {
     background: use-color-static('white');
-    border-right: 1px solid use-color('gray', 200);
+    border-inline-end: use-border-size('normal') use-color('gray', 300);
     //width: 105px;
     box-sizing: border-box;
     overflow: hidden;
@@ -813,12 +920,12 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
     &-item {
       cursor: pointer;
-      margin: 10px 8px;
-      line-height: 24px;
-      padding: 0 16px;
+      margin: use-spacing(5) use-spacing(4);
+      line-height: use-height-size(6);
+      padding: 0 use-spacing(8);
       list-style: none;
       font-size: use-text-size('sm');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       border-radius: use-border-radius('normal');
 
       &:hover {
@@ -830,8 +937,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__indiaHoli {
     display: none;
     position: absolute;
-    top: 36px;
-    left: 0;
+    inset-block-start: use-spacing(18);
+    inset-inline-start: 0;
     width: 430px;
     text-align: center;
 
@@ -840,9 +947,9 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
       max-width: 410px;
       word-break: break-all;
       background: use-color-mode('primary');
-      border: 1px solid #d8e5ff;
-      padding: 7px 12px;
-      border-radius: 2px;
+      border: use-border-size('normal') use-color-mode('primary', 200);
+      padding: calc(#{use-spacing(4)} - 1px) use-spacing(6);
+      border-radius: use-border-radius('sm');
     }
 
     &-enter {
@@ -872,8 +979,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
   &__footer {
     display: flex;
     justify-content: space-between;
-    padding: 6px 8px;
-    border-top: 1px solid use-color('gray', 100);
+    padding: use-spacing(5) use-spacing(4);
+    border-block-start: use-border-size('normal') use-color('gray', 200);
     align-items: center;
     flex-wrap: wrap;
     flex-direction: row-reverse;
@@ -881,8 +988,8 @@ $calendar-large-background-border-radius: $calendar-large-indicator-border-radiu
 
   &__node-mark {
     position: absolute;
-    right: 7px;
-    top: 7px;
+    inset-inline-end: calc(#{use-spacing(4)} - 1px);
+    inset-block-start: calc(#{use-spacing(4)} - 1px);
     width: 0;
     height: 0;
     font-size: use-text-size('sm');

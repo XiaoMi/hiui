@@ -6,25 +6,26 @@ $prefix: '#{$component-prefix}-pagination' !default;
 .#{$prefix}-mini {
   display: flex;
   align-items: center;
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
   user-select: none;
 
   &__total {
-    margin-right: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__option {
-    width: 114px !important;
     margin: 0 0 0 use-spacing(4) !important;
   }
 
   &__jumper {
     display: flex;
     align-items: center;
-    margin-left: use-spacing(4);
+    margin-inline-start: use-spacing(4);
   }
 
   &__list {
+    display: flex;
+    align-items: center;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -32,41 +33,37 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__item {
-    display: inline-block;
-    margin-left: use-spacing(4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: use-spacing(4);
     min-width: use-height-size(8);
-    border: none;
     box-sizing: border-box;
     height: use-height-size(8);
-    line-height: use-height-size(8);
-    text-align: center;
     cursor: pointer;
     outline: 0;
     border-radius: use-border-radius('normal');
-    vertical-align: middle;
-    background: use-color('gray', 100);
+    background: use-color('gray', 200);
     transition: all 0.3s;
-    color: use-color('gray', 600);
+    color: use-color('gray', 800);
+    background-color: use-color-static('white');
+    border: use-border-size('normal') use-color('gray', 400);
 
-    &:hover:not(#{&}--break) {
-      color: use-color-mode('primary');
-      background-color: use-color-mode('primary', 50);
+    &:hover:not(&--break) {
+      background-color: use-color('gray', 100);
     }
 
-    &:focus:not(#{&}--break) {
-      color: use-color-mode('primary');
-      box-shadow: 0 0 0 2px use-color-mode('primary', 100);
+    &:active:not(#{&}--break) {
+      background-color: use-color('gray', 300);
     }
 
     &--active {
-      color: use-color-static('white') !important;
-      background-color: use-color-mode('primary');
+      color: use-color-mode('primary');
       border-color: use-color-mode('primary');
 
       &:hover {
-        color: use-color-static('white') !important;
-        background-color: use-color-mode('primary', 600) !important;
-        border-color: use-color-mode('primary', 600) !important;
+        color: use-color-mode('primary', 600);
+        border-color: use-color-mode('primary', 600);
       }
     }
 
@@ -78,7 +75,9 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: use-height-size(8);
     height: use-height-size(8);
     outline: 0;
@@ -86,22 +85,20 @@ $prefix: '#{$component-prefix}-pagination' !default;
     &--disabled {
       & > button {
         cursor: not-allowed !important;
-        color: use-color('gray', 400) !important;
+        color: use-color('gray', 500) !important;
       }
     }
 
     &:last-of-type {
-      margin-left: use-spacing(4);
+      margin-inline-start: use-spacing(4);
     }
-
-    vertical-align: middle;
 
     & > button {
       width: 100%;
       height: 100%;
-      color: use-color('gray', 600);
-      background: use-color('gray', 100);
-      border: none;
+      color: use-color('gray', 700);
+      background-color: use-color-static('white');
+      border: use-border-size('normal') use-color('gray', 400);
       border-radius: use-border-radius('normal');
       outline: 0;
       cursor: pointer;
@@ -121,46 +118,62 @@ $prefix: '#{$component-prefix}-pagination' !default;
     }
   }
 
-  &--size-sm {
+  &--size-xs {
     font-size: use-text-size('sm');
-    line-height: use-text-lineheight('sm');
 
     .#{$prefix}__btn {
       min-width: use-height-size(6);
       height: use-height-size(6);
+
+      > button {
+        padding-inline-start: use-spacing(2);
+        padding-inline-end: use-spacing(2);
+      }
     }
 
     .#{$prefix}__item {
       min-width: use-height-size(6);
       height: use-height-size(6);
-      line-height: use-height-size(6);
+      padding: 0 use-spacing(1);
+    }
+  }
+
+  &--size-sm {
+    font-size: use-text-size('sm');
+
+    .#{$prefix}__btn {
+      min-width: use-height-size(7);
+      height: use-height-size(7);
+    }
+
+    .#{$prefix}__item {
+      min-width: use-height-size(7);
+      height: use-height-size(7);
+      padding: 0 use-spacing(2);
     }
   }
 
   &--size-md {
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('normal');
+
+    .#{$prefix}__item {
+      padding: 0 use-spacing(3);
+    }
   }
 }
 
 $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
 
 .#{$input-pagination-prefix} {
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
   position: relative;
   display: inline-flex;
   height: auto;
-  min-height: 24px;
+  min-height: use-height-size(6);
   box-sizing: border-box;
   outline: none;
 
   $this: &;
-
-  &--focused {
-    // #{$this}__input {
-    //   border: 1px solid use-color-mode('primary');
-    // }
-  }
 
   &__input {
     &.#{$component-prefix}-input {
@@ -173,5 +186,16 @@ $input-pagination-prefix: '#{$component-prefix}-pagination-mini' !default;
   &__total {
     margin-inline-start: use-spacing(4);
     margin-inline-end: use-spacing(4);
+  }
+}
+
+.#{$prefix} {
+  .#{$component-prefix}-mock-input {
+    padding-inline-start: use-spacing(4) !important;
+    padding-inline-end: use-spacing(4) !important;
+
+    &__suffix {
+      padding-inline-start: use-spacing(2) !important;
+    }
   }
 }

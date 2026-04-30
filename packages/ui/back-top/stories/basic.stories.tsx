@@ -1,6 +1,6 @@
 import React from 'react'
 import Tooltip from '@hi-ui/tooltip'
-import { ArrowUpOutlined } from '@hi-ui/icons'
+import { UpShortOutlined } from '@hi-ui/icons'
 import BackTop from '../src'
 
 /**
@@ -43,7 +43,7 @@ export const Basic = () => {
               background: '#237ffa',
             }}
           >
-            <ArrowUpOutlined />
+            <UpShortOutlined />
           </div>
         </Tooltip>
       </BackTop>

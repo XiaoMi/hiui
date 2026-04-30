@@ -3,16 +3,16 @@
 $prefix: '#{$component-prefix}-tooltip' !default;
 
 .#{$prefix} {
-  $content-color: use-color('gray', 700, 0.8);
-  $arrow-color: use-color('gray', 700, 0.8);
+  $content-color: use-color('gray', 800);
+  $arrow-color: use-color('gray', 800);
   $font-color: use-color-static('white');
 
   box-sizing: border-box;
   color: $font-color;
   border-color: $content-color;
   background-color: $content-color;
-  border-radius: use-border-radius('normal');
-  box-shadow: use-shadow('lg');
+  border-radius: use-border-radius('xl');
+  box-shadow: use-shadow('normal');
 
   // animation
   transition-timing-function: use-motion-bezier('normal');
@@ -80,102 +80,51 @@ $prefix: '#{$component-prefix}-tooltip' !default;
   &__arrow {
     z-index: 1;
     position: relative;
+    display: inline-flex;
 
-    // TODO: 存在空间双倍占用，相当于 12 px，改写成正方形又会占用自己的区域
-    &::before,
-    &::after {
-      content: '';
+    svg {
       position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-color: transparent;
-      border-width: 6px;
-    }
-
-    &::after {
-      filter: blur(8px);
-      z-index: -1;
+      transform-origin: center center;
     }
   }
 
   &__popper {
     &[data-popper-placement^=top] {
       .#{$prefix}__arrow {
-        bottom: -1px;
+        inset-block-end: 0;
 
-        &::before {
-          left: 0;
-          transform: translateX(-6px);
-          top: -1px;
-          border-top-color: $arrow-color;
-        }
-
-        &::after {
-          left: 0;
-          transform: translateX(-6px);
-          top: 1px;
-          border-top-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: translate3d(-50%, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=bottom] {
       .#{$prefix}__arrow {
-        top: -1px;
+        inset-block-start: -6px;
 
-        &::before {
-          left: 0;
-          transform: translateX(-6px);
-          bottom: -1px;
-          border-bottom-color: $arrow-color;
-        }
-
-        &::after {
-          left: 0;
-          transform: translateX(-6px);
-          bottom: 1px;
-          border-bottom-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(180deg) translate3d(50%, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        right: -1px;
+        inset-inline-end: 9px;
 
-        &::before {
-          top: 0;
-          transform: translateY(-50%);
-          left: -1px;
-          border-left-color: $arrow-color;
-        }
-
-        &::after {
-          top: 0;
-          transform: translateY(-50%);
-          left: 1px;
-          border-left-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(-90deg) translate3d(3px, 0, 0);
         }
       }
     }
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
-        left: -1px;
+        inset-inline-start: -15px;
 
-        &::before {
-          top: 0;
-          transform: translateY(-50%);
-          right: -1px;
-          border-right-color: $arrow-color;
-        }
-
-        &::after {
-          top: 0;
-          transform: translateY(-50%);
-          right: 1px;
-          border-right-color: rgba(0, 0, 0, 0.1);
+        svg {
+          transform: rotate(90deg) translate3d(-3px, 0, 0);
         }
       }
     }
@@ -189,6 +138,6 @@ $prefix: '#{$component-prefix}-tooltip' !default;
     color: inherit;
     padding: use-spacing(4) use-spacing(5);
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
   }
 }

@@ -11,12 +11,19 @@ import {
   SelectDataItem,
   SelectItemEventData,
   SelectMergedItem,
+  SelectAppearanceEnum,
 } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import VirtualList, { useCheckInVirtual } from '@hi-ui/virtual-list'
 import type { ListRef } from 'rc-virtual-list'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
-import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
+import { Picker, PickerProps, PickerHelper, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { Highlighter } from '@hi-ui/highlighter'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import {
@@ -29,9 +36,10 @@ import { useData, useFlattenData } from './hooks'
 import { SelectOption } from './SelectOption'
 import { SelectOptionGroup } from './SelectOptionGroup'
 import { uniqBy } from '@hi-ui/array-utils'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'select'
 const _prefix = getPrefixCls(_role)
@@ -53,6 +61,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       clearable = true,
       placeholder: placeholderProp,
       displayRender: displayRenderProp,
+      showIndicator = true,
       // Virtual List
       height,
       itemHeight = 40,
@@ -60,6 +69,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       // search
       searchable: searchableProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
       dataSource,
       searchOnInit,
       filterOption,
@@ -72,7 +82,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       render: titleRender,
       data: dataProp,
       fieldNames,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onSelect: onSelectProp,
@@ -80,11 +90,40 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       onKeyDown: onKeyDownProp,
       onClear: onClearProp,
       customRender,
+      label,
+      creatableInSearch,
+      onItemCreate,
+      renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, select: selectConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      SelectSemanticClassNames,
+      SelectSemanticStyles,
+      SelectProps
+    >({
+      classNamesList: [selectConfig?.classNames, classNamesProp],
+      stylesList: [selectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data: dataProp,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
     const pickerInnerRef = useRef<PickerHelper>(null)
     const placeholder = isUndef(placeholderProp) ? i18n.get('select.placeholder') : placeholderProp
 
@@ -92,7 +131,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       visible,
       disabled,
       onOpen,
-      onClose,
+      onClose: () => {
+        clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
+        onClose?.()
+      },
     })
 
     const onSelect = useLatestCallback((value: React.ReactText, item: SelectItemEventData) => {
@@ -147,7 +189,14 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = inSearch && (searchMode === 'filter' || searchMode === 'dataSource')
 
-        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+        const ret = highlight ? (
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
+        ) : (
+          true
+        )
 
         return ret
       },
@@ -182,7 +231,18 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       }
 
       return nextData.filter((item) => !('groupTitle' in item))
-    }, [selectedItems, flattedData])
+    }, [flattedData, selectedItems])
+
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示创建入口
+    const creatableInSearchVisible = useMemo(() => {
+      if (!creatableInSearch || !searchValue?.trim()) return false
+      const optionItems = showData.filter((item: any) => !('groupTitle' in item))
+      if (optionItems.length === 0) return true
+      const hasFullMatch = optionItems.some(
+        (item: SelectDataItem) => String(item.title).trim() === searchValue.trim()
+      )
+      return !hasFullMatch
+    }, [creatableInSearch, searchValue, showData])
 
     // ************************** 回车选中处理 ************************* //
 
@@ -194,6 +254,11 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       const { keyCode } = evt
 
       if (keyCode === 13) {
+        if (creatableInSearch && showData.length === 0) {
+          handleCreate(searchValue)
+          return
+        }
+
         const item = showData[focusedIndex]
 
         if (item) {
@@ -201,6 +266,26 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
         }
       }
     })
+
+    const handleCreate = useLatestCallback((keyword: string) => {
+      const id = `${keyword}-${uuid()}`
+      const createdItem = {
+        id,
+        title: keyword,
+      }
+      handleSelect(createdItem)
+      onItemCreate?.(createdItem)
+    })
+
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(
+              mergedData.find((d: SelectDataItem) => d.id === value) as SelectItemEventData
+            )
+          : customRender
+        : null
+    }, [customRender, mergedData, value])
 
     // 更新 focused 索引
     useEffect(() => {
@@ -232,12 +317,39 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       }
     }, [menuVisible, showData])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
-      <SelectProvider value={context}>
+      <SelectProvider value={{ ...context, classNames, styles }}>
         <Picker
           ref={ref}
           innerRef={pickerInnerRef}
           className={cls}
+          classNames={pickerClassNames}
+          styles={pickerStyles}
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
@@ -247,20 +359,20 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
           searchable={searchable}
           keyword={keywordProp}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
+          clearSearchOnClosed={clearSearchOnClosed}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderExtraFooter ? renderExtraFooter() : null}
           scrollable={!inVirtual}
+          creatableInSearch={creatableInSearch}
+          creatableInSearchVisible={creatableInSearchVisible}
+          onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
-              typeof customRender === 'function' ? (
-                customRender(
-                  mergedData.find((d: SelectDataItem) => d.id === value) as SelectItemEventData
-                )
-              ) : (
-                customRender
-              )
+              customRenderContent
             ) : (
               <MockInput
+                style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
                 clearable={clearable}
                 placeholder={placeholder}
                 displayRender={
@@ -271,6 +383,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                     : undefined
                 }
                 prefix={prefix}
+                showIndicator={showIndicator}
                 suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
                 value={value}
@@ -278,7 +391,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                   tryChangeValue(value, item.raw)
                   // 非受控模式下清空下拉框
                   if (value === '') {
-                    pickerInnerRef.current?.resetSearch()
+                    pickerInnerRef.current?.clearSearch()
                     onClearProp?.()
                   }
                 }}
@@ -286,6 +399,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
                 data={mergedData}
                 invalid={invalid}
                 appearance={appearance}
+                label={label}
               />
             )
           }
@@ -323,9 +437,18 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
   }
 )
 
+export type SelectSemanticName = PickerSemanticName | 'option' | 'optionGroup'
+export type SelectSemanticClassNames = SemanticClassNamesType<SelectProps, SelectSemanticName>
+export type SelectSemanticStyles = SemanticStylesType<SelectProps, SelectSemanticName>
+export type SelectSemantic = ComponentSemantic<SelectSemanticClassNames, SelectSemanticStyles>
+
 export interface SelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'>,
-    UseSelectProps {
+  extends Omit<
+      PickerProps,
+      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    UseSelectProps,
+    SelectSemantic {
   /**
    * 选项数据
    */
@@ -337,7 +460,11 @@ export interface SelectProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: SelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 触发器输入框占位符
    */
@@ -358,6 +485,10 @@ export interface SelectProps
    * 自定义下拉菜单底部渲染
    */
   renderExtraFooter?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
@@ -418,6 +549,14 @@ export interface SelectProps
    * 自定义触发器
    */
   customRender?: React.ReactNode | ((option: SelectItemEventData) => React.ReactNode)
+  /**
+   * 创建选项时触发
+   */
+  onItemCreate?: (item: SelectMergedItem) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 ;(Select as any).HiName = 'Select'

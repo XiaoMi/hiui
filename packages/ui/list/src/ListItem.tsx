@@ -2,35 +2,38 @@ import React from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import Avatar from '@hi-ui/avatar'
 import { ListDataItem } from './types'
 
-const LIST_PREFIX = getPrefixCls('list')
+const LIST_ITEM_PREFIX = getPrefixCls('list-item')
 
 export const ListItem: React.FC<ListItemProps> = ({
-  prefixCls = LIST_PREFIX,
+  prefixCls = LIST_ITEM_PREFIX,
   className,
   title,
   description,
   extra,
   action,
   avatar,
-  actionPlacement = 'center',
+  actionPlacement = 'top',
 }) => {
+  const cls = cx(`${prefixCls}`, className)
+
   return (
-    <div className={cx(`${prefixCls}-item`, className)}>
+    <div className={cls}>
       {avatar && (
-        <div className={`${prefixCls}-item__avatar`} key="avatar">
-          {typeof avatar === 'string' ? <img src={avatar} /> : avatar}
+        <div className={`${prefixCls}__avatar`} key="avatar">
+          {typeof avatar === 'string' ? <Avatar size="sm" src={avatar} /> : avatar}
         </div>
       )}
-      <div className={`${prefixCls}-item__content`}>
-        {title && <div className={`${prefixCls}-item__title`}>{title}</div>}
-        {description && <div className={`${prefixCls}-item__desc`}>{description}</div>}
-        {extra && <div className={`${prefixCls}-item__extra`}>{extra}</div>}
+      <div className={`${prefixCls}__content`}>
+        {title && <div className={`${prefixCls}__title`}>{title}</div>}
+        {description && <div className={`${prefixCls}__desc`}>{description}</div>}
+        {extra && <div className={`${prefixCls}__extra`}>{extra}</div>}
       </div>
       {action && (
         <div
-          className={`${prefixCls}-item__action`}
+          className={`${prefixCls}__action`}
           key="action"
           style={{ alignSelf: getActionPosition(actionPlacement) }}
         >

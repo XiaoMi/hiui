@@ -11,19 +11,19 @@
 
 /// 获取 shadow duration 对应 css 变量值
 /// @access private
-@function get-shadow-var($key) {
+@function get-shadow-var($key, $direction: 'down') {
   $var-name: get-shadow-css-name-var($key);
-  $var-value: get-shadow($key);
+  $var-value: get-shadow($key, $direction);
 
   @return var(#{$var-name}, #{$var-value});
 }
 
 /// 设置 shadow duration 值
-@function use-shadow($key) {
+@function use-shadow($key, $direction: 'down') {
   // normal 表示通用默认。这里统一收敛，可根据规范调整
   @if ($key == 'normal') {
-    $key: 'md';
+    $key: 'lg';
   }
 
-  @return get-shadow-var($key);
+  @return get-shadow-var($key, $direction);
 }

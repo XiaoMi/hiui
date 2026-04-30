@@ -87,7 +87,12 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
         {trigger ? (
           <div className={`${prefixCls}__trigger`}>{trigger}</div>
         ) : (
-          <IconButton icon={<EllipsisVerticalOutlined />} onClick={menuVisibleAction.not} />
+          <Button
+            appearance="text"
+            size="sm"
+            icon={<EllipsisVerticalOutlined />}
+            onClick={menuVisibleAction.not}
+          />
         )}
 
         <Drawer
@@ -98,7 +103,12 @@ export const TableSettingMenu = forwardRef<HTMLDivElement | null, TableColumnMen
           width={304}
           footer={
             <div className={`${prefixCls}__btn-group`}>
-              <Button key={0} className={`${prefixCls}__btn-cancel`} onClick={resetLatest}>
+              <Button
+                key={0}
+                className={`${prefixCls}__btn-cancel`}
+                appearance="line"
+                onClick={resetLatest}
+              >
                 {i18n.get('table.reset')}
               </Button>
               <Button

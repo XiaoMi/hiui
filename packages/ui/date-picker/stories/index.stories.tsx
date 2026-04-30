@@ -4,6 +4,7 @@ import DatePicker from '../src'
 export * from './basic.stories'
 export * from './appearance.stories'
 export * from './year-month-week.stories'
+export * from './show-week.stories'
 export * from './cell-render.stories'
 export * from './date-time.stories'
 export * from './range.stories'
@@ -15,6 +16,7 @@ export * from './custom-render.stories'
 export * from './addon.stories'
 export * from './need-confirm.stories'
 export * from './utc-offset.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/DatePicker',

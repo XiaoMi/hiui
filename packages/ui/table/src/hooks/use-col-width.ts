@@ -9,12 +9,14 @@ export const useColWidth = ({
   data,
   columns,
   virtual,
+  scrollBodyElementRef,
 }: {
   resizable: boolean
   tableWidthAdjustOnResize: boolean
   data: TableRowRecord[]
   columns: TableColumnItem[]
   virtual?: boolean
+  scrollBodyElementRef: React.RefObject<HTMLTableElement>
 }) => {
   const measureRowElementRef = React.useRef<HTMLTableRowElement | null>(null)
   // 是否重新设置过表格每列宽度
@@ -25,17 +27,19 @@ export const useColWidth = ({
 
   /**
    * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
+   * 如果实际总宽度大于设置的宽度，则将多余的宽度平分到没有设置 fixed 的列上
    */
   const getWidths = useCallback(
     (measureRowElement: HTMLTableRowElement | null) => {
       if (measureRowElement && measureRowElement.childNodes) {
         // 超出的宽度，即每列真实的宽度超出设置的宽度的总和
         let exceedWidth = 0
+        const { flattedColumnsWithoutChildren, colWidths } = getGroupItemWidth(columns)
 
         let _realColumnsWidth = Array.from(measureRowElement.childNodes).map((node, index) => {
-          const realWidth = (node as HTMLElement).getBoundingClientRect().width || 60
-          const { fixed } = columns[index] ?? {}
-          const width = getGroupItemWidth(columns).colWidths[index]
+          const realWidth = (node as HTMLElement).offsetWidth || 60
+          const { fixed } = flattedColumnsWithoutChildren[index] ?? {}
+          const width = colWidths[index]
 
           // 如果该列设置了 fixed 并且真实宽度大于设置的 width 则设置为 width
           if (fixed && width && width < realWidth) {
@@ -48,10 +52,10 @@ export const useColWidth = ({
 
         // 如果有多余的宽度，则将多余的宽度平分到没有设置 fixed 的列上
         if (exceedWidth > 0) {
-          const noFixedColumns = columns.filter((item) => !item.fixed)
+          const noFixedColumns = flattedColumnsWithoutChildren.filter((item) => !item.fixed)
 
           _realColumnsWidth = _realColumnsWidth.map((item, index) => {
-            if (!columns[index]?.fixed) {
+            if (!flattedColumnsWithoutChildren[index]?.fixed) {
               return item + Math.floor(exceedWidth / noFixedColumns.length)
             }
             return item
@@ -96,21 +100,55 @@ export const useColWidth = ({
     }
   }, [columns])
 
+  // 记录上一轮的列，用于判断列是否发生变化，只有发生变化时才重新计算列宽
+  const prevColumnsRef = React.useRef<TableColumnItem[]>(columns)
+  const hasColumnsChanged = React.useCallback(() => {
+    const prevColumns = prevColumnsRef.current
+
+    // 长度不同
+    if (prevColumns.length !== columns.length) {
+      return true
+    }
+
+    // 检查 dataKey、width 是否有变化
+    for (let i = 0; i < columns.length; i++) {
+      const prev = prevColumns[i]
+      const curr = columns[i]
+
+      if (prev.dataKey !== curr.dataKey || prev.width !== curr.width) {
+        return true
+      }
+    }
+
+    return false
+  }, [columns])
+
   useUpdateEffect(() => {
-    if (virtual) {
+    if (virtual && hasColumnsChanged()) {
       // 虚拟滚动的计算需要根据容器来做分配，不能使用没有width默认设置为0的方式来做表格平均分配
       setColWidths(getVirtualWidths())
     }
   }, [getVirtualWidths, virtual])
 
   useUpdateEffect(() => {
+    if (!hasColumnsChanged()) {
+      return
+    }
+
+    prevColumnsRef.current = columns
+
     // 当列变化时，重新设置列宽
     setColWidths(getGroupItemWidth(columns).colWidths)
 
     // 重新设置列宽后，真实的宽度会发生变化，基于真实的宽度再次重新计算出合适的列宽
-    requestAnimationFrame(() => {
-      setColWidths(getWidths(measureRowElementRef.current))
-    })
+    setTimeout(() => {
+      const scrollBodyElementWidth = scrollBodyElementRef.current?.offsetWidth ?? 0
+      const measureRowElementWidth = measureRowElementRef.current?.offsetWidth
+      // 如果测量元素的宽度小于等于容器宽度，则重新设置列宽
+      if (measureRowElementWidth && measureRowElementWidth <= scrollBodyElementWidth) {
+        setColWidths(getWidths(measureRowElementRef.current))
+      }
+    }, 16)
   }, [columns])
 
   /**
@@ -148,7 +186,7 @@ export const useColWidth = ({
     null
   )
 
-  // 控制列最小可调整宽度
+  // 控制列最小可调整宽度，主要用于可拖拽调节列宽的场景，目前表头分组还不支持该功能
   const [minColWidths, setMinColWidths] = React.useState<number[]>(
     getGroupItemWidth(columns).minColWidths
   )
@@ -160,9 +198,11 @@ export const useColWidth = ({
     if (headerTableElement) {
       resizeObserver = new ResizeObserver(() => {
         const calcMinColWidths = Array.from(headerTableElement.childNodes).map((th, index) => {
-          const minColWidth = getGroupItemWidth(columns).minColWidths[index]
+          const { colWidths, minColWidths } = getGroupItemWidth(columns)
+          const colWidth = colWidths[index]
+          const minColWidth = minColWidths[index]
 
-          // 如果设置了最小宽度，则直接使用最小宽度，否则使用标题宽度
+          // 如果设置了最小宽度，则直接使用最小宽度
           if (minColWidth !== undefined && minColWidth !== 0) {
             return minColWidth
           }
@@ -171,7 +211,13 @@ export const useColWidth = ({
             window.getComputedStyle(th as Element).getPropertyValue('padding-left')
           )
           const childNode = Array.from(th.childNodes)[0]
-          const childNodeWidth = (childNode as HTMLElement).offsetWidth + thPaddingLeft * 2
+          // 计算真实标题内容宽度
+          const childNodeWidth = (childNode as HTMLElement)?.offsetWidth + thPaddingLeft * 2
+
+          // 如果设置的标题宽度小于真实内容宽度，则使用设置的宽度，否则使用真实内容宽度
+          if (colWidth && colWidth < childNodeWidth) {
+            return colWidth
+          }
 
           return childNodeWidth || 40
         })
@@ -187,35 +233,6 @@ export const useColWidth = ({
       resizeObserver?.disconnect()
     }
   }, [columns, columns.length, headerTableElement, resizable])
-
-  /**
-   *  控制列最小可调整宽度
-   */
-  const minColWidthMemo = React.useMemo(() => {
-    if (resizable && headerTableElement) {
-      const resizableHandlerWidth = 4
-      const _minColWidth = Array.from(headerTableElement.childNodes).map((th) => {
-        const thPaddingLeft = parseFloat(
-          window.getComputedStyle(th as Element).getPropertyValue('padding-left')
-        )
-        const childNodes = Array.from(th.childNodes)
-
-        return (
-          childNodes
-            .map((child) => (child as HTMLElement).offsetWidth)
-            .reduce((prev, next) => {
-              return prev + next
-            }) +
-          thPaddingLeft * 2 +
-          resizableHandlerWidth
-        )
-      })
-
-      return _minColWidth
-    }
-
-    return Array(columns.length).fill(0)
-  }, [columns.length, headerTableElement, resizable])
 
   /**
    * 列宽拖拽 resize，只处理拖拽线两边的列宽度

@@ -1,10 +1,19 @@
 @import '~@hi-ui/core-css/lib/index.scss';
+@import './solid.scss';
 @import './flat.scss';
 @import './link.scss';
 @import './line.scss';
 @import './unset.scss';
 
 $prefix: '#{$component-prefix}-button' !default;
+
+$group-gap-color-map: (
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 300),
+  'default': use-color('gray', 400),
+  'success': use-color-mode('success', 300),
+  'danger': use-color-mode('danger', 300),
+) !default;
 
 // 通用能力，配置项无关
 
@@ -15,15 +24,16 @@ $prefix: '#{$component-prefix}-button' !default;
 
   background-color: transparent;
   position: relative; // Used by button :focus radio-style etc.
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
   box-sizing: border-box;
   appearance: none;
   margin: 0;
-  border: 1px solid transparent;
+  border: use-border-size('normal') transparent;
   font-weight: use-text-weight('normal');
-  text-align: center;
   text-decoration: none;
-  vertical-align: middle;
   white-space: nowrap;
   touch-action: manipulation; // 禁用非标准手势
   &:not(#{&}--loading) {
@@ -53,25 +63,35 @@ $prefix: '#{$component-prefix}-button' !default;
     cursor: not-allowed;
   }
 
+  &__icon {
+    line-height: 1em;
+  }
+
   // 尺寸通用
+  &--size-xs,
   &--size-sm {
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 14px;
-      line-height: 1em;
+      font-size: calc(#{use-text-size('sm')} + 2px);
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(2);
       }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
+      }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
   }
@@ -81,19 +101,24 @@ $prefix: '#{$component-prefix}-button' !default;
     line-height: use-text-lineheight('normal');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 16px;
-      line-height: 1em;
+      font-size: calc(#{use-text-size('normal')} + 2px);
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
-        margin-inline-end: use-spacing(3);
+      .#{$prefix}__icon--prefix {
+        margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
-        margin-inline-end: use-spacing(3);
+      .#{$prefix}__icon--prefix {
+        margin-inline-end: use-spacing(2);
+      }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(2);
       }
     }
   }
@@ -103,40 +128,24 @@ $prefix: '#{$component-prefix}-button' !default;
     line-height: use-text-lineheight('lg');
 
     .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 20px;
-      line-height: 1em;
+      font-size: calc(#{use-text-size('lg')} + 4px);
     }
 
     &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(4);
       }
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(4);
+      }
     }
+
     &.#{$prefix}--loading:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon {
+      .#{$prefix}__icon--prefix {
         margin-inline-end: use-spacing(4);
       }
-    }
-  }
-
-  &--size-xl {
-    font-size: use-text-size('xl');
-    line-height: use-text-lineheight('xl');
-
-    .#{$prefix}__icon {
-      // 定制大小，非 token
-      font-size: 24px;
-    }
-
-    &:not(.#{$prefix}--icon-only) {
-      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
-        margin-inline-end: use-spacing(6);
-      }
-    }
-    &.#{$prefix}--loading {
-      .#{$prefix}__icon:not(.#{$prefix}--icon-only) {
-        margin-inline-end: use-spacing(6);
+      .#{$prefix}__icon--suffix {
+        margin-inline-start: use-spacing(4);
       }
     }
   }
@@ -165,30 +174,58 @@ $prefix: '#{$component-prefix}-button' !default;
     }
   }
 
+  @include render-solid-button();
   @include render-filled-button();
   @include render-line-button();
   @include render-link-button();
-  @include render-unset-button();
+  @include render-text-button();
 
   &-group {
-    display: inline-block;
+    display: inline-flex;
+
     .#{$prefix} {
-      &:first-child {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+      &:first-child:has(+ .#{$prefix}) {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+        border-inline-end: none;
+      }
+
+      &:last-child:not(:first-child) {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        border-inline-start: none;
       }
 
       &:not(:first-child):not(:last-child) {
         border-radius: 0;
+        border-inline-start: none;
+        border-inline-end: none;
       }
 
       &:not(:first-child) {
-        margin-left: 1px;
+        margin-inline-start: 0;
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset-inline-start: -1px;
+          width: 1px;
+          height: 100%;
+        }
       }
 
-      &:last-child {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+      @each $key, $color in $group-gap-color-map {
+        &--type-#{$key} {
+          &::before {
+            background-color: $color;
+          }
+        }
+      }
+
+      &--appearance-solid.#{$prefix}--type-default {
+        &::before {
+          background-color: use-color('gray', 700);
+        }
       }
     }
   }

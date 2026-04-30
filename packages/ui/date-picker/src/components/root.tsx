@@ -5,6 +5,7 @@ import PickerIcon from './picker-icon'
 import DPContext from '../context'
 import usePlaceholder from '../hooks/usePlaceholders'
 import { parseValue } from '../utils'
+import { isShowTimeEnabled } from '../utils/showTime'
 import moment from 'moment'
 
 const Root = ({
@@ -17,6 +18,7 @@ const Root = ({
   invalid,
   customRender,
   prefix,
+  label,
 }: {
   onTrigger: (index: number) => void
   onClear: () => void
@@ -27,6 +29,7 @@ const Root = ({
   invalid: boolean
   customRender?: React.ReactNode | ((option: (Date | undefined)[]) => React.ReactNode)
   prefix: React.ReactNode
+  label?: React.ReactNode
 }) => {
   const {
     i18n,
@@ -48,12 +51,16 @@ const Root = ({
     max,
     size,
     strideSelectMode,
+    setFocusIndex,
+    showIndicator,
+    classNames,
+    styles,
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
 
   const placeholders = usePlaceholder({
     type,
-    showTime,
+    showTime: isShowTimeEnabled(showTime),
     placeholder,
     i18n,
   })
@@ -133,9 +140,16 @@ const Root = ({
     `${prefixCls}__picker--size-${size}`,
     inputFocus && `${prefixCls}__picker--focus`,
     disabled && `${prefixCls}__picker--disabled`,
-    showTime && `${prefixCls}__picker--hastime`,
-    (invalid || !isValueValid) && `${prefixCls}__picker--invalid`
+    isShowTimeEnabled(showTime) && `${prefixCls}__picker--hastime`,
+    (invalid || !isValueValid) && `${prefixCls}__picker--invalid`,
+    outDate[0] && `${prefixCls}__picker--has-value`
   )
+
+  const customRenderContent = useMemo(() => {
+    return typeof customRender === 'function'
+      ? customRender(inputData.map((item) => item?.toDate()))
+      : customRender
+  }, [customRender, inputData])
 
   return customRender ? (
     <div
@@ -148,37 +162,33 @@ const Root = ({
         }
       }}
     >
-      {typeof customRender === 'function'
-        ? customRender(inputData.map((item) => item?.toDate()))
-        : customRender}
+      {customRenderContent}
     </div>
   ) : (
-    <div className={_cls} ref={setAttachEl}>
-      <div className={`${prefixCls}__picker__wrapper`}>
-        {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
-        <div
-          className={cx(
-            `${prefixCls}__input-selector`,
-            // 选择器位于 日期时间范围 模式下
-            isInDateRangeTimeMode && `${prefixCls}__input-selector--date-time-range`,
-            // 只有在展示 panel，并且 位于特定模式下时，才会激活选择器
-            isInDateRangeTimeMode &&
-              showPanel &&
-              dateRangeTimePanelNow === 0 &&
-              `${prefixCls}__input-selector--active`
-          )}
-          onClick={() => onPickerClickEvent(0)}
-        >
-          <Input
-            date={inputData[0]}
-            placeholder={placeholders[0]}
-            onChange={inputChangeEvent}
-            dir={0}
-          />
-        </div>
-        {renderRange && (
-          <React.Fragment>
-            <span className={`${prefixCls}__input--connection`}>-</span>
+    <div className={cx(_cls, classNames?.picker)} style={styles?.picker} ref={setAttachEl}>
+      <div
+        className={cx(`${prefixCls}__picker__wrapper`, classNames?.pickerWrapper)}
+        style={styles?.pickerWrapper}
+        {...(appearance === 'contained' && !inputData[0]
+          ? { onClick: () => onPickerClickEvent(0) }
+          : {})}
+      >
+        {prefix ? (
+          <span className={cx(`${prefixCls}__prefix`, classNames?.prefix)} style={styles?.prefix}>
+            {prefix}
+          </span>
+        ) : null}
+        {appearance === 'contained' && label && (
+          <span
+            className={cx(`${prefixCls}__picker__label`, classNames?.pickerLabel)}
+            style={styles?.pickerLabel}
+          >
+            {label}
+            {inputData[0] && '：'}
+          </span>
+        )}
+        {appearance !== 'contained' || (appearance === 'contained' && inputData[0]) ? (
+          <>
             <div
               className={cx(
                 `${prefixCls}__input-selector`,
@@ -187,27 +197,71 @@ const Root = ({
                 // 只有在展示 panel，并且 位于特定模式下时，才会激活选择器
                 isInDateRangeTimeMode &&
                   showPanel &&
-                  dateRangeTimePanelNow === 1 &&
-                  `${prefixCls}__input-selector--active`
+                  dateRangeTimePanelNow === 0 &&
+                  `${prefixCls}__input-selector--active`,
+                classNames?.inputSelector
               )}
-              onClick={() => onPickerClickEvent(1)}
+              style={styles?.inputSelector}
+              onClick={(evt) => {
+                evt.stopPropagation()
+                onPickerClickEvent(0)
+              }}
             >
               <Input
-                date={inputData[1]}
-                placeholder={placeholders[1]}
+                date={inputData[0]}
+                placeholder={placeholders[0]}
                 onChange={inputChangeEvent}
-                dir={1}
+                onFocus={() => setFocusIndex?.(0)}
+                dir={0}
               />
             </div>
-          </React.Fragment>
-        )}
+            {renderRange && (
+              <React.Fragment>
+                <span
+                  className={cx(`${prefixCls}__input--connection`, classNames?.inputConnection)}
+                  style={styles?.inputConnection}
+                >
+                  -
+                </span>
+                <div
+                  className={cx(
+                    `${prefixCls}__input-selector`,
+                    // 选择器位于 日期时间范围 模式下
+                    isInDateRangeTimeMode && `${prefixCls}__input-selector--date-time-range`,
+                    // 只有在展示 panel，并且 位于特定模式下时，才会激活选择器
+                    isInDateRangeTimeMode &&
+                      showPanel &&
+                      dateRangeTimePanelNow === 1 &&
+                      `${prefixCls}__input-selector--active`,
+                    classNames?.inputSelector
+                  )}
+                  style={styles?.inputSelector}
+                  onClick={(evt) => {
+                    evt.stopPropagation()
+                    onPickerClickEvent(1)
+                  }}
+                >
+                  <Input
+                    date={inputData[1]}
+                    placeholder={placeholders[1]}
+                    onChange={inputChangeEvent}
+                    onFocus={() => setFocusIndex?.(1)}
+                    dir={1}
+                  />
+                </div>
+              </React.Fragment>
+            )}
+          </>
+        ) : null}
+
         <PickerIcon
           focus={inputFocus}
           type={type}
-          showTime={showTime}
+          showTime={isShowTimeEnabled(showTime)}
           disabled={disabled}
           clearable={clearable}
           onClick={pickerIconClick}
+          showIndicator={showIndicator}
         />
       </div>
     </div>

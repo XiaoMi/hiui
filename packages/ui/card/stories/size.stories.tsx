@@ -11,12 +11,42 @@ export const Size = () => {
     <>
       <h1>Size</h1>
       <div className="card-size__wrap">
-        <h2>常规</h2>
-        <Card title="标题" size="md" extra={<Button appearance="link">链接</Button>}>
+        <h2>紧凑</h2>
+        <Card
+          title="标题"
+          size="sm"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,
-              backgroundColor: '#F5F7FA',
+              backgroundColor: '#F5F8FC',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            此处展示卡片内容
+          </div>
+        </Card>
+        <h2>常规</h2>
+        <Card
+          title="标题"
+          size="md"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
+          <div
+            style={{
+              height: 174,
+              backgroundColor: '#F5F8FC',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -26,12 +56,20 @@ export const Size = () => {
           </div>
         </Card>
         <br />
-        <h2>紧凑</h2>
-        <Card title="标题" size="sm" extra={<Button appearance="link">链接</Button>}>
+        <h2>大尺寸</h2>
+        <Card
+          title="标题"
+          size="lg"
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
+        >
           <div
             style={{
               height: 174,
-              backgroundColor: '#F5F7FA',
+              backgroundColor: '#F5F8FC',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -39,6 +77,25 @@ export const Size = () => {
           >
             此处展示卡片内容
           </div>
+        </Card>
+
+        <h2>不同尺寸嵌套</h2>
+        <Card title="大尺寸" size="lg">
+          <Card title="常规">
+            <Card title="紧凑" size="sm">
+              <div
+                style={{
+                  height: 80,
+                  backgroundColor: '#F5F8FC',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                此处展示卡片内容
+              </div>
+            </Card>
+          </Card>
         </Card>
       </div>
     </>

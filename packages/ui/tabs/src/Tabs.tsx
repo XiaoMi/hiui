@@ -5,7 +5,14 @@ import { TabPaneProps } from './TabPane'
 import { TabList } from './TabList'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { isUndef } from '@hi-ui/type-assertion'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
+import { EditActions } from './TabItem'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -19,6 +26,9 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       defaultActiveId,
       activeId,
@@ -26,15 +36,21 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onTabClick,
       editable,
       placement = 'horizontal',
+      editRender,
+      onEdit,
+      onCopy,
       onAdd,
+      onAdded,
       onDelete,
       draggable = false,
       onDragStart,
       onDragOver,
       onDragEnd,
       onDrop,
-      style,
       type = 'line',
+      size = 'md',
+      showDivider,
+      maxTabTitleWidth,
       extra,
       ...rest
     },
@@ -65,15 +81,30 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
       onChange
     )
 
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tabs?: { classNames?: any; styles?: any }
+    }
+    const { tabs: tabsConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      TabsSemanticClassNames,
+      TabsSemanticStyles,
+      TabsProps
+    >({
+      classNamesList: [tabsConfig?.classNames, classNamesProp],
+      stylesList: [tabsConfig?.styles, stylesProp],
+      info: { props: { ...rest, placement, type, size } },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       placement && `${prefixCls}--placement-${placement}`,
       type && `${prefixCls}--type-${type}`
     )
 
     return (
-      <div ref={ref} role={role} className={cls} style={style} {...rest}>
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
         <TabList
           prefixCls={prefixCls}
           data={tabList}
@@ -82,17 +113,26 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
           onTabClick={onTabClick}
           placement={placement}
           editable={editable}
+          editRender={editRender}
+          onEdit={onEdit}
+          onCopy={onCopy}
           onAdd={onAdd}
+          onAdded={onAdded}
           onDelete={onDelete}
           draggable={draggable}
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
           onDrop={onDrop}
           type={type}
+          size={size}
+          showDivider={showDivider}
           onDragStart={onDragStart}
           extra={extra}
+          maxTabTitleWidth={maxTabTitleWidth}
+          className={classNames?.list}
+          style={styles?.list}
         />
-        <div className={`${_prefix}__content`}>
+        <div className={cx(`${_prefix}__content`, classNames?.content)} style={styles?.content}>
           {React.Children.map(children, (child) => {
             return child
               ? React.cloneElement(child, {
@@ -108,8 +148,17 @@ export const Tabs = forwardRef<HTMLDivElement | null, TabsProps>(
   }
 )
 
+export type TabsSemanticName = 'root' | 'list' | 'content'
+export type TabsSemanticClassNames = SemanticClassNamesType<TabsProps, TabsSemanticName>
+export type TabsSemanticStyles = SemanticStylesType<TabsProps, TabsSemanticName>
+export type TabsSemantic = ComponentSemantic<TabsSemanticClassNames, TabsSemanticStyles>
+
 export interface TabsProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  extends Omit<
+      HiBaseHTMLProps<'div'>,
+      'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+    >,
+    TabsSemantic {
   /**
    * 是否可拖拽
    */
@@ -140,6 +189,18 @@ export interface TabsProps
    */
   type?: 'desc' | 'card' | 'button' | 'line'
   /**
+   * 大小
+   */
+  size?: 'sm' | 'md' | 'lg'
+  /**
+   * 是否显示下划线
+   */
+  showDivider?: boolean
+  /**
+   * 标签最大宽度
+   */
+  maxTabTitleWidth?: number
+  /**
    * `activeId` 改变的回调
    */
   onChange?: (tabId: React.ReactText) => void
@@ -151,15 +212,30 @@ export interface TabsProps
    * 右侧的拓展区域
    */
   extra?: React.ReactNode
-
+  /**
+   * 标签编辑渲染
+   */
+  editRender?: (item: TabPaneProps, index: number, actions: EditActions) => React.ReactNode
+  /**
+   * 节点编辑时触发
+   */
+  onEdit?: (value: string, item: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
+   * 节点复制时触发
+   */
+  onCopy?: (sourceItem: TabPaneProps, copiedItem: TabPaneProps, newItems: TabPaneProps[]) => void
   /**
    * 节点增加时触发
    */
   onAdd?: () => void
   /**
+   * 节点增加完成时触发
+   */
+  onAdded?: (newTab: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void | boolean | Promise<boolean>
   /**
    * 节点开始拖拽时触发
    */

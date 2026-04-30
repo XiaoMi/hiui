@@ -1,0 +1,38 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$action-item-prefix: '#{$component-prefix}-action-item' !default;
+
+.#{$action-item-prefix} {
+  display: flex;
+  align-items: center;
+  gap: use-spacing(4);
+  box-sizing: border-box;
+  height: use-height-size(8);
+  padding: 0 use-spacing(6);
+  margin: use-spacing(2) 0;
+  border-radius: use-border-radius('normal');
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: rgba(#7c87a6, 0.15);
+  }
+
+  &__icon {
+    font-size: use-text-size('xl');
+    color: #7c87a6;
+  }
+
+  &__content {
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+  }
+
+  &--mini {
+    margin-inline-start: use-spacing(2);
+
+    .#{$action-item-prefix}__icon {
+      font-size: use-text-size('lg');
+    }
+  }
+}

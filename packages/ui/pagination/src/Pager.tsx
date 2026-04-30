@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { EllipsisOutlined } from '@hi-ui/icons'
 
 const _role = 'pagination'
 const _prefix = getPrefixCls(_role)
@@ -10,11 +11,17 @@ export const Pager: React.FC<PagerProps> = ({
   onClick,
   page = '',
   active,
+  className,
+  style,
 }) => {
-  const cls = cx(`${prefixCls}__item`, {
-    [`${prefixCls}__item--active`]: active,
-    [`${prefixCls}__item--break`]: page === '...',
-  })
+  const cls = cx(
+    `${prefixCls}__item`,
+    {
+      [`${prefixCls}__item--active`]: active,
+      [`${prefixCls}__item--break`]: page === '...',
+    },
+    className
+  )
 
   const handleClick = useCallback(() => {
     if (onClick) {
@@ -35,11 +42,12 @@ export const Pager: React.FC<PagerProps> = ({
   return (
     <li
       className={cls}
+      style={style}
       onClick={handleClick}
       onKeyPress={handleKeyPress}
       tabIndex={page !== '...' ? 0 : -1}
     >
-      {page}
+      {page === '...' ? <EllipsisOutlined style={{ fontSize: '14px' }} /> : page}
     </li>
   )
 }
@@ -65,6 +73,14 @@ export interface PagerProps {
    * 点击事件
    */
   onClick?: (page: number | string) => void
+  /**
+   * 自定义类名
+   */
+  className?: string
+  /**
+   * 自定义样式
+   */
+  style?: React.CSSProperties
 }
 
 if (__DEV__) {

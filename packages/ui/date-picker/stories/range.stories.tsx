@@ -8,6 +8,8 @@ import DayJs from 'dayjs'
  */
 export const Range = () => {
   const [dynamicSelectedValue, setDynamicSelectedValue] = useState<any>('')
+  const [start, setStart] = useState<Date[]>([])
+
   return (
     <>
       <h1>范围</h1>
@@ -16,32 +18,19 @@ export const Range = () => {
         <DatePicker
           type="daterange"
           style={{ width: 480 }}
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(7, 'day').toDate(), new Date()]}
           format="YYYY-MM-DD"
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
           onSelect={console.log}
-          disabledDate={(val) => {
-            const tomorrow = DayJs(new Date()).isBefore(DayJs(val))
-            if (tomorrow) return true
-
-            if (dynamicSelectedValue) {
-              const startTime = DayJs(dynamicSelectedValue).startOf('month').valueOf()
-              const endTime = DayJs(dynamicSelectedValue).endOf('month').valueOf()
-
-              if (DayJs(val).isBefore(startTime)) return true
-              if (DayJs(val).isAfter(endTime)) return true
-            }
-            return false
-          }}
         />
 
         <h2>年份</h2>
         <DatePicker
           style={{ width: 480 }}
           type="yearrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'year').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -52,7 +41,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="quarterrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[new Date(`${new Date().getFullYear()}-09-01`), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -63,7 +52,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="monthrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'month').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -75,7 +64,7 @@ export const Range = () => {
         <DatePicker
           style={{ width: 480 }}
           type="weekrange"
-          defaultValue={[new Date(), new Date()]}
+          defaultValue={[DayJs().subtract(2, 'week').toDate(), new Date()]}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
           }}
@@ -84,7 +73,7 @@ export const Range = () => {
 
         <h2>日期时间范围</h2>
         <DatePicker
-          style={{ width: 420 }}
+          style={{ width: 480 }}
           type="daterange"
           showTime
           onChange={(date, dateStr) => {
@@ -126,6 +115,52 @@ export const Range = () => {
           onSelect={(val, isCompleted) => {
             console.log(val, isCompleted)
             setDynamicSelectedValue(isCompleted ? '' : val)
+          }}
+          onClear={() => {
+            setDynamicSelectedValue('')
+          }}
+        />
+
+        <h2>动态限制日期时间范围</h2>
+        <DatePicker
+          type="daterange"
+          style={{ width: 480 }}
+          format="YYYY-MM-DD"
+          showTime
+          onChange={(date, dateStr) => {
+            if (!date) {
+              setStart([])
+            }
+          }}
+          onSelect={(val, isCompleted, index = 0) => {
+            console.log('select', val, isCompleted, index)
+            start[index] = val
+            setStart([...start])
+          }}
+          disabledDate={(val, view, index) => {
+            // 如果还没有选择开始日期，不禁用任何日期
+            if (!start[0]) {
+              return false
+            }
+
+            const currentTime = new Date(val).getTime()
+            const startTime = new Date(start[0]).getTime()
+            const sixtyDays = 60 * 24 * 60 * 60 * 1000 // 60天的毫秒数
+
+            // 如果是选择第二个日期
+            if (index === 1) {
+              // 禁用超过开始日期一周范围的日期
+              return currentTime < startTime || currentTime > startTime + sixtyDays
+            }
+
+            // 如果是选择第一个日期且已经选择了结束日期
+            if (index === 0 && start[1]) {
+              const endTime = new Date(start[1]).getTime()
+              // 禁用导致日期范围超过一周的日期
+              return currentTime > endTime || endTime - currentTime > sixtyDays
+            }
+
+            return false
           }}
         />
       </div>

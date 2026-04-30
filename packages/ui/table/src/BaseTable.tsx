@@ -1,7 +1,7 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import { IconButton } from '@hi-ui/icon-button'
 import { PlusSquareOutlined, MinusSquareOutlined } from '@hi-ui/icons'
 import Scrollbar from '@hi-ui/scrollbar'
@@ -43,7 +43,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       onEmbedExpand,
       expandedRender,
       // 其它
-      size = 'md',
+      size: sizeProp,
       extra,
       onRow,
       onHeaderRow,
@@ -55,10 +55,19 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       needDoubleTable,
       onResizeStop,
       fixedToRow,
+      onScroll,
+      classNames,
+      styles,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     // ********************** 内嵌式面板 *********************** //
     const {
       embedExpandable,
@@ -84,6 +93,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
           dataKey: EMBED_DATA_KEY,
           title: '',
           width: 38,
+          fixed: true,
           className: `${prefixCls}__embed-col`,
           align: 'center',
           render: (_: any, rowItem: any) => {
@@ -192,6 +202,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       columns: mergedColumns,
       data,
       virtual,
+      onScroll,
     })
 
     const {
@@ -210,6 +221,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
       scrollWidth,
       footerRender,
       scrollbar,
+      stretchHeight,
     } = providedValue
 
     const hasBorder = borderedProp ?? bordered
@@ -221,11 +233,60 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const alwaysFixedColumn = fixedColumnTrigger === 'always'
 
+    const wrapperRef = React.useRef<HTMLDivElement>(null)
+    const isTableContentExceedWrapperHeight =
+      bodyTableRef.current &&
+      wrapperRef.current &&
+      bodyTableRef.current.offsetHeight > wrapperRef.current.offsetHeight
+    let tableHeaderHeight = 0
+    let freezeShadowHeightStyle: React.CSSProperties | null = null
+
+    if (stretchHeight && rest.fixedToColumn) {
+      tableHeaderHeight =
+        wrapperRef.current?.querySelector(`.${prefixCls}-header`)?.getBoundingClientRect?.()
+          .height ?? 0
+      freezeShadowHeightStyle =
+        !isTableContentExceedWrapperHeight && bodyTableRef.current
+          ? { height: `${bodyTableRef.current.offsetHeight + tableHeaderHeight}px` }
+          : null
+    }
+
     const renderTable = () => {
+      if (needDoubleTable) {
+        const { style, ...restTableHeaderProps } = getTableHeaderProps()
+
+        const doubleTableContent = (
+          <>
+            <div
+              {...restTableHeaderProps}
+              className={classNames?.content}
+              style={{ ...style, ...styles?.content, overflow: undefined }}
+            >
+              <TableHeader />
+
+              {/* 不跟随内部 header 横向滚动，固定到右侧 */}
+              {extraHeader ? (
+                <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
+                  {extraHeader}
+                </div>
+              ) : null}
+            </div>
+
+            <TableBody emptyContent={emptyContent} />
+          </>
+        )
+
+        return doubleTableContent
+      }
+
       const tableContent = (
         <table
           ref={bodyTableRef}
-          style={{ width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%' }}
+          className={classNames?.table}
+          style={{
+            width: canScroll && scrollWidth !== undefined ? scrollWidth : '100%',
+            ...styles?.table,
+          }}
         >
           <ColGroupContent />
           <TheadContent />
@@ -235,17 +296,17 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
       const singleTableContent = (
         <div
-          className={`${prefixCls}-content`}
-          {...(!scrollbar
-            ? {
-                ref: scrollBodyElementRef,
-                onScroll: onTableBodyScroll,
-                style: {
+          className={cx(`${prefixCls}-content`, classNames?.content)}
+          style={{
+            ...styles?.content,
+            ...(!scrollbar
+              ? {
                   // 表格宽度大于div宽度才出现横向滚动条
                   overflowX: canScroll ? 'scroll' : undefined,
-                },
-              }
-            : {})}
+                }
+              : {}),
+          }}
+          {...(!scrollbar ? { ref: scrollBodyElementRef, onScroll: onTableBodyScroll } : {})}
         >
           {!scrollbar ? (
             tableContent
@@ -261,24 +322,7 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         </div>
       )
 
-      const doubleTableContent = (
-        <>
-          <div {...getTableHeaderProps()}>
-            <TableHeader />
-
-            {/* 不跟随内部 header 横向滚动，固定到右侧 */}
-            {extraHeader ? (
-              <div style={{ position: 'absolute', right: 0, zIndex: 11, bottom: 0, top: 0 }}>
-                {extraHeader}
-              </div>
-            ) : null}
-          </div>
-
-          <TableBody emptyContent={emptyContent} />
-        </>
-      )
-
-      return needDoubleTable ? doubleTableContent : singleTableContent
+      return singleTableContent
     }
 
     const renderFreezeShadow = () => {
@@ -286,14 +330,30 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
         <>
           {(alwaysFixedColumn || scrollSize.scrollLeft > 0) && leftFrozenColKeys.length > 0 ? (
             <div
-              className={`${prefixCls}-freeze-shadow  ${prefixCls}-freeze-shadow--left`}
-              style={{ width: leftFixedColumnsWidth + 'px' }}
+              className={cx(
+                `${prefixCls}-freeze-shadow`,
+                `${prefixCls}-freeze-shadow--left`,
+                classNames?.freezeShadowLeft
+              )}
+              style={{
+                width: leftFixedColumnsWidth + 'px',
+                ...freezeShadowHeightStyle,
+                ...styles?.freezeShadowLeft,
+              }}
             />
           ) : null}
           {(alwaysFixedColumn || scrollSize.scrollRight > 0) && rightFrozenColKeys.length > 0 ? (
             <div
-              className={`${prefixCls}-freeze-shadow ${prefixCls}-freeze-shadow--right`}
-              style={{ width: rightFixedColumnsWidth + 'px' }}
+              className={cx(
+                `${prefixCls}-freeze-shadow`,
+                `${prefixCls}-freeze-shadow--right`,
+                classNames?.freezeShadowRight
+              )}
+              style={{
+                width: rightFixedColumnsWidth + 'px',
+                ...freezeShadowHeightStyle,
+                ...styles?.freezeShadowRight,
+              }}
             />
           ) : null}
         </>
@@ -302,15 +362,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
 
     const tableFooter = (
       <div
-        className={`${prefixCls}-footer`}
-        style={
-          stickyFooter
-            ? {
-                position: 'sticky',
-                bottom: stickyFooterBottom,
-              }
-            : undefined
-        }
+        className={cx(`${prefixCls}-footer`, classNames?.footer)}
+        style={{
+          ...(stickyFooter ? { position: 'sticky' as const, bottom: stickyFooterBottom } : {}),
+          ...styles?.footer,
+        }}
       >
         {isFunction(footerRender) ? footerRender(<>{extraFooter}</>) : extraFooter}
       </div>
@@ -319,18 +375,30 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       hasBorder && `${prefixCls}--bordered`,
       (hasScrollToLeft || hasLeftFixedColumns) &&
         data.length > 0 &&
         `${prefixCls}--bordered-left-none`,
       striped && `${prefixCls}--striped`,
       size && `${prefixCls}--size-${size}`,
-      virtual && `${prefixCls}--virtual`
+      virtual && `${prefixCls}--virtual`,
+      data.length === 0 && `${prefixCls}--empty`,
+      `${prefixCls}--${needDoubleTable ? 'double' : 'single'}`,
+      stretchHeight && `${prefixCls}--stretch-height`
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rootProps}>
-        <div className={`${prefixCls}__wrapper`}>
+      <div ref={ref} role={role} className={cls} {...rootProps} style={styles?.root}>
+        <div
+          ref={wrapperRef}
+          className={cx(
+            `${prefixCls}__wrapper`,
+            classNames?.wrapper,
+            isTableContentExceedWrapperHeight && `${prefixCls}--exceed-wrapper-height`
+          )}
+          style={styles?.wrapper}
+        >
           <TableProvider
             value={{
               ...providedValue,
@@ -347,8 +415,11 @@ export const BaseTable = forwardRef<HTMLDivElement | null, BaseTableProps>(
               sumRow,
               hasSumColumn,
               virtual,
+              onScroll,
               onResizeStop,
               fixedToRow,
+              semanticClassNames: classNames,
+              semanticStyles: styles,
             }}
           >
             {renderTable()}
@@ -366,6 +437,14 @@ export interface BaseTableProps
   extends Omit<HiBaseHTMLProps<'div'>, 'onDrop' | 'draggable' | 'onDragStart'>,
     UseTableProps,
     UseEmbedExpandProps {
+  /**
+   * 语义化 classNames（由 Table 透传）
+   */
+  classNames?: any
+  /**
+   * 语义化 styles（由 Table 透传）
+   */
+  styles?: any
   /**
    * 覆盖 header 的setting icon 和 footer 的 pagination。暂不对外暴露
    * @private
@@ -390,7 +469,7 @@ export interface BaseTableProps
   /**
    *  配置表格尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
   /**
    * 底部吸底
    */

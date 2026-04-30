@@ -7,11 +7,13 @@ import Select from '../src'
  */
 export const Disabled = () => {
   const [data] = React.useState([
-    { title: '电视', id: '3', disabled: true },
-    { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: true },
-    { title: '生活周边', id: '5' },
-    { title: '办公', id: '6' },
+    { title: '手机', id: 'shouji' },
+    { title: '电脑', id: 'diannao', disabled: true },
+    { title: '电视', id: 'dianshi' },
+    { title: '洗衣机', id: 'xiyiji' },
+    { title: '冰箱', id: 'bingxiang' },
+    { title: '空调', id: 'kongtiao' },
+    { title: '汽车', id: 'qiche' },
   ])
 
   return (
@@ -21,7 +23,7 @@ export const Disabled = () => {
         <h2>整体禁用</h2>
         <Select style={{ width: 240 }} disabled data={data} defaultValue="2" />
 
-        <h2>整体禁用</h2>
+        <h2>局部禁用</h2>
         <Select style={{ width: 240 }} data={data} defaultValue="2" />
       </div>
     </>

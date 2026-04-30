@@ -4,8 +4,7 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
 
 .#{$prefix} {
   font-size: use-text-size('normal');
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
   padding: 0;
 
   &--md {
@@ -24,8 +23,8 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   }
 
   &__content {
-    transition: all 0.3s;
-    color: use-color('gray', 500);
+    transition: color use-motion-duration('normal') use-motion-bezier('ease-in-out');
+    color: use-color('gray', 600);
   }
 
   a {
@@ -40,20 +39,20 @@ $prefix: '#{$component-prefix}-breadcrumb' !default;
   }
 
   &__separator {
-    margin: 0 use-spacing(4);
-    padding: 0 use-spacing(2);
-    color: use-color('gray', 300);
+    margin: 0 use-spacing(2);
+    font-size: use-text-size('normal');
+    color: use-color('gray', 600);
   }
 
   &__item {
-    display: inline-block;
-    color: use-color('gray', 500);
+    display: inline-flex;
+    color: use-color('gray', 600);
   }
 
   &__item:last-child {
     .#{$prefix}__content {
       cursor: text;
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
     }
 
     .#{$prefix}__separator {

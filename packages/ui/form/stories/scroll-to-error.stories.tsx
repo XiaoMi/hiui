@@ -35,34 +35,6 @@ export const ScrollToError = () => {
             },
           ],
         },
-        {
-          id: '红米',
-          title: '红米',
-          children: [
-            {
-              id: '红米3',
-              title: '红米3',
-            },
-            {
-              id: '红米4',
-              title: '红米4',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: '电视',
-      title: '电视',
-      children: [
-        {
-          id: '小米电视4A',
-          title: '小米电视4A',
-        },
-        {
-          id: '小米电视4C',
-          title: '小米电视4C',
-        },
       ],
     },
   ])
@@ -106,8 +78,7 @@ export const ScrollToError = () => {
           width: '100%',
           height: 240,
           padding: '20px 0',
-          background: '#f5f7fa',
-          boxShadow: '1px 2px 8px #ddd',
+          background: '#f2f4f7',
           overflow: 'auto',
         }}
       >
@@ -152,39 +123,32 @@ export const ScrollToError = () => {
                 data={[
                   { title: '电视', id: '3' },
                   { title: '手机', id: '2' },
-                  { title: '笔记本', id: '4' },
-                  { title: '生活周边', id: '5' },
-                  { title: '办公', id: '6' },
                 ]}
-                searchable
-                placeholder="请选择"
-                emptyContent="无匹配数据"
-                onChange={(item) => {
-                  console.log('多选结果', item)
-                }}
               />
             </FormItem>
             <FormItem label="品类" field="category" valueType="string">
-              <Cascader
-                onChange={(id) => {
-                  console.log('change', id)
-                }}
-                data={cascaderOptions}
-                style={{ width: '100%' }}
-              />
+              <Cascader data={cascaderOptions} />
             </FormItem>
             <FormItem label="地区" field="region" valueType="string">
               <RadioGroup
                 data={[
                   { id: 'beijing', title: '北京' },
                   { id: 'shanghai', title: '上海' },
-                  { id: 'chongqing', title: '重庆' },
                 ]}
               />
             </FormItem>
 
             <FormItem>
               <>
+                <Button
+                  type="default"
+                  appearance="line"
+                  onClick={() => {
+                    formRef.current?.reset()
+                  }}
+                >
+                  重置
+                </Button>
                 <Button
                   type="primary"
                   onClick={() => {
@@ -202,14 +166,7 @@ export const ScrollToError = () => {
                 >
                   提交
                 </Button>
-                <Button
-                  type="default"
-                  onClick={() => {
-                    formRef.current?.reset()
-                  }}
-                >
-                  重置
-                </Button>
+
                 <Button
                   type="danger"
                   onClick={() => {

@@ -1,5 +1,12 @@
-import { HiBaseHTMLProps } from '@hi-ui/core'
 import React from 'react'
+import { ReactCropperProps } from 'react-cropper'
+import { HiBaseHTMLProps } from '@hi-ui/core'
+import { PreviewProps } from '@hi-ui/preview'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 export interface UploadFileItem extends Partial<File> {
   /**
@@ -34,6 +41,9 @@ export interface UploadFileList {
   showPic?: boolean
   actionRender?: (props: ActionRenderProps) => React.ReactNode
   disabled?: boolean
+  size?: 'xs' | 'md' | 'lg'
+  className?: string
+  style?: React.CSSProperties
 }
 
 export interface UploadRequestOption {
@@ -54,11 +64,60 @@ export type UploadPhotoSizeEnum = 'sm' | 'md' | 'lg'
 
 export type UploadTypeEnum = 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
 
-export interface UploadProps extends HiBaseHTMLProps<'div'> {
+export type UploadSemanticName =
+  | 'root'
+  | 'normalUpload'
+  | 'normalUploadTrigger'
+  | 'normalUploadTips'
+  | 'normalUploadList'
+  | 'dragUpload'
+  | 'dragUploadDropArea'
+  | 'dragUploadDropDesc'
+  | 'dragUploadDropTitle'
+  | 'dragUploadTips'
+  | 'dragUploadList'
+  | 'pictureListUpload'
+  | 'pictureListUploadTrigger'
+  | 'pictureListUploadTips'
+  | 'pictureListUploadList'
+  | 'pictureUpload'
+  | 'pictureUploadList'
+  | 'pictureUploadItem'
+  | 'pictureUploadUploadTrigger'
+  | 'avatarUpload'
+  | 'avatarUploadList'
+  | 'avatarUploadItem'
+  | 'avatarUploadUploadTrigger'
+  | 'avatarUploadCropper'
+  | 'avatarUploadCropperToolbar'
+export type UploadSemanticClassNames = SemanticClassNamesType<UploadProps, UploadSemanticName>
+export type UploadSemanticStyles = SemanticStylesType<UploadProps, UploadSemanticName>
+export type UploadSemantic = ComponentSemantic<UploadSemanticClassNames, UploadSemanticStyles>
+
+/** 语义化合并后的 classNames 对象类型，子组件内使用 */
+export type UploadSemanticClassNamesResolved = Partial<Record<UploadSemanticName, string>>
+/** 语义化合并后的 styles 对象类型，子组件内使用 */
+export type UploadSemanticStylesResolved = Partial<Record<UploadSemanticName, React.CSSProperties>>
+
+export interface UploadProps
+  extends HiBaseHTMLProps<'div'>,
+    Omit<UploadSemantic, 'classNames' | 'styles'> {
+  /**
+   * 语义化 classNames（支持对象或函数，子组件内为合并后的对象）
+   */
+  classNames?: UploadSemanticClassNames | UploadSemanticClassNamesResolved
+  /**
+   * 语义化 styles（支持对象或函数，子组件内为合并后的对象）
+   */
+  styles?: UploadSemanticStyles | UploadSemanticStylesResolved
   /**
    * 上传组件类型
    */
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
+  /**
+   * 上传文件列表大小
+   */
+  size?: 'xs' | 'md' | 'lg'
   /**
    * 接收上传的文件类型， 用逗号隔开的 MIME 类型列表，参考 [MDN-MIME 类型](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_Types)
    */
@@ -136,9 +195,9 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
    */
   loading?: boolean
   /**
-   * 头像裁切配置项
+   * 头像裁切配置项（透传扩展后的 react-cropper props）
    */
-  avatarOptions?: Record<string, any>
+  avatarOptions?: AvatarOptions
   /**
    * 设置上传按钮大小,仅在 type === 'photo' 时有效
    */
@@ -146,7 +205,7 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
   /**
    * 预览透传 props
    */
-  preview?: { className?: string }
+  preview?: Omit<PreviewProps, 'visible' | 'src'>
   /**
    * 上传文件前的钩子，返回 true 继续上传，其他终止上传
    */
@@ -184,4 +243,15 @@ export interface UploadProps extends HiBaseHTMLProps<'div'> {
 export interface ActionRenderProps {
   file: UploadFileItem
   index: number
+}
+
+export interface AvatarOptions extends ReactCropperProps {
+  /**
+   * 裁剪后生成的图片宽度
+   */
+  outputWidth?: number
+  /**
+   * 裁剪后生成的图片高度
+   */
+  outputHeight?: number
 }

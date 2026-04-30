@@ -1,9 +1,9 @@
-import React, { forwardRef, useMemo, useState, useEffect, useRef } from 'react'
+import React, { forwardRef, useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { CloseOutlined } from '@hi-ui/icons'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { Tooltip, TooltipProps } from '@hi-ui/tooltip'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 
 const _role = 'tag'
 const _prefix = getPrefixCls(_role)
@@ -27,7 +27,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       background,
       type = 'default',
       appearance = 'filled',
-      size = 'md',
+      size: sizeProp,
       shape = 'square',
       closeable = false,
       editable = false,
@@ -41,6 +41,12 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const contentRef = useRef<HTMLDivElement | null>(null)
 
     const [isInEdit, setIsInEdit] = useState(false)
@@ -102,7 +108,7 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             [`${prefixCls}--hover-enable`]: editable || closeable,
           }
         ),
-      [prefixCls, className, type, appearance, size, editable, isInEdit, closeable, shape]
+      [prefixCls, className, type, appearance, size, shape, editable, isInEdit, closeable]
     )
 
     useEffect(() => {
@@ -137,6 +143,14 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       [isShowPopover, isInEdit, tooltipProps, render, children, triggerEdit]
     )
 
+    const handleDoubleClick = useCallback(
+      (evt) => {
+        evt.stopPropagation()
+        triggerEdit()
+      },
+      [triggerEdit]
+    )
+
     if (__DEV__) {
       if (editable) {
         invariant(
@@ -153,11 +167,9 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
             <div
               className={`${prefixCls}__content`}
               ref={contentRef}
-              onDoubleClick={(evt) => {
-                evt.stopPropagation()
-                triggerEdit()
-              }}
+              onDoubleClick={editable ? handleDoubleClick : undefined}
             >
+              {appearance === 'dot' ? <i className={`${prefixCls}__dot`} /> : null}
               {isInEdit ? editValueCache : render(children as React.ReactText, triggerEdit)}
             </div>
             {editable && isInEdit && (
@@ -199,12 +211,22 @@ export interface TagProps extends HiBaseHTMLProps<'div'> {
    * 类型状态
    * @default 'default'
    */
-  type?: 'primary' | 'success' | 'warning' | 'danger' | 'default'
+  type?:
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'default'
+    | 'yellow'
+    | 'ultramarine'
+    | 'skyblue'
+    | 'purple'
+    | 'rosered'
   /**
    * 外观
    * @default 'solid'
    */
-  appearance?: 'line' | 'solid' | 'filled'
+  appearance?: 'line' | 'solid' | 'filled' | 'dot'
   /**
    * 形状
    * @default 'square'

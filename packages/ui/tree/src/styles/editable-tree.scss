@@ -60,9 +60,9 @@ $prefix: '#{$component-prefix}-tree' !default;
       color: use-color('gray', 800);
       background-color: use-color-static('white');
       width: 160px;
-      box-shadow: 0 2px 8px 0 use-color('gray', 100);
+      box-shadow: 0 2px 8px 0 use-color('gray', 200);
       padding: use-spacing(6) use-spacing(4);
-      border-radius: 4px;
+      border-radius: use-border-radius('md');
 
       &__item {
         list-style: none;
@@ -75,11 +75,11 @@ $prefix: '#{$component-prefix}-tree' !default;
         white-space: nowrap;
         overflow: hidden;
         transition: background-color 0.3s;
-        color: use-color('gray', 700);
+        color: use-color('gray', 800);
         border-radius: use-border-radius('normal');
 
         &:not(:last-of-type) {
-          margin-bottom: use-spacing(4);
+          margin-block-end: use-spacing(4);
         }
 
         &:hover {

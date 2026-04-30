@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CollapseProvider, CollapseContext } from './context'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 
 const _role = 'collapse'
 const _prefix = getPrefixCls(_role)
@@ -29,11 +29,17 @@ export const Collapse = forwardRef<HTMLDivElement | null, CollapseProps>(
       showArrow = true,
       bordered = true,
       arrowRender,
-      size = 'md',
+      size: sizeProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const cls = cx(
       prefixCls,
       `${prefixCls}--size-${size}`,
@@ -131,7 +137,7 @@ export interface CollapseProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置头部大小
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {

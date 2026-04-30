@@ -1,0 +1,112 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$side-menu-prefix: '#{$component-prefix}-side-menu' !default;
+
+.#{$side-menu-prefix} {
+  display: flex;
+  flex-direction: column;
+  padding: use-spacing(2) 0;
+  transition: width 0.3s;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    padding: 0 use-spacing(4) 0 use-spacing(6);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 800);
+    border-radius: use-border-radius('lg');
+    cursor: pointer;
+    position: relative;
+
+    &:hover,
+    &--selected {
+      background-color: rgba(#7c87a6, 0.15);
+    }
+
+    &:not(&--mini) {
+      height: use-height-size(8);
+
+      .#{$side-menu-prefix}-item__title {
+        min-width: 1px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    &-wrapper {
+      padding: use-spacing(2) use-spacing(4);
+    }
+
+    &--active {
+      font-weight: use-text-weight('medium');
+      color: use-color-mode('primary');
+      background-color: use-color-static('white');
+
+      &:hover {
+        background-color: use-color-static('white');
+      }
+
+      .#{$side-menu-prefix}-item__icon,
+      .#{$side-menu-prefix}-item__title {
+        color: use-color-mode('primary');
+      }
+    }
+
+    &__icon {
+      display: inline-flex;
+      margin-inline-end: use-spacing(4);
+      font-size: use-text-size('lg');
+      color: #7c87a6;
+    }
+
+    &--mini {
+      box-sizing: border-box;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: use-spacing(3);
+      width: 52px;
+      max-height: 64px;
+      color: use-color('gray', 700);
+
+      .#{$side-menu-prefix}-item__icon {
+        margin-inline-end: 0;
+        margin-block-end: use-spacing(3);
+        font-size: use-text-size('xl');
+      }
+
+      .#{$side-menu-prefix}-item__title {
+        font-size: 20px;
+        line-height: 28px;
+        text-align: center;
+        text-indent: 0;
+        transform: scale(0.5);
+        width: 200%;
+        margin-block-end: -14px;
+        transform-origin: top;
+        white-space: normal;
+        display: -webkit-box; // stylelint-disable-line
+        -webkit-box-orient: vertical; // stylelint-disable-line
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        word-break: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  &--mini {
+    .#{$side-menu-prefix}-item-wrapper {
+      padding: use-spacing(2);
+    }
+  }
+
+  .#{$component-prefix}-scrollbar {
+    &__wrapper {
+      width: 100%;
+    }
+  }
+}

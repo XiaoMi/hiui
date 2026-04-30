@@ -91,6 +91,8 @@ export default {
     noFoundTip: '無匹配數據',
     searchPlaceholder: '搜索',
     loadingContent: '數據加載中...',
+    createTitle: '創建選項',
+    createPlaceholder: '搜索或創建選項',
   },
   treeSelect: {
     placeholder: '請選擇',
@@ -129,6 +131,9 @@ export default {
     searchPlaceholder: '搜索',
     emptyContent: '暫無數據',
     limit: '數量達上限，無法添加',
+    allItems: '所有選項',
+    checkedItems: '已選',
+    clear: '清空',
   },
   upload: {
     buttonText: '上傳',
@@ -202,5 +207,19 @@ export default {
   },
   backTop: {
     backToTop: '回到頂部',
+  },
+  menuSearch: {
+    placeholder: '請輸入搜索內容',
+    search: '搜索',
+    clear: '清空',
+    searchResult: '共搜索到 {{count}} 項與“{{keyword}}”相關的菜單',
+    searchEmptyResult: '沒有找到相關結果',
+    moveCursor: '移動光標',
+    confirmSelect: '確定選擇',
+    hideWindow: '隱藏窗口',
+  },
+  queryFilter: {
+    pin: '固定在列表頂部',
+    unpin: '取消固定',
   },
 }

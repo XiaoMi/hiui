@@ -1,6 +1,12 @@
 import React, { useEffect, forwardRef, useCallback, useImperativeHandle, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { HiBaseHTMLProps, HiBaseSizeEnum, useLocaleContext, usePortalContext } from '@hi-ui/core'
+import {
+  HiBaseHTMLProps,
+  HiBaseSizeEnum,
+  useLocaleContext,
+  usePortalContext,
+  useGlobalContext,
+} from '@hi-ui/core'
 import { __DEV__ } from '@hi-ui/env'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
@@ -11,12 +17,18 @@ import {
   CloseOutlined,
   CheckCircleFilled,
   CloseCircleFilled,
-  ExclamationCircleFilled,
   InfoCircleFilled,
+  ExclamationCircleFilled,
 } from '@hi-ui/icons'
 import Button from '@hi-ui/button'
 import { useModal, UseModalProps } from './use-modal'
 import { ModalType, ModalTypeEnum } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 import { isUndef } from '@hi-ui/type-assertion'
 
@@ -42,7 +54,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       prefixCls = modalPrefix,
       className,
       children,
-      size = 'md',
+      size: sizeProp,
       disabledPortal = false,
       closeable = true,
       timeout = 300,
@@ -60,18 +72,36 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       container: containerProp,
       closeIcon = defaultCloseIcon,
       showMask = true,
-      showHeaderDivider = true,
-      showFooterDivider = true,
+      showHeaderDivider,
+      showFooterDivider,
       width,
       height,
       preload = false,
       unmountOnClose = false,
       visible = false,
       innerRef,
+      styles: stylesProp,
+      classNames: classNamesProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, modal: modalConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      ModalSemanticClassNames,
+      ModalSemanticStyles,
+      ModalProps
+    >({
+      classNamesList: [modalConfig?.classNames, classNamesProp],
+      stylesList: [modalConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, type, size: sizeProp ?? globalSize ?? 'md', closeable } },
+    })
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const i18n = useLocaleContext()
 
     const globalContainer = usePortalContext()?.container
@@ -122,10 +152,48 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       updateConfirmLoading: (loading: boolean) => setConfirmLoading(loading),
     }))
 
+    const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null)
+    const [scrollState, setScrollState] = useState<{
+      isContentOverflow: boolean
+      isScrollToTop: boolean
+      isScrollToBottom: boolean
+    }>({
+      isContentOverflow: false,
+      isScrollToTop: true,
+      isScrollToBottom: false,
+    })
+
+    const handleScroll = useCallback((evt: React.UIEvent<HTMLDivElement>) => {
+      if (!evt.currentTarget) return
+
+      const { scrollTop, scrollHeight, clientHeight } = evt.currentTarget
+
+      // 判断内容是否超过容器高度
+      const isContentOverflow = scrollHeight > clientHeight
+
+      // 判断是否滚动到顶部
+      const isScrollToTop = scrollTop === 0
+
+      // 判断是否滚动到底部
+      const isScrollToBottom = scrollTop + clientHeight >= scrollHeight - 1 // 减1像素容差
+
+      setScrollState({
+        isContentOverflow,
+        isScrollToTop,
+        isScrollToBottom,
+      })
+    }, [])
+
+    useEffect(() => {
+      if (scrollElement && visible) {
+        handleScroll({ currentTarget: scrollElement } as React.UIEvent<HTMLDivElement>)
+      }
+    }, [handleScroll, visible, scrollElement])
+
     const hasHeader = !!title || closeable
     const hasConfirm = confirmText !== null
     const hasCancel = cancelText !== null
-    const hasFooter = hasConfirm || hasCancel || footer !== null
+    const hasFooter = (hasConfirm || hasCancel) && footer !== null
 
     const cls = cx(
       prefixCls,
@@ -134,6 +202,7 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
       type && `${prefixCls}--type-${type}`
     )
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
     return (
       <Portal container={container} disabled={disabledPortal}>
         <CSSTransition
@@ -145,15 +214,27 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={transitionNodeRef}
         >
-          <div className={cls} {...getModalProps(rootProps, ref)}>
-            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
+          <div
+            className={cx(cls, classNames?.root)}
+            style={{ ...styles?.root }}
+            {...getModalProps(rootProps, [ref, transitionNodeRef])}
+          >
+            {showMask ? (
+              <div
+                className={cx(`${prefixCls}__overlay`, classNames?.overlay)}
+                style={styles?.overlay}
+              />
+            ) : null}
             <div
-              className={`${prefixCls}__wrapper`}
+              className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)}
               style={{
                 width,
                 height,
                 ...(!height ? { maxHeight: defaultMaxHeight } : null),
+                ...styles?.wrapper,
               }}
               {...getModalWrapperProps()}
             >
@@ -161,20 +242,33 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                 <header
                   className={cx(
                     `${prefixCls}__header`,
-                    showHeaderDivider && `${prefixCls}__header--divided`
+                    (showHeaderDivider ||
+                      (scrollState.isContentOverflow && !scrollState.isScrollToTop)) &&
+                      `${prefixCls}__header--divided`,
+                    classNames?.header
                   )}
+                  style={styles?.header}
                 >
                   {title ? (
-                    <div className={`${prefixCls}__title`}>
+                    <div
+                      className={cx(`${prefixCls}__title`, classNames?.title)}
+                      style={styles?.title}
+                    >
                       {type && modalIconMap[type] ? (
-                        <span className={`${prefixCls}__icon`}>{modalIconMap[type]}</span>
+                        <span
+                          className={cx(`${prefixCls}__icon`, classNames?.icon)}
+                          style={styles?.icon}
+                        >
+                          {modalIconMap[type]}
+                        </span>
                       ) : null}
                       {title}
                     </div>
                   ) : null}
                   {closeable ? (
                     <IconButton
-                      className={`${prefixCls}__close-button`}
+                      className={cx(`${prefixCls}__close-button`, classNames?.closeButton)}
+                      style={styles?.closeButton}
                       effect
                       icon={closeIcon}
                       onClick={onClose ?? onRequestCloseLatest}
@@ -182,18 +276,34 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
                   ) : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`}>{children}</main>
+              <main
+                className={cx(`${prefixCls}__body`, classNames?.body)}
+                ref={setScrollElement}
+                onScroll={handleScroll}
+                style={styles?.body}
+              >
+                {children}
+              </main>
               {hasFooter ? (
                 <footer
                   className={cx(
                     `${prefixCls}__footer`,
-                    showFooterDivider && `${prefixCls}__footer--divided`
+                    (showFooterDivider ||
+                      (scrollState.isContentOverflow && !scrollState.isScrollToBottom)) &&
+                      `${prefixCls}__footer--divided`,
+                    classNames?.footer
                   )}
+                  style={styles?.footer}
                 >
                   {footer === undefined
                     ? [
                         hasCancel ? (
-                          <Button key="1" type="default" onClick={onRequestCloseLatest}>
+                          <Button
+                            key="1"
+                            type="default"
+                            appearance="line"
+                            onClick={onRequestCloseLatest}
+                          >
                             {cancelText}
                           </Button>
                         ) : null,
@@ -219,9 +329,23 @@ export const Modal = forwardRef<HTMLDivElement | null, ModalProps>(
   }
 )
 
-export type ModalSizeEnum = HiBaseSizeEnum | undefined
+export type ModalSizeEnum = Omit<HiBaseSizeEnum, 'xs'> | undefined
 
-export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
+export type ModalSemanticName =
+  | 'root'
+  | 'overlay'
+  | 'wrapper'
+  | 'header'
+  | 'title'
+  | 'icon'
+  | 'closeButton'
+  | 'body'
+  | 'footer'
+export type ModalSemanticClassNames = SemanticClassNamesType<ModalProps, ModalSemanticName>
+export type ModalSemanticStyles = SemanticStylesType<ModalProps, ModalSemanticName>
+export type ModalSemantic = ComponentSemantic<ModalSemanticClassNames, ModalSemanticStyles>
+
+export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps, ModalSemantic {
   /**
    * 模态框尺寸
    */
@@ -313,10 +437,14 @@ export interface ModalProps extends HiBaseHTMLProps<'div'>, UseModalProps {
    * @private
    */
   timeout?: number
-  /** 。暂不对外暴露
+  /**
+   * 暂不对外暴露
    * @private
    */
-  innerRef?: React.Ref<{ close: () => void }>
+  innerRef?: React.Ref<{
+    close: () => void
+    updateConfirmLoading: (loading: boolean) => void
+  }>
   /**
    * 关闭动画退出时回调。暂不对外暴露
    * @private

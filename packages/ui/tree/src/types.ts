@@ -22,6 +22,11 @@ export interface TreeDataItem {
    */
   disabled?: boolean
   /**
+   * 节点是否展示复选框（需与 Tree 的 `checkable` 同时开启）；为 `false` 时隐藏复选框且该节点不参与勾选
+   * @default true
+   */
+  checkable?: boolean
+  /**
    * 节点类型，控制操作节点的行为
    */
   type?: TreeNodeType
@@ -109,6 +114,10 @@ export interface TreeNodeRequiredProps {
   selected: boolean
   loading: boolean
   focused: boolean
+  /** 语义化 classNames，由 Tree 透传 */
+  classNames?: Record<string, any>
+  /** 语义化 styles，由 Tree 透传 */
+  styles?: Record<string, any>
 }
 
 export interface TreeNodeEventData extends FlattedTreeNodeData, TreeNodeRequiredProps {}

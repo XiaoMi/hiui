@@ -9,27 +9,29 @@ import PopConfirm from '../src'
 export const Async = () => {
   const [visible, setVisible] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+
   return (
     <>
       <h1>Async</h1>
       <div className="pop-confirm-async__wrap">
         <PopConfirm
-          title="Are you OK ?"
+          style={{ minWidth: 280 }}
+          title="Hello! Are you OK?"
           visible={visible}
           footer={[
-            <Button key="1" type="default" size="md" onClick={() => setVisible(false)}>
+            <Button key="1" appearance="line" size="sm" onClick={() => setVisible(false)}>
               取消
             </Button>,
             <Button
               key="2"
               type="primary"
-              size="md"
+              size="sm"
               loading={loading}
               onClick={() => {
                 setLoading(true)
                 setTimeout(() => {
-                  setLoading(false)
-                  setVisible(false)
+                  // setLoading(false)
+                  // setVisible(false)
                 }, 2000)
               }}
             >

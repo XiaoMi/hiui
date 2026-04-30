@@ -1,7 +1,13 @@
 import React, { forwardRef, useMemo, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { useSlider, UseSliderProps } from './use-slider'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import { Tooltip, TooltipHelpers } from '@hi-ui/tooltip'
@@ -18,6 +24,9 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       prefixCls = SLIDER_PREFIX,
       role = 'slider',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       tipFormatter,
       showRangeLabel = false,
@@ -27,6 +36,7 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
     ref
   ) => {
     const tooltipRef = useRef<TooltipHelpers>(null)
+    const tooltipRef2 = useRef<TooltipHelpers>(null)
 
     const {
       value,
@@ -34,18 +44,33 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
       max,
       disabled,
       vertical,
-      tooltipVisible,
+      range,
       rootProps,
       getRailProps,
       getTrackProps,
       getHandleProps,
       getMarkProps,
       getMarkLabelProps,
-    } = useSlider(rest, tooltipRef)
+    } = useSlider(rest, [tooltipRef, tooltipRef2])
+
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      slider?: { classNames?: any; styles?: any }
+    }
+    const { slider: sliderConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      SliderSemanticClassNames,
+      SliderSemanticStyles,
+      SliderProps
+    >({
+      classNamesList: [sliderConfig?.classNames, classNamesProp],
+      stylesList: [sliderConfig?.styles, stylesProp],
+      info: { props: { ...rest, disabled, vertical, range } },
+    })
 
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       disabled && `${prefixCls}--disabled`,
       vertical ? `${prefixCls}--vertical` : `${prefixCls}--horizontal`
     )
@@ -60,38 +85,129 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
     }, [marksProp])
 
     return (
-      <div role={role} className={cls} {...rootProps} ref={useMergeRefs(rootProps.ref, ref)}>
-        <div className={`${prefixCls}__rail`} {...getRailProps()} />
-        <div className={`${prefixCls}__track`} {...getTrackProps()} />
-        <div className={`${prefixCls}__handle`} {...getHandleProps()}>
-          <Tooltip
-            innerRef={tooltipRef}
-            visible={tooltipVisible}
-            title={
-              <div style={{ textAlign: 'center' }}>
-                {isFunction(tipFormatter) ? tipFormatter(value) : value}
-              </div>
-            }
+      <div
+        role={role}
+        className={cls}
+        {...rootProps}
+        style={{ ...rootProps.style, ...style, ...styles?.root }}
+        ref={useMergeRefs(rootProps.ref, ref)}
+      >
+        <div
+          className={cx(`${prefixCls}__rail`, classNames?.rail)}
+          {...getRailProps()}
+          style={{ ...styles?.rail, ...getRailProps().style }}
+        />
+        <div
+          className={cx(`${prefixCls}__track`, classNames?.track)}
+          {...getTrackProps()}
+          style={{ ...styles?.track, ...getTrackProps().style }}
+        />
+
+        {range && Array.isArray(value) ? (
+          <>
+            {/* 起始滑块 */}
+            <div
+              className={cx(`${prefixCls}__handle`, classNames?.handle)}
+              {...getHandleProps(0)}
+              style={{ ...styles?.handle, ...getHandleProps(0).style }}
+            >
+              <Tooltip
+                innerRef={tooltipRef}
+                placement={vertical ? 'right' : 'top'}
+                title={
+                  <div style={{ textAlign: 'center' }}>
+                    {isFunction(tipFormatter) ? tipFormatter(value[0]) : value[0]}
+                  </div>
+                }
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                />
+              </Tooltip>
+            </div>
+            {/* 结束滑块 */}
+            <div
+              className={cx(`${prefixCls}__handle`, classNames?.handle)}
+              {...getHandleProps(1)}
+              style={{ ...styles?.handle, ...getHandleProps(1).style }}
+            >
+              <Tooltip
+                innerRef={tooltipRef2}
+                placement={vertical ? 'right' : 'top'}
+                title={
+                  <div style={{ textAlign: 'center' }}>
+                    {isFunction(tipFormatter) ? tipFormatter(value[1]) : value[1]}
+                  </div>
+                }
+              >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                />
+              </Tooltip>
+            </div>
+          </>
+        ) : (
+          <div
+            className={cx(`${prefixCls}__handle`, classNames?.handle)}
+            {...getHandleProps(0)}
+            style={{ ...styles?.handle, ...getHandleProps(0).style }}
           >
-            <span
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-              }}
-            />
-          </Tooltip>
-        </div>
-        <div className={`${prefixCls}__marks`}>
+            <Tooltip
+              innerRef={tooltipRef}
+              placement={vertical ? 'right' : 'top'}
+              title={
+                <div style={{ textAlign: 'center' }}>
+                  {isFunction(tipFormatter) ? tipFormatter(value as number) : value}
+                </div>
+              }
+            >
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                }}
+              />
+            </Tooltip>
+          </div>
+        )}
+
+        <div className={cx(`${prefixCls}__marks`, classNames?.marks)} style={styles?.marks}>
           {marksMemo.map((mark, idx) => {
-            return <span key={idx} className={`${prefixCls}__mark`} {...getMarkProps(mark)} />
+            return (
+              <span
+                key={idx}
+                className={cx(`${prefixCls}__mark`, classNames?.mark)}
+                {...getMarkProps(mark)}
+                style={{ ...styles?.mark, ...getMarkProps(mark).style }}
+              />
+            )
           })}
         </div>
-        <div className={`${prefixCls}__labels`}>
+        <div className={cx(`${prefixCls}__labels`, classNames?.labels)} style={styles?.labels}>
           {marksMemo.map((mark, idx) => {
-            return <span key={idx} className={`${prefixCls}__label`} {...getMarkLabelProps(mark)} />
+            return (
+              <span
+                key={idx}
+                className={cx(`${prefixCls}__label`, classNames?.label)}
+                {...getMarkLabelProps(mark)}
+                style={{ ...styles?.label, ...getMarkLabelProps(mark).style }}
+              />
+            )
           })}
 
           {showRangeLabel
@@ -99,15 +215,24 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
                 min !== undefined ? (
                   <span
                     key={0}
-                    className={cx(`${prefixCls}__label`, `${prefixCls}__min`)}
+                    className={cx(`${prefixCls}__label`, `${prefixCls}__min`, classNames?.label)}
                     {...getMarkLabelProps({ value: min, content: min })}
+                    style={{
+                      ...styles?.label,
+                      ...getMarkLabelProps({ value: min, content: min }).style,
+                    }}
                   />
                 ) : null,
                 max !== undefined ? (
                   <span
                     key={1}
-                    className={cx(`${prefixCls}__label`, `${prefixCls}__max`)}
+                    className={cx(`${prefixCls}__label`, `${prefixCls}__max`, classNames?.label)}
                     {...getMarkLabelProps({ value: max, content: max })}
+                    {...getMarkLabelProps({ value: max, content: max })}
+                    style={{
+                      ...styles?.label,
+                      ...getMarkLabelProps({ value: max, content: max }).style,
+                    }}
                   />
                 ) : null,
               ]
@@ -118,7 +243,20 @@ export const Slider = forwardRef<HTMLDivElement | null, SliderProps>(
   }
 )
 
-export interface SliderProps extends HiBaseHTMLProps<'div'>, UseSliderProps {
+export type SliderSemanticName =
+  | 'root'
+  | 'rail'
+  | 'track'
+  | 'handle'
+  | 'marks'
+  | 'mark'
+  | 'labels'
+  | 'label'
+export type SliderSemanticClassNames = SemanticClassNamesType<SliderProps, SliderSemanticName>
+export type SliderSemanticStyles = SemanticStylesType<SliderProps, SliderSemanticName>
+export type SliderSemantic = ComponentSemantic<SliderSemanticClassNames, SliderSemanticStyles>
+
+export interface SliderProps extends HiBaseHTMLProps<'div'>, SliderSemantic, UseSliderProps {
   /**
    * 自定义 Tooltip 中显示文案
    */

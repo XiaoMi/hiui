@@ -1,5 +1,4 @@
 import { ValueOf } from 'packages/core/core/lib/types'
-import { HiBaseSizeEnum } from '@hi-ui/core'
 
 export const ResultTypeEnum = {
   INFO: 'info',
@@ -12,4 +11,4 @@ export const ResultTypeEnum = {
 // eslint-disable-next-line no-redeclare
 export type ResultTypeEnum = ValueOf<typeof ResultTypeEnum>
 
-export type ResultImageSizeEnum = HiBaseSizeEnum | undefined
+export type ResultImageSizeEnum = 'sm' | 'md' | 'lg' | undefined

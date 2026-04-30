@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -47,14 +48,16 @@
     "@hi-ui/dom-utils": "^4.0.7",
     "@hi-ui/env": "^4.0.5",
     "@hi-ui/portal": "^4.0.8",
+    "@hi-ui/react-compat": "^4.0.0",
     "@hi-ui/react-utils": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
     "@hi-ui/use-lazy-render": "^4.0.4",
     "@hi-ui/use-merge-refs": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-outside-click": "^4.0.4",
     "@hi-ui/use-toggle": "^4.0.4",
     "@popperjs/core": "^2.9.3",
-    "react-transition-group": "^4.4.2"
+    "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
     "@hi-ui/core": ">=4.0.8",

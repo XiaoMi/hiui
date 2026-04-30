@@ -15,51 +15,51 @@ $prefix: '#{$component-prefix}-picker' !default;
     cursor: pointer;
 
     &__suffix {
-      color: use-color('gray', 500);
+      color: use-color('gray', 700);
     }
   }
 
   // 耦合注入
   &--open {
-    .#{$component-prefix}-mock-input {
+    .#{$component-prefix}-mock-input:not(.#{$component-prefix}-mock-input--appearance-borderless):not(.#{$component-prefix}-mock-input--appearance-unset) {
       border-color: use-color-mode('primary');
 
-      &__suffix {
-        color: use-color-mode('primary');
-      }
+      // &__suffix {
+      //   color: use-color-mode('primary');
+      // }
 
-      &.invalid {
-        .#{$component-prefix}-mock-input__suffix {
-          color: use-color-mode('error');
-        }
-      }
+      // &.invalid {
+      //   .#{$component-prefix}-mock-input__suffix {
+      //     color: use-color-mode('error');
+      //   }
+      // }
     }
 
-    .#{$component-prefix}-tag-input-mock {
+    .#{$component-prefix}-tag-input-mock:not(.#{$component-prefix}-tag-input-mock--appearance-borderless):not(.#{$component-prefix}-tag-input-mock--appearance-unset) {
       border-color: use-color-mode('primary');
 
-      &__suffix {
-        color: use-color-mode('primary');
-      }
+      // &__suffix {
+      //   color: use-color-mode('primary');
+      // }
 
-      &.invalid {
-        .#{$component-prefix}-tag-input-mock__suffix {
-          color: use-color-mode('error');
-        }
-      }
+      // &.invalid {
+      //   .#{$component-prefix}-tag-input-mock__suffix {
+      //     color: use-color-mode('error');
+      //   }
+      // }
     }
   }
 
   // &--closed {
   //   .#{$component-prefix}-mock-input {
   //     &__suffix {
-  //       color: use-color('gray', 500);
+  //       color: use-color('gray', 600);
   //     }
   //   }
 
   //   .#{$component-prefix}-tag-input-mock {
   //     &__suffix {
-  //       color: use-color('gray', 500);
+  //       color: use-color('gray', 600);
   //     }
   //   }
   // }
@@ -68,38 +68,67 @@ $prefix: '#{$component-prefix}-picker' !default;
     box-sizing: content-box;
     max-height: 260px;
     overflow-y: auto;
-    padding: use-spacing(4) use-spacing(4);
+    padding: use-spacing(2);
   }
 
-  $top-normal-shadow: 0 -2px 4px 0 rgba(31, 39, 51, 0.1) !default;
+  &__header,
+  &__footer {
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 800);
+    background-color: use-color-static('white');
+  }
 
   &__footer {
-    box-shadow: $top-normal-shadow;
+    border-block-start: use-border-size('normal') use-color('gray', 300);
     padding: use-spacing(5) use-spacing(7);
-    background-color: use-color-static('white');
+  }
+
+  &__header {
+    border-block-end: use-border-size('normal') use-color('gray', 300);
   }
 
   &__panel {
     padding: 0;
+    border: use-border-size('normal') use-color('gray', 300);
+    border-radius: use-border-radius('xl');
+    overflow: hidden;
   }
 
   &__search {
-    padding: use-spacing(4) use-spacing(4) 0;
+    border-block-end: use-border-size('normal') use-color('gray', 300);
 
     .#{$component-prefix}-input {
+      font-size: use-text-size('normal');
+
       &__prefix {
-        padding-left: calc(#{use-spacing(4)} - 1px);
-        color: use-color('gray', 700);
+        padding-inline-start: use-spacing(6);
+        font-size: use-text-size('lg');
+        color: use-color('gray', 600);
+      }
+
+      &--appearance-underline {
+        .#{$component-prefix}-input {
+          &__inner {
+            &::after {
+              border: none;
+            }
+
+            .#{$component-prefix}-input__text {
+              padding-inline-start: use-spacing(4);
+            }
+          }
+        }
       }
     }
   }
 
   &__empty,
   &__loading {
-    padding: use-spacing(5) use-spacing(4);
+    padding: calc(#{use-spacing(2)} + 1px) use-spacing(3);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
     line-height: use-text-lineheight('normal');
     display: flex;
     align-items: center;
@@ -107,5 +136,33 @@ $prefix: '#{$component-prefix}-picker' !default;
 
   &__loading {
     justify-content: space-between;
+  }
+
+  &__creator {
+    display: flex;
+    align-items: center;
+    padding: use-spacing(3);
+    border-radius: use-border-radius('normal');
+
+    &:hover {
+      background-color: use-color('gray', 200);
+      cursor: pointer;
+    }
+
+    &-title {
+      margin-inline-end: use-spacing(4);
+      font-size: use-text-size('normal');
+      color: use-color('gray', 600);
+      white-space: nowrap;
+    }
+
+    &-value {
+      font-weight: use-text-weight('medium');
+      font-size: use-text-size('normal');
+      color: use-color('gray', 800);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }

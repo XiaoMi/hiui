@@ -1,17 +1,25 @@
 import React, { forwardRef, useState, useRef, useCallback, useEffect } from 'react'
 import { TabPaneProps } from './TabPane'
 import { __DEV__ } from '@hi-ui/env'
-import { TabItem } from './TabItem'
+import { EditActions, TabItem } from './TabItem'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { TabInk } from './TabInk'
 import { PlusOutlined, LeftOutlined, RightOutlined, UpOutlined, DownOutlined } from '@hi-ui/icons'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { IconButton } from '@hi-ui/icon-button'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { useResizeObserver } from './hooks'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { getNextTabId } from './utils'
+import { Input } from '@hi-ui/input'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'tabs'
 const _prefix = getPrefixCls(_role)
@@ -22,6 +30,8 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       data,
       className,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       activeId,
       defaultActiveId,
       onChange,
@@ -31,20 +41,58 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       direction: directionProp,
       placement = 'horizontal',
       editable,
+      editRender,
       onAdd,
+      onAdded,
       onDelete,
+      onEdit,
+      onCopy,
       draggable,
       onDragStart,
       onDragOver,
       onDrop,
       onDragEnd,
       type = 'line',
+      size: sizeProp,
+      showDivider,
       extra,
+      maxTabTitleWidth,
       ...rest
     },
     ref
   ) => {
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      tabList?: { classNames?: any; styles?: any }
+    }
+    const { size: globalSize } = globalContext
+    const tabListConfig = globalContext.tabList
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const direction = placement ?? directionProp ?? 'horizontal'
+
+    const { classNames, styles } = useMergeSemantic<
+      TabListSemanticClassNames,
+      TabListSemanticStyles,
+      TabListProps
+    >({
+      classNamesList: [tabListConfig?.classNames, classNamesProp],
+      stylesList: [tabListConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          placement: direction,
+          type,
+          size,
+          showDivider,
+          editable,
+          draggable,
+        },
+      },
+    })
 
     const [activeTabId, setActiveTabId] = useUncontrolledState(
       () => {
@@ -157,6 +205,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
         // 左边或上半部内容展示不全
         const currentOffset = -translatePos
+
         if (offsetValue < currentOffset) {
           setTranslatePos(-offsetValue)
         } else {
@@ -183,6 +232,81 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
       syncScrollPosition(tabId)
     })
 
+    const [adding, setAdding] = useState(false)
+    const [showData, setShowData] = useState(data)
+    const addInputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+      setShowData(data)
+    }, [data])
+
+    const handleAdd = useLatestCallback(() => {
+      onAdd?.()
+      setAdding(true)
+    })
+
+    const handleAddDone = useLatestCallback(async (evt: React.FocusEvent<HTMLInputElement>) => {
+      const newTabTitle = evt.target.value
+
+      if (!newTabTitle) {
+        setAdding(false)
+        return
+      }
+
+      const newTabId = uuid()
+      const newTab = {
+        tabId: newTabId,
+        tabTitle: newTabTitle,
+      }
+
+      const result = await onAdded?.(newTab)
+      if (result === false) return
+
+      setActiveTabId(newTabId)
+      setAdding(false)
+    })
+
+    const handleEdit = useLatestCallback(async (value: string, item: TabPaneProps) => {
+      const result = await onEdit?.(value, item)
+      if (result === false) return false
+
+      syncScrollPosition(activeTabId)
+      return true
+    })
+
+    const handleDelete = useLatestCallback(
+      async (deletedNode: TabPaneProps, evt: React.MouseEvent) => {
+        const result = await onDelete?.(deletedNode, evt)
+        if (result === false) return
+
+        const nextTabId = getNextTabId(
+          data,
+          deletedNode.tabId === activeTabId ? activeTabId : deletedNode.tabId
+        )
+
+        nextTabId && setActiveTabId(nextTabId)
+        nextTabId && syncScrollPosition(nextTabId)
+      }
+    )
+
+    const handleCopy = useLatestCallback((targetIndex?: number) => {
+      const currentTab = showData.find((item) => item.tabId === activeTabId)
+      if (!currentTab) return
+
+      const copiedTab = {
+        tabId: `${currentTab.tabId}-${uuid()}`,
+        tabTitle: currentTab.tabTitle,
+      }
+      const insertIndex = targetIndex ?? showData.length
+      const newItems = [
+        ...showData.slice(0, insertIndex),
+        copiedTab,
+        ...showData.slice(insertIndex),
+      ]
+
+      onCopy?.(currentTab, copiedTab, newItems)
+    })
+
     useEffect(() => {
       // activeId 受控模式下改变后，同步更新滚动位置
       initScrollPosition(activeId)
@@ -190,19 +314,27 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     return (
       <div
-        style={style}
+        ref={ref}
+        style={{ ...style, ...styles?.root }}
         className={cx(
           `${prefixCls}__list`,
+          classNames?.root,
           `${prefixCls}__list--placement-${direction}`,
-          { [`${prefixCls}__list--${type}`]: type },
+          { [`${prefixCls}__list--type-${type}`]: type },
+          { [`${prefixCls}__list--size-${size}`]: size },
+          { [`${prefixCls}__list--show-divider`]: showDivider },
+          { [`${prefixCls}__list--editable`]: editable },
           className
         )}
-        ref={ref}
         {...rest}
       >
         {showScrollBtn ? (
           <IconButton
-            className={showHorizontal ? `${prefixCls}__left-btn` : `${prefixCls}__up-btn`}
+            className={cx(
+              showHorizontal ? `${prefixCls}__left-btn` : `${prefixCls}__up-btn`,
+              classNames?.prevBtn
+            )}
+            style={styles?.prevBtn}
             effect
             disabled={translatePos === 0}
             icon={showHorizontal ? <LeftOutlined /> : <UpOutlined />}
@@ -219,24 +351,29 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           />
         ) : null}
 
-        <div className={cx(`${prefixCls}__list--inner`)} ref={setInnerElement}>
+        <div
+          className={cx(`${prefixCls}__list--inner`, classNames?.inner)}
+          style={styles?.inner}
+          ref={setInnerElement}
+        >
           <div
-            className={cx(`${prefixCls}__list--scroll`)}
+            className={cx(`${prefixCls}__list--scroll`, classNames?.scroll)}
             ref={setScrollElement}
-            style={
-              showScrollBtn
+            style={{
+              ...(showScrollBtn
                 ? {
                     transform:
                       direction === 'horizontal'
                         ? `translateX(${translatePos}px)`
                         : `translateY(${translatePos}px)`,
                   }
-                : undefined
-            }
+                : undefined),
+              ...styles?.scroll,
+            }}
           >
-            {data.map((item, index) => (
+            {showData.map((item, index) => (
               <TabItem
-                key={index}
+                key={item.tabId}
                 {...item}
                 ref={(node) => {
                   itemsRef.current[`${item.tabId}`] = node
@@ -246,22 +383,47 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
                 index={index}
                 active={activeTabId === item.tabId}
                 prefixCls={prefixCls}
+                closeable={
+                  item.closeable !== undefined
+                    ? item.closeable && showData.length > 1
+                    : showData.length > 1
+                }
                 draggable={draggable}
                 onTabClick={onClickTab}
                 editable={editable}
-                onDelete={onDelete}
+                editRender={editRender}
+                onCopy={handleCopy}
+                onEdit={async (value) => {
+                  return await handleEdit(value, item)
+                }}
+                onDelete={handleDelete}
                 onDragStart={onDragStart}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
                 onDragEnd={onDragEnd}
                 direction={direction}
+                maxTitleWidth={maxTabTitleWidth}
               />
             ))}
-            {type === 'line' && data.some((item) => item.tabId === activeTabId) ? (
+            {adding ? (
+              <div className={`${prefixCls}__add-input`} ref={addInputRef}>
+                <Input
+                  onBlur={handleAddDone}
+                  autoFocus
+                  onKeyDown={(evt) => {
+                    if (evt.key === 'Enter') {
+                      handleAddDone((evt as unknown) as React.FocusEvent<HTMLInputElement>)
+                    }
+                  }}
+                />
+              </div>
+            ) : null}
+            {type === 'line' && showData.some((item) => item.tabId === activeTabId) ? (
               <TabInk
                 prefixCls={prefixCls}
                 showHorizontal={showHorizontal}
                 activeItemElement={itemsRef.current[activeTabId]}
+                containerElement={scrollElement}
                 activeTabId={activeTabId}
                 getTabOffset={getTabOffset}
               />
@@ -271,7 +433,11 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         {showScrollBtn ? (
           <IconButton
             effect
-            className={showHorizontal ? `${prefixCls}__right-btn` : `${prefixCls}__down-btn`}
+            className={cx(
+              showHorizontal ? `${prefixCls}__right-btn` : `${prefixCls}__down-btn`,
+              classNames?.nextBtn
+            )}
+            style={styles?.nextBtn}
             disabled={translateBoundPos === -translatePos}
             icon={showHorizontal ? <RightOutlined /> : <DownOutlined />}
             onClick={() => {
@@ -288,7 +454,14 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
           />
         ) : null}
         {editable ? (
-          <IconButton icon={<PlusOutlined />} className={`${prefixCls}__add-btn`} onClick={onAdd} />
+          <div
+            className={cx(`${prefixCls}__add-btn-wrap`, classNames?.addBtnWrap)}
+            style={styles?.addBtnWrap}
+          >
+            <div className={cx(`${prefixCls}__add-btn`, classNames?.addBtn)} style={styles?.addBtn}>
+              <IconButton effect icon={<PlusOutlined />} onClick={handleAdd} />
+            </div>
+          </div>
         ) : null}
         {extra}
       </div>
@@ -296,8 +469,25 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
   }
 )
 
+export type TabListSemanticName =
+  | 'root'
+  | 'prevBtn'
+  | 'inner'
+  | 'scroll'
+  | 'addInput'
+  | 'nextBtn'
+  | 'addBtnWrap'
+  | 'addBtn'
+export type TabListSemanticClassNames = SemanticClassNamesType<TabListProps, TabListSemanticName>
+export type TabListSemanticStyles = SemanticStylesType<TabListProps, TabListSemanticName>
+export type TabListSemantic = ComponentSemantic<TabListSemanticClassNames, TabListSemanticStyles>
+
 export interface TabListProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop'> {
+  extends Omit<
+      HiBaseHTMLProps<'div'>,
+      'onDragEnd' | 'onDragOver' | 'onDragStart' | 'onDrop' | 'onCopy'
+    >,
+    TabListSemantic {
   /**
    * tabs 面板数据
    */
@@ -335,17 +525,45 @@ export interface TabListProps
    */
   type?: 'desc' | 'card' | 'button' | 'line'
   /**
+   * 大小
+   */
+  size?: 'sm' | 'md' | 'lg'
+  /**
+   * 是否显示下划线
+   */
+  showDivider?: boolean
+  /**
+   * 标签最大宽度
+   */
+  maxTabTitleWidth?: number
+  /**
    * 右侧的拓展区域
    */
   extra?: React.ReactNode
+  /**
+   * 标签编辑渲染
+   */
+  editRender?: (item: TabPaneProps, index: number, actions: EditActions) => React.ReactNode
   /**
    * 节点增加时触发
    */
   onAdd?: () => void
   /**
+   * 节点增加完成时触发
+   */
+  onAdded?: (newTab: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
    * 节点删除时时触发
    */
-  onDelete?: (deletedNode: TabPaneProps, index: number) => void
+  onDelete?: (deletedNode: TabPaneProps, evt: React.MouseEvent) => void | boolean | Promise<boolean>
+  /**
+   * 节点编辑时触发
+   */
+  onEdit?: (value: string, item: TabPaneProps) => void | boolean | Promise<boolean>
+  /**
+   * 节点复制时触发
+   */
+  onCopy?: (sourceItem: TabPaneProps, copiedItem: TabPaneProps, newItems: TabPaneProps[]) => void
   /**
    * 节点开始拖拽时触发
    */

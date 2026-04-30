@@ -1,95 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '../src'
 
 /**
  * @title 异步展开渲染
  */
 export const AsyncExpandedRender = () => {
-  const [columns] = React.useState([
+  const [columns] = useState([
     {
-      title: '商品名',
+      title: 'Name',
       dataKey: 'name',
-      width: 150,
+      width: 100,
     },
     {
-      title: '品类',
-      dataKey: 'type',
-      width: 150,
+      title: 'Age',
+      dataKey: 'age',
+      width: 100,
     },
     {
-      title: '规格',
-      dataKey: 'size',
-      width: 150,
-    },
-    {
-      title: '单价',
-      dataKey: 'price',
-      width: 150,
-    },
-    {
-      title: '门店',
+      title: 'Address',
       dataKey: 'address',
-      width: 240,
+      width: 200,
     },
     {
-      title: '库存',
-      dataKey: 'stock',
-      width: 150,
+      title: 'Email',
+      dataKey: 'email',
+      width: 200,
     },
   ])
 
-  const [data] = React.useState([
+  const [data] = useState([
     {
-      name: '小米9',
-      type: '手机',
-      size: '6G+64G',
-      price: '3299.00',
-      address: '华润五彩城店',
-      stock: '29,000',
+      name: 'Raynor Maverick',
+      age: 31,
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
       key: 1,
     },
     {
-      name: '小米9 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '1999.00',
-      address: '清河店',
-      stock: '10,000',
+      name: 'Elina Voss',
+      age: 26,
+      address: '83 Dewdrop Road, Rivertown',
+      email: 'elina.voss@sampleinbox.cc',
       key: 2,
     },
     {
-      name: '小米8',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '2599.00',
-      address: '双安店',
-      stock: '12,000',
+      name: 'Darin Poe',
+      age: 37,
+      address: '12 Blossom Close, Newcrest',
+      email: 'darin.poe@mockpost.io',
       key: 3,
-    },
-    {
-      name: 'Redmi Note7',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '999.00',
-      address: '华润五彩城店',
-      stock: '140,000',
-      key: 4,
-    },
-    {
-      name: '小米8 SE',
-      type: '手机',
-      size: '6G+64G 幻彩蓝',
-      price: '699.00',
-      address: '双安店',
-      stock: '12,000',
-      key: 5,
     },
   ])
 
   return (
     <>
       <h1>AsyncExpandedRender for Table</h1>
-      <div className="table-async-expanded-render__wrap" style={{ minWidth: 660 }}>
+      <div className="table-async-expanded-render__wrap">
         <Table
           defaultExpandedEmbedRowKeys={[1]}
           expandedRender={(rowData, index) => {
@@ -104,34 +70,14 @@ export const AsyncExpandedRender = () => {
                     columns={columns}
                     data={[
                       {
-                        name: '小米9',
-                        type: '手机',
-                        size: '6G+64G',
-                        price: '3299.00',
-                        address: '华润五彩城店',
-                        stock: '29,000',
-                        key: 1,
-                      },
-                      {
-                        name: '小米9 SE',
-                        type: '手机',
-                        size: '6G+64G 幻彩蓝',
-                        price: '1999.00',
-                        address: '清河店',
-                        stock: '10,000',
+                        name: 'Jane Doe',
+                        age: 30,
+                        address: '32 Park Road, London',
+                        email: 'jane.doe@example.com',
                         key: 2,
                       },
-                      {
-                        name: '小米8',
-                        type: '手机',
-                        size: '6G+64G 幻彩蓝',
-                        price: '2599.00',
-                        address: '双安店',
-                        stock: '12,000',
-                        key: 3,
-                      },
                     ]}
-                  ></Table>
+                  />
                 )
 
                 resolve(embedTable)

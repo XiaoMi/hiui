@@ -206,14 +206,17 @@ export const usePopper = ({
   const shouldRenderPopper = useLazyRender({ visible, preload, unmountOnExit: unmountOnClose })
 
   const getPopperProps = useCallback(
-    (popperProps = {}, ref = null) => {
+    (popperProps = {}, refs = null) => {
       const { tabIndex = -1, onKeyDown, style } = popperProps
       const { attributes, styles } = state
+
+      // 合并 refs，同时向前兼容单个 ref 的用法
+      const _refs = Array.isArray(refs) ? refs : [refs]
 
       return {
         ...popperProps,
         ...attributes.popper,
-        ref: mergeRefs(setPopperElement, ref),
+        ref: mergeRefs(setPopperElement, ..._refs),
         style: {
           outline: 'none',
           visibility: visible ? 'visible' : 'hidden',

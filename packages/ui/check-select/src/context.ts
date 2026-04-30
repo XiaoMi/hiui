@@ -1,8 +1,14 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 
 import { UseSelectReturn } from './use-check-select'
 
-const checkSelectContext = createContext<Omit<UseSelectReturn, 'rootProps'> | null>(null)
+const checkSelectContext = createContext<
+  | (Omit<UseSelectReturn, 'rootProps'> & {
+      classNames?: Partial<Record<string, string>>
+      styles?: Partial<Record<string, React.CSSProperties>>
+    })
+  | null
+>(null)
 
 export const CheckSelectProvider = checkSelectContext.Provider
 

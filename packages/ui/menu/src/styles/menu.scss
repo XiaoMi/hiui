@@ -1,7 +1,7 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
 $prefix: '#{$component-prefix}-menu' !default;
-$disabled-color: use-color('gray', 400) !default;
+$disabled-color: use-color('gray', 500) !default;
 
 @mixin menu-item-disabled() {
   color: $disabled-color;
@@ -14,25 +14,25 @@ $disabled-color: use-color('gray', 400) !default;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
   display: flex;
-  color: use-color('gray', 700);
+  color: use-color('gray', 800);
   border-radius: use-border-radius('normal');
   flex-wrap: wrap;
 
   &__group:not(:last-of-type) {
-    margin-right: use-spacing(18);
+    margin-inline-end: use-spacing(18);
   }
 
   .#{$prefix}-group-item {
-    height: 40px;
+    height: use-height-size(10);
     margin: 0;
     display: flex;
     align-items: center;
     padding: 0 use-spacing(6);
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   .#{$prefix}-item {
-    height: 40px;
+    height: use-height-size(10);
     margin: 0;
     border-radius: use-border-radius('normal');
     display: flex;
@@ -45,7 +45,7 @@ $disabled-color: use-color('gray', 400) !default;
     }
 
     &:not(.#{$prefix}-item--active):hover {
-      background-color: use-color('gray', 100);
+      background-color: use-color('gray', 200);
     }
 
     &--disabled {
@@ -65,21 +65,19 @@ $disabled-color: use-color('gray', 400) !default;
 
 .#{$prefix}-popmenu {
   background-color: use-color-static('white');
-  border-radius: use-border-radius('normal');
+  border-radius: use-border-radius('xl');
   margin: 0;
   font-size: use-text-size('normal');
   padding: use-spacing(4);
-  color: use-color('gray', 700);
+  color: use-color('gray', 800);
   width: 216px;
   box-sizing: border-box;
 
   .#{$prefix}-item {
-    height: 40px;
     margin: 0;
 
     &__inner {
       box-sizing: border-box;
-      height: 40px;
       display: flex;
       align-items: center;
       padding: 0 use-spacing(4) 0 use-spacing(6);
@@ -88,18 +86,26 @@ $disabled-color: use-color('gray', 400) !default;
       &--active {
         color: use-color-mode('primary');
         background-color: use-color-mode('primary', 50);
+
+        .#{$prefix}-item__icon {
+          color: use-color-mode('primary');
+        }
       }
 
       &--active-p {
         color: use-color-mode('primary');
+
+        .#{$prefix}-item__icon {
+          color: use-color-mode('primary');
+        }
       }
 
       &--expanded {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
 
       &:not(.#{$prefix}-item__inner--active):hover {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
 
       &--disabled {
@@ -113,14 +119,32 @@ $disabled-color: use-color('gray', 400) !default;
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 100%;
-      padding-right: use-spacing(4);
+      padding-inline-end: use-spacing(4);
+    }
+  }
+
+  &.#{$prefix}--size-sm {
+    .#{$prefix}-item__inner {
+      height: use-height-size(8);
+    }
+  }
+
+  &.#{$prefix}--size-md {
+    .#{$prefix}-item__inner {
+      height: use-height-size(9);
+    }
+  }
+
+  &.#{$prefix}--size-lg {
+    .#{$prefix}-item__inner {
+      height: use-height-size(10);
     }
   }
 }
 
 .#{$prefix} {
   background-color: use-color-static('white');
-  color: use-color('gray', 700);
+  color: use-color('gray', 800);
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   box-sizing: border-box;
@@ -137,16 +161,13 @@ $disabled-color: use-color('gray', 400) !default;
     transition: all 0.3s;
 
     &__icon {
-      color: use-color('gray', 500);
+      display: inline-flex;
       margin-inline-end: use-spacing(4);
-
-      svg[class^='hi-v4-icon'] {
-        font-size: use-text-size('lg');
-      }
+      font-size: use-text-size('lg');
+      color: use-color('gray', 600);
     }
 
     &__arrow {
-      color: use-color('gray', 500);
       font-size: use-text-size('lg');
     }
 
@@ -197,14 +218,14 @@ $disabled-color: use-color('gray', 400) !default;
         color: use-color-mode('primary');
 
         .#{$prefix}-item__inner {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
       }
 
       &--active {
         color: use-color-mode('primary');
         .#{$prefix}-item__inner {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
 
         .#{$prefix}-item__icon {
@@ -225,10 +246,10 @@ $disabled-color: use-color('gray', 400) !default;
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        border-bottom: 2px solid transparent;
+        border-block-end: 2px solid transparent;
 
         &--expanded {
-          border-bottom: 2px solid use-color-mode('primary');
+          border-block-end: 2px solid use-color-mode('primary');
         }
       }
 
@@ -279,12 +300,17 @@ $disabled-color: use-color('gray', 400) !default;
     &.#{$prefix}--mini {
       width: 56px;
       overflow-x: hidden;
+
+      &.#{$prefix}--show-title-on-mini {
+        padding-inline-start: use-spacing(2);
+        padding-inline-end: use-spacing(2);
+      }
     }
 
     &.#{$prefix}--popup {
       .#{$prefix}-item__inner {
         &--expanded {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
       &:not(.#{$prefix}--mini) {
@@ -292,7 +318,7 @@ $disabled-color: use-color('gray', 400) !default;
           > .#{$prefix}-item {
             &:last-child {
               .#{$prefix}-item__inner {
-                margin-bottom: 0;
+                margin-block-end: 0;
               }
             }
           }
@@ -301,15 +327,14 @@ $disabled-color: use-color('gray', 400) !default;
     }
 
     .#{$prefix}__toggle {
-      width: use-height-size(10);
       height: use-height-size(10);
+      line-height: use-height-size(10);
+      padding: 0 use-spacing(6);
       // margin-top: use-spacing(4);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       border-radius: use-border-radius('normal');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
+      font-size: use-text-size('lg');
       flex-shrink: 0;
 
       // @animation
@@ -318,7 +343,7 @@ $disabled-color: use-color('gray', 400) !default;
       transition-property: background-color;
 
       &:hover {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
 
@@ -334,10 +359,6 @@ $disabled-color: use-color('gray', 400) !default;
         &--active {
           color: use-color-mode('primary');
           background-color: use-color-mode('primary', 50);
-
-          .#{$prefix}-item__icon {
-            color: use-color-mode('primary');
-          }
         }
 
         &--active-p {
@@ -349,7 +370,7 @@ $disabled-color: use-color('gray', 400) !default;
         }
 
         &:not(.#{$prefix}-item__inner--active):hover {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 
@@ -366,11 +387,44 @@ $disabled-color: use-color('gray', 400) !default;
       }
     }
 
+    &.#{$prefix}--mini.#{$prefix}--show-title-on-mini {
+      width: 60px;
+
+      .#{$prefix}-item {
+        &__inner {
+          flex-direction: column;
+          justify-content: center;
+          box-sizing: border-box;
+          width: 52px;
+          height: 48px;
+          padding: use-spacing(3) use-spacing(3) 0;
+
+          .#{$prefix}-item__icon {
+            margin-inline-end: 0;
+            margin-block-end: use-spacing(1);
+            display: inline-flex;
+
+            svg[class^='#{$component-prefix}-icon'] {
+              font-size: use-text-size('xl');
+            }
+          }
+
+          .#{$prefix}-item__content {
+            transform: scale(0.5);
+            width: 200%;
+            font-size: calc(#{use-text-size('xl')} + 2px);
+            text-align: center;
+            text-indent: 0;
+          }
+        }
+      }
+    }
+
     &.#{$prefix}--size-lg {
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(10);
-          margin-bottom: use-spacing(4);
+          margin-block-end: use-spacing(4);
         }
       }
     }
@@ -379,7 +433,7 @@ $disabled-color: use-color('gray', 400) !default;
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(9);
-          margin-bottom: use-spacing(2);
+          margin-block-end: use-spacing(2);
         }
       }
     }
@@ -388,7 +442,7 @@ $disabled-color: use-color('gray', 400) !default;
       .#{$prefix}-item {
         &__inner {
           height: use-height-size(8);
-          margin-bottom: use-spacing(1);
+          margin-block-end: use-spacing(1);
         }
       }
     }

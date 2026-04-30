@@ -9,14 +9,21 @@ import React, {
 } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { useTooltip, UseTooltipProps } from './use-tooltip'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { Portal } from '@hi-ui/portal'
 import { isElement, isString } from '@hi-ui/type-assertion'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { TooltipHelpers } from './types'
+import { ArrowIcon } from './ArrowIcon'
 
 export const _prefix = getPrefixCls('tooltip')
 
@@ -28,6 +35,7 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     {
       prefixCls = _prefix,
       className,
+      style,
       children,
       title,
       arrow = true,
@@ -41,10 +49,23 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       unmountOnClose = true,
       onExited,
       innerRef,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const ctx = useGlobalContext() as Record<string, { classNames?: any; styles?: any } | undefined>
+    const tooltipConfig = ctx.tooltip
+    const { classNames, styles } = useMergeSemantic<
+      TooltipSemanticClassNames,
+      TooltipSemanticStyles,
+      TooltipProps
+    >({
+      classNamesList: [tooltipConfig?.classNames, classNamesProp],
+      stylesList: [tooltipConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, arrow } },
+    })
     const [transitionVisible, transitionVisibleAction] = useUncontrolledToggle({
       defaultVisible: false,
       visible: visibleProp,
@@ -52,6 +73,12 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       onClose,
       isEqual: Object.is,
     })
+
+    useEffect(() => {
+      if (transitionVisible) {
+        onOpen?.()
+      }
+    }, [onOpen, transitionVisible])
 
     // TODO: 1. 优化封装完全非受控 2. useTooltip 支持 attachEl 设置
     // 用于 api 式完全非受控隐藏
@@ -119,9 +146,11 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
       return trigger
     }, [children, getTriggerProps, setTriggerElement])
 
+    const transitionNodeRef = React.useRef<HTMLElement>(null)
+
     if (triggerMemo === undefined) return null
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(prefixCls, className, classNames?.root)
 
     return (
       <>
@@ -135,11 +164,35 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
             mountOnEnter={!preload}
             unmountOnExit={unmountOnClose}
             onExited={onExitedLatest}
+            // 参考：https://github.com/reactjs/react-transition-group/issues/918
+            nodeRef={transitionNodeRef}
           >
-            <div className={`${prefixCls}__popper`} {...getPopperProps()}>
-              <div ref={ref} className={cls} {...getTooltipProps()}>
-                {arrow ? <div className={`${prefixCls}__arrow`} {...getArrowProps()} /> : null}
-                <div className={`${prefixCls}__content`}>{title}</div>
+            <div
+              className={cx(`${prefixCls}__popper`, classNames?.popper)}
+              {...getPopperProps({}, [transitionNodeRef])}
+              style={{ ...getPopperProps({}, [transitionNodeRef])?.style, ...styles?.popper }}
+            >
+              <div
+                ref={ref}
+                className={cls}
+                style={{ ...style, ...styles?.root }}
+                {...getTooltipProps()}
+              >
+                {arrow ? (
+                  <div
+                    className={cx(`${prefixCls}__arrow`, classNames?.arrow)}
+                    {...getArrowProps()}
+                    style={{ ...getArrowProps()?.style, ...styles?.arrow }}
+                  >
+                    <ArrowIcon />
+                  </div>
+                ) : null}
+                <div
+                  className={cx(`${prefixCls}__content`, classNames?.content)}
+                  style={styles?.content}
+                >
+                  {title}
+                </div>
               </div>
             </div>
           </CSSTransition>
@@ -149,7 +202,11 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
   }
 )
 
-export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps {
+export type TooltipSemanticName = 'root' | 'popper' | 'arrow' | 'content'
+export type TooltipSemanticClassNames = SemanticClassNamesType<TooltipProps, TooltipSemanticName>
+export type TooltipSemanticStyles = SemanticStylesType<TooltipProps, TooltipSemanticName>
+export type TooltipSemantic = ComponentSemantic<TooltipSemanticClassNames, TooltipSemanticStyles>
+export interface TooltipProps extends HiBaseHTMLProps<'div'>, UseTooltipProps, TooltipSemantic {
   /**
    * 	提醒内容
    * TODO: 使用 content 统一字段

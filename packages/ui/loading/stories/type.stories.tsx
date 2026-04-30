@@ -2,7 +2,7 @@ import React from 'react'
 import Loading from '../src'
 
 /**
- * @title 设置加载指示符类型
+ * @title 设置加载类型
  */
 export const Type = () => {
   return (
@@ -12,7 +12,7 @@ export const Type = () => {
         className="loading-basic__wrap"
         style={{ position: 'relative', width: 500, height: 300 }}
       >
-        <Loading type="spin">
+        <Loading type="dot">
           <div
             style={{
               width: 500,

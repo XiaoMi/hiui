@@ -32,7 +32,7 @@ export default create({
   // inputBorderRadius: 4,
 
   base: 'light',
-  brandTitle: 'HiUI V4',
+  brandTitle: 'HiUI V5',
   brandUrl: 'https://xiaomi.github.io/hiui/components/overview/',
   brandImage: '',
 })

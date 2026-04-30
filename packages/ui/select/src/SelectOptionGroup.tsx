@@ -2,19 +2,24 @@ import React, { forwardRef } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { renderIndent } from './SelectOption'
+import { useSelectContext } from './context'
 
 const optionGroupPrefix = getPrefixCls('select-option-group')
 
 export const SelectOptionGroup = forwardRef<HTMLDivElement | null, SelectOptionGroupProps>(
   ({ prefixCls = optionGroupPrefix, className, children, label, onClick, depth, ...rest }, ref) => {
-    const cls = cx(prefixCls, className)
+    const { classNames, styles } = useSelectContext()
+
+    const cls = cx(prefixCls, className, classNames?.optionGroup)
+    const groupStyle = styles?.optionGroup
 
     return (
-      <div ref={ref} className={cls} {...rest}>
-        {renderIndent(prefixCls, depth ?? 0)}
-        <span>{label}</span>
-      </div>
+      <>
+        <div className={`${prefixCls}__divider`} />
+        <div ref={ref} className={cls} style={groupStyle} {...rest}>
+          <span>{label}</span>
+        </div>
+      </>
     )
   }
 )

@@ -5,14 +5,14 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
 .#{$prefix} {
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: use-text-size('normal');
   position: relative;
 
   table {
     width: 100%;
-    text-align: left;
+    text-align: start;
     background-color: use-color-static('white');
-    border-radius: 2px 2px 0 0;
+    border-radius: use-border-radius('sm') use-border-radius('sm') 0 0;
     border-spacing: 0;
     border-collapse: separate;
     display: table;
@@ -22,12 +22,86 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &__wrapper {
     position: relative;
     z-index: 0;
+    border-block-start: use-border-size('normal') use-color('gray', 300);
+
+    &.#{$prefix}--exceed-wrapper-height {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        border-block-end: use-border-size('normal') use-color('gray', 300);
+      }
+    }
+  }
+
+  // 表格高度自动拉伸样式配置
+  &--stretch-height {
+    height: 100%;
+    overflow: hidden;
+
+    .#{$prefix}__wrapper {
+      box-sizing: border-box;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .#{$prefix}-body {
+        flex-grow: 1;
+        overflow: auto;
+      }
+    }
+
+    .#{$prefix}-header-cell {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 1;
+    }
+
+    &.#{$prefix}--empty {
+      .#{$prefix}__wrapper {
+        .#{$prefix}-body {
+          table {
+            height: 100%;
+          }
+        }
+      }
+
+      .#{$component-prefix}-scrollbar {
+        &__wrapper {
+          height: 100%;
+        }
+      }
+    }
+
+    // 在 stretchHeight + bordered 模式下，将左右边框从 wrapper 移到表格内容区域
+    // 避免边框延伸到空白区域
+    &.#{$prefix}--bordered:not(.#{$prefix}--empty) {
+      > .#{$prefix}__wrapper {
+        border-inline-start: none;
+        border-inline-end: none;
+
+        .#{$prefix}-content {
+          border-inline-start: use-border-size('normal') use-color('gray', 300);
+          border-inline-end: use-border-size('normal') use-color('gray', 300);
+        }
+      }
+
+      &.#{$prefix}--bordered-left-none {
+        > .#{$prefix}__wrapper {
+          .#{$prefix}-content {
+            border-inline-start: none;
+          }
+        }
+      }
+    }
   }
 
   // 内嵌面板
   &__switcher {
     &.#{$component-prefix}-icon-button {
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
 
     &--expanded {
@@ -37,94 +111,166 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
   }
 
-  &--size {
-    &-md {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(7);
+  &:not(.#{$prefix}--virtual) {
+    &.#{$prefix}--size {
+      &-sm {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
+          }
+        }
 
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(7) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
           }
         }
       }
 
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(7);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(7) use-spacing(5);
+      &-md {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
           }
         }
-      }
-    }
 
-    &-sm {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(5);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
           }
         }
       }
 
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(5);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(5);
+      &-lg {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
           }
         }
-      }
-    }
 
-    &-lg {
-      .#{$prefix}-header {
-        &-cell {
-          padding: use-spacing(9);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(9) use-spacing(5);
-          }
-        }
-      }
-
-      .#{$prefix}-row:not(.#{$emptyContent}) {
-        .#{$prefix}-cell {
-          padding: use-spacing(9);
-
-          &.#{$prefix}__selection-col {
-            padding: use-spacing(9) use-spacing(5);
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
           }
         }
       }
     }
   }
 
-  &--bordered {
-    > .#{$prefix}__wrapper {
-      border: use-border-size('normal') use-color('gray', 200);
+  &--virtual {
+    width: 100%;
+    overflow: hidden;
 
-      .#{$prefix}-header-cell, .#{$prefix}-cell {
-        border-left: use-border-size('normal') use-color('gray', 200);
+    .#{$prefix}__wrapper {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        border-block-end: use-border-size('normal') use-color('gray', 300);
+      }
+    }
+
+    .#{$component-prefix}-table-cell {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+
+      &.#{$prefix}__selection-col {
+        justify-content: center !important;
+      }
+    }
+
+    &.#{$prefix}--size {
+      &-sm {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
+          }
+        }
+
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            min-height: use-height-size(9);
+            padding: use-spacing(1) use-spacing(5);
+          }
+        }
       }
 
-      .#{$prefix}-row {
-        &:last-child {
+      &-md {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
+          }
+        }
+
+        .#{$prefix}-row:not(.#{$emptyContent}) {
           .#{$prefix}-cell {
-            border-bottom: none;
+            min-height: use-height-size(10);
+            padding: use-spacing(2) use-spacing(6);
+          }
+        }
+      }
+
+      &-lg {
+        .#{$prefix}-header {
+          &-cell {
+            height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
+          }
+        }
+
+        .#{$prefix}-row:not(.#{$emptyContent}) {
+          .#{$prefix}-cell {
+            min-height: use-height-size(12);
+            padding: use-spacing(4) use-spacing(7);
           }
         }
       }
     }
+  }
+
+  // &-virtual-row {
+  //   &:last-child {
+  //     .#{$prefix}-row {
+  //       .#{$prefix}-cell {
+  //         border-bottom: none;
+  //       }
+  //     }
+  //   }
+  // }
+
+  &--bordered {
+    > .#{$prefix}__wrapper {
+      border-inline-start: use-border-size('normal') use-color('gray', 300);
+      border-inline-end: use-border-size('normal') use-color('gray', 300);
+      // border-bottom: use-border-size('normal') use-color('gray', 300);
+
+      .#{$prefix}-header-cell, .#{$prefix}-cell {
+        border-inline-start: use-border-size('normal') use-color('gray', 300);
+      }
+
+      // .#{$prefix}-row {
+      //   &:last-child {
+      //     .#{$prefix}-cell {
+      //       border-bottom: none;
+      //     }
+      //   }
+      // }
+    }
 
     &.#{$prefix}--bordered-left-none {
       > .#{$prefix}__wrapper {
-        border-left: none;
+        border-inline-start: none;
       }
     }
 
@@ -132,19 +278,19 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       > .#{$prefix}__wrapper {
         .#{$prefix}-row {
           .#{$prefix}-cell {
-            border-bottom: use-border-size('normal') use-color('gray', 200);
+            border-block-end: use-border-size('normal') use-color('gray', 300);
           }
         }
 
-        .#{$prefix}-virtual-row {
-          &:last-child {
-            .#{$prefix}-row {
-              .#{$prefix}-cell {
-                border-bottom: none;
-              }
-            }
-          }
-        }
+        // .#{$prefix}-virtual-row {
+        //   &:last-child {
+        //     .#{$prefix}-row {
+        //       .#{$prefix}-cell {
+        //         border-bottom: none;
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
   }
@@ -153,7 +299,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   // &--striped {
   // tr:not(:hover):nth-child(2n) {
   //   td {
-  //     background-color: use-color('gray', 50);
+  //     background-color: use-color('gray', 100);
   //   }
   // }
   // }
@@ -161,15 +307,6 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &--sticky {
     position: sticky;
     top: 0;
-  }
-
-  &--virtual {
-    width: 100%;
-    overflow: hidden;
-
-    .hi-v4-table-cell {
-      box-sizing: border-box;
-    }
   }
 
   &-header {
@@ -182,26 +319,23 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       background-clip: padding-box;
 
       &:hover {
-        background-color: use-color('gray', 200);
-
-        .#{$prefix}-header__resizable-handle {
-          border-left-color: use-color('gray', 200);
-          border-right-color: use-color('gray', 200);
-        }
+        background-color: use-color('gray', 300);
       }
 
       &-handle {
         box-sizing: content-box;
         position: absolute;
+        z-index: 1;
         width: 2px;
         height: 100%;
-        bottom: 0;
-        right: 0;
-        margin-right: -2px;
-        border-left: 2px solid transparent;
-        border-right: 2px solid transparent;
+        inset-block-start: 0;
+        inset-inline-end: -2px;
+        border-inline-start: 2px solid transparent;
+        border-inline-end: 2px solid transparent;
         cursor: col-resize;
-        z-index: 1;
+        background-color: transparent;
+        background-clip: content-box;
+        transition: opacity 0.2s;
 
         .#{$prefix}__selection-col > & {
           display: none;
@@ -209,24 +343,27 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
         &:hover {
           background-color: use-color-mode('primary');
-          border-left-color: use-color('gray', 200);
-          border-right-color: use-color('gray', 200);
         }
       }
     }
 
     &-cell {
-      background-color: use-color('gray', 50);
-      color: use-color('gray', 700);
+      box-sizing: border-box;
+      background-color: use-color-static('white');
+      color: use-color('gray', 600);
       font-size: use-text-size('normal');
       font-weight: use-text-weight('medium');
-      line-height: use-text-lineheight('sm');
+      line-height: use-text-lineheight('normal');
       padding: use-spacing(7) use-spacing(8);
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+      border-block-end: use-border-size('normal') use-color('gray', 300);
 
-      &.#{$prefix}__embed-col,
-      &.#{$prefix}__selection-col {
+      &.#{$prefix}__embed-col {
         padding: use-spacing(7) use-spacing(5);
+      }
+
+      &.#{$prefix}__selection-col {
+        padding: 0 !important;
+        text-align: center !important;
       }
 
       $this: &;
@@ -234,10 +371,10 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       &#{$this}__col--highlight,
       &#{$this}__col--hovered-highlight,
       &#{$this}__col--active {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
 
         &[data-sticky] {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
     }
@@ -251,20 +388,20 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     }
 
     &--fixed-top {
-      top: 0;
+      inset-block-start: 0;
     }
 
     &--fixed-bottom {
-      bottom: 0;
+      inset-block-end: 0;
 
       .#{$prefix}-cell {
-        border-top: use-border-size('normal') use-color('gray', 300);
+        border-block-start: use-border-size('normal') use-color('gray', 400);
       }
     }
 
     &:has(+ .#{$prefix}-row--fixed-bottom) {
       .#{$prefix}-cell {
-        border-bottom: none;
+        border-block-end: none;
       }
     }
 
@@ -272,14 +409,22 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &--hover {
       &:hover {
         & > .#{$prefix}-cell {
-          background-color: use-color-mode('primary', 50);
+          background-color: use-color('gray', 100);
+        }
+      }
+
+      &.#{$prefix}-row--highlight {
+        &:hover {
+          & > .#{$prefix}-cell {
+            background-color: use-color-mode('primary', 100);
+          }
         }
       }
     }
 
     &--striped {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 50);
+        background-color: use-color-static('bgColor');
       }
     }
 
@@ -310,25 +455,25 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &--drag-top {
       // TODO: 使用伪类，避免位置抖动
       & > .#{$prefix}-cell {
-        border-top: 2px dashed use-color-mode('primary');
+        border-block-start: 2px dashed use-color-mode('primary');
       }
     }
 
     &--drag-bottom {
       & > .#{$prefix}-cell {
-        border-bottom: 2px dashed use-color-mode('primary');
+        border-block-end: 2px dashed use-color-mode('primary');
       }
     }
 
     &--avg,
     &--total {
       & > .#{$prefix}-cell {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &:hover {
         & > .#{$prefix}-cell {
-          background-color: use-color('gray', 50);
+          background-color: use-color('gray', 100);
         }
       }
     }
@@ -336,13 +481,19 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     &--virtual {
       display: flex;
     }
+
+    // &:not(.#{$prefix}-row--virtual):last-child {
+    //   .#{$prefix}-cell {
+    //     border-bottom: none;
+    //   }
+    // }
   }
 
   // 利用 table colgroup 控制列
   &-header-col,
   &-col {
     .#{$prefix}-header & {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
 
     &[data-hover-highlight] {
@@ -351,7 +502,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
       }
 
       .#{$prefix}-header & {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }
@@ -371,35 +522,40 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
 // 单元格
 .#{$prefix}-cell {
+  box-sizing: border-box;
   word-break: break-word;
-  border-bottom: use-border-size('normal') use-color('gray', 300);
+  border-block-end: use-border-size('normal') use-color('gray', 300);
   font-size: use-text-size('normal');
   font-weight: use-text-weight('normal');
-  color: use-color('gray', 700);
-  line-height: use-text-lineheight('sm');
+  color: use-color('gray', 800);
+  line-height: use-text-lineheight('normal');
   padding: use-spacing(7) use-spacing(8);
   background-color: use-color-static('white');
 
   &__indent {
     display: inline-block;
     vertical-align: middle;
-    width: 14px;
+    width: use-text-size('normal');
     height: 100%;
-    margin-right: use-spacing(1);
+    margin-inline-end: use-spacing(1);
   }
 
   // 树形展开
   &__switcher {
     &.#{$component-prefix}-icon-button {
-      margin-right: use-spacing(1);
-      color: use-color('gray', 500);
+      margin-inline-end: use-spacing(1);
+      color: use-color('gray', 600);
       vertical-align: middle;
     }
   }
 
-  &.#{$prefix}__embed-col,
-  &.#{$prefix}__selection-col {
+  &.#{$prefix}__embed-col {
     padding: use-spacing(7) use-spacing(5);
+  }
+
+  &.#{$prefix}__selection-col {
+    padding: 0 !important;
+    text-align: center !important;
   }
 
   &.#{$prefix}-cell__col--highlight {
@@ -414,8 +570,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 // 冻结列 阴影
 .#{$prefix}-freeze-shadow {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
   z-index: 20;
   pointer-events: none;
   overflow: hidden;
@@ -423,15 +579,15 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   width: 200px;
 
   &--left {
-    margin-right: 10px;
-    left: 0;
-    box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    margin-inline-end: use-spacing(5);
+    inset-inline-start: 0;
+    box-shadow: use-shadow('sm', 'right');
   }
 
   &--right {
-    margin-left: 10px;
-    right: 0;
-    box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    margin-inline-start: use-spacing(5);
+    inset-inline-end: 0;
+    box-shadow: use-shadow('sm', 'left');
   }
 }
 
@@ -439,33 +595,35 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-dropdown {
     &__trigger {
       &.#{$component-prefix}-icon-button {
-        margin-left: 4px;
+        margin-inline-start: use-spacing(2);
+        color: use-color('gray', 600);
+      }
+
+      &--active.#{$component-prefix}-icon-button {
+        transform: rotate(180deg);
       }
     }
 
     &__content {
       width: 124px;
-      padding: use-spacing(6) use-spacing(4);
+      padding: use-spacing(2);
+      border: use-border-size('normal') use-color('gray', 300);
+      border-radius: use-border-radius('xl');
       font-weight: use-text-weight('normal');
     }
 
     &__item {
-      margin-top: use-spacing(4);
       padding: use-spacing(3) use-spacing(4);
       border-radius: use-border-radius('normal');
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
       font-size: use-text-size('normal');
 
-      &:first-child {
-        margin-top: 0;
-      }
-
       &:hover {
-        background-color: use-color('gray', 50);
+        background-color: use-color('gray', 100);
       }
 
       &--active {
@@ -481,22 +639,38 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   &-sorter {
     display: inline-flex;
     flex-direction: column;
-    height: 20px;
+    height: 100%;
+    justify-content: center;
     vertical-align: middle;
-    margin-left: 6px;
+    align-items: center;
 
     &__icon {
-      display: inline-block;
-      height: 8px;
+      display: inline-flex;
+      height: 15px;
+      padding-inline-start: use-spacing(3);
       cursor: pointer;
       overflow: hidden;
-      // font-size: 16px;
       font-weight: use-text-weight('normal');
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
+
+      &:hover {
+        color: use-color('gray', 700);
+      }
 
       svg {
         position: relative;
-        top: -5px;
+      }
+
+      &:first-child {
+        svg {
+          inset-block-end: -4px;
+        }
+      }
+
+      &:last-child {
+        svg {
+          inset-block-start: -4px;
+        }
       }
 
       &--active {
@@ -507,13 +681,15 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
   &-custom {
     &__trigger {
-      margin-left: 6px;
-      color: use-color('gray', 500);
+      margin-inline-start: use-spacing(3);
+      color: use-color('gray', 600);
       cursor: pointer;
     }
 
     &__content {
-      padding: 12px 8px;
+      padding: use-spacing(6);
+      border: use-border-size('normal') use-color('gray', 300);
+      border-radius: use-border-radius('xl');
     }
   }
 }
@@ -523,27 +699,25 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   z-index: 0;
 
   & > td {
-    background-color: use-color('gray', 200);
-    padding: use-spacing(10);
+    background-color: use-color('gray', 100);
+    padding: use-spacing(6);
   }
 }
 
 .#{$prefix}-setting {
   position: absolute;
-  height: 100%;
+  height: calc(100% - 2px);
   z-index: 11;
   box-sizing: border-box;
-  right: 0;
+  inset-inline-end: 0;
   display: flex;
   align-items: center;
-  border-left: use-border-size('normal') use-color('gray', 300);
-  border-bottom: none;
-  border-top: none;
-  color: use-color('gray', 500);
+  // border-left: use-border-size('normal') use-color('gray', 400);
+  color: use-color('gray', 600);
   cursor: pointer;
   font-size: use-text-size('sm');
   width: 18px;
-  background: use-color('gray', 50);
+  background: use-color-static('white');
 
   &__btn-group {
     display: flex;
@@ -554,8 +728,8 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
 .#{$prefix}-setting-item {
   position: relative;
-  padding-top: use-spacing(1);
-  padding-bottom: use-spacing(1);
+  padding-block-start: use-spacing(1);
+  padding-block-end: use-spacing(1);
   box-sizing: border-box;
 
   $this: &;
@@ -566,9 +740,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 
     @include flex(space-between);
 
-    padding: use-spacing(3) use-spacing(4);
-    line-height: use-text-lineheight('sm');
-    // border: use-border-size('normal') use-color-static('transparent');
+    padding: calc(#{use-spacing(3)} - 1px) use-spacing(4);
     border-radius: use-border-radius('normal');
 
     &:hover {
@@ -583,15 +755,15 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   // 拖拽指示器-小圆球
   &::before {
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     z-index: 9999;
     display: none;
     box-sizing: border-box;
-    width: 8px;
-    height: 8px;
+    width: use-height-size(2);
+    height: use-height-size(2);
     content: '';
     background-color: use-color-static('white');
-    border: 1px solid use-color-mode('primary');
+    border: use-border-size('normal') use-color-mode('primary');
     border-radius: 100%;
   }
 
@@ -603,43 +775,43 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
     z-index: 9998;
     display: block;
     box-sizing: border-box;
-    border-bottom-width: 0;
-    border-bottom-style: solid;
+    border-block-end-width: 0;
+    border-block-end-style: solid;
     border-bottom-color: use-color-mode('primary');
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
   }
 
   &::before,
   &::after {
-    margin-left: -10px;
-    margin-right: -10px;
+    margin-inline-start: calc(-1 * #{use-spacing(5)});
+    margin-inline-end: calc(-1 * #{use-spacing(5)});
   }
 
   &--direction {
     &-before {
       &::before {
         display: block;
-        top: -0.5px;
-        transform: translateY(-4px);
+        inset-block-start: -0.5px;
+        transform: translate3d(0, -4px, 0);
       }
 
       &::after {
-        top: -0.5px;
-        border-bottom-width: 1px;
+        inset-block-start: -0.5px;
+        border-block-end-width: 1px;
       }
     }
 
     &-after {
       &::before {
         display: block;
-        bottom: 0.5px;
-        transform: translateY(4px);
+        inset-block-end: 0.5px;
+        transform: translate3d(0, 4px, 0);
       }
 
       &::after {
-        bottom: 0.5px;
-        border-bottom-width: 1px;
+        inset-block-end: 0.5px;
+        border-block-end-width: 1px;
       }
     }
   }
@@ -648,7 +820,7 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
 .#{$prefix}-pagination {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 8px;
+  row-gap: use-spacing(4);
   padding: use-spacing(6) 0;
   background-color: use-color-static('white');
 
@@ -665,13 +837,21 @@ $emptyContent: '#{$component-prefix}-table-body-empty-content' !default;
   }
 }
 
-.#{$emptyContent} {
+.#{$prefix}--empty {
   td {
     text-align: center;
     padding: use-spacing(12) 0;
+  }
 
-    .#{$prefix}--bordered & {
-      border-bottom: use-border-size('normal') use-color('gray', 300);
+  &.#{$prefix}--bordered {
+    tr:first-child {
+      th:first-child {
+        border-inline-start: none;
+      }
+    }
+
+    td {
+      border-block-end: use-border-size('normal') use-color('gray', 300);
     }
   }
 }

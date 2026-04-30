@@ -12,7 +12,8 @@ export const Draggable = () => {
       <div className="upload-draggable__wrap">
         <Upload
           type="drag"
-          uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          // uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
+          uploadAction="https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload"
           headers={{ name: 'mi' }}
           accept=".png,.jpg,.jpeg"
           onChange={(file, fileList, response) => {

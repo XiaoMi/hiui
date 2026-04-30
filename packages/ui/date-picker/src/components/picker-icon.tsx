@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useContext } from 'react'
 import { cx } from '@hi-ui/classname'
 import { CloseCircleFilled, TimeOutlined, CalendarOutlined } from '@hi-ui/icons'
 import { DatePickerTypeEnum } from '../types'
+import DPContext from '../context'
 
 const PickerIcon = ({
   focus,
@@ -10,6 +11,7 @@ const PickerIcon = ({
   showTime,
   disabled,
   onClick,
+  showIndicator,
 }: {
   focus: boolean
   clearable?: boolean
@@ -17,7 +19,9 @@ const PickerIcon = ({
   disabled?: boolean
   type: DatePickerTypeEnum
   onClick: (status: boolean) => void
+  showIndicator?: boolean
 }) => {
+  const { classNames, styles } = useContext(DPContext)
   const cls = cx(
     'hi-icon',
     disabled && 'hi-icon--disabled',
@@ -28,18 +32,25 @@ const PickerIcon = ({
       : 'icon-date'
   )
   const MatchIcon = useMemo(() => {
-    if (focus && clearable) {
+    if (focus && clearable && !disabled) {
       return CloseCircleFilled
-    } else if (type.includes('time') || showTime) {
-      return TimeOutlined
-    } else {
-      return CalendarOutlined
     }
-  }, [clearable, focus, showTime, type])
+
+    if (showIndicator) {
+      if (type.includes('time') || showTime) {
+        return TimeOutlined
+      } else {
+        return CalendarOutlined
+      }
+    }
+
+    return React.Fragment
+  }, [clearable, disabled, focus, showIndicator, showTime, type])
 
   return (
     <MatchIcon
-      className={cls}
+      className={cx(cls, classNames?.triggerIcon)}
+      style={styles?.triggerIcon}
       onClick={(evt) => {
         evt.stopPropagation()
 

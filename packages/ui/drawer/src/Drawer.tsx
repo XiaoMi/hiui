@@ -1,7 +1,7 @@
-import React, { forwardRef, useCallback, useEffect } from 'react'
+import React, { forwardRef, useCallback, useEffect, useState } from 'react'
 import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, usePortalContext } from '@hi-ui/core'
 import { CSSTransition } from 'react-transition-group'
 import { Portal } from '@hi-ui/portal'
 import { useModal, UseModalProps } from '@hi-ui/modal'
@@ -13,6 +13,12 @@ import { IconButton } from '@hi-ui/icon-button'
 import { mergeRefs } from '@hi-ui/react-utils'
 import { useOutsideClick } from '@hi-ui/use-outside-click'
 import { DrawerPlacementEnum } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const DRAWER_PREFIX = getPrefixCls('drawer')
 
@@ -26,6 +32,9 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     {
       prefixCls = DRAWER_PREFIX,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       disabledPortal = false,
       closeable = true,
@@ -37,6 +46,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       closeIcon = defaultCloseIcon,
       width,
       height,
+      size: sizeProp,
       preload = false,
       unmountOnClose = false,
       visible = false,
@@ -53,6 +63,14 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const [transitionExited, transitionExitedAction] = useToggle(true)
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
+    const { size: globalSize, drawer: globalDrawerConfig } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+    if (size === 'lg') {
+      size = 'md'
+    }
 
     const { rootProps, getModalProps, getModalWrapperProps } = useModal({
       ...rest,
@@ -86,11 +104,65 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       onExitedLatest()
     }, [onExitedLatest, transitionExitedAction])
 
+    const [scrollElement, setScrollElement] = useState<HTMLElement | null>(null)
+    const [scrollState, setScrollState] = useState<{
+      isContentOverflow: boolean
+      isScrollToTop: boolean
+      isScrollToBottom: boolean
+    }>({
+      isContentOverflow: false,
+      isScrollToTop: true,
+      isScrollToBottom: false,
+    })
+
+    const handleScroll = useCallback((evt: React.UIEvent<HTMLDivElement>) => {
+      if (!evt.currentTarget) return
+
+      const { scrollTop, scrollHeight, clientHeight } = evt.currentTarget
+
+      // 判断内容是否超过容器高度
+      const isContentOverflow = scrollHeight > clientHeight
+
+      // 判断是否滚动到顶部
+      const isScrollToTop = scrollTop === 0
+
+      // 判断是否滚动到底部
+      const isScrollToBottom = scrollTop + clientHeight >= scrollHeight - 1 // 减1像素容差
+
+      setScrollState({
+        isContentOverflow,
+        isScrollToTop,
+        isScrollToBottom,
+      })
+    }, [])
+
+    useEffect(() => {
+      if (scrollElement && visible) {
+        handleScroll({ currentTarget: scrollElement } as React.UIEvent<HTMLDivElement>)
+      }
+    }, [handleScroll, visible, scrollElement])
+
+    const { classNames, styles } = useMergeSemantic<
+      DrawerSemanticClassNames,
+      DrawerSemanticStyles,
+      DrawerProps
+    >({
+      classNamesList: [globalDrawerConfig?.classNames, classNamesProp],
+      stylesList: [globalDrawerConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, footer, placement, size, closeable, showMask } },
+    })
+
     const hasHeader = !!title || closeable
     const bodyWidth = isNumeric(width) ? width + 'px' : width
     const bodyHeight = isNumeric(height) ? height + 'px' : height
 
-    const cls = cx(prefixCls, className, `${prefixCls}--placement-${placement}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--placement-${placement}`,
+      `${prefixCls}--size-${size}`
+    )
 
     return (
       <Portal container={container} disabled={disabledPortal}>
@@ -102,6 +174,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
           onExited={onExited}
           mountOnEnter={!preload}
           unmountOnExit={unmountOnClose}
+          // 参考：https://github.com/reactjs/react-transition-group/issues/918
+          nodeRef={innerRef}
         >
           <div
             className={cls}
@@ -109,10 +183,12 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
               ...modalProps,
               ref: mergeRefs(modalProps.ref, innerRef),
             }}
-            {...(!showMask &&
-              visible && {
-                style:
-                  placement === 'left' || placement === 'right'
+            style={{
+              ...style,
+              ...styles?.root,
+              ...(!showMask &&
+                visible && {
+                  ...(placement === 'left' || placement === 'right'
                     ? {
                         ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth ?? '404px',
@@ -120,28 +196,71 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
                     : {
                         ...modalProps.style,
                         [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight ?? '404px',
-                      },
-              })}
+                      }),
+                }),
+            }}
           >
-            {showMask ? <div className={`${prefixCls}__overlay`} /> : null}
+            {showMask ? (
+              <div
+                className={cx(`${prefixCls}__overlay`, classNames?.overlay)}
+                style={styles?.overlay}
+              />
+            ) : null}
             <div
-              className={`${prefixCls}__wrapper`}
+              className={cx(`${prefixCls}__wrapper`, classNames?.wrapper)}
               style={{
                 [`${getPrefixStyleVar('drawer-body-width')}`]: bodyWidth,
                 [`${getPrefixStyleVar('drawer-body-height')}`]: bodyHeight,
+                ...styles?.wrapper,
               }}
               {...getModalWrapperProps(drawerConfig)}
             >
               {hasHeader ? (
-                <header className={`${prefixCls}__header`}>
-                  {title ? <div className={`${prefixCls}__title`}>{title}</div> : null}
+                <header
+                  className={cx(`${prefixCls}__header`, classNames?.header)}
+                  style={styles?.header}
+                >
+                  {title ? (
+                    <div
+                      className={cx(`${prefixCls}__title`, classNames?.title)}
+                      style={styles?.title}
+                    >
+                      {title}
+                    </div>
+                  ) : null}
                   {closeable ? (
-                    <IconButton effect onClick={onClose} icon={closeIcon} />
+                    <IconButton
+                      className={cx(classNames?.close)}
+                      style={styles?.close}
+                      effect
+                      onClick={onClose}
+                      icon={closeIcon}
+                    />
                   ) : null}
                 </header>
               ) : null}
-              <main className={`${prefixCls}__body`}>{children}</main>
-              {footer ? <footer className={`${prefixCls}__footer`}>{footer}</footer> : null}
+              <main
+                className={cx(`${prefixCls}__body`, classNames?.body)}
+                style={styles?.body}
+                ref={setScrollElement}
+                onScroll={handleScroll}
+              >
+                {children}
+              </main>
+              {footer ? (
+                <footer
+                  className={cx(
+                    `${prefixCls}__footer`,
+                    scrollState.isContentOverflow &&
+                      !scrollState.isScrollToBottom &&
+                      `${prefixCls}__footer--divided`,
+                    classNames?.footer
+                  )}
+                  style={styles?.footer}
+                >
+                  {footer}
+                </footer>
+              ) : null}
             </div>
           </div>
         </CSSTransition>
@@ -150,7 +269,23 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
   }
 )
 
-export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseModalProps {
+export type DrawerSemanticName =
+  | 'root'
+  | 'overlay'
+  | 'wrapper'
+  | 'header'
+  | 'title'
+  | 'close'
+  | 'body'
+  | 'footer'
+export type DrawerSemanticClassNames = SemanticClassNamesType<DrawerProps, DrawerSemanticName>
+export type DrawerSemanticStyles = SemanticStylesType<DrawerProps, DrawerSemanticName>
+export type DrawerSemantic = ComponentSemantic<DrawerSemanticClassNames, DrawerSemanticStyles>
+
+export interface DrawerProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'title'>,
+    UseModalProps,
+    DrawerSemantic {
   /**
    * 模态框标题
    */
@@ -171,6 +306,10 @@ export interface DrawerProps extends Omit<HiBaseHTMLProps<'div'>, 'title'>, UseM
    * 自定义抽屉高度，仅在 placement="bottom" | "top" 有效
    */
   height?: number | string
+  /**
+   * 头部大小
+   */
+  size?: 'sm' | 'md'
   /**
    * 自定义css展示层级
    */

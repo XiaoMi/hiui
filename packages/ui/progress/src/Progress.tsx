@@ -1,7 +1,13 @@
 import React, { forwardRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { ProgressSizeEnum, ProgressTypeEnum, ProgressPlacementEnum } from './types'
 
 const PROGRESS_PREFIX = getPrefixCls('progress')
@@ -14,16 +20,18 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
     {
       prefixCls = PROGRESS_PREFIX,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       percent = 0,
       bufferPercent = 0,
       type = 'primary',
-      size = 'md',
+      size: sizeProp,
       active = false,
       indeterminate = false,
       showInfo: showInfoProp,
       placement = 'outside',
-      style,
       content,
       strokeWidth,
       width,
@@ -32,66 +40,115 @@ export const Progress = forwardRef<HTMLDivElement | null, ProgressProps>(
     },
     ref
   ) => {
+    const { size: globalSize, progress: progressConfig } = useGlobalContext() as ReturnType<
+      typeof useGlobalContext
+    > & { progress?: { classNames?: any; styles?: any } }
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const [barElement, setBarElement] = useState<HTMLSpanElement | null>(null)
     const [contentElement, setContentElement] = useState<HTMLSpanElement | null>(null)
 
     const rate = percent > 100 ? 100 : Number(percent)
     const bufferRate = bufferPercent > 100 ? 100 : Number(bufferPercent)
 
+    const { classNames, styles } = useMergeSemantic<
+      ProgressSemanticClassNames,
+      ProgressSemanticStyles,
+      ProgressProps
+    >({
+      classNamesList: [progressConfig?.classNames, classNamesProp],
+      stylesList: [progressConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          percent: rate,
+          bufferPercent: bufferRate,
+          type,
+          size: sizeProp,
+          active,
+          indeterminate,
+          placement,
+          showInfo: showInfoProp,
+        },
+      },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--${size}`,
       indeterminate && `${prefixCls}--indeterminate`
     )
 
     const showInfo = showInfoProp === undefined ? !indeterminate : showInfoProp
 
-    if (showInfo && content === undefined) {
-      content = `${rate}%`
+    let resolvedContent = content
+    if (showInfo && resolvedContent === undefined) {
+      resolvedContent = `${rate}%`
     }
 
     return (
-      <div ref={ref} className={cls} role="progressbar" style={{ ...style, width }} {...rest}>
+      <div
+        ref={ref}
+        className={cls}
+        role="progressbar"
+        style={{ ...style, width, ...styles?.root }}
+        {...rest}
+      >
         <div
-          className={cx(`${prefixCls}__inner`, { [`${prefixCls}__inner--active`]: active })}
-          style={{ height: strokeWidth }}
+          className={cx(`${prefixCls}__inner`, classNames?.inner, {
+            [`${prefixCls}__inner--active`]: active,
+          })}
+          style={{ height: strokeWidth, ...styles?.inner }}
         >
           {bufferRate > 0 ? (
             <span
-              style={{ width: `${bufferRate}%` }}
-              className={`${prefixCls}__buffer`}
+              style={{ width: `${bufferRate}%`, ...styles?.buffer }}
+              className={cx(`${prefixCls}__buffer`, classNames?.buffer)}
               aria-label="buffer"
             />
           ) : null}
           <span
             ref={setBarElement}
-            style={{ width: indeterminate ? undefined : `${rate}%`, backgroundColor: color }}
-            className={cx(`${prefixCls}__value`, `${prefixCls}__value--${type}`)}
+            style={{
+              width: indeterminate ? undefined : `${rate}%`,
+              backgroundColor: color,
+              ...styles?.value,
+            }}
+            className={cx(`${prefixCls}__value`, `${prefixCls}__value--${type}`, classNames?.value)}
             aria-label="value"
           >
             {showInfo && placement === 'inside' && barElement && barElement.clientHeight >= 14 && (
               <span
                 ref={setContentElement}
-                className={cx(`${prefixCls}__content`, {
+                className={cx(`${prefixCls}__content`, classNames?.content, {
                   [`${prefixCls}__content--right`]:
                     contentElement && contentElement?.clientWidth >= barElement?.clientWidth - 8,
                 })}
+                style={styles?.content}
               >
-                {content}
+                {resolvedContent}
               </span>
             )}
           </span>
         </div>
         {showInfo && placement === 'outside' && (
-          <div className={`${prefixCls}__content`}>{content}</div>
+          <div className={cx(`${prefixCls}__content`, classNames?.content)} style={styles?.content}>
+            {resolvedContent}
+          </div>
         )}
       </div>
     )
   }
 )
 
-export interface ProgressProps extends HiBaseHTMLProps<'div'> {
+export type ProgressSemanticName = 'root' | 'inner' | 'buffer' | 'value' | 'content'
+export type ProgressSemanticClassNames = SemanticClassNamesType<ProgressProps, ProgressSemanticName>
+export type ProgressSemanticStyles = SemanticStylesType<ProgressProps, ProgressSemanticName>
+export type ProgressSemantic = ComponentSemantic<ProgressSemanticClassNames, ProgressSemanticStyles>
+
+export interface ProgressProps extends HiBaseHTMLProps<'div'>, ProgressSemantic {
   /**
    * 进度条大小
    */

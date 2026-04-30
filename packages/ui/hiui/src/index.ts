@@ -73,10 +73,14 @@ export { default as Grid } from '@hi-ui/grid'
 export * from '@hi-ui/highlighter'
 export { default as Highlighter } from '@hi-ui/highlighter'
 
-// export * from '@hi-ui/icon-button'
+export * from '@hi-ui/icon-button'
+export { default as IconButton } from '@hi-ui/icon-button'
 
 export * from '@hi-ui/input'
 export { default as Input } from '@hi-ui/input'
+
+export * from '@hi-ui/layout'
+export { default as Layout } from '@hi-ui/layout'
 
 export * from '@hi-ui/list'
 export { default as List } from '@hi-ui/list'
@@ -111,11 +115,14 @@ export { default as Notification } from '@hi-ui/notification'
 export * from '@hi-ui/number-input'
 export { default as NumberInput } from '@hi-ui/number-input'
 
+export * from '@hi-ui/page-header'
+export { default as PageHeader } from '@hi-ui/page-header'
+
 export * from '@hi-ui/pagination'
 export { default as Pagination } from '@hi-ui/pagination'
 
-// export * from '@hi-ui/picker'
-// export { default as Picker } from '@hi-ui/picker'
+export * from '@hi-ui/picker'
+export { default as Picker } from '@hi-ui/picker'
 
 export * from '@hi-ui/pop-confirm'
 export { default as PopConfirm } from '@hi-ui/pop-confirm'
@@ -123,9 +130,11 @@ export { default as PopConfirm } from '@hi-ui/pop-confirm'
 export * from '@hi-ui/popover'
 export { default as Popover } from '@hi-ui/popover'
 
-// export * from '@hi-ui/popper'
+export * from '@hi-ui/popper'
+export { default as Popper } from '@hi-ui/popper'
 
-// export * from '@hi-ui/portal'
+export * from '@hi-ui/portal'
+export { default as Portal } from '@hi-ui/portal'
 
 export * from '@hi-ui/preview'
 export { default as Preview } from '@hi-ui/preview'
@@ -135,6 +144,9 @@ export { default as Progress } from '@hi-ui/progress'
 
 export * from '@hi-ui/provider'
 export { default as Provider } from '@hi-ui/provider'
+
+export * from '@hi-ui/query-filter'
+export { default as QueryFilter } from '@hi-ui/query-filter'
 
 export * from '@hi-ui/radio'
 export { default as Radio } from '@hi-ui/radio'
@@ -160,8 +172,8 @@ export { default as Slider } from '@hi-ui/slider'
 export * from '@hi-ui/space'
 export { default as Space } from '@hi-ui/space'
 
-// export * from '@hi-ui/spinner'
-// export { default as Spinner } from '@hi-ui/spinner'
+export * from '@hi-ui/spinner'
+export { default as Spinner } from '@hi-ui/spinner'
 
 export * from '@hi-ui/stepper'
 export { default as Stepper } from '@hi-ui/stepper'
@@ -181,7 +193,8 @@ export { default as Tabs } from '@hi-ui/tabs'
 export * from '@hi-ui/tag'
 export { default as Tag } from '@hi-ui/tag'
 
-// export * from '@hi-ui/tag-input'
+export * from '@hi-ui/tag-input'
+export { default as TagInput } from '@hi-ui/tag-input'
 
 export * from '@hi-ui/textarea'
 export { default as Textarea } from '@hi-ui/textarea'
@@ -217,7 +230,8 @@ export { default as Watermark } from '@hi-ui/watermark'
 export * from '@hi-ui/zen-mode'
 export { default as ZenMode } from '@hi-ui/zen-mode'
 
-// export * from '@hi-ui/skeleton'
+export * from '@hi-ui/skeleton'
+export { default as Skeleton } from '@hi-ui/skeleton'
 
 export * from '@hi-ui/scrollbar'
 export { default as Scrollbar } from '@hi-ui/scrollbar'

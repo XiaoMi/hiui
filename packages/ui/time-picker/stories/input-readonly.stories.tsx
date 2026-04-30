@@ -12,6 +12,7 @@ export const InputReadonly = () => {
       <h1>Input Readonly</h1>
       <div className="time-picker-input-readonly__wrap">
         <TimePicker
+          style={{ width: '240px' }}
           placeholder={['请选择时间']}
           value={inputReadonlyValue}
           onChange={(e) => {

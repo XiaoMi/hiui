@@ -16,6 +16,7 @@ export const CustomDisabled = () => {
       <div className="time-picker-custom-disabled__wrap" style={{ height: 400 }}>
         <h2>hour</h2>
         <TimePicker
+          style={{ width: '240px' }}
           value={hourValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
           onChange={(value: any) => {
@@ -27,6 +28,7 @@ export const CustomDisabled = () => {
         />
         <h2>minute</h2>
         <TimePicker
+          style={{ width: '240px' }}
           value={minuteValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
           onChange={(value: any) => {
@@ -43,6 +45,7 @@ export const CustomDisabled = () => {
         />
         <h2>second</h2>
         <TimePicker
+          style={{ width: '240px' }}
           value={secondValue}
           placeholder={['请选择开始时间', '请选择结束时间']}
           onChange={(value: any) => {

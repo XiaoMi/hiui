@@ -1,7 +1,13 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { invariant, __DEV__ } from '@hi-ui/env'
-import { HiBaseFieldNames, HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { cloneElement, toArray, transformData } from './util'
 import { Row } from './Row'
 import {
@@ -23,6 +29,9 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       prefixCls = DESCRIPTIONS_PREFIX,
       role = 'descriptions',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       data,
       fieldNames,
@@ -32,12 +41,21 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       labelPlacement = 'left',
       labelWidth,
       columnGap,
-      size = 'md',
+      size: sizeProp,
       contentPosition = 'top',
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, descriptions: descriptionsConfig } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'md'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+    if (size === 'lg') {
+      size = 'md'
+    }
+
     const noBackground = appearance === 'unset' && labelPlacement === 'right'
     const vertical = placement === 'vertical'
     const bordered = appearance === 'table' || noBackground
@@ -52,19 +70,40 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
       : React.Children.toArray(children)
     const rows = computeRows(computeChildren, column)
 
+    const { classNames, styles } = useMergeSemantic<
+      DescriptionsSemanticClassNames,
+      DescriptionsSemanticStyles,
+      DescriptionsProps
+    >({
+      classNamesList: [descriptionsConfig?.classNames, classNamesProp],
+      stylesList: [descriptionsConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          placement,
+          appearance,
+          labelPlacement,
+          size,
+          column,
+          contentPosition,
+        },
+      },
+    })
+
     const cls = cx(
       prefixCls,
       appearance && `${prefixCls}--appearance-${appearance}`,
       placement && `${prefixCls}--placement-${placement}`,
       labelPlacement && `${prefixCls}--label-placement-${labelPlacement}`,
       `${prefixCls}--size-${size}`,
-      className
+      className,
+      classNames?.root
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <table className={`${prefixCls}__table`}>
-          <tbody className={`${prefixCls}__tbody`}>
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
+        <table className={cx(`${prefixCls}__table`, classNames?.table)} style={styles?.table}>
+          <tbody className={cx(`${prefixCls}__tbody`, classNames?.tbody)} style={styles?.tbody}>
             {rows.map((row, index) => (
               <Row
                 key={index}
@@ -78,6 +117,8 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
                 rootLabelWidth={labelWidth}
                 cellColumnGap={columnGap}
                 contentPosition={contentPosition}
+                cellClassNames={classNames}
+                cellStyles={styles}
               />
             ))}
           </tbody>
@@ -87,7 +128,21 @@ export const Descriptions = forwardRef<HTMLDivElement | null, DescriptionsProps>
   }
 )
 
-export interface DescriptionsProps extends HiBaseHTMLProps<'div'> {
+export type DescriptionsSemanticName = 'root' | 'table' | 'tbody' | 'cell' | 'label' | 'content'
+export type DescriptionsSemanticClassNames = SemanticClassNamesType<
+  DescriptionsProps,
+  DescriptionsSemanticName
+>
+export type DescriptionsSemanticStyles = SemanticStylesType<
+  DescriptionsProps,
+  DescriptionsSemanticName
+>
+export type DescriptionsSemantic = ComponentSemantic<
+  DescriptionsSemanticClassNames,
+  DescriptionsSemanticStyles
+>
+
+export interface DescriptionsProps extends HiBaseHTMLProps<'div'>, DescriptionsSemantic {
   /**
    * 对齐方式，默认'horizontal'
    */

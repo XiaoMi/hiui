@@ -1,9 +1,13 @@
 import React, { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
+import { __DEV__ } from '@hi-ui/env'
 
 import { modalPrefix, Modal, ModalProps } from './Modal'
+
+const STATIC_CONTEXT_WARNING =
+  'Static API `Modal.confirm` creates a new React root and cannot access React Context (e.g. theme, i18n). Prefer `Modal.useModal()` and place the returned contextHolder under your providers.'
 
 const prefixCls = modalPrefix
 const selector = `.${prefixCls}-wrapper`
@@ -13,18 +17,22 @@ const modalInstanceCache: {
 } = {}
 
 // TODO： 抽离合并到 Toast API
-const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}) => {
+const open = ({ key, onConfirm, onCancel, content, width = 400, ...rest }: ModalApiProps = {}) => {
+  if (__DEV__) {
+    console.warn(STATIC_CONTEXT_WARNING)
+  }
   if (!key) {
     key = uuid()
   }
 
   const selectorId = `${selector}__${key}`
   let container: any = Container.getContainer(selectorId)
+  let mockUnmount: any = null
 
-  const toastManagerRef = createRef<any>()
+  const toastManagerRef: NonNullable<ModalProps['innerRef']> = createRef<any>()
 
   const ClonedModal = createElement(Modal, {
-    width: 400,
+    width,
     showHeaderDivider: false,
     type: 'info',
     ...rest,
@@ -34,7 +42,7 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
     onExited: () => {
       // 卸载
       if (container) {
-        unmountComponentAtNode(container)
+        mockUnmount()
         Container.removeContainer(selectorId)
       }
 
@@ -46,7 +54,7 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
       try {
         await onConfirm?.()
       } catch (error) {
-        console.log('onConfirm error', error)
+        return
       } finally {
         toastManagerRef.current?.updateConfirmLoading(false)
       }
@@ -61,7 +69,8 @@ const open = ({ key, onConfirm, onCancel, content, ...rest }: ModalApiProps = {}
   })
 
   requestAnimationFrame(() => {
-    render(ClonedModal, container)
+    const mockRender = getReactDomRender()
+    mockUnmount = mockRender(ClonedModal, container)
   })
 
   const close = () => {
@@ -83,22 +92,7 @@ const close = (key: string) => {
   delete modalInstanceCache[key]
 }
 
-export interface ModalApiProps
-  extends Pick<
-    ModalProps,
-    | 'onConfirm'
-    | 'onCancel'
-    | 'title'
-    | 'cancelText'
-    | 'confirmText'
-    | 'className'
-    | 'type'
-    | 'closeable'
-    | 'showMask'
-    | 'showHeaderDivider'
-    | 'closeOnEsc'
-    | 'maskClosable'
-  > {
+export interface ModalApiProps extends Omit<ModalProps, 'visible' | 'innerRef'> {
   /**
    * 	confirm 的内容
    */
@@ -109,6 +103,14 @@ export interface ModalApiProps
   key?: string
 }
 
+export const staticApis = {
+  confirm: open,
+  // 新增 open 方法暴露，与其他组件的静态 api 保持一致
+  open,
+  close,
+}
+
+// 其实内部没再使用了，保持导出以维持兼容性
 export function withModal(instance: typeof Modal) {
   return Object.assign(instance, { confirm: open, close })
 }

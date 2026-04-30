@@ -3,6 +3,7 @@ import { useLatestCallback } from '@hi-ui/use-latest'
 import { useInput, UseInputProps } from '@hi-ui/input'
 import { calcNodeAutoSizeStyles } from './utils'
 import { mergeRefs } from '@hi-ui/use-merge-refs'
+import { callAllFuncs } from '@hi-ui/func-utils'
 
 export const useTextarea = ({
   name,
@@ -48,19 +49,40 @@ export const useTextarea = ({
   const enabledAutoSize =
     autoSize === undefined ? typeof minRows === 'number' || typeof maxRows === 'number' : autoSize
 
+  // useEffect(() => {
+  //   if (enabledAutoSize && textareaElement) {
+  //     const styles = calcNodeAutoSizeStyles(textareaElement, minRows, maxRows)
+  //     resizingRef.current = true
+  //     setAutoSizeStyles(styles)
+  //   }
+  //   return () => {
+  //     // 取消 onResize 的回调计算，避免多次更新
+  //     if (rafIdRef.current) {
+  //       window.cancelAnimationFrame(rafIdRef.current)
+  //     }
+  //   }
+  // }, [enabledAutoSize, value, textareaElement, minRows, maxRows])
+
   useEffect(() => {
     if (enabledAutoSize && textareaElement) {
       const styles = calcNodeAutoSizeStyles(textareaElement, minRows, maxRows)
       resizingRef.current = true
       setAutoSizeStyles(styles)
     }
-    return () => {
-      // 取消 onResize 的回调计算，避免多次更新
-      if (rafIdRef.current) {
-        window.cancelAnimationFrame(rafIdRef.current)
-      }
+  }, [enabledAutoSize, maxRows, minRows, textareaElement])
+
+  const handleInput = useLatestCallback(() => {
+    if (enabledAutoSize && textareaElement) {
+      const styles = calcNodeAutoSizeStyles(textareaElement, minRows, maxRows)
+      resizingRef.current = true
+      textareaElement.style.height = 'auto'
+      textareaElement.style.height = textareaElement.scrollHeight + 'px'
+      textareaElement.style.height = styles.height + 'px'
+      textareaElement.style.minHeight = styles.minHeight + 'px'
+      textareaElement.style.maxHeight = styles.maxHeight + 'px'
+      textareaElement.style.overflowY = styles.overflowY || 'unset'
     }
-  }, [enabledAutoSize, value, textareaElement, minRows, maxRows])
+  })
 
   const handleResize = useLatestCallback(() => {
     // 正在 resizing 中不允许更新
@@ -95,6 +117,7 @@ export const useTextarea = ({
       autoComplete: 'off',
       ...props,
       ...getInputProps(),
+      onInput: callAllFuncs(handleInput, props.onInput),
       style: { ...props.style, ...autoSizeStyles },
     }
   })

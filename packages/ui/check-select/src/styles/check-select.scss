@@ -9,16 +9,16 @@ $prefix: '#{$component-prefix}-check-select' !default;
     display: flex;
     align-items: center;
     position: relative;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
     cursor: pointer;
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 700);
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 800);
 
     &__indent {
       display: inline-block;
-      width: 16px;
+      width: use-height-size(4);
       height: 100%;
     }
 
@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-check-select' !default;
       align-items: center;
       box-sizing: border-box;
       width: 100%;
-      padding: use-spacing(3) use-spacing(3);
+      padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
       font-size: inherit;
       text-size-adjust: none;
       font-weight: inherit;
@@ -37,17 +37,8 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
     $this: &;
 
-    // &:not(#{$this}--checked):not(#{$this}--focused):not(#{$this}--disabled):hover {
-    //   background-color: use-color('gray', 100);
-    // }
-
     &:hover {
       background-color: use-color('gray', 100);
-    }
-
-    &--checked {
-      // background-color: use-color-mode('primary', 50);
-      // color: use-color-mode('primary');
     }
 
     &--focused {
@@ -56,22 +47,28 @@ $prefix: '#{$component-prefix}-check-select' !default;
 
     &--disabled {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
     }
   }
 
   &-option-group {
     display: inline-block;
-    margin-top: use-spacing(6);
-    margin-bottom: use-spacing(2);
-    padding: use-spacing(3) 0 use-spacing(3) use-spacing(3);
+    padding: calc(#{use-spacing(2)} + 1px) use-spacing(4);
     font-size: use-text-size('normal');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 500);
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
+    color: use-color('gray', 700);
 
-    &:first-child {
-      margin-top: use-spacing(2);
+    &__divider {
+      box-sizing: border-box;
+      width: calc(100% + #{use-spacing(4)});
+      height: 1px;
+      margin: use-spacing(2) calc(#{use-spacing(2)} * -1);
+      background-color: use-color('gray', 300);
+
+      &:first-child {
+        display: none;
+      }
     }
   }
 }

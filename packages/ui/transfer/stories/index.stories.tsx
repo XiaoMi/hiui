@@ -11,6 +11,8 @@ export * from './searchable.stories'
 export * from './pagination.stories'
 export * from './draggable.stories'
 export * from './render.stories'
+export * from './fast-transfer.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Transfer',

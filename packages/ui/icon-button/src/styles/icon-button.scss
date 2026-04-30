@@ -2,6 +2,8 @@
 
 $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
 
+$icon-button-effect-color: var(--#{$icon-button-prefix}-effect-color, use-color('gray', 200)) !default;
+
 .#{$icon-button-prefix} {
   @include button-reset;
 
@@ -15,17 +17,17 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
   position: relative;
   flex-shrink: 0;
   z-index: use-zindex('absolute');
-  color: use-color('gray', 600);
+  color: use-color('gray', 700);
 
   &--virtual-area {
     &::after {
       content: '';
       position: absolute;
       display: block;
-      right: calc(-1 * #{use-spacing(2)});
-      top: calc(-1 * #{use-spacing(2)});
-      bottom: calc(-1 * #{use-spacing(2)});
-      left: calc(-1 * #{use-spacing(2)});
+      inset-inline-end: calc(-1 * #{use-spacing(2)});
+      inset-block-start: calc(-1 * #{use-spacing(2)});
+      inset-block-end: calc(-1 * #{use-spacing(2)});
+      inset-inline-start: calc(-1 * #{use-spacing(2)});
       background: use-color-static('transparent');
     }
   }
@@ -35,20 +37,19 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
       content: '';
       position: absolute;
       display: block;
-      right: calc(-1 * #{use-spacing(1)});
-      top: calc(-1 * #{use-spacing(1)});
-      bottom: calc(-1 * #{use-spacing(1)});
-      left: calc(-1 * #{use-spacing(1)});
+      inset-inline-end: calc(-1 * #{use-spacing(2)});
+      inset-block-start: calc(-1 * #{use-spacing(2)});
+      inset-block-end: calc(-1 * #{use-spacing(2)});
+      inset-inline-start: calc(-1 * #{use-spacing(2)});
       z-index: -1;
       background-color: transparent;
       transition: background-color use-motion-duration('normal');
-      border-radius: use-border-radius('full');
+      border-radius: use-border-radius('normal');
     }
 
-    &:hover,
-    &:focus {
+    &:hover {
       &::before {
-        background-color: use-color('gray', 100);
+        background-color: $icon-button-effect-color;
       }
     }
   }
@@ -59,7 +60,7 @@ $icon-button-prefix: '#{$component-prefix}-icon-button' !default;
 
   &--disabled {
     &.#{$icon-button-prefix} {
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
     }
   }
 }

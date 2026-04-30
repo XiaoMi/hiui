@@ -2,15 +2,13 @@
 
 $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
 
-.#{$arrows-class}{
+.#{$arrows-class} {
 
   $large-diff: 24px;
   $middle-diff: 16px;
   $small-diff: 12px;
 
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,61 +17,96 @@ $arrows-class: '#{$component-prefix}-carousel__arrows-button' !default;
   overflow: hidden;
   cursor: pointer;
 
-  &::before{
+  &--horizontal {
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  &--vertical {
+    inset-inline-start: 50%;
+    transform: translate3d(-50%, 0, 0) rotate(90deg);
+  }
+
+  &::before {
     content: '';
     position: absolute;
-    background: use-color('gray',700);
+    background: use-color('gray', 700);
     opacity: 0.35;
     width: 100%;
     height: 100%;
-    left: 0;
-    top: 0;
+    inset-inline-start: 0;
+    inset-block-start: 0;
     z-index: -1;
   }
 
-  &:hover{
-    &::before{
-      background: use-color('gray',900);
+  &:hover {
+    &::before {
+      background: use-color('gray', 900);
       opacity: 0.7;
     }
   }
 
-  &--lg{
-    width: 40px;
-    height: 40px;
+  &--lg {
+    width: use-height-size(10);
+    height: use-height-size(10);
     font-size: 28px;
 
-    &.#{$arrows-class}--left{
-      left: $large-diff;
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--start {
+      inset-inline-start: $large-diff;
     }
-    &.#{$arrows-class}--right{
-      right: $large-diff;
+
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--end {
+      inset-inline-end: $large-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--start {
+      inset-block-start: $large-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--end {
+      inset-block-end: $large-diff;
     }
   }
 
-  &--md{
-    width: 32px;
-    height: 32px;
+  &--md {
+    width: use-height-size(8);
+    height: use-height-size(8);
     font-size: 20px;
 
-    &.#{$arrows-class}--left{
-      left: $middle-diff;
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--start {
+      inset-inline-start: $middle-diff;
     }
-    &.#{$arrows-class}--right{
-      right: $middle-diff;
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--end {
+      inset-inline-end: $middle-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--start {
+      inset-block-start: $middle-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--end {
+      inset-block-end: $middle-diff;
     }
   }
 
-  &--sm{
-    width: 24px;
-    height: 24px;
+  &--sm {
+    width: use-height-size(6);
+    height: use-height-size(6);
     font-size: 16px;
 
-    &.#{$arrows-class}--left{
-      left: $small-diff;
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--start {
+      inset-inline-start: $small-diff;
     }
-    &.#{$arrows-class}--right{
-      right: $small-diff;
+    &.#{$arrows-class}--horizontal.#{$arrows-class}--end {
+      inset-inline-end: $small-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--start {
+      inset-block-start: $small-diff;
+    }
+
+    &.#{$arrows-class}--vertical.#{$arrows-class}--end {
+      inset-block-end: $small-diff;
     }
   }
 }

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
@@ -8,11 +8,18 @@ import {
   CheckCascaderDataItem,
   CheckCascaderExpandTriggerEnum,
   CheckCascaderItemEventData,
+  CheckCascaderAppearanceEnum,
   FlattedCheckCascaderDataItem,
 } from './types'
 import { useCache } from '@hi-ui/use-cache'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { CheckCascaderMenuList } from './CheckCascaderMenuList'
 import {
   matchStrategy,
@@ -20,18 +27,20 @@ import {
   useTreeCustomSearch,
   useTreeUpMatchSearch,
 } from '@hi-ui/use-search-mode'
-import { flattenTreeData } from './utils'
-import { getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
+import {
+  flattenTreeData,
+  getAllCheckedStatus,
+  processCheckedIds,
+  allowCheck,
+  parseCheckDataDirty,
+} from './utils'
+import { filterTree, getNodeAncestorsWithMe, getTopDownAncestors } from '@hi-ui/tree-utils'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isUndef } from '@hi-ui/type-assertion'
-import {
-  HiBaseAppearanceEnum,
-  HiBaseFieldNames,
-  HiBaseSizeEnum,
-  useLocaleContext,
-} from '@hi-ui/core'
-
+import { HiBaseFieldNames, HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import Checkbox from '@hi-ui/checkbox'
 import { callAllFuncs } from '@hi-ui/func-utils'
+import { Highlighter } from '@hi-ui/highlighter'
 
 const _prefix = getPrefixCls('check-cascader')
 const NOOP_ARRAY = [] as []
@@ -69,25 +78,59 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       searchable: searchableProp,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       overlayClassName,
       type = 'tree',
+      flattedSearchResult = true,
       checkedMode,
       visible,
       onOpen,
       onClose,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       renderExtraFooter,
       dropdownColumnRender,
       customRender,
       fieldNames,
+      label,
+      showOnlyShowChecked,
+      virtual,
+      showCheckAll,
+      showIndicator = true,
+      renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, checkCascader: checkCascaderConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckCascaderSemanticClassNames,
+      CheckCascaderSemanticStyles,
+      CheckCascaderProps
+    >({
+      classNamesList: [checkCascaderConfig?.classNames, classNamesProp],
+      stylesList: [checkCascaderConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+          expandTrigger,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -104,6 +147,10 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       onClose,
     })
 
+    const [filterItems, setFilterItems] = useState<CheckCascaderDataItem[] | null>(null)
+    const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
+    const activeExpandable = showOnlyShowChecked && !!filterItems && menuVisible
+
     const [cascaderData, setCascaderData] = useCache(data)
 
     const [flattedData, flattedDataMap] = useMemo(() => {
@@ -115,7 +162,9 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
     const [_value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     // 内部实现使用尾部 id
-    const value = _value.map((path) => path[path.length - 1])
+    const value = useMemo(() => {
+      return _value.map((path) => path[path.length - 1])
+    }, [_value])
 
     const proxyOnChange = useLatestCallback(
       (value: React.ReactText[], item: any, shouldChecked: boolean) => {
@@ -180,6 +229,16 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && searchMode === 'upMatch'
 
+        if (highlight && !flattedSearchResult) {
+          return (
+            <span className={cx(`title__text`, `title__text--cols`)}>
+              <Highlighter key={node.id} keyword={new RegExp(searchValue, 'ig')}>
+                {node.title}
+              </Highlighter>
+            </span>
+          )
+        }
+
         let found = false
 
         const ret = highlight ? (
@@ -223,13 +282,13 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
 
         return ret
       },
-      [titleRender, searchValue, searchMode]
+      [titleRender, searchValue, searchMode, flattedSearchResult]
     )
 
     const shouldUseSearch = !!searchValue
 
     const selectProps = {
-      data: shouldUseSearch ? stateInSearch.data : flattedData,
+      data: filterItems || (shouldUseSearch ? stateInSearch.data : flattedData),
       titleRender: proxyTitleRender,
     }
 
@@ -241,12 +300,91 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
       })
     }, [flattedDataMap, value])
 
-    useEffect(() => {
+    const [currentAllChecked, hasCheckedAll] = useMemo(() => {
+      if (!showCheckAll) return []
+      const parsedCheckedIds = parseCheckDataDirty(
+        checkedMode as string,
+        value,
+        flattedData,
+        allowCheck
+      )
+
+      return getAllCheckedStatus(flattedData, parsedCheckedIds)
+    }, [showCheckAll, value, flattedData, checkedMode])
+
+    const toggleCheckAll = useCallback(() => {
+      const shouldChecked = !currentAllChecked
+
+      // 全选操作
+      if (!currentAllChecked && !hasCheckedAll) {
+        const checkedIds = processCheckedIds(
+          checkedMode as string,
+          flattedData
+            .filter((item) => allowCheck(item as CheckCascaderItemEventData))
+            .map(({ id }) => id),
+          flattedData,
+          allowCheck
+        )
+
+        proxyOnChange(checkedIds, null, shouldChecked)
+      } else {
+        proxyOnChange([], null, shouldChecked)
+      }
+    }, [checkedMode, flattedData, currentAllChecked, hasCheckedAll, proxyOnChange])
+
+    const renderDefaultFooter = useCallback(() => {
+      if (!showCheckAll) return null
+
+      return (
+        <Checkbox
+          indeterminate={hasCheckedAll}
+          checked={currentAllChecked}
+          onChange={toggleCheckAll}
+        >
+          {i18n.get('checkSelect.checkAll')}
+        </Checkbox>
+      )
+    }, [i18n, showCheckAll, currentAllChecked, hasCheckedAll, toggleCheckAll])
+
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(selectedItems, value)
+          : customRender
+        : null
+    }, [customRender, selectedItems, value])
+
+    const handleMenuListChange = useCallback(() => {
       if (menuVisible) {
         // 数据改变时更新弹窗显示位置，避免弹窗内容被遮挡
         pickerInnerRef.current?.update()
       }
-    }, [menuVisible, selectProps.data])
+    }, [menuVisible])
+
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
 
     return (
       <Picker
@@ -254,6 +392,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         innerRef={pickerInnerRef}
         className={cls}
         overlayClassName={cx(`${prefixCls}__popper`, overlayClassName)}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
         overlay={{ matchWidth: false, ...rest.overlay }}
@@ -266,18 +406,17 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         onClose={menuVisibleAction.off}
         searchable={searchable}
         scrollable={false}
-        footer={isFunction(renderExtraFooter) && renderExtraFooter()}
+        footer={isFunction(renderExtraFooter) ? renderExtraFooter() : renderDefaultFooter()}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
+        header={renderExtraHeader?.()}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(selectedItems)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <TagInputMock
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               {...tagInputProps}
               size={size}
               clearable={clearable}
@@ -286,6 +425,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               // @ts-ignore
               displayRender={displayRender}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               appearance={appearance}
@@ -294,10 +434,68 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
               onChange={proxyOnChange}
               data={flattedData}
               invalid={invalid}
+              label={label}
               // onExpand={() => {
               //   // setViewSelected(true)
               //   menuVisibleAction.on()
               // }}
+              onClick={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                evt.preventDefault()
+                if (filterItems) {
+                  setFilterItems(null)
+                }
+
+                if (menuVisible) {
+                  if (expandedViewRef.current === 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'normal'
+              }}
+              expandable={showOnlyShowChecked}
+              activeExpandable={activeExpandable}
+              onExpand={(evt) => {
+                if (!showOnlyShowChecked) return
+
+                // 阻止冒泡触发外层 onClick
+                evt.preventDefault()
+                evt.stopPropagation()
+
+                // 选中数据
+                setFilterItems(() => {
+                  const filterFunc = (node: CheckCascaderDataItem): boolean => {
+                    if (value.includes(node.id)) {
+                      return true
+                    }
+
+                    if (node.children && node.children?.length > 0) {
+                      return node.children.some((child) => filterFunc(child))
+                    }
+
+                    return false
+                  }
+                  // filterTree 过滤树结构，将不包含value中的节点分支过滤掉
+                  // 返回过滤后的树结构
+                  const treeData = filterTree(data, filterFunc)
+
+                  return flattenTreeData(treeData, fieldNames)
+                })
+                // 展开/关闭操作
+                if (menuVisible) {
+                  if (expandedViewRef.current !== 'normal') {
+                    menuVisibleAction.off()
+                  }
+                } else {
+                  menuVisibleAction.on()
+                }
+
+                expandedViewRef.current = 'onlyChecked'
+              }}
             />
           )
         }
@@ -306,6 +504,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
           <CheckCascaderMenuList
             disabled={disabled}
             value={value}
+            classNames={classNames}
+            styles={styles}
             // @ts-ignore
             onChange={proxyOnChange}
             expandTrigger={expandTrigger}
@@ -314,7 +514,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onSelect={onSelect}
             onLoadChildren={onLoadChildren}
             titleRender={proxyTitleRender}
-            flatted={flatted || !!searchValue}
+            flatted={flatted || (!!searchValue && flattedSearchResult) || activeExpandable}
             // @ts-ignore
             flattedData={selectProps.data}
             originalFlattedData={flattedData}
@@ -322,6 +522,8 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
             onChangeData={setCascaderData}
             checkedMode={checkedMode}
             dropdownColumnRender={dropdownColumnRender}
+            virtual={virtual}
+            onMenuListChange={handleMenuListChange}
           />
         ) : null}
       </Picker>
@@ -329,7 +531,26 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   }
 )
 
-export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrollable'> {
+export type CheckCascaderSemanticName = PickerSemanticName | 'menuList' | 'menu' | 'option'
+export type CheckCascaderSemanticClassNames = SemanticClassNamesType<
+  CheckCascaderProps,
+  CheckCascaderSemanticName
+>
+export type CheckCascaderSemanticStyles = SemanticStylesType<
+  CheckCascaderProps,
+  CheckCascaderSemanticName
+>
+export type CheckCascaderSemantic = ComponentSemantic<
+  CheckCascaderSemanticClassNames,
+  CheckCascaderSemanticStyles
+>
+
+export interface CheckCascaderProps
+  extends Omit<
+      PickerProps,
+      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+    >,
+    CheckCascaderSemantic {
   /**
    * 设置选择项数据源
    */
@@ -405,6 +626,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   type?: 'flatted' | 'tree'
   /**
+   * 搜索结果拍平展示
+   */
+  flattedSearchResult?: boolean
+  /**
    * 触发器输入框占位符
    */
   placeholder?: string
@@ -422,7 +647,11 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: CheckCascaderAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 自定义搜索过滤器，仅在 searchable 为 true 时有效
    * 第一个参数为输入的关键字，
@@ -458,6 +687,10 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   renderExtraFooter?: () => React.ReactNode
   /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
+  /**
    * 自定义下拉菜单每列渲染
    */
   dropdownColumnRender?: (menu: React.ReactElement, level: number) => React.ReactNode
@@ -466,7 +699,26 @@ export interface CheckCascaderProps extends Omit<PickerProps, 'trigger' | 'scrol
    */
   customRender?:
     | React.ReactNode
-    | ((selectItems: (FlattedCheckCascaderDataItem | undefined)[]) => React.ReactNode)
+    | ((
+        selectItems: (FlattedCheckCascaderDataItem | undefined)[],
+        value?: React.ReactText[]
+      ) => React.ReactNode)
+  /**
+   * 是否只展示选中的选项
+   */
+  showOnlyShowChecked?: boolean
+  /**
+   * 是否开启虚拟滚动
+   */
+  virtual?: boolean
+  /**
+   * 是否开启全选功能
+   */
+  showCheckAll?: boolean
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

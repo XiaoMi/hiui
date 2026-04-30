@@ -10,22 +10,22 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     box-sizing: border-box;
     width: 100%;
     min-width: 160px;
-    font-size: 14px;
+    font-size: use-text-size('normal');
     vertical-align: middle;
     color: use-color-static('black');
-    border: 1px solid transparent;
+    border: use-border-size('normal') transparent;
     background-color: use-color-static('white');
     transition: all 0.3s;
-    padding: 4px 10px;
+    padding: use-spacing(2) use-spacing(5);
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 32px;
+    min-height: use-height-size(8);
     overflow: hidden;
 
     // outline
-    border-color: use-color('gray', 300);
-    border-radius: 4px;
+    border-color: use-color('gray', 400);
+    border-radius: use-border-radius('md');
 
     &:not(.disabled):hover {
       border-color: use-color-mode('primary');
@@ -38,34 +38,34 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
 
     &.disabled {
       cursor: not-allowed;
-      color: use-color('gray', 500);
-      background-color: use-color('gray', 100);
+      color: use-color('gray', 600);
+      background-color: use-color('gray', 200);
 
       .#{$tag-input-prefix}__tag {
-        background-color: use-color('gray', 200);
+        background-color: use-color('gray', 300);
       }
     }
   }
 
   &__placeholder {
-    color: use-color('gray', 500);
+    color: use-color('gray', 600);
   }
 
   &__suffix {
-    font-size: 16px;
+    font-size: use-text-size('lg');
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
-    min-width: 32px;
+    min-width: use-width-size(8);
   }
 
   &__clear {
     display: inline-flex;
     align-items: center;
-    width: 16px;
-    height: 16px;
-    font-size: 14px;
-    color: use-color('gray', 500);
+    width: use-width-size(4);
+    height: use-height-size(4);
+    font-size: use-text-size('normal');
+    color: use-color('gray', 600);
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s;
@@ -80,8 +80,8 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     width: 100%;
     display: inline-flex;
     align-items: center;
-    height: 22px;
-    line-height: 22px;
+    height: use-text-lineheight('normal');
+    line-height: use-text-lineheight('normal');
   }
 
   &__tags {
@@ -93,36 +93,36 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     white-space: nowrap;
     height: 100%;
     box-sizing: border-box;
-    margin-top: -4px;
+    margin-block-start: calc(-1 * #{use-spacing(2)});
     position: relative;
   }
 
   &__tag,
   &__tag--left {
     display: inline-block;
-    margin-right: 4px;
+    margin-inline-end: use-spacing(2);
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 use-spacing(4);
     vertical-align: middle;
-    font-size: 12px;
+    font-size: use-text-size('sm');
     color: #333;
     user-select: none;
-    background-color: use-color('gray', 100);
-    border-radius: 4px;
+    background-color: use-color('gray', 200);
+    border-radius: use-border-radius('md');
   }
 
   &__tag--total {
     display: inline-block;
-    margin-right: 6px;
+    margin-inline-end: use-spacing(3);
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 use-spacing(4);
     vertical-align: middle;
-    font-size: 12px;
+    font-size: use-text-size('sm');
     user-select: none;
     background-color: use-color-mode('primary', 100);
     color: use-color-mode('primary');
-    border-radius: 4px;
-    line-height: 22px;
+    border-radius: use-border-radius('md');
+    line-height: use-text-lineheight('normal');
     cursor: inherit;
   }
 
@@ -139,8 +139,8 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
     }
 
     &-closed {
-      margin-left: use-spacing(4);
-      font-size: 12px;
+      margin-inline-start: use-spacing(4);
+      font-size: use-text-size('sm');
       box-sizing: border-box;
       color: rgba(142, 142, 142, 1);
       cursor: pointer;
@@ -175,11 +175,11 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
 
     .#{$tag-input-prefix}__tags {
       white-space: normal;
-      margin-top: -4px;
+      margin-block-start: calc(-1 * #{use-spacing(2)});
     }
 
     .#{$tag-input-prefix}__tag {
-      margin-top: 4px;
+      margin-block-start: use-spacing(2);
     }
   }
 
@@ -188,27 +188,27 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
 
     .#{$tag-input-prefix}__container__expand {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset-block-start: 0;
+      inset-inline-start: 0;
       height: auto;
       z-index: 1;
       flex: 1;
       box-sizing: border-box;
       width: 100%;
       min-width: 160px;
-      font-size: 14px;
+      font-size: use-text-size('normal');
       vertical-align: middle;
       color: use-color-static('black');
-      border: 1px solid transparent;
+      border: use-border-size('normal') transparent;
       background-color: use-color-statc('white');
       transition: all 0.3s;
       padding: 3px 0;
       display: inline-flex;
       justify-content: space-between;
       align-items: flex-start;
-      min-height: 32px;
+      min-height: use-height-size(8);
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: use-border-radius('md');
       border-color: use-color-mode('primary');
 
       .#{$tag-input-prefix}__value {
@@ -216,23 +216,23 @@ $tag-input-prefix: '#{$component-prefix}-tag-input' !default;
         max-height: 74px;
         align-items: stretch;
         overflow: scroll;
-        padding-left: 10px;
+        padding-inline-start: use-spacing(5);
       }
 
       .#{$tag-input-prefix}__tags {
         white-space: normal;
-        margin-top: -4px;
+        margin-block-start: calc(-1 * #{use-spacing(2)});
       }
 
       .#{$tag-input-prefix}__tag {
-        margin-top: 4px;
+        margin-block-start: use-spacing(2);
       }
 
       .#{$tag-input-prefix}__suffix {
         align-items: flex-start;
-        padding: 4px 10px 4px 0;
+        padding: use-spacing(2) use-spacing(5) use-spacing(2) 0;
         position: sticky;
-        top: 0;
+        inset-block-start: 0;
       }
     }
   }

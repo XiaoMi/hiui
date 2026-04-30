@@ -1,21 +1,19 @@
-import Input from '@hi-ui/input'
 import React from 'react'
 import Select from '../src'
-import { PlusOutlined } from '@hi-ui/icons'
 
 /**
  * @title 吸底内容条
  */
 export const Footer = () => {
-  const [data, setData] = React.useState([
-    { title: '电视', id: '3', disabled: false },
-    { title: '手机', id: '2' },
-    { title: '笔记本', id: '4', disabled: false },
-    { title: '生活周边', id: '5' },
-    { title: '办公', id: '6' },
+  const [data] = React.useState([
+    { title: '手机', id: 'shouji' },
+    { title: '电脑', id: 'diannao' },
+    { title: '电视', id: 'dianshi' },
+    { title: '洗衣机', id: 'xiyiji' },
+    { title: '冰箱', id: 'bingxiang' },
+    { title: '空调', id: 'kongtiao' },
+    { title: '汽车', id: 'qiche' },
   ])
-
-  const [inputValue, setInputValue] = React.useState('')
 
   return (
     <>
@@ -27,24 +25,11 @@ export const Footer = () => {
           data={data}
           renderExtraFooter={() => {
             return (
-              <Input
-                placeholder="添加选项"
-                value={inputValue}
-                onChange={(evt) => {
-                  setInputValue(evt.target.value)
-                }}
-                suffix={
-                  <PlusOutlined
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      setData((prev) => {
-                        return [...prev, { id: Math.random() + inputValue, title: inputValue }]
-                      })
-                      setInputValue('')
-                    }}
-                  />
-                }
-              />
+              <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              >
+                Custom Footer
+              </div>
             )
           }}
         />

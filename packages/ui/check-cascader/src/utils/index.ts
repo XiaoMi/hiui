@@ -2,7 +2,6 @@ import React from 'react'
 import { HiBaseFieldNames } from '@hi-ui/core'
 import {
   baseFlattenTree,
-  fFindNodeById,
   findNestedChildren,
   getNodeAncestors,
   getTopDownAncestors,
@@ -48,6 +47,7 @@ export const flattenTreeData = (
       flattedNode.isLeaf = getKeyFields(raw, 'isLeaf') ?? false
       flattedNode.checkable = getKeyFields(raw, 'checkable') ?? true
       flattedNode.disabledCheckbox = getKeyFields(raw, 'disabledCheckbox') ?? false
+      flattedNode.disabledCheckboxCascaded = getKeyFields(raw, 'disabledCheckboxCascaded') ?? false
 
       return flattedNode
     },
@@ -121,11 +121,10 @@ export const processCheckedIds = (
   flattenData: any,
   allowCheck: (node: any) => boolean
 ) => {
-  const keySet = new Set(checkedIds)
-  const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
-
   switch (type) {
-    case 'CHILD':
+    case 'CHILD': {
+      const keySet = new Set(checkedIds)
+      const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
       return checkedIds.filter((id) => {
         const node = flattenDataMap.get(id) as any
 
@@ -142,8 +141,11 @@ export const processCheckedIds = (
         // 没有孩子节点，保留
         return true
       })
+    }
 
-    case 'PARENT':
+    case 'PARENT': {
+      const keySet = new Set(checkedIds)
+      const flattenDataMap = new Map(flattenData.map((node: any) => [node.id, node]))
       return checkedIds.filter((id) => {
         const node = flattenDataMap.get(id) as any
 
@@ -158,6 +160,7 @@ export const processCheckedIds = (
 
         return true
       })
+    }
   }
 
   return checkedIds
@@ -265,4 +268,64 @@ function fillCheck(
   }
 
   return Array.from(checkedIdsSet)
+}
+
+export const allowCheck = (targetItem: CheckCascaderItemEventData) => {
+  if (targetItem.disabled || targetItem.disabledCheckbox || targetItem.checkable === false) {
+    return false
+  }
+  return true
+}
+
+export const getAllCheckedStatus = (flattedData: any[], values: React.ReactText[]) => {
+  const treeIds = flattedData.map(({ id }: CheckCascaderItemEventData) => id)
+
+  const treeIdsSet = new Set(treeIds)
+  let hasValue = false
+
+  values.forEach((id) => {
+    if (treeIdsSet.has(id)) {
+      hasValue = true
+      treeIdsSet.delete(id)
+    }
+  })
+
+  return [hasValue && treeIdsSet.size === 0, hasValue && treeIdsSet.size > 0]
+}
+
+export const getFilteredMenuList = (
+  menuList: FlattedCheckCascaderDataItem[][],
+  searchedData: any[]
+) => {
+  const result = [] as any[]
+
+  searchedData.forEach((item) => {
+    while (item && item.depth >= 0) {
+      const depth = item.depth
+      let depthResult = result[depth] as Map<React.ReactText, any>
+
+      if (!depthResult) {
+        depthResult = new Map()
+        result[depth] = depthResult
+      }
+
+      depthResult.set(item.id, item)
+      item = item.parent
+    }
+  })
+
+  if (result.length === 0) return result
+
+  return menuList.map((depthItems, depth) => {
+    const depthSavedMp = result[depth]
+    if (!depthSavedMp) return depthItems
+
+    return depthItems.filter((item: any) => {
+      const depthSavedMp = result[item.depth]
+
+      if (!depthSavedMp) return true
+      if (depthSavedMp.has(item.id)) return true
+      return false
+    })
+  })
 }

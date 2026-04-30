@@ -22,7 +22,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   z-index: auto;
   font-size: inherit;
   line-height: inherit;
-  color: use-color('gray', 700);
+  color: use-color('gray', 800);
   border: use-border-size('normal') use-color-static('transparent');
   background-color: use-color-static('white');
 
@@ -35,15 +35,18 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   }
 
   &.disabled {
-    cursor: not-allowed;
+    cursor: not-allowed !important;
   }
 
-  &__suffix,
-  &__placeholder {
-    color: use-color('gray', 400);
+  &__suffix {
+    color: use-color('gray', 700);
+
+    &:has(> *) {
+      padding-left: use-spacing(4);
+    }
 
     .#{$mock-input-prefix}--appearance-unset & {
-      color: use-color('gray', 500);
+      color: use-color('gray', 700);
     }
   }
 
@@ -57,6 +60,11 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: use-color('gray', 600);
+
+    .#{$mock-input-prefix}--appearance-unset & {
+      color: use-color('gray', 600);
+    }
   }
 
   // clear icon
@@ -65,9 +73,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     align-items: center;
     width: 16px;
     height: 16px;
-    font-size: use-text-size('normal');
+    font-size: use-text-size('lg');
     text-align: center;
-    color: use-color('gray', 500);
+    color: use-color('gray', 700);
     flex-shrink: 0;
     cursor: pointer;
     visibility: hidden;
@@ -77,7 +85,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     transition-timing-function: use-motion-bezier('normal');
 
     &:hover {
-      color: use-color-static('black');
+      color: use-color-mode('primary');
     }
 
     &.active {
@@ -92,17 +100,13 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    color: use-color('gray', 400);
+    color: use-color('gray', 500);
     font-size: use-text-size('lg');
     text-align: center;
   }
 
   &__prefix {
-    margin-right: use-spacing(4);
-  }
-
-  &__suffix {
-    padding-left: use-spacing(4);
+    margin-inline-end: use-spacing(4);
   }
 
   &__value {
@@ -118,13 +122,29 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   $input-padding-width: calc(#{use-spacing(6)} - 1px);
 
   &--size {
-    &-sm {
+    &-xs {
       &.#{$mock-input-prefix} {
         height: use-height-size(6);
         font-size: use-text-size('sm');
         line-height: use-text-lineheight('sm');
         border-radius: use-border-radius('normal');
-        padding: 1px $input-padding-width;
+
+        &:not(.#{$mock-input-prefix}--appearance-borderless) {
+          padding: 1px calc(#{use-spacing(4)} - 1px);
+        }
+      }
+    }
+
+    &-sm {
+      &.#{$mock-input-prefix} {
+        height: use-height-size(7);
+        font-size: use-text-size('sm');
+        line-height: use-text-lineheight('sm');
+        border-radius: use-border-radius('normal');
+
+        &:not(.#{$mock-input-prefix}--appearance-borderless) {
+          padding: 1px $input-padding-width;
+        }
       }
     }
 
@@ -134,7 +154,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         font-size: use-text-size('normal');
         line-height: use-text-lineheight('normal');
         border-radius: use-border-radius('normal');
-        padding: 4px $input-padding-width;
+
+        &:not(.#{$mock-input-prefix}--appearance-borderless) {
+          padding: 4px $input-padding-width;
+        }
       }
     }
 
@@ -144,7 +167,10 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         font-size: use-text-size('lg');
         line-height: use-text-lineheight('lg');
         border-radius: use-border-radius('normal');
-        padding: 7px $input-padding-width;
+
+        &:not(.#{$mock-input-prefix}--appearance-borderless) {
+          padding: 7px $input-padding-width;
+        }
       }
     }
   }
@@ -152,14 +178,13 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
   &--appearance {
     &-line {
       &.#{$mock-input-prefix} {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
 
         &:not(.disabled):hover {
           border-color: use-color-mode('primary');
         }
 
         &:not(.disabled).focused {
-          box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
         }
 
@@ -168,10 +193,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
 
           &.hover {
             border-color: use-color-mode('error');
-          }
-
-          &.focused {
-            box-shadow: $input-error-shadow;
           }
         }
       }
@@ -184,14 +205,9 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         justify-content: flex-start;
         border-color: transparent;
 
-        &:not(.disabled):hover {
-          background-color: use-color('gray', 100);
-        }
-
+        &:not(.disabled):hover,
         &:not(.disabled).focused {
-          box-shadow: $input-shadow;
-          background-color: use-color-static('white');
-          border-color: use-color-mode('primary');
+          background-color: use-color('gray', 100);
         }
 
         &:not(.disabled).invalid {
@@ -200,12 +216,12 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           &.hover {
             border-color: use-color-mode('error');
           }
-
-          &.focused {
-            box-shadow: $input-error-shadow;
-          }
         }
       }
+    }
+
+    &-borderless {
+      border: none;
     }
 
     &-filled {
@@ -218,7 +234,6 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
         }
 
         &:not(.disabled).focused {
-          box-shadow: $input-shadow;
           border-color: use-color-mode('primary');
           background-color: use-color-static('white');
         }
@@ -229,10 +244,54 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
           &.hover {
             border-color: use-color-mode('error');
           }
+        }
+      }
+    }
 
-          &.focused {
-            box-shadow: $input-error-shadow;
+    &-contained {
+      background-color: use-color('gray', 100);
+      border: none;
+
+      &.#{$mock-input-prefix} {
+        width: auto;
+      }
+
+      .#{$mock-input-prefix}__label,
+      .#{$mock-input-prefix}__suffix {
+        color: use-color('gray', 700);
+      }
+
+      .#{$mock-input-prefix}__label {
+        flex-shrink: 0;
+      }
+
+      &.#{$mock-input-prefix}--has-value,
+      &:not(.disabled):hover {
+        background-color: use-color-mode('primary', 50);
+
+        .#{$mock-input-prefix}__label,
+        .#{$mock-input-prefix}__value,
+        .#{$mock-input-prefix}__suffix {
+          color: use-color-mode('primary', 700);
+        }
+
+        .#{$mock-input-prefix}__clear {
+          color: use-color-mode('primary', 700);
+
+          &:hover {
+            color: use-color-mode('primary', 800);
           }
+        }
+      }
+
+      &.disabled {
+        .#{$mock-input-prefix}__label,
+        .#{$mock-input-prefix}__value {
+          color: use-color('gray', 600);
+        }
+
+        .#{$mock-input-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }
@@ -241,14 +300,20 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     &-unset,
     &-filled {
       &.disabled {
-        &.#{$mock-input-prefix} {
-          color: use-color('gray', 400);
+        .#{$mock-input-prefix}__placeholder {
+          color: use-color('gray', 600);
+        }
+
+        &.#{$mock-input-prefix},
+        .#{$mock-input-prefix}__suffix {
+          color: use-color('gray', 500);
         }
       }
     }
 
     &-line,
-    &-filled {
+    &-filled,
+    &-contained {
       &.disabled {
         &.#{$mock-input-prefix} {
           background-color: use-color('gray', 100);

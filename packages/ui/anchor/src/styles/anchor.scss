@@ -5,12 +5,13 @@ $prefix: '#{$component-prefix}-anchor' !default;
 .#{$prefix} {
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
 
   &__list {
     @include list-reset();
 
     position: relative;
-    padding-left: use-spacing(2);
+    padding-inline-start: use-spacing(2);
 
     &::before {
       content: '';
@@ -21,15 +22,16 @@ $prefix: '#{$component-prefix}-anchor' !default;
       display: block;
       width: 2px;
       height: 100%;
-      background-color: use-color('gray', 200);
+      background-color: use-color('gray', 300);
     }
   }
 
   &-ink {
-    left: 0;
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: -100%;
     width: 2px;
     height: 12px;
-    display: block;
     background-color: use-color-mode('primary');
   }
 }
@@ -42,10 +44,10 @@ $item-prefix: '#{$prefix}-item' !default;
   width: 100%;
 
   & > & {
-    padding-left: use-spacing(6);
+    padding-inline-start: use-spacing(6);
   }
 
-  &__link {
+  > .#{$item-prefix}__link {
     @include link-reset();
     @include ellipsis();
 
@@ -58,7 +60,7 @@ $item-prefix: '#{$prefix}-item' !default;
     font-size: use-text-size('sm');
     line-height: use-text-lineheight('sm');
     font-weight: use-text-weight('normal');
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     background-color: use-color-static('transparent');
     // @animation
     transition-property: background-color;
@@ -67,13 +69,13 @@ $item-prefix: '#{$prefix}-item' !default;
     position: relative;
 
     &:hover {
-      background-color: use-color('gray', 50);
+      background-color: use-color('gray', 100);
     }
   }
 
   &--active {
     > .#{$item-prefix}__link {
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
       font-weight: use-text-weight('medium');
     }
   }

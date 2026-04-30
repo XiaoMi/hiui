@@ -1,8 +1,16 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useImperativeHandle,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCheckSelect, UseCheckSelectProps } from './use-check-select'
-import type { HiBaseHTMLProps } from '@hi-ui/core'
+import type { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
 import { CheckSelectProvider, useCheckSelectContext } from './context'
 import {
@@ -10,20 +18,27 @@ import {
   CheckSelectDataItem,
   CheckSelectItemEventData,
   CheckSelectMergedItem,
+  CheckSelectHelper,
 } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import Checkbox from '@hi-ui/checkbox'
 import { TagInputMock, TagInputMockProps } from '@hi-ui/tag-input'
 import { isFunction, isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import VirtualList, { ListRef, useCheckInVirtual } from '@hi-ui/virtual-list'
-import { Picker, PickerProps, PickerHelper } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { mockDefaultHandlers } from '@hi-ui/dom-utils'
-import { times, uniqBy } from '@hi-ui/array-utils'
+import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { UseDataSource } from '@hi-ui/use-data-source'
 import { callAllFuncs } from '@hi-ui/func-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import {
   useAsyncSearch,
   useFilterSearch,
@@ -32,6 +47,7 @@ import {
 } from '@hi-ui/use-search-mode'
 import { flattenData } from './hooks'
 import { getAllCheckedStatus, isCheckableOption, isOption } from './utils'
+import { uuid } from '@hi-ui/use-id'
 
 const _role = 'check-select'
 const _prefix = getPrefixCls(_role)
@@ -73,19 +89,50 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       render: titleRender,
       renderExtraFooter,
       onSearch: onSearchProp,
+      onItemCreate,
+      creatableInSearch,
       fieldNames = DEFAULT_FIELD_NAMES,
       checkedOnEntered = true,
       customRender,
       tagInputProps,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       onKeyDown: onKeyDownProp,
       keyword: keywordProp,
+      clearSearchOnClosed,
+      label,
+      showIndicator = true,
+      renderExtraHeader,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      innerRef,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, checkSelect: checkSelectConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
+    const { classNames, styles } = useMergeSemantic<
+      CheckSelectSemanticClassNames,
+      CheckSelectSemanticStyles,
+      CheckSelectProps
+    >({
+      classNamesList: [checkSelectConfig?.classNames, classNamesProp],
+      stylesList: [checkSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
+
     // ************************** 国际化 ************************* //
 
     const i18n = useLocaleContext()
@@ -161,9 +208,12 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'filter' || searchMode === 'dataSource')
 
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
         const ret = highlight ? (
           <Checkbox checked={node.checked} disabled={node.disabled}>
-            <Highlighter keyword={searchValue}>{node.title}</Highlighter>
+            <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
           </Checkbox>
         ) : (
           true
@@ -184,6 +234,17 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       const nextData = checkedItems.concat(flattedData as any[])
       return uniqBy(nextData, 'id')
     }, [checkedItems, flattedData])
+
+    // 仅当有关键字搜索且（无结果 或 关键字与搜索结果无全匹配）时显示创建入口
+    const creatableInSearchVisible = useMemo(() => {
+      if (!creatableInSearch || !searchValue?.trim()) return false
+      const optionItems = showData.filter((item: any) => !('groupTitle' in item))
+      if (optionItems.length === 0) return true
+      const hasFullMatch = optionItems.some(
+        (item: CheckSelectDataItem) => String(item.title).trim() === searchValue.trim()
+      )
+      return !hasFullMatch
+    }, [creatableInSearch, searchValue, showData])
 
     const mergedCheckedItems = useMemo(() => {
       if (typeof customRender !== 'function') {
@@ -248,6 +309,11 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       const { key } = evt
 
       if (key === 'Enter' && checkedOnEntered) {
+        if (creatableInSearch && showData.length === 0) {
+          handleCreate(searchValue)
+          return
+        }
+
         const focusedItem = showData[focusedIndex]
 
         if (focusedItem) {
@@ -256,13 +322,37 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
     })
 
+    const handleCreate = useLatestCallback((keyword: string) => {
+      const id = `${keyword}-${uuid()}`
+      const createdItem = {
+        id,
+        title: keyword,
+      }
+      onSelect(createdItem, true)
+      onItemCreate?.(createdItem)
+
+      // 创建后重置搜索和关闭弹窗
+      clearSearchOnClosed && pickerInnerRef.current?.clearSearch()
+      menuVisibleAction.off()
+    })
+
     // 更新 focused 索引
     useEffect(() => {
       setFocusedIndex(defaultIndex)
     }, [defaultIndex, menuVisible])
 
     const renderDefaultFooter = () => {
-      const extra = renderExtraFooter ? renderExtraFooter() : null
+      const CheckAllNode = (
+        <Checkbox
+          indeterminate={showIndeterminate}
+          checked={showAllChecked}
+          onChange={toggleCheckAll}
+          disabled={!dropdownItems?.length}
+        >
+          {i18n.get('checkSelect.checkAll')}
+        </Checkbox>
+      )
+      const extra = renderExtraFooter ? renderExtraFooter(CheckAllNode) : null
       if (showCheckAll) {
         return (
           <>
@@ -270,6 +360,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
               indeterminate={showIndeterminate}
               checked={showAllChecked}
               onChange={toggleCheckAll}
+              disabled={!dropdownItems?.length}
             >
               {i18n.get('checkSelect.checkAll')}
             </Checkbox>
@@ -279,6 +370,14 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
       return extra
     }
+
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(mergedCheckedItems)
+          : customRender
+        : null
+    }, [customRender, mergedCheckedItems])
 
     const expandedViewRef = useRef<'normal' | 'onlyChecked'>('normal')
 
@@ -307,12 +406,69 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
       }
     }, [menuVisible, showData])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
+    useImperativeHandle(innerRef, () => {
+      return {
+        checkAll: (checked = true) => {
+          if (checked) {
+            if (!showAllChecked) toggleCheckAll()
+          } else {
+            if (showAllChecked) toggleCheckAll()
+          }
+        },
+        showOnlyChecked: (onlyChecked = true) => {
+          if (!showOnlyShowChecked) return
+          if (disabled) return
+
+          if (onlyChecked) {
+            setFilterItems(() => {
+              return mergedData.filter((item) => value.includes(item.id))
+            })
+
+            menuVisibleAction.on()
+            expandedViewRef.current = 'onlyChecked'
+          } else {
+            if (filterItems) setFilterItems(null)
+
+            menuVisibleAction.on()
+            expandedViewRef.current = 'normal'
+          }
+        },
+      }
+    })
+
     return (
-      <CheckSelectProvider value={context}>
+      <CheckSelectProvider value={{ ...context, classNames, styles }}>
         <Picker
           ref={ref}
           innerRef={pickerInnerRef}
           className={cls}
+          classNames={pickerClassNames}
+          styles={pickerStyles}
           {...rootProps}
           visible={menuVisible}
           disabled={disabled}
@@ -320,30 +476,34 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
           onClose={menuVisibleAction.off}
           onKeyDown={mockDefaultHandlers(handleKeyDown, onKeyDownProp)}
           keyword={keywordProp}
+          clearSearchOnClosed={clearSearchOnClosed}
           searchable={searchable}
           scrollable={!inVirtual}
           onSearch={callAllFuncs(onSearchProp, onSearch)}
           loading={rest.loading !== undefined ? rest.loading : loading}
           footer={renderDefaultFooter()}
+          creatableInSearch={creatableInSearch}
+          creatableInSearchVisible={creatableInSearchVisible}
+          onCreate={handleCreate}
+          header={renderExtraHeader?.()}
           trigger={
             customRender ? (
-              typeof customRender === 'function' ? (
-                customRender(mergedCheckedItems)
-              ) : (
-                customRender
-              )
+              customRenderContent
             ) : (
               <TagInputMock
+                style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
                 {...tagInputProps}
                 size={size}
                 clearable={clearable}
                 placeholder={placeholder}
                 // @ts-ignore
                 displayRender={displayRender}
+                showIndicator={showIndicator}
                 prefix={prefix}
                 suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
                 focused={menuVisible}
                 appearance={appearance}
+                label={label}
                 value={value}
                 // @ts-ignore
                 onChange={tryChangeValue}
@@ -427,9 +587,27 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
   }
 )
 
+export type CheckSelectSemanticName = PickerSemanticName | 'option' | 'optionGroup'
+export type CheckSelectSemanticClassNames = SemanticClassNamesType<
+  CheckSelectProps,
+  CheckSelectSemanticName
+>
+export type CheckSelectSemanticStyles = SemanticStylesType<
+  CheckSelectProps,
+  CheckSelectSemanticName
+>
+export type CheckSelectSemantic = ComponentSemantic<
+  CheckSelectSemanticClassNames,
+  CheckSelectSemanticStyles
+>
+
 export interface CheckSelectProps
-  extends Omit<PickerProps, 'trigger' | 'scrollable'>,
-    UseCheckSelectProps {
+  extends Omit<
+      PickerProps,
+      'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles' | 'innerRef'
+    >,
+    UseCheckSelectProps,
+    CheckSelectSemantic {
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
@@ -459,7 +637,7 @@ export interface CheckSelectProps
   /**
    * 自定义尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 自定义渲染节点的 title 内容
    */
@@ -476,6 +654,10 @@ export interface CheckSelectProps
    * 设置展现形式
    */
   appearance?: CheckSelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 节点搜索模式，仅在mode=normal模式下生效
    */
@@ -497,7 +679,11 @@ export interface CheckSelectProps
   /**
    * 自定义下拉菜单底部渲染
    */
-  renderExtraFooter?: () => React.ReactNode
+  renderExtraFooter?: (CheckAllNode?: React.ReactNode) => React.ReactNode
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
   /**
    * 选择框前置内容
    */
@@ -538,6 +724,22 @@ export interface CheckSelectProps
    * TagInput 参数设置
    */
   tagInputProps?: TagInputMockProps
+  /**
+   * 是否开启创建选项
+   */
+  creatableInSearch?: boolean
+  /**
+   * 创建选项时触发
+   */
+  onItemCreate?: (item: CheckSelectMergedItem) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
+  /**
+   * 提供辅助方法的内部引用
+   */
+  innerRef?: React.Ref<CheckSelectHelper>
 }
 
 // @ts-ignore
@@ -563,7 +765,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     },
     ref
   ) => {
-    const { isCheckedId, onSelect } = useCheckSelectContext()
+    const { isCheckedId, onSelect, classNames, styles } = useCheckSelectContext()
 
     const { id, disabled = false } = option
     const checked = isCheckedId(id)
@@ -578,6 +780,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     const cls = cx(
       prefixCls,
       className,
+      classNames?.option,
       checked && `${prefixCls}--checked`,
       disabled && `${prefixCls}--disabled`,
       focused && `${prefixCls}--focused`
@@ -612,8 +815,7 @@ export const CheckSelectOption = forwardRef<HTMLDivElement | null, CheckSelectOp
     )
 
     return (
-      <div ref={ref} className={cls} {...rest} onClick={handleOptionCheck}>
-        {renderIndent(prefixCls, depth)}
+      <div ref={ref} className={cls} style={styles?.option} {...rest} onClick={handleOptionCheck}>
         {renderTitle(eventNodeRef.current, titleRender)}
       </div>
     )
@@ -634,13 +836,18 @@ export const CheckSelectOptionGroup = forwardRef<
   HTMLDivElement | null,
   CheckSelectOptionGroupProps
 >(({ prefixCls = optionGroupPrefix, className, label, depth, ...rest }, ref) => {
-  const cls = cx(prefixCls, className)
+  const { classNames, styles } = useCheckSelectContext()
+
+  const cls = cx(prefixCls, className, classNames?.optionGroup)
+  const groupStyle = styles?.optionGroup
 
   return (
-    <div ref={ref} className={cls} {...rest}>
-      {renderIndent(prefixCls, !depth || depth === 0 ? 0 : depth - 1)}
-      <span>{label}</span>
-    </div>
+    <>
+      <div className={`${prefixCls}__divider`} />
+      <div ref={ref} className={cls} style={groupStyle} {...rest}>
+        <span>{label}</span>
+      </div>
+    </>
   )
 })
 
@@ -655,17 +862,4 @@ export interface CheckSelectOptionGroupProps extends HiBaseHTMLProps {
 CheckSelectOptionGroup.HiName = 'CheckSelectOptionGroup'
 if (__DEV__) {
   CheckSelectOptionGroup.displayName = 'CheckSelectOptionGroup'
-}
-
-/**
- * 渲染空白占位
- */
-const renderIndent = (prefixCls: string, depth: number) => {
-  return times(depth, (index: number) => {
-    return (
-      <span key={index} style={{ alignSelf: 'stretch' }}>
-        <span className={cx(`${prefixCls}__indent`)} />
-      </span>
-    )
-  })
 }

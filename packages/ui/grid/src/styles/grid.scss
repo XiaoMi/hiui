@@ -10,15 +10,17 @@ $prefix: '#{$component-prefix}-grid' !default;
     flex-direction: row;
     flex-wrap: wrap;
     row-gap: var(#{with-prefix-var('grid-row-gap')});
-    margin-left: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
-    margin-right: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
+    margin-inline-start: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
+    margin-inline-end: calc(-1 * var(#{with-prefix-var('grid-row-gutter')}) / 2);
 
     $justify-content: with-prefix-var('grid-row-justify') !default;
+    $align-content: with-prefix-var('grid-row-align') !default;
 
     justify-content: var($justify-content);
+    align-items: var($align-content);
 
     & + & {
-      margin-top: var(with-prefix-var('grid-row-gap'));
+      margin-block-start: var(with-prefix-var('grid-row-gap'));
     }
   }
 
@@ -27,8 +29,8 @@ $prefix: '#{$component-prefix}-grid' !default;
     flex-grow: 0;
     flex-shrink: 0;
     min-width: 1px;
-    padding-left: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);
-    padding-right: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);
+    padding-inline-start: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);
+    padding-inline-end: calc(var(#{with-prefix-var('grid-row-gutter')}) / 2);
 
     $span: with-prefix-var('grid-col-span') !default;
     $columns: with-prefix-var('grid-row-columns') !default;
@@ -51,14 +53,14 @@ $prefix: '#{$component-prefix}-grid' !default;
   }
 }
 
-$hi-v4-xxs-viewport: 'only screen and (min-width: 375px)' !default;
-$hi-v4-xs-viewport: 'only screen and (min-width: 480px)' !default;
-$hi-v4-xs-viewport: 'only screen and (min-width: 480px)' !default;
-$hi-v4-sm-viewport: 'only screen and (min-width: 576px)' !default;
-$hi-v4-md-viewport: 'only screen and (min-width: 768px)' !default;
-$hi-v4-lg-viewport: 'only screen and (min-width: 992px)' !default;
-$hi-v4-xl-viewport: 'only screen and (min-width: 1200px)' !default;
-$hi-v4-xl-viewport: 'only screen and (min-width: 1600px)' !default;
+$hi-v5-xxs-viewport: 'only screen and (min-width: 375px)' !default;
+$hi-v5-xs-viewport: 'only screen and (min-width: 480px)' !default;
+$hi-v5-xs-viewport: 'only screen and (min-width: 480px)' !default;
+$hi-v5-sm-viewport: 'only screen and (min-width: 576px)' !default;
+$hi-v5-md-viewport: 'only screen and (min-width: 768px)' !default;
+$hi-v5-lg-viewport: 'only screen and (min-width: 992px)' !default;
+$hi-v5-xl-viewport: 'only screen and (min-width: 1200px)' !default;
+$hi-v5-xl-viewport: 'only screen and (min-width: 1600px)' !default;
 
 .#{$prefix}-col {
   --#{$prefix}-col-span: var(--#{$prefix}-col-span-xs);
@@ -71,7 +73,7 @@ $hi-v4-xl-viewport: 'only screen and (min-width: 1600px)' !default;
   --#{$prefix}-row-justify: var(--#{$prefix}-row-justify-xs);
 }
 
-@media #{$hi-v4-sm-viewport} {
+@media #{$hi-v5-sm-viewport} {
   .#{$prefix}-row {
     --#{$prefix}-row-justify: var(--#{$prefix}-row-justify-sm);
   }
@@ -84,7 +86,7 @@ $hi-v4-xl-viewport: 'only screen and (min-width: 1600px)' !default;
   }
 }
 
-@media #{$hi-v4-md-viewport} {
+@media #{$hi-v5-md-viewport} {
   .#{$prefix}-row {
     --#{$prefix}-row-justify: var(--#{$prefix}-row-justify-md);
   }
@@ -97,7 +99,7 @@ $hi-v4-xl-viewport: 'only screen and (min-width: 1600px)' !default;
   }
 }
 
-@media #{$hi-v4-lg-viewport} {
+@media #{$hi-v5-lg-viewport} {
   .#{$prefix}-row {
     --#{$prefix}-row-justify: var(--#{$prefix}-row-justify-lg);
   }
@@ -110,7 +112,7 @@ $hi-v4-xl-viewport: 'only screen and (min-width: 1600px)' !default;
   }
 }
 
-@media #{$hi-v4-xl-viewport} {
+@media #{$hi-v5-xl-viewport} {
   .#{$prefix}-row {
     --#{$prefix}-row-justify: var(--#{$prefix}-row-justify-xl);
   }

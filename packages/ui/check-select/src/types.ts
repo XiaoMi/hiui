@@ -57,4 +57,20 @@ export interface CheckSelectItemEventData
   extends FlattedCheckSelectDataItem,
     CheckSelectRequiredProps {}
 
-export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | undefined
+export type CheckSelectAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined
+
+/**
+ * CheckSelect 通过 innerRef 暴露的辅助方法
+ */
+export interface CheckSelectHelper {
+  /**
+   * 全选/取消全选当前列表中的可选项
+   * @param checked 默认 true：全选 (非全选状态下)；传 false 时取消全选 (全选状态下)
+   */
+  checkAll: (checked?: boolean) => void
+  /**
+   * 仅显示已选 / 显示全部
+   * @param onlyChecked 默认 true：仅显示已选项并打开下拉；传 false 时显示全部并打开下拉
+   */
+  showOnlyChecked: (onlyChecked?: boolean) => void
+}

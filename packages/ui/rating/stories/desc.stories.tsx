@@ -13,7 +13,7 @@ export const Desc = () => {
           defaultValue={1}
           descRender={(value) => {
             const arr = ['极差', '失望', '一般', '满意', '很满意']
-            return <span style={{ color: '#ff5959' }}>{arr[Math.ceil(value) - 1]}</span>
+            return <span>{arr[Math.ceil(value) - 1]}</span>
           }}
         ></Rating>
       </div>

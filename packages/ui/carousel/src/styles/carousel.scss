@@ -19,7 +19,7 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
 
   &--dot-outer {
     .#{$wrapper-class} {
-      height: calc(100% - 32px);
+      height: calc(100% - #{use-height-size(8)});
     }
   }
 
@@ -31,6 +31,25 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
     display: flex;
     align-items: center;
     transition: 300ms ease-in-out all;
+  }
+
+  // 当 dotPlacement 为 left 或 right 时，切换为垂直方向
+  &--vertical {
+    .#{$prefix}__content {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .#{$prefix}__item-wrapper {
+      // 在垂直方向时，每个 item-wrapper 应该占据 wrapper 的 100% 高度
+      // 使用 flex-basis: 100% 来确保每个 item 占据 content 的 1/(childCount+1) 高度
+      // 由于 content 的高度是 (childCount + 1) * 100%，所以每个 item 会占据 wrapper 的 100% 高度
+      flex: 0 0 100%;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+    }
   }
 
   &__item-wrapper {
@@ -45,8 +64,8 @@ $wrapper-class: '#{$prefix}__wrapper' !default;
 
   &__page-number {
     position: absolute;
-    right: 12px;
-    bottom: 16px;
+    inset-inline-end: 12px;
+    inset-block-end: 16px;
     color: use-color-static('white');
     font-size: use-text-size('sm');
     line-height: 22px;

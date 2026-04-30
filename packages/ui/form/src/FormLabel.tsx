@@ -34,6 +34,8 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     labelPlacement = labelPlacementContext,
     formMessage,
     showValidateMessage: showValidateMessageProp = showValidateMessageContext,
+    itemClassNames: semanticClassNames,
+    itemStyles: semanticStyles,
     ...rest
   } = props
 
@@ -83,14 +85,23 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
     <div ref={ref} role={role} className={cls} style={style} {...rest}>
       <div className={`${prefixCls}__content`} style={{ alignItems: contentPositionMemo }}>
         {label ? (
-          <label className={`${prefixCls}__content__text`} style={{ width: labelWidth }}>
+          <label
+            className={cx(`${prefixCls}__content__text`, semanticClassNames?.label)}
+            style={{ width: labelWidth, ...semanticStyles?.label }}
+          >
             {label}
             {colon}
           </label>
         ) : (
-          <span className={`${prefixCls}__content__indent`} style={{ width: labelWidth }} />
+          <span
+            className={cx(`${prefixCls}__content__indent`, semanticClassNames?.label)}
+            style={{ width: labelWidth, ...semanticStyles?.label }}
+          />
         )}
-        <div className={`${prefixCls}__content__control`} style={{ width: controlWidth }}>
+        <div
+          className={cx(`${prefixCls}__content__control`, semanticClassNames?.content)}
+          style={{ width: controlWidth, ...semanticStyles?.content }}
+        >
           {children}
         </div>
       </div>
@@ -101,7 +112,29 @@ export const FormLabel = forwardRef<HTMLDivElement | null, FormLabelProps>((prop
   )
 })
 
+/** Form.Item 传入的 label/content 语义化 classNames */
+export interface FormLabelSemanticClassNames {
+  label?: string
+  content?: string
+}
+
+/** Form.Item 传入的 label/content 语义化 styles */
+export interface FormLabelSemanticStyles {
+  label?: React.CSSProperties
+  content?: React.CSSProperties
+}
+
 export interface FormLabelProps extends HiBaseHTMLProps<'div'> {
+  /**
+   * 由 Form.Item 传入的语义化 classNames（label / content），勿直接使用
+   * @internal
+   */
+  itemClassNames?: FormLabelSemanticClassNames
+  /**
+   * 由 Form.Item 传入的语义化 styles（label / content），勿直接使用
+   * @internal
+   */
+  itemStyles?: FormLabelSemanticStyles
   /**
    * label 放置的位置
    */

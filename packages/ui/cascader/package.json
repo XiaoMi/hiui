@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -58,9 +59,11 @@
     "@hi-ui/use-check-state": "^4.0.4",
     "@hi-ui/use-data-source": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-search-mode": "^4.2.1",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4",
+    "@hi-ui/virtual-list": "^4.0.8",
     "scroll-into-view-if-needed": "^3.1.0"
   },
   "peerDependencies": {

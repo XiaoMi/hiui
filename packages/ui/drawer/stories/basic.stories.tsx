@@ -19,10 +19,10 @@ export const Basic = () => {
           onClose={() => setVisible(false)}
           footer={
             <div style={{ textAlign: 'right' }}>
-              <Button type="default" key={1} onClick={() => console.log(2)}>
+              <Button type="default" appearance="line" key={1} onClick={() => setVisible(false)}>
                 取消
               </Button>
-              <Button type="primary" key={0} onClick={() => console.log(1)}>
+              <Button type="primary" key={0} onClick={() => setVisible(false)}>
                 确认
               </Button>
             </div>

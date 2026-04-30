@@ -15,6 +15,9 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       type = 'default',
       title,
       content,
@@ -31,15 +34,25 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
 
     const cls = cx(
       prefixCls,
+      className,
+      classNamesProp?.item,
       active && `${prefixCls}--active`,
       done && `${prefixCls}--done`,
-      pending && `${prefixCls}--pending`,
-      className
+      pending && `${prefixCls}--pending`
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={`${prefixCls}-status`}>
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{ ...style, ...stylesProp?.item }}
+        {...rest}
+      >
+        <div
+          className={cx(`${prefixCls}-status`, classNamesProp?.itemStatus)}
+          style={stylesProp?.itemStatus}
+        >
           {renderIcon({
             prefixCls: `${prefixCls}-status`,
             icon: icon,
@@ -48,13 +61,26 @@ export const StepperItem = forwardRef<HTMLDivElement | null, StepperItemProps>(
             done,
           })}
         </div>
-        <div className={`${prefixCls}-tip`}>
+        <div
+          className={cx(`${prefixCls}-tip`, classNamesProp?.itemTip)}
+          style={stylesProp?.itemTip}
+        >
           {isUndef(title) ? null : (
-            <div className={`${prefixCls}-tip__title`}>
+            <div
+              className={cx(`${prefixCls}-tip__title`, classNamesProp?.itemTipTitle)}
+              style={stylesProp?.itemTipTitle}
+            >
               <div>{title}</div>
             </div>
           )}
-          {isUndef(content) ? null : <div className={`${prefixCls}-tip__content`}>{content}</div>}
+          {isUndef(content) ? null : (
+            <div
+              className={cx(`${prefixCls}-tip__content`, classNamesProp?.itemTipContent)}
+              style={stylesProp?.itemTipContent}
+            >
+              {content}
+            </div>
+          )}
         </div>
       </div>
     )
@@ -74,6 +100,26 @@ export interface StepperItemProps extends HiBaseHTMLProps<'div'>, StepperDataIte
    * 默认展示 icon 类型
    */
   type?: 'dot' | 'default'
+  /**
+   * 语义化 classNames（由 Stepper 传入，对应 item / itemStatus / itemTip / itemTipTitle / itemTipContent）
+   */
+  classNames?: {
+    item?: string
+    itemStatus?: string
+    itemTip?: string
+    itemTipTitle?: string
+    itemTipContent?: string
+  }
+  /**
+   * 语义化 styles（由 Stepper 传入）
+   */
+  styles?: {
+    item?: React.CSSProperties
+    itemStatus?: React.CSSProperties
+    itemTip?: React.CSSProperties
+    itemTipTitle?: React.CSSProperties
+    itemTipContent?: React.CSSProperties
+  }
 }
 
 if (__DEV__) {

@@ -1,5 +1,5 @@
 import { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { uuid } from '@hi-ui/use-id'
 
@@ -24,6 +24,7 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopoverApiP
     (disabledPortal ? target.parentNode : undefined) as Element
   )
 
+  let mockUnmount: any = null
   const popoverRef = createRef<any>()
 
   const ClonedPopover = createElement(Popover, {
@@ -35,7 +36,7 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopoverApiP
     onExited: () => {
       // 卸载
       if (container) {
-        unmountComponentAtNode(container)
+        mockUnmount()
         Container.removeContainer(selectId)
       }
       container = undefined
@@ -43,9 +44,16 @@ const open = (target: HTMLElement, { key, disabledPortal, ...rest }: PopoverApiP
     ...rest,
   })
 
+  const mockRender = getReactDomRender()
+  mockUnmount = mockRender(ClonedPopover, container)
+
   requestAnimationFrame(() => {
-    render(ClonedPopover, container)
-    popoverRef.current.open()
+    popoverRef.current?.open()
+
+    // NOTE 适配 React19 后，此处可能并非完全标准意义上的同步渲染
+    // 会导致 popoverRef 未被正确赋值，因此此处等待一帧后再唤起元素
+    // 一帧的时间是预估的，若收到反馈无法正确唤起，可尝试调整此处等待时间
+    // setTimeout(() => popoverRef.current.open(), 16)
   })
 
   const close = () => {

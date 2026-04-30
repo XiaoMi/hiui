@@ -16,10 +16,10 @@ $label-class: '#{$prefix}__label' !default;
   vertical-align: middle;
 
   &--type-button {
-    height: 32px;
-    padding: 0 12px;
-    color: use-color('gray', 600);
-    background: use-color('gray', 100);
+    height: use-height-size(8);
+    padding: 0 use-spacing(6);
+    border-radius: use-border-radius('md');
+    color: use-color('gray', 700);
     cursor: pointer;
     transition: all use-motion-duration('normal');
 
@@ -38,14 +38,17 @@ $label-class: '#{$prefix}__label' !default;
 
     &:hover,
     &[data-checked] {
-      background: use-color-mode('primary', 50);
       color: use-color-mode('primary');
+    }
+
+    &[data-checked] {
+      background: use-color-static('white');
     }
 
     &[data-disabled] {
       cursor: not-allowed;
-      background: use-color('gray', 200);
-      color: use-color('gray', 400);
+      background: use-color('gray', 300);
+      color: use-color('gray', 500);
     }
 
     &[data-checked]#{&}[data-disabled] {
@@ -60,7 +63,6 @@ $label-class: '#{$prefix}__label' !default;
       &__input {
         &:focus + .#{$prefix}__controller {
           border-color: use-color-mode('primary');
-          box-shadow: 0 0 0 2px use-color-mode('primary', 100);
         }
       }
 
@@ -69,21 +71,21 @@ $label-class: '#{$prefix}__label' !default;
 
         position: relative;
         box-sizing: border-box;
-        width: 16px;
-        height: 16px;
-        border: 1px solid use-color('gray', 300);
+        width: use-height-size(4);
+        height: use-height-size(4);
+        border: use-border-size('normal') use-color('gray', 400);
         border-radius: use-border-radius('full');
         transition: all use-motion-duration('normal');
         flex: none;
 
         &::after {
           position: absolute;
-          top: 0;
-          left: 0;
+          inset-block-start: -1px;
+          inset-inline-start: -1px;
           box-sizing: border-box;
           display: inline-block;
-          width: 14px;
-          height: 14px;
+          width: use-height-size(4);
+          height: use-height-size(4);
           content: '';
           background: use-color-mode('primary');
           border-radius: use-border-radius('full');
@@ -96,7 +98,7 @@ $label-class: '#{$prefix}__label' !default;
       &__label {
         box-sizing: border-box;
         margin-inline-start: use-spacing(4);
-        color: use-color('gray', 700);
+        color: use-color('gray', 800);
       }
     }
 
@@ -113,7 +115,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.3);
+          transform: scale(0.4);
           background-color: use-color-static('white');
         }
       }
@@ -127,7 +129,7 @@ $label-class: '#{$prefix}__label' !default;
 
         &::after {
           opacity: 1;
-          transform: scale(0.3);
+          transform: scale(0.4);
           background-color: use-color-static('white');
         }
       }
@@ -137,15 +139,15 @@ $label-class: '#{$prefix}__label' !default;
       cursor: not-allowed;
 
       .#{$controller-class} {
-        border-color: use-color('gray', 300);
+        border-color: use-color('gray', 400);
         background: use-color('gray', 100);
 
         &::after {
-          background: use-color('gray', 300);
+          background: use-color('gray', 400);
         }
       }
       .#{$label-class} {
-        color: use-color('gray', 500);
+        color: use-color('gray', 600);
       }
     }
   }
@@ -160,8 +162,11 @@ $label-class: '#{$prefix}__label' !default;
   }
 
   &--type-button {
+    padding: use-spacing(1);
     border-radius: use-border-radius('normal');
+    border: use-border-size('normal') use-color('gray', 300);
     overflow: hidden;
+    background-color: use-color('gray', 100);
   }
 
   &--type-default {
@@ -184,16 +189,23 @@ $label-class: '#{$prefix}__label' !default;
       }
     }
 
-    .#{$prefix}--type-button {
-      &::after {
+    .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
+      &::before {
         content: '';
         background: use-color('gray', 300);
         width: 1px;
-        left: 100%;
-        top: 8px;
-        bottom: 8px;
+        inset-inline-start: 0;
+        inset-block-start: use-spacing(4);
+        inset-block-end: use-spacing(4);
         position: absolute;
         z-index: use-zindex('absolute');
+      }
+    }
+
+    .#{$prefix}--type-button[data-disabled],
+    .#{$prefix}--type-button[data-checked] + .#{$prefix}--type-button {
+      &::before {
+        display: none;
       }
     }
   }
@@ -201,16 +213,23 @@ $label-class: '#{$prefix}__label' !default;
   &--placement-vertical {
     flex-direction: column;
 
-    .#{$prefix}--type-button {
-      &::after {
+    .#{$prefix}--type-button:not([data-checked]):not(:first-child) {
+      &::before {
         content: '';
         background: use-color('gray', 300);
         height: 1px;
-        left: 8px;
-        right: 8px;
-        top: 100%;
+        inset-inline-start: use-spacing(4);
+        inset-inline-end: use-spacing(4);
+        inset-block-start: 0;
         position: absolute;
         z-index: use-zindex('absolute');
+      }
+    }
+
+    .#{$prefix}--type-button[data-disabled],
+    .#{$prefix}--type-button[data-checked] + .#{$prefix}--type-button {
+      &::before {
+        display: none;
       }
     }
   }

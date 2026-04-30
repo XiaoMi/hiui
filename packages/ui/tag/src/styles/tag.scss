@@ -3,84 +3,169 @@
 $solid-color-map: (
   'primary': (
     'normal': use-color-mode('primary'),
-    'hover': use-color-mode('primary', 400)
+    'hover': use-color-mode('primary', 400),
+    'divider': use-color-mode('primary', 300)
   ),
   'warning': (
     'normal':use-color-mode('warning'),
-    'hover':use-color-mode('warning', 400)
+    'hover':use-color-mode('warning', 400),
+    'divider': use-color-mode('warning', 300)
   ),
   'success': (
     'normal':use-color-mode('success'),
-    'hover':use-color-mode('success', 400)
+    'hover':use-color-mode('success', 400),
+    'divider': use-color-mode('success', 300)
   ),
   'danger': (
     'normal': use-color-mode('danger'),
-    'hover': use-color-mode('danger', 400)
+    'hover': use-color-mode('danger', 400),
+    'divider': use-color-mode('danger', 300)
   ),
   'default': (
-    'normal': use-color('gray', 400),
-    'hover': use-color('gray', 300)
+    'normal': use-color('gray', 600),
+    'hover': use-color('gray', 400),
+    'divider': use-color('gray', 300)
+  ),
+  'yellow': (
+    'normal': use-color('yellow', 500),
+    'hover': use-color('yellow', 400),
+    'divider': use-color('yellow', 300)
+  ),
+  'ultramarine': (
+    'normal': use-color('ultramarine', 500),
+    'hover': use-color('ultramarine', 400),
+    'divider': use-color('ultramarine', 300)
+  ),
+  'skyblue': (
+    'normal': use-color('skyblue', 500),
+    'hover': use-color('skyblue', 400),
+    'divider': use-color('skyblue', 300)
+  ),
+  'purple': (
+    'normal': use-color('purple', 500),
+    'hover': use-color('purple', 400),
+    'divider': use-color('purple', 300)
+  ),
+  'rosered': (
+    'normal': use-color('rosered', 500),
+    'hover': use-color('rosered', 400),
+    'divider': use-color('rosered', 300)
   )
 ) !default;
-
 $line-color-map: (
   'primary': (
     'text': use-color-mode('primary'),
-    'border': use-color-mode('primary', 200),
+    'border': use-color-mode('primary'),
     'hover-text': use-color-mode('primary', 400),
     'hover-border': use-color-mode('primary', 100)
   ),
   'warning': (
     'text':use-color-mode('warning'),
-    'border':use-color-mode('warning', 200),
+    'border':use-color-mode('warning'),
     'hover-text':use-color-mode('warning', 400),
     'hover-border':use-color-mode('warning', 100)
   ),
   'success': (
     'text':use-color-mode('success'),
-    'border':use-color-mode('success', 200),
+    'border':use-color-mode('success'),
     'hover-text':use-color-mode('success', 400),
     'hover-border':use-color-mode('success', 100)
   ),
   'danger': (
     'text': use-color-mode('danger'),
-    'border': use-color-mode('danger', 200),
+    'border': use-color-mode('danger'),
     'hover-text': use-color-mode('danger', 400),
     'hover-border': use-color-mode('danger', 100)
   ),
   'default': (
-    'text': use-color('gray', 700),
-    'border': use-color('gray', 300),
-    'hover-text': use-color('gray', 600),
-    'hover-border': use-color('gray', 200)
+    'text': use-color('gray', 800),
+    'border': use-color('gray', 500),
+    'hover-text': use-color('gray', 700),
+    'hover-border': use-color('gray', 300)
+  ),
+  'yellow': (
+    'text': use-color('yellow', 500),
+    'border': use-color('yellow', 500),
+    'hover-text': use-color('yellow', 600),
+    'hover-border': use-color('yellow', 200)
+  ),
+  'ultramarine': (
+    'text': use-color('ultramarine', 500),
+    'border': use-color('ultramarine', 500),
+    'hover-text': use-color('ultramarine', 600),
+    'hover-border': use-color('ultramarine', 200)
+  ),
+  'skyblue': (
+    'text': use-color('skyblue', 500),
+    'border': use-color('skyblue', 500),
+    'hover-text': use-color('skyblue', 600),
+    'hover-border': use-color('skyblue', 200)
+  ),
+  'purple': (
+    'text': use-color('purple', 500),
+    'border': use-color('purple', 500),
+    'hover-text': use-color('purple', 600),
+    'hover-border': use-color('purple', 200)
+  ),
+  'rosered': (
+    'text': use-color('rosered', 500),
+    'border': use-color('rosered', 500),
+    'hover-text': use-color('rosered', 600),
+    'hover-border': use-color('rosered', 200)
   )
 ) !default;
 
 $filled-color-map: (
   'primary': (
-    'color': use-color-mode('primary'),
-    'background':use-color-mode('primary', 50),
-    'hover-background':use-color-mode('primary', 100)
+    'color': use-color-mode('primary', 800),
+    'background':use-color-mode('primary', 100),
+    'hover-background':use-color-mode('primary', 100),
+    'divider': use-color-mode('primary', 50)
   ),
   'warning': (
-    'color':use-color-mode('warning'),
-    'background':use-color-mode('warning', 50),
+    'color':use-color-mode('warning', 800),
+    'background':use-color-mode('warning', 100),
     'hover-background':use-color-mode('warning', 100),
   ),
   'success': (
-    'color':use-color-mode('success'),
-    'background':use-color-mode('success', 50),
+    'color':use-color-mode('success', 900),
+    'background':use-color-mode('success', 100),
     'hover-background':use-color-mode('success', 100)
   ),
   'danger': (
-    'color': use-color-mode('danger'),
-    'background': use-color-mode('danger', 50),
+    'color': use-color-mode('danger', 800),
+    'background': use-color-mode('danger', 100),
     'hover-background': use-color-mode('danger', 100)
   ),
   'default': (
-    'color': use-color('gray', 700),
-    'background': use-color('gray', 100),
-    'hover-background': use-color('gray', 200)
+    'color': use-color('gray', 800),
+    'background': use-color('gray', 200),
+    'hover-background': use-color('gray', 300)
+  ),
+  'yellow': (
+    'color': use-color('yellow', 900),
+    'background': use-color('yellow', 100),
+    'hover-background': use-color('yellow', 100)
+  ),
+  'ultramarine': (
+    'color': use-color('ultramarine', 800),
+    'background': use-color('ultramarine', 100),
+    'hover-background': use-color('ultramarine', 100)
+  ),
+  'skyblue': (
+    'color': use-color('skyblue', 900),
+    'background': use-color('skyblue', 100),
+    'hover-background': use-color('skyblue', 100)
+  ),
+  'purple': (
+    'color': use-color('purple', 800),
+    'background': use-color('purple', 100),
+    'hover-background': use-color('purple', 100)
+  ),
+  'rosered': (
+    'color': use-color('rosered', 800),
+    'background': use-color('rosered', 100),
+    'hover-background': use-color('rosered', 100)
   )
 ) !default;
 
@@ -108,6 +193,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
 
         &.#{$prefix}--hover-enable:hover {
           background: map-get($value, 'hover');
+        }
+
+        .#{$prefix}__close-button {
+          border-color: map-get($value, 'divider');
         }
       }
     }
@@ -141,16 +230,50 @@ $shape-round: '#{$prefix}--shape-round' !default;
     }
   }
 
+  &--appearance-dot {
+    .#{$prefix}__content-wrapper {
+      padding: 0 !important;
+    }
+
+    .#{$prefix}__dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .#{$prefix}__content {
+      display: inline-flex;
+      align-items: center;
+      gap: use-spacing(4);
+      font-size: use-text-size('md');
+      line-height: use-text-lineheight('md');
+      color: use-color('gray', 800);
+    }
+
+    @each $key, $value in $solid-color-map {
+      &.#{$prefix}--type-#{$key} {
+        .#{$prefix}__dot {
+          background: map-get($value, 'normal');
+        }
+      }
+    }
+  }
+
   &--size-sm {
     height: use-height-size(5);
     font-size: use-text-size('sm');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('sm');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
+    }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(2);
     }
   }
 
@@ -159,11 +282,15 @@ $shape-round: '#{$prefix}--shape-round' !default;
     font-size: use-text-size('sm');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('normal');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
+    }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(3);
     }
   }
 
@@ -172,11 +299,15 @@ $shape-round: '#{$prefix}--shape-round' !default;
     font-size: use-text-size('normal');
 
     &.#{$shape-square} {
-      border-radius: use-border-radius('normal');
+      border-radius: use-border-radius('md');
     }
 
     &.#{$shape-round} {
       border-radius: use-border-radius('full');
+    }
+
+    .#{$prefix}__content-wrapper {
+      padding: 0 use-spacing(4);
     }
   }
 
@@ -191,7 +322,7 @@ $shape-round: '#{$prefix}--shape-round' !default;
   }
 
   &--in-edit {
-    @include edit-shadow();
+    // @include edit-shadow();
 
     .#{$prefix}__content {
       opacity: 0;
@@ -204,19 +335,10 @@ $shape-round: '#{$prefix}--shape-round' !default;
 
   &__content-wrapper {
     position: relative;
-    padding: 0 use-spacing(4);
     height: 100%;
     overflow: hidden;
     display: flex;
     align-items: center;
-  }
-
-  &--appearance-line { /* stylelint-disable-line */
-    .#{$prefix} {
-      &__content-wrapper {
-        padding: 0 calc(#{use-spacing(4)} - 1px);
-      }
-    }
   }
 
   &__content {
@@ -237,20 +359,20 @@ $shape-round: '#{$prefix}--shape-round' !default;
     width: calc(100% - #{use-spacing(8)});
     position: absolute;
     line-height: inherit;
-    left: use-spacing(4);
-    top: 50%;
-    transform: translateY(-50%);
+    inset-inline-start: use-spacing(4);
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
     z-index: use-zindex('absolute');
   }
 
   &__close-button {
     height: calc(100% - #{use-spacing(4)});
     padding: 0 use-spacing(2);
-    border-left: use-border-size('normal') use-color('gray', 300);
+    border-inline-start: use-border-size('normal') use-color('gray', 400);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: use-text-size('lg');
+    font-size: use-text-size('sm');
     cursor: pointer;
   }
 }

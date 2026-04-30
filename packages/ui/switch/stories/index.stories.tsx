@@ -6,6 +6,7 @@ export * from './size.stories'
 export * from './controlled.stories'
 export * from './status.stories'
 export * from './custom.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Switch',

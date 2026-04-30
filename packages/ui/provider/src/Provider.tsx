@@ -5,37 +5,51 @@ import {
   PortalProviderProps,
   LocaleProvider,
   LocaleProviderProps,
+  GlobalProvider,
+  UseGlobalContext,
 } from '@hi-ui/core'
-import { DesignSystemAccentColorEnum, DesignSystemProps } from './types'
-import { createSystem, extendsTheme } from './theme'
+import { DesignSystemAccentColorEnum, ThemeDataProps } from './types'
+import {
+  createComponentsSystem,
+  createSystem,
+  extendsTheme,
+  removeComponentsSystem,
+  removeSystem,
+} from './theme'
 import { getAccentColorTheme } from './accent-color'
 
-const PREFIX = 'hi-v4'
+const PREFIX = 'hi-v5'
 
 export const Provider: React.FC<ProviderProps> & {
   extends: ProviderExtendsFunc
   merge: ProviderMergeFunc
-} = ({ children, locale, languages, accentColor, theme, portal }) => {
+} = ({ children, locale, languages, accentColor, theme, portal, ...rest }) => {
   /**
    * global css var config
    */
   useEffect(() => {
     const accentColorTheme = getAccentColorTheme(accentColor)
 
-    const mergedThemes = extendsTheme(accentColorTheme, theme)
+    const mergedThemes = extendsTheme(accentColorTheme, theme?.token)
+    const componentsThemes = theme?.components
 
-    if (!mergedThemes) return
+    if (!mergedThemes && !componentsThemes) return
 
-    createSystem(mergedThemes, PREFIX)
+    requestAnimationFrame(() => {
+      createSystem(mergedThemes, PREFIX)
+      createComponentsSystem(componentsThemes, PREFIX)
+    })
+
     return () => {
-      createSystem(null, PREFIX)
+      removeSystem(PREFIX)
+      removeComponentsSystem(componentsThemes, PREFIX)
     }
   }, [accentColor, theme])
 
   return (
     <PortalProvider portal={portal}>
       <LocaleProvider locale={locale} languages={languages}>
-        {children}
+        <GlobalProvider value={rest}>{children}</GlobalProvider>
       </LocaleProvider>
     </PortalProvider>
   )
@@ -44,6 +58,7 @@ export const Provider: React.FC<ProviderProps> & {
 export interface ProviderProps
   extends LocaleProviderProps,
     PortalProviderProps,
+    UseGlobalContext,
     ThemeProviderProps {
   children?: React.ReactNode
 }
@@ -56,7 +71,7 @@ interface ThemeProviderProps {
   /**
    * 自定义主题，包括色彩、圆角、边框、动效等
    */
-  theme?: DesignSystemProps
+  theme?: ThemeDataProps
 }
 
 if (__DEV__) {

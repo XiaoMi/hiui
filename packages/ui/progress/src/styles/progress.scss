@@ -42,10 +42,10 @@ $progress-color-map: (
       .#{$prefix}__value {
         &::before {
           position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+          inset-block-start: 0;
+          inset-inline-end: 0;
+          inset-block-end: 0;
+          inset-inline-start: 0;
           background: use-color-static('white');
           opacity: 0;
           content: '';
@@ -73,14 +73,14 @@ $progress-color-map: (
 
     .#{$prefix}__content {
       &--right {
-        right: 0;
-        transform: translateX(calc(100% + #{use-spacing(4)}));
+        inset-inline-end: 0;
+        transform: translate3d(calc(100% + #{use-spacing(4)}), 0, 0);
         color: use-color('gray', 700);
       }
 
       color: use-color-static('white');
       position: absolute;
-      right: use-spacing(4);
+      inset-inline-end: use-spacing(4);
       height: 100%;
       display: flex;
       align-items: center;
@@ -89,8 +89,8 @@ $progress-color-map: (
   }
 
   &__content {
-    font-size: use-text-size('normal');
-    margin-left: use-spacing(10);
+    font-size: use-text-size('sm');
+    margin-inline-start: use-spacing(6);
     color: use-color('gray', 700);
     white-space: nowrap;
   }
@@ -99,14 +99,14 @@ $progress-color-map: (
   &__value {
     // cover to parent element content
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     transition: 350ms cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: use-border-radius('full');
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
   }
 
   &__buffer {
@@ -163,17 +163,19 @@ $circle-progress-prefix: '#{$component-prefix}-circle-progress' !default;
     width: 100%;
     text-align: center;
     line-height: 1;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
+    inset-inline-start: 0;
     margin: 0;
     padding: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: use-text-size('sm');
+    color: use-color('gray', 700);
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           color: $value;
         }
       }
@@ -212,17 +214,19 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
     width: 100%;
     text-align: center;
     line-height: 1;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
+    inset-inline-start: 0;
     margin: 0;
     padding: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: use-text-size('sm');
+    color: use-color('gray', 700);
 
     @each $key, $value in $progress-color-map {
       &--#{$key} {
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           color: $value;
         }
       }
@@ -258,5 +262,38 @@ $dashboard-progress-prefix: '#{$component-prefix}-dashboard-progress' !default;
         stroke: $value;
       }
     }
+  }
+}
+
+$mini-progress-prefix: '#{$component-prefix}-mini-progress' !default;
+
+.#{$mini-progress-prefix} {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: use-text-size('sm');
+
+  &__background {
+    fill: none;
+    stroke: use-color('gray', 200);
+  }
+
+  &__circle {
+    fill: none;
+    stroke: use-color-mode('primary');
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
+
+    @each $key, $value in $progress-color-map {
+      &--#{$key} {
+        stroke: $value;
+      }
+    }
+  }
+
+  &__text {
+    margin-inline-start: use-spacing(4);
+    color: use-color('gray', 700);
   }
 }

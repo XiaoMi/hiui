@@ -1,20 +1,29 @@
 import React, { forwardRef, useCallback, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps, UploadFileItem } from './types'
+import type {
+  UploadProps,
+  UploadFileItem,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
 import {
   PlusOutlined,
   DeleteOutlined,
-  EyeOutlined,
-  ExclamationCircleOutlined,
-  CloseCircleOutlined,
+  SearchOutlined,
+  InfoCircleFilled,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+  RotateRightOutlined,
+  RotateLeftOutlined,
+  ResetOutlined,
 } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
 import { Modal } from '@hi-ui/modal'
-import Cropper from 'react-cropper'
+import Cropper, { ReactCropperElement } from 'react-cropper'
 import { getImageTypeByFilename } from './utils'
 
 const UPLOAD_PREFIX = getPrefixCls('upload')
@@ -46,6 +55,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       preview,
       method,
       timeout,
+      content,
+      size = 'md',
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -60,6 +73,12 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       disabled && `${prefixCls}--disabled`,
       className
     )
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -79,27 +98,74 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       timeout,
     })
 
-    const { aspectRatio = 0, dragMode = 'move' } = avatarOptions
-    const cropperRef = useRef<HTMLImageElement>(null)
+    const {
+      aspectRatio = 0,
+      dragMode = 'move',
+      rotatable = true,
+      outputWidth,
+      outputHeight,
+      ...restAvatarOptions
+    } = avatarOptions
 
     const uploadRef = useRef<HTMLLIElement>(null)
+    const cropperRef = useRef<ReactCropperElement>(null)
 
     // TODO: 提取 usePreview hook
     const [visible, setVisible] = useState(false)
     const [previewFile, setPreviewFile] = useState<string>('')
     const [cropperFile, setCropperFile] = useState<UploadFileItem | null>(null)
+    const [zoomLevel, setZoomLevel] = useState(1)
+    const [cropperVisible, setCropperVisible] = useState(false)
 
     const closeModal = useCallback(() => {
       setPreviewFile('')
       setVisible(false)
     }, [])
 
+    const cropperInstance = useCallback(() => cropperRef.current?.cropper, [])
+
+    // == cropper toolbar 相关方法 ==
+    const updateZoomLevel = useCallback(() => {
+      const imageData = cropperInstance()?.getImageData()
+      if (imageData) {
+        setZoomLevel(imageData.width / imageData.naturalWidth)
+      }
+    }, [cropperInstance])
+
+    const onCropperReady = useCallback(() => {
+      updateZoomLevel()
+    }, [updateZoomLevel])
+
+    const onCropperZoom = useCallback(() => {
+      updateZoomLevel()
+    }, [updateZoomLevel])
+
+    const zoomIn = useCallback(() => {
+      cropperInstance()?.zoom(0.1)
+    }, [cropperInstance])
+
+    const zoomOut = useCallback(() => {
+      cropperInstance()?.zoom(-0.1)
+    }, [cropperInstance])
+
+    const rotateRight = useCallback(() => {
+      cropperInstance()?.rotate(90)
+    }, [cropperInstance])
+
+    const rotateLeft = useCallback(() => {
+      cropperInstance()?.rotate(-90)
+    }, [cropperInstance])
+
+    const reset = useCallback(() => {
+      cropperInstance()?.reset()
+      updateZoomLevel()
+    }, [cropperInstance, updateZoomLevel])
+
     const previewImage = useCallback((url: string) => {
       setPreviewFile(url)
       setVisible(true)
     }, [])
-
-    const [cropperVisible, setCropperVisible] = useState(false)
+    // == cropper toolbar 相关方法 ==
 
     const takeCropper = useCallback((file: UploadFileItem) => {
       const fr = new window.FileReader()
@@ -139,10 +205,15 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       (filename: string) => {
         // 裁切图片
         if (cropperRef.current) {
-          const canvas = (cropperRef.current as any)?.cropper?.getCroppedCanvas()
+          const canvas = cropperRef.current?.cropper?.getCroppedCanvas({
+            ...(typeof outputWidth === 'number' ? { width: outputWidth } : {}),
+            ...(typeof outputHeight === 'number' ? { height: outputHeight } : {}),
+          })
+
           if (typeof canvas === 'undefined') {
             return
           }
+
           const dataUrl = canvas.toDataURL(getImageTypeByFilename(filename))
           const file: UploadFileItem = base2blob(dataUrl, filename)
           file.url = dataUrl
@@ -151,7 +222,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
           setCropperVisible(false)
         }
       },
-      [uploadFiles, base2blob]
+      [uploadFiles, base2blob, outputWidth, outputHeight]
     )
 
     const handleItemKeydown = useCallback(
@@ -187,10 +258,20 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <ul className={`${prefixCls}__list`}>
+        <ul
+          className={cx(
+            `${prefixCls}__list`,
+            `${prefixCls}__list--size-${size}`,
+            cn?.avatarUploadList
+          )}
+          style={st?.avatarUploadList}
+        >
           {!!file &&
             (file.uploadState === 'loading' ? (
-              <li className={`${prefixCls}__item`}>
+              <li
+                className={cx(`${prefixCls}__item`, cn?.avatarUploadItem)}
+                style={st?.avatarUploadItem}
+              >
                 <img src={file.url} className={`${prefixCls}__thumb`} />
                 <div className={`${prefixCls}__percent`}>
                   <p className={`${prefixCls}__loading-text`}>
@@ -208,9 +289,10 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
               </li>
             ) : (
               <li
-                className={cx(`${prefixCls}__item`, {
+                className={cx(`${prefixCls}__item`, cn?.avatarUploadItem, {
                   [`${prefixCls}__item--error`]: file.uploadState === 'error',
                 })}
+                style={st?.avatarUploadItem}
                 tabIndex={0}
                 onClick={() => previewImage(file.url || '')}
                 onKeyDown={(e) => {
@@ -223,7 +305,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     <div className={`${prefixCls}__mask`}>
                       <div className={`${prefixCls}__action-group`}>
                         <span className={`${prefixCls}__action-btn`}>
-                          <EyeOutlined
+                          <SearchOutlined
                             onClick={() => {
                               previewImage(file.url || '')
                             }}
@@ -242,7 +324,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   ) : (
                     <div className={`${prefixCls}__percent`}>
                       <span className={`${prefixCls}__error-btn`}>
-                        <ExclamationCircleOutlined />
+                        <InfoCircleFilled />
                       </span>
                       <span
                         className={cx(`${prefixCls}__delete-btn`)}
@@ -251,7 +333,7 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                           deleteFile(file, 0)
                         }}
                       >
-                        <CloseCircleOutlined />
+                        <DeleteOutlined />
                       </span>
                     </div>
                   )
@@ -268,12 +350,18 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             >
               {children === undefined ? (
                 <li
-                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--upload`)}
+                  className={cx(
+                    `${prefixCls}__item`,
+                    `${prefixCls}__item--upload`,
+                    cn?.avatarUploadUploadTrigger
+                  )}
+                  style={st?.avatarUploadUploadTrigger}
                   ref={uploadRef}
                   tabIndex={0}
                   onKeyDown={handleUploadKeydown}
                 >
                   <PlusOutlined />
+                  <div className={`${prefixCls}__item__upload-text`}>{content}</div>
                 </li>
               ) : (
                 children
@@ -293,14 +381,47 @@ export const AvatarUpload = forwardRef<HTMLDivElement | null, UploadProps>(
             setCropperVisible(false)
           }}
         >
-          <Cropper
-            src={cropperFile?.url || ''}
-            aspectRatio={aspectRatio}
-            guides={false}
-            dragMode={dragMode}
-            ref={cropperRef}
-            style={{ height: 400, width: '100%' }}
-          />
+          <div
+            className={cx(`${prefixCls}-cropper__container`, cn?.avatarUploadCropper)}
+            style={st?.avatarUploadCropper}
+          >
+            <Cropper
+              src={cropperFile?.url || ''}
+              aspectRatio={aspectRatio}
+              guides={false}
+              dragMode={dragMode}
+              ref={cropperRef}
+              style={{ height: 400, width: '100%' }}
+              ready={onCropperReady}
+              zoom={onCropperZoom}
+              rotatable={rotatable}
+              {...restAvatarOptions}
+            />
+            <div
+              className={cx(`${prefixCls}-cropper__toolbar`, cn?.avatarUploadCropperToolbar)}
+              style={st?.avatarUploadCropperToolbar}
+            >
+              <span onClick={zoomOut} className={`${prefixCls}-cropper__toolbar-btn`}>
+                <ZoomOutOutlined />
+              </span>
+              <span className={`${prefixCls}-cropper__toolbar-zoom`}>
+                {Math.round(zoomLevel * 100)}%
+              </span>
+              <span onClick={zoomIn} className={`${prefixCls}-cropper__toolbar-btn`}>
+                <ZoomInOutlined />
+              </span>
+              <span className={`${prefixCls}-cropper__toolbar-separator`} />
+              <span onClick={rotateRight} className={`${prefixCls}-cropper__toolbar-btn`}>
+                <RotateRightOutlined />
+              </span>
+              <span onClick={rotateLeft} className={`${prefixCls}-cropper__toolbar-btn`}>
+                <RotateLeftOutlined />
+              </span>
+              <span onClick={reset} className={`${prefixCls}-cropper__toolbar-btn`}>
+                <ResetOutlined />
+              </span>
+            </div>
+          </div>
         </Modal>
       </div>
     )

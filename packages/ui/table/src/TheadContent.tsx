@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo, useRef } from 'react'
 import { Resizable } from 'react-resizable'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
@@ -24,16 +24,39 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
       showColMenu,
       setHeaderTableElement,
       onResizeStop,
+      maxHeight,
+      sticky,
+      stickyTop,
+      stickyFooter,
+      stretchHeight,
+      semanticClassNames,
+      semanticStyles,
     } = useTableContext()
 
     const activeColumnKeysAction = useCheckState()
+    const trRefs = useRef<HTMLTableRowElement[]>([])
+    const needSticky = useMemo(() => {
+      return sticky || stickyTop || stickyFooter || stretchHeight || maxHeight
+    }, [maxHeight, sticky, stickyFooter, stickyTop, stretchHeight])
 
     return (
       <thead {...rest}>
         {/* 渲染列 */}
         {groupedColumns.map((cols, colsIndex) => {
           return (
-            <tr key={colsIndex} ref={setHeaderTableElement}>
+            <tr
+              key={colsIndex}
+              ref={(el) => {
+                if (el) {
+                  trRefs.current[colsIndex] = el
+                  if (colsIndex === 0) {
+                    setHeaderTableElement(el)
+                  }
+                }
+              }}
+              className={semanticClassNames?.headerRow}
+              style={semanticStyles?.headerRow}
+            >
               {cols.map((col, colIndex) => {
                 const { dataKey, title, raw } = col || {}
                 let titleContent = isFunction(title) ? title(col) : title
@@ -57,7 +80,7 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                   }
                 }
 
-                const stickyColProps = getStickyColProps(col)
+                const stickyColProps = getStickyColProps(col, 'th')
 
                 const cell = (
                   <th
@@ -66,11 +89,18 @@ export const TheadContent = forwardRef<HTMLDivElement | null, TheadContentProps>
                     style={{
                       ...stickyColProps.style,
                       // 表头合并场景下，被合并的表头需要隐藏
+                      ...semanticStyles?.headerCell,
+                      ...semanticStyles?.cell,
                       display: col?.colSpan === 0 ? 'none' : undefined,
+                      insetBlockStart: needSticky
+                        ? trRefs.current[colsIndex]?.offsetTop
+                        : undefined,
                     }}
                     className={cx(
                       `${prefixCls}-cell`,
                       raw.className,
+                      semanticClassNames?.headerCell,
+                      semanticClassNames?.cell,
                       isHighlightedCol(dataKey!) && `${prefixCls}-cell__col--highlight`,
                       isHoveredHighlightCol(dataKey!) &&
                         `${prefixCls}-cell__col--hovered-highlight`,

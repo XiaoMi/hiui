@@ -9,17 +9,19 @@ import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from
 import { getTopDownAncestors } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isFunction } from '@hi-ui/type-assertion'
 import scrollIntoView from 'scroll-into-view-if-needed'
+import VirtualList from '@hi-ui/virtual-list'
 
 const menuListPrefix = getPrefixCls('cascader-menu-list')
 
 export const CascaderMenuList = forwardRef<HTMLDivElement | null, CascaderMenuListProps>(
   ({ prefixCls = menuListPrefix, className, ...rest }, ref) => {
-    const { flatted, menuList, dropdownColumnRender } = useCascaderContext()
+    const { flatted, menuList, dropdownColumnRender, classNames, styles } = useCascaderContext()
 
-    const cls = cx(prefixCls, className, flatted && `${prefixCls}--flatted`)
+    const cls = cx(prefixCls, className, classNames?.menuList, flatted && `${prefixCls}--flatted`)
+    const rootStyle = styles?.menuList
 
     return (
-      <div ref={ref} className={cls} {...rest}>
+      <div ref={ref} className={cls} style={rootStyle} {...rest}>
         {menuList.map((menu, menuIndex) => {
           return isArrayNonEmpty(menu) ? (
             isFunction(dropdownColumnRender) ? (
@@ -49,18 +51,18 @@ export const CascaderMenu = ({
   style,
   data: menu,
 }: CascaderMenuProps) => {
-  const {
-    flatted,
-    disabled: disabledContext,
-    expandTrigger,
-    onItemClick,
-    onItemHover,
-    titleRender,
-    onLoadChildren,
-    getItemRequiredProps,
-  } = useCascaderContext()
+  const { virtual, classNames, styles } = useCascaderContext()
 
-  const cls = cx(prefixCls, className)
+  const cls = cx(prefixCls, className, classNames?.menu)
+  const menuStyle = { ...style, ...styles?.menu }
+
+  const virtualListProps = {
+    virtual,
+    data: menu,
+    height: 260,
+    itemHeight: 32,
+  }
+
   const activeNodeRef = useRef<HTMLLIElement>()
   const [activeNode, setActiveNode] = useState<HTMLLIElement | null>(null)
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -80,62 +82,112 @@ export const CascaderMenu = ({
         clearTimeout(timeoutId.current)
       }
     }
-  }, [activeNode, activeNodeRef])
+  }, [activeNode, activeNodeRef, virtual])
 
   return (
-    <ul className={cls} style={style} role={role}>
-      {menu.map((option) => {
-        const eventOption = getItemEventData(option, getItemRequiredProps(option))
-
-        const { selected, loading, active } = eventOption
-        const disabled = disabledContext || option.disabled
-
-        const optionCls = cx(
-          `${prefixCls}-option`,
-          active && `${prefixCls}-option--active`,
-          loading && `${prefixCls}-option--loading`,
-          disabled && `${prefixCls}-option--disabled`,
-          selected && `${prefixCls}-option--selected`
-        )
-
-        return (
-          <li
-            ref={(node) => {
-              if (node && active) {
-                setActiveNode(node)
-              }
+    <ul className={cls} style={menuStyle} role={role}>
+      {isArrayNonEmpty(menu) ? (
+        virtual ? (
+          <VirtualList itemKey={'id'} fullHeight={false} {...virtualListProps}>
+            {(option: any) => {
+              return <MenuItem key={option.id} option={option} prefixCls={prefixCls} />
             }}
-            key={option.id}
-            role="menu-item"
-            className={`${prefixCls}-item`}
-          >
-            <div
-              className={optionCls}
-              onClick={() => {
-                if (disabled) return
-                onItemClick(eventOption)
-              }}
-              onMouseEnter={() => {
-                if (disabled) return
-                if (expandTrigger === 'hover') {
-                  onItemHover(eventOption)
-                }
-              }}
-            >
-              {flatted ? (
-                renderFlattedTitle(eventOption, titleRender)
-              ) : (
-                <>
-                  {renderDefaultTitle(eventOption, titleRender)}
-                  {renderSuffix(prefixCls, option, loading, onLoadChildren)}
-                </>
-              )}
-            </div>
-          </li>
+          </VirtualList>
+        ) : (
+          menu.map((option) => {
+            return (
+              <MenuItem
+                key={option.id}
+                option={option}
+                prefixCls={prefixCls}
+                setActiveNode={setActiveNode}
+              />
+            )
+          })
         )
-      })}
+      ) : null}
     </ul>
   )
+}
+
+const MenuItem = forwardRef<
+  HTMLLIElement,
+  {
+    option: FlattedCascaderDataItem
+    prefixCls: string
+    setActiveNode?: React.Dispatch<React.SetStateAction<HTMLLIElement | null>>
+  }
+>(({ option, prefixCls, setActiveNode }, ref) => {
+  const {
+    flatted,
+    disabled: disabledContext,
+    expandTrigger,
+    onItemClick,
+    onItemClickProp,
+    onItemHover,
+    titleRender,
+    onLoadChildren,
+    getItemRequiredProps,
+    classNames,
+    styles,
+  } = useCascaderContext()
+
+  const eventOption = getItemEventData(option, getItemRequiredProps(option))
+
+  const { selected, loading, active } = eventOption
+  const disabled = disabledContext || option.disabled
+
+  const optionCls = cx(
+    `${prefixCls}-option`,
+    active && `${prefixCls}-option--active`,
+    loading && `${prefixCls}-option--loading`,
+    disabled && `${prefixCls}-option--disabled`,
+    selected && `${prefixCls}-option--selected`,
+    classNames?.option
+  )
+
+  return (
+    <li
+      ref={(node) => {
+        if (node && active) {
+          setActiveNode?.(node)
+        }
+      }}
+      key={option.id}
+      role="menu-item"
+      className={`${prefixCls}-item`}
+      title={typeof option.title === 'string' ? option.title : undefined}
+    >
+      <div
+        className={optionCls}
+        style={styles?.option}
+        onClick={(evt) => {
+          if (disabled) return
+          onItemClick(eventOption)
+          onItemClickProp?.(evt, eventOption)
+        }}
+        onMouseEnter={() => {
+          if (disabled) return
+          if (expandTrigger === 'hover') {
+            onItemHover(eventOption)
+          }
+        }}
+      >
+        {flatted ? (
+          renderFlattedTitle(eventOption, titleRender)
+        ) : (
+          <>
+            {renderDefaultTitle(eventOption, titleRender)}
+            {renderSuffix(prefixCls, option, loading, onLoadChildren)}
+          </>
+        )}
+      </div>
+    </li>
+  )
+})
+
+if (__DEV__) {
+  MenuItem.displayName = 'MenuItem'
 }
 
 export interface CascaderMenuProps extends HiBaseHTMLProps {

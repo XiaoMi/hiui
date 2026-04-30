@@ -25,19 +25,29 @@ $link-hover-color-map:(
 $link-active-color-map: (
   'primary': use-color-mode('primary', 600),
   'secondary': use-color-mode('primary'),
-  'default': use-color-static('black'),
+  'default': use-color('gray', 800),
   'success': use-color-mode('success', 600),
-  'danger': use-color-mode('danger', 600),
+  'danger': use-color-mode('danger', 500),
+) !default;
+
+// 加载态
+
+$link-loading-color-map: (
+  'primary': use-color-mode('primary', 300),
+  'secondary': use-color-mode('primary', 200),
+  'default': use-color('gray', 500),
+  'success': use-color-mode('success', 200),
+  'danger': use-color-mode('danger', 300),
 ) !default;
 
 // 禁用态
 
 $link-disabled-color-map: (
-  'primary': use-color-mode('primary', 300),
-  'secondary': use-color-mode('primary', 200),
+  'primary': use-color('gray', 500),
+  'secondary': use-color('gray', 500),
   'default': use-color('gray', 500),
-  'success': use-color-mode('success', 300),
-  'danger': use-color-mode('danger', 300),
+  'success': use-color('gray', 500),
+  'danger': use-color('gray', 500),
 ) !default;
 
 // focus 态
@@ -71,12 +81,16 @@ $link-focus-shadow-map: (
           color: map-get($link-active-color-map, $key);
         }
 
-        &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
-          box-shadow: 0 0 0 2px map-get($link-focus-shadow-map, $key);
-        }
+        // &:not(.#{$prefix}--disabled):not(.#{$prefix}--loading):focus {
+        //   box-shadow: 0 0 0 2px map-get($link-focus-shadow-map, $key);
+        // }
 
         &.#{$prefix}--disabled {
           color: map-get($link-disabled-color-map, $key);
+        }
+
+        &.#{$prefix}--loading {
+          color: map-get($link-loading-color-map, $key);
         }
       }
     }

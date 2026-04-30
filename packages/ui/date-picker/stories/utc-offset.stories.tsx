@@ -21,6 +21,9 @@ export const UTCOffset = () => {
           showTime={true}
           utcOffset={utcOffset}
           format="YYYY-MM-DD HH:mm:ss"
+          onSelect={(date) => {
+            console.log('onSelect', date)
+          }}
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
             setValue(date)

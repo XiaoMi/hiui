@@ -5,12 +5,16 @@ $prefix: '#{$component-prefix}-search' !default;
 .#{$prefix} {
   &__dropdown {
     box-sizing: border-box;
-    padding: use-spacing(4);
+    padding: use-spacing(2);
     font-size: use-text-size('normal');
     // 填充没有选项时 loading 展示空间
     min-height: 48px;
     max-height: 276px;
     overflow-y: auto;
+
+    &-container {
+      border: use-border-size('normal') use-color('gray', 300);
+    }
 
     &--highlight {
       color: use-color-mode('primary');
@@ -21,17 +25,18 @@ $prefix: '#{$component-prefix}-search' !default;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      padding: use-spacing(2) use-spacing(6) use-spacing(2) use-spacing(12);
-      color: use-color('gray', 700);
+      padding: use-spacing(2) use-spacing(4);
+      border-radius: use-border-radius('md');
+      color: use-color('gray', 800);
       cursor: pointer;
       transition: all 0.3s;
 
       &--focus {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
 
       &:hover {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
 
@@ -40,36 +45,37 @@ $prefix: '#{$component-prefix}-search' !default;
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      padding: use-spacing(2) use-spacing(6);
-      color: use-color('gray', 500);
+      padding: use-spacing(2) use-spacing(4);
+      color: use-color('gray', 600);
     }
 
     &-subgroup {
-      padding-left: use-spacing(6);
+      padding-inline-start: use-spacing(4);
     }
 
     &-item {
       &:not(.#{$prefix}__dropdown-group) {
         &:last-of-type {
-          margin-bottom: 0;
+          margin-block-end: 0;
         }
 
         box-sizing: border-box;
         min-height: use-height-size(8);
         display: flex;
         align-items: center;
-        padding: use-spacing(2) use-spacing(6);
-        color: use-color('gray', 700);
+        padding: use-spacing(2) use-spacing(4);
+        border-radius: use-border-radius('md');
+        color: use-color('gray', 800);
         cursor: pointer;
         transition: all 0.3s;
 
         &:hover {
-          background-color: use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 
       &--focus {
-        background-color: use-color('gray', 100);
+        background-color: use-color('gray', 200);
       }
     }
   }

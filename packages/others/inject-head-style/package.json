@@ -19,6 +19,7 @@
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./dist/index.js",
       "default": "./dist/inject-head-style.esm.js"
     }

@@ -62,10 +62,11 @@ export const DateRangeTimePanel = (props: DateRangeTimePanelProps) => {
   const panelOnPick = useCallback<DPContextData['onPick']>(
     (date, isShowPanel) => {
       const newRange = { ...range }
+      const _dates = date.map((date) => (date && date instanceof Date ? moment(date) : date))
       if (nowIndex === 0) {
-        newRange.start = date[0]
+        newRange.start = _dates[0]
       } else {
-        newRange.end = date[0]
+        newRange.end = _dates[0]
       }
 
       // 此处不允许关闭panel

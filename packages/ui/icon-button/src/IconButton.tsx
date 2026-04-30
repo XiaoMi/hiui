@@ -1,5 +1,5 @@
 import React, { Children, forwardRef } from 'react'
-import { cx, getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls, getPrefixStyleVar } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { HiBaseHTMLProps } from '@hi-ui/core'
 import { isString } from '@hi-ui/type-assertion'
@@ -25,6 +25,7 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
       virtualArea = true,
       effect = false,
       disabled = false,
+      effectColor,
       ...rest
     },
     ref
@@ -38,7 +39,16 @@ export const IconButton = forwardRef<HTMLButtonElement | null, IconButtonProps>(
       !disabled && effect && `${prefixCls}--effect`
     )
     return (
-      <button ref={ref} role={role} className={cls} {...rest}>
+      <button
+        ref={ref}
+        role={role}
+        className={cls}
+        {...rest}
+        style={{
+          ...rest.style,
+          ...(effectColor ? { [getPrefixStyleVar('icon-button-effect-color')]: effectColor } : {}),
+        }}
+      >
         {isString(icon) ? icon : Children.only(icon)}
       </button>
     )
@@ -66,6 +76,10 @@ export interface IconButtonProps extends HiBaseHTMLProps<'button'> {
    * 是否禁用
    */
   disabled?: boolean
+  /**
+   * 鼠标悬浮时的颜色
+   */
+  effectColor?: string
 }
 
 if (__DEV__) {

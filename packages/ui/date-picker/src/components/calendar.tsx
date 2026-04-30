@@ -41,6 +41,9 @@ const Calendar = ({
     prefixCls,
     cellRender,
     utcOffset,
+    showWeek,
+    classNames,
+    styles,
   } = useContext(DPContext)
 
   // const largeCell = !!(altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset)
@@ -67,6 +70,7 @@ const Calendar = ({
     // panelPosition,
     disabledDate,
     utcOffset,
+    showWeek,
   })
 
   const [calendarCls, setCalenderCls] = useState(`${prefixCls}__calendar`)
@@ -108,8 +112,8 @@ const Calendar = ({
     // 根据偏移做数组移位，展示顶部星期文案
     const _week = week.slice(weekOffset).concat(week.slice(0, weekOffset))
 
-    // 如果是周选择类型，第一个th增加一个空白标题
-    if (type === 'week' || type === 'weekrange') _week.unshift('')
+    // 如果是周选择类型，或者日期选择需要展示周时，第一个th增加一个空白标题
+    if (type === 'week' || type === 'weekrange' || showWeek) _week.unshift('')
 
     return _week
   }
@@ -288,6 +292,7 @@ const Calendar = ({
               className={`${prefixCls}__lunar ${
                 fullTimeInfo.highlight ? `${prefixCls}__lunar--highlight` : ''
               }`}
+              title={String(fullTimeInfo.text || fullTimeInfo.name)}
             >
               {/* 如果是节气，使用 fullTimeInfo.name */}
               {fullTimeInfo.name || fullTimeInfo.text}
@@ -305,20 +310,40 @@ const Calendar = ({
       className={cx(
         `${prefixCls}__calendar-wrap`,
         `${prefixCls}__calendar-wrap--${isLarge ? 'lg' : 'md'}`,
-        `${prefixCls}__calendar-wrap--type-${type}`
+        `${prefixCls}__calendar-wrap--type-${type}`,
+        showWeek && `${prefixCls}__calendar-wrap--show-week`,
+        classNames?.calendarWrap
       )}
+      style={styles?.calendarWrap}
     >
       <CSSTransition in={holidayFullNameShow} timeout={300} classNames={`${prefixCls}__indiaHoli`}>
-        <div className={`${prefixCls}__indiaHoli`}>
-          <div className={`${prefixCls}__indiaHoli-text`}>{holidayFullName}</div>
+        <div
+          className={cx(`${prefixCls}__indiaHoli`, classNames?.calendarHoliday)}
+          style={styles?.calendarHoliday}
+        >
+          <div
+            className={cx(`${prefixCls}__indiaHoli-text`, classNames?.calendarHolidayText)}
+            style={styles?.calendarHolidayText}
+          >
+            {holidayFullName}
+          </div>
         </div>
       </CSSTransition>
-      <table className={calendarCls} onClick={onTableClick} onMouseMove={onTableMouseMove}>
+      <table
+        className={cx(calendarCls, classNames?.calendar)}
+        style={styles?.calendar}
+        onClick={onTableClick}
+        onMouseMove={onTableMouseMove}
+      >
         {(view.includes('date') || view.includes('week')) && (
           <thead>
             <tr>
               {getWeeks(type).map((item: React.ReactNode, index: number) => {
-                return <th key={index}>{item}</th>
+                return (
+                  <th key={index} className={classNames?.calendarHead} style={styles?.calendarHead}>
+                    {item}
+                  </th>
+                )
               })}
             </tr>
           </thead>
@@ -331,14 +356,21 @@ const Calendar = ({
             return (
               <tr
                 key={index}
-                className={cx(`${prefixCls}__row`, {
-                  [`${prefixCls}__row--has-selected`]: row.some((item) => item.type === 'selected'),
-                  [`${prefixCls}__row--has-start`]: row.some((item) => item.rangeStart),
-                  [`${prefixCls}__row--has-end`]: row.some((item) => item.rangeEnd),
-                  [`${prefixCls}__row--week-mode-select`]: isInWeekMode,
-                  [`${prefixCls}__row--range-mode`]: range,
-                  [`${prefixCls}__row--large`]: isLarge,
-                })}
+                className={cx(
+                  `${prefixCls}__row`,
+                  {
+                    [`${prefixCls}__row--has-selected`]: row.some(
+                      (item) => item.type === 'selected'
+                    ),
+                    [`${prefixCls}__row--has-start`]: row.some((item) => item.rangeStart),
+                    [`${prefixCls}__row--has-end`]: row.some((item) => item.rangeEnd),
+                    [`${prefixCls}__row--week-mode-select`]: isInWeekMode,
+                    [`${prefixCls}__row--range-mode`]: range,
+                    [`${prefixCls}__row--large`]: isLarge,
+                  },
+                  classNames?.calendarRow
+                )}
+                style={styles?.calendarRow}
               >
                 {row.map((cell, _index) => {
                   const cellValue = cell.weekNum
@@ -354,20 +386,19 @@ const Calendar = ({
                       value={cell.value}
                       type={cell.type}
                       weektype={cell.weekType}
-                      // 完全超出范围之外，所在的那一行，全部都在当前月之外
                       // @ts-ignore
                       belong-full-out-of-range={isBelongFullOutOfRange}
-                      // className='hi-datepicker__cell'
-                      className={getTDClass(cell, isLarge)}
+                      className={cx(getTDClass(cell, isLarge), classNames?.calendarCell)}
+                      style={styles?.calendarCell}
                     >
                       {isInWeekMode && <div className={`${prefixCls}__cell-week-indicator`} />}
                       <div
-                        className={`${prefixCls}__cell-text`}
+                        className={cx(`${prefixCls}__cell-text`, classNames?.calendarCellText)}
+                        style={styles?.calendarCellText}
                         // @ts-ignore
                         value={cell.value}
                         type={cell.type}
                         weektype={cell.weekType}
-                        // 完全超出范围之外，所在的那一行，全部都在当前月之外
                         // @ts-ignore
                         belong-full-out-of-range={isBelongFullOutOfRange}
                       >
@@ -376,8 +407,8 @@ const Calendar = ({
                           value={cell.value}
                           type={cell.type}
                           weektype={cell.weekType}
-                          className={`${prefixCls}__cellnum`}
-                          // 完全超出范围之外，所在的那一行，全部都在当前月之外
+                          className={cx(`${prefixCls}__cellnum`, classNames?.calendarCellNum)}
+                          style={styles?.calendarCellNum}
                           // @ts-ignore
                           belong-full-out-of-range={isBelongFullOutOfRange}
                         >

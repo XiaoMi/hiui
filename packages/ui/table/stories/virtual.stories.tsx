@@ -1,47 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table, { TableHelper } from '../src'
 import Button from '@hi-ui/button'
 /**
  * @title 虚拟列表
+ * @desc 内嵌面板、表头分组等复杂场景暂不支持
  */
 export const Virtual = () => {
   const MockData: any = []
   for (let index = 0; index < 10000; index++) {
     MockData.push({
-      name: '小米-' + index,
-      type: '手机',
-      size:
-        '6G+64G 幻彩蓝' +
-        (index % 10 === 0 ? 'f地方对了时间放的书法大师到了撒娇发了多少解封了的' : ''),
-      price: '3299.00',
-      operation: '查看',
+      name: 'yun-' + index,
+      age: Math.floor(Math.random() * 100),
+      address: '45 Sunbeam Lane, Mistville',
+      email: 'raynor.mav@maildemo.net',
+      phone: '1234567890',
+      phone2: '1234567890',
     })
   }
-  const [column] = React.useState([
+  const [columns] = useState([
     {
-      title: '商品名',
+      title: 'Name',
       dataKey: 'name',
-      width: 300,
     },
     {
-      title: '品类',
-      dataKey: 'type',
-      width: 200,
+      title: 'Age',
+      dataKey: 'age',
     },
     {
-      title: '规格',
-      dataKey: 'size',
-      width: 150,
+      title: 'Address',
+      dataKey: 'address',
     },
     {
-      title: '单价',
-      dataKey: 'price',
-      width: 150,
+      title: 'Phone',
+      dataKey: 'phone',
     },
     {
-      title: '操作',
-      dataKey: 'operation',
-      width: 150,
+      title: 'Phone2',
+      dataKey: 'phone2',
+    },
+    {
+      title: 'Email',
+      dataKey: 'email',
     },
   ])
   const [data] = React.useState(MockData)
@@ -50,29 +49,30 @@ export const Virtual = () => {
   return (
     <>
       <h1>Virtual for Table</h1>
-      <div className="table-virtual__wrap" style={{ minWidth: 660, background: '#fff' }}>
+      <div className="table-virtual__wrap">
         <div style={{ marginBottom: '1em' }}>
           <Button
             onClick={() => {
               // key 为节点 id
-              tableRef.current?.scrollTo?.({ key: '小米-1000', align: 'top' })
+              tableRef.current?.scrollTo?.({ key: 'yun-100', align: 'top' })
             }}
           >
-            scroll to key: 小米-1000
+            scroll to key: yun-100
           </Button>
         </div>
         <Table
           fieldKey="name"
-          columns={column}
+          columns={columns}
           data={data}
-          virtual={true}
+          virtual
           innerRef={tableRef}
           // virtual={{
           //   onVisibleChange(...args) {
           //     console.log('onVisibleChange', ...args)
           //   },
           // }}
-          fixedToColumn={{ right: 'operation' }}
+          rowSelection={{}}
+          fixedToColumn={{ right: 'email' }}
         />
       </div>
     </>

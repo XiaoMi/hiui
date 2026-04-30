@@ -11,31 +11,19 @@ $image-container: '#{$prefix}__image' !default;
 
   &--size-sm {
     .#{$image-container} {
-      height: 72px;
+      height: 80px;
     }
   }
 
   &--size-md {
     .#{$image-container} {
-      height: 88px;
+      height: 100px;
     }
   }
 
   &--size-lg {
     .#{$image-container} {
-      height: 96px;
-    }
-  }
-
-  &--size-xl {
-    .#{$image-container} {
       height: 120px;
-    }
-  }
-
-  &--size-xxl {
-    .#{$image-container} {
-      height: 160px;
     }
   }
 
@@ -49,12 +37,13 @@ $image-container: '#{$prefix}__image' !default;
 
   &__title {
     display: block;
-    color: use-color('gray', 500);
+    margin-block-start: use-spacing(6);
+    color: use-color('gray', 600);
     font-size: use-text-size('normal');
-    line-height: use-text-lineheight('sm');
+    line-height: use-text-lineheight('normal');
   }
 
   &__slot {
-    margin-top: 10px;
+    margin-block-start: use-spacing(5);
   }
 }

@@ -3,8 +3,15 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useCollapseContext } from './context'
 import { RightOutlined, DownOutlined } from '@hi-ui/icons'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import { isFunction } from '@hi-ui/type-assertion'
+import { IconButton } from '@hi-ui/icon-button'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'collapse-panel'
 const _prefix = getPrefixCls(_role)
@@ -20,8 +27,10 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       prefixCls = _prefix,
       role = _role,
       className,
-      children,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      children,
       disabled = false,
       id,
       title,
@@ -39,6 +48,26 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       onClickPanel,
       arrowRender,
     } = useCollapseContext()
+
+    const { collapsePanel: collapsePanelConfig } = useGlobalContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      SemanticClassNamesType<CollapsePanelProps, CollapsePanelSemanticName>,
+      SemanticStylesType<CollapsePanelProps, CollapsePanelSemanticName>,
+      CollapsePanelProps
+    >({
+      classNamesList: [collapsePanelConfig?.classNames, classNamesProp],
+      stylesList: [collapsePanelConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          disabled,
+          id,
+          title,
+          extra,
+        },
+      },
+    })
 
     const active = useMemo(() => judgeIsActive(id), [id, judgeIsActive])
 
@@ -97,43 +126,74 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
       <div
         ref={ref}
         role={role}
-        style={style}
-        className={cx(prefixCls, className, {
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        className={cx(prefixCls, className, classNames?.root, {
           [`${prefixCls}--disabled`]: disabled,
           [`${prefixCls}--show`]: active,
         })}
         {...rest}
       >
-        <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
+        <div
+          className={cx(`${prefixCls}__head`, classNames?.head)}
+          style={styles?.head}
+          onClick={() => !disabled && onClickPanel(id)}
+        >
           {showArrow && arrowPlacement === 'left' ? (
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`)}>
-                <RightOutlined />
-              </span>
+              <IconButton
+                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--left`, classNames?.icon)}
+                style={styles?.icon}
+                icon={<RightOutlined />}
+                disabled={disabled}
+                effect
+              />
             )
           ) : null}
-          <div className={`${prefixCls}__title-container`}>
-            <div className={`${prefixCls}__title`}>{title}</div>
-            <div className={`${prefixCls}__extra`}>{extra}</div>
+          <div
+            className={cx(`${prefixCls}__title-container`, classNames?.titleContainer)}
+            style={styles?.titleContainer}
+          >
+            <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+              {title}
+            </div>
+            {extra ? (
+              <div className={cx(`${prefixCls}__extra`, classNames?.extra)} style={styles?.extra}>
+                {extra}
+              </div>
+            ) : null}
           </div>
           {showArrow && arrowPlacement === 'right' ? (
             isFunction(arrowRender) ? (
               arrowRender(active)
             ) : (
-              <span className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`)}>
-                <DownOutlined />
-              </span>
+              <IconButton
+                className={cx(`${prefixCls}__icon`, `${prefixCls}__icon--right`, classNames?.icon)}
+                style={styles?.icon}
+                disabled={disabled}
+                icon={<DownOutlined />}
+                effect
+              />
             )
           ) : null}
         </div>
         <div
-          className={`${prefixCls}__content-wrapper`}
-          style={wrapperStyle}
+          className={cx(`${prefixCls}__content-wrapper`, classNames?.contentWrapper)}
+          style={{
+            ...wrapperStyle,
+            ...styles?.contentWrapper,
+          }}
           onTransitionEnd={onTransitionEnd}
         >
-          <div className={`${prefixCls}__content`} ref={contentRef}>
+          <div
+            className={cx(`${prefixCls}__content`, classNames?.content)}
+            style={styles?.content}
+            ref={contentRef}
+          >
             {children}
           </div>
         </div>
@@ -142,7 +202,29 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
   }
 )
 
-export interface CollapsePanelProps extends HiBaseHTMLProps<'div'> {
+export type CollapsePanelSemanticName =
+  | 'root'
+  | 'head'
+  | 'icon'
+  | 'titleContainer'
+  | 'title'
+  | 'extra'
+  | 'contentWrapper'
+  | 'content'
+export type CollapsePanelSemanticClassNames = SemanticClassNamesType<
+  CollapsePanelProps,
+  CollapsePanelSemanticName
+>
+export type CollapsePanelSemanticStyles = SemanticStylesType<
+  CollapsePanelProps,
+  CollapsePanelSemanticName
+>
+export type CollapsePanelSemantic = ComponentSemantic<
+  CollapsePanelSemanticClassNames,
+  CollapsePanelSemanticStyles
+>
+
+export interface CollapsePanelProps extends HiBaseHTMLProps<'div'>, CollapsePanelSemantic {
   /**
    * 	面板唯一标识
    */

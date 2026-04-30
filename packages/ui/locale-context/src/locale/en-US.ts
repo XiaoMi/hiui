@@ -94,6 +94,9 @@ export default {
     searchPlaceholder: 'Please search',
     emptyContent: 'No data',
     limit: 'Reached limit, unable to add',
+    allItems: 'All options',
+    checkedItems: 'Checked',
+    clear: 'Clear',
   },
   upload: {
     buttonText: 'Upload',
@@ -175,6 +178,8 @@ export default {
     noFoundTip: 'Not found',
     searchPlaceholder: 'Please search',
     loadingContent: 'loading data...',
+    createTitle: 'Create option',
+    createPlaceholder: 'Search or create option',
   },
   zenMode: {
     back: 'back',
@@ -188,5 +193,19 @@ export default {
   },
   backTop: {
     backToTop: 'Back to the top',
+  },
+  menuSearch: {
+    placeholder: 'Please enter the search content',
+    search: 'Search',
+    clear: 'Clear',
+    searchResult: 'Found {{count}} items related to "{{keyword}}"',
+    searchEmptyResult: 'No related results found',
+    moveCursor: 'Move',
+    confirmSelect: 'Confirm',
+    hideWindow: 'Hide',
+  },
+  queryFilter: {
+    pin: 'Pin to the top of the list',
+    unpin: 'Unpin',
   },
 }

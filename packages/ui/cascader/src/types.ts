@@ -1,4 +1,5 @@
 import React from 'react'
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 
 export interface CascaderDataItem extends Record<string, any> {
   /**
@@ -65,3 +66,5 @@ export interface CascaderItemRequiredProps {
 export interface CascaderItemEventData extends FlattedCascaderDataItem, CascaderItemRequiredProps {}
 
 export type CascaderExpandTriggerEnum = 'click' | 'hover'
+
+export type CascaderAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined

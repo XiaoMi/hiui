@@ -24,13 +24,13 @@ export const Dashboard = () => {
 
         <DashboardProgress
           type="warning"
-          content={<CloseOutlined style={{ fontSize: '20px' }} />}
+          content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
           percent={50}
         />
 
         <DashboardProgress
           type="error"
-          content={<ExclamationOutlined style={{ fontSize: '20px' }} />}
+          content={<CloseOutlined style={{ fontSize: '20px' }} />}
           percent={20}
         />
         <DashboardProgress percent={75} />

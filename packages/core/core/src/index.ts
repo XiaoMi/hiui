@@ -54,6 +54,7 @@ export const HiBaseAppearanceEnum = {
   LINE: 'line',
   FILLED: 'filled',
   UNSET: 'unset',
+  BORDERLESS: 'borderless',
 } as const
 
 // 对外暴露同名联合类型
@@ -61,6 +62,7 @@ export const HiBaseAppearanceEnum = {
 export type HiBaseAppearanceEnum = ValueOf<typeof HiBaseAppearanceEnum>
 
 export const HiBaseSizeEnum = {
+  XS: 'xs',
   SM: 'sm',
   MD: 'md',
   LG: 'lg',
@@ -76,3 +78,6 @@ export type { UseLocaleContext, LocaleProviderProps } from '@hi-ui/locale-contex
 
 export { usePortalContext, PortalProvider } from '@hi-ui/portal-context'
 export type { UsePortalContext, PortalProviderProps } from '@hi-ui/portal-context'
+
+export { useGlobalContext, GlobalProvider } from '@hi-ui/global-context'
+export type { UseGlobalContext, GlobalProviderProps } from '@hi-ui/global-context'

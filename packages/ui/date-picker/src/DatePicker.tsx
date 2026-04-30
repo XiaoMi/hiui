@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } 
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { clone as cloneDeep } from '@hi-ui/object-utils'
-import { useLocaleContext } from '@hi-ui/core'
+import { useLocaleContext, useGlobalContext } from '@hi-ui/core'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import { useDate } from './hooks/useData'
@@ -18,15 +18,17 @@ import {
   CalendarItemV3,
   DatePickerProps,
   DatePickerTypeEnum,
-  DatePickerValueV3,
   DateRange,
   DatePickerOnChangeDateString,
   DatePickerOnChangeDate,
 } from './types'
-import { getBelongWeek, getBelongWeekYear } from './utils/week'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type { DatePickerSemanticClassNames, DatePickerSemanticStyles } from './types'
+import { getBelongWeek, getBelongWeekYear, formatWeekByTemplate } from './utils/week'
 import { DateRangeTimePanel } from './components/date-range-time-panel'
 import { GranularityMap } from './utils/constants'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
+import { isShowTimeEnabled } from './utils/showTime'
 
 const DATE_PICKER_PREFIX = getPrefixCls('date-picker')
 
@@ -40,6 +42,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       prefixCls = DATE_PICKER_PREFIX,
       role = 'date-picker',
       className,
+      style,
       type: propType = 'date',
       value: controlledValue,
       defaultValue: uncontrolledValue,
@@ -65,7 +68,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledDate = DEFAULT_DISABLED_DATE,
       maxDate: max = null,
       minDate: min = null,
-      utcOffset,
+      utcOffset: utcOffsetProp,
       onSelect: propsOnSelectOriginal,
       onPanelChange,
       theme,
@@ -73,11 +76,12 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       disabledMinutes = DEFAULT_DISABLED_FUNCTION,
       disabledSeconds = DEFAULT_DISABLED_FUNCTION,
       appearance = 'line',
-      size = 'md',
+      size: sizeProp,
       overlay,
       invalid = false,
       onOpen,
       onClose,
+      onClear: onClearProp,
       cellRender,
       footerRender,
       strideSelectMode = 'auto',
@@ -86,10 +90,46 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       needConfirm: needConfirmProp = false,
       onConfirm,
       visible,
+      label,
+      showIndicator = true,
+      showWeek,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...otherProps
     },
     ref
   ) => {
+    const globalContext = useGlobalContext()
+    const {
+      size: globalSize,
+      datePicker: datePickerConfig,
+      utcOffset: utcOffsetGlobal,
+    } = globalContext
+    const utcOffset = utcOffsetProp ?? utcOffsetGlobal
+    const { classNames, styles } = useMergeSemantic<
+      DatePickerSemanticClassNames,
+      DatePickerSemanticStyles,
+      DatePickerProps
+    >({
+      classNamesList: [
+        datePickerConfig?.classNames as DatePickerSemanticClassNames | undefined,
+        classNamesProp,
+      ],
+      stylesList: [datePickerConfig?.styles as DatePickerSemanticStyles | undefined, stylesProp],
+      info: {
+        props: {
+          ...otherProps,
+          type: propType,
+          disabled,
+          appearance,
+          size: sizeProp,
+          invalid,
+          showTime,
+        },
+      },
+    })
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
     const locale = i18n.locale
 
@@ -97,12 +137,13 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const cacheDate = useRef<(moment.Moment | null)[]>([])
     const [inputFocus, setInputFocus] = useState(false)
+    const [focusIndex, setFocusIndex] = useState<0 | 1>(0)
     const [type, setType] = useState<DatePickerTypeEnum>(propType)
     const rangeRef = useRef<CalenderSelectedRange | null>(null)
 
     const needConfirm = useMemo(() => {
       // 如果是日期时间范围选择，则默认返回 true
-      if (type === 'daterange' && showTime) {
+      if (type === 'daterange' && isShowTimeEnabled(showTime)) {
         return true
       }
       return needConfirmProp
@@ -122,9 +163,32 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const propsOnSelect = useCallback(
       (data: moment.Moment, isCompleted: boolean, panelIndex?: number) => {
-        propsOnSelectOriginal?.(moment(data).toDate(), isCompleted, panelIndex)
+        if (!propsOnSelectOriginal) return
+
+        // 应用 utcOffset 处理，与 onChange 回调保持一致
+        let processedDate: moment.Moment
+
+        if (typeof utcOffset === 'number') {
+          // 完整的时区转换流程：
+          // 1. 将显示的时间理解为 utcOffset 指定时区的时间
+          // 2. 转换为 UTC 标准时间
+          // 3. 转换为当前系统时区的本地时间
+
+          // 第一步：减去 utcOffset，得到 UTC 时间
+          const utcTime = data.clone().subtract(utcOffset * 60, 'minutes')
+
+          // 第二步：获取当前系统时区偏移量并转换为本地时间
+          const currentTimezoneOffset = new Date().getTimezoneOffset()
+
+          // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
+          processedDate = utcTime.subtract(currentTimezoneOffset, 'minutes')
+        } else {
+          processedDate = data.clone()
+        }
+
+        propsOnSelectOriginal(processedDate.toDate(), isCompleted, panelIndex)
       },
-      [propsOnSelectOriginal]
+      [propsOnSelectOriginal, utcOffset]
     )
 
     const safeWeekOffset = useMemo(
@@ -132,20 +196,23 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       [weekOffset, locale]
     )
 
-    const valueAdapter = useCallback((original?: DatePickerValueV3 | DatePickerValueV3[]) => {
-      if (!original) {
-        return original
-      } else {
-        if (Array.isArray(original)) {
-          return {
-            start: new Date(original[0] as any),
-            end: new Date(original[1] as any),
-          } as DateRange
-        } else {
+    const valueAdapter = useCallback(
+      (original) => {
+        if (!original) {
           return original
+        } else {
+          if (Array.isArray(original) && type.includes('range')) {
+            return {
+              start: new Date(original[0] as any),
+              end: new Date(original[1] as any),
+            } as DateRange
+          } else {
+            return original
+          }
         }
-      }
-    }, [])
+      },
+      [type]
+    )
 
     const altCalendar = useMemo<CalendarItemV3[] | undefined>(
       () =>
@@ -209,7 +276,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     })
     const realFormat = useFormat({
       type,
-      showTime,
+      showTime: isShowTimeEnabled(showTime),
       format: typeof format === 'function' ? undefined : format,
       locale,
     })
@@ -265,7 +332,9 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           // 第二步：获取当前系统时区偏移量并转换为本地时间
           const currentTimezoneOffset = new Date().getTimezoneOffset()
 
-          return typeof utcOffset === 'number' && utcOffset !== currentTimezoneOffset
+          // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
+          // return utcTime.subtract(currentTimezoneOffset, 'minutes')
+          return typeof utcOffset === 'number'
             ? // getTimezoneOffset() 返回 UTC 到本地时间的偏移量（分钟）
               utcTime.subtract(currentTimezoneOffset, 'minutes')
             : utcTime
@@ -284,15 +353,18 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         } else if (type.includes('week')) {
           const getWeekString = (disposeDate: moment.Moment | null) => {
             if (disposeDate) {
-              return format
-                ? disposeDate.format(realFormat)
-                : i18n.get('datePicker.weekRange', {
-                    year: getBelongWeekYear(disposeDate, safeWeekOffset),
-                    week: getBelongWeek(disposeDate, safeWeekOffset),
-                  })
-            } else {
-              return ''
+              if (typeof format === 'string') {
+                return formatWeekByTemplate(disposeDate, safeWeekOffset, realFormat)
+              }
+              if (typeof format === 'function') {
+                return format(disposeDate)
+              }
+              return i18n.get('datePicker.weekRange', {
+                year: getBelongWeekYear(disposeDate, safeWeekOffset),
+                week: getBelongWeek(disposeDate, safeWeekOffset),
+              })
             }
+            return ''
           }
 
           returnDate = {
@@ -314,7 +386,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         if (
           _dates.slice(0, compareNumber).some((od: moment.Moment | null, index: number) => {
             return od
-              ? !od.isSame(cacheDate.current![index], showTime ? 'second' : GranularityMap[type])
+              ? !od.isSame(
+                  cacheDate.current![index],
+                  isShowTimeEnabled(showTime) ? 'second' : GranularityMap[type]
+                )
               : // 如果 新数据为空，则，进入以下比较
                 // 如果 旧数据也为空，则，视作，相等，旧数据存在，视作改变（此处是考虑到 null undefined 共存的情况）
                 od || cacheDate.current![index]
@@ -328,16 +403,17 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     const onPick = useCallback(
-      (dates: (moment.Moment | null)[], isShowPanel = false) => {
+      (dates: (moment.Moment | Date | null)[], isShowPanel = false) => {
         setTimeout(() => {
           setShowPanel(isShowPanel)
         }, 0)
+        const _dates = dates.map((date) => (date && date instanceof Date ? moment(date) : date))
         if (!isShowPanel) {
           setInputFocus(false)
-          callback(dates)
+          callback(_dates)
           onClose?.()
         }
-        changeOutDate([...dates])
+        changeOutDate([..._dates])
       },
       [callback, changeOutDate, onClose]
     )
@@ -355,6 +431,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         const isValid = moment(outDateValue).isValid()
         const start = rangeRef.current?.start
         const end = rangeRef.current?.end
+
         let newDate
         if (!!start && !!end) {
           newDate = [start, end]
@@ -365,8 +442,8 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         // @ts-ignore
         const { startDate, endDate } = isValid && getInRangeDate(newDate[0], newDate[1], max, min)
         const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
-        callback(_outDate, true)
 
+        callback(_outDate, true)
         changeOutDate(_outDate)
         rangeRef.current = null
       }
@@ -384,6 +461,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       // @ts-ignore
       onChange(null, '')
       onClose?.()
+      onClearProp?.()
     }
 
     const onSelect = useCallback(
@@ -399,7 +477,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const popperCls = cx(
       `${prefixCls}__popper`,
-      type === 'date' && showTime && `${prefixCls}__popper--time`,
+      type === 'date' && isShowTimeEnabled(showTime) && `${prefixCls}__popper--time`,
       type.includes('range') && `${prefixCls}__popper--range`,
       type === 'timeperiod' && `${prefixCls}__popper--timeperiod`,
       shortcuts && `${prefixCls}__popper--shortcuts`
@@ -407,7 +485,10 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
 
     const [attachEl, setAttachEl] = useState<HTMLElement | null>(null)
 
-    const isInDateRangeTimeMode = useMemo(() => type === 'daterange' && showTime, [type, showTime])
+    const isInDateRangeTimeMode = useMemo(
+      () => type === 'daterange' && isShowTimeEnabled(showTime),
+      [type, showTime]
+    )
 
     const popContent = useMemo(() => {
       // 日期时间范围选择器特殊处理
@@ -421,7 +502,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       }
 
       return (
-        <div className={popperCls}>
+        <div className={cx(popperCls, classNames?.popper)} style={styles?.popper}>
           {type.includes('range') || type === 'timeperiod' ? (
             <RangePanel />
           ) : (
@@ -445,12 +526,16 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       needConfirm,
       onConfirm,
       dateRangeTimePanelNow,
+      classNames?.popper,
+      styles?.popper,
     ])
 
     return (
       <DPContext.Provider
         value={{
           ...otherProps,
+          classNames,
+          styles,
           locale,
           appearance,
           i18n,
@@ -496,9 +581,29 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           rangeRef,
           utcOffset,
           defaultPickerValue,
+          focusIndex,
+          setFocusIndex,
+          showIndicator,
+          needConfirm,
+          onConfirm,
+          showWeek,
         }}
       >
-        <div className={cx(prefixCls, className)} {...otherProps}>
+        <div
+          className={cx(prefixCls, className, classNames?.root)}
+          style={{ ...style, ...styles?.root }}
+          {...otherProps}
+          onMouseEnter={() => {
+            if (outDate[0]) {
+              setInputFocus(true)
+            }
+          }}
+          onMouseLeave={() => {
+            if (!showPanel) {
+              setInputFocus(false)
+            }
+          }}
+        >
           <Root
             inputChangeEvent={inputChangeEvent}
             onClear={onClear}
@@ -513,10 +618,12 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
             invalid={invalid}
             customRender={customRender}
             prefix={prefix}
+            label={label}
           />
           <Popper
             {...(overlay || {})}
             visible={visible !== undefined ? visible : showPanel}
+            gutterGap={4}
             onEntered={onOpen}
             onClose={onPopperClose}
             attachEl={attachEl}

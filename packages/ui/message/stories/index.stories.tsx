@@ -3,6 +3,7 @@ import Message from '../src'
 
 export * from './basic.stories'
 export * from './type.stories'
+export * from './icon.stories'
 export * from './close.stories'
 export * from './auto-close.stories'
 export * from './custom.stories'

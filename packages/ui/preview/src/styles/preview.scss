@@ -5,18 +5,18 @@ $prefix: '#{$component-prefix}-preview' !default;
 .#{$prefix} {
   z-index: use-zindex('dialog');
   position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
+  inset-inline-start: 0;
 
   &__mask {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: use-color('gray', 700);
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    background-color: use-color('gray', 800);
     opacity: 0;
   }
 
@@ -26,17 +26,17 @@ $prefix: '#{$component-prefix}-preview' !default;
     }
 
     &-enter-active {
-      opacity: 0.3;
+      opacity: 0.7;
       transition: opacity 0.3s;
     }
 
     &-enter-done {
-      opacity: 0.3;
+      opacity: 0.7;
       transition: opacity 0.3s;
     }
 
     &-exit {
-      opacity: 0.3;
+      opacity: 0.7;
     }
 
     &-exit-active {
@@ -51,95 +51,165 @@ $prefix: '#{$component-prefix}-preview' !default;
   }
 
   &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: absolute;
-    height: 48px;
-    line-height: 48px;
-    text-align: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: use-color-static('white');
-    background-color: rgba(0, 0, 0, 0.1);
+    inset-block-start: use-spacing(10);
+    inset-inline-start: use-spacing(10);
+    inset-inline-end: use-spacing(10);
     z-index: 2;
+  }
+
+  &__title {
+    padding: calc(#{use-spacing(4)} + 1px) use-spacing(8);
+    font-size: use-text-size('normal');
+    line-height: use-text-lineheight('normal');
+    border-radius: 9999px;
+    color: use-color-static('white');
+    background-color: rgba(#1a1d26, 0.7);
   }
 
   &__container {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     text-align: center;
     outline: none;
-
-    // 该伪类用于让图片在容器中垂直居中
-    &::before {
-      content: '';
-      width: 0;
-      height: 100%;
-      vertical-align: middle;
-      display: inline-block;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   &__toolbar {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: use-color-static('white');
-    padding: 0 32px;
-    height: 48px;
     display: flex;
     align-items: center;
-    border-radius: 28px;
+    position: absolute;
+    inset-block-end: use-spacing(10);
+    inset-inline-start: 50%;
+    transform: translate3d(-50%, 0, 0);
+    background: rgba(#1a1d26, 0.9);
+    padding: 0 use-spacing(4);
+    height: use-height-size(12);
+    border-radius: use-border-radius('xl');
+    color: use-color-static('white');
 
     svg {
-      margin: 0 12px;
       font-size: 20px;
+    }
+
+    &-index {
+      margin: 0 use-spacing(6);
+      user-select: none;
+    }
+
+    &-scale {
+      margin: 0 use-spacing(1);
+      user-select: none;
+    }
+
+    &-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 use-spacing(5);
+      width: use-height-size(7);
+      height: use-height-size(7);
+      border-radius: use-border-radius('normal');
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(#fff, 0.2);
+      }
+
+      &__scale1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(#{use-height-size(3)} + 2px);
+        height: calc(#{use-height-size(3)} + 2px);
+        border-radius: use-border-radius('md');
+        border: use-border-size('semibold') use-color-static('white');
+        user-select: none;
+
+        &-text {
+          font-size: 20px;
+          transform: scale(0.5);
+          transform-origin: center;
+        }
+      }
+    }
+
+    &-divider {
+      width: 1px;
+      height: use-height-size(4);
+      margin: 0 use-spacing(4);
+      background-color: use-color('gray', 700);
     }
   }
 
   &__close-btn {
+    position: relative;
+    width: use-height-size(10);
+    height: use-height-size(10);
+    border-radius: 50%;
+    background-color: rgba(#1a1d26, 0.7);
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(#1a1d26, 0.5);
+    }
+
+    &:focus,
+    &:active {
+      background-color: rgba(#1a1d26, 0.3);
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      width: 16px;
+      height: 2px;
+      background-color: use-color-static('white');
+      border-radius: 1px;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+
+  &__left-btn,
+  &__right-btn {
     position: absolute;
-    right: 10px;
-    top: 6px;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
+    inset-block-start: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     font-size: 24px;
     cursor: pointer;
+    margin-block-start: -18px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: use-color-static('white');
   }
 
   &__left-btn {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 24px;
-    cursor: pointer;
-    margin-top: -18px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: use-color-static('white');
+    inset-inline-start: use-spacing(5);
   }
 
   &__right-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 24px;
-    cursor: pointer;
-    margin-top: -18px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: use-color-static('white');
+    inset-inline-end: use-spacing(5);
   }
 
   &__image {
@@ -147,7 +217,7 @@ $prefix: '#{$component-prefix}-preview' !default;
     max-height: 100%;
     vertical-align: middle;
     transform: scale(1);
-    cursor: grab;
+    cursor: zoom-out;
     transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
     user-select: none;
     pointer-events: auto;
@@ -155,6 +225,9 @@ $prefix: '#{$component-prefix}-preview' !default;
   }
 
   &__img-wrapper {
-    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: use-color('gray', 800);
   }
 }

@@ -1,5 +1,5 @@
 import { createRef, createElement } from 'react'
-import { render, unmountComponentAtNode } from 'react-dom'
+import getReactDomRender from '@hi-ui/react-compat'
 import * as Container from '@hi-ui/container'
 import { _prefix, Loading, LoadingProps } from './Loading'
 import { uuid } from '@hi-ui/use-id'
@@ -14,7 +14,7 @@ const loadingInstanceCache: {
 
 const open = (
   target?: HTMLElement | null,
-  { content, key, duration, size, autoClose = true }: LoadingApiProps = {}
+  { content, key, duration, size = 'lg', autoClose = true }: LoadingApiProps = {}
 ) => {
   if (!key) {
     key = uuid()
@@ -33,14 +33,15 @@ const open = (
     part: true,
   })
 
-  render(ClonedLoading, container)
+  const mockRender = getReactDomRender()
+  const mockUnmount = mockRender(ClonedLoading, container)
 
   const close = () => {
     innerRef.current?.close()
 
     setTimeout(() => {
       if (container) {
-        unmountComponentAtNode(container as Element)
+        mockUnmount()
         container = null
       }
       Container.removeContainer(selector)

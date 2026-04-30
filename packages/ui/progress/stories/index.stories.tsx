@@ -7,9 +7,11 @@ export * from './dashboard.stories'
 export * from './custom-percent.stories'
 export * from './indeterminate.stories'
 export * from './inside.stories'
-export * from './bar-size.stories'
+// export * from './bar-size.stories'
 export * from './circle-size.stories'
+export * from './mini.stories'
 export * from './dashboard-size.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'FeedBack/Progress',

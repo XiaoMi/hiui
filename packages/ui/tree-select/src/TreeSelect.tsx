@@ -1,18 +1,24 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { TreeSelectDataItem } from './types'
+import { TreeSelectDataItem, TreeSelectAppearanceEnum } from './types'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { FlattedTreeNodeData, Tree, TreeNodeEventData } from '@hi-ui/tree'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { Picker, PickerHelper, PickerProps } from '@hi-ui/picker'
+import { Picker, PickerHelper, PickerProps, PickerSemanticName } from '@hi-ui/picker'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { baseFlattenTree } from '@hi-ui/tree-utils'
 import { isArrayNonEmpty, isUndef } from '@hi-ui/type-assertion'
 import { uniqBy } from '@hi-ui/array-utils'
 import { Highlighter } from '@hi-ui/highlighter'
 import { MockInput } from '@hi-ui/input'
 import { DownOutlined, UpOutlined } from '@hi-ui/icons'
-import { HiBaseAppearanceEnum, HiBaseSizeEnum, useLocaleContext } from '@hi-ui/core'
+import { HiBaseSizeEnum, useLocaleContext, useGlobalContext } from '@hi-ui/core'
 
 import { callAllFuncs } from '@hi-ui/func-utils'
 import { UseDataSource } from '@hi-ui/use-data-source'
@@ -62,6 +68,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       filterOption,
       keyword: keywordProp,
       onSearch: onSearchProp,
+      clearSearchOnClosed,
       // ********* popper ********* //
       // optionWidth,
       // overlayClassName,
@@ -76,16 +83,45 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       virtual,
       itemHeight,
       height,
-      size = 'md',
+      size: sizeProp,
       prefix,
       suffix,
       customRender,
       shouldShowSwitcher,
+      label,
+      showIndicator = true,
+      renderExtraHeader,
+      renderExtraFooter,
+      classNames: classNamesProp,
+      styles: stylesProp,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, treeSelect: treeSelectConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const i18n = useLocaleContext()
+
+    const { classNames, styles } = useMergeSemantic<
+      TreeSelectSemanticClassNames,
+      TreeSelectSemanticStyles,
+      TreeSelectProps
+    >({
+      classNamesList: [treeSelectConfig?.classNames, classNamesProp],
+      stylesList: [treeSelectConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          disabled,
+          searchable: searchableProp,
+          visible,
+          size,
+          appearance,
+        },
+      },
+    })
 
     const pickerInnerRef = useRef<PickerHelper>(null)
 
@@ -207,7 +243,14 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         // 本地搜索执行默认高亮规则
         const highlight = !!searchValue && (searchMode === 'highlight' || searchMode === 'filter')
 
-        const ret = highlight ? <Highlighter keyword={searchValue}>{node.title}</Highlighter> : true
+        // 转义正则表达式特殊字符，避免 searchValue 包含 [ 等特殊字符时报错
+        const escapedSearchValue = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+        const ret = highlight ? (
+          <Highlighter keyword={new RegExp(escapedSearchValue, 'ig')}>{node.title}</Highlighter>
+        ) : (
+          true
+        )
 
         return ret
       },
@@ -235,6 +278,14 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       return flattedData
     }, [selectedItem, flattedData])
 
+    const customRenderContent = useMemo(() => {
+      return customRender
+        ? typeof customRender === 'function'
+          ? customRender(selectedItem)
+          : customRender
+        : null
+    }, [customRender, selectedItem])
+
     const cls = cx(prefixCls, className)
 
     useEffect(() => {
@@ -244,11 +295,38 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
       }
     }, [menuVisible, treeProps.expandedIds])
 
+    const pickerSemanticKeys: PickerSemanticName[] = [
+      'root',
+      'container',
+      'panel',
+      'header',
+      'search',
+      'body',
+      'footer',
+      'loading',
+      'empty',
+      'creator',
+    ]
+    const pickerClassNames = pickerSemanticKeys.reduce((acc, key) => {
+      if (classNames?.[key as keyof typeof classNames] !== undefined) {
+        acc[key] = classNames[key as keyof typeof classNames] as string
+      }
+      return acc
+    }, {} as Record<string, string>)
+    const pickerStyles = pickerSemanticKeys.reduce((acc, key) => {
+      if (styles?.[key as keyof typeof styles]) {
+        acc[key] = styles[key as keyof typeof styles] as React.CSSProperties
+      }
+      return acc
+    }, {} as Record<string, React.CSSProperties>)
+
     return (
       <Picker
         ref={ref}
         innerRef={pickerInnerRef}
         className={cls}
+        classNames={pickerClassNames}
+        styles={pickerStyles}
         {...rest}
         visible={menuVisible}
         disabled={disabled}
@@ -260,16 +338,16 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
         searchable={searchable}
         keyword={keywordProp}
         onSearch={callAllFuncs(onSearchProp, onSearch)}
+        clearSearchOnClosed={clearSearchOnClosed}
         loading={rest.loading !== undefined ? rest.loading : loading}
+        header={renderExtraHeader?.()}
+        footer={rest.footer ?? renderExtraFooter?.()}
         trigger={
           customRender ? (
-            typeof customRender === 'function' ? (
-              customRender(selectedItem)
-            ) : (
-              customRender
-            )
+            customRenderContent
           ) : (
             <MockInput
+              style={{ maxWidth: appearance === 'contained' ? '360px' : undefined }}
               // disabled={disabled}
               size={size}
               clearable={clearable}
@@ -277,6 +355,7 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               placeholder={placeholder}
               displayRender={displayRenderProp}
               prefix={prefix}
+              showIndicator={showIndicator}
               suffix={[menuVisible ? <UpOutlined /> : <DownOutlined />, suffix]}
               focused={menuVisible}
               value={value}
@@ -285,14 +364,15 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
               // @ts-ignore
               invalid={invalid}
               appearance={appearance}
+              label={label}
             />
           )
         }
       >
         {isArrayNonEmpty(treeProps.data) ? (
           <Tree
-            size={'md'}
-            className={`${prefixCls}__tree`}
+            className={cx(`${prefixCls}__tree`, classNames?.tree)}
+            style={styles?.tree}
             selectable
             selectedId={value}
             onSelect={onSelect}
@@ -312,8 +392,23 @@ export const TreeSelect = forwardRef<HTMLDivElement | null, TreeSelectProps>(
   }
 )
 
+export type TreeSelectSemanticName = PickerSemanticName | 'tree'
+export type TreeSelectSemanticClassNames = SemanticClassNamesType<
+  TreeSelectProps,
+  TreeSelectSemanticName
+>
+export type TreeSelectSemanticStyles = SemanticStylesType<TreeSelectProps, TreeSelectSemanticName>
+export type TreeSelectSemantic = ComponentSemantic<
+  TreeSelectSemanticClassNames,
+  TreeSelectSemanticStyles
+>
+
 export interface TreeSelectProps
-  extends Omit<PickerProps, 'data' | 'onChange' | 'trigger' | 'scrollable'> {
+  extends Omit<
+      PickerProps,
+      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'classNames' | 'styles'
+    >,
+    TreeSelectSemantic {
   /**
    * 展示数据
    */
@@ -414,7 +509,11 @@ export interface TreeSelectProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: TreeSelectAppearanceEnum
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置虚拟滚动容器的可视高度。暂不对外暴露
    * @private
@@ -449,6 +548,19 @@ export interface TreeSelectProps
    * 自定义切换器显示逻辑
    */
   shouldShowSwitcher?: (node: TreeNodeEventData) => boolean
+  /**
+   * 是否展示指示器
+   * @default true
+   */
+  showIndicator?: boolean
+  /**
+   * 自定义下拉菜单顶部渲染
+   */
+  renderExtraHeader?: () => React.ReactNode
+  /**
+   * 自定义下拉菜单底部渲染
+   */
+  renderExtraFooter?: () => React.ReactNode
 }
 
 if (__DEV__) {

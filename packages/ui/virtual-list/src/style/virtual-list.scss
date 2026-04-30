@@ -1,0 +1,23 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: 'rc-virtual-list' !default;
+
+.#{$prefix} {
+  &-scrollbar {
+    box-sizing: border-box;
+    width: 6px !important;
+
+    &-thumb {
+      background: use-color('gray', 800) !important;
+      opacity: 0.25;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      .#{$prefix}-scrollbar-thumb {
+        opacity: 0.6;
+      }
+    }
+  }
+}

@@ -3,10 +3,16 @@
 $prefix: '#{$component-prefix}-notification' !default;
 
 .#{$prefix}-manager {
-  margin-top: 6px;
+  margin-block-start: use-spacing(3);
   overflow-x: hidden;
   overflow-y: auto;
-  bottom: 0;
+  inset-block-end: 0;
+
+  // 底部渲染时，需要反转 flex 方向
+  &--placement-bottom {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }
 
 .#{$prefix} {
@@ -14,9 +20,9 @@ $prefix: '#{$component-prefix}-notification' !default;
   box-sizing: border-box;
   width: 360px;
   margin: use-spacing(8);
-  border-radius: use-border-radius('lg');
+  border-radius: use-border-radius('xl');
   pointer-events: auto;
-  box-shadow: 0 4px 16px 0 rgba(0, 29, 97, 0.12);
+  box-shadow: use-shadow('normal');
   font-size: use-text-size('normal');
   line-height: use-text-lineheight('normal');
   background-color: use-color-static('white');
@@ -38,25 +44,25 @@ $prefix: '#{$component-prefix}-notification' !default;
     align-items: center;
     word-break: break-word;
     font-size: use-text-size('lg');
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   &__content {
     word-break: break-word;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
 
     .#{$prefix}--size-lg & {
-      margin-top: use-spacing(4);
+      margin-block-start: use-spacing(4);
       padding: 0 0 0 use-spacing(16);
     }
 
     .#{$prefix}--size-md & {
-      margin-top: use-spacing(3);
+      margin-block-start: use-spacing(3);
       padding: 0 0 0 use-spacing(15);
     }
 
     .#{$prefix}--size-sm & {
-      margin-top: use-spacing(2);
+      margin-block-start: use-spacing(2);
       padding: 0 0 0 use-spacing(14);
     }
   }
@@ -64,17 +70,18 @@ $prefix: '#{$component-prefix}-notification' !default;
   &__icon {
     display: flex;
     align-items: center;
+    transform: scale(1.05);
 
     .#{$prefix}--size-lg & {
-      margin-right: use-spacing(6);
+      margin-inline-end: use-spacing(6);
     }
 
     .#{$prefix}--size-md & {
-      margin-right: use-spacing(5);
+      margin-inline-end: use-spacing(5);
     }
 
     .#{$prefix}--size-sm & {
-      margin-right: use-spacing(4);
+      margin-inline-end: use-spacing(4);
     }
 
     svg {
@@ -95,39 +102,75 @@ $prefix: '#{$component-prefix}-notification' !default;
     flex-direction: column;
     position: relative;
     max-height: 50vh;
-    overflow: hidden;
     // animation
     transition: transform $transition-duration, opacity $transition-duration, height $transition-height-duration $transition-height-delay;
     transition-timing-function: use-motion-bezier('normal');
     opacity: 1;
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
     transform-origin: 50% 50% 0;
     will-change: transform;
   }
 
-  &--motion {
-    &-enter {
-      transform: translateX(100%);
+  &--placement-left.#{$prefix}-container {
+    align-items: flex-start;
+    transform: translate3d(-100%, 0, 0);
 
-      &-active {
-        transform: translateX(0);
+    &.#{$prefix}--left {
+      &-enter {
+        transform: translate3d(-100%, 0, 0);
+
+        &-active {
+          transform: translate3d(0, 0, 0);
+        }
+
+        &-done {
+          transform: translate3d(0, 0, 0);
+        }
       }
 
-      &-done {
-        transform: none;
+      &-exit {
+        transform: translate3d(0, 0, 0);
+
+        &-active {
+          transform: translate3d(-100%, 0, 0);
+        }
+
+        &-done {
+          visibility: hidden;
+          opacity: 0;
+        }
       }
     }
+  }
 
-    &-exit {
-      transform: translateX(0%);
+  &--placement-right.#{$prefix}-container {
+    align-items: flex-end;
+    transform: translate3d(100%, 0, 0);
 
-      &-active {
-        transform: translateX(100%);
+    &.#{$prefix}--right {
+      &-enter {
+        transform: translate3d(100%, 0, 0);
+
+        &-active {
+          transform: translate3d(0, 0, 0);
+        }
+
+        &-done {
+          transform: translate3d(0, 0, 0);
+        }
       }
 
-      &-done {
-        visibility: hidden;
-        opacity: 0;
+      &-exit {
+        transform: translate3d(0, 0, 0);
+
+        &-active {
+          transform: translate3d(100%, 0, 0);
+        }
+
+        &-done {
+          visibility: hidden;
+          opacity: 0;
+        }
       }
     }
   }
@@ -167,18 +210,18 @@ $prefix: '#{$component-prefix}-notification' !default;
     line-height: 0;
 
     .#{$prefix}--size-lg & {
-      top: use-spacing(10);
-      right: use-spacing(10);
+      inset-block-start: calc(#{use-spacing(12)} - 1px);
+      inset-inline-end: use-spacing(10);
     }
 
     .#{$prefix}--size-md & {
-      top: use-spacing(8);
-      right: use-spacing(8);
+      inset-block-start: calc(#{use-spacing(10)} - 1px);
+      inset-inline-end: use-spacing(8);
     }
 
     .#{$prefix}--size-sm & {
-      top: use-spacing(6);
-      right: use-spacing(6);
+      inset-block-start: calc(#{use-spacing(8)} - 1px);
+      inset-inline-end: use-spacing(6);
     }
   }
 
@@ -187,15 +230,15 @@ $prefix: '#{$component-prefix}-notification' !default;
     justify-content: flex-end;
 
     .#{$prefix}--size-lg & {
-      margin-top: use-spacing(10);
+      margin-block-start: use-spacing(10);
     }
 
     .#{$prefix}--size-md & {
-      margin-top: use-spacing(8);
+      margin-block-start: use-spacing(8);
     }
 
     .#{$prefix}--size-sm & {
-      margin-top: use-spacing(6);
+      margin-block-start: use-spacing(6);
     }
   }
 }

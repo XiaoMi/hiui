@@ -10,6 +10,7 @@ const _prefix = getPrefixCls(_role)
 
 const NOOP_ARRAY = [] as []
 const NOOP_FUNC = () => {}
+
 /**
  * 禅模式
  */

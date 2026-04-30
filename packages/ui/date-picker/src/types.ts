@@ -1,9 +1,14 @@
 import React from 'react'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { PopperOverlayProps } from '@hi-ui/popper'
-import { TimePickerPanelType } from '@hi-ui/time-picker'
+import { TimePickerPanelType, TimePickerValue } from '@hi-ui/time-picker'
 import { CalendarColInfo } from './hooks/useCalenderData'
 import { Moment } from 'moment'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 export type CalendarViewEnum = 'date' | 'year' | 'month' | 'quarter'
 
@@ -110,7 +115,9 @@ export type DisabledDate = (
   panelIndex?: number
 ) => boolean
 
-export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'> {
+export interface DatePickerProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'placeholder'>,
+    DatePickerSemantic {
   /**
    * 选择器类型
    */
@@ -156,10 +163,11 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   clearable?: boolean
   /**
-   * 是否在日期选择器中显示时间选择器，在使用时请注意 format 的设置
+   * 是否在日期选择器中显示时间选择器，在使用时请注意 format 的设置。
+   * 传入对象时等价于开启时间选择，且可通过 `defaultOpenValue` 在未选择日期时指定时间列的默认展示（与 `defaultPickerValue` 独立，仅影响时间滚轮）。
    * @default false
    */
-  showTime?: boolean
+  showTime?: boolean | { defaultOpenValue?: TimePickerValue[] | TimePickerValue }
   /**
    * 时间段的间隔，以分钟为单位
    * @default 240
@@ -253,12 +261,16 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 不同 UI 外观
    * @default 'line'
    */
-  appearance?: 'line' | 'unset' | 'filled'
+  appearance?: 'line' | 'unset' | 'filled' | 'borderless' | 'contained'
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 不同尺寸
    * @default 'md'
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 自定义控制弹出层 popper
    */
@@ -277,6 +289,10 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   onClose?: () => void
   /**
+   * 清空时回调
+   */
+  onClear?: () => void
+  /**
    * 自定义单元格内容
    */
   cellRender?: (colInfo: CalendarColInfo, date: Moment) => React.ReactNode
@@ -285,7 +301,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    */
   footerRender?: (
     actionContents: React.ReactElement,
-    onPick: (dates: (Moment | null)[], isShowPanel?: boolean) => void
+    onPick: (dates: (Moment | Date | null)[], isShowPanel?: boolean) => void
   ) => React.ReactNode
   /**
    * 跨月选择模式
@@ -310,7 +326,7 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
   /**
    * 点击确认按钮的回调
    */
-  onConfirm?: (date: Date) => void
+  onConfirm?: (date: Date | Date[]) => void
   /**
    * 是否显示日期选择器
    */
@@ -319,4 +335,60 @@ export interface DatePickerProps extends Omit<HiBaseHTMLProps<'div'>, 'placehold
    * 默认面板显示的日期，当用户没有传入或选择日期时，选择面板基于此值来显示日期
    */
   defaultPickerValue?: DatePickerValue | DatePickerValue[]
+  /**
+   * 是否展示指示器
+   * @default true
+   */
+  showIndicator?: boolean
+  /**
+   * 是否展示周，仅在 type 为 date 或 daterange 时生效
+   */
+  showWeek?: boolean
 }
+
+/** DatePicker 语义化元素名称 */
+export type DatePickerSemanticName =
+  | 'root'
+  | 'popper'
+  | 'picker'
+  | 'pickerWrapper'
+  | 'prefix'
+  | 'pickerLabel'
+  | 'inputSelector'
+  | 'inputConnection'
+  | 'inputContainer'
+  | 'input'
+  | 'inputShadow'
+  | 'triggerIcon'
+  | 'panel'
+  | 'panelLeft'
+  | 'panelHeader'
+  | 'panelTimeContainer'
+  | 'panelTimeHeader'
+  | 'panelTimeContent'
+  | 'footer'
+  // calendar 语义
+  | 'calendarWrap'
+  | 'calendar'
+  | 'calendarHead'
+  | 'calendarRow'
+  | 'calendarCell'
+  | 'calendarCellText'
+  | 'calendarCellNum'
+  | 'calendarHoliday'
+  | 'calendarHolidayText'
+
+export type DatePickerSemanticClassNames = SemanticClassNamesType<
+  DatePickerProps,
+  DatePickerSemanticName
+>
+export type DatePickerSemanticStyles = SemanticStylesType<DatePickerProps, DatePickerSemanticName>
+/** 语义化 classNames/styles 的解析结果类型，用于 context 等内部传递 */
+export type DatePickerSemanticClassNamesResolved = Partial<Record<DatePickerSemanticName, string>>
+export type DatePickerSemanticStylesResolved = Partial<
+  Record<DatePickerSemanticName, React.CSSProperties>
+>
+export type DatePickerSemantic = ComponentSemantic<
+  DatePickerSemanticClassNames,
+  DatePickerSemanticStyles
+>

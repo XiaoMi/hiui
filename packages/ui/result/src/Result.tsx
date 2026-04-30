@@ -1,24 +1,29 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { isNullish, isUndefined } from '@hi-ui/type-assertion'
+import {
+  InfoCircleFilled,
+  CheckCircleFilled,
+  CloseCircleFilled,
+  ExclamationCircleFilled,
+} from '@hi-ui/icons'
 import { ResultImageSizeEnum, ResultTypeEnum } from './types'
-import { ResultImageInfo, ResultImageSuccess, ResultImageWarning, ResultImageError } from './icons'
 
 const RESULT_PREFIX = getPrefixCls('result')
 
 const DEFAULT_ICON_MAP = {
-  [ResultTypeEnum.INFO]: ResultImageInfo,
-  [ResultTypeEnum.SUCCESS]: ResultImageSuccess,
-  [ResultTypeEnum.WARNING]: ResultImageWarning,
-  [ResultTypeEnum.ERROR]: ResultImageError,
-}
-
-const IMAGE_CONTAINER_STYLE_MAP = {
-  sm: { width: '100px', height: '100px' },
-  md: { width: '140px', height: '140px' },
-  lg: { width: '180px', height: '180px' },
+  [ResultTypeEnum.INFO]: InfoCircleFilled,
+  [ResultTypeEnum.SUCCESS]: CheckCircleFilled,
+  [ResultTypeEnum.WARNING]: ExclamationCircleFilled,
+  [ResultTypeEnum.ERROR]: CloseCircleFilled,
 }
 
 /**
@@ -30,8 +35,11 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
       prefixCls = RESULT_PREFIX,
       role = 'result',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       image,
-      imageSize = 'md',
+      imageSize: sizeProp,
       type = 'info',
       title,
       content,
@@ -40,7 +48,29 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const { size: globalSize, result: resultConfig } = useGlobalContext()
+    let imageSize = sizeProp ?? globalSize ?? 'md'
+    if (imageSize === 'xs') {
+      imageSize = 'sm'
+    }
+
+    const { classNames, styles } = useMergeSemantic<
+      ResultSemanticClassNames,
+      ResultSemanticStyles,
+      ResultProps
+    >({
+      classNamesList: [resultConfig?.classNames, classNamesProp],
+      stylesList: [resultConfig?.styles, stylesProp],
+      info: { props: { ...rest, type, imageSize, title, content } },
+    })
+
+    const cls = cx(
+      prefixCls,
+      className,
+      classNames?.root,
+      `${prefixCls}--type-${type}`,
+      `${prefixCls}--size-${imageSize}`
+    )
 
     const renderImage = () => {
       const DefaultImage = DEFAULT_ICON_MAP[type]
@@ -53,8 +83,8 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
 
       return (
         <div
-          style={IMAGE_CONTAINER_STYLE_MAP[imageSize]}
-          className={`${prefixCls}__image-container`}
+          className={cx(`${prefixCls}__image-container`, classNames?.image)}
+          style={styles?.image}
         >
           {image ?? <DefaultImage />}
         </div>
@@ -62,17 +92,35 @@ export const Result = forwardRef<HTMLDivElement | null, ResultProps>(
     }
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
         {renderImage()}
-        <div className={`${prefixCls}__title`}>{title}</div>
-        {!isNullish(content) && <div className={`${prefixCls}__content`}>{content}</div>}
-        {!isNullish(children) && <div className={`${prefixCls}__children`}>{children}</div>}
+        <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+          {title}
+        </div>
+        {!isNullish(content) && (
+          <div className={cx(`${prefixCls}__content`, classNames?.content)} style={styles?.content}>
+            {content}
+          </div>
+        )}
+        {!isNullish(children) && (
+          <div
+            className={cx(`${prefixCls}__children`, classNames?.children)}
+            style={styles?.children}
+          >
+            {children}
+          </div>
+        )}
       </div>
     )
   }
 )
 
-export interface ResultProps extends HiBaseHTMLProps<'div'> {
+export type ResultSemanticName = 'root' | 'image' | 'title' | 'content' | 'children'
+export type ResultSemanticClassNames = SemanticClassNamesType<ResultProps, ResultSemanticName>
+export type ResultSemanticStyles = SemanticStylesType<ResultProps, ResultSemanticName>
+export type ResultSemantic = ComponentSemantic<ResultSemanticClassNames, ResultSemanticStyles>
+
+export interface ResultProps extends HiBaseHTMLProps<'div'>, ResultSemantic {
   /**
    * 自定义图标、图片
    */

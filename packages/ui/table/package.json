@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -71,6 +72,7 @@
     "@hi-ui/use-check-state": "^4.0.4",
     "@hi-ui/use-drag-sorter": "^4.0.4",
     "@hi-ui/use-latest": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-toggle": "^4.0.4",
     "@hi-ui/use-uncontrolled-state": "^4.0.4",
     "@hi-ui/use-update-effect": "^4.0.4",

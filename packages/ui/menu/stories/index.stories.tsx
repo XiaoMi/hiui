@@ -11,7 +11,12 @@ export * from './expand-all.stories'
 export * from './footer-render.stories'
 export * from './render.stories'
 export * from './size.stories'
-export * from './sidebar.stories'
+export * from './show-title-on-mini.stories'
+export * from './side-menu.stories'
+export * from './group-menu.stories'
+export * from './menu-search.stories'
+export * from './semantic.stories'
+// export * from './sidebar.stories'
 
 export default {
   title: 'Navigation/Menu',

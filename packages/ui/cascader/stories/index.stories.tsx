@@ -3,6 +3,7 @@ import Cascader from '../src'
 
 export * from './basic.stories'
 export * from './size.stories'
+export * from './appearance.stories'
 export * from './disabled.stories'
 export * from './search.stories'
 export * from './filter-options.stories'
@@ -17,6 +18,9 @@ export * from './dropdown-column-render.stories'
 export * from './field-names.stories'
 export * from './visible.stories'
 export * from './custom-render.stories'
+export * from './virtual.stories'
+export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Cascader',

@@ -3,7 +3,7 @@ to: <%= h.uiDir(`${name}/package.json`) %>
 ---
 {
   "name": "@hi-ui/<%= name %>",
-  "version": "4.0.0-alpha.0",
+  "version": "5.0.0-alpha.0",
   "description": "A sub-package for @hi-ui/hiui.",
   "keywords": [],
   "author": "HiUI <mi-hiui@xiaomi.com>",
@@ -46,17 +46,17 @@ to: <%= h.uiDir(`${name}/package.json`) %>
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/classname": "^4.0.0",
-    "@hi-ui/env": "^4.0.0"
+    "@hi-ui/classname": "^5.0.0",
+    "@hi-ui/env": "^5.0.0"
   },
   "peerDependencies": {
-    "@hi-ui/core": ">=4.0.0",
+    "@hi-ui/core": ">=5.0.0",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
   },
   "devDependencies": {
-    "@hi-ui/core": "^4.0.0",
-    "@hi-ui/core-css": "^4.0.0",
+    "@hi-ui/core": "^5.0.0",
+    "@hi-ui/core-css": "^5.0.0",
 
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

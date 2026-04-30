@@ -16,7 +16,27 @@ export const ShowCount = () => {
           placeholder="请输入"
           appearance="line"
           showCount
-          maxLength={80}
+          maxLength={100}
+        />
+        <br />
+        <br />
+        <TextArea
+          value={value}
+          onChange={(evt) => setValue(evt.target.value)}
+          placeholder="请输入"
+          appearance="filled"
+          showCount
+          maxLength={100}
+        />
+        <br />
+        <br />
+        <TextArea
+          value={value}
+          onChange={(evt) => setValue(evt.target.value)}
+          placeholder="请输入"
+          appearance="unset"
+          showCount
+          maxLength={100}
         />
       </div>
     </>

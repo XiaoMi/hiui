@@ -37,7 +37,6 @@ export const Group = () => {
           placeholder="请输入"
           append={
             <Button
-              appearance="filled"
               type="primary"
               icon={<SearchOutlined />}
               onClick={() => {

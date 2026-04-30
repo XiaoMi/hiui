@@ -19,25 +19,15 @@ export const Extra = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>我是大标题</div>
               <Button
+                style={{ marginRight: 20, flexShrink: 0, fontSize: 16 }}
                 icon={<EditOutlined />}
-                appearance="link"
-                size="sm"
-                style={{ marginRight: 8, flexShrink: 0 }}
+                appearance="text"
+                size="xs"
               />
             </div>
           }
           visible={visible}
           onClose={() => setVisible(false)}
-          footer={
-            <div style={{ textAlign: 'right' }}>
-              <Button type="default" key={1} onClick={() => console.log(2)}>
-                取消
-              </Button>
-              <Button type="primary" key={0} onClick={() => console.log(1)}>
-                确认
-              </Button>
-            </div>
-          }
         >
           <div>我是一段文字，也可以是表单、表格、步骤条等等</div>
           <div>我是一段文字，也可以是表单、表格、步骤条等等</div>

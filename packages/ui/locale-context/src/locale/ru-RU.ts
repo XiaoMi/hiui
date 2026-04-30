@@ -189,4 +189,18 @@ export default {
   backTop: {
     backToTop: 'Наверх',
   },
+  menuSearch: {
+    placeholder: 'Введите текст для поиска',
+    search: 'Поиск',
+    clear: 'Очистить',
+    searchResult: 'Найдено {{count}} пунктов, связанных с «{{keyword}}»',
+    searchEmptyResult: 'Ничего не найдено',
+    moveCursor: 'Переместить курсор',
+    confirmSelect: 'Подтвердить',
+    hideWindow: 'Скрыть',
+  },
+  queryFilter: {
+    pin: 'Закрепить вверху списка',
+    unpin: 'Открепить',
+  },
 }

@@ -32,7 +32,11 @@ interface InputProps extends ExtendType {
   // onBlur: () => void
   onValidChange: (isValid: boolean) => void
   isFitContent: boolean
-  size: 'sm' | 'md' | 'lg'
+  size: 'xs' | 'sm' | 'md' | 'lg'
+  /** 语义化：根节点类名 */
+  className?: string
+  /** 语义化：根节点样式 */
+  style?: React.CSSProperties
 }
 
 export interface InputRef {
@@ -62,6 +66,8 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
     onValidChange,
     isFitContent,
     size,
+    className: classNameProp,
+    style: styleProp,
   } = props
   const i18n = useLocaleContext()
 
@@ -181,7 +187,6 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
       componentClass,
       disabled,
       placeholders,
-      isFitContent,
       format,
       cacheValue,
       validChecker,
@@ -205,12 +210,13 @@ export const Input = forwardRef((props: InputProps, ref: React.Ref<InputRef>) =>
   )
   return (
     <div
-      className={cx(componentClass, `${componentClass}--size-${size}`, {
+      className={cx(componentClass, `${componentClass}--size-${size}`, classNameProp, {
         [`${componentClass}--not-valid`]: !judgeIsValid(cacheValue),
         [`${componentClass}--range`]: type === 'range',
         [`${componentClass}--disabled`]: disabled,
         [`${componentClass}--fit-content`]: isFitContent,
       })}
+      style={styleProp}
     >
       {renderInput(cacheValue[0], 0)}
       {type === 'range' && <div className={`${componentClass}__range-separator`}>{toText}</div>}

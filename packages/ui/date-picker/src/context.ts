@@ -1,5 +1,11 @@
 import React from 'react'
-import { CalendarItemV3, DatePickerProps, DatePickerValueV3 } from './types'
+import {
+  CalendarItemV3,
+  DatePickerProps,
+  DatePickerValueV3,
+  DatePickerSemanticClassNamesResolved,
+  DatePickerSemanticStylesResolved,
+} from './types'
 import moment from 'moment'
 import type { UseLocaleContext } from '@hi-ui/core'
 import { CalenderSelectedRange } from './hooks/useCalenderData'
@@ -43,6 +49,7 @@ type ExtendsType = Omit<
       | 'timeInterval'
       | 'appearance'
       | 'size'
+      | 'showIndicator'
     >
   >
 
@@ -50,7 +57,7 @@ export interface DPContextData extends ExtendsType {
   prefixCls: string
   i18n: UseLocaleContext
   outDate: (moment.Moment | null)[]
-  onPick: (dates: (moment.Moment | null)[], isShowPanel?: boolean) => void
+  onPick: (dates: (moment.Moment | Date | null)[], isShowPanel?: boolean) => void
   realFormat: string
   altCalendarPresetData: any
   dateMarkPresetData: any
@@ -66,5 +73,9 @@ export interface DPContextData extends ExtendsType {
   rangeRef: React.MutableRefObject<CalenderSelectedRange | null>
   utcOffset?: number
   defaultPickerValue?: DatePickerValueV3
+  focusIndex?: 0 | 1
+  setFocusIndex?: React.Dispatch<React.SetStateAction<0 | 1>>
+  classNames?: DatePickerSemanticClassNamesResolved
+  styles?: DatePickerSemanticStylesResolved
 }
 export default DPContext

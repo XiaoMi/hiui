@@ -20,9 +20,9 @@ $prefix: '#{$component-prefix}-resize-box' !default;
       }
 
       .#{$prefix}-toggle {
-        right: -13px;
+        inset-inline-end: -13px;
 
-        svg[class^=hi-v4-icon] {
+        svg[class^=#{$component-prefix}-icon] {
           transform: rotate(180deg);
         }
       }
@@ -42,12 +42,12 @@ $prefix: '#{$component-prefix}-resize-box' !default;
       box-sizing: border-box;
       width: 6px;
       height: 100%;
-      border-right: 2px solid use-color('gray', 300);
+      border-inline-end: 2px solid use-color('gray', 400);
     }
 
     &:hover {
       .#{$prefix}-separator-content {
-        border-right-color: use-color('brandblue', 300);
+        border-inline-end-color: use-color('brandblue', 300);
       }
 
       + .#{$prefix}-toggle {
@@ -68,19 +68,19 @@ $prefix: '#{$component-prefix}-resize-box' !default;
     justify-content: center;
     width: 12px;
     height: 60px;
-    right: -11px;
-    top: 50%;
-    transform: translateY(-50%);
+    inset-inline-end: -11px;
+    inset-block-start: 50%;
+    transform: translate3d(0, -50%, 0);
     border-start-end-radius: 16px 8px;
     border-end-end-radius: 16px 8px;
-    border: 1px solid use-color('gray', 300);
-    border-left: none;
+    border: use-border-size('normal') use-color('gray', 400);
+    border-inline-start: none;
     cursor: pointer;
-    color: use-color('gray', 600);
+    color: use-color('gray', 700);
     background-color: #fff;
 
-    svg[class^=hi-v4-icon] {
-      margin-left: -4px;
+    svg[class^=#{$component-prefix}-icon] {
+      margin-inline-start: -4px;
     }
   }
 }

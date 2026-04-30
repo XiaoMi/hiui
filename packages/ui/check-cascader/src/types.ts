@@ -1,10 +1,10 @@
 import React from 'react'
-
+import type { HiBaseAppearanceEnum } from '@hi-ui/core'
 export interface CheckCascaderDataItem {
   /**
    * 树节点唯一 id
    */
-  id?: React.ReactText
+  id: React.ReactText
   /**
    * 树节点标题
    */
@@ -29,6 +29,10 @@ export interface CheckCascaderDataItem {
    * 是否禁用该节点 checkbox 功能
    */
   disabledCheckbox?: boolean
+  /**
+   * 是否禁用该节点 checkbox 级联功能，禁用后只能用于展示勾选状态，无法进行操作
+   */
+  disabledCheckboxCascaded?: boolean
 }
 
 // TODO: ts 类型工具函数 将指定属性转为非可选属性
@@ -69,3 +73,5 @@ export interface CheckCascaderItemEventData
     CheckCascaderDataItemRequiredProps {}
 
 export type CheckCascaderExpandTriggerEnum = 'click' | 'hover'
+
+export type CheckCascaderAppearanceEnum = HiBaseAppearanceEnum | 'contained' | undefined

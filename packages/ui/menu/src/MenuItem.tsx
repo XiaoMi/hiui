@@ -53,6 +53,9 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
       closeAllPopper,
       activeParents,
       overlayClassName,
+      showTitleOnMini,
+      semanticClassNames,
+      semanticStyles,
     } = useContext(MenuContext)
 
     const _parentIds = (parentIds || []).concat(id)
@@ -75,18 +78,24 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 (activeId === id || activeParents?.includes(id)) &&
                 level === 1,
             },
-            className
+            className,
+            semanticClassNames?.item
           )}
-          style={hidden ? hiddenStyle : undefined}
+          style={{ ...(hidden ? hiddenStyle : undefined), ...semanticStyles?.item }}
         >
           <div
-            className={cx(`${prefixCls}-item__inner`, {
-              // TODO: 移到 上面的 item 统一管理
-              [`${prefixCls}-item__inner--active`]: activeId === id,
-              [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
-              [`${prefixCls}-item__inner--expanded`]: expandedIds?.includes(id),
-              [`${prefixCls}-item__inner--hasIcon`]: icon,
-            })}
+            className={cx(
+              `${prefixCls}-item__inner`,
+              {
+                // TODO: 移到 上面的 item 统一管理
+                [`${prefixCls}-item__inner--active`]: activeId === id,
+                [`${prefixCls}-item__inner--active-p`]: activeParents?.includes(id),
+                [`${prefixCls}-item__inner--expanded`]: expandedIds?.includes(id),
+                [`${prefixCls}-item__inner--hasIcon`]: icon,
+              },
+              semanticClassNames?.itemInner
+            )}
+            style={semanticStyles?.itemInner}
             onClick={() => {
               if (isArrayNonEmpty(children)) {
                 !disabled && clickSubMenu?.(id)
@@ -105,8 +114,18 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               ? renderIndent({ prefixCls: `${prefixCls}-item`, depth: level - 1 })
               : null}
 
-            {icon ? <span className={`${prefixCls}-item__icon`}>{icon}</span> : null}
-            <span className={`${prefixCls}-item__content`}>
+            {icon ? (
+              <span
+                className={cx(`${prefixCls}-item__icon`, semanticClassNames?.itemIcon)}
+                style={semanticStyles?.itemIcon}
+              >
+                {icon}
+              </span>
+            ) : null}
+            <span
+              className={cx(`${prefixCls}-item__content`, semanticClassNames?.itemContent)}
+              style={semanticStyles?.itemContent}
+            >
               {isFunction(render) ? render({ ...raw, id, icon, title }, level) : title}
             </span>
             {/* 垂直菜单-纵向展开 */}
@@ -116,32 +135,64 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               expandedType === 'collapse' &&
               !showAllSubMenus &&
               (!disabled && expandedIds?.includes(id) ? (
-                <Arrow prefixCls={`${prefixCls}-item`} direction="up" />
+                <Arrow
+                  prefixCls={`${prefixCls}-item`}
+                  direction="up"
+                  className={semanticClassNames?.itemArrow}
+                  style={semanticStyles?.itemArrow}
+                />
               ) : (
-                <Arrow prefixCls={`${prefixCls}-item`} direction="down" />
+                <Arrow
+                  prefixCls={`${prefixCls}-item`}
+                  direction="down"
+                  className={semanticClassNames?.itemArrow}
+                  style={semanticStyles?.itemArrow}
+                />
               ))}
             {/* 垂直菜单-mini */}
             {hasChildren && mini && level > 1 && placement === 'vertical' ? (
-              <Arrow prefixCls={`${prefixCls}-item`} />
+              <Arrow
+                prefixCls={`${prefixCls}-item`}
+                className={semanticClassNames?.itemArrow}
+                style={semanticStyles?.itemArrow}
+              />
             ) : null}
             {/* 垂直菜单-弹出展开 */}
             {hasChildren &&
             !mini &&
             placement === 'vertical' &&
             (expandedType === 'pop' || showAllSubMenus) ? (
-              <Arrow prefixCls={`${prefixCls}-item`} />
+              <Arrow
+                prefixCls={`${prefixCls}-item`}
+                className={semanticClassNames?.itemArrow}
+                style={semanticStyles?.itemArrow}
+              />
             ) : null}
             {/* 水平菜单 */}
             {hasChildren && placement === 'horizontal' && level > 1 ? (
-              <Arrow prefixCls={`${prefixCls}-item`} />
+              <Arrow
+                prefixCls={`${prefixCls}-item`}
+                className={semanticClassNames?.itemArrow}
+                style={semanticStyles?.itemArrow}
+              />
             ) : null}
             {hasChildren &&
               placement === 'horizontal' &&
               level === 1 &&
               (!disabled && expandedIds?.includes(id) ? (
-                <Arrow prefixCls={`${prefixCls}-item`} direction="up" />
+                <Arrow
+                  prefixCls={`${prefixCls}-item`}
+                  direction="up"
+                  className={semanticClassNames?.itemArrow}
+                  style={semanticStyles?.itemArrow}
+                />
               ) : (
-                <Arrow prefixCls={`${prefixCls}-item`} direction="down" />
+                <Arrow
+                  prefixCls={`${prefixCls}-item`}
+                  direction="down"
+                  className={semanticClassNames?.itemArrow}
+                  style={semanticStyles?.itemArrow}
+                />
               ))}
           </div>
           {/* 垂直菜单-纵向展开 */}
@@ -151,7 +202,10 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
           !showAllSubMenus &&
           expandedType === 'collapse' ? (
             <Expander visible={!disabled && !!expandedIds?.includes(id)}>
-              <ul className={`${prefixCls}-submenu`}>
+              <ul
+                className={cx(`${prefixCls}-submenu`, semanticClassNames?.submenu)}
+                style={semanticStyles?.submenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -179,13 +233,20 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               visible={!!expandedIds?.includes(id)}
               attachEl={itemRef.current}
               placement={'right-start'}
-              gutterGap={16}
+              gutterGap={showTitleOnMini ? 8 : 16}
               className={overlayClassName}
               onClose={() => {
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => {
                   return (
                     <MenuItem
@@ -206,14 +267,21 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
               visible={!!expandedIds?.includes(id)}
               attachEl={itemRef.current}
               placement={'right-start'}
-              gutterGap={16}
+              gutterGap={showTitleOnMini ? 12 : 16}
               disabledPortal
               className={overlayClassName}
               onClose={() => {
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -244,7 +312,14 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -270,7 +345,14 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -344,7 +426,14 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -370,7 +459,14 @@ export const MenuItem = forwardRef<HTMLLIElement | null, MenuItemProps>(
                 closePopper?.(id)
               }}
             >
-              <ul className={`${prefixCls}-popmenu ${prefixCls}--size-${size}`}>
+              <ul
+                className={cx(
+                  `${prefixCls}-popmenu`,
+                  `${prefixCls}--size-${size}`,
+                  semanticClassNames?.popmenu
+                )}
+                style={semanticStyles?.popmenu}
+              >
                 {children!.map((child) => (
                   <MenuItem
                     {...child}
@@ -444,14 +540,24 @@ export interface MenuItemProps extends Omit<HiBaseHTMLProps<'li'>, 'id'> {
   parentIds?: React.ReactText[]
   render?: (node: MenuDataItem, level?: number) => React.ReactNode
   raw?: MenuDataItem
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {
   MenuItem.displayName = 'MenuItem'
 }
 
-const Arrow = ({ prefixCls, direction }: any) => {
+const Arrow = ({
+  prefixCls,
+  direction,
+  className,
+  style,
+}: {
+  prefixCls: string
+  direction?: 'up' | 'down'
+  className?: string
+  style?: React.CSSProperties
+}) => {
   let icon
   switch (direction) {
     case 'up':
@@ -464,7 +570,11 @@ const Arrow = ({ prefixCls, direction }: any) => {
       icon = <RightOutlined />
   }
 
-  return <span className={`${prefixCls}__arrow`}>{icon}</span>
+  return (
+    <span className={cx(`${prefixCls}__arrow`, className)} style={style}>
+      {icon}
+    </span>
+  )
 }
 
 /**

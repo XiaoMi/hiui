@@ -1,0 +1,38 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$search-trigger-prefix: '#{$component-prefix}-search-trigger' !default;
+
+.#{$search-trigger-prefix} {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: use-spacing(4);
+  height: use-height-size(8);
+  margin: 0 use-spacing(4) use-spacing(6);
+  font-size: use-text-size('lg');
+  color: use-color('gray', 600);
+  background-color: rgba(#717ea3, 0.1);
+  cursor: pointer;
+  border-radius: 9999px;
+
+  &:not(&--mini) {
+    padding: 0 use-spacing(6);
+  }
+
+  &--mini {
+    width: use-height-size(8);
+    margin-inline-start: use-spacing(7);
+    justify-content: center;
+  }
+
+  &__placeholder {
+    font-size: use-text-size('md');
+    line-height: use-text-lineheight('md');
+  }
+
+  &__popper-container {
+    border-radius: use-border-radius('xl') !important;
+    border: use-border-size('normal') use-color('gray', 200);
+  }
+}

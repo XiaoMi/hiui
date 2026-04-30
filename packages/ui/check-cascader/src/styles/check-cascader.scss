@@ -5,9 +5,19 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 .#{$prefix} {
   &__popper {
     .#{$component-prefix}-picker {
+      &__panel {
+        box-sizing: border-box;
+        min-width: 160px;
+      }
+
+      &__search {
+        .#{$component-prefix}-input__text {
+          width: 100px;
+        }
+      }
+
       &__body {
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
         overflow-y: hidden;
       }
 
@@ -25,22 +35,21 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-search {
     box-sizing: border-box;
-    // padding: 10px;
-    padding: 0 10px 10px;
+    padding: 0 use-spacing(5) use-spacing(5);
     position: relative;
 
     .#{$component-prefix}-input__prefix {
-      font-size: 16px;
-      padding-left: 0;
+      font-size: use-text-size('lg');
+      padding-inline-start: 0;
     }
 
     &__empty {
       display: inline-block;
-      margin-top: 20px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #999;
-      line-height: 20px;
+      margin-block-start: use-spacing(10);
+      font-size: use-text-size('normal');
+      font-weight: use-text-weight('normal');
+      line-height: use-text-lineheight('normal');
+      color: use-color('gray', 800);
     }
   }
 }
@@ -60,33 +69,30 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 .#{$prefix}-menu {
   @include component-reset;
 
-  // padding: 0 0 10px 0;
   list-style: none;
   width: auto;
   box-sizing: border-box;
   flex-shrink: 0;
   display: inline-block;
-  min-width: 140px;
-  max-height: 256px;
+  min-width: 160px;
+  max-height: 260px;
   overflow: auto;
-  padding: 0 use-spacing(4);
-  border-right: use-border-size('normal') use-color('gray', 200);
+  padding: use-spacing(2);
 
-  &:last-of-type {
-    border: none;
+  &:not(:last-of-type) {
+    border-inline-end: use-border-size('normal') use-color('gray', 300);
   }
 
   $this: &;
 
   &--checkable {
     #{$this}-checkbox + .title__text {
-      padding-left: 8px;
+      padding-inline-start: use-spacing(2);
     }
   }
 
   &-item {
     width: 100%;
-    // padding: use-spacing(1) 0;
     position: relative;
     cursor: pointer;
     display: flex;
@@ -96,10 +102,10 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     position: relative;
 
     &::after {
-      right: 0;
-      top: -8px;
-      bottom: -8px;
-      left: -8px;
+      inset-inline-end: 0;
+      inset-block-start: calc(#{use-spacing(4)} * -1);
+      inset-block-end: calc(#{use-spacing(4)} * -1);
+      inset-inline-start: calc(#{use-spacing(4)} * -1);
       content: '';
       position: absolute;
       display: block;
@@ -107,7 +113,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
   }
 
   &-option {
-    padding: use-spacing(1) use-spacing(3);
+    padding: use-spacing(1) use-spacing(4);
     box-sizing: border-box;
     height: use-height-size(8);
     width: 100%;
@@ -115,7 +121,8 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
     align-items: center;
     position: relative;
     justify-content: space-between;
-    border-radius: use-border-radius('normal');
+    border-radius: use-border-radius('md');
+    white-space: nowrap;
 
     &:hover {
       background-color: use-color('gray', 100);
@@ -144,17 +151,20 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
     &--disabled {
       cursor: not-allowed;
-      color: use-color('gray', 500);
+      color: use-color('gray', 600);
       background: transparent;
 
       .#{$prefix}-menu-switcher {
-        color: use-color('gray', 400);
+        color: use-color('gray', 500);
       }
     }
   }
 
   .title__text {
     flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &--cols {
       display: block;
@@ -186,8 +196,8 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 
   &-switcher {
     flex-shrink: 0;
-    font-size: 16px;
-    color: use-color('gray', 500);
+    font-size: use-text-size('lg');
+    color: use-color('gray', 600);
 
     &--loading {
       color: use-color-mode('primary');
@@ -196,7 +206,7 @@ $prefix: '#{$component-prefix}-check-cascader' !default;
 }
 
 // TODO: 迁移
-.hi-v4-tree--icon-loading {
+.#{$component-prefix}-tree--icon-loading {
   animation-name: hi-rotate;
   animation-duration: 2s;
   animation-iteration-count: infinite;

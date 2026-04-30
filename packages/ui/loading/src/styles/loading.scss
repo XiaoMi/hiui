@@ -16,10 +16,10 @@ $prefixCls: #{$component-prefix}-loading !default;
     @include flex;
 
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
     z-index: use-zindex('back');
     background: rgba(#fff, 0.64);
     transition: 0.3s ease;
@@ -43,7 +43,34 @@ $prefixCls: #{$component-prefix}-loading !default;
     height: auto;
   }
 
+  &__content-wrapper {
+    display: flex;
+  }
+
+  &--content-position-bottom {
+    .#{$prefixCls}__content-wrapper {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .#{$prefixCls}__content {
+      margin-block-start: use-spacing(4);
+    }
+  }
+
+  &--content-position-right {
+    .#{$prefixCls}__content-wrapper {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .#{$prefixCls}__content {
+      margin-inline-start: use-spacing(2);
+    }
+  }
+
   &__icon {
+    display: inline-flex;
     position: relative;
 
     div {
@@ -53,81 +80,81 @@ $prefixCls: #{$component-prefix}-loading !default;
 
       @keyframes #{$component-prefix}-left-dot {
         0% {
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
           z-index: 1;
         }
 
         25% {
-          transform: translateX(100%) scale(1.5);
+          transform: translate3d(100%, 0, 0) scale(1.5);
           z-index: 1;
         }
 
         50% {
-          transform: translateX(200%);
+          transform: translate3d(200%, 0, 0);
           z-index: 0;
         }
 
         75% {
-          transform: translateX(100%) scale(0.5);
+          transform: translate3d(100%, 0, 0) scale(0.5);
           z-index: 0;
         }
 
         100% {
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
           z-index: 1;
         }
       }
 
       @keyframes #{$component-prefix}-right-dot {
         0% {
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
           z-index: 0;
         }
 
         25% {
-          transform: translateX(-100%) scale(0.5);
+          transform: translate3d(-100%, 0, 0) scale(0.5);
           z-index: 0;
         }
 
         50% {
-          transform: translateX(-200%);
+          transform: translate3d(-200%, 0, 0);
           z-index: 1;
         }
 
         75% {
-          transform: translateX(-100%) scale(1.5);
+          transform: translate3d(-100%, 0, 0) scale(1.5);
           z-index: 1;
         }
 
         100% {
-          transform: translateX(0%);
+          transform: translate3d(0, 0, 0);
           z-index: 0;
         }
       }
 
       &:first-child {
-        background: #f63;
-        left: 0;
-        transform: translateX(0);
+        background: use-color('orange', 500);
+        inset-inline-start: 0;
+        transform: translate3d(0, 0, 0);
         animation: #{$component-prefix}-left-dot 1.5s linear infinite;
       }
 
       &:last-child {
         background: use-color-mode('primary');
-        right: 0;
-        transform: translateX(0);
+        inset-inline-end: 0;
+        transform: translate3d(0, 0, 0);
         animation: #{$component-prefix}-right-dot 1.5s linear infinite;
       }
     }
   }
 
   &__content {
-    margin-top: 6px;
-    animation: #{$component-prefix}-flash 1.6s linear infinite;
-    color: #f63;
+    font-size: use-text-size('md');
+    color: use-color('gray', 700);
+    // animation: #{$component-prefix}-flash 1.6s linear infinite;
   }
 
-  &--size {
+  &--type-dot.#{$prefixCls}--size {
     &-sm {
       .#{$prefixCls}__icon {
         width: 24px;
@@ -167,10 +194,10 @@ $prefixCls: #{$component-prefix}-loading !default;
 
   &--full {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
     z-index: use-zindex('top');
   }
 

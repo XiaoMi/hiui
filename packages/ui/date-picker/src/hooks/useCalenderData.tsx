@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import moment, { Moment } from 'moment'
 import { DAY_MILLISECONDS } from '../utils/constants'
 import { DatePickerTypeEnum, DisabledDate } from '../types'
-import { getBelongWeek, getBelongWeekBoundary } from '../utils/week'
+import { getBelongWeek, getBelongWeekBoundary, getBelongWeekYear } from '../utils/week'
 import { UseLocaleContext } from '@hi-ui/core'
 import { createDateWithUTCOffset, toUtcTime } from '../utils'
 
@@ -268,6 +268,7 @@ const getDateRows = ({
   renderDate,
   disabledDate,
   utcOffset,
+  showWeek,
 }: {
   originDate: moment.Moment | null
   range?: CalenderSelectedRange
@@ -278,6 +279,7 @@ const getDateRows = ({
   renderDate: moment.Moment | null
   disabledDate: DisabledDate
   utcOffset?: number
+  showWeek?: boolean
 }) => {
   const rows: CalendarRowInfo[] = [[], [], [], [], [], []] as any
   // 根据utcOffset计算今天的日期
@@ -296,11 +298,13 @@ const getDateRows = ({
   // *  lastMonthDayCount: 上月总天数
   // *  firstDayWeek: 当月第一天是周几（不是现实的周几，而是在表中的偏移位置，展示位置）
   let firstDayWeek = _date.startOf('month').day() - weekOffset
+  // 使用模运算确保结果在 0-6 之间
+  if (firstDayWeek < 0) {
+    firstDayWeek = ((firstDayWeek % 7) + 7) % 7
+  }
+  // 如果为0 代表该月第一天正好是周的第一天，在日历上需要第二行开始显示
   if (firstDayWeek === 0) {
-    // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
     firstDayWeek = 7
-  } else if (firstDayWeek < 0) {
-    firstDayWeek = 6
   }
   const startTimeByCurrentPanel = getTime(firstDayWeek, _date.year(), _date.month() + 1)
   const dayCount = _date.daysInMonth()
@@ -393,16 +397,14 @@ const getDateRows = ({
       if (type === 'week') {
         col.weekType = col.type
         if (originDate) {
-          const wFirst = getBelongWeekBoundary(originDate, weekOffset)
-          const wLast = getBelongWeekBoundary(originDate, weekOffset, false)
-          if (currentTime.isSame(wFirst, 'day') || currentTime.isSame(wLast, 'day')) {
-            col.type = 'selected'
-            continue
-          }
-          // 处于周开始与结束之间，也看做，被选中了
-          if (currentTime.isBetween(wFirst, wLast)) {
-            // col.type = 'normal'
-            // col.range = true
+          // 通过比较日期所属的周是否相同来判断是否选中，而不是使用 isBetween
+          // 这样可以避免 weekOffset 导致的边界判断问题
+          const originWeek = getBelongWeek(originDate, weekOffset)
+          const originWeekYear = getBelongWeekYear(originDate, weekOffset)
+          const currentWeek = getBelongWeek(currentTime, weekOffset)
+          const currentWeekYear = getBelongWeekYear(currentTime, weekOffset)
+
+          if (originWeek === currentWeek && originWeekYear === currentWeekYear) {
             col.type = 'selected'
           }
         }
@@ -412,7 +414,7 @@ const getDateRows = ({
 
   // 新增功能：周选择显示周数
   // 如果是周类型，则计算出每一行的周数并放入每行数组第一个
-  if (type === 'week' || type === 'weekrange') {
+  if (type === 'week' || type === 'weekrange' || showWeek) {
     const year = _date.year()
     const month = _date.month() + 1
 
@@ -500,6 +502,7 @@ const useDate = ({
   renderDate,
   disabledDate,
   utcOffset,
+  showWeek,
 }: {
   originDate: moment.Moment | null
   renderDate: moment.Moment | null
@@ -512,6 +515,7 @@ const useDate = ({
   i18n: UseLocaleContext
   range?: CalenderSelectedRange
   utcOffset?: number
+  showWeek?: boolean
 }) => {
   const [rows, setRows] = useState<CalendarRowInfo[]>([])
 
@@ -540,6 +544,7 @@ const useDate = ({
             renderDate,
             disabledDate,
             utcOffset,
+            showWeek,
           })
 
     setRows(_rows)
@@ -555,6 +560,7 @@ const useDate = ({
     weekOffset,
     originDate,
     utcOffset,
+    showWeek,
   ])
 
   return [rows]

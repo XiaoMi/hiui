@@ -11,7 +11,7 @@ import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { CloseCircleFilled, CloseOutlined } from '@hi-ui/icons'
 import { TagInputOption } from './types'
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, HiBaseSizeEnum } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { isArrayNonEmpty, isFunction, isArray } from '@hi-ui/type-assertion'
 import ResizeDetector from 'react-resize-detector'
@@ -38,6 +38,7 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       readOnly = false,
       size = 'md',
       appearance = 'line',
+      label,
       wrap = false,
       expandable = false,
       activeExpandable = false,
@@ -50,16 +51,25 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       onMouseLeave,
       onClear,
       onExpand,
+      showIndicator = true,
       ...rest
     },
     ref
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
 
+    const dataMap = useMemo(() => {
+      const map: Record<React.ReactText, TagInputOption> = {}
+      data.forEach((item) => {
+        map[item.id] = item
+      })
+      return map
+    }, [data])
+
     const tagList = useMemo(() => {
-      const dataMap = new Map(data.map((item) => [item.id, item]))
-      return value.map((id) => dataMap.get(id) || { id, title: id })
-    }, [value, data])
+      return value.map((id) => dataMap[id] || { id, title: id })
+    }, [value, dataMap])
+
     const tagCount = tagList.length
 
     const [containerWidth = 0, setContainerWidth] = useState<number>()
@@ -182,7 +192,8 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
       invalid && 'invalid',
       disabled && `${prefixCls}--disabled`,
       wrap && `${prefixCls}--wrap`,
-      expandable && `${prefixCls}--expandable`
+      expandable && `${prefixCls}--expandable`,
+      showTagCount && `${prefixCls}--has-value`
     )
 
     return (
@@ -210,30 +221,51 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
         >
           {prefix ? <span className={`${prefixCls}__prefix`}>{prefix}</span> : null}
 
+          {appearance === 'contained' && label ? (
+            <span className={`${prefixCls}__label`}>
+              {label}
+              {value?.length > 0 && '：'}
+            </span>
+          ) : null}
+
           {/* tags 列表区域渲染 */}
-          {showTags ? (
-            <span className={`${prefixCls}__tags`}>
-              {mergedTagList.map((option, index) => {
+          {appearance !== 'contained' ? (
+            showTags ? (
+              <span className={`${prefixCls}__tags`}>
+                {mergedTagList.map((option, index) => {
+                  return (
+                    <MockTag
+                      hidden={wrap ? false : index > tagMaxCount}
+                      maxWidth={maxTagWidth}
+                      key={option.id}
+                      prefixCls={prefixCls}
+                      disabled={disabled}
+                      option={option}
+                      value={value}
+                      displayRender={displayRender}
+                      tryChangeValue={tryChangeValue}
+                      onTagResize={(id: string, w: number) =>
+                        setTagsWidth((prev) => ({ ...prev, [id]: w }))
+                      }
+                    />
+                  )
+                })}
+              </span>
+            ) : (
+              <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
+            )
+          ) : (
+            <span className={`${prefixCls}__value`}>
+              {value.map((id, index) => {
+                const option = data.find((d) => d.id === id) ?? { id, title: id }
                 return (
-                  <MockTag
-                    hidden={wrap ? false : index > tagMaxCount}
-                    maxWidth={maxTagWidth}
-                    key={option.id}
-                    prefixCls={prefixCls}
-                    disabled={disabled}
-                    option={option}
-                    value={value}
-                    displayRender={displayRender}
-                    tryChangeValue={tryChangeValue}
-                    onTagResize={(id: string, w: number) =>
-                      setTagsWidth((prev) => ({ ...prev, [id]: w }))
-                    }
-                  />
+                  <React.Fragment key={id}>
+                    {isFunction(displayRender) ? displayRender(option) : option.title}
+                    {index !== value.length - 1 && '、'}
+                  </React.Fragment>
                 )
               })}
             </span>
-          ) : (
-            <span className={`${prefixCls}__placeholder`}>{placeholder}</span>
           )}
 
           {suffix[1] ? <span className={`${prefixCls}__secondary-suffix`}>{suffix[1]}</span> : null}
@@ -269,9 +301,9 @@ export const TagInputMock = forwardRef<HTMLDivElement | null, TagInputMockProps>
                   >
                     <CloseCircleFilled />
                   </span>
-                ) : (
+                ) : showIndicator ? (
                   suffix[0]
-                )}
+                ) : null}
               </span>
             ) : null}
           </ResizeDetector>
@@ -346,11 +378,15 @@ export interface TagInputMockProps
   /**
    * 设置展现形式
    */
-  appearance?: HiBaseAppearanceEnum
+  appearance?: HiBaseAppearanceEnum | 'contained'
+  /**
+   * 设置输入框 label 内容，仅在 appearance 为 contained 时生效
+   */
+  label?: React.ReactNode
   /**
    * 设置输入框尺寸
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: HiBaseSizeEnum
   /**
    * 是否开启换行全展示
    */
@@ -367,6 +403,10 @@ export interface TagInputMockProps
    * 展开时回调
    */
   onExpand?: (evt: React.MouseEvent) => void
+  /**
+   * 是否展示箭头
+   */
+  showIndicator?: boolean
 }
 
 if (__DEV__) {

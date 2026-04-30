@@ -12,13 +12,17 @@ export const Subtitle = () => {
       <div className="card-subtitle__wrap">
         <Card
           title="标题"
-          extra={<Button appearance="link">链接</Button>}
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
           subtitle="这是一句简要的卡片副标题"
         >
           <div
             style={{
               height: 174,
-              backgroundColor: '#F5F7FA',
+              backgroundColor: '#F5F8FC',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -32,13 +36,17 @@ export const Subtitle = () => {
         <Card
           title="标题"
           showHeaderDivider
-          extra={<Button appearance="link">链接</Button>}
+          extra={
+            <Button type="primary" appearance="link">
+              链接
+            </Button>
+          }
           subtitle="这是一句简要的卡片副标题"
         >
           <div
             style={{
               height: 174,
-              backgroundColor: '#F5F7FA',
+              backgroundColor: '#F5F8FC',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',

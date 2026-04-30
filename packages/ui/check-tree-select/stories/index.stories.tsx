@@ -4,6 +4,8 @@ import CheckTreeSelect from '../src'
 export * from './basic.stories'
 export * from './controlled.stories'
 export * from './uncontrolled.stories'
+export * from './checked-mode.stories'
+export * from './disabled.stories'
 export * from './tag-input-wrap.stories'
 export * from './appearance.stories'
 export * from './size.stories'
@@ -18,6 +20,8 @@ export * from './virtual-list.stories'
 export * from './custom-render.stories'
 export * from './addon.stories'
 export * from './only-checked.stories'
+export * from './extra-render.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/CheckTreeSelect',

@@ -24,7 +24,6 @@ export const WithApi = () => {
         }}
       >
         <span>{title}</span>
-        <IconButton effect icon={<CloseOutlined />} onClick={() => Popover.close(key)} />
       </div>
     )
   }
@@ -63,8 +62,8 @@ export const WithApi = () => {
             </FormItem>
           </Form>
         </div>
-        <div style={{ display: 'flex' }}>
-          <Button style={{ flex: 1 }} onClick={() => Popover.close(key)}>
+        <div style={{ textAlign: 'right' }}>
+          <Button style={{ flex: 1 }} appearance="line" onClick={() => Popover.close(key)}>
             取消
           </Button>
           <Button

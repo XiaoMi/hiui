@@ -18,7 +18,11 @@ export const List = () => {
       <h1>List</h1>
       <div className="form-list__wrap">
         <div style={{ textAlign: 'right', marginBottom: '1em' }}>
-          <Button onClick={() => formListRef.current?.add({ username: '', password: '' })}>
+          <Button
+            type="primary"
+            appearance="line"
+            onClick={() => formListRef.current?.add({ username: '', password: '' })}
+          >
             动态添加成组表单
           </Button>
         </div>
@@ -28,20 +32,20 @@ export const List = () => {
           rules={{
             testInput: [
               {
-                // name: 'max',
-                // strategy: 10,
                 max: 10,
                 message: 'max is 10',
               },
             ],
             testInput2: [
               {
-                // name: 'required',
-                // strategy: true,
                 required: true,
                 message: 'testInput2 is required',
               },
             ],
+          }}
+          onValuesChange={(changedValues, allValues) => {
+            console.log('changedValues', changedValues)
+            console.log('allValues', allValues)
           }}
         >
           <FormItem field="testInput" valueType="string" label="供应商">
@@ -78,21 +82,27 @@ export const List = () => {
                         >
                           <Input />
                         </FormItem>
-                        <FormItem field={null} valueType={null}>
+                        <FormItem>
                           <div>
-                            <Button size="sm" type="danger" onClick={() => remove(index)}>
+                            <Button
+                              size="md"
+                              type="danger"
+                              appearance="line"
+                              onClick={() => remove(index)}
+                            >
                               删除
                             </Button>
                             <Button
-                              size="sm"
+                              size="md"
+                              appearance="line"
                               onClick={() => insertBefore(index, { username: '', password: '' })}
                             >
                               在该组之前插入
                             </Button>
-                            <Button size="sm" onClick={() => move(index, 0)}>
+                            <Button size="md" appearance="line" onClick={() => move(index, 0)}>
                               移到数组索引 0 位置
                             </Button>
-                            <Button size="sm" onClick={() => swap(index, 0)}>
+                            <Button size="md" appearance="line" onClick={() => swap(index, 0)}>
                               和第一个置换值
                             </Button>
                           </div>
@@ -100,7 +110,11 @@ export const List = () => {
                       </div>
                     )
                   })}
-                  <Button onClick={() => add({ username: '', password: '' })}>
+                  <Button
+                    type="primary"
+                    appearance="line"
+                    onClick={() => add({ username: '', password: '' })}
+                  >
                     动态添加成组表单
                   </Button>
                 </div>

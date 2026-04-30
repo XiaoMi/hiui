@@ -5,8 +5,15 @@ import { Portal } from '@hi-ui/portal'
 import { Watermark, WatermarkProps } from '@hi-ui/watermark'
 import { CSSTransition } from 'react-transition-group'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseHTMLProps, usePortalContext } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext, usePortalContext } from '@hi-ui/core'
 import { useLatestCallback } from '@hi-ui/use-latest'
+import { useScrollLock } from '@hi-ui/use-scroll-lock'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import {
   ZoomInOutlined,
   ZoomOutOutlined,
@@ -14,8 +21,9 @@ import {
   RotateRightOutlined,
   LeftOutlined,
   RightOutlined,
-  CloseOutlined,
+  DownloadOutlined,
 } from '@hi-ui/icons'
+import { Scale1Icon } from './scale1Icon'
 
 const PREVIEW_PREFIX = getPrefixCls('preview')
 
@@ -36,13 +44,16 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       role = 'preview',
       className,
       style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       visible = false,
       current,
       defaultCurrent,
       onPreviewChange,
-      title,
+      title: titleProp,
       onError,
       onClose,
+      onDownload,
       src,
       watermarkProps,
       disabledDownload = false,
@@ -51,7 +62,25 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
+    const { preview: previewConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      PreviewSemanticClassNames,
+      PreviewSemanticStyles,
+      PreviewProps
+    >({
+      classNamesList: [previewConfig?.classNames, classNamesProp],
+      stylesList: [previewConfig?.styles, stylesProp],
+      info: {
+        props: {
+          visible,
+          src,
+          disabledDownload,
+          title: titleProp,
+        },
+      },
+    })
+    const cls = cx(prefixCls, className, classNames?.root)
+    const maskElRef = useRef<HTMLDivElement>(null)
 
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
@@ -71,6 +100,16 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     const previewRef = useRef<HTMLDivElement>(null)
 
     const isMultiple = useMemo(() => Array.isArray(src) && src.length > 1, [src])
+
+    const title = useMemo(() => {
+      if (typeof titleProp === 'function') {
+        return titleProp(Array.isArray(src) ? src[active] : src, active)
+      }
+      return titleProp ?? getTitle(Array.isArray(src) ? src[active] : src)
+    }, [active, src, titleProp])
+
+    // 锁定外部滚动
+    useScrollLock(previewRef, { enabled: visible })
 
     // 图片加水印
     const [watermarkContainer, setWatermarkContainer] = useState<HTMLDivElement | null>(null)
@@ -110,13 +149,41 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
     // 缩放处理
     const handleZoom = useCallback(
       (type: 'zoomIn' | 'zoomOut') => {
-        const newScale = Number(
-          (imgTransform.scale + (type === 'zoomIn' ? 1 : -1) * 0.1).toFixed(1)
-        )
+        const currentScale = imgTransform.scale
+        // 动态步长：根据当前缩放比例调整步长
+        let step = 0.1
+        if (currentScale < 0.5) {
+          step = 0.05 // 小比例时使用更小的步长
+        } else if (currentScale < 1) {
+          step = 0.1
+        } else if (currentScale < 2) {
+          step = 0.2
+        } else if (currentScale < 5) {
+          step = 0.5
+        } else {
+          step = 1 // 大比例时使用更大的步长
+        }
+
+        const delta = (type === 'zoomIn' ? 1 : -1) * step
+        const newScale = Number((currentScale + delta).toFixed(2))
+
+        // 边界值检查：最小 0.1，最大 10
+        if (newScale < 0.05) {
+          return
+        }
+        if (newScale > 10) {
+          updateImgTransform({ ...imgTransform, scale: 10 })
+          return
+        }
+
         updateImgTransform({ ...imgTransform, scale: newScale })
       },
       [imgTransform]
     )
+
+    const handleZoomTo1 = useCallback(() => {
+      updateImgTransform({ ...imgTransform, scale: 1 })
+    }, [imgTransform])
 
     // 翻转处理
     const handleRotate = useCallback(
@@ -208,9 +275,34 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
       [handleClose, isMultiple, selectNext, selectPrev]
     )
 
+    const handleDownload = useCallback(() => {
+      typeof onDownload === 'function'
+        ? onDownload(Array.isArray(src) ? src[active] : src)
+        : downloadImage(Array.isArray(src) ? src[active] : src)
+    }, [active, onDownload, src])
+
+    const handleClick = useCallback(
+      (evt: React.MouseEvent) => {
+        evt.stopPropagation()
+        evt.preventDefault()
+
+        if (imgTransform.scale >= 0.25) {
+          handleZoom('zoomOut')
+        } else {
+          handleClose(evt)
+        }
+      },
+      [handleClose, handleZoom, imgTransform.scale]
+    )
+
     return (
       <Portal container={container} disabled={disabledPortal}>
-        <div ref={ref} role={role} className={cls} style={{ ...style, display: 'none' }}>
+        <div
+          ref={ref}
+          role={role}
+          className={cls}
+          style={{ ...style, ...styles?.root, display: 'none' }}
+        >
           <CSSTransition
             appear
             classNames={`${prefixCls}__mask--transition`}
@@ -218,98 +310,168 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
             timeout={200}
             mountOnEnter
             unmountOnExit={false}
-            onEnter={(ele: HTMLElement) => {
+            // 参考：https://github.com/reactjs/react-transition-group/issues/918
+            nodeRef={maskElRef}
+            onEnter={() => {
+              const ele = maskElRef.current
+              if (!ele) return
               ;(ele.parentNode as HTMLElement).style.display = 'block'
               ele.style.display = 'block'
             }}
-            onExited={(ele: HTMLElement) => {
+            onExited={() => {
+              const ele = maskElRef.current
+              if (!ele) return
               ;(ele.parentNode as HTMLElement).style.display = 'none'
               ele.style.display = 'none'
             }}
           >
-            <div className={`${prefixCls}__mask`} />
+            <div
+              className={cx(`${prefixCls}__mask`, classNames?.mask)}
+              style={styles?.mask}
+              ref={maskElRef}
+            />
           </CSSTransition>
           {visible && (
             <>
-              <div className={`${prefixCls}__header`}>
-                {title}
-                <div className={`${prefixCls}__close-btn`} onClick={handleClose}>
-                  <CloseOutlined />
+              <div
+                className={cx(`${prefixCls}__header`, classNames?.header)}
+                style={styles?.header}
+              >
+                <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+                  {title}
                 </div>
+                <i
+                  className={cx(`${prefixCls}__close-btn`, classNames?.close)}
+                  style={styles?.close}
+                  onClick={handleClose}
+                />
               </div>
               <div
-                className={`${prefixCls}__container`}
+                className={cx(`${prefixCls}__container`, classNames?.container)}
+                style={styles?.container}
                 onClick={onClickContainer}
                 tabIndex={-1}
                 onWheel={handleWheel}
                 ref={previewRef}
-                onMouseMove={onMoving}
                 onKeyDown={handleKeyDown}
               >
                 <div
-                  className={`${prefixCls}__img-wrapper`}
+                  className={cx(`${prefixCls}__img-wrapper`, classNames?.imgWrapper)}
                   ref={(e) => {
                     setWatermarkContainer(e)
                   }}
                   style={{
                     transform: `scale(${imgTransform.scale}, ${imgTransform.scale}) translate(${imgTransform.translateX}px,${imgTransform.translateY}px) rotate(${imgTransform.rotate}deg)`,
+                    ...styles?.imgWrapper,
                   }}
                 >
                   <img
                     ref={imgRef}
                     onError={onError}
-                    onMouseDown={onMoveStart}
-                    onMouseUp={onMoveEnd}
+                    onClick={handleClick}
                     onContextMenu={disabledDownload ? handleContextMenu : undefined}
                     src={Array.isArray(src) ? src[active] : src}
-                    className={`${prefixCls}__image`}
+                    className={cx(`${prefixCls}__image`, classNames?.image)}
+                    style={styles?.image}
                   />
                 </div>
-                <div className={`${prefixCls}__toolbar`}>
-                  <ZoomInOutlined
-                    onClick={() => {
-                      handleZoom('zoomIn')
-                    }}
-                  />
-                  <ZoomOutOutlined
+                <div
+                  className={cx(`${prefixCls}__toolbar`, classNames?.toolbar)}
+                  style={styles?.toolbar}
+                >
+                  {isMultiple && (
+                    <>
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={selectPrev}
+                      >
+                        <LeftOutlined />
+                      </div>
+                      <span
+                        className={cx(`${prefixCls}__toolbar-index`, classNames?.toolbarIndex)}
+                        style={styles?.toolbarIndex}
+                      >
+                        {active + 1}/{src.length}
+                      </span>
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={selectNext}
+                      >
+                        <RightOutlined />
+                      </div>
+                      <i
+                        className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                        style={styles?.toolbarDivider}
+                      />
+                    </>
+                  )}
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
                     onClick={() => {
                       if (imgTransform.scale >= 0.25) {
                         handleZoom('zoomOut')
                       }
                     }}
+                  >
+                    <ZoomOutOutlined />
+                  </div>
+                  <span
+                    className={cx(`${prefixCls}__toolbar-scale`, classNames?.toolbarScale)}
+                    style={styles?.toolbarScale}
+                  >
+                    {(imgTransform.scale * 100).toFixed(0)}%
+                  </span>
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
+                    onClick={() => handleZoom('zoomIn')}
+                  >
+                    <ZoomInOutlined />
+                  </div>
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
+                    onClick={handleZoomTo1}
+                  >
+                    <Scale1Icon />
+                  </div>
+                  <i
+                    className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                    style={styles?.toolbarDivider}
                   />
-                  <RotateLeftOutlined
-                    onClick={() => {
-                      handleRotate('left')
-                    }}
-                  />
-                  <RotateRightOutlined
-                    onClick={() => {
-                      handleRotate('right')
-                    }}
-                  />
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
+                    onClick={() => handleRotate('right')}
+                  >
+                    <RotateRightOutlined />
+                  </div>
+                  <div
+                    className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                    style={styles?.toolbarAction}
+                    onClick={() => handleRotate('left')}
+                  >
+                    <RotateLeftOutlined />
+                  </div>
+                  {!disabledDownload && (
+                    <>
+                      <i
+                        className={cx(`${prefixCls}__toolbar-divider`, classNames?.toolbarDivider)}
+                        style={styles?.toolbarDivider}
+                      />
+                      <div
+                        className={cx(`${prefixCls}__toolbar-action`, classNames?.toolbarAction)}
+                        style={styles?.toolbarAction}
+                        onClick={handleDownload}
+                      >
+                        <DownloadOutlined />
+                      </div>
+                    </>
+                  )}
                 </div>
-
-                {isMultiple && (
-                  <>
-                    <div
-                      className={`${prefixCls}__left-btn`}
-                      onClick={() => {
-                        selectPrev()
-                      }}
-                    >
-                      <LeftOutlined />
-                    </div>
-                    <div
-                      className={`${prefixCls}__right-btn`}
-                      onClick={() => {
-                        selectNext()
-                      }}
-                    >
-                      <RightOutlined />
-                    </div>
-                  </>
-                )}
               </div>
               {watermarkProps && watermarkContainer && (
                 <Watermark {...watermarkProps} container={watermarkContainer} />
@@ -322,7 +484,25 @@ export const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(
   }
 )
 
-export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
+export type PreviewSemanticName =
+  | 'root'
+  | 'mask'
+  | 'header'
+  | 'title'
+  | 'close'
+  | 'container'
+  | 'imgWrapper'
+  | 'image'
+  | 'toolbar'
+  | 'toolbarAction'
+  | 'toolbarIndex'
+  | 'toolbarScale'
+  | 'toolbarDivider'
+export type PreviewSemanticClassNames = SemanticClassNamesType<PreviewProps, PreviewSemanticName>
+export type PreviewSemanticStyles = SemanticStylesType<PreviewProps, PreviewSemanticName>
+export type PreviewSemantic = ComponentSemantic<PreviewSemanticClassNames, PreviewSemanticStyles>
+
+export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'>, PreviewSemantic {
   /**
    * 是否显示预览窗体
    */
@@ -330,7 +510,7 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
   /**
    * 预览窗体标题
    */
-  title?: string
+  title?: React.ReactNode | ((url: string, index: number) => React.ReactNode)
   /**
    * 预览图片地址
    */
@@ -364,6 +544,10 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
    */
   onPreviewChange?: (current: number) => void
   /**
+   * 下载图片的回调
+   */
+  onDownload?: (url: string) => void
+  /**
    * 指定 portal 的容器
    */
   container?: HTMLElement | null
@@ -375,4 +559,37 @@ export interface PreviewProps extends Omit<HiBaseHTMLProps<'div'>, 'onError'> {
 
 if (__DEV__) {
   Preview.displayName = 'Preview'
+}
+
+const getTitle = (url: string = '') => {
+  return url.split('/').pop()?.split('?')[0] || ''
+}
+
+export const downloadImage = (url: string) => {
+  const filename = Date.now() + (getTitle(url) || 'image.png')
+
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobUrl = URL.createObjectURL(new Blob([blob]))
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      URL.revokeObjectURL(blobUrl)
+      link.remove()
+    })
+    .catch((err) => {
+      console.error(err)
+      // 如果下载失败，则打开图片
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      a.target = '_blank'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      a.remove()
+    })
 }

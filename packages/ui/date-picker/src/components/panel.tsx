@@ -5,8 +5,13 @@ import Calendar from './calendar'
 import moment from 'moment'
 import DPContext, { DPContextData } from '../context'
 import { TimePickerPopContent } from '@hi-ui/time-picker'
-import { getView, genNewDates, toUtcTime, parseValue } from '../utils'
+import { getView, genNewDates, mergeCalendarDateKeepTime, parseValue } from '../utils'
 import { useTimePickerData } from '../hooks/useTimePickerData'
+import {
+  getShowTimeDefaultMoment,
+  getShowTimeDefaultOpenValue,
+  isShowTimeEnabled,
+} from '../utils/showTime'
 import { timePickerValueAdaptor } from '../utils/timePickerValueAdaptor'
 import { useTimePickerFormat } from '../hooks/useTimePickerFormat'
 import { getBelongWeekRange } from '../utils/week'
@@ -32,9 +37,7 @@ const Panel = (props: PanelProps) => {
     panelIndex = 0,
   } = props
   const {
-    // outDate,
     type,
-    // onPick,
     i18n,
     showTime,
     theme,
@@ -54,10 +57,24 @@ const Panel = (props: PanelProps) => {
     footerRender,
     utcOffset,
     defaultPickerValue,
+    classNames,
+    styles,
   } = useContext(DPContext)
+  const showTimeEnabled = isShowTimeEnabled(showTime)
   const [view, setView] = useState(getView(type))
 
   const [calRenderDates, setCalRenderDates] = useState<moment.Moment[]>([])
+  const getDateWithTime = useCallback(
+    (date: moment.Moment, calendarIndex = 0) => {
+      if (!showTimeEnabled) return date
+      // daterange + DateRangeTimePanel：outDate 恒为单元素 [start] 或 [end]，默认时间须按 panelIndex 取
+      const source = outDate[calendarIndex]
+        ? calRenderDates[calendarIndex]
+        : getShowTimeDefaultMoment(showTime, panelIndex) || calRenderDates[calendarIndex]
+      return source ? mergeCalendarDateKeepTime(date, source) : date
+    },
+    [calRenderDates, outDate, panelIndex, showTime, showTimeEnabled]
+  )
   // 疑问：实在不知道这到底是啥意思
   // useState(() => {
   //   setView(getView(type))
@@ -145,16 +162,27 @@ const Panel = (props: PanelProps) => {
         _view = 'date'
       }
       setView(_view)
-      const _innerDates = genNewDates(calRenderDates, date)
+      const dateToApply = showTimeEnabled && view === 'date' ? getDateWithTime(date, 0) : date
+      const _innerDates = genNewDates(calRenderDates, dateToApply)
 
       if (view === 'date') {
-        onPick(_innerDates, showTime)
+        onPick(_innerDates, showTimeEnabled)
         return
       }
 
       setCalRenderDates(_innerDates)
     },
-    [calRenderDates, onPick, onSelect, showTime, type, view, weekOffset]
+    [
+      calRenderDates,
+      getDateWithTime,
+      onPick,
+      onSelect,
+      panelIndex,
+      showTimeEnabled,
+      type,
+      view,
+      weekOffset,
+    ]
   )
 
   const needFooter = useMemo(() => {
@@ -164,16 +192,35 @@ const Panel = (props: PanelProps) => {
   const panelCls = cx(
     `${prefixCls}__panel`,
     `theme__${theme}`,
-    (showTime || needFooter) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`
+    (showTimeEnabled || needFooter) && `${prefixCls}__panel--time ${prefixCls}__panel--noshadow`,
+    classNames?.panel
   )
 
   const timePickerFormat = useTimePickerFormat(realFormat)
-  const timePickerData = useTimePickerData(calRenderDates, timePickerFormat)
+  const defaultOpenForTimePicker = useMemo(() => {
+    const arr = getShowTimeDefaultOpenValue(showTime)
+    if (!arr?.length) return undefined
+    if (type === 'daterange') {
+      return [arr[panelIndex] ?? arr[0]]
+    }
+    return arr
+  }, [panelIndex, showTime, type])
+
+  const timePickerData = useTimePickerData(
+    calRenderDates,
+    timePickerFormat,
+    outDate,
+    defaultOpenForTimePicker
+  )
 
   const onTimeChange = useCallback(
     (date: string[]) => {
       // 关闭之后，不再响应事件
       if (showPanel) {
+        // daterange + showTime 场景中，切换到结束侧时 TimePicker 可能在初始化阶段触发 onChange；
+        // 若该侧尚未选中日期，不应因此自动落值日期。
+        if (type === 'daterange' && !outDate[0]) return
+
         const d = timePickerValueAdaptor({
           timePickerValue: date,
           format: timePickerFormat,
@@ -184,13 +231,15 @@ const Panel = (props: PanelProps) => {
         // d[0].setCalRenderDates(d)
 
         onPick(d, true)
+        onSelect?.(d as any, showPanel, panelIndex)
       }
     },
-    [calRenderDates, onPick, showPanel, timePickerFormat]
+    [calRenderDates, onPick, onSelect, outDate, panelIndex, showPanel, timePickerFormat, type]
   )
 
   const onArrowEvent = (date: moment.Moment) => {
-    const _innerDates = genNewDates(calRenderDates, date)
+    const dateToApply = showTimeEnabled ? getDateWithTime(date, 0) : date
+    const _innerDates = genNewDates(calRenderDates, dateToApply)
     if (type.includes('range') && _innerDates[0] >= _innerDates[1]) return
     setCalRenderDates(_innerDates)
     onPanelChange?.(date.toDate())
@@ -202,24 +251,25 @@ const Panel = (props: PanelProps) => {
 
   return (
     <>
-      <div className={panelCls}>
-        <div className={`${prefixCls}__panel--left`}>
+      <div className={panelCls} style={styles?.panel}>
+        <div
+          className={cx(`${prefixCls}__panel--left`, classNames?.panelLeft)}
+          style={styles?.panelLeft}
+        >
           {calRenderDates[0] && (
             <React.Fragment>
-              <Header
-                renderDate={calRenderDates[0]}
-                // 疑问：尚未找到这个 props
-                // renderDates={calRenderDates}
-                changeView={() => setView('year')}
-                onArrowEvent={onArrowEvent}
-                i18n={i18n}
-                view={view}
-                panelPosition={0}
-                // 疑问：尚未找到这个 props
-                // type={type}
-                locale={locale}
-                prefixCls={prefixCls}
-              />
+              <div className={classNames?.panelHeader} style={styles?.panelHeader}>
+                <Header
+                  renderDate={calRenderDates[0]}
+                  changeView={() => setView('year')}
+                  onArrowEvent={onArrowEvent}
+                  i18n={i18n}
+                  view={view}
+                  panelPosition={0}
+                  locale={locale}
+                  prefixCls={prefixCls}
+                />
+              </div>
               <Calendar
                 renderDate={calRenderDates[0]}
                 originDate={outDate[0]}
@@ -227,15 +277,25 @@ const Panel = (props: PanelProps) => {
                 view={view}
                 disabledDate={disabledDate}
                 range={range}
-                // panelPosition="left"
               />
             </React.Fragment>
           )}
         </div>
-        {showTime && (
-          <div className={`${prefixCls}__panel__time-container`}>
-            <div className={`${prefixCls}__panel__time-header`}>{timePickerData[0]}</div>
-            <div className={`${prefixCls}__panel__time-content`}>
+        {showTimeEnabled && (
+          <div
+            className={cx(`${prefixCls}__panel__time-container`, classNames?.panelTimeContainer)}
+            style={styles?.panelTimeContainer}
+          >
+            <div
+              className={cx(`${prefixCls}__panel__time-header`, classNames?.panelTimeHeader)}
+              style={styles?.panelTimeHeader}
+            >
+              {timePickerData[0]}
+            </div>
+            <div
+              className={cx(`${prefixCls}__panel__time-content`, classNames?.panelTimeContent)}
+              style={styles?.panelTimeContent}
+            >
               <TimePickerPopContent
                 onChange={onTimeChange}
                 value={timePickerData}

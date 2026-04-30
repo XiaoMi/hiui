@@ -19,6 +19,7 @@
   "typings": "lib/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "default": "./lib/esm/index.js"
     }
@@ -63,6 +64,7 @@
     "@hi-ui/use-latest": "^4.0.4",
     "@hi-ui/use-lazy-render": "^4.0.4",
     "@hi-ui/use-merge-refs": "^4.0.4",
+    "@hi-ui/use-merge-semantic": "^4.0.0",
     "@hi-ui/use-outside-click": "^4.0.4",
     "@hi-ui/use-scroll": "^4.0.5",
     "@hi-ui/use-scroll-lock": "^4.0.4",

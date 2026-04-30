@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   cloneTree,
   // fFindNestedChildNodesByIndex,
@@ -40,6 +47,7 @@ import {
   TableHelper,
 } from './types'
 import { SELECTION_DATA_KEY } from './Table'
+import { ListRef } from 'rc-virtual-list'
 
 const DEFAULT_COLUMNS = [] as []
 const DEFAULT_DATA = [] as []
@@ -75,6 +83,7 @@ export const useTable = ({
   onLoadChildren,
   // 表头吸顶
   maxHeight,
+  stretchHeight,
   sticky,
   stickyTop = 0,
   // drag
@@ -95,6 +104,7 @@ export const useTable = ({
   onChange,
   onHighlightedCol,
   innerRef,
+  onScroll,
   ...rootProps
 }: UseTableProps) => {
   /**
@@ -191,6 +201,22 @@ export const useTable = ({
     onSelect: setHoveredColKey,
   })
 
+  const bodyTableRef = useRef<HTMLTableElement>(null)
+  const scrollBodyElementRef = useRef<HTMLTableElement>(null)
+  const virtualListRef = useRef<ListRef>(null)
+
+  // @ts-ignore
+  useImperativeHandle(innerRef, () => {
+    if (virtual) {
+      return {
+        scrollTo: virtualListRef.current?.scrollTo,
+      }
+    }
+    return {
+      scrollTo: scrollBodyElementRef.current?.scrollTo?.bind(scrollBodyElementRef.current),
+    }
+  })
+
   // ************************ 列宽 resizable ************************ //
 
   const {
@@ -205,12 +231,10 @@ export const useTable = ({
     resizable,
     tableWidthAdjustOnResize,
     virtual: !!virtual,
+    scrollBodyElementRef,
   })
 
   // ************************ 列冻结 ************************ //
-
-  const bodyTableRef = useRef<HTMLTableElement>(null)
-  const scrollBodyElementRef = useRef<HTMLTableElement>(null)
 
   /**
    * 左右 fixed 所在的列，抹平数据结构
@@ -486,8 +510,9 @@ export const useTable = ({
       if (scrollBodyElementRef.current) {
         syncScrollLeft(scrollBodyElementRef.current.scrollLeft, scrollHeaderElementRef.current)
       }
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // 1. 对于 sticky 的元素，触发滚轮滚动，需要模拟 onScroll 触发，比如 tableHeader 固定吸顶时
@@ -502,8 +527,10 @@ export const useTable = ({
 
       scrollHeaderElementRef.current.scrollLeft = scrollHeaderElementRef.current.scrollLeft + deltaX
       syncScrollLeft(scrollHeaderElementRef.current.scrollLeft, scrollBodyElementRef.current)
+
+      onScroll?.(evt)
     },
-    [syncScrollLeft]
+    [syncScrollLeft, onScroll]
   )
 
   // ************************ 行高亮 ************************ //
@@ -542,7 +569,7 @@ export const useTable = ({
     }, [] as FlattedTableColumnItemData[][])
   }, [mergedColumns1])
 
-  const getStickyColProps = useLatestCallback((column) => {
+  const getStickyColProps = useLatestCallback((column, type: 'th' | 'td' = 'td') => {
     const { rightStickyWidth, leftStickyWidth, align } = column
     const sticky =
       canScroll &&
@@ -550,14 +577,15 @@ export const useTable = ({
 
     const style: React.CSSProperties = {
       textAlign: align,
+      justifyContent: align === 'right' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
     }
 
     if (sticky) {
       style.position = 'sticky'
-      style.right = rightStickyWidth + 'px'
-      style.left = leftStickyWidth + 'px'
-      // the value is same with v3
-      style.zIndex = 5
+      style.insetInlineEnd = rightStickyWidth + 'px'
+      style.insetInlineStart = leftStickyWidth + 'px'
+      // the value is same with v4
+      style.zIndex = type === 'th' ? 5 : 4
     }
 
     return {
@@ -569,8 +597,7 @@ export const useTable = ({
   const getTableHeaderProps = React.useCallback(() => {
     const style: React.CSSProperties = {
       position: sticky ? 'sticky' : 'relative',
-      top: sticky ? stickyTop : undefined,
-      boxShadow: maxHeight ? '0px 2px 6px 0px rgba(0,0,0,0.12)' : undefined,
+      insetBlockStart: sticky ? stickyTop : undefined,
       overflow: 'hidden',
       zIndex: sticky ? 10 : undefined,
     }
@@ -579,7 +606,7 @@ export const useTable = ({
       style,
       'data-sticky': setAttrStatus(sticky),
     }
-  }, [sticky, stickyTop, maxHeight])
+  }, [sticky, stickyTop])
 
   const isTreeView = useMemo(() => {
     return isArrayNonEmpty(data)
@@ -614,7 +641,7 @@ export const useTable = ({
       const sortedColumn = getColumnByDataKey(columns, activeSorterColumn)
       const sorter = sortedColumn?.sorter
 
-      if (sorter) {
+      if (typeof sorter === 'function') {
         activeSorterType === 'ascend' ? _data.sort(sorter) : _data.sort(sorter).reverse()
 
         // 平铺的树形结构排序
@@ -645,6 +672,7 @@ export const useTable = ({
     setActiveSorterType,
     canScroll,
     maxHeight,
+    stretchHeight,
     getTableHeaderProps,
     isErrorRow,
     bodyTableRef,
@@ -720,6 +748,9 @@ export const useTable = ({
     cellClassName,
     onHighlightedCol,
     innerRef,
+    virtualListRef,
+    sticky,
+    stickyTop,
   }
 }
 
@@ -768,6 +799,11 @@ export interface UseTableProps {
    *  表格最大高度，当穿过该高度时，展示滚动条且表头固定
    */
   maxHeight?: number | string
+  /**
+   *  表格高度自动拉伸
+   *  Todo: 无法显示分页和Footer
+   */
+  stretchHeight?: boolean
   /**
    *  表格列冻结默认设置，为 string 时仅支持从左侧冻结至某一列
    */
@@ -824,6 +860,7 @@ export interface UseTableProps {
    * -Row：onDoubleClick
    * -Cell: colspan，rowspan
    * -统计：平局行，总数行
+   * -表头分组
    */
   virtual?:
     | boolean
@@ -946,6 +983,10 @@ export interface UseTableProps {
    * 提供辅助方法的内部引用
    */
   innerRef?: React.Ref<TableHelper>
+  /**
+   * 内容滚动时触发的回调函数
+   */
+  onScroll?: (event: React.UIEvent<HTMLDivElement>) => void
 }
 
 export type UseTableReturn = ReturnType<typeof useTable>

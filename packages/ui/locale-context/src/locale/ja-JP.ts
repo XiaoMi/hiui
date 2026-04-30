@@ -187,4 +187,18 @@ export default {
   backTop: {
     backToTop: 'トップに戻る',
   },
+  menuSearch: {
+    placeholder: '検索内容を入力してください',
+    search: '検索',
+    clear: 'クリア',
+    searchResult: '「{{keyword}}」に関連するメニューが{{count}}件見つかりました',
+    searchEmptyResult: '該当する結果がありません',
+    moveCursor: 'カーソル移動',
+    confirmSelect: '確定',
+    hideWindow: '非表示',
+  },
+  queryFilter: {
+    pin: 'リストの先頭に固定',
+    unpin: '固定を解除',
+  },
 }

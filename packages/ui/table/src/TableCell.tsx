@@ -52,6 +52,8 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       isLoadingTreeNodeId,
       colWidths,
       virtual,
+      semanticClassNames,
+      semanticStyles,
     } = useTableContext()
 
     const { id: dataKey, leftStickyWidth, rightStickyWidth, render: rawRender, raw } = column
@@ -98,24 +100,26 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       prefixCls,
       className,
       raw.className,
+      semanticClassNames?.bodyCell,
+      semanticClassNames?.cell,
       canScroll && sticky && `${prefixCls}__col--sticky`,
       isHighlightedCol(dataKey) && `${prefixCls}__col--highlight`,
       isHoveredHighlightCol(dataKey) && `${prefixCls}__col--hovered-highlight`
     )
+    const cellStyle = { ...semanticStyles?.bodyCell, ...semanticStyles?.cell }
 
     if (virtual) {
       const width = colWidths[colIndex]
-      const colProps = getStickyColProps(column)
+      const colProps = getStickyColProps(column, 'td')
       return (
         <div
           ref={ref}
           key={dataKey}
           className={cls}
           {...colProps}
-          // 按需绑定函数，避免频繁调用 setState 特别消耗性能
           onMouseEnter={showColHighlight ? () => onHoveredColChange(column, true) : undefined}
           onMouseLeave={showColHighlight ? () => onHoveredColChange(column, false) : undefined}
-          style={{ ...colProps.style, width: width }}
+          style={{ ...colProps.style, ...cellStyle, width: width }}
         >
           {/* 渲染树形表格缩进 */}
           {isSwitcherCol && depth > 0 ? renderIndent({ depth, prefixCls }) : null}
@@ -139,15 +143,16 @@ export const TableCell = forwardRef<HTMLTableCellElement | null, TableCellProps>
       )
     }
 
+    const stickyColProps = getStickyColProps(column, 'td')
     return (
       <td
         ref={ref}
         key={dataKey}
         className={cls}
-        {...getStickyColProps(column)}
+        {...stickyColProps}
+        style={{ ...stickyColProps.style, ...cellStyle }}
         colSpan={cellContent.props.colSpan}
         rowSpan={cellContent.props.rowSpan}
-        // 按需绑定函数，避免频繁调用 setState 特别消耗性能
         onMouseEnter={showColHighlight ? () => onHoveredColChange(column, true) : undefined}
         onMouseLeave={showColHighlight ? () => onHoveredColChange(column, false) : undefined}
       >

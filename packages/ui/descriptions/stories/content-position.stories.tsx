@@ -2,6 +2,7 @@ import React from 'react'
 import Descriptions from '../src'
 import Preview from '@hi-ui/preview'
 import { JpgColorful } from '@hi-ui/icons'
+import Button from '@hi-ui/button'
 
 /**
  * @title 设置标签和内容对齐方式
@@ -38,10 +39,9 @@ export const ContentPosition = () => {
           </Descriptions.Item>
           <Descriptions.Item label="实体门店招牌" labelWidth={84}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <JpgColorful style={{ fontSize: 16 }} />
-              <a href="#" style={{ textDecoration: 'none', color: '#4a9eff' }}>
+              <Button type="primary" appearance="link" icon={<JpgColorful />}>
                 主站.jpg
-              </a>
+              </Button>
             </div>
           </Descriptions.Item>
           <Descriptions.Item label="备注信息" labelWidth={84}>

@@ -8,7 +8,13 @@ import { TransferDataItem } from './types'
 import { TransferProvider } from './context'
 import { useCheck } from '@hi-ui/use-check'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
-import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext } from '@hi-ui/core'
+import { HiBaseFieldNames, HiBaseHTMLProps, useLocaleContext, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import { transformData } from './utils'
 
 const _role = 'transfer'
@@ -26,6 +32,9 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       disabled = false,
       showCheckAll = false,
       searchable = false,
@@ -281,45 +290,64 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
     const enabledSourceToTarget = sourceCheckedIds.length > 0
     const enabledTargetToSource = targetCheckedIds.length > 0
 
-    const cls = cx(prefixCls, className, type && `${prefixCls}--type-${type}`)
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      transfer?: { classNames?: any; styles?: any }
+    }
+    const { transfer: transferConfig } = globalContext
+    const { classNames, styles } = useMergeSemantic<
+      TransferSemanticClassNames,
+      TransferSemanticStyles,
+      TransferProps
+    >({
+      classNamesList: [transferConfig?.classNames, classNamesProp],
+      stylesList: [transferConfig?.styles, stylesProp],
+      info: { props: { ...rest, type, disabled, data, targetIds } },
+    })
+
+    const cls = cx(prefixCls, className, classNames?.root, type && `${prefixCls}--type-${type}`)
 
     return (
       // @ts-ignore
       <TransferProvider value={providedValue}>
-        <div ref={ref} role={role} className={cls} {...rest}>
-          <TransferPanel
-            disabled={disabled}
-            title={panelTitles[0]}
-            placeholder={panelPlaceholders[0]}
-            emptyContent={panelEmptyContents[0]}
-            data={sourceList}
-            checkedIds={sourceCheckedIds}
-            setCheckedIds={setSourceCheckedIds}
-            onCheck={onSourceItemCheck}
-            isCheckedIds={isSourceCheckedIds}
-            overflowed={isOverflowed}
-            draggable={false}
-            onItemClick={(item) => {
-              onItemClick(item, 'right')
-            }}
-            keyword={keyword?.left}
-            onSearch={(keyword) => {
-              onSearch?.(keyword, 'left')
-            }}
-          />
-          <div className={`${prefixCls}-operation`}>
+        <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
+          <div className={classNames?.sourcePanel} style={styles?.sourcePanel}>
+            <TransferPanel
+              disabled={disabled}
+              title={panelTitles[0]}
+              placeholder={panelPlaceholders[0]}
+              emptyContent={panelEmptyContents[0]}
+              data={sourceList}
+              checkedIds={sourceCheckedIds}
+              setCheckedIds={setSourceCheckedIds}
+              onCheck={onSourceItemCheck}
+              isCheckedIds={isSourceCheckedIds}
+              overflowed={isOverflowed}
+              draggable={false}
+              onItemClick={(item) => {
+                onItemClick(item, 'right')
+              }}
+              keyword={keyword?.left}
+              onSearch={(keyword) => {
+                onSearch?.(keyword, 'left')
+              }}
+            />
+          </div>
+          <div
+            className={cx(`${prefixCls}-operation`, classNames?.operations)}
+            style={styles?.operations}
+          >
             {type === 'multiple' ? (
               <>
                 <Button
                   shape="round"
-                  type={enabledSourceToTarget ? 'secondary' : 'default'}
+                  type={enabledSourceToTarget ? 'primary' : 'secondary'}
                   disabled={!enabledSourceToTarget || isOverflowed}
                   icon={<RightOutlined />}
                   onClick={() => moveTo('right')}
                 />
                 <Button
                   shape="round"
-                  type={enabledTargetToSource ? 'secondary' : 'default'}
+                  type={enabledTargetToSource ? 'primary' : 'secondary'}
                   disabled={!enabledTargetToSource}
                   icon={<LeftOutlined />}
                   onClick={() => moveTo('left')}
@@ -329,34 +357,42 @@ export const Transfer = forwardRef<HTMLDivElement | null, TransferProps>(
               <LeftRightOutlined className={`${prefixCls}-operation-arrow`} />
             )}
           </div>
-          <TransferPanel
-            disabled={disabled}
-            title={panelTitles[1]}
-            placeholder={panelPlaceholders[1]}
-            emptyContent={panelEmptyContents[1]}
-            data={targetList}
-            checkedIds={targetCheckedIds}
-            setCheckedIds={setTargetCheckedIds}
-            onCheck={onTargetItemCheck}
-            isCheckedIds={isTargetCheckedIds}
-            overflowed={false}
-            draggable={draggable}
-            onItemClick={(item) => {
-              onItemClick(item, 'left')
-            }}
-            keyword={keyword?.right}
-            onSearch={(keyword) => {
-              onSearch?.(keyword, 'right')
-            }}
-          />
+          <div className={classNames?.targetPanel} style={styles?.targetPanel}>
+            <TransferPanel
+              disabled={disabled}
+              title={panelTitles[1]}
+              placeholder={panelPlaceholders[1]}
+              emptyContent={panelEmptyContents[1]}
+              data={targetList}
+              checkedIds={targetCheckedIds}
+              setCheckedIds={setTargetCheckedIds}
+              onCheck={onTargetItemCheck}
+              isCheckedIds={isTargetCheckedIds}
+              overflowed={false}
+              draggable={draggable}
+              onItemClick={(item) => {
+                onItemClick(item, 'left')
+              }}
+              keyword={keyword?.right}
+              onSearch={(keyword) => {
+                onSearch?.(keyword, 'right')
+              }}
+            />
+          </div>
         </div>
       </TransferProvider>
     )
   }
 )
 
+export type TransferSemanticName = 'root' | 'sourcePanel' | 'operations' | 'targetPanel'
+export type TransferSemanticClassNames = SemanticClassNamesType<TransferProps, TransferSemanticName>
+export type TransferSemanticStyles = SemanticStylesType<TransferProps, TransferSemanticName>
+export type TransferSemantic = ComponentSemantic<TransferSemanticClassNames, TransferSemanticStyles>
+
 export interface TransferProps
-  extends Omit<HiBaseHTMLProps<'div'>, 'placeholder' | 'onDragStart' | 'onDragEnd' | 'onDrop'> {
+  extends Omit<HiBaseHTMLProps<'div'>, 'placeholder' | 'onDragStart' | 'onDragEnd' | 'onDrop'>,
+    TransferSemantic {
   /**
    * 穿梭框类型
    */

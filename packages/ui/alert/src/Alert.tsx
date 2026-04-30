@@ -1,13 +1,18 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps, HiBaseSizeEnum } from '@hi-ui/core'
-
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { AlertTypeEnum } from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 import { useTimeout } from '@hi-ui/use-timeout'
-import { IconButton } from '@hi-ui/icon-button'
+import { Button } from '@hi-ui/button'
 import { alertIconMap, defaultCloseIcon } from './icons'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _prefix = getPrefixCls('alert')
 
@@ -23,6 +28,9 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       prefixCls = _prefix,
       role = 'alert',
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       title,
       content,
@@ -32,12 +40,18 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
       closeIcon = defaultCloseIcon,
       // duration小于 0，表示不开启自动关闭
       duration = -1,
-      size = 'lg',
+      size: sizeProp,
       onClose,
       ...rest
     },
     ref
   ) => {
+    const { size: globalSize, alert: alertConfig } = useGlobalContext()
+    let size = sizeProp ?? globalSize ?? 'lg'
+    if (size === 'xs') {
+      size = 'sm'
+    }
+
     const [internalVisible, setInternalVisible] = useState(true)
 
     const handleClose = useLatestCallback(() => {
@@ -59,30 +73,74 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
 
     const suffixIcon = alertIconMap[type] || null
 
+    const { classNames, styles } = useMergeSemantic<
+      AlertSemanticClassNames,
+      AlertSemanticStyles,
+      AlertProps
+    >({
+      classNamesList: [alertConfig?.classNames, classNamesProp],
+      stylesList: [alertConfig?.styles, stylesProp],
+      info: { props: { ...rest, title, content, type, size } },
+    })
+
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       suffixIcon && `${prefixCls}--type-${type}`,
       content && `${prefixCls}--with-content`,
       size && `${prefixCls}--size-${size}`
     )
 
     return internalVisible ? (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        {showIcon && suffixIcon ? <span className={`${prefixCls}__icon`}>{suffixIcon}</span> : null}
-        <div className={`${prefixCls}__message`}>
-          <div className={`${prefixCls}__title`}>{title}</div>
-          {content ? <div className={`${prefixCls}__content`}>{content}</div> : null}
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        {...rest}
+      >
+        {showIcon && suffixIcon ? (
+          <span className={cx(`${prefixCls}__icon`, classNames?.icon)} style={styles?.icon}>
+            {suffixIcon}
+          </span>
+        ) : null}
+        <div className={cx(`${prefixCls}__message`, classNames?.message)} style={styles?.message}>
+          <div className={cx(`${prefixCls}__title`, classNames?.title)} style={styles?.title}>
+            {title}
+          </div>
+          {content ? (
+            <div
+              className={cx(`${prefixCls}__content`, classNames?.content)}
+              style={styles?.content}
+            >
+              {content}
+            </div>
+          ) : null}
         </div>
         {closeable && closeIcon ? (
-          <IconButton className={`${prefixCls}__close`} onClick={handleClose} icon={closeIcon} />
+          <Button
+            className={cx(`${prefixCls}__close`, classNames?.close)}
+            style={styles?.close}
+            onClick={handleClose}
+            appearance="link"
+            icon={closeIcon}
+          />
         ) : null}
       </div>
     ) : null
   }
 )
 
-export interface AlertProps extends HiBaseHTMLProps<'div'> {
+export type AlertSemanticName = 'root' | 'icon' | 'message' | 'title' | 'content' | 'close'
+export type AlertSemanticClassNames = SemanticClassNamesType<AlertProps, AlertSemanticName>
+export type AlertSemanticStyles = SemanticStylesType<AlertProps, AlertSemanticName>
+export type AlertSemantic = ComponentSemantic<AlertSemanticClassNames, AlertSemanticStyles>
+
+export interface AlertProps extends HiBaseHTMLProps<'div'>, AlertSemantic {
   /**
    * 	警告提示类型
    */
@@ -109,18 +167,16 @@ export interface AlertProps extends HiBaseHTMLProps<'div'> {
   onClose?: () => void
   /**
    * 自定义关闭 Icon
-   * @version 4.0.0
    */
   closeIcon?: React.ReactNode
   /**
    * 是否显示提示图标
-   * @version 4.0.0
    */
   showIcon?: boolean
   /**
    * 设置尺寸
    */
-  size?: HiBaseSizeEnum
+  size?: Omit<HiBaseSizeEnum, 'xs'>
 }
 
 if (__DEV__) {

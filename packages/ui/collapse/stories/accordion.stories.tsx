@@ -1,5 +1,7 @@
 import React from 'react'
 import Collapse from '../src'
+import { IconButton } from '@hi-ui/icon-button'
+import { EditOutlined } from '@hi-ui/icons'
 
 /**
  * @title 手风琴模式
@@ -23,7 +25,18 @@ export const Accordion = () => {
               我是小米手机的内容
             </div>
           </Collapse.Panel>
-          <Collapse.Panel title="红米手机" id="2">
+          <Collapse.Panel
+            title="红米手机"
+            id="2"
+            extra={
+              <IconButton
+                style={{ marginInlineEnd: 12 }}
+                icon={<EditOutlined />}
+                onClick={(evt) => evt.stopPropagation()}
+                effect
+              />
+            }
+          >
             <div
               style={{
                 backgroundColor: '#f5f7fa',

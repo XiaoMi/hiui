@@ -1,0 +1,290 @@
+import React, { forwardRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
+import Tooltip from '@hi-ui/tooltip'
+import { useLatestCallback } from '@hi-ui/use-latest'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import Scrollbar from '@hi-ui/scrollbar'
+import { MenuDataItem } from './types'
+import { getAncestorIds } from './util'
+
+const SIDE_MENU_PREFIX = getPrefixCls('side-menu')
+
+/**
+ * 侧边菜单组件
+ */
+export const SideMenu = forwardRef<HTMLDivElement | null, SideMenuProps>(
+  (
+    {
+      prefixCls = SIDE_MENU_PREFIX,
+      role = 'side-menu',
+      className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      defaultActiveId = null,
+      activeId: activeIdProp,
+      selectedId: selectedIdProp,
+      data = [],
+      mini,
+      childrenContainerRef,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+      ...rest
+    },
+    ref
+  ) => {
+    const { sideMenu: sideMenuConfig } = useGlobalContext()
+    const { classNames, styles } = useMergeSemantic<
+      SideMenuSemanticClassNames,
+      SideMenuSemanticStyles,
+      SideMenuProps
+    >({
+      classNamesList: [sideMenuConfig?.classNames, classNamesProp],
+      stylesList: [sideMenuConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          data,
+          mini,
+          defaultActiveId,
+          activeId: activeIdProp,
+          selectedId: selectedIdProp,
+        },
+      },
+    })
+    const cls = cx(prefixCls, className, classNames?.root, {
+      [`${prefixCls}--mini`]: mini,
+    })
+
+    const [activeId, tryChangeActiveId] = useUncontrolledState<React.ReactText | null>(
+      defaultActiveId,
+      activeIdProp
+    )
+
+    const handleClick = useLatestCallback(
+      (event: React.MouseEvent<HTMLDivElement>, id: React.ReactText, item: MenuDataItem) => {
+        tryChangeActiveId(id)
+        onClick?.(event, id, item)
+      }
+    )
+
+    const handleMouseEnter = useLatestCallback(
+      (event: React.MouseEvent<HTMLDivElement>, id: React.ReactText, item: MenuDataItem) => {
+        event.stopPropagation()
+        onMouseEnter?.(event, id, item)
+      }
+    )
+
+    const handleMouseLeave = useLatestCallback(
+      (event: React.MouseEvent<HTMLDivElement>, id: React.ReactText, item: MenuDataItem) => {
+        event.stopPropagation()
+        onMouseLeave?.(event, id, item)
+      }
+    )
+
+    return (
+      <div ref={ref} role={role} className={cls} style={{ ...style, ...styles?.root }} {...rest}>
+        <Scrollbar
+          onlyScrollVisible
+          axes="y"
+          className={classNames?.wrapper}
+          style={styles?.wrapper}
+        >
+          {data.map((item) => {
+            const { id, title, icon } = item
+            return (
+              <div
+                key={id}
+                className={cx(`${prefixCls}-item-wrapper`, classNames?.itemWrapper)}
+                style={styles?.itemWrapper}
+                onClick={(evt) => handleClick(evt, id, item)}
+                onMouseEnter={(evt) => {
+                  const currentTarget = evt.currentTarget as HTMLDivElement
+                  const titleElement = currentTarget.querySelector(
+                    `.${prefixCls}-item__title`
+                  ) as HTMLDivElement
+                  if (!titleElement) {
+                    handleMouseEnter(evt, id, item)
+                    return
+                  }
+                  const { scrollWidth, clientWidth, scrollHeight, clientHeight } = titleElement
+                  // 单行溢出：scrollWidth > clientWidth；多行（如 mini 2 行）溢出：scrollHeight > clientHeight
+                  const isOverflow = scrollWidth > clientWidth || scrollHeight > clientHeight
+                  if (isOverflow) {
+                    Tooltip.open(currentTarget, {
+                      key: `side-menu-tooltip-${id}`,
+                      title,
+                      placement: 'right',
+                      zIndex: 2001,
+                    })
+                  }
+                  handleMouseEnter(evt, id, item)
+                }}
+                onMouseLeave={(evt) => {
+                  Tooltip.close(`side-menu-tooltip-${id}`)
+                  handleMouseLeave(evt, id, item)
+                }}
+              >
+                <div
+                  className={cx(
+                    `${prefixCls}-item`,
+                    {
+                      [`${prefixCls}-item--active`]: activeId === id,
+                      [`${prefixCls}-item--mini`]: mini,
+                      [`${prefixCls}-item--selected`]: selectedIdProp === id,
+                    },
+                    classNames?.item
+                  )}
+                  style={styles?.item}
+                >
+                  <div
+                    className={cx(`${prefixCls}-item__icon`, classNames?.itemIcon)}
+                    style={styles?.itemIcon}
+                  >
+                    {icon}
+                  </div>
+                  <div
+                    className={cx(`${prefixCls}-item__title`, classNames?.itemTitle)}
+                    style={styles?.itemTitle}
+                    ref={(el) => {
+                      if (el) {
+                        if (mini) {
+                          if (el.clientHeight > 28) {
+                            el.style.marginBlockEnd = '-28px'
+                          } else {
+                            el.style.marginBlockEnd = ''
+                          }
+                        } else {
+                          el.style.marginBlockEnd = ''
+                        }
+                      }
+                    }}
+                  >
+                    {title}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </Scrollbar>
+      </div>
+    )
+  }
+)
+
+export type SideMenuSemanticName =
+  | 'root'
+  | 'wrapper'
+  | 'itemWrapper'
+  | 'item'
+  | 'itemIcon'
+  | 'itemTitle'
+export type SideMenuSemanticClassNames = SemanticClassNamesType<SideMenuProps, SideMenuSemanticName>
+export type SideMenuSemanticStyles = SemanticStylesType<SideMenuProps, SideMenuSemanticName>
+export type SideMenuSemantic = ComponentSemantic<SideMenuSemanticClassNames, SideMenuSemanticStyles>
+export interface SideMenuProps
+  extends Omit<HiBaseHTMLProps<'div'>, 'onClick' | 'onMouseEnter' | 'onMouseLeave'>,
+    SideMenuSemantic {
+  /**
+   * 侧边菜单宽度
+   */
+  width?: number
+  /**
+   * 是否为迷你模式
+   */
+  mini?: boolean
+  /**
+   * 默认激活的菜单项
+   */
+  defaultActiveId?: React.ReactText | null
+  /**
+   * 激活的菜单项
+   */
+  activeId?: React.ReactText | null
+  /**
+   * 选中的菜单项
+   */
+  selectedId?: React.ReactText | null
+  /**
+   * 侧边菜单数据
+   */
+  data: MenuDataItem[]
+  /**
+   * 子菜单容器引用
+   */
+  childrenContainerRef?: React.RefObject<HTMLDivElement>
+  /**
+   * 点击侧边菜单项
+   */
+  onClick?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    id: React.ReactText,
+    item: MenuDataItem
+  ) => void
+  /**
+   * 鼠标移入侧边菜单项
+   */
+  onMouseEnter?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    id: React.ReactText,
+    item: MenuDataItem
+  ) => void
+  /**
+   * 鼠标移出侧边菜单项
+   */
+  onMouseLeave?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    id: React.ReactText,
+    item: MenuDataItem
+  ) => void
+}
+
+if (__DEV__) {
+  SideMenu.displayName = 'SideMenu'
+}
+
+export const useSideMenuCascade = ({
+  data,
+  selectId,
+  activeId,
+}: {
+  data: MenuDataItem[]
+  selectId: React.ReactText
+  activeId: React.ReactText
+}) => {
+  const activeParents = React.useMemo(() => {
+    return getAncestorIds(activeId, data)
+  }, [activeId, data])
+
+  const selectParents = React.useMemo(() => {
+    return getAncestorIds(selectId, data)
+  }, [selectId, data])
+
+  const selectParentId = React.useMemo(() => {
+    return selectParents[selectParents.length - 1] ?? selectId
+  }, [selectId, selectParents])
+
+  const activeParentId = React.useMemo(() => {
+    return activeParents[activeParents.length - 1] ?? activeId
+  }, [activeId, activeParents])
+
+  const submenuData = React.useMemo(() => {
+    const parentId = selectParentId || activeParentId
+    return data.find((item) => item.id === parentId)?.children || []
+  }, [selectParentId, activeParentId, data])
+
+  return {
+    submenuData,
+    selectParentId,
+    activeParentId,
+  }
+}

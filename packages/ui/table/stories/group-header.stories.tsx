@@ -3,6 +3,7 @@ import Table, { TableColumnItem } from '../src'
 
 /**
  * @title 表头分组
+ * @desc 当列数较少且数据为空时，表头可能显示异常，可配置 <code>needDoubleTable</code> 为 <code>true</code> 来解决
  */
 export const GroupHeader = () => {
   const [columns] = React.useState<TableColumnItem[]>([
@@ -55,46 +56,6 @@ export const GroupHeader = () => {
       width: 100,
     },
     {
-      title: 'Name3',
-      dataKey: 'name3',
-      width: 100,
-    },
-    {
-      title: 'Name4',
-      dataKey: 'name4',
-      width: 100,
-    },
-    {
-      title: 'Name5',
-      dataKey: 'name5',
-      width: 100,
-    },
-    {
-      title: 'Name6',
-      dataKey: 'name6',
-      width: 100,
-    },
-    {
-      title: 'Name7',
-      dataKey: 'name7',
-      width: 100,
-    },
-    {
-      title: 'Name8',
-      dataKey: 'name8',
-      width: 100,
-    },
-    {
-      title: 'Name9',
-      dataKey: 'name9',
-      width: 100,
-    },
-    {
-      title: 'Name10',
-      dataKey: 'name10',
-      width: 100,
-    },
-    {
       title: 'Company',
       dataKey: 'company',
       children: [
@@ -107,37 +68,6 @@ export const GroupHeader = () => {
           title: 'Name',
           dataKey: 'companyName',
           width: 150,
-        },
-      ],
-    },
-    {
-      title: 'Name11',
-      dataKey: 'name11',
-      width: 100,
-    },
-    {
-      title: 'Name12',
-      dataKey: 'name12',
-      width: 100,
-    },
-    {
-      title: 'Name13',
-      dataKey: 'name13',
-      width: 100,
-    },
-    {
-      title: 'Name14',
-      dataKey: 'name14',
-      children: [
-        {
-          title: 'Address14',
-          dataKey: 'address14',
-          width: 100,
-        },
-        {
-          title: 'Company14',
-          dataKey: 'company14',
-          width: 100,
         },
       ],
     },
@@ -158,13 +88,10 @@ export const GroupHeader = () => {
         building: 'C',
         number: 2035,
         name: 'Flcwl',
+        name2: 'Flcwl2',
         companyAddress: 'Lake Street 42',
         companyName: 'SoftLake Co',
         gender: 'M',
-      }
-
-      for (let j = 2; j <= 14; j++) {
-        item[`name${j}`] = `name${j}`
       }
 
       data.push(item)
@@ -176,17 +103,12 @@ export const GroupHeader = () => {
   return (
     <>
       <h1>GroupHeader for Table</h1>
-      <div className="table-group-header__wrap" style={{ minWidth: 660 }}>
+      <div className="table-group-header__wrap">
         <Table
           rowSelection={{}}
           fixedToColumn={{
-            // left: 'building',
-            // left: 'address',
-            left: 'number',
+            left: 'name',
             right: 'gender',
-            // right: 'address14',
-            // right: 'companyName',
-            // right: 'companyAddress',
           }}
           columns={columns}
           data={data}

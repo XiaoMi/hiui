@@ -1,7 +1,14 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
+import Spinner from '@hi-ui/spinner'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'button'
 const _prefix = getPrefixCls(_role)
@@ -15,10 +22,13 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       type = 'default',
-      size = 'md',
-      appearance = 'filled',
+      size: sizeProp,
+      appearance,
       disabled = false,
       loading = false,
       icon = null,
@@ -31,18 +41,71 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     const isEmptyChildren = !children || (typeof children === 'string' && !children.trim())
     const isNonInteractive = disabled || loading
 
-    const prepend = loading ? (
-      <IconLoading className={`${prefixCls}__icon`} />
-    ) : icon ? (
-      <span className={`${prefixCls}__icon`}>{icon}</span>
+    const { size: globalSize, button: buttonConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize ?? 'md'
+
+    const { classNames, styles } = useMergeSemantic<
+      ButtonSemanticClassNames,
+      ButtonSemanticStyles,
+      ButtonProps
+    >({
+      classNamesList: [buttonConfig?.classNames, classNamesProp],
+      stylesList: [buttonConfig?.styles, stylesProp],
+      info: { props: { ...rest, type, size, appearance, disabled, loading, shape } },
+    })
+
+    const prefix = loading ? (
+      <Spinner
+        color="currentColor"
+        className={cx(`${prefixCls}__icon ${prefixCls}__icon--prefix`, classNames?.prefixIcon)}
+        style={styles?.prefixIcon}
+      />
+    ) : icon && (!Array.isArray(icon) || icon[0]) ? (
+      <span
+        className={cx(`${prefixCls}__icon ${prefixCls}__icon--prefix`, classNames?.prefixIcon)}
+        style={styles?.prefixIcon}
+      >
+        {Array.isArray(icon) ? icon[0] : icon}
+      </span>
     ) : null
+
+    const suffix =
+      Array.isArray(icon) && icon.length > 1 ? (
+        <span
+          className={cx(`${prefixCls}__icon ${prefixCls}__icon--suffix`, classNames?.suffixIcon)}
+          style={styles?.suffixIcon}
+        >
+          {icon[1]}
+        </span>
+      ) : null
+
+    // 兼容 V4 版本，当 type 是 secondary 类型时，自动转换为 primary 类型，appearance 自动转换为 filled 外观
+    let _type = type
+    let _appearance = appearance
+    if (type === 'secondary') {
+      _type = 'primary'
+    }
+    if (type === 'secondary') {
+      _appearance = 'filled'
+    }
+
+    // 如果未设置外观，则根据 type 自动设置外观
+    if (!appearance) {
+      if (['primary', 'success', 'danger'].includes(type)) {
+        _appearance = 'solid'
+      } else if (['default'].includes(type)) {
+        // 默认使用灰色 line 外观
+        _appearance = 'line'
+      }
+    }
 
     const cls = cx(
       prefixCls,
       className,
-      `${prefixCls}--appearance-${appearance}`,
+      classNames?.root,
+      `${prefixCls}--appearance-${_appearance}`,
       `${prefixCls}--size-${size}`,
-      `${prefixCls}--type-${type}`,
+      `${prefixCls}--type-${_type}`,
       `${prefixCls}--shape-${shape}`,
       isEmptyChildren && `${prefixCls}--icon-only`,
       disabled && `${prefixCls}--disabled`,
@@ -54,23 +117,44 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         ref={ref}
         role={role}
         className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
         disabled={isNonInteractive}
         type="button"
         {...(rest as any)}
       >
-        {prepend}
+        {prefix}
         {children}
+        {suffix}
       </button>
     ) : (
-      <a ref={ref} role={role} href={href} className={cls} {...(rest as any)}>
-        {prepend}
+      <a
+        ref={ref}
+        role={role}
+        href={href}
+        className={cls}
+        style={{
+          ...style,
+          ...styles?.root,
+        }}
+        {...(rest as any)}
+      >
+        {prefix}
         {children}
+        {suffix}
       </a>
     )
   }
 )
 
-export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
+export type ButtonSemanticName = 'root' | 'prefixIcon' | 'suffixIcon'
+export type ButtonSemanticClassNames = SemanticClassNamesType<ButtonProps, ButtonSemanticName>
+export type ButtonSemanticStyles = SemanticStylesType<ButtonProps, ButtonSemanticName>
+export type ButtonSemantic = ComponentSemantic<ButtonSemanticClassNames, ButtonSemanticStyles>
+
+export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'>, ButtonSemantic {
   /**
    * 设置按钮类型
    */
@@ -78,12 +162,11 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮尺寸
    */
-  size?: 'lg' | 'sm' | 'md' | 'xl'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   /**
    * 设置按钮外观
-   * 其中 `unset` 暂不对外
    */
-  appearance?: 'filled' | 'link' | 'line' | 'unset'
+  appearance?: 'solid' | 'filled' | 'link' | 'line' | 'text'
   /**
    * 设置按钮是否禁用
    */
@@ -103,7 +186,7 @@ export interface ButtonProps extends HiBaseHTMLProps<'button' | 'a'> {
   /**
    * 设置按钮图标
    */
-  icon?: React.ReactNode
+  icon?: React.ReactNode | React.ReactNode[]
   /**
    * 设置按钮形状
    */
@@ -119,20 +202,4 @@ Button.HiName = 'Button'
 
 if (__DEV__) {
   Button.displayName = 'Button'
-}
-
-function IconLoading({ className = '', size = '0.8em' }) {
-  return (
-    <i className={cx(className)}>
-      <svg viewBox="0 0 18 18" width={size} height={size} fill="currentColor">
-        <g>
-          <path
-            d="m9 18c-4.9706 0-9-4.0294-9-9 0-4.9706 4.0294-9 9-9 4.9706 0 9 4.0294 9 9 0 4.9706-4.0294 9-9 9zm0-2c3.866 0 7-3.134 7-7 0-3.866-3.134-7-7-7-3.866 0-7 3.134-7 7 0 3.866 3.134 7 7 7z"
-            opacity=".15"
-          />
-          <path d="m15.547 2.8242c0.37904 0.40168 0.36068 1.0346-0.040996 1.4136-0.40168 0.37904-1.0346 0.36068-1.4136-0.040996-1.315-1.3935-3.1381-2.1969-5.0922-2.1969-3.866 0-7 3.134-7 7 0 0.55228-0.44772 1-1 1s-1-0.44772-1-1c0-4.9706 4.0294-9 9-9 2.5103 0 4.8578 1.0343 6.5468 2.8242z" />
-        </g>
-      </svg>
-    </i>
-  )
 }

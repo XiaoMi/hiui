@@ -1,8 +1,13 @@
 import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-
-import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps } from '@hi-ui/core'
+import { HiBaseAppearanceEnum, HiBaseHTMLFieldProps, useGlobalContext } from '@hi-ui/core'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 import ResizeDetector from 'react-resize-detector'
 import { useTextarea, UseTextareaProps } from './use-textarea'
 
@@ -16,7 +21,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     {
       prefixCls = _prefix,
       className,
-      size = 'md',
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
+      size: sizeProp,
       appearance = 'line',
       header,
       invalid = false,
@@ -40,6 +48,13 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
     },
     ref
   ) => {
+    const globalContext = useGlobalContext() as ReturnType<typeof useGlobalContext> & {
+      textarea?: { classNames?: any; styles?: any }
+    }
+    const { size: globalSize } = globalContext
+    const textareaConfig = globalContext.textarea
+    const size = sizeProp ?? globalSize ?? 'md'
+
     const { focused, autoSize, value, getTextareaProps, onResize } = useTextarea({
       name,
       autoFocus,
@@ -64,31 +79,77 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
       const max = Number(maxLength)
       const valueLength = value.length
 
-      return `${valueLength}${max > 0 ? `/${max}` : ''}`
-    }, [showCount, maxLength, value])
+      return (
+        <>
+          {valueLength > 0 ? (
+            <span className={`${prefixCls}__count-value`}>{valueLength}</span>
+          ) : (
+            valueLength
+          )}
+          {max > 0 ? `/${max}` : ''}
+        </>
+      )
+    }, [showCount, maxLength, value.length, prefixCls])
+
+    const { classNames, styles } = useMergeSemantic<
+      TextAreaSemanticClassNames,
+      TextAreaSemanticStyles,
+      TextAreaProps
+    >({
+      classNamesList: [textareaConfig?.classNames, classNamesProp],
+      stylesList: [textareaConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          size: size as TextAreaProps['size'],
+          appearance,
+          header,
+          invalid,
+          disabled,
+          readOnly,
+          showCount,
+        },
+      },
+    })
 
     const cls = cx(
       prefixCls,
       className,
+      classNames?.root,
       `${prefixCls}--size-${size}`,
       `${prefixCls}--appearance-${appearance}`,
       `${prefixCls}-wrapper`,
       showCount && `${prefixCls}-wrapper--show-count`
     )
 
+    const textareaProps = getTextareaProps(rest, ref)
+
     const textareaNode = (
-      <div className={cls} data-count={dataCount}>
+      <div className={cls} style={{ ...style, ...styles?.root }}>
         <div
           className={cx(
             `${prefixCls}__inner`,
+            classNames?.inner,
             focused && `${prefixCls}__inner--focused`,
             disabled && `${prefixCls}__inner--disabled`,
             readOnly && `${prefixCls}__inner--readonly`,
             invalid && `${prefixCls}__inner--invalid`
           )}
+          style={styles?.inner}
         >
-          {header ? <div className={`${prefixCls}__header`}>{header}</div> : null}
-          <textarea {...getTextareaProps(rest, ref)} className={`${prefixCls}__text`} />
+          {header ? (
+            <div className={cx(`${prefixCls}__header`, classNames?.header)} style={styles?.header}>
+              {header}
+            </div>
+          ) : null}
+          <textarea
+            {...textareaProps}
+            className={cx(`${prefixCls}__text`, classNames?.text)}
+            style={{ ...styles?.text, ...textareaProps.style }}
+          />
+        </div>
+        <div className={cx(`${prefixCls}__count`, classNames?.count)} style={styles?.count}>
+          {dataCount}
         </div>
       </div>
     )
@@ -101,7 +162,15 @@ export const TextArea = forwardRef<HTMLTextAreaElement | null, TextAreaProps>(
   }
 )
 
-export interface TextAreaProps extends HiBaseHTMLFieldProps<'textarea'>, UseTextareaProps {
+export type TextAreaSemanticName = 'root' | 'inner' | 'header' | 'text' | 'count'
+export type TextAreaSemanticClassNames = SemanticClassNamesType<TextAreaProps, TextAreaSemanticName>
+export type TextAreaSemanticStyles = SemanticStylesType<TextAreaProps, TextAreaSemanticName>
+export type TextAreaSemantic = ComponentSemantic<TextAreaSemanticClassNames, TextAreaSemanticStyles>
+
+export interface TextAreaProps
+  extends HiBaseHTMLFieldProps<'textarea'>,
+    TextAreaSemantic,
+    UseTextareaProps {
   /**
    * 设置输入框尺寸
    */

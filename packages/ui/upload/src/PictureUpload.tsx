@@ -1,15 +1,13 @@
 import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { UploadProps } from './types'
+import type {
+  UploadProps,
+  UploadSemanticClassNamesResolved,
+  UploadSemanticStylesResolved,
+} from './types'
 import { FileSelect } from '@hi-ui/file-select'
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  CloseCircleOutlined,
-  ExclamationCircleOutlined,
-} from '@hi-ui/icons'
+import { PlusOutlined, DeleteOutlined, SearchOutlined, CloseCircleFilled } from '@hi-ui/icons'
 import useUpload from './hooks/use-upload'
 import { useLocaleContext } from '@hi-ui/core'
 import { Preview } from '@hi-ui/preview'
@@ -43,6 +41,9 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       preview,
       method,
       timeout,
+      content,
+      classNames,
+      styles,
       ...rest
     },
     ref
@@ -50,10 +51,12 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
     const photoSize = useMemo(() => {
       switch (photoSizeProp) {
         case 'sm':
+          return 'sm'
         // @ts-ignore deprecated
         case 'small':
           return 'sm'
         case 'lg':
+          return 'lg'
         // @ts-ignore deprecated
         case 'large':
           return 'lg'
@@ -72,6 +75,12 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
       disabled && `${prefixCls}--disabled`,
       className
     )
+    const cn: UploadSemanticClassNamesResolved | undefined = classNames as
+      | UploadSemanticClassNamesResolved
+      | undefined
+    const st: UploadSemanticStylesResolved | undefined = styles as
+      | UploadSemanticStylesResolved
+      | undefined
 
     const [_fileList, uploadFiles, deleteFile] = useUpload({
       fileList,
@@ -160,13 +169,25 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
 
     return (
       <div ref={ref} role={role} className={cls} {...rest}>
-        <ul className={`${prefixCls}__list`}>
+        <ul
+          className={cx(
+            `${prefixCls}__list`,
+            `${prefixCls}__list--size-${photoSize}`,
+            cn?.pictureUploadList
+          )}
+          style={st?.pictureUploadList}
+        >
           {_fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
                 <li
                   key={index}
-                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`)}
+                  className={cx(
+                    `${prefixCls}__item`,
+                    `${prefixCls}__item--${photoSize}`,
+                    cn?.pictureUploadItem
+                  )}
+                  style={st?.pictureUploadItem}
                   tabIndex={0}
                 >
                   <img src={file.url} className={`${prefixCls}__thumb`} />
@@ -194,9 +215,15 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                 <li
                   tabIndex={0}
                   key={index}
-                  className={cx(`${prefixCls}__item`, `${prefixCls}__item--${photoSize}`, {
-                    [`${prefixCls}__item--error`]: file.uploadState === 'error',
-                  })}
+                  className={cx(
+                    `${prefixCls}__item`,
+                    `${prefixCls}__item--${photoSize}`,
+                    cn?.pictureUploadItem,
+                    {
+                      [`${prefixCls}__item--error`]: file.uploadState === 'error',
+                    }
+                  )}
+                  style={st?.pictureUploadItem}
                   onClick={() => previewImage(index)}
                   onKeyDown={(e) => handleItemKeydown(e, file, index)}
                 >
@@ -206,7 +233,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                       <div className={`${prefixCls}__mask`}>
                         <div className={`${prefixCls}__action-group`}>
                           <span className={`${prefixCls}__action-btn`}>
-                            <EyeOutlined
+                            <SearchOutlined
                               onClick={() => {
                                 previewImage(index)
                               }}
@@ -225,7 +252,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                     ) : (
                       <div className={`${prefixCls}__percent`}>
                         <span className={`${prefixCls}__error-btn`}>
-                          <ExclamationCircleOutlined />
+                          <CloseCircleFilled />
                         </span>
                         <span
                           className={cx(`${prefixCls}__delete-btn`)}
@@ -234,7 +261,7 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                             deleteFile(file, index)
                           }}
                         >
-                          <CloseCircleOutlined />
+                          <DeleteOutlined />
                         </span>
                       </div>
                     )
@@ -256,13 +283,16 @@ export const PictureUpload = forwardRef<HTMLDivElement | null, UploadProps>(
                   className={cx(
                     `${prefixCls}__item`,
                     `${prefixCls}__item--upload`,
-                    `${prefixCls}__item--${photoSize}`
+                    `${prefixCls}__item--${photoSize}`,
+                    cn?.pictureUploadUploadTrigger
                   )}
+                  style={st?.pictureUploadUploadTrigger}
                   tabIndex={0}
                   onKeyDown={handleUploadKeydown}
                   ref={uploadRef}
                 >
                   <PlusOutlined />
+                  <div className={`${prefixCls}__item__upload-text`}>{content}</div>
                 </li>
               ) : (
                 children

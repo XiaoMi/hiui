@@ -3,8 +3,14 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__, invariant } from '@hi-ui/env'
 import { FormProvider } from './context'
 import { useForm, UseFormProps } from './use-form'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, HiBaseSizeEnum, useGlobalContext } from '@hi-ui/core'
 import { FormRuleModel, FormHelpers } from './types'
+import { useMergeSemantic } from '@hi-ui/use-merge-semantic'
+import type {
+  ComponentSemantic,
+  SemanticClassNamesType,
+  SemanticStylesType,
+} from '@hi-ui/use-merge-semantic'
 
 const _role = 'form'
 const _prefix = getPrefixCls(_role)
@@ -21,6 +27,9 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       prefixCls = _prefix,
       role = _role,
       className,
+      style,
+      classNames: classNamesProp,
+      styles: stylesProp,
       children,
       innerRef,
       labelWidth,
@@ -28,13 +37,39 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       placement = 'vertical',
       contentPosition = 'center',
       showRequiredOnValidateRequired = false,
-      showColon = true,
+      showColon,
       showValidateMessage = true,
+      size: sizeProp,
       ...rest
     },
     ref
   ) => {
-    const formContext = useForm(rest)
+    const { size: globalSize, form: formConfig } = useGlobalContext()
+    const size = sizeProp ?? globalSize
+
+    const { classNames, styles } = useMergeSemantic<
+      FormSemanticClassNames,
+      FormSemanticStyles,
+      FormProps
+    >({
+      classNamesList: [formConfig?.classNames, classNamesProp],
+      stylesList: [formConfig?.styles, stylesProp],
+      info: {
+        props: {
+          ...rest,
+          labelWidth,
+          labelPlacement,
+          placement,
+          contentPosition,
+          showRequiredOnValidateRequired,
+          showColon,
+          showValidateMessage,
+          size,
+        },
+      },
+    })
+
+    const formContext = useForm({ ...rest, size })
 
     const { getRootProps } = formContext
 
@@ -65,6 +100,14 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
         showValidateMessage,
         ...formContext,
         prefixCls,
+        formSemanticClassNames:
+          classNames?.label != null || classNames?.content != null
+            ? { label: classNames?.label, content: classNames?.content }
+            : undefined,
+        formSemanticStyles:
+          styles?.label != null || styles?.content != null
+            ? { label: styles?.label, content: styles?.content }
+            : undefined,
       }
     }, [
       labelWidth,
@@ -75,14 +118,29 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
       showValidateMessage,
       formContext,
       prefixCls,
+      classNames?.label,
+      classNames?.content,
+      styles?.label,
+      styles?.content,
     ])
 
-    const cls = cx(prefixCls, className, placement && `${prefixCls}--placement-${placement}`)
+    const cls = cx(
+      prefixCls,
+      className,
+      placement && `${prefixCls}--placement-${placement}`,
+      classNames?.root
+    )
 
     return (
       // @ts-ignore
       <FormProvider value={providedValue}>
-        <form ref={ref} role={role} className={cls} {...getRootProps()}>
+        <form
+          ref={ref}
+          role={role}
+          className={cls}
+          style={{ ...style, ...styles?.root }}
+          {...getRootProps()}
+        >
           {children}
         </form>
       </FormProvider>
@@ -90,9 +148,15 @@ export const Form = forwardRef<HTMLFormElement | null, FormProps>(
   }
 )
 
+export type FormSemanticName = 'root' | 'label' | 'content'
+export type FormSemanticClassNames = SemanticClassNamesType<FormProps, FormSemanticName>
+export type FormSemanticStyles = SemanticStylesType<FormProps, FormSemanticName>
+export type FormSemantic = ComponentSemantic<FormSemanticClassNames, FormSemanticStyles>
+
 export interface FormProps<Values = Record<string, any>>
   extends Omit<HiBaseHTMLProps<'form'>, 'onSubmit' | 'onReset'>,
-    UseFormProps<Values> {
+    UseFormProps<Values>,
+    FormSemantic {
   /**
    * 提供辅助方法的内部引用
    */
@@ -126,6 +190,10 @@ export interface FormProps<Values = Record<string, any>>
    * @default true
    */
   showValidateMessage?: boolean
+  /**
+   * 设置表单尺寸
+   */
+  size?: HiBaseSizeEnum
 }
 
 if (__DEV__) {

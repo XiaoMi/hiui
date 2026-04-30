@@ -5,7 +5,7 @@ $prefix: '#{$component-prefix}-filter' !default;
 .#{$prefix} {
   &:last-child {
     .#{$prefix}-item--appearance-filled {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
   }
 }
@@ -55,12 +55,14 @@ $prefix: '#{$component-prefix}-filter' !default;
     &--disabled {
       @include disabled;
 
-      color: use-color('gray', 400);
+      color: use-color('gray', 500);
+      cursor: not-allowed;
+      pointer-events: unset;
     }
   }
 
   &--appearance-link {
-    line-height: 44px;
+    line-height: use-height-size(11);
 
     .#{$prefix}-item__label {
       &::after {
@@ -68,23 +70,23 @@ $prefix: '#{$component-prefix}-filter' !default;
         content: '';
         width: 1px;
         height: 14px;
-        background-color: use-color('gray', 300);
+        background-color: use-color('gray', 400);
       }
 
       &-title {
-        color: use-color('gray', 600);
+        color: use-color('gray', 700);
       }
     }
 
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(20);
-      color: use-color('gray', 700);
+      color: use-color('gray', 800);
 
       &::after {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 50%;
+        inset-block-end: 0;
+        inset-inline-start: 50%;
         transform: translate(-50%, -50%);
         transition: background-color 0.3s;
       }
@@ -107,28 +109,28 @@ $prefix: '#{$component-prefix}-filter' !default;
   }
 
   &--appearance-filled {
-    line-height: 36px;
-    margin-bottom: use-spacing(4);
+    line-height: use-height-size(9);
+    margin-block-end: use-spacing(4);
 
     .#{$prefix}-item__label {
       &-title {
-        color: use-color('gray', 700);
+        color: use-color('gray', 800);
         font-weight: use-text-weight('semibold');
       }
     }
 
     .#{$prefix}-item__value {
       margin-inline-end: use-spacing(12);
-      padding: 2px 0;
-      color: use-color('gray', 600);
+      padding: use-spacing(1) 0;
+      color: use-color('gray', 700);
 
       &__text {
-        padding:  0 use-spacing(6);
+        padding: 0 use-spacing(6);
         line-height: use-height-size(8);
-        border-radius: use-border-radius('md');
+        border-radius: use-border-radius('normal');
 
         &:hover {
-          background-color:  use-color('gray', 100);
+          background-color: use-color('gray', 200);
         }
       }
 

@@ -8,9 +8,12 @@ export * from './nested.stories'
 export * from './justify.stories'
 export * from './responsive.stories'
 export * from './order.stories'
+export * from './auto-grid-basic.stories'
+export * from './auto-grid-nodes.stories'
+export * from './dynamic-grid-basic.stories'
 
 export default {
-  title: 'Basic/Grid',
+  title: 'Layout/Grid',
   component: Grid,
   decorators: [(story: Function) => <div>{story()}</div>],
 }

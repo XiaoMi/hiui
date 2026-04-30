@@ -16,7 +16,10 @@ export const AsyncUploadAction = () => {
           uploadAction={() => {
             console.log('上传前的处理')
             return new Promise((resolve) => {
-              setTimeout(() => resolve('https://jsonplaceholder.typicode.com/posts/'), 1000)
+              setTimeout(
+                () => resolve('https://ae97d8f3-cdda-48e5-98a6-40ffe37a94bc.mock.pstmn.io/upload'),
+                1000
+              )
             })
           }}
           tips="仅支持 jpg/png 文件，且不超过 500kb"

@@ -14,27 +14,38 @@ export const Custom = () => {
       <h1>自定义按钮位置和内容</h1>
       <div className="back-top-basic__wrap">
         <div style={{ position: 'relative', height: 400 }}>
-          <Tooltip title="回到顶部" placement="left">
-            <BackTop
-              style={{ position: 'absolute', right: 50, bottom: 112 }}
-              container={() => document.getElementById('back-top_custom')}
+          <BackTop
+            style={{ position: 'absolute', right: 50, bottom: 112 }}
+            container={() => document.getElementById('back-top_custom')}
+            onClick={() => {
+              Tooltip.close('back-top-custom')
+            }}
+            onMouseEnter={(evt) => {
+              Tooltip.open(evt.currentTarget, {
+                key: 'back-top-custom',
+                title: '回到顶部',
+                placement: 'left',
+              })
+            }}
+            onMouseLeave={() => {
+              Tooltip.close('back-top-custom')
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                color: '#fff',
+                background: '#237ffa',
+              }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  color: '#fff',
-                  background: '#237ffa',
-                }}
-              >
-                <ToTopOutlined />
-              </div>
-            </BackTop>
-          </Tooltip>
+              <ToTopOutlined />
+            </div>
+          </BackTop>
           <div
             id="back-top_custom"
             style={{ position: 'relative', height: 400, overflowY: 'scroll' }}

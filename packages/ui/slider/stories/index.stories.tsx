@@ -5,11 +5,13 @@ export * from './basic.stories'
 export * from './controlled.stories'
 export * from './reversed.stories'
 export * from './vertical.stories'
+export * from './set-range.stories'
 export * from './range.stories'
 export * from './disabled.stories'
 export * from './tip.stories'
 export * from './custom-color.stories'
 export * from './mark.stories'
+export * from './semantic.stories'
 
 export default {
   title: 'Data Input/Slider',

@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useMemo } from 'react'
-import { getPrefixCls } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useCounter } from '@hi-ui/counter'
@@ -8,6 +8,11 @@ import { useLatestRef } from '@hi-ui/use-latest'
 import { PagerButton } from './PagerButton'
 import Input from '@hi-ui/input'
 import { HiBaseHTMLProps } from '@hi-ui/core'
+import type {
+  PaginationSemantic,
+  PaginationSemanticClassNamesResolved,
+  PaginationSemanticStylesResolved,
+} from './DefaultPagination'
 
 const _prefix = getPrefixCls('pagination-mini')
 
@@ -18,6 +23,8 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
       role = 'pagination',
       onChange,
       className,
+      classNames: classNamesProp,
+      styles: stylesProp,
       total,
       current: currentProp,
       defaultCurrent = MIN_PAGE,
@@ -30,6 +37,8 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
     },
     ref
   ) => {
+    const classNames = classNamesProp as PaginationSemanticClassNamesResolved | undefined
+    const styles = stylesProp as PaginationSemanticStylesResolved | undefined
     const [current, trySetCurrent] = useUncontrolledState(defaultCurrent, currentProp, onChange)
 
     const currentRef = useLatestRef(current)
@@ -76,29 +85,50 @@ export const ShrinkPagination = forwardRef<HTMLDivElement | null, ShrinkPaginati
 
     if (hiddenPagination) return null
 
+    const rootClassName = cx(rootProps.className, classNames?.root)
+    const rootStyle = { ...rootProps.style, ...styles?.root }
+
     return (
-      <div ref={ref} role={role} {...rootProps}>
+      <div ref={ref} role={role} {...rootProps} className={rootClassName} style={rootStyle}>
         {/* TODO: 分离实现
           分页的快捷键是回车下一页，
           counter 的快捷键焦点始终在 input 之上，上下控制加减
         */}
-        <PagerButton {...getMinusButtonProps()} type="prev" />
+        <PagerButton
+          {...getMinusButtonProps()}
+          size={size}
+          type="prev"
+          className={classNames?.prevButton}
+          style={styles?.prevButton}
+        />
 
         {showJumper ? (
           <>
             {/* @ts-ignore */}
-            <Input {...getInputProps()} appearance="filled" size={size} />
-            {showTotal ? <span className={`${prefixCls}__total`}>{`/ ${maxPage}`}</span> : null}
+            <Input {...getInputProps()} size={size} />
+            {showTotal ? (
+              <span className={cx(`${prefixCls}__total`, classNames?.total)} style={styles?.total}>
+                {`/ ${maxPage}`}
+              </span>
+            ) : null}
           </>
         ) : null}
 
-        <PagerButton {...getPlusButtonProps()} type="next" />
+        <PagerButton
+          {...getPlusButtonProps()}
+          size={size}
+          type="next"
+          className={classNames?.nextButton}
+          style={styles?.nextButton}
+        />
       </div>
     )
   }
 )
 
-export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
+export interface ShrinkPaginationProps
+  extends HiBaseHTMLProps<'div'>,
+    Pick<PaginationSemantic, 'classNames' | 'styles'> {
   /**
    * 当前页码
    */
@@ -131,7 +161,7 @@ export interface ShrinkPaginationProps extends HiBaseHTMLProps<'div'> {
   /**
    * 设置尺寸
    */
-  size?: 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md'
   /**
    * 	只有一页时是否隐藏分页器
    */

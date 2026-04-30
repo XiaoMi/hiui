@@ -1,11 +1,15 @@
 import React from 'react'
 import Form, { FormHelpers, FormRules } from '../src'
-import Input from '@hi-ui/input'
-import NumberInput from '@hi-ui/number-input'
-import { Select } from '@hi-ui/select'
-import { Cascader } from '@hi-ui/cascader'
-import Radio from '@hi-ui/radio'
-import Button from '@hi-ui/button'
+import {
+  Input,
+  NumberInput,
+  Select,
+  Cascader,
+  Radio,
+  Button,
+  DatePicker,
+  TimePicker,
+} from '@hi-ui/hiui'
 
 /**
  * @title 表单校验
@@ -35,34 +39,6 @@ export const Validate = () => {
               title: '小米4',
             },
           ],
-        },
-        {
-          id: '红米',
-          title: '红米',
-          children: [
-            {
-              id: '红米3',
-              title: '红米3',
-            },
-            {
-              id: '红米4',
-              title: '红米4',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: '电视',
-      title: '电视',
-      children: [
-        {
-          id: '小米电视4A',
-          title: '小米电视4A',
-        },
-        {
-          id: '小米电视4C',
-          title: '小米电视4C',
         },
       ],
     },
@@ -110,7 +86,6 @@ export const Validate = () => {
         <Form
           innerRef={formRef}
           rules={rules}
-          // lazyValidate
           labelWidth="80"
           labelPlacement="right"
           initialValues={{
@@ -120,6 +95,8 @@ export const Validate = () => {
             count: '',
             count2: null,
             store: '',
+            date: new Date(),
+            time: '12:00:00',
           }}
         >
           <FormItem
@@ -148,39 +125,59 @@ export const Validate = () => {
               data={[
                 { title: '电视', id: '3' },
                 { title: '手机', id: '2' },
-                { title: '笔记本', id: '4' },
-                { title: '生活周边', id: '5' },
-                { title: '办公', id: '6' },
               ]}
-              searchable
-              placeholder="请选择"
-              emptyContent="无匹配数据"
-              onChange={(item) => {
-                console.log('多选结果', item)
-              }}
             />
           </FormItem>
           <FormItem label="品类" field="category" valueType="string">
-            <Cascader
-              onChange={(id) => {
-                console.log('change', id)
-              }}
-              data={cascaderOptions}
-              style={{ width: '100%' }}
-            />
+            <Cascader data={cascaderOptions} />
           </FormItem>
           <FormItem label="地区" field="region" valueType="string">
             <RadioGroup
               data={[
                 { id: 'beijing', title: '北京' },
                 { id: 'shanghai', title: '上海' },
-                { id: 'chongqing', title: '重庆' },
               ]}
             />
+          </FormItem>
+          <FormItem
+            label="日期"
+            field="date"
+            valueType="date"
+            rules={[
+              {
+                required: true,
+                message: '请选择日期',
+              },
+            ]}
+          >
+            <DatePicker />
+          </FormItem>
+
+          <FormItem
+            label="时间"
+            field="time"
+            valueType="string"
+            rules={[
+              {
+                required: true,
+                message: '请选择时间',
+              },
+            ]}
+          >
+            <TimePicker />
           </FormItem>
 
           <FormItem>
             <>
+              <Button
+                type="default"
+                appearance="line"
+                onClick={() => {
+                  formRef.current?.reset()
+                }}
+              >
+                重置
+              </Button>
               <Button
                 type="primary"
                 onClick={() => {
@@ -197,14 +194,6 @@ export const Validate = () => {
                 }}
               >
                 提交
-              </Button>
-              <Button
-                type="default"
-                onClick={() => {
-                  formRef.current?.reset()
-                }}
-              >
-                重置
               </Button>
               <Button
                 type="danger"
