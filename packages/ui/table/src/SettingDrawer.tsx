@@ -87,21 +87,24 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
 
     const [visible, setVisible] = useUncontrolledState<boolean>(false, visibleProp, onClose)
 
-    const resetLatest = useLatestCallback(() => {
+    const syncCacheLatest = useLatestCallback(() => {
       setCacheHiddenColKeys(hiddenColKeys)
       setCacheSortedCols(sortedCols)
-
-      onReset?.()
     })
 
-    // 当 visible 由 false 变为 true 时触发
-    const prevShowPopperRef = useRef(!visible)
+    // 仅在 visible 真正由 false -> true 时触发，避免首次 visible=true 误触发
+    const prevVisibleRef = useRef(visible)
     useEffect(() => {
-      if (!prevShowPopperRef.current && visible) {
-        resetLatest()
+      if (!prevVisibleRef.current && visible) {
+        syncCacheLatest()
       }
-      prevShowPopperRef.current = visible
-    }, [visible, resetLatest])
+      prevVisibleRef.current = visible
+    }, [visible, syncCacheLatest])
+
+    const handleReset = useLatestCallback(() => {
+      syncCacheLatest()
+      onReset?.()
+    })
 
     const onConfirm = () => {
       const newSortKeys = cacheSortedCols.map((col) => col.dataKey!)
@@ -160,7 +163,7 @@ export const SettingDrawer = forwardRef<HTMLDivElement | null, SettingDrawerProp
           <div className={`${prefixCls}-footer`}>
             <div className={`${prefixCls}-footer__extra`}>{showCheckAll && CheckAllContent}</div>
             <div className={`${prefixCls}-footer__action`}>
-              <Button onClick={resetLatest}>{i18n.get('table.reset')}</Button>
+              <Button onClick={handleReset}>{i18n.get('table.reset')}</Button>
               <Button onClick={onConfirm} type="primary">
                 {i18n.get('table.confirm')}
               </Button>
