@@ -77,10 +77,12 @@ const HookModal = React.forwardRef<
     } catch (e) {
       console.warn('onConfirm error', e)
       onResolve(false)
+      return
     } finally {
       modalRef.current?.updateConfirmLoading(false)
-      closeFn()
     }
+
+    closeFn()
   }, [onConfirm, onResolve, closeFn])
 
   const handleCancel = useCallback(() => {
