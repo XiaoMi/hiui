@@ -162,19 +162,23 @@ export const usePopper = ({
   }, [nonInteractive, attachElement, popperElement, popperOptionsRef])
 
   useEffect(() => {
-    let resizeObserver: ResizeObserver
+    if (!attachElement && !popperElement) return
+
+    const resizeObserver = new ResizeObserver(() => {
+      instanceRef.current?.update()
+    })
 
     if (attachElement) {
-      resizeObserver = new ResizeObserver(() => {
-        instanceRef.current?.update()
-      })
       resizeObserver.observe(attachElement as Element)
+    }
+    if (popperElement) {
+      resizeObserver.observe(popperElement)
     }
 
     return () => {
-      resizeObserver?.disconnect()
+      resizeObserver.disconnect()
     }
-  }, [attachElement])
+  }, [attachElement, popperElement])
 
   const onCloseLatest = useLatestCallback(() => {
     if (nonInteractive) return
