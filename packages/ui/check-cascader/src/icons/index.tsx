@@ -1,8 +1,12 @@
 import React from 'react'
-import { DownOutlined } from '@hi-ui/icons'
+import { RightOutlined, LeftOutlined } from '@hi-ui/icons'
 import { Spinner } from '@hi-ui/spinner'
+import { useGlobalContext } from '@hi-ui/core'
 
-export const defaultSuffixIcon = <DownOutlined />
+export const DefaultSuffixIcon = () => {
+  const { direction } = useGlobalContext()
+  return direction === 'rtl' ? <LeftOutlined /> : <RightOutlined />
+}
 
 export const defaultLeafIcon = null
 

@@ -178,6 +178,9 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
 
     const getTabOffset = useCallback(
       (tabId: React.ReactText) => {
+        const targetElement = itemsRef.current[tabId]
+        if (!targetElement) return 0
+
         // 获取目标元素的位置
         const targetPos = getTabPos(tabId)
 
@@ -189,7 +192,7 @@ export const TabList = forwardRef<HTMLDivElement | null, TabListProps>(
         }
 
         // 返回目标元素相对基准元素的偏移量
-        return targetPos ? targetPos - basePos : 0
+        return targetPos - basePos
       },
       [data, getTabPos]
     )

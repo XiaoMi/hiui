@@ -42,7 +42,7 @@ $mock-input-prefix: '#{$component-prefix}-mock-input' !default;
     color: use-color('gray', 700);
 
     &:has(> *) {
-      padding-left: use-spacing(4);
+      padding-inline-start: use-spacing(4);
     }
 
     .#{$mock-input-prefix}--appearance-unset & {

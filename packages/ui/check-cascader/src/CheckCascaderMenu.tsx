@@ -6,7 +6,7 @@ import {
   CheckCascaderDataItemRequiredProps,
   CheckCascaderDataItem,
 } from './types'
-import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
+import { defaultLeafIcon, defaultLoadingIcon, DefaultSuffixIcon } from './icons'
 import Checkbox from '@hi-ui/checkbox'
 import { useCheckCascaderContext } from './context'
 import { getCascaderItemEventData } from './utils'
@@ -246,8 +246,8 @@ const renderSuffix = (
 
   if (hasChildren || canLoadChildren) {
     return (
-      <span className={cx(`${prefixCls}-switcher`)} style={{ transform: `rotate(-90deg)` }}>
-        {defaultSuffixIcon}
+      <span className={cx(`${prefixCls}-switcher`)}>
+        <DefaultSuffixIcon />
       </span>
     )
   }

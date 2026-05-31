@@ -1,9 +1,9 @@
 import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import Popover, { PopoverProps } from '@hi-ui/popover'
-import { CheckOutlined, RightOutlined } from '@hi-ui/icons'
+import { CheckOutlined, LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { useUncontrolledToggle } from '@hi-ui/use-toggle'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
@@ -24,7 +24,7 @@ export const Profile = forwardRef<HTMLDivElement | null, ProfileProps>(
     ref
   ) => {
     const cls = cx(prefixCls, className)
-
+    const { direction } = useGlobalContext()
     const [value, setValue] = useUncontrolledState(settings?.value ?? {}, settings?.value)
 
     return (
@@ -89,7 +89,7 @@ export const Profile = forwardRef<HTMLDivElement | null, ProfileProps>(
                 </div>
                 {item.children?.length ? (
                   <div className={`${prefixCls}__settings-item__arrow`}>
-                    <RightOutlined />
+                    {direction === 'rtl' ? <LeftOutlined /> : <RightOutlined />}
                   </div>
                 ) : null}
               </div>

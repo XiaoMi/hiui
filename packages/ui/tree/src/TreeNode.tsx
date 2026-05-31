@@ -5,7 +5,7 @@ import { times } from '@hi-ui/array-utils'
 import Checkbox from '@hi-ui/checkbox'
 import Spinner from '@hi-ui/spinner'
 import IconButton from '@hi-ui/icon-button'
-import { defaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
+import { DefaultCollapseIcon, defaultExpandIcon, defaultLeafIcon } from './icons'
 import { useTreeContext } from './context'
 import { FlattedTreeNodeData, TreeNodeDragDirection, TreeNodeEventData } from './types'
 import { getTreeNodeEventData } from './utils'
@@ -28,7 +28,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>((props, 
     loading = false,
     focused = false,
     // custom switcher
-    collapsedIcon: collapseIconProp = defaultCollapseIcon,
+    collapsedIcon: collapseIconProp = <DefaultCollapseIcon />,
     expandedIcon: expandIconProp = defaultExpandIcon,
     leafIcon: leafIconProp = defaultLeafIcon,
     classNames,

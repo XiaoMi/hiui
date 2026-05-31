@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { HiBaseHTMLProps } from '@hi-ui/core'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
-import { defaultLeafIcon, defaultLoadingIcon, defaultSuffixIcon } from './icons'
+import { defaultLeafIcon, defaultLoadingIcon, DefaultSuffixIcon } from './icons'
 import { checkCanLoadChildren, getItemEventData } from './utils'
 import { useCascaderContext } from './context'
 import { CascaderDataItem, FlattedCascaderDataItem, CascaderItemEventData } from './types'
@@ -222,7 +222,7 @@ const renderSuffix = (
   if (canLoadChildren) {
     return (
       <span className={cx(`${prefixCls}-switcher`, `${prefixCls}-switcher--arrow`)}>
-        {defaultSuffixIcon}
+        <DefaultSuffixIcon />
       </span>
     )
   }

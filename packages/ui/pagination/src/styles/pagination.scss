@@ -14,7 +14,7 @@ $prefix: '#{$component-prefix}-pagination' !default;
   }
 
   &__option {
-    margin: 0 0 0 use-spacing(4) !important;
+    margin-inline-start: use-spacing(4) !important;
   }
 
   &__jumper {
