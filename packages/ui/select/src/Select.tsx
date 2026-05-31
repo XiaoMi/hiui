@@ -1,4 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { MockInput } from '@hi-ui/input'
@@ -96,6 +104,7 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
       renderExtraHeader,
       classNames: classNamesProp,
       styles: stylesProp,
+      innerRef,
       ...rest
     },
     ref
@@ -221,6 +230,10 @@ export const Select = forwardRef<HTMLDivElement | null, SelectProps>(
 
       return flattedData
     }, [shouldUseSearch, searchMode, flattedData, flattedDataAsync, stateInSearch.data])
+
+    useImperativeHandle(innerRef, () => ({
+      getShowData: () => showData,
+    }))
 
     const mergedData = useMemo(() => {
       let nextData = flattedData as FlattedSelectDataItem[]
@@ -442,10 +455,25 @@ export type SelectSemanticClassNames = SemanticClassNamesType<SelectProps, Selec
 export type SelectSemanticStyles = SemanticStylesType<SelectProps, SelectSemanticName>
 export type SelectSemantic = ComponentSemantic<SelectSemanticClassNames, SelectSemanticStyles>
 
+export interface SelectHelper {
+  /**
+   * 获取当前下拉列表展示的数据（含搜索、异步搜索过滤后的结果）
+   */
+  getShowData: () => FlattedSelectDataItem[]
+}
+
 export interface SelectProps
   extends Omit<
       PickerProps,
-      'data' | 'onChange' | 'trigger' | 'scrollable' | 'header' | 'footer' | 'classNames' | 'styles'
+      | 'data'
+      | 'onChange'
+      | 'trigger'
+      | 'scrollable'
+      | 'header'
+      | 'footer'
+      | 'classNames'
+      | 'styles'
+      | 'innerRef'
     >,
     UseSelectProps,
     SelectSemantic {
@@ -557,6 +585,10 @@ export interface SelectProps
    * 是否展示箭头
    */
   showIndicator?: boolean
+  /**
+   * 提供辅助方法的内部引用
+   */
+  innerRef?: React.Ref<SelectHelper>
 }
 
 ;(Select as any).HiName = 'Select'
