@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { LeftOutlined, RightOutlined } from '@hi-ui/icons'
 import { __DEV__ } from '@hi-ui/env'
-import { HiBaseHTMLProps } from '@hi-ui/core'
+import { HiBaseHTMLProps, useGlobalContext } from '@hi-ui/core'
 import Button from '@hi-ui/button'
 
 const _role = 'pagination'
@@ -23,6 +23,9 @@ export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps
     },
     ref
   ) => {
+    const { direction } = useGlobalContext()
+    const isRtl = direction === 'rtl'
+
     const handleChange = useCallback(() => {
       if (onChange && !disabled) {
         onChange(type === 'prev' ? current - 1 : current + 1)
@@ -56,7 +59,19 @@ export const PagerButton = forwardRef<HTMLButtonElement | null, PagerButtonProps
           disabled={disabled}
           appearance="line"
           size={size}
-          icon={type === 'prev' ? <LeftOutlined /> : <RightOutlined />}
+          icon={
+            type === 'prev' ? (
+              isRtl ? (
+                <RightOutlined />
+              ) : (
+                <LeftOutlined />
+              )
+            ) : isRtl ? (
+              <LeftOutlined />
+            ) : (
+              <RightOutlined />
+            )
+          }
         />
       </li>
     )

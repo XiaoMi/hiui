@@ -126,18 +126,19 @@ $prefix: '#{$component-prefix}-checkbox' !default;
 
     &--checked {
       &::after {
-        transform: rotate(45deg) scaleY(1);
         pointer-events: none;
         box-sizing: content-box;
         content: '';
-        border: 2px solid use-color-static('white');
-        border-inline-start: 0;
-        border-block-start: 0;
-        height: 7px;
-        inset-inline-start: 4px;
         position: absolute;
-        inset-block-start: 1px;
+        // 对钩形状：固定物理方向，不随 writing-mode 镜像
+        border: 2px solid use-color-static('white');
+        border-left: 0;
+        border-top: 0;
         width: 4px;
+        height: 7px;
+        left: 4px;
+        top: 1px;
+        transform: rotate(45deg) scaleY(1);
         transform-origin: center;
       }
     }

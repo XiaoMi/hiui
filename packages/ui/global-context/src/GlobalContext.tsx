@@ -12,6 +12,7 @@ export interface UseGlobalContext extends ConfigComponentProps {
   size?: 'xs' | 'sm' | 'md' | 'lg'
   // prefix?: string
   utcOffset?: number
+  direction?: 'ltr' | 'rtl'
 }
 
 export interface ComponentStyleConfig {

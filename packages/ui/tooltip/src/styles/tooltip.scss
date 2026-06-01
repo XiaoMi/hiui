@@ -111,7 +111,11 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=left] {
       .#{$prefix}__arrow {
-        inset-inline-end: 9px;
+        right: 9px;
+
+        &--rtl {
+          right: -15px;
+        }
 
         svg {
           transform: rotate(-90deg) translate3d(3px, 0, 0);
@@ -121,7 +125,11 @@ $prefix: '#{$component-prefix}-tooltip' !default;
 
     &[data-popper-placement^=right] {
       .#{$prefix}__arrow {
-        inset-inline-start: -15px;
+        left: -15px;
+
+        &--rtl {
+          left: 9px;
+        }
 
         svg {
           transform: rotate(90deg) translate3d(-3px, 0, 0);

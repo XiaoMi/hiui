@@ -6,19 +6,22 @@ import {
   DirectionLeftOutlined,
 } from '@hi-ui/icons'
 import moment, { DurationInputArg1 } from 'moment'
-import { UseLocaleContext } from '@hi-ui/core'
+import { UseLocaleContext, useGlobalContext } from '@hi-ui/core'
 
 const getHeaderCenterContent = (
   i18n: UseLocaleContext,
   view: string,
   renderDate: moment.Moment,
-  locale = 'zh-CN'
+  locale = 'zh-CN',
+  isRtl = false
 ) => {
   const _date = renderDate
   const year = _date.year()
   const month = _date.month()
   if (view === 'year') {
-    return year - 4 + '~' + (year + 7)
+    const startYear = year - 4
+    const endYear = year + 7
+    return isRtl ? `${endYear}~${startYear}` : `${startYear}~${endYear}`
   }
   if (view === 'month' || view === 'quarter') {
     return year
@@ -26,11 +29,12 @@ const getHeaderCenterContent = (
 
   const monthShortText = i18n.get('datePicker.monthShort')
   const arr = [monthShortText[month]]
+  const yearFirst = locale === 'zh-CN' ? !isRtl : isRtl
 
-  if (locale === 'zh-CN') {
-    arr.unshift(year + '年    ')
+  if (yearFirst) {
+    arr.unshift(locale === 'zh-CN' ? `${year}年    ` : `${year}    `)
   } else {
-    arr.push(`    ${year}`)
+    arr.push(locale === 'zh-CN' ? `    ${year}年` : `    ${year}`)
   }
   return arr
 }
@@ -61,6 +65,9 @@ const Header = ({
     panelDate.add(val, flag)
     onArrowEvent(panelDate, panelPosition)
   }
+  const { direction } = useGlobalContext()
+  const isRtl = direction === 'rtl'
+
   return (
     <div className={`${prefixCls}__header`}>
       {
@@ -69,14 +76,14 @@ const Header = ({
             className={`${prefixCls}__header-icon`}
             onClick={() => headerChangeDateEvent('year', view === 'year' ? -12 : -1)}
           >
-            <DirectionLeftOutlined />
+            {isRtl ? <DirectionRightOutlined /> : <DirectionLeftOutlined />}
           </span>
           {view !== 'year' && view !== 'month' && view !== 'quarter' && (
             <span
               className={`${prefixCls}__header-icon`}
               onClick={() => headerChangeDateEvent('months', -1)}
             >
-              <LeftOutlined />
+              {isRtl ? <RightOutlined /> : <LeftOutlined />}
             </span>
           )}
         </div>
@@ -87,7 +94,7 @@ const Header = ({
           changeView()
         }}
       >
-        {getHeaderCenterContent(i18n, view, renderDate, locale)}
+        {getHeaderCenterContent(i18n, view, renderDate, locale, isRtl)}
       </span>
       {
         <div className={`${prefixCls}__header-btns`}>
@@ -96,14 +103,14 @@ const Header = ({
               onClick={() => headerChangeDateEvent('months', 1)}
               className={`${prefixCls}__header-icon`}
             >
-              <RightOutlined />
+              {isRtl ? <LeftOutlined /> : <RightOutlined />}
             </span>
           )}
           <span
             onClick={() => headerChangeDateEvent('year', view === 'year' ? 12 : 1)}
             className={`${prefixCls}__header-icon`}
           >
-            <DirectionRightOutlined />
+            {isRtl ? <DirectionLeftOutlined /> : <DirectionRightOutlined />}
           </span>
         </div>
       }

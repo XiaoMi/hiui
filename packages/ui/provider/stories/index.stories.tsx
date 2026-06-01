@@ -2,8 +2,9 @@ import React from 'react'
 
 export * from './basic.stories'
 export * from './theme.stories'
-export * from './portal.stories'
 export * from './size.stories'
+export * from './direction.stories'
+export * from './portal.stories'
 export * from './locale-extends.stories'
 export * from './locale-merge.stories'
 

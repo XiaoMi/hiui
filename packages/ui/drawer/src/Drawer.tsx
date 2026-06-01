@@ -63,7 +63,7 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
     const [transitionExited, transitionExitedAction] = useToggle(true)
     const globalContainer = usePortalContext()?.container
     const container = containerProp ?? globalContainer
-    const { size: globalSize, drawer: globalDrawerConfig } = useGlobalContext()
+    const { size: globalSize, drawer: globalDrawerConfig, direction } = useGlobalContext()
     let size = sizeProp ?? globalSize ?? 'md'
     if (size === 'xs') {
       size = 'sm'
@@ -161,7 +161,8 @@ export const Drawer = forwardRef<HTMLDivElement | null, DrawerProps>(
       className,
       classNames?.root,
       `${prefixCls}--placement-${placement}`,
-      `${prefixCls}--size-${size}`
+      `${prefixCls}--size-${size}`,
+      direction === 'rtl' ? `${prefixCls}--rtl` : ''
     )
 
     return (

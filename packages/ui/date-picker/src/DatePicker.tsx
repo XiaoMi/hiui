@@ -129,7 +129,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
       },
     })
     const size = sizeProp ?? globalSize ?? 'md'
-
+    const { direction } = useGlobalContext()
     const i18n = useLocaleContext()
     const locale = i18n.locale
 
@@ -232,19 +232,19 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
         let resultString = null
 
         if (disposeDate) {
-          resultData = ((disposeDate as unknown) as DateRange).start
+          resultData = (disposeDate as unknown as DateRange).start
             ? [
-                moment(((disposeDate as unknown) as DateRange).start).toDate(),
-                moment(((disposeDate as unknown) as DateRange).end).toDate(),
+                moment((disposeDate as unknown as DateRange).start).toDate(),
+                moment((disposeDate as unknown as DateRange).end).toDate(),
               ]
             : moment(disposeDate as any).toDate()
         }
 
         if (disposeString) {
-          resultString = (((disposeString as unknown) as DateRange).start as string)
+          resultString = ((disposeString as unknown as DateRange).start as string)
             ? [
-                ((disposeString as unknown) as DateRange).start as string,
-                ((disposeString as unknown) as DateRange).end as string,
+                (disposeString as unknown as DateRange).start as string,
+                (disposeString as unknown as DateRange).end as string,
               ]
             : (disposeString as string)
         }
@@ -255,14 +255,14 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
     )
 
     const value = useMemo(() => valueAdapter(controlledValue), [valueAdapter, controlledValue])
-    const defaultValue = useMemo(() => valueAdapter(uncontrolledValue), [
-      valueAdapter,
-      uncontrolledValue,
-    ])
-    const defaultPickerValue = useMemo(() => valueAdapter(defaultPickerValueProp), [
-      valueAdapter,
-      defaultPickerValueProp,
-    ])
+    const defaultValue = useMemo(
+      () => valueAdapter(uncontrolledValue),
+      [valueAdapter, uncontrolledValue]
+    )
+    const defaultPickerValue = useMemo(
+      () => valueAdapter(defaultPickerValueProp),
+      [valueAdapter, defaultPickerValueProp]
+    )
     const [outDate, changeOutDate] = useDate({
       value,
       type,
@@ -623,6 +623,7 @@ export const DatePicker = forwardRef<HTMLDivElement | null, DatePickerProps>(
           <Popper
             {...(overlay || {})}
             visible={visible !== undefined ? visible : showPanel}
+            placement={direction === 'rtl' ? 'bottom-end' : 'bottom-start'}
             gutterGap={4}
             onEntered={onOpen}
             onClose={onPopperClose}

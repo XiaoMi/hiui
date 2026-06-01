@@ -1,9 +1,18 @@
 import React from 'react'
 import { CaretDownFilled } from '@hi-ui/icons'
+import { useGlobalContext } from '@hi-ui/core'
 
-export const defaultCollapseIcon = (
-  <CaretDownFilled style={{ transition: 'transform 0.3s', transform: 'rotate(-90deg)' }} />
-)
+export const DefaultCollapseIcon = () => {
+  const { direction } = useGlobalContext()
+  return (
+    <CaretDownFilled
+      style={{
+        transition: 'transform 0.3s',
+        transform: direction === 'rtl' ? 'rotate(90deg)' : 'rotate(-90deg)',
+      }}
+    />
+  )
+}
 export const defaultExpandIcon = (
   <CaretDownFilled style={{ transition: 'transform 0.3s', transform: 'rotate(0)' }} />
 )

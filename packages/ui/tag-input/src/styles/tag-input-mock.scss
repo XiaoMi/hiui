@@ -256,7 +256,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       }
 
       &:not(.#{$tag-input-mock-prefix}--appearance-borderless) {
-        padding: 1px use-spacing(4) 1px use-spacing(2);
+        padding-block: 1px;
+        padding-inline: use-spacing(2) use-spacing(4);
       }
 
       font-size: use-text-size('sm');
@@ -287,7 +288,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       }
 
       &:not(.#{$tag-input-mock-prefix}--appearance-borderless) {
-        padding: use-spacing(1) use-spacing(6) use-spacing(1) use-spacing(2);
+        padding-block: use-spacing(1);
+        padding-inline: use-spacing(2) use-spacing(6);
       }
 
       font-size: use-text-size('normal');
@@ -318,7 +320,8 @@ $tag-input-mock-prefix: '#{$component-prefix}-tag-input-mock' !default;
       }
 
       &:not(.#{$tag-input-mock-prefix}--appearance-borderless) {
-        padding: calc(#{use-spacing(3)} - 1px) use-spacing(8) calc(#{use-spacing(3)} - 1px) use-spacing(2);
+        padding-block: calc(#{use-spacing(3)} - 1px);
+        padding-inline: use-spacing(2) use-spacing(8);
       }
 
       font-size: use-text-size('lg');

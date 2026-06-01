@@ -55,7 +55,8 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
     },
     ref
   ) => {
-    const ctx = useGlobalContext() as Record<string, { classNames?: any; styles?: any } | undefined>
+    const ctx = useGlobalContext()
+    const { direction } = ctx
     const tooltipConfig = ctx.tooltip
     const { classNames, styles } = useMergeSemantic<
       TooltipSemanticClassNames,
@@ -180,7 +181,11 @@ export const Tooltip = forwardRef<HTMLDivElement | null, TooltipProps>(
               >
                 {arrow ? (
                   <div
-                    className={cx(`${prefixCls}__arrow`, classNames?.arrow)}
+                    className={cx(
+                      `${prefixCls}__arrow`,
+                      direction === 'rtl' ? `${prefixCls}__arrow--rtl` : '',
+                      classNames?.arrow
+                    )}
                     {...getArrowProps()}
                     style={{ ...getArrowProps()?.style, ...styles?.arrow }}
                   >

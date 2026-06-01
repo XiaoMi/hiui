@@ -450,7 +450,7 @@ export const FloatMenu = () => {
                     alignItems: 'center',
                     gap: 4,
                     height: 40,
-                    marginLeft: collapsed ? 12 : 10,
+                    marginInlineStart: collapsed ? 12 : 10,
                     fontSize: 14,
                     cursor: 'pointer',
                   }}

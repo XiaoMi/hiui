@@ -302,4 +302,62 @@ $prefix: '#{$component-prefix}-drawer' !default;
     //   pointer-events: none;
     // }
   }
+
+  &--rtl {
+    direction: rtl;
+
+    &.#{$prefix}--placement-left {
+      .#{$prefix}__wrapper {
+        transform: translate3d(100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter .#{$prefix}__wrapper {
+        transform: translate3d(100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter-active .#{$prefix}__wrapper {
+        transform: translate3d(0, 0, 0);
+      }
+
+      &.#{$prefix}--motion-exit .#{$prefix}__wrapper {
+        transform: translate3d(0, 0, 0);
+      }
+
+      &.#{$prefix}--motion-exit-active .#{$prefix}__wrapper {
+        transform: translate3d(100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter-done .#{$prefix}__wrapper {
+        box-shadow: use-shadow('md', 'left');
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    &.#{$prefix}--placement-right {
+      .#{$prefix}__wrapper {
+        transform: translate3d(-100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter .#{$prefix}__wrapper {
+        transform: translate3d(-100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter-active .#{$prefix}__wrapper {
+        transform: translate3d(0, 0, 0);
+      }
+
+      &.#{$prefix}--motion-exit .#{$prefix}__wrapper {
+        transform: translate3d(0, 0, 0);
+      }
+
+      &.#{$prefix}--motion-exit-active .#{$prefix}__wrapper {
+        transform: translate3d(-100%, 0, 0);
+      }
+
+      &.#{$prefix}--motion-enter-done .#{$prefix}__wrapper {
+        box-shadow: use-shadow('md', 'right');
+        transform: translate3d(0, 0, 0);
+      }
+    }
+  }
 }

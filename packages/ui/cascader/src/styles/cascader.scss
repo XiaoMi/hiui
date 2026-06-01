@@ -180,10 +180,6 @@ $prefix: '#{$component-prefix}-cascader' !default;
     &--loading {
       color: use-color-mode('primary');
     }
-
-    &--arrow {
-      transform: rotate(-90deg);
-    }
   }
 }
 

@@ -108,7 +108,7 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
   ) => {
     const { size: globalSize, checkCascader: checkCascaderConfig } = useGlobalContext()
     const size = sizeProp ?? globalSize ?? 'md'
-
+    const { direction } = useGlobalContext()
     const i18n = useLocaleContext()
 
     const { classNames, styles } = useMergeSemantic<
@@ -396,7 +396,11 @@ export const CheckCascader = forwardRef<HTMLDivElement | null, CheckCascaderProp
         styles={pickerStyles}
         {...rest}
         // 这种展现形式宽度是不固定的，关掉宽度匹配策略
-        overlay={{ matchWidth: false, ...rest.overlay }}
+        overlay={{
+          matchWidth: false,
+          placement: direction === 'rtl' ? 'bottom-end' : 'bottom-start',
+          ...rest.overlay,
+        }}
         visible={menuVisible}
         onOpen={() => {
           // setViewSelected(false)
