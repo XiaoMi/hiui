@@ -1,5 +1,135 @@
 # @hi-ui/table
 
+## 5.0.0
+
+### Major Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- [#3481](https://github.com/XiaoMi/hiui/pull/3481) [`df301c0dc`](https://github.com/XiaoMi/hiui/commit/df301c0dc4c11f6f87eac0b78d82dc923a68b789) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 普通表格支持 scrollTo 方法 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`95e65eecd`](https://github.com/XiaoMi/hiui/commit/95e65eecdcb5d8841ae1dc22bc760c75a8c8fd76) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): 支持远程排序 (5.0)
+
+- [#3480](https://github.com/XiaoMi/hiui/pull/3480) [`aebefd73e`](https://github.com/XiaoMi/hiui/commit/aebefd73eee5764722babe0fd68cf1f21bf97f85) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): add onScroll api (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`9f4268ee3`](https://github.com/XiaoMi/hiui/commit/9f4268ee39924f8d8c6c4ebe0b64f019cf224064) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): TableColumnItem 支持泛型 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`d51de8acc`](https://github.com/XiaoMi/hiui/commit/d51de8acc30360cdd2d23bf5d61c55f3e9239d0f) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(table): add stretchHeight api (5.0)
+
+- [#3502](https://github.com/XiaoMi/hiui/pull/3502) [`59cef699f`](https://github.com/XiaoMi/hiui/commit/59cef699f96f56d4f68fae7f9dadb960c487b5de) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`4a31cea53`](https://github.com/XiaoMi/hiui/commit/4a31cea53a1ec48c6e31b1703315ba5838ad883f) Thanks [@zyprepare](https://github.com/zyprepare)! - style: 统一调整组件 shadow (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`9b34d99bc`](https://github.com/XiaoMi/hiui/commit/9b34d99bc2aa8b78b9e3281e08afc086ac4afea1) Thanks [@zyprepare](https://github.com/zyprepare)! - chore: 将代码中 v4 改为 v5 (5.0)
+
+- [#3478](https://github.com/XiaoMi/hiui/pull/3478) [`e5964c571`](https://github.com/XiaoMi/hiui/commit/e5964c571ee25c02ca0630fce0af6c0a5efb71bb) Thanks [@zyprepare](https://github.com/zyprepare)! - style(table): 修复虚拟表格中多选列没有居中问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`d2cdb2537`](https://github.com/XiaoMi/hiui/commit/d2cdb25371397d644041a3624643678e9588a312) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复在 stretchHeight 模式下，冻结列表头和单元格层级问题 (5.0)
+
+- [#3495](https://github.com/XiaoMi/hiui/pull/3495) [`dad50a380`](https://github.com/XiaoMi/hiui/commit/dad50a38017b0cc860f7e9bf1f4841c5bb1b6ecd) Thanks [@zyprepare](https://github.com/zyprepare)! - style(table): 修改斑马纹颜色为 bgColor token (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`619e031ab`](https://github.com/XiaoMi/hiui/commit/619e031abd3b99b0ffdb06c5c6c20c18d4d2797f) Thanks [@zyprepare](https://github.com/zyprepare)! - style(table): update hover and striped row background colors for improved visibility (5.0)
+
+- [#3479](https://github.com/XiaoMi/hiui/pull/3479) [`76cfe571b`](https://github.com/XiaoMi/hiui/commit/76cfe571bc90cacd5102d5aac8be1da52162e21b) Thanks [@zyprepare](https://github.com/zyprepare)! - style(table): 修复虚拟表格下 align 设置无效问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8c0ee78f0`](https://github.com/XiaoMi/hiui/commit/8c0ee78f013dcd9ced94cef13a69933e039621aa) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`9b34d99bc`](https://github.com/XiaoMi/hiui/commit/9b34d99bc2aa8b78b9e3281e08afc086ac4afea1) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 5.0 UI 问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`ebd1a6e7a`](https://github.com/XiaoMi/hiui/commit/ebd1a6e7a7bf8483f42e34d08c271bb9111dc97a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 stretchHeight 模式下冻结列阴影样式问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`ea9d00628`](https://github.com/XiaoMi/hiui/commit/ea9d006282b866a32d3342de6b214cf5df2aa90c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复表头分组数据为空时表头显示异常问题，当 data 为空时，使用双表格 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`fc7f381ff`](https://github.com/XiaoMi/hiui/commit/fc7f381ff2b45ff1e361979019278b4f97fad1a7) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(table): add cell class prefix to TbodyContent and adjust useColWidth debounce timing (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`b6a389ac1`](https://github.com/XiaoMi/hiui/commit/b6a389ac1321d03f28bdd19ffd0ce8b1a0970856) Thanks [@zyprepare](https://github.com/zyprepare)! - perf(table): 优化表格列宽更新逻辑，当内容宽度没有超出时再更新列宽 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`79ea480f3`](https://github.com/XiaoMi/hiui/commit/79ea480f33bb8f692dda1e6252a9d2a75c3ac30d) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(global-context): 增加 size api 全局配置 (5.0)
+
+- [#3492](https://github.com/XiaoMi/hiui/pull/3492) [`18a876ca6`](https://github.com/XiaoMi/hiui/commit/18a876ca61f3a10eb444c5dd6a3af38a8b30300b) Thanks [@zyprepare](https://github.com/zyprepare)! - style(table): 扩大排序按钮点击区域 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`e2f69cb62`](https://github.com/XiaoMi/hiui/commit/e2f69cb629cef9bbcfbd738df530059226a522fb) Thanks [@zyprepare](https://github.com/zyprepare)! - refactor(table): stretchHeight 模式不再使用双表格结构，使用 sticky 实现 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`2e56529f7`](https://github.com/XiaoMi/hiui/commit/2e56529f7ea8c74e2fac8b6061628d4fd0d862ac) Thanks [@zyprepare](https://github.com/zyprepare)! - styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`eb718e940`](https://github.com/XiaoMi/hiui/commit/eb718e940a0cabc6914d1242e6ca4a21431a628a) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修改组件问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`150e813bf`](https://github.com/XiaoMi/hiui/commit/150e813bfe57ca64cc2efcbbdd6122a9d69f654c) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 优化 useColSorter 钩子，移除不必要的 columnsLatestRef 引用，直接使用 columns 进行排序计算 (5.0)
+
+- [#3504](https://github.com/XiaoMi/hiui/pull/3504) [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe) Thanks [@zyprepare](https://github.com/zyprepare)! - style: 修复 UI/样式问题 (5.0)
+
+- [#3522](https://github.com/XiaoMi/hiui/pull/3522) [`96aeb5a9a`](https://github.com/XiaoMi/hiui/commit/96aeb5a9adbf86badc9284d486a02c1ac40fc065) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): fix sorter ui bug (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`ac15c6141`](https://github.com/XiaoMi/hiui/commit/ac15c6141f9ddb9dbe9de1e16b48f61d5ca77768) Thanks [@zyprepare](https://github.com/zyprepare)! - <br />
+
+  - fix(table): 修改表格在外层是 scale 时导致列宽计算有误的问题 (5.0)
+  - fix(loading): 修改 loading size 类型，移除 xs 尺寸 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`6ac7e8eb2`](https://github.com/XiaoMi/hiui/commit/6ac7e8eb2b37a768fb47148a63b72733e99199b7) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(table): export SettingDrawer types (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`ded9bb6d6`](https://github.com/XiaoMi/hiui/commit/ded9bb6d6a8dd9640bf5d93f75d2bef71bab205e) Thanks [@zyprepare](https://github.com/zyprepare)! - <br>
+
+  - perf(table): 优化列宽更新逻辑，当 columns 长度和 dataKey、width 发生变化时，重新计算列宽 (5.0)
+  - fix(table): 用于计算真实列宽的行节点，考虑单元格合并的场景 (5.0)
+  - fix(table): 修复 stretchHeight 模式下高度变化时虚拟表格高度没有更新问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`11b7699f6`](https://github.com/XiaoMi/hiui/commit/11b7699f64be4a75b297615bc1e40bddb2ff9e05) Thanks [@zyprepare](https://github.com/zyprepare)! - <br>
+
+  - fix(table): 标题去掉背景，头部加上边框 (5.0)
+  - fix(table): 单元格间距调整 & 设置最小高度 (5.0)
+  - fix(table): 不同尺寸修改 (5.0)
+
+- [#3484](https://github.com/XiaoMi/hiui/pull/3484) [`3d84a04aa`](https://github.com/XiaoMi/hiui/commit/3d84a04aa8ad20dc9eef3cb69fe04b142b7e2272) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 stretchHeight+bordered 模式下数据为空时左右边框未显示问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`478b51050`](https://github.com/XiaoMi/hiui/commit/478b5105070ff3acc82d851c77ed9c315f31bfd3) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复标题过长时，列头宽度拉宽后无法缩小的问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`e3a854122`](https://github.com/XiaoMi/hiui/commit/e3a854122b61bbe8623d1826e43a614eea09b155) Thanks [@zyprepare](https://github.com/zyprepare)! - refactor(table): 调整列宽计算逻辑，兼容表头分组和单元格合并场景 (5.0)
+
+- [#3487](https://github.com/XiaoMi/hiui/pull/3487) [`cfdc94dbc`](https://github.com/XiaoMi/hiui/commit/cfdc94dbc36f48314a25e8797c45349337f76dd8) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 计算每列 top 值优化，只有在需要 sticky 的场景下才设置该值 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`6ae564d44`](https://github.com/XiaoMi/hiui/commit/6ae564d44a94da6b245af86700d107c0954e6f28) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(table): 修复 SettingDrawer 打开时会触发 onReset 问题 (5.0)
+
+- Updated dependencies [[`20aac2a2f`](https://github.com/XiaoMi/hiui/commit/20aac2a2f8274a77313e3f5f864ac93c294078af), [`4a31cea53`](https://github.com/XiaoMi/hiui/commit/4a31cea53a1ec48c6e31b1703315ba5838ad883f), [`0f7aac2f3`](https://github.com/XiaoMi/hiui/commit/0f7aac2f3385fc562814a9068338ecf527299842), [`1e226cd66`](https://github.com/XiaoMi/hiui/commit/1e226cd66413cea8eb1e63b1cb83c1bfbf5f0a41), [`eea29eade`](https://github.com/XiaoMi/hiui/commit/eea29eade364317198270daa62d7454279f9068a), [`b9989e482`](https://github.com/XiaoMi/hiui/commit/b9989e48214dbbf8a938a788d3a415d9bb94b1b2), [`7f204c892`](https://github.com/XiaoMi/hiui/commit/7f204c892156ea8a4fb95d218db9d59c8c4e0c49), [`6167ad50b`](https://github.com/XiaoMi/hiui/commit/6167ad50bf20f68ca424eb585083c827ad118013), [`122d1d859`](https://github.com/XiaoMi/hiui/commit/122d1d859bb92379fbe109fe9a5581259e6bb9a1), [`f1ab51725`](https://github.com/XiaoMi/hiui/commit/f1ab517258599ee2dfad183e4a8c7b855ef409c1), [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe), [`cf89262c7`](https://github.com/XiaoMi/hiui/commit/cf89262c72b03fa0a00c154164b68482c3a8ac98), [`8c0ee78f0`](https://github.com/XiaoMi/hiui/commit/8c0ee78f013dcd9ced94cef13a69933e039621aa), [`9b34d99bc`](https://github.com/XiaoMi/hiui/commit/9b34d99bc2aa8b78b9e3281e08afc086ac4afea1), [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39), [`95dd766b9`](https://github.com/XiaoMi/hiui/commit/95dd766b919af5c02d0d29d8b99a61261183da2f), [`423aab762`](https://github.com/XiaoMi/hiui/commit/423aab762c116fa6a08392b1de808fc64d3e058e), [`fd4c20bbd`](https://github.com/XiaoMi/hiui/commit/fd4c20bbd30e18bc4c1a2eb078acaa4790f7b2eb), [`08b9d0ecf`](https://github.com/XiaoMi/hiui/commit/08b9d0ecf6088aee4b62164dfb1b8b7b96528d41), [`b6a389ac1`](https://github.com/XiaoMi/hiui/commit/b6a389ac1321d03f28bdd19ffd0ce8b1a0970856), [`f8acad4e1`](https://github.com/XiaoMi/hiui/commit/f8acad4e1299acbcad9ccf5991dbf1cfa918a1ac), [`79ea480f3`](https://github.com/XiaoMi/hiui/commit/79ea480f33bb8f692dda1e6252a9d2a75c3ac30d), [`2e56529f7`](https://github.com/XiaoMi/hiui/commit/2e56529f7ea8c74e2fac8b6061628d4fd0d862ac), [`eb718e940`](https://github.com/XiaoMi/hiui/commit/eb718e940a0cabc6914d1242e6ca4a21431a628a), [`3a7186e4b`](https://github.com/XiaoMi/hiui/commit/3a7186e4b4e7ce351c3856f3e1ba574b9f6df22f), [`277c5033a`](https://github.com/XiaoMi/hiui/commit/277c5033aacd43ef3d6b8e0b9e818a09ebe21875), [`4e0ed3a31`](https://github.com/XiaoMi/hiui/commit/4e0ed3a310b29cfc0bde1a3103189129cc4e59d7), [`95abba983`](https://github.com/XiaoMi/hiui/commit/95abba98391a31c3cd79704fa0a63f64f437601f), [`8f23e9322`](https://github.com/XiaoMi/hiui/commit/8f23e9322e8aa117608d42898cce1f9d74414629), [`8a92ec660`](https://github.com/XiaoMi/hiui/commit/8a92ec660d7622768574dfe2e799b24d14e052a7), [`b27483796`](https://github.com/XiaoMi/hiui/commit/b2748379661e2e7a4c18e94c478dc2554405c7dd), [`1429eced2`](https://github.com/XiaoMi/hiui/commit/1429eced2c79d22b6973229af3860b5dc48ad4a9), [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe), [`ac15c6141`](https://github.com/XiaoMi/hiui/commit/ac15c6141f9ddb9dbe9de1e16b48f61d5ca77768), [`976ec929d`](https://github.com/XiaoMi/hiui/commit/976ec929da088830d4d4bfa5438aa679676f71ca), [`f1ab51725`](https://github.com/XiaoMi/hiui/commit/f1ab517258599ee2dfad183e4a8c7b855ef409c1), [`6dca7795c`](https://github.com/XiaoMi/hiui/commit/6dca7795c71123f941d91b991ecd17ce26b6a2da), [`de8d058dc`](https://github.com/XiaoMi/hiui/commit/de8d058dc8b8fcd3acd6792ba71eac47475496ed), [`5210770d9`](https://github.com/XiaoMi/hiui/commit/5210770d9d6bf9c83e84a28229f2007202d2d3b8), [`4006b2c8c`](https://github.com/XiaoMi/hiui/commit/4006b2c8cabba5ec553b69a17e4bf3fb53fe9180), [`c407744fe`](https://github.com/XiaoMi/hiui/commit/c407744fea78d93da66b73eed0b62d18e5b3a011), [`d91a8bb0f`](https://github.com/XiaoMi/hiui/commit/d91a8bb0f887fa886215aa596852eef3c2ce8519), [`77d969c2e`](https://github.com/XiaoMi/hiui/commit/77d969c2e4f6db55f6cc154c1803971ac3e3f085), [`2f850ad84`](https://github.com/XiaoMi/hiui/commit/2f850ad8460685b7177f35a018490123ed16e501), [`3457a6f7d`](https://github.com/XiaoMi/hiui/commit/3457a6f7dae4830d74ced9c36cff82d51f06ac19), [`4006b2c8c`](https://github.com/XiaoMi/hiui/commit/4006b2c8cabba5ec553b69a17e4bf3fb53fe9180), [`e42e2badf`](https://github.com/XiaoMi/hiui/commit/e42e2badfd099ced93eaf8414513d7a49d1e66c0), [`ec647a5ee`](https://github.com/XiaoMi/hiui/commit/ec647a5eed37085e3214da263bf63f3dfd3bb8f2), [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193), [`0a4e90dbd`](https://github.com/XiaoMi/hiui/commit/0a4e90dbd7398e69511e7505b1fd6093eca48cee), [`58ad82e94`](https://github.com/XiaoMi/hiui/commit/58ad82e9441e76bf6090e6a0f4e36a04342c25f0), [`4a31cea53`](https://github.com/XiaoMi/hiui/commit/4a31cea53a1ec48c6e31b1703315ba5838ad883f), [`95d930354`](https://github.com/XiaoMi/hiui/commit/95d930354a1ab4291e98a9abccb9525d6c210795), [`f2be367e9`](https://github.com/XiaoMi/hiui/commit/f2be367e959d42506953fe9d57cf677ccb79305e), [`1972fd16a`](https://github.com/XiaoMi/hiui/commit/1972fd16ae1971690412192bce03d6860af8efdd), [`59cef699f`](https://github.com/XiaoMi/hiui/commit/59cef699f96f56d4f68fae7f9dadb960c487b5de), [`99801c2d1`](https://github.com/XiaoMi/hiui/commit/99801c2d12628c194657579eccd09a86aedea22b), [`cb7b794d0`](https://github.com/XiaoMi/hiui/commit/cb7b794d07d56c74f7972f05440632335631b9e0), [`dd60555d3`](https://github.com/XiaoMi/hiui/commit/dd60555d3b3fcb1fe6e07530ef428f6fdde150bf), [`f9c4afd14`](https://github.com/XiaoMi/hiui/commit/f9c4afd148b6d82400a923b3353df7c115292cc1)]:
+  - @hi-ui/radio@5.0.0
+  - @hi-ui/drawer@5.0.0
+  - @hi-ui/loading@5.0.0
+  - @hi-ui/popper@5.0.0
+  - @hi-ui/button@5.0.0
+  - @hi-ui/select@5.0.0
+  - @hi-ui/icons@5.0.0
+  - @hi-ui/empty-state@5.0.0
+  - @hi-ui/core@5.0.0
+  - @hi-ui/pagination@5.0.0
+  - @hi-ui/use-cache@5.0.0
+  - @hi-ui/use-check@5.0.0
+  - @hi-ui/use-check-state@5.0.0
+  - @hi-ui/use-drag-sorter@5.0.0
+  - @hi-ui/use-latest@5.0.0
+  - @hi-ui/use-toggle@5.0.0
+  - @hi-ui/use-uncontrolled-state@5.0.0
+  - @hi-ui/use-update-effect@5.0.0
+  - @hi-ui/checkbox@5.0.0
+  - @hi-ui/icon-button@5.0.0
+  - @hi-ui/scrollbar@5.0.0
+  - @hi-ui/spinner@5.0.0
+  - @hi-ui/array-utils@5.0.0
+  - @hi-ui/classname@5.0.0
+  - @hi-ui/dom-utils@5.0.0
+  - @hi-ui/env@5.0.0
+  - @hi-ui/func-utils@5.0.0
+  - @hi-ui/object-utils@5.0.0
+  - @hi-ui/react-utils@5.0.0
+  - @hi-ui/times@5.0.0
+  - @hi-ui/tree-utils@5.0.0
+  - @hi-ui/type-assertion@5.0.0
+  - @hi-ui/use-merge-semantic@5.0.0
+
 ## 4.12.3
 
 ### Patch Changes
