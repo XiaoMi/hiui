@@ -18,15 +18,19 @@ jobs:
   update_version:
     name: Update Version
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: Get current date
-        id: date
-        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Get release branch timestamp
+        id: release
+        run: echo "id=$(date -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
       - name: Checkout Repo
         uses: actions/checkout@v6
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js 14.21.x
         uses: actions/setup-node@v6
@@ -44,11 +48,33 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Commit and push release branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="release/${{ steps.release.outputs.id }}${{ github.run_attempt }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No version changes to release"
+            exit 0
+          fi
+          git commit -m "Generate version and changelog"
+          git push origin "$BRANCH" --force-with-lease
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: Generate version and changelog
-          title: Release
-          body: Update the version and changelog of the package
-          branch: release/${{ steps.date.outputs.today }}
-          base: master
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="release/${{ steps.release.outputs.id }}${{ github.run_attempt }}"
+          if gh pr list --head "$BRANCH" --base master --json number --jq '.[0].number' | grep -q .; then
+            echo "Pull request already exists for $BRANCH"
+            exit 0
+          fi
+          gh pr create \
+            --base master \
+            --head "$BRANCH" \
+            --title "Release" \
+            --body "Update the version and changelog of the package"

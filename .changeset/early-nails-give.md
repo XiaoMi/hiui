@@ -1,5 +1,5 @@
 ---
-"@hi-ui/global-context": minor
+"@hi-ui/global-context": major
 "@hi-ui/provider": minor
 "@hi-ui/core": minor
 ---
