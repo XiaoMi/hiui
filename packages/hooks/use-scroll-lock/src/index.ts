@@ -14,8 +14,8 @@ export const useScrollLock = (ref: React.RefObject<Element>, options: UseScrollL
   const prevRef = useRef<Element | null>(null)
   const prevBodyOverflowRef = useRef<string | undefined>(undefined)
 
-  const targetMemo = useMemo(() => {
-    if (isElement(target) && 'style' in target) return target
+  const targetMemo = useMemo((): HTMLElement => {
+    if (isElement(target) && target instanceof HTMLElement) return target
 
     if (isBrowser) return document.body
 
