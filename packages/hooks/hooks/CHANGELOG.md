@@ -1,5 +1,49 @@
 # @hi-ui/hooks
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- c407744fe: feat(use-merge-semantic): add use-merge-semantic hook (5.0)
+
+### Patch Changes
+
+- 3a7186e4b: fix: 给 package.json 中的"exports"配置补充"types"配置 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [7b956b1eb]
+- Updated dependencies [c407744fe]
+- Updated dependencies [33da3144e]
+  - @hi-ui/use-async-data@5.0.0-rc.0
+  - @hi-ui/use-cache@5.0.0-rc.0
+  - @hi-ui/use-check@5.0.0-rc.0
+  - @hi-ui/use-check-state@5.0.0-rc.0
+  - @hi-ui/use-children@5.0.0-rc.0
+  - @hi-ui/use-data-source@5.0.0-rc.0
+  - @hi-ui/use-deep-equal-deps@5.0.0-rc.0
+  - @hi-ui/use-did-mount@5.0.0-rc.0
+  - @hi-ui/use-drag-sorter@5.0.0-rc.0
+  - @hi-ui/use-force-update@5.0.0-rc.0
+  - @hi-ui/use-id@5.0.0-rc.0
+  - @hi-ui/use-latest@5.0.0-rc.0
+  - @hi-ui/use-lazy-render@5.0.0-rc.0
+  - @hi-ui/use-merge-refs@5.0.0-rc.0
+  - @hi-ui/use-outside-click@5.0.0-rc.0
+  - @hi-ui/use-scroll@5.0.0-rc.0
+  - @hi-ui/use-scroll-lock@5.0.0-rc.0
+  - @hi-ui/use-search-mode@5.0.0-rc.0
+  - @hi-ui/use-timeout@5.0.0-rc.0
+  - @hi-ui/use-toggle@5.0.0-rc.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-rc.0
+  - @hi-ui/use-unmount-effect@5.0.0-rc.0
+  - @hi-ui/use-update-effect@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.0.9
 
 ### Patch Changes

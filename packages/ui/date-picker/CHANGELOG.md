@@ -1,5 +1,102 @@
 # @hi-ui/date-picker
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 2fd15e136: feat(date-picker): 支持设置选择面板默认展示时间 (5.0)
+- 569d26655: feat(global-context): add utcOffset api (5.0)
+- ae8dcbce8: feat(date-picker): add showWeek api (5.0)
+- 795b2346e: feat(date-picker): add onClear api (5.0)
+- aff25dbeb: - fix(date-picker): 显示框圆角改为 6px (5.0)
+  - feat(date-picker): 增加 xs 尺寸 (5.0)
+- 63fe6aae6: feat(date-picker): needConfirm 支持日期范围选择场景 (5.0)
+- 6dca7795c: feat: 下拉选择组件增加 showIndicator 参数 & 修改 appearance 中的 unset 样式 (5.0)
+- 6fcda9bf2: feat(date-picker): appearance 参数增加 contained 类型 (5.0)
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 9f5d129f6: fix(date-picker): 加强 valueAdapter 逻辑处理，当值是数组并且是范围类型时，再做转换 (5.0)
+- 693bf9b46: perf(date-picker): 优化 contained 模式下的点击事件交互&范围选择的交互优化 (5.0)
+- 8dc3817cf: fix(date-picker): footerRender 中的 onPick 参数支持 Date 类型 (5.0)
+- d64eaca73: fix(date-picker): 修复 onSelect 回调没有处理 utcOffset 的问题 (5.0)
+- b28c4f745: fix(date-picker): 修复在 showTime 模式下，选择时间后没有触发 onSelect 回调的问题 (5.0)
+- 29cae09ea: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 1f20567ca: fix(date-picker): 修复周选择模式下 2026 年第一周显示为 2025-W53 问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- e28c72493: style(date-picker): 增加日期选择器输入框的溢出处理和文本省略样式 (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- 4a31cea53: style: 下拉框间距改为 4px (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 99155ed2b: perf(date-picker): 优化跨月范围选择交互体验，选择跨月日期时，自动切换面板月份 (5.0)
+- de8d058dc: perf: 对下拉选择类组件的 customRender 的内容增加 memoization 以优化性能 (5.0)
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- a5327c316: style(date-picker, time-picker): 修改禁用时的样式 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- b01ae679c: fix(date-picker): 修复 weekOffset 设置不为 0 的值时会选中 2 周的问题 (5.0)
+- 4a31cea53: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- b7a2d0d11: fix(date-picker): 修复 weekOffset 设置为 3、4、5、6 时显示 2 周选中的问题 (5.0)
+- 99801c2d1: fix: 修复 UI 问题 (5.0)
+- Updated dependencies [2f5e5ce4d]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [7f204c892]
+- Updated dependencies [122d1d859]
+- Updated dependencies [41552be0b]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [277c5033a]
+- Updated dependencies [3b989bb78]
+- Updated dependencies [95abba983]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [1429eced2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [a5327c316]
+- Updated dependencies [c74ed73f3]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [f8321b72f]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [4a31cea53]
+- Updated dependencies [95d930354]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [59cef699f]
+- Updated dependencies [99801c2d1]
+  - @hi-ui/time-picker@5.0.0-rc.0
+  - @hi-ui/popper@5.0.0-rc.0
+  - @hi-ui/button@5.0.0-rc.0
+  - @hi-ui/icons@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/object-utils@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.13.0
 
 ### Minor Changes

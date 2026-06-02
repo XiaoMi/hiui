@@ -1,5 +1,73 @@
 # @hi-ui/search
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [da2e63a14]
+- Updated dependencies [0f7aac2f3]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eea29eade]
+- Updated dependencies [7f204c892]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [277c5033a]
+- Updated dependencies [95abba983]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [8a92ec660]
+- Updated dependencies [1429eced2]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [ac15c6141]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [59cef699f]
+- Updated dependencies [99801c2d1]
+  - @hi-ui/input@5.0.0-rc.0
+  - @hi-ui/loading@5.0.0-rc.0
+  - @hi-ui/popper@5.0.0-rc.0
+  - @hi-ui/button@5.0.0-rc.0
+  - @hi-ui/icons@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/use-latest@5.0.0-rc.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-rc.0
+  - @hi-ui/highlighter@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/func-utils@5.0.0-rc.0
+  - @hi-ui/type-assertion@5.0.0-rc.0
+
 ## 4.1.1
 
 ### Patch Changes

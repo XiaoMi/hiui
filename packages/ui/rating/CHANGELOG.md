@@ -1,5 +1,48 @@
 # @hi-ui/rating
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 8a14ae85f: style(rating): 更新星星和表情图标的 SVG 设计 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [d021b4fa6]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+- Updated dependencies [59cef699f]
+  - @hi-ui/tooltip@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/use-did-mount@5.0.0-rc.0
+  - @hi-ui/use-merge-refs@5.0.0-rc.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.0.10
 
 ### Patch Changes

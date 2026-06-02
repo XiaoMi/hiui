@@ -1,5 +1,27 @@
 # @hi-ui/core-css
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+- eea29eade: feat(core-css): 更新 Token 到 5.0 版本 (5.0)
+
+### Patch Changes
+
+- 4a31cea53: style: 统一调整组件 shadow (5.0)
+- 3457a6f7d: style(core-css): 增加 top 投影样式规范 (5.0)
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- eb718e940: fix: 修改组件问题 (5.0)
+- dad50a380: style(core-css): add bgColor token (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 4a31cea53: style(core-css): 更新灰色调色板的颜色值 (5.0)
+- 67dbef4ee: style(core-css): update color token (5.0)
+- c498f0c9d: style(color-css): 更新颜色 Token 中的色值以优化配色方案 (5.0)
+- 3ff6c519b: style(color-css): 更新颜色 Token (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
 ## 4.1.5
 
 ### Patch Changes

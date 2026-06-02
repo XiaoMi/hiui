@@ -1,5 +1,65 @@
 # @hi-ui/textarea
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 58ad82e94: feat: 输入框和选择器组件增加 borderless 形态 (5.0)
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 03f04676b: fix(textarea): 修复更新 maxRows 无效的问题 (5.0)
+- 29cae09ea: style: 修改 appearance 为 unset 和 borderless 模式的样式 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 8f23e9322: style: 表单类组件统一调整后缀颜色、placeholder 颜色 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- ebee14cb8: fix(textarea): 修复设置 minRows 无效问题 (5.0)
+- 900c6c2f0: style: 统一修改表单类组件 filled 背景色为 g100 (5.0)
+- 5d50840af: perf(textarea): 优化高度自适应交互体验，解决换行时抖动问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- 9b34d99bc: chore(textarea): 设置最小高度 32px (5.0)
+- Updated dependencies [da2e63a14]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [33da3144e]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+- Updated dependencies [59cef699f]
+- Updated dependencies [99801c2d1]
+  - @hi-ui/input@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/use-latest@5.0.0-rc.0
+  - @hi-ui/use-merge-refs@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/func-utils@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.1.7
 
 ### Patch Changes

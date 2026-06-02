@@ -1,5 +1,93 @@
 # @hi-ui/tree
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- e25399be4: feat(tree): add actionMenuPopper api (5.0)
+- 07a57b9c1: feat(check-tree-select): 支持设置 checkable (5.0)
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 4a31cea53: style: 统一调整组件 shadow (5.0)
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 98df634ac: fix(tree): 修复在可勾选模式下搜索结果中父节点勾选状态不正确的问题，更新相关数据处理逻辑 (5.0)
+- 223bd1397: fix(tree): onSelect 第二个参数固定返回当前操作的节点对象 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- fe579e212: style(tree): update class names for tree node elements in SCSS (5.0)
+- 4a31cea53: style: 统一调整选择类组件 hover 时的背景色 (5.0)
+- Updated dependencies [da2e63a14]
+- Updated dependencies [1e226cd66]
+- Updated dependencies [7f204c892]
+- Updated dependencies [122d1d859]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [41552be0b]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [9b34d99bc]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [ec4c7faa2]
+- Updated dependencies [29cae09ea]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [f8acad4e1]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [277c5033a]
+- Updated dependencies [4e0ed3a31]
+- Updated dependencies [95abba983]
+- Updated dependencies [8f23e9322]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [976ec929d]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [6dca7795c]
+- Updated dependencies [900c6c2f0]
+- Updated dependencies [4006b2c8c]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [77d969c2e]
+- Updated dependencies [e42e2badf]
+- Updated dependencies [33da3144e]
+- Updated dependencies [6fcda9bf2]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [59cef699f]
+- Updated dependencies [99801c2d1]
+  - @hi-ui/input@5.0.0-rc.0
+  - @hi-ui/popper@5.0.0-rc.0
+  - @hi-ui/icons@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/use-check@5.0.0-rc.0
+  - @hi-ui/use-data-source@5.0.0-rc.0
+  - @hi-ui/use-latest@5.0.0-rc.0
+  - @hi-ui/use-merge-refs@5.0.0-rc.0
+  - @hi-ui/use-outside-click@5.0.0-rc.0
+  - @hi-ui/use-toggle@5.0.0-rc.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-rc.0
+  - @hi-ui/checkbox@5.0.0-rc.0
+  - @hi-ui/icon-button@5.0.0-rc.0
+  - @hi-ui/spinner@5.0.0-rc.0
+  - @hi-ui/virtual-list@5.0.0-rc.0
+  - @hi-ui/array-utils@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/times@5.0.0-rc.0
+  - @hi-ui/tree-utils@5.0.0-rc.0
+  - @hi-ui/type-assertion@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.7.0
 
 ### Minor Changes

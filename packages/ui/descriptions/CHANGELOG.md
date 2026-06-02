@@ -1,5 +1,39 @@
 # @hi-ui/descriptions
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- 9b34d99bc: chore: 将代码中 v4 改为 v5 (5.0)
+- 8c0ee78f0: perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+- 3a20f5556: style(descriptions): 更新描述组件样式，调整标签颜色为灰色 600，并增加行高设置 (5.0)
+- 79ea480f3: feat(global-context): 增加 size api 全局配置 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/type-assertion@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+
 ## 4.5.1
 
 ### Patch Changes

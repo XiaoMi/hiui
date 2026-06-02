@@ -1,9 +1,5 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.2.0/schema.json",
-  "changelog": [
-    "../scripts/changelog-github-batched.js",
-    { "repo": "XiaoMi/hiui", "batchSize": 25 }
-  ],
   "commit": false,
   "fixed": [],
   "linked": [],

@@ -1,5 +1,66 @@
 # @hi-ui/tooltip
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 59cef699f: feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- 1e226cd66: chore: 修改 react-compat 依赖管理方式 & 更新 react-transition-group 依赖 (5.0)
+- 9b34d99bc: fix: 修复 5.0 UI 问题 (5.0)
+- 2e56529f7: styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+- eb17c4697: style: 修复 UI/样式问题 (5.0)
+- 9b34d99bc: style(tooltip): 去掉背景色透明度 (5.0)
+- d021b4fa6: feat: add onOpen callback trigger on visibility change (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [1e226cd66]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [8c0ee78f0]
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [fd4c20bbd]
+- Updated dependencies [79ea480f3]
+- Updated dependencies [2e56529f7]
+- Updated dependencies [3a7186e4b]
+- Updated dependencies [277c5033a]
+- Updated dependencies [95abba983]
+- Updated dependencies [eb17c4697]
+- Updated dependencies [e3dea9be5]
+- Updated dependencies [f1ab51725]
+- Updated dependencies [7f08a4e4f]
+- Updated dependencies [c407744fe]
+- Updated dependencies [d91a8bb0f]
+- Updated dependencies [33da3144e]
+- Updated dependencies [58ad82e94]
+- Updated dependencies [95d930354]
+- Updated dependencies [f2be367e9]
+- Updated dependencies [1972fd16a]
+- Updated dependencies [59cef699f]
+  - @hi-ui/popper@5.0.0-rc.0
+  - @hi-ui/core@5.0.0-rc.0
+  - @hi-ui/use-id@5.0.0-rc.0
+  - @hi-ui/use-latest@5.0.0-rc.0
+  - @hi-ui/use-lazy-render@5.0.0-rc.0
+  - @hi-ui/use-timeout@5.0.0-rc.0
+  - @hi-ui/use-toggle@5.0.0-rc.0
+  - @hi-ui/use-uncontrolled-state@5.0.0-rc.0
+  - @hi-ui/use-unmount-effect@5.0.0-rc.0
+  - @hi-ui/portal@5.0.0-rc.0
+  - @hi-ui/array-utils@5.0.0-rc.0
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/container@5.0.0-rc.0
+  - @hi-ui/dom-utils@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/react-utils@5.0.0-rc.0
+  - @hi-ui/type-assertion@5.0.0-rc.0
+  - @hi-ui/use-merge-semantic@5.0.0-rc.0
+  - @hi-ui/react-compat@5.0.0-rc.0
+
 ## 4.0.11
 
 ### Patch Changes

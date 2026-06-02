@@ -1,5 +1,30 @@
 # @hi-ui/locale-context
 
+## 5.0.0-rc.0
+
+### Major Changes
+
+- 8f3aa85e4: feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- 95d930354: feat(locale-context): 增加 mrege 方法 & 增加更多国家语言 (5.0)
+- cb7b794d0: feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
+### Patch Changes
+
+- fd4c20bbd: chore(locale-context): Transfer 组件增加文案 (5.0)
+- 95abba983: fix: 修改 UI 问题 (5.0)
+- d91a8bb0f: chore(locale-context): 补充多语言内容 (5.0)
+- 33da3144e: build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+- Updated dependencies [8f3aa85e4]
+- Updated dependencies [33da3144e]
+  - @hi-ui/classname@5.0.0-rc.0
+  - @hi-ui/env@5.0.0-rc.0
+  - @hi-ui/func-utils@5.0.0-rc.0
+  - @hi-ui/object-utils@5.0.0-rc.0
+  - @hi-ui/type-assertion@5.0.0-rc.0
+
 ## 4.1.1
 
 ### Patch Changes
