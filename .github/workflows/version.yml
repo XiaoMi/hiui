@@ -19,9 +19,9 @@ jobs:
     name: Update Version
     runs-on: ubuntu-latest
     steps:
-      - name: Get current date
-        id: date
-        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Get release branch timestamp
+        id: release
+        run: echo "id=$(date -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
       - name: Checkout Repo
         uses: actions/checkout@v6
@@ -50,5 +50,5 @@ jobs:
           commit-message: Generate version and changelog
           title: Release
           body: Update the version and changelog of the package
-          branch: release/${{ steps.date.outputs.today }}
+          branch: release/${{ steps.release.outputs.id }}
           base: master
