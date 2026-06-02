@@ -1,5 +1,54 @@
 # @hi-ui/form
 
+## 5.0.0
+
+### Major Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`dd5033f60`](https://github.com/XiaoMi/hiui/commit/dd5033f60207a638d119a8585805ee69cf435abf) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(form): 增加 autoRegister 参数,支持动态添加和删除表单时,数据同步更新 (5.0)
+
+- [#3502](https://github.com/XiaoMi/hiui/pull/3502) [`59cef699f`](https://github.com/XiaoMi/hiui/commit/59cef699f96f56d4f68fae7f9dadb960c487b5de) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件语义化样式改造，增加 styles 和 classNames 属性 (5.0)
+
+### Patch Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`dd83a83bc`](https://github.com/XiaoMi/hiui/commit/dd83a83bc60904342412a88af56ec904c972a965) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(form): 修复 FormList 字段变化时没有触发 onValuesChange 回调的问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8c0ee78f0`](https://github.com/XiaoMi/hiui/commit/8c0ee78f013dcd9ced94cef13a69933e039621aa) Thanks [@zyprepare](https://github.com/zyprepare)! - perf: 优化全局 size 配置,对于组件中没有的 size 值,取最接近的尺寸展示 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`9b34d99bc`](https://github.com/XiaoMi/hiui/commit/9b34d99bc2aa8b78b9e3281e08afc086ac4afea1) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修复 5.0 UI 问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`79ea480f3`](https://github.com/XiaoMi/hiui/commit/79ea480f33bb8f692dda1e6252a9d2a75c3ac30d) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(global-context): 增加 size api 全局配置 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`2e56529f7`](https://github.com/XiaoMi/hiui/commit/2e56529f7ea8c74e2fac8b6061628d4fd0d862ac) Thanks [@zyprepare](https://github.com/zyprepare)! - styles: 主题定制功能完善&&样式变量化写法改造&&兼容 RTL (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`539749951`](https://github.com/XiaoMi/hiui/commit/53974995177f7cf813a4208b05fb6e1b43201f48) Thanks [@zyprepare](https://github.com/zyprepare)! - <br>
+
+  - fix(form): 错误提示字号改为 12px (5.0)
+  - fix(form): 必填星号调整为显示在右侧 (5.0)
+  - fix(form): 标题和控件间距改为 6px (5.0)
+  - fix(form): 包裹控件容器设置最小高度 32px (5.0)
+  - fix(form): 默认不显示标题冒号 (5.0)
+
+- [#3504](https://github.com/XiaoMi/hiui/pull/3504) [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe) Thanks [@zyprepare](https://github.com/zyprepare)! - style: 修复 UI/样式问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
+- Updated dependencies [[`eea29eade`](https://github.com/XiaoMi/hiui/commit/eea29eade364317198270daa62d7454279f9068a), [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe), [`8c0ee78f0`](https://github.com/XiaoMi/hiui/commit/8c0ee78f013dcd9ced94cef13a69933e039621aa), [`9b34d99bc`](https://github.com/XiaoMi/hiui/commit/9b34d99bc2aa8b78b9e3281e08afc086ac4afea1), [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39), [`fd4c20bbd`](https://github.com/XiaoMi/hiui/commit/fd4c20bbd30e18bc4c1a2eb078acaa4790f7b2eb), [`79ea480f3`](https://github.com/XiaoMi/hiui/commit/79ea480f33bb8f692dda1e6252a9d2a75c3ac30d), [`2e56529f7`](https://github.com/XiaoMi/hiui/commit/2e56529f7ea8c74e2fac8b6061628d4fd0d862ac), [`3a7186e4b`](https://github.com/XiaoMi/hiui/commit/3a7186e4b4e7ce351c3856f3e1ba574b9f6df22f), [`8a92ec660`](https://github.com/XiaoMi/hiui/commit/8a92ec660d7622768574dfe2e799b24d14e052a7), [`1429eced2`](https://github.com/XiaoMi/hiui/commit/1429eced2c79d22b6973229af3860b5dc48ad4a9), [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe), [`f1ab51725`](https://github.com/XiaoMi/hiui/commit/f1ab517258599ee2dfad183e4a8c7b855ef409c1), [`c407744fe`](https://github.com/XiaoMi/hiui/commit/c407744fea78d93da66b73eed0b62d18e5b3a011), [`d91a8bb0f`](https://github.com/XiaoMi/hiui/commit/d91a8bb0f887fa886215aa596852eef3c2ce8519), [`4006b2c8c`](https://github.com/XiaoMi/hiui/commit/4006b2c8cabba5ec553b69a17e4bf3fb53fe9180), [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193), [`58ad82e94`](https://github.com/XiaoMi/hiui/commit/58ad82e9441e76bf6090e6a0f4e36a04342c25f0), [`95d930354`](https://github.com/XiaoMi/hiui/commit/95d930354a1ab4291e98a9abccb9525d6c210795), [`99801c2d1`](https://github.com/XiaoMi/hiui/commit/99801c2d12628c194657579eccd09a86aedea22b)]:
+  - @hi-ui/button@5.0.0
+  - @hi-ui/core@5.0.0
+  - @hi-ui/use-latest@5.0.0
+  - @hi-ui/array-utils@5.0.0
+  - @hi-ui/classname@5.0.0
+  - @hi-ui/dom-utils@5.0.0
+  - @hi-ui/env@5.0.0
+  - @hi-ui/func-utils@5.0.0
+  - @hi-ui/object-utils@5.0.0
+  - @hi-ui/type-assertion@5.0.0
+  - @hi-ui/use-merge-semantic@5.0.0
+
 ## 4.3.4
 
 ### Patch Changes
