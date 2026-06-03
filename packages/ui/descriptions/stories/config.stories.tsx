@@ -2,7 +2,7 @@ import React from 'react'
 import Descriptions from '../src'
 
 /**
- * @title 通过Data 数组配置
+ * @title 通过 data 数组配置
  * @desc Descriptions 通过 data api 描述 Item 信息
  */
 export const Config = () => {
