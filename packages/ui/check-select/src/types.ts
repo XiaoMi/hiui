@@ -73,4 +73,8 @@ export interface CheckSelectHelper {
    * @param onlyChecked 默认 true：仅显示已选项并打开下拉；传 false 时显示全部并打开下拉
    */
   showOnlyChecked: (onlyChecked?: boolean) => void
+  /**
+   * 获取当前下拉列表展示的数据（含搜索、异步搜索过滤后的结果）
+   */
+  getShowData: () => CheckSelectItemEventData[]
 }
