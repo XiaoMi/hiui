@@ -1,0 +1,46 @@
+{
+  "name": "@hi-ui/hiui-cli",
+  "version": "1.0.0",
+  "description": "HiUI CLI for AI agents — fetch component docs and props from llms endpoints",
+  "keywords": [
+    "hiui",
+    "cli",
+    "llms",
+    "ai",
+    "mcp"
+  ],
+  "author": "Flcwl <flcwl@vip.qq.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "bin": {
+    "hiui": "bin/index.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "node __tests__/parse.test.js && node __tests__/utils.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "homepage": "https://github.com/XiaoMi/hiui#readme",
+  "dependencies": {
+    "commander": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=12.22.1"
+  }
+}
