@@ -3,7 +3,7 @@ import Cascader from '../src'
 import { match } from 'pinyin-pro'
 
 /**
- * @title 自定义搜索筛选规则
+ * @title 自定义筛选规则
  * @desc 通过 filterOption 可自定义搜索条件的算法
  */
 export const FilterOptions = () => {

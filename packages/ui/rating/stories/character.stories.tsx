@@ -2,8 +2,8 @@ import React from 'react'
 import Rating from '../src'
 
 /**
- * @title 基础用法
- * @desc 评定业务指标、信用等级、满意度等
+ * @title 字符和图片字符
+ * @desc 通过 character 设置字符，支持文字和图片
  */
 export const Character = () => {
   return (

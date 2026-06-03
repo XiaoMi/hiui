@@ -6,7 +6,7 @@ import Cascader from '../src'
  * @desc 自定义控制下拉选项菜单显隐
  */
 export const Visible = () => {
-  const [visible, setVisible] = React.useState(true)
+  const [visible, setVisible] = React.useState(false)
   const [data] = React.useState([
     {
       id: '手机',

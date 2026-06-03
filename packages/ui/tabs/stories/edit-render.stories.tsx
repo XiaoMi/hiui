@@ -6,8 +6,8 @@ import { EllipsisVerticalOutlined } from '@hi-ui/icons'
 import { Tabs, TabPane } from '../src'
 
 /**
- * @title 可编辑
- * @desc 支持标签的增加、删除和修改
+ * @title 自定义编辑渲染
+ * @desc 自定义标签的编辑渲染
  */
 export const EditRender = () => {
   const [tabContents, setTabContents] = React.useState<

@@ -3,7 +3,7 @@ import Menu from '../src'
 import { AppStoreFilled, SunFilled } from '@hi-ui/icons'
 
 /**
- * @title 自定义 Footer 渲染
+ * @title 自定义 Footer
  * @desc 自行控制底部内容展示，支持插入额外的元素等场景
  */
 export const FooterRender = () => {

@@ -3,8 +3,8 @@ import Menu from '../src'
 import { AppStoreFilled, UserFilled, SunFilled, PadFilled } from '@hi-ui/icons'
 
 /**
- * @title 基础用法
- * @desc 当导航的菜单项和层级较多时适用，可收起
+ * @title 收缩态显示标题
+ * @desc 在收缩态下，显示菜单项的标题
  */
 export const ShowTitleOnMini = () => {
   return (
