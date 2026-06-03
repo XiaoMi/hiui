@@ -2,8 +2,8 @@ import React from 'react'
 import { Tabs, TabPane } from '../src'
 
 /**
- * @title 大小
- * @desc 标签页大小
+ * @title 不同尺寸
+ * @desc 通过 size 设置标签页大小，默认为中号
  */
 export const Size = () => {
   return (

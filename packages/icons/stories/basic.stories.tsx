@@ -382,9 +382,9 @@ export const Basic = () => {
       <div className="icons-basic__wrap">
         {icons.map((typeItem) => (
           <React.Fragment key={typeItem.id}>
-            <div style={{ lineHeight: '22px', fontSize: '16px', margin: '8px 0' }}>
+            <h2 style={{ lineHeight: '22px', fontSize: '16px', margin: '8px 0' }}>
               {typeItem.title}
-            </div>
+            </h2>
             <div
               style={{
                 display: 'grid',

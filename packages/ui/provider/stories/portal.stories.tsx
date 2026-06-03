@@ -8,7 +8,7 @@ import { createMessage } from '@hi-ui/message'
 import { createNotification } from '@hi-ui/notification'
 
 /**
- * @title 设置 portal
+ * @title 设置弹出层容器
  * @desc 通过 Provider 设置 portal，可以将 Drawer、Modal 等组件的弹出层渲染在特定的 DOM 节点下
  */
 export const Portal = () => {

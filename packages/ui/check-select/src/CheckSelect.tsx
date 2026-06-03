@@ -458,6 +458,7 @@ export const CheckSelect = forwardRef<HTMLDivElement | null, CheckSelectProps>(
             expandedViewRef.current = 'normal'
           }
         },
+        getShowData: () => showData,
       }
     })
 
