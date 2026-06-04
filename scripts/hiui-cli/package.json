@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui-cli",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "description": "HiUI CLI for AI agents — fetch component docs and props from llms endpoints",
   "keywords": [
     "hiui",
@@ -9,7 +9,7 @@
     "ai",
     "mcp"
   ],
-  "author": "Flcwl <flcwl@vip.qq.com>",
+  "author": "HiUI <mi-hiui@xiaomi.com>",
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {
@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "node __tests__/parse.test.js && node __tests__/utils.test.js && node __tests__/migrate.test.js"
+    "test": "node __tests__/parse.test.js && node __tests__/utils.test.js && node __tests__/migrate.test.js && node __tests__/patch-for-react.test.js"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"

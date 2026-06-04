@@ -6,6 +6,7 @@ const { runDoc } = require('./commands/doc')
 const { runInfo } = require('./commands/info')
 const { runMigrateCommand } = require('./commands/migrate')
 const { runVersion } = require('./commands/version')
+const { runPatchForReactCommand } = require('./commands/patch-for-react')
 const { getCliVersionInfo } = require('./version')
 
 const pkg = require('../package.json')
@@ -77,6 +78,33 @@ function createProgram () {
 
       const { writeStdout } = require('./utils')
       writeStdout(url)
+    })
+
+  program
+    .command('patch-for-react')
+    .description(
+      'Install @hi-ui/patch-for-react and inject import at project entry (React 19 compat)'
+    )
+    .option('--path <dir>', 'Project root directory', '.')
+    .option('--entry <file>', 'Entry file path (e.g. src/index.tsx)')
+    .option('--dry-run', 'Preview changes without writing files or installing')
+    .option('--skip-install', 'Only update package.json and entry file, skip install')
+    .option(
+      '--patch-version <version>',
+      'Version range for @hi-ui/patch-for-react',
+      '^5.0.0'
+    )
+    .action(function () {
+      const opts = getSharedOptions(this)
+      const cmdOpts = this.opts()
+      runPatchForReactCommand({
+        path: cmdOpts.path,
+        entry: cmdOpts.entry,
+        dryRun: !!cmdOpts.dryRun,
+        skipInstall: !!cmdOpts.skipInstall,
+        patchVersion: cmdOpts.patchVersion,
+        format: opts.format,
+      })
     })
 
   program

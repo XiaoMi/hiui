@@ -84,22 +84,10 @@ function upgradePackageJsonObject (pkg, targetVersion) {
   return { pkg: next, changes }
 }
 
-function readPackageJson (filePath) {
-  const raw = fs.readFileSync(filePath, 'utf8')
-  return { raw, data: JSON.parse(raw) }
-}
-
-function detectIndent (raw) {
-  const match = raw.match(/^(\s+)"/m)
-  return match ? match[1] : '  '
-}
-
-function writePackageJson (filePath, data, raw) {
-  const indent = detectIndent(raw)
-  const content = `${JSON.stringify(data, null, indent)}\n`
-  fs.writeFileSync(filePath, content, 'utf8')
-  return content
-}
+const {
+  readPackageJson,
+  writePackageJson,
+} = require('../shared/package-json-io')
 
 function findPackageJsonFiles (rootDir) {
   const results = []
