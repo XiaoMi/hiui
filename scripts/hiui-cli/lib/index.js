@@ -4,6 +4,7 @@ const { toComponentSlug } = require('./utils')
 const { runList } = require('./commands/list')
 const { runDoc } = require('./commands/doc')
 const { runInfo } = require('./commands/info')
+const { runMigrateCommand } = require('./commands/migrate')
 
 const pkg = require('../package.json')
 
@@ -66,6 +67,29 @@ function createProgram () {
 
       const { writeStdout } = require('./utils')
       writeStdout(url)
+    })
+
+  program
+    .command('migrate <from> <to>')
+    .description(
+      'Migrate HiUI project between major versions (e.g. hiui migrate 4 5)'
+    )
+    .option('--path <dir>', 'Project root directory', '.')
+    .option('--dry-run', 'Preview changes without writing files')
+    .option('--deps-only', 'Only upgrade package.json dependencies')
+    .option('--class-only', 'Only replace legacy class name prefixes in project files')
+    .action(function (from, to) {
+      const opts = getSharedOptions(this)
+      const cmdOpts = this.opts()
+      runMigrateCommand({
+        from,
+        to,
+        path: cmdOpts.path,
+        dryRun: !!cmdOpts.dryRun,
+        depsOnly: !!cmdOpts.depsOnly,
+        classOnly: !!cmdOpts.classOnly,
+        format: opts.format,
+      })
     })
 
   return program

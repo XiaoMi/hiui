@@ -31,7 +31,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "node __tests__/parse.test.js && node __tests__/utils.test.js"
+    "test": "node __tests__/parse.test.js && node __tests__/utils.test.js && node __tests__/migrate.test.js"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"

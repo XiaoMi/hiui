@@ -18,6 +18,7 @@ yarn --cwd scripts/hiui-cli install
 | `hiui doc <component>` | 获取组件完整 Markdown 文档 |
 | `hiui info <component>` | 获取组件 Props 表格（解析自文档） |
 | `hiui url <component>` | 输出组件 llms 文档 URL |
+| `hiui migrate <from> <to>` | 跨主版本迁移（如 `hiui migrate 4 5`） |
 
 ### 全局选项
 
@@ -46,6 +47,32 @@ hiui info button --format json
 # 获取文档 URL
 hiui url cascader
 ```
+
+### V4 升级到 V5
+
+`hiui migrate 4 5` 会在指定目录（默认当前目录）内：
+
+1. 将所有 `package.json` 中的 `@hi-ui/*` 依赖版本更新为 `^5.0.0`（工具包 `@hi-ui/hi-build` 等除外）
+2. 将项目文件中的 `.hi-v4` 替换为 `.hi-v5`，并将 `hi-v4-` 类名前缀替换为 `hi-v5-`（覆盖 `[class^='hi-v4-']` 等写法）
+
+```bash
+# 预览变更（不写入文件）
+hiui migrate 4 5 --dry-run
+
+# 升级当前项目
+hiui migrate 4 5
+
+# 升级指定目录
+hiui migrate 4 5 --path ./apps/web
+
+# 仅升级 package.json
+hiui migrate 4 5 --deps-only
+
+# 仅替换样式类名
+hiui migrate 4 5 --class-only
+```
+
+升级完成后请执行 `npm install` 或 `yarn` 安装依赖，并参考 [从 V4 升级至 V5](https://xiaomi.github.io/hiui/docs/practices/migration4-5) 处理 API 变更。
 
 ### JSON 输出示例
 
@@ -105,6 +132,7 @@ node __tests__/utils.test.js
 | --- | --- | --- |
 | 数据来源 | 内置离线数据 | 在线 llms 端点 |
 | `list` / `doc` / `info` | ✅ | ✅ |
+| `migrate` (V4→V5) | — | ✅ |
 | MCP Server | ✅ (`antd mcp`) | 规划中 |
 | `--format json` | ✅ | ✅ |
 
