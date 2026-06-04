@@ -2,6 +2,8 @@
 
 # Output files
 lib/
+!scripts/hi-build/lib/
+!scripts/hiui-cli/lib/
 es/
 # locally packed package
 *.tgz
