@@ -14,6 +14,7 @@ yarn --cwd scripts/hiui-cli install
 
 | 命令 | 说明 |
 | --- | --- |
+| `hiui version` | 查询当前 CLI 版本号（亦支持 `hiui -V` / `hiui --version`） |
 | `hiui list` | 列出所有可用组件（来自 [llms.txt](https://xiaomi.github.io/hiui/llms.txt)） |
 | `hiui doc <component>` | 获取组件完整 Markdown 文档 |
 | `hiui info <component>` | 获取组件 Props 表格（解析自文档） |
@@ -33,6 +34,11 @@ yarn --cwd scripts/hiui-cli install
 ## 使用示例
 
 ```bash
+# 查询 CLI 版本
+hiui version
+hiui version --format json
+hiui --version
+
 # 列出组件
 hiui list
 hiui list --format json

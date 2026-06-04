@@ -5,6 +5,8 @@ const { runList } = require('./commands/list')
 const { runDoc } = require('./commands/doc')
 const { runInfo } = require('./commands/info')
 const { runMigrateCommand } = require('./commands/migrate')
+const { runVersion } = require('./commands/version')
+const { getCliVersionInfo } = require('./version')
 
 const pkg = require('../package.json')
 
@@ -24,6 +26,14 @@ function createProgram () {
     )
     .option('--format <type>', 'Output format: text | json', 'text')
     .option('--timeout <ms>', 'HTTP timeout in milliseconds', '30000')
+
+  program
+    .command('version')
+    .description('Print @hi-ui/hiui-cli version')
+    .action(function () {
+      const opts = getSharedOptions(this)
+      runVersion({ format: opts.format })
+    })
 
   program
     .command('list')
@@ -119,4 +129,5 @@ if (require.main === module) {
 module.exports = {
   createProgram,
   runCli,
+  getCliVersionInfo,
 }
