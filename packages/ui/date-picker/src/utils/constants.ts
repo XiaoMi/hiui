@@ -43,6 +43,7 @@ export const getLocaleTypeFormatMap = (locale: string) => {
     : {
         date: 'MM/DD/YYYY',
         month: 'MM/YYYY',
+        quarter: 'qQ/YYYY',
         year: 'YYYY',
         time: 'HH:mm:ss',
         timerange: 'HH:mm:ss',
