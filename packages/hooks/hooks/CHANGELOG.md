@@ -1,5 +1,47 @@
 # @hi-ui/hooks
 
+## 5.0.0
+
+### Major Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- [#3502](https://github.com/XiaoMi/hiui/pull/3502) [`c407744fe`](https://github.com/XiaoMi/hiui/commit/c407744fea78d93da66b73eed0b62d18e5b3a011) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(use-merge-semantic): add use-merge-semantic hook (5.0)
+
+### Patch Changes
+
+- [#3515](https://github.com/XiaoMi/hiui/pull/3515) [`3a7186e4b`](https://github.com/XiaoMi/hiui/commit/3a7186e4b4e7ce351c3856f3e1ba574b9f6df22f) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 给 package.json 中的"exports"配置补充"types"配置 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
+- Updated dependencies [[`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39), [`3a7186e4b`](https://github.com/XiaoMi/hiui/commit/3a7186e4b4e7ce351c3856f3e1ba574b9f6df22f), [`7b956b1eb`](https://github.com/XiaoMi/hiui/commit/7b956b1eb6ba711b05412e4fc1e413bf17f648a6), [`c407744fe`](https://github.com/XiaoMi/hiui/commit/c407744fea78d93da66b73eed0b62d18e5b3a011), [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193)]:
+  - @hi-ui/use-async-data@5.0.0
+  - @hi-ui/use-cache@5.0.0
+  - @hi-ui/use-check@5.0.0
+  - @hi-ui/use-check-state@5.0.0
+  - @hi-ui/use-children@5.0.0
+  - @hi-ui/use-data-source@5.0.0
+  - @hi-ui/use-deep-equal-deps@5.0.0
+  - @hi-ui/use-did-mount@5.0.0
+  - @hi-ui/use-drag-sorter@5.0.0
+  - @hi-ui/use-force-update@5.0.0
+  - @hi-ui/use-id@5.0.0
+  - @hi-ui/use-latest@5.0.0
+  - @hi-ui/use-lazy-render@5.0.0
+  - @hi-ui/use-merge-refs@5.0.0
+  - @hi-ui/use-outside-click@5.0.0
+  - @hi-ui/use-scroll@5.0.0
+  - @hi-ui/use-scroll-lock@5.0.0
+  - @hi-ui/use-search-mode@5.0.0
+  - @hi-ui/use-timeout@5.0.0
+  - @hi-ui/use-toggle@5.0.0
+  - @hi-ui/use-uncontrolled-state@5.0.0
+  - @hi-ui/use-unmount-effect@5.0.0
+  - @hi-ui/use-update-effect@5.0.0
+  - @hi-ui/use-merge-semantic@5.0.0
+
 ## 4.0.9
 
 ### Patch Changes
