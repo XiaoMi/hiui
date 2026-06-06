@@ -1,5 +1,27 @@
 # @hi-ui/use-search-mode
 
+## 5.0.0
+
+### Major Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Patch Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`7b956b1eb`](https://github.com/XiaoMi/hiui/commit/7b956b1eb6ba711b05412e4fc1e413bf17f648a6) Thanks [@zyprepare](https://github.com/zyprepare)! - fix(use-search-mode): 优化首次触发搜索逻辑 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
+- Updated dependencies [[`0f7aac2f3`](https://github.com/XiaoMi/hiui/commit/0f7aac2f3385fc562814a9068338ecf527299842), [`1e226cd66`](https://github.com/XiaoMi/hiui/commit/1e226cd66413cea8eb1e63b1cb83c1bfbf5f0a41), [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39), [`79ea480f3`](https://github.com/XiaoMi/hiui/commit/79ea480f33bb8f692dda1e6252a9d2a75c3ac30d), [`2e56529f7`](https://github.com/XiaoMi/hiui/commit/2e56529f7ea8c74e2fac8b6061628d4fd0d862ac), [`eb17c4697`](https://github.com/XiaoMi/hiui/commit/eb17c46978dfcb5e8ec0a0e3b3dcffabae8d31fe), [`ac15c6141`](https://github.com/XiaoMi/hiui/commit/ac15c6141f9ddb9dbe9de1e16b48f61d5ca77768), [`4006b2c8c`](https://github.com/XiaoMi/hiui/commit/4006b2c8cabba5ec553b69a17e4bf3fb53fe9180), [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193), [`59cef699f`](https://github.com/XiaoMi/hiui/commit/59cef699f96f56d4f68fae7f9dadb960c487b5de)]:
+  - @hi-ui/loading@5.0.0
+  - @hi-ui/use-data-source@5.0.0
+  - @hi-ui/use-latest@5.0.0
+  - @hi-ui/dom-utils@5.0.0
+  - @hi-ui/env@5.0.0
+  - @hi-ui/func-utils@5.0.0
+  - @hi-ui/tree-utils@5.0.0
+  - @hi-ui/type-assertion@5.0.0
+
 ## 4.2.3
 
 ### Patch Changes
