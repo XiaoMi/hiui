@@ -1,5 +1,34 @@
 # @hi-ui/locale-context
 
+## 5.0.0
+
+### Major Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39) Thanks [@zyprepare](https://github.com/zyprepare)! - feat: 组件的 package.json 中的 exports 统一加上 types 配置 (5.0)
+
+### Minor Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`95d930354`](https://github.com/XiaoMi/hiui/commit/95d930354a1ab4291e98a9abccb9525d6c210795) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(locale-context): 增加 mrege 方法 & 增加更多国家语言 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`cb7b794d0`](https://github.com/XiaoMi/hiui/commit/cb7b794d07d56c74f7972f05440632335631b9e0) Thanks [@zyprepare](https://github.com/zyprepare)! - feat(select): 增加 creatableInSearch、createTitle 参数，支持在搜索无结果时可创建选项 (5.0)
+
+### Patch Changes
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`fd4c20bbd`](https://github.com/XiaoMi/hiui/commit/fd4c20bbd30e18bc4c1a2eb078acaa4790f7b2eb) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(locale-context): Transfer 组件增加文案 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`95abba983`](https://github.com/XiaoMi/hiui/commit/95abba98391a31c3cd79704fa0a63f64f437601f) Thanks [@zyprepare](https://github.com/zyprepare)! - fix: 修改 UI 问题 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`d91a8bb0f`](https://github.com/XiaoMi/hiui/commit/d91a8bb0f887fa886215aa596852eef3c2ce8519) Thanks [@zyprepare](https://github.com/zyprepare)! - chore(locale-context): 补充多语言内容 (5.0)
+
+- [#3532](https://github.com/XiaoMi/hiui/pull/3532) [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193) Thanks [@zyprepare](https://github.com/zyprepare)! - build: 将 package.json 中 exports 配置中的 types 配置放在最上面 (5.0)
+
+- Updated dependencies [[`8f3aa85e4`](https://github.com/XiaoMi/hiui/commit/8f3aa85e4e1977854cecdf2864498a77e959bc39), [`33da3144e`](https://github.com/XiaoMi/hiui/commit/33da3144e916edd75ee0669ca9e5090edc681193)]:
+  - @hi-ui/classname@5.0.0
+  - @hi-ui/env@5.0.0
+  - @hi-ui/func-utils@5.0.0
+  - @hi-ui/object-utils@5.0.0
+  - @hi-ui/type-assertion@5.0.0
+
 ## 4.1.1
 
 ### Patch Changes
