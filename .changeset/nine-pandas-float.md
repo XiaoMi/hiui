@@ -1,6 +1,6 @@
 ---
 "@hi-ui/hiui": patch
-"@hi-ui/use-patch-element": patch
+"@hi-ui/use-patch-element": major
 "@hi-ui/modal": patch
 ---
 
