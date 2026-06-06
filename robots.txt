@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /hiui/
+Allow: /hiui/llms.txt
+
+Sitemap: https://xiaomi.github.io/hiui/sitemap.xml
