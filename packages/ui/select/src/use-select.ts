@@ -1,7 +1,12 @@
 import React from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useSelect as useSelectDefault } from '@hi-ui/use-check'
-import { FlattedSelectDataItem, SelectItemEventData, SelectItemRequiredProps } from './types'
+import {
+  FlattedSelectDataItem,
+  SelectDataItem,
+  SelectItemEventData,
+  SelectItemRequiredProps,
+} from './types'
 import { useLatestCallback } from '@hi-ui/use-latest'
 
 const NOOP_VALUE = ''
@@ -78,7 +83,7 @@ export interface UseSelectProps {
   /**
    * 选中值改变时的回调
    */
-  onChange?: (selectedId: React.ReactText, changedItem: SelectItemEventData) => void
+  onChange?: (selectedId: React.ReactText, changedItem: SelectDataItem) => void
   /**
    * 选中值时回调
    */
