@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { uniqBy } from '@hi-ui/array-utils'
 import { useCheck as useCheckDefault } from '@hi-ui/use-check'
-import { CheckSelectItemEventData, CheckSelectMergedItem } from './types'
+import { CheckSelectDataItem, CheckSelectItemEventData, CheckSelectMergedItem } from './types'
 import { useLatestCallback, useLatestRef } from '@hi-ui/use-latest'
 import { useCache } from '@hi-ui/use-cache'
 import { useFlattenData, useData } from './hooks'
@@ -78,7 +78,12 @@ export const useCheckSelect = ({
       const nextCheckedItems = usedItems.filter((item) => value.includes(item.id))
       setCheckedItems(nextCheckedItems)
 
-      tryChangeValue(value, changedItems, nextCheckedItems)
+      tryChangeValue(
+        value,
+        // 处理脏数据
+        changedItems.map((item) => ('raw' in item ? item.raw : item)),
+        nextCheckedItems.map((item) => ('raw' in item ? item.raw : item))
+      )
 
       // 每次更新 value 时，同步更新下 cacheData
       updateCacheData(nextCheckedItems)
@@ -122,8 +127,8 @@ export interface UseCheckSelectProps {
    */
   onChange?: (
     value: React.ReactText[],
-    changedItems: CheckSelectItemEventData[],
-    checkedItems: CheckSelectItemEventData[]
+    changedItems: CheckSelectDataItem[],
+    checkedItems: CheckSelectDataItem[]
   ) => void
   /**
    * 选中值时回调。暂不对外暴露
