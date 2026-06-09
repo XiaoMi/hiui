@@ -63,7 +63,7 @@ async function writeKnowledgeFiles(components, mergedHiuiMarkdown, componentMark
   const componentNames = Array.from(new Set(components.map((item) => item.name)))
     .filter((name) => name && name !== 'hiui')
     .sort()
-  const componentLinks = componentNames.map((name) => `- ${siteBaseUrl}components/${name}.md`)
+  const componentLinks = componentNames.map((name) => `- ${siteBaseUrl}llms/${name}.md`)
   const sitemapLinks = [
     siteBaseUrl,
     `${siteBaseUrl}docs/quick-start`,
