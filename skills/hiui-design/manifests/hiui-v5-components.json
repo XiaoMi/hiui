@@ -1,0 +1,1594 @@
+{
+  "$schemaVersion": 1,
+  "status": "catalog-synced",
+  "generated": {
+    "source": "HIUI_V5_DOCS_ROOT/README.md",
+    "componentCount": 83,
+    "lastSyncedAt": "2026-06-06T10:03:56.129Z",
+    "notes": [
+      "Auto-managed fields come from hiui-v5 README.md and local document-mention heuristics.",
+      "Auto-managed fields come from hiui-v5 README.md and local high-frequency heuristics.",
+      "Generated section tracks the full upstream HiUI v5 component catalog.",
+      "Semantic and quick-reference fields should be preserved across sync runs and filled incrementally.",
+      "Semantic fields should be preserved across sync runs and filled incrementally."
+    ]
+  },
+  "defaults": {
+    "importSource": "@hi-ui/hiui",
+    "iconImportSource": "@hi-ui/icons"
+  },
+  "specialTokens": {
+    "nonComponentAlternatives": [
+      "customInfoBlock",
+      "fieldCard",
+      "heroCard",
+      "infoStrip",
+      "mediaCard",
+      "meta-row",
+      "secondary-info-band",
+      "summaryStrip",
+      "text-row"
+    ]
+  },
+  "components": {
+    "Alert": {
+      "name": "Alert",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/alert.mdx",
+      "upstreamSummary": "警示，内容提示，说明，要求，规则等阅读类信息 显示在页面局部的提示性文案",
+      "frequency": "high",
+      "semanticRoles": [
+        "inline-warning"
+      ],
+      "notFor": [
+        "terminal-result",
+        "global-feedback"
+      ],
+      "alternatives": [
+        "Result",
+        "Message",
+        "Tag"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-for-reading-notice-and-risk-tip"
+      ]
+    },
+    "Anchor": {
+      "name": "Anchor",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/anchor.mdx",
+      "upstreamSummary": "通过锚点可快速找到信息内容在当前页面的位置",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Avatar": {
+      "name": "Avatar",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/avatar.mdx",
+      "upstreamSummary": "用于展示用户或对象的标识，支持图片、图标或字符，常见于个人资料卡或成员列表",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "BackTop": {
+      "name": "BackTop",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/back-top.mdx",
+      "upstreamSummary": "当内容滑动到设定高度时，显示回到顶部按钮，点击按钮回到最顶部",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Badge": {
+      "name": "Badge",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/badge.mdx",
+      "upstreamSummary": "有新消息提示时 常见于图标、文字标题、按钮等位置",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Breadcrumb": {
+      "name": "Breadcrumb",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/breadcrumb.mdx",
+      "upstreamSummary": "用户处于界面的内容区域时，内容的信息层级有 2 层以上 想要无需使用主导航系统就可以来去自如 进入二级页面，除了给予逃生出口外，告知用户更详细的信息",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Button": {
+      "name": "Button",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/button.mdx",
+      "upstreamSummary": "用户需要执行有具体含义的动作、命令 连接页面之间、页面和弹窗、页面和浮层面板的跳转",
+      "frequency": "high",
+      "quickReference": {
+        "group": "page-header-actions",
+        "order": 20
+      },
+      "semanticRoles": [
+        "action-trigger"
+      ],
+      "notFor": [
+        "status-indicator",
+        "query-filter"
+      ],
+      "alternatives": [
+        "IconButton",
+        "Dropdown"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "do-not-replace-navigation-or-status-semantics-with-button-only"
+      ]
+    },
+    "Card": {
+      "name": "Card",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/card.mdx",
+      "upstreamSummary": "当一组同类信息不能自然形成区块感时，需借助卡片来组织 当一个应用或功能由大量信息组成，需要通过重点信息快速识别时 后台展示概览信息时",
+      "frequency": "high",
+      "semanticRoles": [
+        "local-panel"
+      ],
+      "notFor": [
+        "layout-shell",
+        "detail-body",
+        "structured-data-list",
+        "page-header"
+      ],
+      "alternatives": [
+        "Descriptions",
+        "Table",
+        "List",
+        "Alert"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "not-default-answer-for-first-level-group",
+        "must-not-take-over-page-level-surface"
+      ]
+    },
+    "Carousel": {
+      "name": "Carousel",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/carousel.mdx",
+      "upstreamSummary": "在空间有限的情况下，需要展示多张图片时 常用于宣传营销 Banner、新功能上线等场景",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Cascader": {
+      "name": "Cascader",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/cascader.mdx",
+      "upstreamSummary": "需要从大量的离散型数据中选择一部分时使用 备选项数量 5 个以上时 不需要将全部备选项都展示给用户时",
+      "frequency": "high",
+      "semanticRoles": [
+        "hierarchical-selection"
+      ],
+      "notFor": [
+        "flat-selection"
+      ],
+      "alternatives": [
+        "Select",
+        "TreeSelect",
+        "CheckCascader"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-for-level-by-level-path-selection"
+      ]
+    },
+    "CheckCascader": {
+      "name": "CheckCascader",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/check-cascader.mdx",
+      "upstreamSummary": "采用多级分类组织选项，支持跨类别多选，适合在复杂层级数据中快速勾选多个项目",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "CheckSelect": {
+      "name": "CheckSelect",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/check-select.mdx",
+      "upstreamSummary": "以下拉面板呈现可勾选的选项，适合在有限空间内完成多项选择或批量筛选",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "CheckTreeSelect": {
+      "name": "CheckTreeSelect",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/check-tree-select.mdx",
+      "upstreamSummary": "接收树形数据结构的多选控件，支持展开层级浏览并勾选多个节点，便于处理复杂结构数据",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Checkbox": {
+      "name": "Checkbox",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/checkbox.mdx",
+      "upstreamSummary": "需要快速完成多选一且备选项数量不多时 常见于后台设置、调研问卷、表单等场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 60
+      },
+      "semanticRoles": [
+        "multi-choice-input"
+      ],
+      "notFor": [
+        "single-choice-input",
+        "hierarchical-selection"
+      ],
+      "alternatives": [
+        "CheckSelect",
+        "CheckTreeSelect"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-only-when-option-count-is-small"
+      ]
+    },
+    "Collapse": {
+      "name": "Collapse",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/collapse.mdx",
+      "upstreamSummary": "信息复杂，有主次之分时，将次要信息折叠进面板 一级信息需优先识别，二级信息多为辅助信息或描述信息",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Counter": {
+      "name": "Counter",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/counter.mdx",
+      "upstreamSummary": "提供递增递减按钮的数值输入方式，常用于设置数量、配额或库存上下限",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "DatePicker": {
+      "name": "DatePicker",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/date-picker.mdx",
+      "upstreamSummary": "需要将某一个日期或时间录入到系统中时 需要将某一个时间段或任一个时间周期录入到系统中时",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 60
+      },
+      "semanticRoles": [
+        "date-input"
+      ],
+      "notFor": [
+        "single-value-input",
+        "flat-selection"
+      ],
+      "alternatives": [
+        "TimePicker",
+        "Input"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-structured-date-or-range-input"
+      ]
+    },
+    "Descriptions": {
+      "name": "Descriptions",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/descriptions.mdx",
+      "upstreamSummary": "以成组字段展示只读信息，常用于详情页或侧边面板的关键信息概览",
+      "frequency": "high",
+      "quickReference": {
+        "group": "drawer-detail",
+        "order": 20
+      },
+      "semanticRoles": [
+        "detail-body"
+      ],
+      "notFor": [
+        "title-adjacent-meta",
+        "heterogeneous-reading-list"
+      ],
+      "alternatives": [
+        "List",
+        "Tag",
+        "text-row"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "do-not-upgrade-title-adjacent-meta-to-descriptions",
+        "do-not-replace-with-custom-info-block"
+      ]
+    },
+    "Drawer": {
+      "name": "Drawer",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/drawer.mdx",
+      "upstreamSummary": "当前任务中需要中途填写信息或执行别的动作 常见于后台设置、新建编辑等场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "drawer-detail",
+        "order": 10
+      },
+      "semanticRoles": [
+        "context-preserving-task"
+      ],
+      "notFor": [
+        "blocking-confirmation",
+        "lightweight-overlay"
+      ],
+      "alternatives": [
+        "Modal",
+        "Popover"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-mid-task-edit-or-detail-with-context-kept"
+      ]
+    },
+    "Dropdown": {
+      "name": "Dropdown",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/dropdown.mdx",
+      "upstreamSummary": "有二级以上的菜单且展示空间有限 当一组平级的动作要展示时，将其收入一个入口，可让页面信息更整洁",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "EllipsisTooltip": {
+      "name": "EllipsisTooltip",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/ellipsis-tooltip.mdx",
+      "upstreamSummary": "文本溢出时以省略号收起，鼠标悬停后展示完整内容，兼顾信息完整性与布局整洁",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "EmptyState": {
+      "name": "EmptyState",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/empty-state.mdx",
+      "upstreamSummary": "在无数据、无权限或搜索无结果等情境下展示空状态，引导用户下一步操作",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "primary",
+      "notes": []
+    },
+    "FileSelect": {
+      "name": "FileSelect",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/file-select.mdx",
+      "upstreamSummary": "提供文件选择或替换入口，常用于上传附件、导入数据等场景",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Filter": {
+      "name": "Filter",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/filter.mdx",
+      "upstreamSummary": "聚合多个筛选条件的输入控件，帮助用户对列表数据快速过滤和定位",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Form": {
+      "name": "Form",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/form.mdx",
+      "upstreamSummary": "当系统需要收集、录入时 常见于调查问卷、登录、新建/编辑、设置等场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 10
+      },
+      "semanticRoles": [
+        "multi-field-form"
+      ],
+      "notFor": [
+        "detail-body",
+        "structured-data-list"
+      ],
+      "alternatives": [
+        "Descriptions"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "do-not-replace-with-div-plus-input-collection"
+      ]
+    },
+    "GlobalContext": {
+      "name": "GlobalContext",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/global-context.mdx",
+      "upstreamSummary": "提供全局配置上下文，用于在组件树中统一管理全局状态和配置",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "Grid": {
+      "name": "Grid",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/grid.mdx",
+      "upstreamSummary": "24 栏栅格系统，用于实现内容区域的各种布局",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Highlighter": {
+      "name": "Highlighter",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/highlighter.mdx",
+      "upstreamSummary": "高亮结果中的关键字，帮助用户迅速识别匹配项",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "HiUI": {
+      "name": "HiUI",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/hiui.mdx",
+      "upstreamSummary": "HIUI 组件生态总览入口，汇集各类基础与业务组件的导航",
+      "frequency": "low",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": [
+        "docs-navigation-entry-only"
+      ]
+    },
+    "IconButton": {
+      "name": "IconButton",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/icon-button.mdx",
+      "upstreamSummary": "以图标强化按钮语义，适合空间紧凑或仅需图形表达含义的操作",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Icons": {
+      "name": "Icons",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/icons.mdx",
+      "upstreamSummary": "引入语义化图标时使用",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "InputGroup": {
+      "name": "InputGroup",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/input-group.mdx",
+      "upstreamSummary": "常用于表单控件控制，灵活组合多种表单控件进行展示",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Input": {
+      "name": "Input",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/input.mdx",
+      "upstreamSummary": "用户需要通过键盘输入内容时 常见于表单，作为表单的组件类型之一",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 20
+      },
+      "semanticRoles": [
+        "single-value-input"
+      ],
+      "notFor": [
+        "numeric-input",
+        "date-input",
+        "flat-selection",
+        "hierarchical-selection"
+      ],
+      "alternatives": [
+        "Textarea",
+        "NumberInput",
+        "Select"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "do-not-use-for-structured-selection-or-time-entry"
+      ]
+    },
+    "Layout": {
+      "name": "Layout",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/layout.mdx",
+      "upstreamSummary": "提供包含导航、侧栏、内容区的页面布局框架，便于快速搭建管理后台骨架",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "List": {
+      "name": "List",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/list.mdx",
+      "upstreamSummary": "最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面",
+      "frequency": "high",
+      "semanticRoles": [
+        "heterogeneous-reading-list"
+      ],
+      "notFor": [
+        "structured-data-list",
+        "detail-body"
+      ],
+      "alternatives": [
+        "Table",
+        "Descriptions"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-when-items-read-sequentially"
+      ]
+    },
+    "Loading": {
+      "name": "Loading",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/loading.mdx",
+      "upstreamSummary": "页面加载时 页面卡片、浮层面板加载时",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "LocaleContext": {
+      "name": "LocaleContext",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/locale-context.mdx",
+      "upstreamSummary": "注入语言配置上下文，在组件树内统一管理国际化文案",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "Menu": {
+      "name": "Menu",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/menu.mdx",
+      "upstreamSummary": "承载站点或系统的信息架构，用于顶部或侧边栏导航，引导用户定位功能页面",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Message": {
+      "name": "Message",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/message.mdx",
+      "upstreamSummary": "由用户在界面交互过程中发生的全局性操作提示 即时反馈当前操作的结果",
+      "frequency": "high",
+      "quickReference": {
+        "group": "page-header-actions",
+        "order": 40
+      },
+      "semanticRoles": [
+        "global-feedback"
+      ],
+      "notFor": [
+        "inline-warning",
+        "terminal-result"
+      ],
+      "alternatives": [
+        "Toast",
+        "Alert",
+        "Result"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-short-lived-global-feedback"
+      ]
+    },
+    "Modal": {
+      "name": "Modal",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/modal.mdx",
+      "upstreamSummary": "当前任务中需要中途填写信息或执行别的动作 常见于后台设置、新建编辑等场景",
+      "frequency": "high",
+      "semanticRoles": [
+        "blocking-confirmation"
+      ],
+      "notFor": [
+        "context-preserving-task",
+        "lightweight-overlay"
+      ],
+      "alternatives": [
+        "Drawer",
+        "PopConfirm",
+        "Popover"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-blocking-small-task-or-confirmation"
+      ]
+    },
+    "Notification": {
+      "name": "Notification",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/notification.mdx",
+      "upstreamSummary": "系统级推送 用于通知、通告、公告、广播等场景",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "NumberInput": {
+      "name": "NumberInput",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/number-input.mdx",
+      "upstreamSummary": "只允许输入数字时使用",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 30
+      },
+      "semanticRoles": [
+        "numeric-input"
+      ],
+      "notFor": [
+        "single-value-input",
+        "date-input"
+      ],
+      "alternatives": [
+        "Input",
+        "Counter"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-over-plain-input-for-constrained-number-entry"
+      ]
+    },
+    "PageHeader": {
+      "name": "PageHeader",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/page-header.mdx",
+      "upstreamSummary": "展示页面主标题、辅助信息与常用操作，构建清晰的页面头部区域",
+      "frequency": "high",
+      "quickReference": {
+        "group": "page-header-actions",
+        "order": 10
+      },
+      "semanticRoles": [
+        "page-header"
+      ],
+      "notFor": [
+        "local-panel",
+        "detail-body"
+      ],
+      "alternatives": [
+        "Breadcrumb",
+        "Space+Button"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "page-title-and-primary-actions-entry-only"
+      ]
+    },
+    "Pagination": {
+      "name": "Pagination",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/pagination.mdx",
+      "upstreamSummary": "当数据量级较大，请求数据时延过长 当展示数据的页面空间有限，无法一次性展示时 用户更关心前几条或前几十条数据情况时",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 40
+      },
+      "semanticRoles": [
+        "pagination-nav"
+      ],
+      "notFor": [
+        "single-keyword-search",
+        "global-feedback"
+      ],
+      "alternatives": [
+        "BackTop"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-long-structured-result-navigation"
+      ]
+    },
+    "Picker": {
+      "name": "Picker",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/picker.mdx",
+      "upstreamSummary": "通用型下拉选择器，支持从备选项中快速选定一个或多个值",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "PopConfirm": {
+      "name": "PopConfirm",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/pop-confirm.mdx",
+      "upstreamSummary": "触发后弹出轻量确认气泡，用于在提交、删除等敏感操作前再次确认",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Popover": {
+      "name": "Popover",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/popover.mdx",
+      "upstreamSummary": "信息先以隐藏的形式收起，递进式呈现，以优先展示一级信息 以轻量级的形式对操作进行二次确认提示",
+      "frequency": "high",
+      "semanticRoles": [
+        "lightweight-overlay"
+      ],
+      "notFor": [
+        "blocking-confirmation",
+        "context-preserving-task"
+      ],
+      "alternatives": [
+        "Tooltip",
+        "Drawer",
+        "Modal"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "do-not-hold-complex-form"
+      ]
+    },
+    "Popper": {
+      "name": "Popper",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/popper.mdx",
+      "upstreamSummary": "提供可自定义定位的轻量弹出层容器，支撑 Tooltip、Popover 等场景",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "PortalContext": {
+      "name": "PortalContext",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/portal-context.mdx",
+      "upstreamSummary": "管理 Portal 挂载容器的上下文配置，确保弹层渲染到指定 DOM 节点",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "Portal": {
+      "name": "Portal",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/portal.mdx",
+      "upstreamSummary": "将子元素渲染到其它 DOM 容器，常用于跨层级展示弹层或浮动面板",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "Preview": {
+      "name": "Preview",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/preview.mdx",
+      "upstreamSummary": "提供图片等多媒体的预览能力，支持放大查看、切换或全屏展示",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Progress": {
+      "name": "Progress",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/progress.mdx",
+      "upstreamSummary": "需要显示、掌控某件事务的进展的状态，如百分比等 常用于上传、下载文件等场景",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Provider": {
+      "name": "Provider",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/provider.mdx",
+      "upstreamSummary": "HIUI 的顶层 Provider，向下传递主题、语言等全局配置",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "QueryFilter": {
+      "name": "QueryFilter",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/query-filter.mdx",
+      "upstreamSummary": "提供表单化的筛选条件输入，支持多字段组合查询，常用于数据列表的筛选场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 20,
+        "note": "典型页优先从 `@hiui-design/typical-page-shells/pro-list-page` 使用；底层来源 `@hi-ui/query-filter`"
+      },
+      "semanticRoles": [
+        "query-filter"
+      ],
+      "notFor": [
+        "single-keyword-search",
+        "title-adjacent-meta"
+      ],
+      "alternatives": [
+        "Search",
+        "Filter"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-over-handmade-search-select-datepicker-row"
+      ]
+    },
+    "Radio": {
+      "name": "Radio",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/radio.mdx",
+      "upstreamSummary": "需要快速完成多选一且备选项数量不多时 常见于后台设置、调研问卷等场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 50
+      },
+      "semanticRoles": [
+        "single-choice-input"
+      ],
+      "notFor": [
+        "multi-choice-input",
+        "hierarchical-selection"
+      ],
+      "alternatives": [
+        "Select",
+        "Tabs"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-only-when-option-count-is-small"
+      ]
+    },
+    "Rate": {
+      "name": "Rate",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/rating.mdx",
+      "upstreamSummary": "需要对某一个指标或事件进行评级评分时",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "ResizeBox": {
+      "name": "ResizeBox",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/resize-box.mdx",
+      "upstreamSummary": "用于可调整大小的布局",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Result": {
+      "name": "Result",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/result.mdx",
+      "upstreamSummary": "当有重要操作需告知用户处理结果，且反馈内容较为复杂时使用",
+      "frequency": "high",
+      "semanticRoles": [
+        "terminal-result"
+      ],
+      "notFor": [
+        "inline-warning",
+        "global-feedback"
+      ],
+      "alternatives": [
+        "Alert",
+        "Message",
+        "EmptyState"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-for-complete-outcome-feedback"
+      ]
+    },
+    "Scrollbar": {
+      "name": "Scrollbar",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/scrollbar.mdx",
+      "upstreamSummary": "需要统一滚动条视觉样式，或者需要监听某些特殊滚动事件，比如滚动到底部、滚动到顶部",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Search": {
+      "name": "Search",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/search.mdx",
+      "upstreamSummary": "- 全栈信息检索 - 表格数据、信息列表",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 50
+      },
+      "semanticRoles": [
+        "single-keyword-search"
+      ],
+      "notFor": [
+        "query-filter",
+        "hierarchical-selection"
+      ],
+      "alternatives": [
+        "QueryFilter"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "single-keyword-entry-only"
+      ]
+    },
+    "Select": {
+      "name": "Select",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/select.mdx",
+      "upstreamSummary": "需要从大量的离散型数据中选择一部分时使用 备选项数量 5 个以上时 不需要将全部备选项都展示给用户时",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 70
+      },
+      "semanticRoles": [
+        "flat-selection"
+      ],
+      "notFor": [
+        "hierarchical-selection"
+      ],
+      "alternatives": [
+        "TreeSelect",
+        "Cascader",
+        "CheckSelect"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "do-not-flatten-tree-data-into-select"
+      ]
+    },
+    "Skeleton": {
+      "name": "Skeleton",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/skeleton.mdx",
+      "upstreamSummary": "在网络请求或数据处理过程中，需要展示内容的大致结构 在数据尚未加载完成前，用于替代真实内容的占位展示 用于避免页面空白和跳动，提升用户体验",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Slider": {
+      "name": "Slider",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/slider.mdx",
+      "upstreamSummary": "设置多个参数且要求操作所即见即所得时",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Space": {
+      "name": "Space",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/space.mdx",
+      "upstreamSummary": "快速对组件进行排版布局，保证组件之间有一定的控件划分",
+      "frequency": "high",
+      "quickReference": {
+        "group": "page-header-actions",
+        "order": 30
+      },
+      "semanticRoles": [
+        "layout-spacing"
+      ],
+      "notFor": [
+        "layout-shell",
+        "local-panel"
+      ],
+      "alternatives": [
+        "Grid"
+      ],
+      "defaultPriority": "helper",
+      "notes": [
+        "use-for-inline-group-spacing-not-page-level-surface"
+      ]
+    },
+    "Spinner": {
+      "name": "Spinner",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/spinner.mdx",
+      "upstreamSummary": "展示加载旋转动画，在异步请求或页面等待时提示用户进度",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Stepper": {
+      "name": "Stepper",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/stepper.mdx",
+      "upstreamSummary": "当完成的目标需要分布来执行，且带有明确的先后次序 一个任务的每一步都需要较为复杂的信息和执行操作",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "SvgIcon": {
+      "name": "SvgIcon",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/svg-icon.mdx",
+      "upstreamSummary": "快速渲染 SVG 图标资源，支持自定义尺寸与配色",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Switch": {
+      "name": "Switch",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/switch.mdx",
+      "upstreamSummary": "有两种状态，通常切换时会引起状态的改变 常用于设置参数、控制面板等场景",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 70
+      },
+      "semanticRoles": [
+        "boolean-toggle"
+      ],
+      "notFor": [
+        "blocking-confirmation",
+        "single-choice-input"
+      ],
+      "alternatives": [
+        "Radio",
+        "Checkbox"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-only-for-immediate-two-state-toggle"
+      ]
+    },
+    "Table": {
+      "name": "Table",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/table.mdx",
+      "upstreamSummary": "当需要管理一定量级的统一结构的数据记录时 当需要对一部分全部数据进行编辑、筛选过滤时",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 10
+      },
+      "semanticRoles": [
+        "structured-data-list"
+      ],
+      "notFor": [
+        "heterogeneous-reading-list",
+        "detail-body"
+      ],
+      "alternatives": [
+        "List"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "do-not-replace-with-card-grid"
+      ]
+    },
+    "Tabs": {
+      "name": "Tabs",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tabs.mdx",
+      "upstreamSummary": "当页面空间有限，要组织大量的信息且信息之间有明确的分界线 节省屏幕空间，减少用户视觉和信息干扰 无信息间的对比要求，即不同时查看",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "TagInput": {
+      "name": "TagInput",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tag-input.mdx",
+      "upstreamSummary": "以标签形式录入和展示多值内容，常用于关键词、成员等集合型数据",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Tag": {
+      "name": "Tag",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tag.mdx",
+      "upstreamSummary": "有新消息提示时 常见于图标、文本标题、按钮等位置",
+      "frequency": "high",
+      "quickReference": {
+        "group": "drawer-detail",
+        "order": 30
+      },
+      "semanticRoles": [
+        "status-indicator"
+      ],
+      "notFor": [
+        "action-trigger",
+        "count-indicator"
+      ],
+      "alternatives": [
+        "Badge",
+        "Alert",
+        "Message"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-status-or-category-semantic-chip"
+      ]
+    },
+    "Textarea": {
+      "name": "Textarea",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/textarea.mdx",
+      "upstreamSummary": "提供多行文本输入区域，适合填写备注、描述等长文本",
+      "frequency": "high",
+      "quickReference": {
+        "group": "form-input",
+        "order": 40
+      },
+      "semanticRoles": [
+        "single-value-input"
+      ],
+      "notFor": [
+        "numeric-input",
+        "date-input",
+        "flat-selection"
+      ],
+      "alternatives": [
+        "Input"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-multi-line-text-entry"
+      ]
+    },
+    "TimePicker": {
+      "name": "TimePicker",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/time-picker.mdx",
+      "upstreamSummary": "在弹出面板上选择时间，以便捷完成时间输入的控件",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Timeline": {
+      "name": "Timeline",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/timeline.mdx",
+      "upstreamSummary": "信息呈现的方式以时间流形式展示时 信息发生的时间粒度较小，且间隔较为均匀 常用在行为记录、日志、日程提醒、物流等场景",
+      "frequency": "high",
+      "semanticRoles": [
+        "time-sequence"
+      ],
+      "notFor": [
+        "detail-body",
+        "structured-data-list"
+      ],
+      "alternatives": [
+        "List"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-for-event-log-and-time-flow"
+      ]
+    },
+    "Toast": {
+      "name": "Toast",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/toast.mdx",
+      "upstreamSummary": "全局轻量通知组件，自动消失提示操作结果或系统状态",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Tooltip": {
+      "name": "Tooltip",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tooltip.mdx",
+      "upstreamSummary": "词汇注释，生僻专业词汇，动作描述 图标代表的含义",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "helper",
+      "notes": []
+    },
+    "Transfer": {
+      "name": "Transfer",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/transfer.mdx",
+      "upstreamSummary": "一组数据进行两种状态的分类时 有更多的空间进行选择时 需快速批量的完成选项归类且可调整顺序时",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "TreeSelect": {
+      "name": "TreeSelect",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tree-select.mdx",
+      "upstreamSummary": "- 选择部门的组织结构、部门等 - 选择商品目录等",
+      "frequency": "high",
+      "semanticRoles": [
+        "hierarchical-selection"
+      ],
+      "notFor": [
+        "flat-selection"
+      ],
+      "alternatives": [
+        "Select",
+        "Cascader",
+        "CheckTreeSelect"
+      ],
+      "defaultPriority": "primary",
+      "notes": [
+        "prefer-for-expandable-tree-choices"
+      ]
+    },
+    "Tree": {
+      "name": "Tree",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/tree.mdx",
+      "upstreamSummary": "多层级数据结构 需要明确的展示层级结构 对多层级结构节点进行操作",
+      "frequency": "high",
+      "quickReference": {
+        "group": "list-filter",
+        "order": 80
+      },
+      "semanticRoles": [
+        "hierarchical-browse"
+      ],
+      "notFor": [
+        "flat-selection",
+        "structured-data-list"
+      ],
+      "alternatives": [
+        "TreeSelect",
+        "List"
+      ],
+      "defaultPriority": "secondary",
+      "notes": [
+        "prefer-for-browse-or-operate-hierarchical-nodes"
+      ]
+    },
+    "Upload": {
+      "name": "Upload",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/upload.mdx",
+      "upstreamSummary": "上传本地文档 上传图片附件或照片墙",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "Watermark": {
+      "name": "Watermark",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/watermark.mdx",
+      "upstreamSummary": "页面内容涉及到保密或其它情况时",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    },
+    "ZenMode": {
+      "name": "ZenMode",
+      "aliases": [],
+      "importSource": "@hi-ui/hiui",
+      "iconImportSource": "@hi-ui/icons",
+      "upstreamDocPath": "components/zen-mode.mdx",
+      "upstreamSummary": "将页面核心区域放大聚焦，可快速切换至演示或沉浸式浏览模式",
+      "frequency": "medium",
+      "semanticRoles": [],
+      "notFor": [],
+      "alternatives": [],
+      "defaultPriority": "secondary",
+      "notes": []
+    }
+  }
+}

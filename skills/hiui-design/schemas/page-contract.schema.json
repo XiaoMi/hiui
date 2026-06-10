@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hiui-design/page-contract.schema.json",
+  "type": "object",
+  "required": [
+    "version",
+    "pageTypeId",
+    "pageTypeLabel",
+    "shell",
+    "generatedPagePath",
+    "examplePath",
+    "hostArchetypePath",
+    "scrollStrategy",
+    "regionMapping"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "pageTypeId": {
+      "type": "string"
+    },
+    "pageTypeLabel": {
+      "type": "string"
+    },
+    "shell": {
+      "type": "string"
+    },
+    "generatedPagePath": {
+      "type": "string"
+    },
+    "examplePath": {
+      "type": "string"
+    },
+    "hostArchetypePath": {
+      "type": "string"
+    },
+    "archetypeId": {
+      "type": "string"
+    },
+    "archetypeVersion": {
+      "type": "integer"
+    },
+    "archetypeMode": {
+      "type": "string"
+    },
+    "scrollStrategy": {
+      "type": "string",
+      "enum": ["page-scroll", "table-body-scroll", "form-body-scroll", "drawer-body-scroll"]
+    },
+    "strictExampleGeneration": {
+      "type": "boolean"
+    },
+    "i18nBaseline": {
+      "type": "object"
+    },
+    "regionMapping": {
+      "type": "array"
+    },
+    "ownershipMode": {
+      "type": "string"
+    },
+    "ownershipMapping": {
+      "type": "array"
+    },
+    "splitPaneContract": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "leftPaneSelector": {
+          "type": "string"
+        },
+        "rightPaneSelector": {
+          "type": "string"
+        },
+        "tableRegionSelector": {
+          "type": "string"
+        },
+        "leftPaneScroll": {
+          "type": "string",
+          "enum": ["independent-pane-scroll", "shared-main-scroll", "not-applicable"]
+        },
+        "rightPaneScroll": {
+          "type": "string",
+          "enum": ["independent-pane-scroll", "shared-main-scroll", "not-applicable"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "adapterContract": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

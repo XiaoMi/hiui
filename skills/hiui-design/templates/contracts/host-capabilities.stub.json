@@ -1,0 +1,10 @@
+{
+  "mode": "rules-only",
+  "capabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ]
+}

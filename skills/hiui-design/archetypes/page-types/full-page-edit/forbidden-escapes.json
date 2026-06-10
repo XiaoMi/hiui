@@ -1,0 +1,8 @@
+{
+  "escapes": [
+    "Use generic Layout.footer instead of the archetype footer region.",
+    "Wrap every top-level section in its own white card.",
+    "Translate the page into a gray background plus one large white card form.",
+    "Rebuild header/body/footer from primitives without naming one host archetype."
+  ]
+}

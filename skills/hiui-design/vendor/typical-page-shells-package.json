@@ -1,0 +1,23 @@
+{
+  "name": "@hiui-design/typical-page-shells",
+  "version": "0.1.1",
+  "peerDependencies": {
+    "@hi-ui/classname": "5.0.0-experimental.0",
+    "@hi-ui/ellipsis-tooltip": "5.0.0-experimental.1",
+    "@hi-ui/empty-state": "5.0.0-experimental.1",
+    "@hi-ui/hiui": "5.0.0-experimental.6",
+    "@hi-ui/loading": "5.0.0-experimental.1",
+    "@hi-ui/query-filter": "5.0.0-experimental.2",
+    "@hi-ui/schema-core": "4.0.0-experimental.10",
+    "@hi-ui/schema-fields": "4.0.0-experimental.12",
+    "@hi-ui/schema-form": "4.0.0-experimental.4",
+    "@hi-ui/schema-group": "4.0.0-experimental.7",
+    "@hi-ui/schema-table": "4.0.0-experimental.4",
+    "@hi-ui/textarea": "5.0.0-experimental.3",
+    "@hi-ui/use-ref-state": "4.0.0-experimental.2",
+    "@hi-ui/use-subscription": "4.0.0-experimental.2",
+    "ahooks": "3.9.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

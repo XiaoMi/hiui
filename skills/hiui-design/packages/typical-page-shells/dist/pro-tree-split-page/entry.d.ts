@@ -1,0 +1,20 @@
+import type { ComponentProps, ReactNode } from 'react';
+import type { FieldConfigType } from '@hi-ui/schema-core';
+import { Table } from '../pro-list-page';
+import styles from './index.module.scss';
+type TreeSplitPageFrameProps = {
+    title: string;
+    extra?: ReactNode;
+    queryFields: FieldConfigType[];
+    tableFields: FieldConfigType[];
+    searchPlaceholder: string;
+    leftPane: ReactNode;
+    defaultLeftWidth?: number;
+    minLeftWidth?: number;
+    maxLeftWidth?: number;
+    storageKey?: string;
+    tableProps?: Partial<ComponentProps<typeof Table>>;
+    children?: ReactNode;
+};
+export declare function TreeSplitPageFrame({ title, extra, queryFields, tableFields, searchPlaceholder, leftPane, defaultLeftWidth, minLeftWidth, maxLeftWidth, storageKey, tableProps, children, }: TreeSplitPageFrameProps): import("react/jsx-runtime").JSX.Element;
+export { styles as proTreeSplitPageStyles };

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hiui-design/archetype.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "pageTypeId",
+    "label",
+    "shell",
+    "examplePath",
+    "requiredRegions",
+    "requiredOwnershipRoles"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "pageTypeId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "shell": {
+      "type": "string"
+    },
+    "examplePath": {
+      "type": "string"
+    },
+    "requiredRegions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredOwnershipRoles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,17 @@
+{
+  "allowed": [
+    "title",
+    "route",
+    "form-fields",
+    "validation-rules",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbidden": [
+    "shell-type",
+    "region-count",
+    "region-nesting",
+    "scroll-chain",
+    "footer-mount-semantics"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "tree-split-core",
+  "version": 1,
+  "pageTypeId": "tree-split",
+  "label": "Tree split archetype",
+  "shell": "TreeSplitPageFrame",
+  "examplePath": "examples/host-integration/src/pages/inventory-split.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "split-workspace",
+    "left-tree",
+    "right-list",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredRegions": [
+    "header",
+    "split-workspace",
+    "left-tree",
+    "right-list",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "tree-query",
+    "query-fields",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "split left tree and right list into independent pages",
+    "collapse split regions into one generic main body",
+    "second outer scroll owner outside the split workspace"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/tree-split" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/tree-split" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/tree-split" }
+  }
+}

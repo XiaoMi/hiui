@@ -1,0 +1,8 @@
+{
+  "escapes": [
+    "Split stats, filter, and table into separate section shells.",
+    "Use hand-written stat cards without preserving a single white-body container.",
+    "Translate the page into a generic list page plus an extra stat block.",
+    "Render pagination in a host footer that is detached from the table-stat workspace."
+  ]
+}

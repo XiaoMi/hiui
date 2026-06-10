@@ -1,0 +1,60 @@
+{
+  "id": "table-basic-core",
+  "version": 1,
+  "pageTypeId": "table-basic",
+  "label": "Basic table archetype",
+  "shell": "TablePageFrame",
+  "examplePath": "examples/host-integration/src/pages/basic-table.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "query-fields",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "PageHeader + Search + Table + Pagination from primitives",
+    "nested white cards around one list workspace",
+    "generic main/body contract regions",
+    "pagination outside the table white-body"
+  ],
+  "modeAdapters": {
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/table-basic"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/table-basic"
+    },
+    "legacy-host-compatible": {
+      "templateDir": "templates/archetypes/legacy-host-compatible/table-basic"
+    }
+  }
+}

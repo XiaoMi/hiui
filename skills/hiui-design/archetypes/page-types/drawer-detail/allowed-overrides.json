@@ -1,0 +1,4 @@
+{
+  "allowed": ["title", "route", "detail-fields", "api-functions", "button-copy"],
+  "forbidden": ["shell-type", "region-count", "region-nesting", "drawer-footer-mount-semantics"]
+}

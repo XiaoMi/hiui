@@ -1,0 +1,17 @@
+{
+  "archetypeId": "full-page-edit-core",
+  "pageTypeId": "full-page-edit",
+  "mode": "legacy-host-compatible",
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "scroll-body",
+    "sticky-footer"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "form-body",
+    "footer"
+  ]
+}

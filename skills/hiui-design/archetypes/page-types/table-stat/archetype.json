@@ -1,0 +1,62 @@
+{
+  "id": "table-stat-core",
+  "version": 1,
+  "pageTypeId": "table-stat",
+  "label": "Stat table archetype",
+  "shell": "StatListPageFrame",
+  "examplePath": "examples/host-integration/src/pages/table-stat.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "query-fields",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "PageHeader + Search + Table + Pagination from primitives",
+    "independent white card wrappers for stats/search/table",
+    "custom stat cards without a single stat workspace owner",
+    "pagination outside the table-stat white-body shell"
+  ],
+  "modeAdapters": {
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/table-stat"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/table-stat"
+    },
+    "legacy-host-compatible": {
+      "templateDir": "templates/archetypes/legacy-host-compatible/table-stat"
+    }
+  }
+}

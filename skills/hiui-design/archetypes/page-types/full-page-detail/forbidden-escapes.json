@@ -1,0 +1,7 @@
+{
+  "escapes": [
+    "Build a custom field grid instead of preserving detail semantics.",
+    "Wrap detail sections in multiple extra white cards.",
+    "Collapse detail-body into a generic main/body region."
+  ]
+}

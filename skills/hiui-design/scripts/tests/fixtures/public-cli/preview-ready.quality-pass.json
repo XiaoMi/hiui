@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "previewReady": true,
+  "checks": [
+    {
+      "detail": "src/pages/orders/index.tsx exists",
+      "key": "page-exists",
+      "ok": true
+    },
+    {
+      "detail": "Detected page type: table-basic (informational only)",
+      "key": "page-type",
+      "ok": true
+    },
+    {
+      "detail": "No preview URL was provided. Accepted static file-exists fallback.",
+      "key": "browser-preview",
+      "ok": true,
+      "skipped": true
+    }
+  ],
+  "normalizedPagePath": "src/pages/orders/index.tsx",
+  "pageTypeId": "table-basic",
+  "qualityChecks": [
+    {
+      "detail": "Found managed page contract: .local-context/hiui-design/contracts/src-pages-orders-index.json",
+      "key": "contract-exists",
+      "ok": true
+    },
+    {
+      "detail": "workflow.status=finalized; deliveryStatus=finalized",
+      "key": "workflow-finalized",
+      "ok": true
+    },
+    {
+      "detail": "Runtime smoke is not required for this page contract.",
+      "key": "runtime-smoke-pass",
+      "ok": true
+    }
+  ],
+  "qualityVerified": true,
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "runtimeSmokeRequired": false,
+  "runtimeSmokeRequirementReason": "",
+  "sourceSnapshotHash": "preview-ready-contract-fixture-source",
+  "usedStaticFallback": true,
+  "usage": {
+    "exit_code": 0,
+    "message": "DRY_RUN",
+    "ok": true,
+    "requires_network_authorization": false,
+    "status": "completed",
+    "usage": {
+      "dryRun": true,
+      "payload": {
+        "event": "page_artifact_created",
+        "prompt": "preview-ready contract fixture",
+        "report_mode": "rules-only",
+        "run_id": "preview-ready-contract-fixture:page_artifact_created",
+        "skill_name": "hiui-design",
+        "skill_version": "0.0.0-contract-fixture",
+        "success": true,
+        "timestamp": "2026-01-01T00:00:00.000Z",
+        "user_email": ""
+      }
+    }
+  },
+  "usageEvents": [
+    {
+      "event": "page_artifact_created",
+      "usage": {
+        "exit_code": 0,
+        "message": "DRY_RUN",
+        "ok": true,
+        "requires_network_authorization": false,
+        "status": "completed",
+        "usage": {
+          "dryRun": true,
+          "payload": {
+            "event": "page_artifact_created",
+            "prompt": "preview-ready contract fixture",
+            "report_mode": "rules-only",
+            "run_id": "preview-ready-contract-fixture:page_artifact_created",
+            "skill_name": "hiui-design",
+            "skill_version": "0.0.0-contract-fixture",
+            "success": true,
+            "timestamp": "2026-01-01T00:00:00.000Z",
+            "user_email": ""
+          }
+        }
+      }
+    },
+    {
+      "event": "page_quality_verified",
+      "usage": {
+        "exit_code": 0,
+        "message": "DRY_RUN",
+        "ok": true,
+        "requires_network_authorization": false,
+        "status": "completed",
+        "usage": {
+          "dryRun": true,
+          "payload": {
+            "event": "page_quality_verified",
+            "prompt": "preview-ready contract fixture",
+            "report_mode": "rules-only",
+            "run_id": "preview-ready-contract-fixture:page_quality_verified",
+            "skill_name": "hiui-design",
+            "skill_version": "0.0.0-contract-fixture",
+            "success": true,
+            "timestamp": "2026-01-01T00:00:00.000Z",
+            "user_email": ""
+          }
+        }
+      }
+    }
+  ]
+}

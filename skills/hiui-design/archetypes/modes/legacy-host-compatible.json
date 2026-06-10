@@ -1,0 +1,7 @@
+{
+  "id": "legacy-host-compatible",
+  "label": "Legacy host compatible",
+  "runtimePolicy": "Do not import the standard shell runtime; preserve example semantics through a host-native adapter.",
+  "allowsShellRuntimeImports": false,
+  "requiresAdapterContract": true
+}

@@ -1,0 +1,46 @@
+{
+  "id": "drawer-form-core",
+  "version": 1,
+  "pageTypeId": "drawer-form",
+  "label": "Drawer form archetype",
+  "shell": "ProFormDrawer",
+  "examplePath": "examples/host-integration/src/pages/drawer-form.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "drawer-shell",
+    "drawer-body",
+    "form-body",
+    "drawer-footer"
+  ],
+  "requiredRegions": [
+    "header",
+    "drawer-body",
+    "form-body",
+    "drawer-footer"
+  ],
+  "requiredOwnershipRoles": [],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "form-fields",
+    "validation-rules",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "render form body outside one drawer shell",
+    "move footer actions into the form body",
+    "replace drawer shell with a generic page container"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/drawer-form" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/drawer-form" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/drawer-form" }
+  }
+}

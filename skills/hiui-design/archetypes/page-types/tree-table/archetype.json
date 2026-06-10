@@ -1,0 +1,54 @@
+{
+  "id": "tree-table-core",
+  "version": 1,
+  "pageTypeId": "tree-table",
+  "label": "Tree table archetype",
+  "shell": "TablePageFrame",
+  "examplePath": "examples/host-integration/src/pages/tree-table.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination",
+    "tree-column"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "query-fields",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "translate tree-table into left-tree-right-table split",
+    "split query filter and table into separate workspaces",
+    "generic main/body contract regions"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/tree-table" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/tree-table" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/tree-table" }
+  }
+}

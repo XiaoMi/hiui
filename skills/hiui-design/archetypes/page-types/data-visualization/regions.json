@@ -1,0 +1,11 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title and actions." },
+    { "id": "white-body", "order": 2, "summary": "Single analytics workspace." },
+    { "id": "stat-section", "order": 3, "summary": "Top stat card overview." },
+    { "id": "query-filter", "order": 4, "summary": "Inline filter region." },
+    { "id": "chart-section", "order": 5, "summary": "Primary chart workspace." },
+    { "id": "table", "order": 6, "summary": "Detail table section." },
+    { "id": "pagination", "order": 7, "summary": "Pagination aligned with the detail table." }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "full-page-detail-core",
+  "version": 1,
+  "pageTypeId": "full-page-detail",
+  "label": "Full-page detail archetype",
+  "shell": "ProDetailPage",
+  "examplePath": "examples/host-integration/src/pages/full-page-detail.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "detail-body",
+    "leading-back"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "detail-body"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "detail-fields",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "hand-roll detail layout without detail semantics",
+    "multiple white cards around one detail workspace",
+    "generic body/content contract regions"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/full-page-detail" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/full-page-detail" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/full-page-detail" }
+  }
+}

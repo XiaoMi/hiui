@@ -1,0 +1,11 @@
+{
+  "archetypeId": "<archetype-id>",
+  "pageTypeId": "<page-type-id>",
+  "hostArchetypePath": "src/views/<host-archetype>.tsx",
+  "regionMapping": [],
+  "ownershipMode": "page-surface-owns-workspace",
+  "ownershipMapping": [],
+  "requiredCapabilities": [],
+  "allowedOverrides": [],
+  "forbiddenEscapes": []
+}

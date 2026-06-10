@@ -1,0 +1,17 @@
+{
+  "allowed": [
+    "title",
+    "route",
+    "query-fields",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbidden": [
+    "shell-type",
+    "region-count",
+    "region-nesting",
+    "workspace-ownership",
+    "pagination-mount-semantics"
+  ]
+}

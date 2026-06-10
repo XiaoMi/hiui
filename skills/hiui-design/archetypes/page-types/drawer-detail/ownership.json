@@ -1,0 +1,8 @@
+{
+  "requiredOwnershipRoles": [],
+  "legalOwnershipModes": [],
+  "invariants": [
+    "drawer-body and drawer-footer stay inside one shell",
+    "detail-body owns the drawer content flow without spawning a second container"
+  ]
+}

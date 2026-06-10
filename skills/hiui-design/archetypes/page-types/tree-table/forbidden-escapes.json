@@ -1,0 +1,7 @@
+{
+  "escapes": [
+    "Translate a tree-table into a split workspace.",
+    "Move tree semantics out of the table region.",
+    "Wrap the table in an extra nested white-body."
+  ]
+}

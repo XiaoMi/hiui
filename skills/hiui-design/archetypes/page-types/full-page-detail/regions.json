@@ -1,0 +1,7 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title and leading back area." },
+    { "id": "white-body", "order": 2, "summary": "Single white detail workspace." },
+    { "id": "detail-body", "order": 3, "summary": "Main detail content region." }
+  ]
+}

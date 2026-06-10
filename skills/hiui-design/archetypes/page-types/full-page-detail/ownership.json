@@ -1,0 +1,9 @@
+{
+  "requiredOwnershipRoles": ["content-slot", "white-body", "outer-padding", "main-scroll"],
+  "legalOwnershipModes": ["host-slot-owns-workspace", "page-surface-owns-workspace"],
+  "invariants": [
+    "detail-body stays inside one white-body workspace",
+    "outer padding has one owner",
+    "main scroll belongs to the detail workspace only once"
+  ]
+}
