@@ -1,0 +1,59 @@
+{
+  "status": "started",
+  "pageType": {
+    "id": "table-basic",
+    "label": "普通表格"
+  },
+  "mode": "rules-only",
+  "requestedPagePath": "src/pages/orders/index.tsx",
+  "pagePath": "src/pages/orders/index.tsx",
+  "examplePath": "examples/host-integration/src/pages/table-basic.tsx",
+  "hostArchetypePath": "src/pages/orders/host-archetype.tsx",
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "localBypasses": [],
+  "scaffoldArtifacts": [
+    {
+      "filePath": "src/pages/orders/index.tsx"
+    }
+  ],
+  "contract": {
+    "jsonPath": ".local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.json",
+    "markdownPath": ".local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.md",
+    "workflow": {
+      "status": "started",
+      "deliveryStatus": "not-finalized",
+      "preflightStatus": "not-run",
+      "sourceGateStatus": "not-run",
+      "doctorStatus": "not-run",
+      "runtimeSmokeStatus": "not-required",
+      "sourceSnapshotHash": "start-page-contract-fixture-source"
+    },
+    "strictTemplateRequired": true,
+    "templateStatus": "executable",
+    "archetypeTemplatePath": "templates/archetypes/rules-only/table-basic"
+  },
+  "nextSteps": [
+    "replace TODO contract targets",
+    "run typical-page:preflight",
+    "complete delivery with typical-page:finalize-page"
+  ]
+}

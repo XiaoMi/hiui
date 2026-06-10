@@ -1,0 +1,7 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title/header area." },
+    { "id": "white-body", "order": 2, "summary": "Single feedback workspace." },
+    { "id": "feedback-panel", "order": 3, "summary": "Primary centered feedback panel." }
+  ]
+}

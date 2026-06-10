@@ -1,0 +1,118 @@
+.root {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.pageSurface {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.detailBody {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0%;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.workspace {
+  display: flex;
+  flex: 1 1 0%;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  border: 1px solid var(--hi-v5-color-gray-200, #edeff2);
+  border-radius: 12px;
+  background: var(--hi-v5-color-white, #fff);
+}
+
+.leftPane {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+  border-inline-end: 1px solid var(--hi-v5-color-gray-200, #edeff2);
+  background: var(--hi-v5-color-gray-50, #f7f9fc);
+}
+
+.leftPaneInner {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.splitter {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 6px;
+  cursor: col-resize;
+  background: transparent;
+}
+
+.splitter::after {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 50%;
+  width: 1px;
+  background: var(--hi-v5-color-gray-200, #edeff2);
+  content: '';
+  transform: translateX(-50%);
+}
+
+.splitter:hover::after,
+.splitter:focus-visible::after {
+  width: 2px;
+  background: var(--hi-v5-color-primary-300, #7aa7ff);
+}
+
+.splitterDisabled {
+  cursor: default;
+}
+
+.splitterDisabled:hover::after,
+.splitterDisabled:focus-visible::after {
+  width: 1px;
+  background: var(--hi-v5-color-gray-200, #edeff2);
+}
+
+.rightPane {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  background: var(--hi-v5-color-white, #fff);
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    flex-direction: column;
+  }
+
+  .leftPane {
+    inline-size: 100% !important;
+    border-inline-end: none;
+    border-block-end: 1px solid var(--hi-v5-color-gray-200, #edeff2);
+  }
+
+  .splitter {
+    display: none;
+  }
+}

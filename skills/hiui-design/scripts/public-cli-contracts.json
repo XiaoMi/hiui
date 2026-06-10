@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "description": "Machine-readable contract tiers for hiui-design scripts. Shipped machine-public entries must keep stable JSON fixtures.",
+  "tiers": {
+    "machine-public": [
+      {
+        "id": "plan-page-task",
+        "script": "scripts/plan-page-task.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--change",
+          "新增一个数据看板页面",
+          "--page-type",
+          "table-stat",
+          "--mode",
+          "rules-only",
+          "--target",
+          "<skillRoot>",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/plan-page-task.table-stat.json",
+        "requiredTopLevelFields": [
+          "version",
+          "contractVersion",
+          "taskLevel",
+          "mode",
+          "pageType",
+          "isNonTypical",
+          "layoutOverlayRequired",
+          "requiredDocs",
+          "requiredCommands",
+          "conditionalCommands",
+          "contractFieldsNeeded",
+          "kickoffSkeleton",
+          "runtimeSmokePlan",
+          "usagePolicy",
+          "factsSource",
+          "canStartImplementation",
+          "blockingReasons",
+          "decisionTracePath"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": ["taskLevel"],
+            "fields": ["id", "source"]
+          },
+          {
+            "path": ["mode"],
+            "fields": ["id", "source"]
+          },
+          {
+            "path": ["pageType"],
+            "fields": ["id", "label", "source"]
+          },
+          {
+            "path": ["runtimeSmokePlan"],
+            "fields": ["required", "command"]
+          },
+          {
+            "path": ["usagePolicy"],
+            "fields": ["mode", "source", "requireNetworkAuthorization"]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-runtime-smoke",
+        "script": "scripts/typical-page-runtime-smoke.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--url",
+          "http://runtime-smoke.fixture.invalid/visual-missing",
+          "--profile",
+          "visual",
+          "--viewport",
+          "390x844",
+          "--contract-fixture",
+          "visual-missing",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/runtime-smoke.visual-missing.json",
+        "expectedExitCode": 1,
+        "requiredTopLevelFields": [
+          "status",
+          "profile",
+          "page",
+          "pageType",
+          "url",
+          "sourceSnapshotHash",
+          "viewports",
+          "checks",
+          "visualEvidence",
+          "artifacts"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": ["visualEvidence"],
+            "fields": ["required", "status", "baselinePolicy", "screenshotDir", "screenshots"]
+          },
+          {
+            "path": ["artifacts"],
+            "fields": ["markdownReportPath", "jsonReportPath", "screenshots"]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-preview-ready",
+        "script": "scripts/typical-page-preview-ready.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page",
+          "src/pages/orders/index.tsx",
+          "--report-mode",
+          "rules-only",
+          "--prompt",
+          "preview-ready contract fixture",
+          "--contract-fixture",
+          "quality-pass"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/preview-ready.quality-pass.json",
+        "requiredTopLevelFields": [
+          "ok",
+          "previewReady",
+          "checks",
+          "normalizedPagePath",
+          "pageTypeId",
+          "qualityChecks",
+          "qualityVerified",
+          "requiredRegions",
+          "runtimeSmokeRequired",
+          "runtimeSmokeRequirementReason",
+          "sourceSnapshotHash",
+          "usedStaticFallback",
+          "usage",
+          "usageEvents"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": ["usage"],
+            "fields": ["exit_code", "message", "ok", "requires_network_authorization", "status", "usage"]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-start-page",
+        "script": "scripts/typical-page-start-page.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page-type",
+          "table-basic",
+          "--mode",
+          "rules-only",
+          "--page",
+          "src/pages/orders/index.tsx",
+          "--archetype",
+          "src/pages/orders/host-archetype.tsx",
+          "--contract-fixture",
+          "table-basic-started",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/start-page.table-basic-started.json",
+        "requiredTopLevelFields": [
+          "status",
+          "pageType",
+          "mode",
+          "requestedPagePath",
+          "pagePath",
+          "examplePath",
+          "hostArchetypePath",
+          "requiredRegions",
+          "requiredOwnershipRoles",
+          "requiredCapabilities",
+          "localBypasses",
+          "scaffoldArtifacts",
+          "contract",
+          "nextSteps"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": ["pageType"],
+            "fields": ["id", "label"]
+          },
+          {
+            "path": ["contract"],
+            "fields": ["jsonPath", "markdownPath", "workflow", "strictTemplateRequired", "templateStatus", "archetypeTemplatePath"]
+          },
+          {
+            "path": ["contract", "workflow"],
+            "fields": ["status", "deliveryStatus", "preflightStatus", "sourceGateStatus", "doctorStatus", "runtimeSmokeStatus", "sourceSnapshotHash"]
+          }
+        ]
+      }
+    ],
+    "human-cli": [
+      "setup-for-designers",
+      "apply-in-current-project",
+      "typical-page-doctor"
+    ],
+    "maintainer-only": [
+      "release-skill-archive",
+      "sync-global-skill",
+      "manage-usage-service"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "feedback-status-core",
+  "version": 1,
+  "pageTypeId": "feedback-status",
+  "label": "Feedback status archetype",
+  "shell": "FeedbackStatePanel",
+  "examplePath": "examples/host-integration/src/pages/empty-state.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "feedback-panel"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "feedback-panel"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "feedback-copy",
+    "action-copy",
+    "api-functions"
+  ],
+  "forbiddenEscapes": [
+    "reuse list or form shells for feedback pages",
+    "spawn multiple white surfaces around one feedback panel",
+    "collapse feedback-panel into generic body content"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/feedback-status" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/feedback-status" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/feedback-status" }
+  }
+}

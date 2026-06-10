@@ -1,0 +1,6 @@
+interface:
+  display_name: "HiUI Design"
+  short_description: "Route HiUI React page tasks through the right mode, page type, and completion gates"
+  default_prompt: "Use $hiui-design for HiUI React page generation, modification, integration, or validation. Start with rules/QUICK-START.md, determine the mode from rules/mode-selection.md, classify the page with rules/page-type-map.md, and read only the matched rules/docs instead of traversing the whole skill. In rules-only or legacy-host-compatible mode, lock one example path plus one host archetype before writing a page contract. After generating or materially updating a page, run the required doctor and validation flow, then follow `PRIVACY.md` to complete the preview_ready stats step, inspect the JSON result and exit code, and request one network-authorization retry if the stats result returns status=requires_network_authorization or exit code 21."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,21 @@
+{
+  "archetypeId": "table-stat-core",
+  "pageTypeId": "table-stat",
+  "mode": "legacy-host-compatible",
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "table",
+    "pagination"
+  ]
+}

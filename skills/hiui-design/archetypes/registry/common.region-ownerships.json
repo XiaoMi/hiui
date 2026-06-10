@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-02",
+  "ownershipModes": [
+    {
+      "id": "host-slot-owns-workspace",
+      "summary": "The host content slot owns the white-body or split workspace."
+    },
+    {
+      "id": "page-surface-owns-workspace",
+      "summary": "The page-level surface owns the white-body while the host slot is neutralized."
+    }
+  ],
+  "ownershipRoles": [
+    {
+      "id": "content-slot",
+      "summary": "The host layout content slot that receives the page root."
+    },
+    {
+      "id": "white-body",
+      "summary": "The single white working surface for list, detail, or edit content."
+    },
+    {
+      "id": "outer-padding",
+      "summary": "The single owner of outer padding and workspace inset."
+    },
+    {
+      "id": "main-scroll",
+      "summary": "The single owner of the main vertical scrolling chain."
+    }
+  ],
+  "invariants": [
+    "A page can bind exactly one example page.",
+    "A page can bind exactly one host archetype.",
+    "Outer padding must have exactly one owner.",
+    "Main vertical scroll must have exactly one owner.",
+    "The host content slot and white-body cannot both own padding/background/radius/overflow."
+  ]
+}

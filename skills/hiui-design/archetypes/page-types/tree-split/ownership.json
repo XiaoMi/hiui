@@ -1,0 +1,9 @@
+{
+  "requiredOwnershipRoles": ["content-slot", "outer-padding", "main-scroll"],
+  "legalOwnershipModes": ["host-slot-owns-workspace", "page-surface-owns-workspace"],
+  "invariants": [
+    "left tree and right list stay inside one split-workspace",
+    "outer padding has one owner",
+    "main scroll belongs to the split workspace only once"
+  ]
+}

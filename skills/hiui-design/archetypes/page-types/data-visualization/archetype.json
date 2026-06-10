@@ -1,0 +1,58 @@
+{
+  "id": "data-visualization-core",
+  "version": 1,
+  "pageTypeId": "data-visualization",
+  "label": "Data visualization archetype",
+  "shell": "StatListPageFrame",
+  "examplePath": "examples/host-integration/src/pages/data-visualization.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "chart-section",
+    "table",
+    "pagination"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "stat-section",
+    "query-filter",
+    "chart-section",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "query-fields",
+    "chart-specs",
+    "table-columns",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "split charts and detail table into multiple page shells",
+    "rebuild analytics page as generic stat page plus free-form charts",
+    "second white-body around chart section"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/data-visualization" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/data-visualization" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/data-visualization" }
+  }
+}

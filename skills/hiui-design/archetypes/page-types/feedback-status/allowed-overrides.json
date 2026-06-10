@@ -1,0 +1,4 @@
+{
+  "allowed": ["title", "route", "feedback-copy", "action-copy", "api-functions"],
+  "forbidden": ["shell-type", "region-count", "region-nesting", "workspace-ownership", "borrowed-list-or-form-semantics"]
+}

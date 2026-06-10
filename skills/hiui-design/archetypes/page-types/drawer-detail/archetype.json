@@ -1,0 +1,45 @@
+{
+  "id": "drawer-detail-core",
+  "version": 1,
+  "pageTypeId": "drawer-detail",
+  "label": "Drawer detail archetype",
+  "shell": "ProDetailDrawer",
+  "examplePath": "examples/host-integration/src/pages/drawer-detail.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "drawer-shell",
+    "drawer-body",
+    "detail-body",
+    "drawer-footer"
+  ],
+  "requiredRegions": [
+    "header",
+    "drawer-body",
+    "detail-body",
+    "drawer-footer"
+  ],
+  "requiredOwnershipRoles": [],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "detail-fields",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "render detail body outside one drawer shell",
+    "move footer actions into the detail body",
+    "replace drawer shell with a generic page container"
+  ],
+  "modeAdapters": {
+    "host-integration": { "templateDir": "templates/archetypes/host-integration/drawer-detail" },
+    "rules-only": { "templateDir": "templates/archetypes/rules-only/drawer-detail" },
+    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/drawer-detail" }
+  }
+}

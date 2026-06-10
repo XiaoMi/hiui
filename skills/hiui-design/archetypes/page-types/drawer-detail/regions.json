@@ -1,0 +1,8 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Drawer title/header area." },
+    { "id": "drawer-body", "order": 2, "summary": "Main drawer body shell." },
+    { "id": "detail-body", "order": 3, "summary": "Detail region inside the drawer body." },
+    { "id": "drawer-footer", "order": 4, "summary": "Drawer action footer." }
+  ]
+}

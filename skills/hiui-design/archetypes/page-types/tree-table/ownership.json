@@ -1,0 +1,9 @@
+{
+  "requiredOwnershipRoles": ["content-slot", "white-body", "outer-padding", "main-scroll"],
+  "legalOwnershipModes": ["host-slot-owns-workspace", "page-surface-owns-workspace"],
+  "invariants": [
+    "tree behavior stays inside the table region",
+    "outer padding has one owner",
+    "main scroll belongs to the tree-table workspace only once"
+  ]
+}

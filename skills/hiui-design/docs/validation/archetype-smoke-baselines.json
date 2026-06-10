@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "requiredPageTypes": [
+    "data-visualization",
+    "table-stat",
+    "full-page-edit",
+    "full-page-detail"
+  ],
+  "baselines": [
+    {
+      "pageTypeId": "data-visualization",
+      "screenshotKey": "data-visualization-core",
+      "viewport": {
+        "width": 1440,
+        "height": 1200
+      },
+      "routeSuggestion": "chart/common/data-visualization",
+      "examplePath": "examples/host-integration/src/pages/data-visualization.tsx",
+      "assertions": [
+        "white-body remains continuous from stat-section through chart-section into the table region",
+        "page keeps page-level scrolling instead of clipping charts/table into a local non-scroll workspace",
+        "detail table remains visible below the filter region instead of being truncated by stat-page height-chain styles"
+      ]
+    },
+    {
+      "pageTypeId": "table-stat",
+      "screenshotKey": "table-stat-core",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "routeSuggestion": "table/common/table-stat",
+      "examplePath": "examples/host-integration/src/pages/table-stat.tsx",
+      "assertions": [
+        "stat-section remains visible as real white stat cards",
+        "query-filter keeps QueryFilter semantics instead of raw primitive controls",
+        "pagination stays inside the same white-body workspace"
+      ]
+    },
+    {
+      "pageTypeId": "full-page-edit",
+      "screenshotKey": "full-page-edit-core",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "routeSuggestion": "form/typical/edit",
+      "examplePath": "examples/host-integration/src/pages/full-page-edit.tsx",
+      "assertions": [
+        "header, white-body, form scroll body, and sticky footer remain one shell",
+        "page does not regress into a grey host plus one floating white card",
+        "footer stays bottom-docked while body owns scrolling"
+      ]
+    },
+    {
+      "pageTypeId": "full-page-detail",
+      "screenshotKey": "full-page-detail-core",
+      "viewport": {
+        "width": 1440,
+        "height": 1024
+      },
+      "routeSuggestion": "detail/typical/page",
+      "examplePath": "examples/host-integration/src/pages/full-page-detail.tsx",
+      "assertions": [
+        "header stays 60px tall and vertically centered",
+        "Descriptions keeps vertical placement with three columns",
+        "detail groups stay inside one white-body workspace without extra summary cards"
+      ]
+    }
+  ]
+}

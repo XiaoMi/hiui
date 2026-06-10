@@ -1,0 +1,60 @@
+{
+  "id": "full-page-edit-core",
+  "version": 1,
+  "pageTypeId": "full-page-edit",
+  "label": "Full-page edit archetype",
+  "shell": "ProEditPage",
+  "examplePath": "examples/host-integration/src/pages/full-page-edit.tsx",
+  "requiredStartFromExample": true,
+  "structuralContract": {
+    "singleExample": true,
+    "singleHostArchetype": true,
+    "singleWorkspaceOwner": true,
+    "singleScrollChain": true
+  },
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "scroll-body",
+    "sticky-footer",
+    "leading-back"
+  ],
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "form-body",
+    "footer"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "allowedOverrides": [
+    "title",
+    "route",
+    "form-fields",
+    "validation-rules",
+    "api-functions",
+    "button-copy"
+  ],
+  "forbiddenEscapes": [
+    "Card + Form + footer",
+    "Layout.footer as edit action carrier",
+    "header/body/footer assembled from generic primitives",
+    "independent white cards per top-level form section",
+    "main scroll on both host slot and form body"
+  ],
+  "modeAdapters": {
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/full-page-edit"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/full-page-edit"
+    },
+    "legacy-host-compatible": {
+      "templateDir": "templates/archetypes/legacy-host-compatible/full-page-edit"
+    }
+  }
+}

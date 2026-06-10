@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-02",
+  "capabilities": [
+    {
+      "id": "layout-search-table-adapter",
+      "label": "Single white-body list workspace",
+      "pageTypes": [
+        "table-basic",
+        "tree-table"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "white-body",
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "forbiddenPatterns": [
+        "hand-written PageHeader + Search + Table + Pagination",
+        "multiple white cards around one list workspace",
+        "generic main/body container names in contract"
+      ]
+    },
+    {
+      "id": "page-header-form-footer-adapter",
+      "label": "Page header + form body + sticky footer",
+      "pageTypes": [
+        "full-page-edit"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "white-body",
+        "scroll-body",
+        "sticky-footer"
+      ],
+      "forbiddenPatterns": [
+        "Card + Form + footer",
+        "Layout.footer for edit actions",
+        "independent white card wrappers per section"
+      ]
+    },
+    {
+      "id": "layout-search-stat-table-adapter",
+      "label": "Single white-body stat/search/table workspace",
+      "pageTypes": [
+        "table-stat",
+        "data-visualization"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "white-body",
+        "stat-section",
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "forbiddenPatterns": [
+        "hand-written PageHeader + Search + Table + Pagination",
+        "stat/search/table split across multiple white cards",
+        "fixed-column config declared only inside columns"
+      ]
+    },
+    {
+      "id": "split-workspace-adapter",
+      "label": "Split workspace with left tree and right list",
+      "pageTypes": [
+        "tree-split"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "split-workspace",
+        "left-tree",
+        "right-list",
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "forbiddenPatterns": [
+        "split left tree and right list into independent pages",
+        "second outer scroll owner outside the split workspace",
+        "collapse split regions into one generic main body"
+      ]
+    },
+    {
+      "id": "drawer-shell-adapter",
+      "label": "Drawer shell with body and footer",
+      "pageTypes": [
+        "drawer-form",
+        "drawer-detail"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "drawer-shell",
+        "drawer-body",
+        "drawer-footer"
+      ],
+      "forbiddenPatterns": [
+        "free-floating modal body without one drawer shell",
+        "move drawer footer actions into body content",
+        "replace drawer shell with generic page container"
+      ]
+    },
+    {
+      "id": "page-header-detail-adapter",
+      "label": "Page header + detail body",
+      "pageTypes": [
+        "full-page-detail"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "white-body",
+        "detail-body",
+        "leading-back"
+      ],
+      "forbiddenPatterns": [
+        "custom detail grid without detail semantics",
+        "multiple white cards around one detail workspace",
+        "generic content/body contract regions"
+      ]
+    },
+    {
+      "id": "feedback-panel-adapter",
+      "label": "Page header + feedback panel workspace",
+      "pageTypes": [
+        "feedback-status"
+      ],
+      "supportedModes": [
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredCapabilities": [
+        "header-slot",
+        "white-body",
+        "feedback-panel"
+      ],
+      "forbiddenPatterns": [
+        "reuse list or form shells for feedback pages",
+        "multiple working surfaces around one feedback panel",
+        "collapse feedback panel into generic empty div"
+      ]
+    }
+  ]
+}

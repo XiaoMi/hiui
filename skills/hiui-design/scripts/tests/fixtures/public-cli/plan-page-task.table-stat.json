@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "contractVersion": 1,
+  "taskLevel": {
+    "id": "new-page-or-rearchitecture",
+    "source": "inferred-from-change"
+  },
+  "mode": {
+    "id": "rules-only",
+    "source": "explicit"
+  },
+  "pageType": {
+    "id": "table-stat",
+    "label": "数据统计表",
+    "source": "explicit"
+  },
+  "isNonTypical": false,
+  "layoutOverlayRequired": false,
+  "requiredDocs": [
+    "rules/QUICK-START.md",
+    "rules/mode-selection.md",
+    "rules/page-type-map.md",
+    "rules/contract-regions.md",
+    "rules/generation-rules.md",
+    "docs/generation/ai-kickoff-template.md",
+    "docs/generation/figma-page-rules.md",
+    "docs/generation/rules-only-component-matrix.md",
+    "docs/generation/i18n-baseline.md"
+  ],
+  "requiredCommands": [
+    {
+      "script": "typical-page:select-archetype",
+      "args": [
+        "--page-type <page-type>"
+      ],
+      "when": "after page type is selected"
+    },
+    {
+      "script": "typical-page:start-page",
+      "args": [
+        "--page-type <page-type>",
+        "--page <new-page>"
+      ],
+      "when": "before implementation"
+    },
+    {
+      "script": "typical-page:preflight",
+      "args": [
+        "--page <new-page>"
+      ],
+      "when": "before business JSX/detail implementation"
+    },
+    {
+      "script": "typical-page:source-gate",
+      "args": [
+        "--file <new-page>"
+      ],
+      "when": "after implementation"
+    },
+    {
+      "script": "typical-page:doctor",
+      "args": [],
+      "when": "after implementation"
+    },
+    {
+      "script": "typical-page:finalize-page",
+      "args": [
+        "--page-type <page-type>",
+        "--page <new-page>",
+        "--archetype <host-archetype-path>",
+        "--region <name=target>"
+      ],
+      "when": "before claiming managed delivery complete"
+    }
+  ],
+  "conditionalCommands": [
+    {
+      "script": "typical-page:runtime-smoke",
+      "args": [
+        "--page <new-page>",
+        "--url <url>"
+      ],
+      "when": "runtime smoke is required by page type, scroll strategy, chart-section, or split pane contract"
+    },
+    {
+      "script": "typical-page:preview-ready",
+      "args": [
+        "--page <new-page>",
+        "--url <url>",
+        "--report-mode <mode>",
+        "--prompt <prompt>"
+      ],
+      "when": "before final response after a renderable page preview exists"
+    }
+  ],
+  "contractFieldsNeeded": [
+    "generatedPagePath",
+    "pageTypeId",
+    "archetypeMode",
+    "examplePath",
+    "hostArchetypePath",
+    "regionMapping",
+    "ownershipMode",
+    "ownershipMapping",
+    "layoutStrategy",
+    "layoutArchetype",
+    "workflow",
+    "shellInheritanceStrategy",
+    "shellCarrierPath"
+  ],
+  "kickoffSkeleton": {
+    "mode": "rules-only",
+    "pageType": "table-stat",
+    "taskLevel": "new-page-or-rearchitecture",
+    "examplePath": "examples/host-integration/src/pages/table-stat.tsx",
+    "templateDir": "templates/archetypes/rules-only/table-stat"
+  },
+  "runtimeSmokePlan": {
+    "required": true,
+    "command": "typical-page:runtime-smoke --page <new-page> --url <url>"
+  },
+  "usagePolicy": {
+    "mode": "follow-workspace-policy",
+    "source": "`PRIVACY.md`",
+    "requireNetworkAuthorization": "when usage script exits 21"
+  },
+  "factsSource": {
+    "mode": "rules/mode-selection.md",
+    "pageTypes": "rules/common.page-types.json",
+    "archetypes": "archetypes/page-types/*/archetype.json",
+    "usagePolicy": "`PRIVACY.md`"
+  },
+  "canStartImplementation": true,
+  "blockingReasons": [],
+  "decisionTracePath": ""
+}

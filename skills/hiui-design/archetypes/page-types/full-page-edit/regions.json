@@ -1,0 +1,24 @@
+{
+  "regions": [
+    {
+      "id": "header",
+      "order": 1,
+      "summary": "Header title area with leading back affordance."
+    },
+    {
+      "id": "white-body",
+      "order": 2,
+      "summary": "Single white working surface that spans to the footer."
+    },
+    {
+      "id": "form-body",
+      "order": 3,
+      "summary": "The only scrollable edit body for the form groups."
+    },
+    {
+      "id": "footer",
+      "order": 4,
+      "summary": "Sticky bottom action bar that remains inside the page shell."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title and actions." },
+    { "id": "split-workspace", "order": 2, "summary": "Shared split workspace shell." },
+    { "id": "left-tree", "order": 3, "summary": "Left-side tree panel." },
+    { "id": "right-list", "order": 4, "summary": "Right-side list workspace." },
+    { "id": "query-filter", "order": 5, "summary": "Filter region for the right list." },
+    { "id": "table", "order": 6, "summary": "Right-side main table." },
+    { "id": "pagination", "order": 7, "summary": "Pagination for the right-side list." }
+  ]
+}

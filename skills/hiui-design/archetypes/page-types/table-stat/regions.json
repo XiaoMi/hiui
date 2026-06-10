@@ -1,0 +1,34 @@
+{
+  "regions": [
+    {
+      "id": "header",
+      "order": 1,
+      "summary": "Page title area plus right-aligned primary actions."
+    },
+    {
+      "id": "white-body",
+      "order": 2,
+      "summary": "The single white workspace that contains stats, filter, table, and pagination."
+    },
+    {
+      "id": "stat-section",
+      "order": 3,
+      "summary": "Adaptive stat card grid that fills the available row first."
+    },
+    {
+      "id": "query-filter",
+      "order": 4,
+      "summary": "Inline filter area that stays inside the same white-body."
+    },
+    {
+      "id": "table",
+      "order": 5,
+      "summary": "Main result table area."
+    },
+    {
+      "id": "pagination",
+      "order": 6,
+      "summary": "Pagination area aligned with the white-body table shell."
+    }
+  ]
+}

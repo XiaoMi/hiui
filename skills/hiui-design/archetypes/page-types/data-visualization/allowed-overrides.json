@@ -1,0 +1,4 @@
+{
+  "allowed": ["title", "route", "query-fields", "chart-specs", "table-columns", "api-functions", "button-copy"],
+  "forbidden": ["shell-type", "region-count", "region-nesting", "workspace-ownership", "chart-shell-semantics"]
+}

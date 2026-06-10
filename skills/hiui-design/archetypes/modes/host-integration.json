@@ -1,0 +1,7 @@
+{
+  "id": "host-integration",
+  "label": "Host integration",
+  "runtimePolicy": "Mount the packaged shells directly and keep the host bridge contract intact.",
+  "allowsShellRuntimeImports": true,
+  "requiresAdapterContract": false
+}

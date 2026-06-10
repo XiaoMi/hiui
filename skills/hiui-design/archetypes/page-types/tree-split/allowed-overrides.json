@@ -1,0 +1,4 @@
+{
+  "allowed": ["title", "route", "tree-query", "query-fields", "table-columns", "api-functions", "button-copy"],
+  "forbidden": ["shell-type", "region-count", "region-nesting", "split-workspace-ownership", "tree-vs-list-boundary"]
+}

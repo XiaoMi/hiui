@@ -1,0 +1,9 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title and actions." },
+    { "id": "white-body", "order": 2, "summary": "Single tree-table workspace." },
+    { "id": "query-filter", "order": 3, "summary": "Inline filter region." },
+    { "id": "table", "order": 4, "summary": "Tree-enabled table area." },
+    { "id": "pagination", "order": 5, "summary": "Pagination area aligned with the table shell." }
+  ]
+}

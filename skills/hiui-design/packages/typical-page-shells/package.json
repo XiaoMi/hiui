@@ -1,0 +1,101 @@
+{
+  "name": "@hiui-design/typical-page-shells",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Reusable HiUI typical page shells extracted from hiui-design.",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.scss",
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./host": {
+      "types": "./dist/host.d.ts",
+      "import": "./dist/host.js"
+    },
+    "./pro-edit-page": {
+      "types": "./dist/pro-edit-page/index.d.ts",
+      "import": "./dist/pro-edit-page/index.js"
+    },
+    "./pro-detail-page": {
+      "types": "./dist/pro-detail-page/index.d.ts",
+      "import": "./dist/pro-detail-page/index.js"
+    },
+    "./pro-list-page": {
+      "types": "./dist/pro-list-page/index.d.ts",
+      "import": "./dist/pro-list-page/index.js"
+    },
+    "./pro-form-drawer": {
+      "types": "./dist/pro-form-drawer/index.d.ts",
+      "import": "./dist/pro-form-drawer/index.js"
+    },
+    "./pro-detail-drawer": {
+      "types": "./dist/pro-detail-drawer/index.d.ts",
+      "import": "./dist/pro-detail-drawer/index.js"
+    },
+    "./pro-table-page": {
+      "types": "./dist/pro-table-page/index.d.ts",
+      "import": "./dist/pro-table-page/index.js"
+    },
+    "./pro-stat-page": {
+      "types": "./dist/pro-stat-page/index.d.ts",
+      "import": "./dist/pro-stat-page/index.js"
+    },
+    "./pro-tree-split-page": {
+      "types": "./dist/pro-tree-split-page/index.d.ts",
+      "import": "./dist/pro-tree-split-page/index.js"
+    },
+    "./pro-edit-page/*": {
+      "types": "./dist/pro-edit-page/*.d.ts",
+      "import": "./dist/pro-edit-page/*.js"
+    },
+    "./pro-detail-page/*": {
+      "types": "./dist/pro-detail-page/*.d.ts",
+      "import": "./dist/pro-detail-page/*.js"
+    },
+    "./pro-list-page/*": {
+      "types": "./dist/pro-list-page/*.d.ts",
+      "import": "./dist/pro-list-page/*.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@hi-ui/classname": "5.0.0-experimental.0",
+    "@hi-ui/ellipsis-tooltip": "5.0.0-experimental.1",
+    "@hi-ui/empty-state": "5.0.0-experimental.1",
+    "@hi-ui/hiui": "5.0.0-experimental.6",
+    "@hi-ui/loading": "5.0.0-experimental.1",
+    "@hi-ui/query-filter": "5.0.0-experimental.2",
+    "@hi-ui/schema-core": "4.0.0-experimental.10",
+    "@hi-ui/schema-fields": "4.0.0-experimental.12",
+    "@hi-ui/schema-form": "4.0.0-experimental.4",
+    "@hi-ui/schema-group": "4.0.0-experimental.7",
+    "@hi-ui/schema-table": "4.0.0-experimental.4",
+    "@hi-ui/textarea": "5.0.0-experimental.3",
+    "@hi-ui/use-ref-state": "4.0.0-experimental.2",
+    "@hi-ui/use-subscription": "4.0.0-experimental.2",
+    "ahooks": "3.9.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "pack:check": "npm pack --dry-run",
+    "prepublishOnly": "npm run pack:check"
+  },
+  "license": "Apache-2.0"
+}

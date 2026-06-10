@@ -1,0 +1,17 @@
+{
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "legalOwnershipModes": [
+    "host-slot-owns-workspace",
+    "page-surface-owns-workspace"
+  ],
+  "invariants": [
+    "content-slot and white-body cannot both own outer padding",
+    "main-scroll must be assigned to the edit scroll body only once",
+    "footer must stay adjacent to the form-body inside one shell"
+  ]
+}

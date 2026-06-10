@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hiui-design/host-capabilities.schema.json",
+  "type": "object",
+  "required": [
+    "mode",
+    "capabilities"
+  ],
+  "properties": {
+    "mode": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,9 @@
+{
+  "regions": [
+    { "id": "header", "order": 1, "summary": "Page title and primary action area." },
+    { "id": "white-body", "order": 2, "summary": "Single white list workspace." },
+    { "id": "query-filter", "order": 3, "summary": "Inline filter area inside the white-body." },
+    { "id": "table", "order": 4, "summary": "Main result table area." },
+    { "id": "pagination", "order": 5, "summary": "Pagination area aligned with the table shell." }
+  ]
+}

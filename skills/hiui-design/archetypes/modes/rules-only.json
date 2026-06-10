@@ -1,0 +1,7 @@
+{
+  "id": "rules-only",
+  "label": "Rules only",
+  "runtimePolicy": "Translate the packaged example into one host archetype and emit an adapter contract.",
+  "allowsShellRuntimeImports": false,
+  "requiresAdapterContract": true
+}

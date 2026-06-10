@@ -1,0 +1,17 @@
+{
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "legalOwnershipModes": [
+    "host-slot-owns-workspace",
+    "page-surface-owns-workspace"
+  ],
+  "invariants": [
+    "stats, filter, table, and pagination stay inside one white-body",
+    "outer padding has one owner",
+    "main scroll belongs to the list workspace only once"
+  ]
+}

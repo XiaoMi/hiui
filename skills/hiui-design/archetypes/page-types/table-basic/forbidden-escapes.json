@@ -1,0 +1,7 @@
+{
+  "escapes": [
+    "Rebuild the page from PageHeader + Search + Table primitives.",
+    "Wrap the query filter and table in separate white cards.",
+    "Collapse query-filter/table/pagination into a generic body region."
+  ]
+}

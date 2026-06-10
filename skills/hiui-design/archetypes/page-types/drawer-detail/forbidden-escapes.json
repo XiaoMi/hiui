@@ -1,0 +1,7 @@
+{
+  "escapes": [
+    "Move footer actions into the drawer body.",
+    "Render the drawer detail as a generic page shell.",
+    "Collapse drawer-body and detail-body into one unlabeled generic body region."
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "version": 11,
+  "pageTypeId": "<page-type-id>",
+  "pageTypeLabel": "<page-type-label>",
+  "shell": "<shell-name>",
+  "generatedPagePath": "src/views/<page>/index.tsx",
+  "examplePath": "examples/host-integration/src/pages/<example>.tsx",
+  "hostArchetypePath": "src/views/<host-archetype>.tsx",
+  "archetypeId": "<archetype-id>",
+  "archetypeVersion": 1,
+  "archetypeMode": "<rules-only|legacy-host-compatible|host-integration>",
+  "strictExampleGeneration": true,
+  "i18nBaseline": {
+    "strategyDeclaration": "required-before-visible-copy",
+    "referenceDoc": "docs/generation/i18n-baseline.md",
+    "runtimePolicy": "reuse-project-runtime-or-init-hiui-design-bridge",
+    "bootstrapCommands": [
+      "auto via setup-for-designers/apply/bootstrap",
+      "pnpm typical-page:i18n:init (manual resync)",
+      "npm run typical-page:i18n:init (manual resync)"
+    ],
+    "syncCommand": "pnpm i18n:sync",
+    "supportedLocales": ["zh-CN", "zh-TW", "en-US", "id-ID", "th-TH", "de-DE", "ar-SA"],
+    "formatterPolicy": ["date", "number", "currency", "percent", "collation"],
+    "directionStrategy": "rtl-aware-logical-properties",
+    "textExpansionMultipliers": {
+      "zh-CN": 1,
+      "zh-TW": 1,
+      "en-US": 1.5,
+      "id-ID": 1.5,
+      "th-TH": 2,
+      "de-DE": 2.5,
+      "ar-SA": 2
+    }
+  },
+  "regionMapping": [],
+  "ownershipMode": "page-surface-owns-workspace",
+  "ownershipMapping": [],
+  "splitPaneContract": {
+    "enabled": false,
+    "leftPaneSelector": "",
+    "rightPaneSelector": "",
+    "tableRegionSelector": "",
+    "leftPaneScroll": "not-applicable",
+    "rightPaneScroll": "not-applicable"
+  },
+  "semanticContract": {
+    "queryFilterRegionRole": "table-query-filter",
+    "dimensionSwitchControl": "not-applicable",
+    "listShellComposition": "page-type-shell",
+    "spacingOwnership": "single-owner",
+    "areaChartFill": "not-applicable"
+  },
+  "adapterContract": {
+    "hostAdapterId": "<adapter-family-id>",
+    "hostAdapterLabel": "<adapter-family-label>",
+    "requiredCapabilities": [],
+    "allowedOverrides": [],
+    "forbiddenEscapes": []
+  },
+  "workflow": {
+    "status": "started",
+    "deliveryStatus": "not-finalized",
+    "startedAt": "<iso-timestamp>",
+    "finalizedAt": "",
+    "preflightStatus": "not-run",
+    "sourceGateStatus": "not-run",
+    "doctorStatus": "not-run",
+    "runtimeSmokeStatus": "not-required",
+    "runtimeSmokeSnapshotHash": "",
+    "runtimeSmokeReportPath": "",
+    "sourceSnapshotHash": "",
+    "staleReason": "",
+    "reportPath": "",
+    "smokeReportPath": "",
+    "lastCommand": "typical-page:start-page"
+  }
+}
