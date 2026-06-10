@@ -1,0 +1,6 @@
+interface:
+  display_name: "UX Walkthrough"
+  short_description: "Review code, URLs, or screenshots and generate a full walkthrough report with a local docx file"
+  default_prompt: "Use $ux-walkthrough to review a codebase, URL, or screenshots. Start with the precheck, follow the detected mode, and only treat the task as complete after both the full report and the local docx are ready."
+policy:
+  allow_implicit_invocation: true

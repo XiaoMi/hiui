@@ -1,0 +1,35 @@
+{
+  "title": "示例体验走查报告",
+  "project": "示例系统",
+  "source": "code",
+  "generated_at": "2026-06-09T15:10:00+08:00",
+  "scope": "packages/web + 下单流程",
+  "tech_stack": "React + HiUI",
+  "summary": {
+    "overall": "主流程可用，但关键操作提示不够清晰。",
+    "key_points": [
+      "主按钮反馈不足"
+    ],
+    "improvement_direction": "先强化主操作反馈，再收敛说明文案。"
+  },
+  "issues": [
+    {
+      "index": 1,
+      "severity": "P1",
+      "title": "主按钮缺少明确结果说明",
+      "category": "交互问题",
+      "location": "packages/web/src/pages/Home.tsx / 主操作区",
+      "description": "用户难以判断按钮点击后会直接提交还是仅保存草稿。",
+      "suggestion": "在主按钮附近补充结果说明，并强化点击后的状态反馈。",
+      "evidence_note": "基于代码推断，建议结合实际页面确认",
+      "images": []
+    }
+  ],
+  "appendix": {
+    "note": "该 fixture 仅用于脚本验证。",
+    "items": [
+      "无截图证据",
+      "用于 smoke test"
+    ]
+  }
+}
