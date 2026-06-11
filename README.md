@@ -44,7 +44,9 @@ npm install @hi-ui/core @hi-ui/组件名
 
 ## 使用
 
-组件使用详见[官方文档](https://xiaomi.github.io/hiui/docs/quick-start)。
+组件使用详见[官方文档](https://xiaomi.github.io/hiui/docs/quick-start)
+HiUI Design skill 使用详见[使用说明](https://xiaomi.github.io/hiui/docs/hiui-design-skill/)
+用户体验走查 skill 使用详见[使用说明](https://xiaomi.github.io/hiui/docs/hiui-check-skill/)
 
 ## 贡献
 
