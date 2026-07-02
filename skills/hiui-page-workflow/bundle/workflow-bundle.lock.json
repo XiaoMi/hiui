@@ -38,7 +38,7 @@
       "source": {
         "kind": "git",
         "repoUrl": "https://github.com/XiaoMi/hiui.git",
-        "ref": "refs/pull/3561/head",
+        "ref": "refs/pull/3562/head",
         "path": "skills/refine-product-requirements"
       }
     },
