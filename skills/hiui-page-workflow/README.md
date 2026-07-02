@@ -25,11 +25,14 @@
 
 ## Public Preview Install
 
-公开预览版目前通过公开 GitHub clone URL + ref + path 安装四个 skill。若你希望直接验证当前 bundle，可先拉取公开预览分支，然后从 skill 目录执行安装：
+公开预览版目前通过公开 GitHub clone URL + ref + path 安装四个 skill。若你希望直接验证当前 bundle，可先拉取 upstream PR 预览 ref，然后从 skill 目录执行安装：
 
 ```bash
-git clone --depth 1 --branch feat/add-hiui-page-workflow-skill https://github.com/1108guorui-web/hiui.git
-bash hiui/skills/hiui-page-workflow/install.sh
+git clone --depth 1 https://github.com/XiaoMi/hiui.git
+cd hiui
+git fetch --depth 1 origin refs/pull/3562/head
+git checkout --detach FETCH_HEAD
+bash skills/hiui-page-workflow/install.sh
 ```
 
 也可以在已有仓库副本中直接运行：
@@ -75,7 +78,7 @@ bash install.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是唯一真相源。公开预览版默认使用公开 GitHub clone URL 加显式 `ref` 和 `path` 来定位 skill 源码；在 upstream 合并前，部分下游 skill 会先指向公开 fork 分支，以保证 bundle 能拿到完整的 `skill.manifest.json` 和 public contracts。
+`workflow-bundle.lock.json` 是唯一真相源。公开预览版默认使用官方 GitHub 仓库加显式 `ref` 和 `path` 来定位 skill 源码；在 upstream 合并前，preview 版本通过 upstream PR ref 保持可安装，同时避免把个人 fork 作为默认公开依赖。
 
 ## Validation And Rollback
 

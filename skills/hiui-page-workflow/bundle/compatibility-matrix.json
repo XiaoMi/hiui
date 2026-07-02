@@ -3,7 +3,7 @@
   "bundleName": "hiui-page-workflow",
   "notes": [
     "The public preview bundle resolves all skill sources from public GitHub clone URLs plus explicit ref/path entries.",
-    "Until upstream merge is complete, preview refs may point to public fork branches that carry the required skill manifests."
+    "Until upstream merge is complete, preview refs may point to upstream pull-request refs that carry the required skill manifests."
   ],
   "testedBundles": [
     {

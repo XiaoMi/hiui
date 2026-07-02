@@ -4,6 +4,8 @@
 lib/
 !scripts/hi-build/lib/
 !scripts/hiui-cli/lib/
+!skills/hiui-page-workflow/scripts/lib/
+!skills/hiui-page-workflow/scripts/lib/*.mjs
 es/
 # locally packed package
 *.tgz

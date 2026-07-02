@@ -24,8 +24,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "feat/add-hiui-page-workflow-skill",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "refs/pull/3562/head",
         "path": "skills/hiui-page-workflow"
       }
     },
@@ -37,8 +37,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "feat/add-refine-product-requirements-skill",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "refs/pull/3561/head",
         "path": "skills/refine-product-requirements"
       }
     },
@@ -50,8 +50,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "feat/add-hiui-page-workflow-skill",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "refs/pull/3562/head",
         "path": "skills/hiui-design"
       }
     },
@@ -63,8 +63,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "feat/add-hiui-page-workflow-skill",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "refs/pull/3562/head",
         "path": "skills/ux-walkthrough"
       }
     }
