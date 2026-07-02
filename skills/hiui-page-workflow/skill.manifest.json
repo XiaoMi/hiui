@@ -37,7 +37,7 @@
     {
       "name": "ux-walkthrough",
       "required": true,
-      "versionRange": ">=1.1.2"
+      "versionRange": ">=1.0.1"
     }
   ]
 }

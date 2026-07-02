@@ -26,10 +26,10 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 
 若脚本输出：
 
-- `status=needs_input`
-- `reason=evidence_insufficient`
+- `status=failed`
+- `failure_preset=screenshot_evidence_insufficient`
 
-则应先引导用户补充截图，再继续推进走查。
+则不继续停留在口头判断，应直接说明失败原因，并等待用户补充可执行输入。
 
 ## 证据采集
 
@@ -41,7 +41,7 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 
 ## 问题判断重点
 
-以下仅为截图走查的额外关注点。正式问题判断时，仍需结合 `ux-checklist.md` 与 `issue-examples.md` 执行。
+以下仅为截图走查的额外关注点。正式问题判断时，仍需结合 `ux-checklist.md` 与命中条目 `related_examples` 指向的 `issue-examples/*` 锚点执行。
 
 - 页面类型：列表、表单、详情、仪表盘、弹窗等
 - 信息层级是否清楚
@@ -81,8 +81,8 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 - 没法确认交互时，不强行下定论
 - 优先输出用户能直接理解的问题
 - 截图是截图走查的必要输入和必要证据
-- 输出的每个问题原则上都应能对应到原图或标注图
-- `.docx` 的嵌图与排版方式统一按 `report-docx.md` 执行
+- 输出的每个确定问题都须有对应标注图与 bbox
+- `.docx` 的嵌图与排版方式统一按 `report-json.md` § DOCX 执行
 
 ## `report.json` 组织建议
 
@@ -94,11 +94,12 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 - 若问题只涉及很小控件，建议在 `images` 中优先放标注后的确认图，再放原图
 - 若结论属于“待交互验证”，可以保留在 `description` 或 `evidence_note` 中，但不要写成确定交互结论
 
-## 形成一次完整 `screenshot` 交付的条件
+## 记为一次完整 `source=screenshot` 使用的条件
 
 - 截图证据完整
 - 报告已输出
 - 本地 `.docx` 已生成
-- 若当前只是暂时截图不全、仍在等待用户补图，说明当前还不能形成完整交付
-- 若已确认截图证据不足且无法继续形成完整交付，直接说明失败原因，不要停留在模糊的中间状态
-- 若问题仍以“待交互验证”为主，但整体截图走查已经完整交付，仍可正常交付
+- 若当前只是暂时截图不全、仍在等待用户补图，属于 `needs_input`，暂不完成判断
+- 若已确认截图证据不足且无法继续形成完整交付，应说明失败原因和下一步，不要输出完整报告
+- 若问题仍以“待交互验证”为主，但整体截图走查已经完整交付，仍可记一次 `source=screenshot`
+- 具体完成判断按 `SKILL.md` 完成定义执行

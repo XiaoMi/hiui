@@ -216,7 +216,7 @@ Gate 最小状态：
 
 - `ux-smoke`：确认目标页面不是空白页、错误页、登录页或错误路由，并保留最终截图路径。
 - `ux-standard`：必须有可用证据，读取 `ux-walkthrough` 的 checklist、severity、ignore-list 和 issue examples；必须覆盖 P0 场景。
-- `ux-formal`：按 `ux-walkthrough` 的 `docs/onboarding/execution-sop.md` 执行完整 SOP，包括 precheck、证据门禁、report.json、docx 和 closeout。
+- `ux-formal`：按 `ux-walkthrough` 的 `SKILL.md` 主流程与 `docs/onboarding/gates.md` 执行完整 SOP，包括 precheck、证据门禁、report.json 和 docx 交付。
 
 证据不足时，不输出确定性 UX 问题；只能输出“待补充证据 / 待交互验证 / 无法判断”。
 

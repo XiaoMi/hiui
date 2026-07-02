@@ -5,7 +5,7 @@ UX Walkthrough - 本地 DOCX 生成标准入口
 用途：
 - 读取结构化 report.json
 - 统一生成本地 .docx 报告
-- 返回结构化 JSON 结果，供外层判断执行结果
+- 返回结构化 JSON 结果，供外层判断 docx 是否生成成功
 """
 
 from __future__ import annotations
@@ -18,12 +18,10 @@ from pathlib import Path
 try:
     from docx import Document
     from docx.enum.text import WD_ALIGN_PARAGRAPH
-    from docx.oxml.ns import qn
     from docx.shared import Inches, Pt
 except ImportError as exc:  # pragma: no cover - import guard
     Document = None  # type: ignore[assignment]
     WD_ALIGN_PARAGRAPH = None  # type: ignore[assignment]
-    qn = None  # type: ignore[assignment]
     Inches = None  # type: ignore[assignment]
     Pt = None  # type: ignore[assignment]
     DOCX_IMPORT_ERROR = exc
@@ -33,24 +31,6 @@ else:
 
 SUPPORTED_SOURCES = {"code", "url", "screenshot"}
 MAX_IMAGE_WIDTH_INCHES = 6.2
-DOCX_FONT_CANDIDATES: list[tuple[str, list[str]]] = [
-    ("PingFang SC", ["/System/Library/Fonts/PingFang.ttc"]),
-    ("Hiragino Sans GB", ["/System/Library/Fonts/Hiragino Sans GB.ttc"]),
-    ("Microsoft YaHei", ["C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/msyh.ttf"]),
-    ("Noto Sans CJK SC", [
-        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
-        "/usr/share/fonts/opentype/noto/NotoSansCJKSC-Regular.otf",
-        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
-        "/usr/share/fonts/truetype/noto/NotoSansCJKSC-Regular.otf",
-    ]),
-    ("Source Han Sans SC", [
-        "/usr/share/fonts/opentype/source-han-sans/SourceHanSansSC-Regular.otf",
-        "/usr/share/fonts/opentype/adobe-source-han-sans/SourceHanSansSC-Regular.otf",
-    ]),
-    ("SimSun", ["C:/Windows/Fonts/simsun.ttc", "C:/Windows/Fonts/simsun.ttf"]),
-    ("Arial Unicode MS", ["/Library/Fonts/Arial Unicode.ttf", "C:/Windows/Fonts/ARIALUNI.TTF"]),
-]
-DOCX_FONT_FALLBACK = "Arial"
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -58,6 +38,11 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--report-json", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--skip-annotation-check",
+        action="store_true",
+        help="仅调试；正式走查勿使用",
+    )
     parser.add_argument("--json", action="store_true")
     return parser
 
@@ -136,41 +121,6 @@ def _resolve_output_path(raw_output: str) -> Path:
     if output.suffix.lower() != ".docx":
         raise ValueError("--output 必须以 .docx 结尾")
     return output.resolve()
-
-
-def _select_docx_font_name() -> str:
-    for font_name, candidates in DOCX_FONT_CANDIDATES:
-        if any(Path(path).is_file() for path in candidates):
-            return font_name
-    return DOCX_FONT_FALLBACK
-
-
-def _set_style_font(style, font_name: str, size: float | None = None) -> None:
-    style.font.name = font_name
-    if size is not None:
-        style.font.size = Pt(size)
-    if qn is None:
-        return
-    r_pr = style.element.get_or_add_rPr()
-    r_fonts = r_pr.get_or_add_rFonts()
-    r_fonts.set(qn("w:ascii"), font_name)
-    r_fonts.set(qn("w:hAnsi"), font_name)
-    r_fonts.set(qn("w:eastAsia"), font_name)
-    r_fonts.set(qn("w:cs"), font_name)
-
-
-def _set_run_font(run, font_name: str, size: float | None = None) -> None:
-    run.font.name = font_name
-    if size is not None:
-        run.font.size = Pt(size)
-    if qn is None:
-        return
-    r_pr = run._element.get_or_add_rPr()
-    r_fonts = r_pr.get_or_add_rFonts()
-    r_fonts.set(qn("w:ascii"), font_name)
-    r_fonts.set(qn("w:hAnsi"), font_name)
-    r_fonts.set(qn("w:eastAsia"), font_name)
-    r_fonts.set(qn("w:cs"), font_name)
 
 
 def _resolve_image_path(raw: str, base_dir: Path) -> Path:
@@ -282,27 +232,24 @@ def _normalize_report(data: dict, report_path: Path) -> dict:
     }
 
 
-def _set_base_style(document: Document) -> str:
+def _set_base_style(document: Document) -> None:
     section = document.sections[0]
     section.top_margin = Inches(0.7)
     section.bottom_margin = Inches(0.7)
     section.left_margin = Inches(0.8)
     section.right_margin = Inches(0.8)
 
-    font_name = _select_docx_font_name()
-    _set_style_font(document.styles["Normal"], font_name, 10.5)
-    for style_name, size in (("Title", 18), ("Heading 1", 14), ("Heading 2", 12)):
-        if style_name in document.styles:
-            _set_style_font(document.styles[style_name], font_name, size)
-    return font_name
+    normal = document.styles["Normal"]
+    normal.font.name = "PingFang SC"
+    normal.font.size = Pt(10.5)
 
 
-def _add_title(document: Document, report: dict, font_name: str) -> None:
+def _add_title(document: Document, report: dict) -> None:
     title = document.add_paragraph()
     title.style = document.styles["Title"]
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = title.add_run(report["title"])
-    _set_run_font(run, font_name, 18)
+    run.font.size = Pt(18)
 
     meta_lines = [
         f"走查时间：{report['generated_at'] or '未提供'}",
@@ -463,8 +410,8 @@ def _generate_docx(report: dict, output_path: Path) -> dict:
         )
 
     document = Document()
-    font_name = _set_base_style(document)
-    _add_title(document, report, font_name)
+    _set_base_style(document)
+    _add_title(document, report)
     _add_summary(document, report)
     document.add_heading("问题详情", level=1)
 
@@ -505,12 +452,31 @@ def build_result(args: argparse.Namespace) -> dict:
 
     report_path = Path(args.report_json).expanduser().resolve()
     try:
-        report = _normalize_report(_load_json(report_path), report_path)
+        raw_report = _load_json(report_path)
+        report = _normalize_report(raw_report, report_path)
     except ValueError as exc:
-        detail = str(exc)
-        if detail.startswith("图片不存在："):
-            return _fail("DOCX generation failed: missing image asset", detail=detail, reason="missing_asset")
-        return _fail("DOCX generation failed: invalid report content", detail=detail, reason="invalid_report")
+        return _fail("DOCX generation failed: invalid report json", detail=str(exc))
+
+    if not args.skip_annotation_check:
+        try:
+            from validate_report_annotations import validate_report
+        except ImportError as exc:
+            return _fail(
+                "DOCX generation failed: annotation validator missing",
+                detail=str(exc),
+            )
+        gate = validate_report(raw_report)
+        if not gate.get("ok"):
+            errors = gate.get("errors", [])
+            detail = "；".join(errors[:5])
+            if len(errors) > 5:
+                detail += f"；等共 {len(errors)} 项"
+            return _fail(
+                "DOCX generation failed: annotation gate not passed",
+                detail=detail or "标注门禁未通过",
+                reason="annotations_missing",
+                extra={"annotation_errors": errors},
+            )
 
     return _generate_docx(report, output_path)
 

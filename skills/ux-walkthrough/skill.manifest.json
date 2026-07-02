@@ -1,43 +1,50 @@
 {
   "schemaVersion": 1,
   "name": "ux-walkthrough",
-  "version": "1.2.3",
+  "version": "1.0.1",
   "distributionScope": "single-skill",
   "entry": "SKILL.md",
   "requiredPaths": [
     "SKILL.md",
     "agents/openai.yaml",
+    "docs/onboarding/gates.md",
     "docs/onboarding/execution-sop.md",
+    "references/mode.md",
     "references/ux-checklist.md",
     "references/report-json.md",
     "references/annotation-style.md",
     "references/ignore-list.md",
-    "references/issue-examples.md",
     "references/severity-rubric.md",
     "scripts/precheck_walkthrough.py",
+    "scripts/probe_dev_server.py",
     "scripts/check_evidence_gate.py",
+    "scripts/validate_report_annotations.py",
     "scripts/generate_docx.py"
   ],
   "publicContracts": {
     "files": [
       "SKILL.md",
       "agents/openai.yaml",
+      "docs/onboarding/gates.md",
       "docs/onboarding/execution-sop.md",
+      "references/mode.md",
       "references/ux-checklist.md",
       "references/report-json.md",
       "references/annotation-style.md",
       "references/ignore-list.md",
-      "references/issue-examples.md",
       "references/severity-rubric.md",
       "scripts/precheck_walkthrough.py",
+      "scripts/probe_dev_server.py",
       "scripts/check_evidence_gate.py",
+      "scripts/validate_report_annotations.py",
       "scripts/generate_docx.py"
     ],
     "directories": [
       "agents",
       "docs",
       "references",
-      "scripts"
+      "scripts",
+      "tests"
     ]
   },
   "dependencies": []

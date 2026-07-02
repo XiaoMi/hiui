@@ -5,12 +5,11 @@ UX Walkthrough - 输入识别与代码仓库门禁判断脚本
 用途：
 - 在正式走查前，先做一次确定性输入识别
 - 对代码仓库额外判断其是否属于可执行页面走查的页面项目
-- 输出结构化 JSON，供外层决定是继续、补充输入，还是直接说明当前无法形成完整交付
+- 输出结构化 JSON，供外层决定是继续、补充输入，还是明确失败原因并等待补充
 
 用法：
 - python3 detect_input_mode.py <输入> --json
 - python3 detect_input_mode.py --repo-path /path/to/repo --json
-- python3 detect_input_mode.py --repo-path /path/to/repo --entry packages/web --json
 - python3 detect_input_mode.py --url https://example.com --json
 - python3 detect_input_mode.py --image-path /path/to/image.png --json
 """
@@ -102,6 +101,11 @@ SKIP_DIRECTORIES = {
     "coverage",
     ".turbo",
 }
+
+
+def _is_skipped_repo_path(rel_text: str) -> bool:
+    parts = Path(rel_text).parts
+    return len(parts) >= 2 and parts[0] == "scripts" and parts[1] == "dev"
 ROUTER_SIGNAL_EXTENSIONS = {
     ".js",
     ".jsx",
@@ -126,7 +130,6 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="识别 ux-walkthrough 输入模式并判断代码仓库是否为页面项目")
     parser.add_argument("input", nargs="?", default="")
     parser.add_argument("--repo-path", default="")
-    parser.add_argument("--entry", default="")
     parser.add_argument("--url", default="")
     parser.add_argument("--image-path", default="")
     parser.add_argument("--json", action="store_true")
@@ -192,31 +195,6 @@ def _package_dependencies(pkg: dict) -> set[str]:
     return keys
 
 
-def _workspace_config(pkg: dict) -> list[str]:
-    workspaces = pkg.get("workspaces", [])
-    if isinstance(workspaces, list):
-        return [str(item) for item in workspaces if isinstance(item, str) and item.strip()]
-    if isinstance(workspaces, dict):
-        packages = workspaces.get("packages", [])
-        if isinstance(packages, list):
-            return [str(item) for item in packages if isinstance(item, str) and item.strip()]
-    return []
-
-
-def _expand_workspace_samples(project_path: Path, patterns: list[str]) -> list[str]:
-    samples: list[str] = []
-    for pattern in patterns:
-        for matched in project_path.glob(pattern):
-            if matched.is_dir():
-                try:
-                    samples.append(matched.relative_to(project_path).as_posix())
-                except ValueError:
-                    samples.append(matched.as_posix())
-            if len(samples) >= 8:
-                return sorted(dict.fromkeys(samples))
-    return sorted(dict.fromkeys(samples))
-
-
 def _iter_repo_files(project_path: Path) -> tuple[list[str], list[str], list[str], list[str]]:
     page_files: list[str] = []
     style_files: list[str] = []
@@ -226,10 +204,14 @@ def _iter_repo_files(project_path: Path) -> tuple[list[str], list[str], list[str
     for root, dirs, files in os.walk(project_path):
         dirs[:] = [name for name in dirs if name not in SKIP_DIRECTORIES and not name.startswith(".")]
         rel_root = Path(root).relative_to(project_path)
+        if rel_root.parts == ("scripts",):
+            dirs[:] = [name for name in dirs if name != "dev"]
 
         for name in files:
             rel_path = rel_root / name if str(rel_root) != "." else Path(name)
             rel_text = rel_path.as_posix()
+            if _is_skipped_repo_path(rel_text):
+                continue
             suffix = rel_path.suffix.lower()
             lowered_name = name.lower()
 
@@ -253,8 +235,6 @@ def _repo_kind(project_path: Path) -> dict:
     pkg = _read_json(package_json_path) if package_json_path.is_file() else {}
     scripts = _package_scripts(pkg)
     deps = _package_dependencies(pkg)
-    workspace_patterns = _workspace_config(pkg)
-    workspace_samples = _expand_workspace_samples(project_path, workspace_patterns)
 
     positive_signals: list[str] = []
     negative_signals: list[str] = []
@@ -262,9 +242,6 @@ def _repo_kind(project_path: Path) -> dict:
     frontend_deps = sorted(dep for dep in deps if dep in FRONTEND_DEPENDENCIES)
     if frontend_deps:
         positive_signals.append(f"检测到前端依赖：{', '.join(frontend_deps[:5])}")
-
-    if workspace_patterns:
-        positive_signals.append("检测到 monorepo/workspaces 配置")
 
     script_values = " ".join(scripts.values()).lower()
     if any(keyword in script_values for keyword in ("vite", "next", "nuxt", "webpack", "react-scripts", "astro")):
@@ -336,20 +313,10 @@ def _repo_kind(project_path: Path) -> dict:
         "service_file_samples": service_files[:8],
         "style_file_count": len(style_files),
         "style_file_samples": style_files[:8],
-        "workspace_patterns": workspace_patterns[:8],
-        "workspace_package_samples": workspace_samples[:8],
     }
 
-def _resolve_repo_target(project_path: Path, entry: str) -> tuple[Path, str]:
-    entry_text = entry.strip()
-    if not entry_text:
-        return project_path, ""
-    entry_path = Path(entry_text).expanduser()
-    target = entry_path if entry_path.is_absolute() else project_path / entry_text
-    return target, entry_text
 
-
-def _result_for_repo(project_path: Path, entry: str = "") -> dict:
+def _result_for_repo(project_path: Path) -> dict:
     if not project_path.exists():
         return {
             "message": f"未找到仓库目录：{project_path}",
@@ -359,6 +326,7 @@ def _result_for_repo(project_path: Path, entry: str = "") -> dict:
             "path": str(project_path),
             "reason": "repo_not_found",
             "should_continue": False,
+            "should_report_completion": False,
             "status": "needs_input",
         }
 
@@ -371,61 +339,22 @@ def _result_for_repo(project_path: Path, entry: str = "") -> dict:
             "path": str(project_path),
             "reason": "repo_not_directory",
             "should_continue": False,
+            "should_report_completion": False,
             "status": "needs_input",
         }
 
-    target_path, entry_text = _resolve_repo_target(project_path, entry)
-    if entry_text and not target_path.exists():
-        return {
-            "entry": entry_text,
-            "message": f"未找到指定入口目录：{entry_text}",
-            "mode": "code",
-            "next_action": "request_valid_repo_entry",
-            "ok": False,
-            "path": str(target_path),
-            "repo_root": str(project_path.resolve()),
-            "reason": "repo_entry_not_found",
-            "should_continue": False,
-            "status": "needs_input",
-        }
-    if entry_text and not target_path.is_dir():
-        return {
-            "entry": entry_text,
-            "message": f"指定入口不是有效目录：{entry_text}",
-            "mode": "code",
-            "next_action": "request_valid_repo_entry",
-            "ok": False,
-            "path": str(target_path),
-            "repo_root": str(project_path.resolve()),
-            "reason": "repo_entry_not_directory",
-            "should_continue": False,
-            "status": "needs_input",
-        }
-
-    repo = _repo_kind(target_path)
+    repo = _repo_kind(project_path)
     result = {
-        "entry": entry_text,
         "message": "",
         "mode": "code",
         "next_action": "",
         "ok": True,
-        "path": str(target_path.resolve()),
+        "path": str(project_path.resolve()),
         "repo": repo,
-        "repo_root": str(project_path.resolve()),
         "should_continue": False,
+        "should_report_completion": False,
         "status": "needs_input",
     }
-
-    if not entry_text and repo["workspace_patterns"] and repo["workspace_package_samples"]:
-        result.update(
-            {
-                "message": "已识别为代码仓库输入，且仓库带有多包结构。请先补充实际前端入口，再继续正式走查。",
-                "next_action": "request_repo_entry",
-                "next_input_hint": "可补充 packages/web、apps/admin、frontend 等实际前端入口目录。",
-                "status": "needs_input",
-            }
-        )
-        return result
 
     if repo["kind"] == "page_project":
         result.update(
@@ -446,8 +375,9 @@ def _result_for_repo(project_path: Path, entry: str = "") -> dict:
                 "failure_preset": "code_not_page_project",
                 "failure_reason": "not_page_project",
                 "failure_stage": "evidence_ready",
-                "message": "已识别为代码仓库输入，但仓库更像服务端或非页面项目，建议直接提示用户补充真正的页面输入。",
-                "next_action": "stop_walkthrough_and_request_page_input",
+                "message": "已识别为代码仓库输入，但仓库更像服务端或非页面项目，请说明失败原因，并提示用户补充真正的页面输入。",
+                "next_action": "explain_failure",
+                "should_report_completion": True,
                 "status": "failed",
             }
         )
@@ -471,6 +401,7 @@ def _result_for_url(value: str) -> dict:
         "ok": True,
         "path": value,
         "should_continue": True,
+        "should_report_completion": False,
         "status": "continue",
     }
 
@@ -478,24 +409,18 @@ def _result_for_url(value: str) -> dict:
 def _result_for_image(value: str) -> dict:
     path = Path(value).expanduser()
     exists = path.is_file()
-    is_image_file = exists and path.suffix.lower() in IMAGE_EXTENSIONS
     return {
         "exists": exists,
-        "message": (
-            "已识别为截图走查输入，可继续执行截图模式的证据门禁判断。"
-            if is_image_file
-            else (
-                "输入看起来像截图路径，但当前文件不存在，请确认路径后重试。"
-                if not exists
-                else "输入路径存在，但当前文件不是常见图片格式，请确认后重试。"
-            )
-        ),
+        "message": "已识别为截图走查输入，可继续执行截图模式的证据门禁判断。"
+        if exists
+        else "输入看起来像截图路径，但当前文件不存在，请确认路径后重试。",
         "mode": "screenshot",
-        "next_action": "run_evidence_gate" if is_image_file else "request_valid_screenshot_path",
-        "ok": is_image_file,
+        "next_action": "run_evidence_gate" if exists else "request_valid_screenshot_path",
+        "ok": exists,
         "path": str(path),
-        "should_continue": is_image_file,
-        "status": "continue" if is_image_file else "needs_input",
+        "should_continue": exists,
+        "should_report_completion": False,
+        "status": "continue" if exists else "needs_input",
     }
 
 
@@ -507,6 +432,7 @@ def _result_for_unknown(value: str) -> dict:
         "ok": False,
         "raw_input": value,
         "should_continue": False,
+        "should_report_completion": False,
         "status": "needs_clarification",
     }
 
@@ -515,7 +441,7 @@ def build_result(args: argparse.Namespace) -> dict:
     input_kind, value = _normalize_input(args)
 
     if input_kind == "repo":
-        return _result_for_repo(Path(value).expanduser(), args.entry)
+        return _result_for_repo(Path(value).expanduser())
     if input_kind == "url":
         return _result_for_url(value)
     if input_kind == "image":

@@ -1,6 +1,6 @@
 interface:
-  display_name: "UX Walkthrough"
-  short_description: "Review code, URLs, or screenshots and generate a full walkthrough report with a local docx file"
-  default_prompt: "Use $ux-walkthrough to review a codebase, URL, or screenshots. Start with the precheck, follow the detected mode, and only treat the task as complete after both the full report and the local docx are ready."
+  display_name: "体验走查"
+  short_description: "对代码库、URL 或截图做体验走查；输出完整报告并生成本地 docx"
+  default_prompt: "以 SKILL.md 为唯一主规范，按 A→B→C 三阶段执行。优先使用 precheck_walkthrough.py 与 generate_docx.py；docx 未生成成功前，不得将任务视为完整完成。"
 policy:
   allow_implicit_invocation: true
