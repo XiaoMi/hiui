@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-page-workflow",
+  "bundleVersion": "1.0.1",
+  "channel": "stable",
+  "installPolicyRef": "install-policy.json",
+  "compatibilityMatrixRef": "compatibility-matrix.json",
+  "codexCompatibility": {
+    "requiredRuntimes": [
+      "node",
+      "python3"
+    ],
+    "notes": [
+      "Local development and fixture validation can resolve source.kind=local entries relative to this lock file.",
+      "Published internal releases should replace local source entries with git-backed repo/ref/path values."
+    ]
+  },
+  "skills": [
+    {
+      "name": "hiui-page-workflow",
+      "installName": "hiui-page-workflow",
+      "required": true,
+      "version": "1.0.1",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "feat/add-hiui-page-workflow-skill",
+        "path": "skills/hiui-page-workflow"
+      }
+    },
+    {
+      "name": "refine-product-requirements",
+      "installName": "refine-product-requirements",
+      "required": true,
+      "version": "1.0.0",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "feat/add-refine-product-requirements-skill",
+        "path": "skills/refine-product-requirements"
+      }
+    },
+    {
+      "name": "hiui-design",
+      "installName": "hiui-design",
+      "required": true,
+      "version": "1.0.0",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "feat/add-hiui-page-workflow-skill",
+        "path": "skills/hiui-design"
+      }
+    },
+    {
+      "name": "ux-walkthrough",
+      "installName": "ux-walkthrough",
+      "required": true,
+      "version": "1.2.3",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "feat/add-hiui-page-workflow-skill",
+        "path": "skills/ux-walkthrough"
+      }
+    }
+  ]
+}

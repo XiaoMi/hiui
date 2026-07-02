@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "name": "hiui-page-workflow",
+  "version": "1.0.1",
+  "distributionScope": "bundle-entry",
+  "entry": "SKILL.md",
+  "requiredPaths": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "references/acceptance-matrix.md",
+    "references/handoff-contract.md",
+    "references/final-report-template.md"
+  ],
+  "publicContracts": {
+    "files": [
+      "SKILL.md",
+      "references/acceptance-matrix.md",
+      "references/handoff-contract.md",
+      "references/final-report-template.md"
+    ],
+    "directories": [
+      "agents",
+      "references"
+    ]
+  },
+  "dependencies": [
+    {
+      "name": "refine-product-requirements",
+      "required": true,
+      "versionRange": ">=1.0.0"
+    },
+    {
+      "name": "hiui-design",
+      "required": true,
+      "versionRange": ">=1.0.0"
+    },
+    {
+      "name": "ux-walkthrough",
+      "required": true,
+      "versionRange": ">=1.1.2"
+    }
+  ]
+}
