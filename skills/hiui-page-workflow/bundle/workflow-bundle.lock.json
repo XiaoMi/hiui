@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "bundleName": "hiui-page-workflow",
   "bundleVersion": "1.0.1",
-  "channel": "stable",
+  "channel": "canary",
   "installPolicyRef": "install-policy.json",
   "compatibilityMatrixRef": "compatibility-matrix.json",
   "codexCompatibility": {
@@ -24,8 +24,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/XiaoMi/hiui.git",
-        "ref": "refs/pull/3562/head",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "gray-skill-bundle-20260703",
         "path": "skills/hiui-page-workflow"
       }
     },
@@ -37,8 +37,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/XiaoMi/hiui.git",
-        "ref": "refs/pull/3562/head",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "gray-skill-bundle-20260703",
         "path": "skills/refine-product-requirements"
       }
     },
@@ -50,8 +50,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/XiaoMi/hiui.git",
-        "ref": "refs/pull/3562/head",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "gray-skill-bundle-20260703",
         "path": "skills/hiui-design"
       }
     },
@@ -63,8 +63,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/XiaoMi/hiui.git",
-        "ref": "refs/pull/3562/head",
+        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
+        "ref": "gray-skill-bundle-20260703",
         "path": "skills/ux-walkthrough"
       }
     }

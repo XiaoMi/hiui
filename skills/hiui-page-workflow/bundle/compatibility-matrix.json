@@ -8,7 +8,7 @@
   "testedBundles": [
     {
       "bundleVersion": "1.0.1",
-      "channel": "stable",
+      "channel": "canary",
       "skills": {
         "hiui-page-workflow": "1.0.1",
         "refine-product-requirements": "1.0.0",

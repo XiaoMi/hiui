@@ -25,13 +25,11 @@
 
 ## Public Preview Install
 
-公开预览版目前通过公开 GitHub clone URL + ref + path 安装四个 skill。若你希望直接验证当前 bundle，可先拉取 upstream PR 预览 ref，然后从 skill 目录执行安装：
+当前灰度版通过你的公开 fork 分支直接安装四个 skill。若你希望验证在线安装，可直接拉取灰度分支并执行 bundle 安装：
 
 ```bash
-git clone --depth 1 https://github.com/XiaoMi/hiui.git
+git clone --depth 1 --branch gray-skill-bundle-20260703 https://github.com/1108guorui-web/hiui.git
 cd hiui
-git fetch --depth 1 origin refs/pull/3562/head
-git checkout --detach FETCH_HEAD
 bash skills/hiui-page-workflow/install.sh
 ```
 
@@ -78,7 +76,13 @@ bash install.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是唯一真相源。公开预览版默认使用官方 GitHub 仓库加显式 `ref` 和 `path` 来定位 skill 源码；在 upstream 合并前，preview 版本通过 upstream PR ref 保持可安装，同时避免把个人 fork 作为默认公开依赖。
+`workflow-bundle.lock.json` 是唯一真相源。当前灰度版默认使用公开 fork 的固定灰度分支加显式 `ref` 和 `path` 来定位 skill 源码，方便做一次完整的在线安装验证；完成灰度验证后，应再切回稳定上游分支、tag 或 commit。
+
+若你只想在临时目录验证在线安装，不污染本机 `$CODEX_HOME`，可先指定一个临时目录：
+
+```bash
+CODEX_HOME=/tmp/codex-gray-test bash skills/hiui-page-workflow/install.sh
+```
 
 ## Validation And Rollback
 

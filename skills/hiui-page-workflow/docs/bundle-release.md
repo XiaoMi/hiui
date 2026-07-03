@@ -16,13 +16,11 @@
 - 调用 `scripts/install-workflow-bundle.mjs`
 - 透传 `--dry-run`、`--reinstall`、`--force-sync`、`--allow-downgrade` 等参数
 
-公开预览阶段，推荐从 upstream PR 预览副本执行安装：
+灰度阶段，推荐直接从公开 fork 的灰度分支执行安装：
 
 ```bash
-git clone --depth 1 https://github.com/XiaoMi/hiui.git
+git clone --depth 1 --branch gray-skill-bundle-20260703 https://github.com/1108guorui-web/hiui.git
 cd hiui
-git fetch --depth 1 origin refs/pull/3562/head
-git checkout --detach FETCH_HEAD
 bash skills/hiui-page-workflow/install.sh
 ```
 
@@ -75,7 +73,7 @@ node scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 
 只有当下游公开 skill 已经提供 `skill.manifest.json`、`requiredPaths` 和 `publicContracts` 时，才允许接入 bundle。
 
-若某个 skill 仍处于公开预览阶段，可临时跟随 upstream PR ref；但在 upstream 合并后，应尽快把 lock 切回稳定上游分支、tag 或 commit，并重新执行：
+若某个 skill 仍处于灰度验证阶段，可临时跟随公开灰度分支；但在 upstream 合并或正式发布后，应尽快把 lock 切回稳定上游分支、tag 或 commit，并重新执行：
 
 - `node scripts/verify-workflow-bundle.mjs --json`
 - `node scripts/release-workflow-bundle.mjs --json`
