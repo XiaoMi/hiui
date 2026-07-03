@@ -4,10 +4,12 @@ import type { DescriptionsProps } from '@hi-ui/hiui'
 import { D, G } from '@hi-ui/schema-core'
 import { GroupMapProvider, SchemaGroup } from '@hi-ui/schema-group'
 import { SchemaDescriptionsBridge } from '@hi-ui/schema-group/descriptions'
+import { SchemaTableBridge } from '@hi-ui/schema-group/table'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import {
   ProDetailPage,
   ProDetailPageProvider,
+  useProDetailPageContext,
 } from '@hiui-design/typical-page-shells/pro-detail-page'
 import { useNavigate } from 'react-router-dom'
 import { getWorkOrderDetail } from './typical-pages.mock'
@@ -16,6 +18,47 @@ import { useTranslation } from '../../translation'
 
 const detailGroupMap = {
   descriptions: SchemaDescriptionsBridge,
+  table: SchemaTableBridge,
+}
+
+type WarrantyInfoItem = {
+  type: string
+  remainingDays: number
+  startAt: string
+  endAt: string
+}
+
+function WarrantyInfoCards() {
+  const { detailData } = useProDetailPageContext()
+  const { t, formatNumber } = useTranslation()
+  const warrantyInfo = (detailData?.warrantyInfo ?? []) as WarrantyInfoItem[]
+
+  return (
+    <div className={styles.warrantyGrid}>
+      {warrantyInfo.map((item) => (
+        <article className={styles.warrantyCard} key={item.type}>
+          <div className={styles.warrantyType}>{t(item.type)}</div>
+          <div className={styles.warrantyRemaining}>
+            <span className={styles.warrantyRemainingValue}>{formatNumber(item.remainingDays)}</span>
+            <span className={styles.warrantyRemainingUnit}>{t('天')}</span>
+          </div>
+          <div className={styles.warrantyMeta}>
+            <span>{t('剩余天数')}</span>
+          </div>
+          <dl className={styles.warrantyDates}>
+            <div>
+              <dt>{t('开始时间')}</dt>
+              <dd>{item.startAt}</dd>
+            </div>
+            <div>
+              <dt>{t('截止时间')}</dt>
+              <dd>{item.endAt}</dd>
+            </div>
+          </dl>
+        </article>
+      ))}
+    </div>
+  )
 }
 
 function FullPageDetailInner() {
@@ -42,11 +85,15 @@ function FullPageDetailInner() {
             D(t('服务方式'), 'serviceMethod').val,
             D(t('关联商品'), 'relatedProduct').val,
             D(t('购买渠道'), 'purchaseChannel').val,
-            D(t('三包开始时间'), 'warrantyStart').val,
-            D(t('三包截止时间'), 'warrantyEnd').val,
             D(t('来访原因'), 'visitReason').val,
           ],
           props: { descriptionsProps },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('三包信息'), 'warrantyInfo')
+        .Custom({
+          render: () => <WarrantyInfoCards />,
         })
         .CardProps({ size: 'lg' })
         .val,
@@ -70,6 +117,24 @@ function FullPageDetailInner() {
             D(t('问题描述'), 'description').MWP({ colSpan: 3 }).val,
           ],
           props: { descriptionsProps },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('服务记录'), 'serviceRecords')
+        .Table({
+          fields: [
+            D(t('服务时间'), 'serviceTime').W(180).val,
+            D(t('服务动作'), 'serviceAction').W(160).val,
+            D(t('状态'), 'status').W(120).val,
+            D(t('详情描述'), 'detailDescription').W(360).val,
+          ],
+          props: {
+            className: styles.serviceRecordTable,
+            tableProps: {
+              bordered: false,
+              striped: false,
+            },
+          },
         })
         .CardProps({ size: 'lg' })
         .val,
@@ -116,9 +181,12 @@ export function FullPageDetailPage() {
           ticketType: t(response.basicInfo.ticketType),
           serviceMethod: t(response.basicInfo.serviceMethod),
           visitReason: t(response.basicInfo.visitReason),
-          warrantyStart: formatDate(response.basicInfo.warrantyStart, dateOptions),
-          warrantyEnd: formatDate(response.basicInfo.warrantyEnd, dateOptions),
         },
+        warrantyInfo: response.warrantyInfo.map((item) => ({
+          ...item,
+          endAt: formatDate(item.endAt, dateOptions),
+          startAt: formatDate(item.startAt, dateOptions),
+        })),
         customerInfo: {
           ...response.customerInfo,
           userName: t(response.customerInfo.userName),
@@ -134,6 +202,13 @@ export function FullPageDetailPage() {
           description: t(response.serviceInfo.description),
           acceptedAt: formatDate(response.serviceInfo.acceptedAt, dateTimeOptions),
         },
+        serviceRecords: response.serviceRecords.map((item) => ({
+          ...item,
+          detailDescription: t(item.detailDescription),
+          serviceAction: t(item.serviceAction),
+          serviceTime: formatDate(item.serviceTime, dateTimeOptions),
+          status: t(item.status),
+        })),
       }
     },
     [formatDate, t]

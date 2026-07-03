@@ -25,6 +25,15 @@
 
 ## 何时进入非典型页面路径
 
+进入本文件前，必须先完成机器计划里的 `topology` / `intentUnits` / `pageUnits` 判断。禁止因为 `pageType` 为空、提示词包含多个页面名、或用户没有显式写典型页型，就直接进入非典型路径。
+
+进入非典型路径前还必须先判断能否由“典型页 + 受控扩展”承接：
+
+- 标准槽位变更属于 Level 0，不进入非典型。
+- 顶部提示、辅助链接、状态 badge、轻量说明条等 Level 1 受控扩展，不进入非典型。
+- 只有新增独立 section、独立图表块、详情预览区、独立滚动 / 查询 / 分页等 Level 2 结构扩展，才进入增强链路。
+- 只有 split、主从联动、多工作区、自定义 dashboard 等 Level 3 结构变化，才进入本文件定义的 non-typical / composition 重流程。
+
 满足任一条件即可进入：
 
 - 现有典型页型没有可直接套用的 archetype
@@ -33,9 +42,19 @@
 
 不要误判：
 
+- 非典型页面不等于页型尚未解析
+- 非典型页面不等于多页面工作流
 - 非典型页面不等于详情页
 - 非典型页面不等于主次分栏页面
 - 非典型页面只说明“不能直接套典型页模板”，不说明“必须采用某一种布局”
+
+下面这些默认不是非典型页面：
+
+- 一个提示词中并列出现多个页面意图，例如查询页、详情页、编辑页、统计页、评审页、配置页或日志页
+- 列表页带查看详情、评审、编辑等行操作
+- 典型页基础上的 Level 1 受控扩展，例如顶部提示、轻量说明条、工具栏辅助 badge 或帮助链接
+- 单个详情、编辑、表单、统计、树表或异常反馈页面
+- 同屏主从 / split 布局的早期判断阶段；它应先进入组合页 contract，而不是自由非典型拼装
 
 ## 自由拼装的边界
 
@@ -61,6 +80,37 @@
 - non-typical means custom grouping, not custom component hierarchy
 - free composition is allowed only inside a HiUI-first, spec-constrained frame
 - 组件优先级、视觉 token、spacing ownership、禁止大段空白、runtime shell requirements 仍然是硬门槛
+
+## 策略驱动生成门槛
+
+非典型页面必须先证明“为什么不能直接套典型页”，再进入 JSX / 样式实现。这里的证明不是固定某个区块组合，而是把页面的一层信息组织策略落成机器可追踪事实。
+
+进入 `non-typical / overlay` 路径时，`page-task-plan.v1` / contract / source markers / runtime markers 必须共用同一组事实：
+
+- `layout strategy`：本页采用的布局策略，例如工作台式详情、流程追踪式详情、看板式详情、决策辅助式详情、对比分析式详情、时间线式详情等。不要新造一套与本字段平行的 `informationStrategy`。
+- `layout archetype`：本页复用或翻译的布局原型，例如 `primary-secondary`、`parallel-sections`、`context-main-split`、`detail-workbench` 等。
+- `non-typical scope`：只说明哪些一级组织需要非典型编排；不要把 header、white-body、main-scroll 等关键壳层纳入自由范围。
+- `composition guardrails`：说明允许自由组合的槽位、禁止替换的 carrier、禁止重写的 HiUI 骨架。
+- `strategy evidence`：说明源码和运行时需要出现哪些布局 marker / 语义组件 / 一级分组来证明策略已兑现。
+
+阻断规则：
+
+- 用户明确要求非典型，但计划无法给出 `layout strategy` 与 `layout archetype` 时，必须 `status=blocked` 补业务意图，不能降级为自由拼装。
+- 若页面只声明 `non-typical-overlay`，但没有策略、范围、guardrails 与 evidence，contract 不完整，不得交付。
+- 若生成结果只剩标准 `Descriptions / SchemaGroup` 字段分组，且没有策略证据，应按“非典型退化成典型详情”处理。
+- 不允许把“顶部摘要 + 主区 + 右侧栏”固化为所有非典型详情的必备结构；它只能是 `detail-workbench` 等策略下的一种证据组合。
+
+## 页头生成边界
+
+页头属于 carrier-critical region，非典型自由拼装不得覆盖它。业务页面只能替换页头的业务槽位，不能拥有页头承载方式或几何。
+
+生成规则：
+
+- 页头必须来自已有示例、受管 mold、shared shell 或已认证 host adapter。
+- 业务页不得定义本地 header portal、不得直接 `createPortal` 注入 `PageHeader`、不得自定义 `HeaderPortal / PageHeaderPortal` 变体。
+- 业务页只允许替换 `pageTitle`、`headerExtra`、`onBack`、`statusText`、`primaryAction` 等业务槽位。
+- `PageHeader` 高度、padding、align-items、portal carrier、`.hi-v5-page-header*` 骨架样式属于锁定区域。
+- 若当前宿主没有可复用页头 adapter，必须先补 adapter / 示例，再生成业务页；不得在业务页临时手写页头。
 
 ### Host-slot shell 根容器规则
 
@@ -419,7 +469,7 @@ ownership、`split pane contract` 等 contract 字段形状，统一按 `../../r
 ### 验收
 页面质量验收证据、真实页面核验与页面完成门槛，只看 `../../rules/validation-checklist.md`。
 
-若当前任务生成或实质性修改了页面，最终回复前的统计收口再看 `../onboarding/usage-stats.md`。
+若当前任务生成或实质性修改了页面，最终回复前的统计收口再看 `PRIVACY.md`。
 
 ## 配套阅读
 
@@ -427,5 +477,5 @@ ownership、`split pane contract` 等 contract 字段形状，统一按 `../../r
 - `../../rules/contract-regions.md`
 - `implementation-checklist-template.md`
 - `../../rules/validation-checklist.md`
-- `../onboarding/usage-stats.md`
+- `PRIVACY.md`
 - `layout-anti-patterns.md`

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "host-qualification-facts.v1",
+  "status": "ready",
+  "statusReasons": ["invalid because manual-observed cannot be ready"],
+  "automationLevel": "manual-observed",
+  "freshness": {"status": "fresh", "staleReasons": []}
+}

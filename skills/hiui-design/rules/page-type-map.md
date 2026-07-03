@@ -1,6 +1,6 @@
 <!-- Generated from rules/common.page-types.json by scripts/sync-manifest-docs.mjs. -->
 <!-- Do not edit page-type facts directly in this file. Canonical machine facts live in rules/common.page-types.json. -->
-<!-- Rules version: 0.10.0 (2026-06-09). -->
+<!-- Rules version: 1.0.0 (2026-06-09). -->
 
 # 页型总表
 

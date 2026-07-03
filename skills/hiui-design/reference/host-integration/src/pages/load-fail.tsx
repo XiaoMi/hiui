@@ -2,6 +2,7 @@ import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import loadFailIndicatorUrl from '../assets/load-fail-indicator.svg'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -77,21 +78,23 @@ function LoadFailIndicator() {
 }
 
 export function LoadFailPage() {
+  const { t } = useTranslation()
+
   return (
     <div style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="加载失败"
+          title={t('加载失败')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -102,17 +105,17 @@ export function LoadFailPage() {
         <div style={contentStyle}>
           <EmptyState
             indicator={<LoadFailIndicator />}
-            title={<span style={titleStyle}>加载失败</span>}
+            title={<span style={titleStyle}>{t('加载失败')}</span>}
             size="md"
           >
             <div style={descStyle}>
-              请先进行数据的添加和新建，或者 <span style={linkStyle}>联系管理员</span>
+              {t('请先进行数据的添加和新建，或者')} <span style={linkStyle}>{t('联系管理员')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">立即重试</Button>
+              <Button type="primary">{t('立即重试')}</Button>
             </Space>
           </EmptyState>
         </div>

@@ -25,39 +25,49 @@
 首次回复默认按下面顺序输出；不要打乱顺序。
 
 1. `mode`
-2. `page type`
-3. `example path`
-4. `host archetype path`
-5. `shell inheritance strategy`（仅在 `rules-only` / `legacy-host-compatible` 的 `table-basic` / `table-stat` / `data-visualization` / `tree-table` 时输出）
-6. `shell carrier path`（仅在 `rules-only` / `legacy-host-compatible` 的 `table-basic` / `table-stat` / `data-visualization` / `tree-table` 时输出）
-7. `mandatory components`
-8. `shared component inheritance`
-9. `style inheritance contract`
-10. `interaction inheritance contract`
-11. `i18n strategy`
-12. `layout strategy`（仅在未命中典型页型，或命中 overlay 需要额外内部布局判断时输出）
-13. `non-typical scope`（仅在进入非典型 / overlay 路径时输出）
-14. `layout archetype`（仅在当前非典型 / overlay 页面还命中稳定布局 archetype 时输出，例如 `context-main-split`）
-15. `primary semantic components`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
-16. `rejected alternatives`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
-17. `why not custom container`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
-18. `import path discipline`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
-19. `composition guardrails`（仅在进入非典型 / overlay 路径时输出）
-20. `root chrome policy`（仅在进入非典型 / overlay 路径时输出）
-21. `split shell inheritance strategy`（仅在 `layout archetype = context-main-split` 时输出）
-22. `split shell carrier path`（仅在 `layout archetype = context-main-split` 时输出）
-23. `split resize strategy`（仅在 `layout archetype = context-main-split` 时输出）
-24. `resize handle selector`（仅在 `layout archetype = context-main-split` 时输出）
-25. `split pane contract`（仅在 `layout archetype = context-main-split` 时输出）
-26. `split risk check`（仅在 `layout archetype = context-main-split` 时输出）
-27. `split-section closure strategy`（仅在 `layout strategy = primary-secondary` 且后方仍有同级通栏主内容时输出）
-28. `chart baseline checklist`（仅在页面实际渲染图表时输出）
-29. `table hard-gate verdicts`（仅在表格类页型或右侧表格工作区场景时输出）
+2. `topology`
+3. `page units`（仅在 `topology = multi-page-workflow` 或 `single-page-composite` 时输出）
+4. `generation strategy`
+5. `startFrom`
+6. `page type docs`
+7. `page type`
+8. `example path`
+9. `host archetype path`
+10. `shell inheritance strategy`（仅在 `rules-only` / `legacy-host-compatible` 的 `table-basic` / `table-stat` / `data-visualization` / `tree-table` 时输出）
+11. `shell carrier path`（仅在 `rules-only` / `legacy-host-compatible` 的 `table-basic` / `table-stat` / `data-visualization` / `tree-table` 时输出）
+12. `mandatory components`
+13. `shared component inheritance`
+14. `style inheritance contract`
+15. `interaction inheritance contract`
+16. `i18nMode`（`none` / `key-only` / `full`；只有 `full` 才展开完整 `i18n strategy`）
+17. `layout strategy`（仅在未命中典型页型，或命中 overlay 需要额外内部布局判断时输出）
+18. `non-typical scope`（仅在进入非典型 / overlay 路径时输出）
+19. `layout archetype`（仅在当前非典型 / overlay 页面还命中稳定布局 archetype 时输出，例如 `context-main-split`）
+20. `primary semantic components`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
+21. `rejected alternatives`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
+22. `why not custom container`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
+23. `import path discipline`（仅在进入非典型 / overlay 路径且所需组件超出 `../hiui-v5-quick-reference.md` 覆盖范围时输出）
+24. `composition guardrails`（仅在进入非典型 / overlay 路径时输出）
+25. `root chrome policy`（仅在进入非典型 / overlay 路径时输出）
+26. `split shell inheritance strategy`（仅在 `layout archetype = context-main-split` 时输出）
+27. `split shell carrier path`（仅在 `layout archetype = context-main-split` 时输出）
+28. `split resize strategy`（仅在 `layout archetype = context-main-split` 时输出）
+29. `resize handle selector`（仅在 `layout archetype = context-main-split` 时输出）
+30. `split pane contract`（仅在 `layout archetype = context-main-split` 时输出）
+31. `split risk check`（仅在 `layout archetype = context-main-split` 时输出）
+32. `split-section closure strategy`（仅在 `layout strategy = primary-secondary` 且后方仍有同级通栏主内容时输出）
+33. `chart baseline checklist`（仅在页面实际渲染图表时输出）
+34. `table hard-gate verdicts`（仅在表格类页型或右侧表格工作区场景时输出）
 
 ## 固定起手格式
 
 ```md
 mode: <host-integration | rules-only | legacy-host-compatible>
+topology: <single-typical-page | multi-page-workflow | single-page-composite | non-typical-overlay | unresolved>
+page units: <only when topology has multiple intent units; list role + pageType + generation order>
+generation strategy: <copy-template-or-host-archetype-and-replace-business-slots | run-fast-path-per-page-unit | reuse-existing-contract-for-minor-edit | resolve-composite-layout-before-generation | non-typical-constrained-assembly | resolve-page-type-before-generation>
+startFrom: <template | host-archetype | reference-or-scaffold | page-units | unresolved>
+page type docs: <pageTypeDocs from plan-page-task>
 page type: <page-type>
 example path: <path>
 host archetype path: <path>
@@ -67,7 +77,7 @@ mandatory components: <list>
 shared component inheritance: <summary>
 style inheritance contract: <summary>
 interaction inheritance contract: <summary>
-i18n strategy: <summary>
+i18nMode: <none | key-only | full; full 时补 i18n strategy summary>
 layout strategy: <only when needed>
 non-typical scope: <only when needed>
 layout archetype: <only when needed>
@@ -237,7 +247,7 @@ mandatory components: PageHeader, Tag, Alert, ManagedChartCard, JoinedTableSecti
 shared component inheritance: header 继续走 host header carrier；图表继续走 shared chart card；风险状态继续走 Tag / Alert；明细区继续走 JoinedTableSection
 style inheritance contract: white-body owner 保持 shared shell；page-level spacing 不下放到业务 section；局部信息块才允许 Card
 interaction inheritance contract: header actions 仍右停靠；筛选仍由 QueryFilter 承接；表格与分页仍处于同一 shell/footer 链
-i18n strategy: 标题、标签、图表标题、tooltip、表头与按钮文案全部走 locale 资源
+i18nMode: full；标题、标签、图表标题、tooltip、表头与按钮文案全部走 locale 资源
 layout strategy: primary-secondary
 non-typical scope: 图表区之外新增“风险提醒”和“运营建议”两个一级分组；表格工作区与页头链路不改
 layout archetype: none
@@ -294,3 +304,43 @@ table hard-gate verdicts:
 - 字段含义、是否必填、何时阻断，统一由 `generation-rules.md`、`contract-regions.md`、`non-typical-pages.md`、`implementation-checklist-template.md` 定义。
 - 若示例里出现 summary placeholder，不要把它扩写成另一套值域、contract 子字段或阻断条件；直接回 owner 文档取定义。
 - 验收阶段不要回到本文件抄条件；统一以 `validation-checklist.md` 为准。
+
+## Pre-plan Facts Kickoff（截图 / 旧系统转译特例）
+
+普通页面任务首轮仍只解释 `plan-page-task` 输出的 `page-task-plan.v1`。只有 `DetectSourceInput` 命中不规范原型截图、旧系统截图 / URL / 源码时，才允许使用 `kickoffType=pre-plan-facts`。
+
+`kickoffType=pre-plan-facts` 只能解释 `visual-translation-brief.v1` 与必要的 `host-qualification-facts.v1` 状态，不得推理或输出 `page-task-plan.v1` 字段。
+
+允许字段：
+
+- `kickoffType: pre-plan-facts`
+- `visualTranslationStatus`
+- `visualTranslationStatusReasons`
+- `source`
+- `businessObject`
+- `primaryGoal`
+- `pageTypeCandidates`
+- `preserve`
+- `discard`
+- `prePlanBlockingFacts`
+- `blockingIssues`
+- `blockingReasons`
+- legacy 触发时的 `hostQualificationStatus`、`automationLevel`、`modeLock`、`componentQualification`、`translationMapRefs`、`hostFactsFreshnessStatus`
+
+禁止字段：
+
+- `status`
+- `taskLevel`
+- `topology`
+- `pageType`
+- `pageUnits`
+- `targetPage`
+- `startFrom`
+- `fastPath`
+- `requiredDocs`
+- `requiredActions`
+- `acceptanceLevel`
+- `acceptanceProfile`
+- `finalReportContract`
+
+facts ready 后必须运行 `plan-page-task`；在 `plan-page-task --brief --host-facts` 接入前，facts 只能作为需求上下文 / 附件，不是机器可消费计划输入。不得手工模拟 `page-task-plan.v1`。

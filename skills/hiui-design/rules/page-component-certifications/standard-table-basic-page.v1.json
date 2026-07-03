@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "page-component-certification.v1",
+  "componentId": "standard-table-basic-page.v1",
+  "baseMoldId": "table-basic.managed-mold.v1",
+  "mode": "host-integration",
+  "componentVersion": "v1",
+  "status": "certified",
+  "certifiedAt": "2026-06-24T00:00:00.000Z",
+  "certificationInputs": {
+    "moldDigest": "sha256:dcdb1a0ead46783c0bc026f563a0dcded08017538ea416d7f37a44ffa81143d7",
+    "moldRegistryDigest": "sha256:36651c40ba440ab7eab76d705e80cbe68d14c6f50f64157dcb1c1b81eb9db785",
+    "componentDigest": "sha256:72cc3630fc2cb7ef3d50fa6c80f9feb80927e25d5c4c20e76ecd9a49cfe8e94e",
+    "componentSource": "examples/host-integration/src/pages/basic-table.tsx",
+    "componentShell": "@hiui-design/typical-page-shells/pro-table-page::TablePageFrame",
+    "adapterDigests": {},
+    "runtimeProfile": {
+      "projectMode": "host-integration",
+      "runtime": "vite-react",
+      "react": "^18.3.1",
+      "reactDom": "^18.3.1",
+      "hiui": "5.0.0-experimental.6",
+      "typicalPageShells": "file:.local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+      "projectModeDigest": "sha256:dcce5614838f4f62569af44490517a5d509a2a674e4f11d1db7d61625ec21820",
+      "packageLockDigest": "sha256:c1fcb1eae76819df69d2f654850e9acefcbe5eebef89d6f92f6e1f03edc4441b",
+      "evidence": {
+        "assetInspection": "node .local-context/hiui-design/scripts/typical-page-inspect-asset.mjs --type page-component --id standard-table-basic-page.v1 --json",
+        "preflight": {
+          "command": "node .local-context/hiui-design/scripts/typical-page-preflight.mjs --page src/pages/__hiui_component_certification__/table-basic/index.tsx --json",
+          "status": "passed",
+          "page": "src/pages/__hiui_component_certification__/table-basic/index.tsx"
+        },
+        "build": {
+          "command": "npm run build",
+          "status": "passed"
+        }
+      }
+    }
+  },
+  "checks": {
+    "regionValidation": "passed",
+    "slotValidation": "passed",
+    "extensionValidation": "passed",
+    "adapterValidation": "passed",
+    "visualPreview": "not_run",
+    "runtimeSmoke": "not_run"
+  },
+  "knownLimitations": [
+    "Certification proves the reusable page-level component asset; each generated business page still requires page-instance validation and preflight.",
+    "Data visualization remains managed-analytics and is intentionally not certified as an ordinary page-component primary asset."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/page-instance-validation.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "pagePath", "componentId", "status", "checks"],
+  "properties": {
+    "schemaVersion": { "const": "page-instance-validation.v1" },
+    "pagePath": { "type": "string" },
+    "componentId": { "type": "string" },
+    "baseMoldId": { "type": "string" },
+    "status": { "enum": ["passed", "failed", "invalid"] },
+    "extensionLevel": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "usesCertifiedComponent": { "enum": ["passed", "failed", "not_run"] },
+        "requiredSlotsComplete": { "enum": ["passed", "failed", "not_run"] },
+        "extensionSlotsAllowed": { "enum": ["passed", "failed", "not_run"] },
+        "lockedRegionsUnchanged": { "enum": ["passed", "failed", "not_run"] },
+        "ownershipPreserved": { "enum": ["passed", "failed", "not_run"] },
+        "routeOwnershipValid": { "enum": ["passed", "failed", "not_run"] },
+        "businessMappingStatus": { "enum": ["passed", "partial", "blocked", "not_run"] },
+        "runtimeRender": { "enum": ["passed", "failed", "not_run"] }
+      },
+      "additionalProperties": false
+    },
+    "businessMapping": {
+      "type": "object",
+      "properties": {
+        "preserved": { "type": "array", "items": { "type": "string" } },
+        "normalized": { "type": "array", "items": { "type": "string" } },
+        "discarded": { "type": "array", "items": { "type": "string" } },
+        "unmappedSourceElements": { "type": "array", "items": { "type": "string" } },
+        "needsDesignerConfirmation": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "blockingReasons": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

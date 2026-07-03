@@ -12,6 +12,7 @@
 当前生效的通用页型事实源是：
 
 - `../rules/common.page-types.json`
+- `doc-bundle-registry.json`（planner 最小文档包注册表）
 
 当前脚本已经支持通过 `--line <line-id>` 叠加业务线 overlay。
 
@@ -35,6 +36,19 @@ manifests/
 3. 再叠加 business-line overlay
 
 不要把不同业务线规则混写进一个超大 manifest；保持通用层稳定，业务线层最小覆盖。
+
+## 1.5 planner 文档包
+
+`doc-bundle-registry.json` 只负责 planner 的跨页型文档包声明：把普通典型页快路径、legacy、non-typical、composite 等场景默认补读的最小文档集合显式化，避免继续散落在脚本里硬编码。
+
+它不负责：
+
+- 选择 `pageType`
+- 选择 `generationStrategy`
+- 覆盖 `pageType.docEntry/sharedDocs`
+- 重复存储 `pageComponent` / `startFrom` / slot facts
+
+原则是：bundle 只声明“读什么”，planner 代码决定“什么时候命中这个 bundle”。
 
 ## 2. HiUI v5 组件事实层
 

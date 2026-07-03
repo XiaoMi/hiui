@@ -7,35 +7,50 @@ import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifes
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
+  writeManagedPageContractArtifacts,
 } from './lib/managed-page-artifacts.mjs'
+import { buildTypicalPageReuseTargetError } from './lib/typical-page-route-ownership.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 import {
   getManagedPageSemanticContract,
   getManagedPageRuntimeSmokeRequirement,
+  getRulesOnlyOutputRoot,
   getRequiredOwnershipRolesForPageType,
   getRequiredRegionsForPageType,
   loadRulesOnlyPageContracts,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
-  renderRulesOnlyPageContractMarkdown,
+  toContractSlug,
   validateRulesOnlyPageContract,
 } from './lib/rules-only-page-contracts.mjs'
 
+const HIGH_RISK_TRANSLATION_MAP_PAGE_TYPES = new Set([
+  'table-stat',
+  'tree-split',
+  'drawer-form',
+  'drawer-detail',
+  'full-page-edit',
+  'full-page-detail',
+])
+
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/typical-page-preflight.mjs" --page <relative-page-path> [--target <project-root>] [--line <line-id>] [--json]
+  node ".local-context/hiui-design/scripts/typical-page-preflight.mjs" --page <relative-page-path> [--target <project-root>] [--line <line-id>] [--depth <core|deep>] [--json] [--contract-fixture <quality-pass>]
 
 Default behavior:
   - loads the page contract for the given managed page
   - checks unresolved placeholder mappings before implementation continues
-  - runs the same source-level guard used by typical-page:source-gate, including transitive local imports
+  - default "--depth core" checks the current entry page and its direct style evidence only
+  - "--depth deep" additionally runs the same transitive source-level guard used by typical-page:source-gate
   - refreshes contract.workflow.preflightStatus so CI and collaborators can see whether the page cleared preflight
 `)
 }
 
 function parseArgs(argv) {
   const options = {
+    contractFixture: '',
+    depth: 'core',
     json: false,
     line: '',
     page: '',
@@ -49,7 +64,7 @@ function parseArgs(argv) {
       continue
     }
 
-    if (arg === '--page' || arg === '--target' || arg === '--line') {
+    if (arg === '--page' || arg === '--target' || arg === '--line' || arg === '--depth' || arg === '--contract-fixture') {
       const value = argv[index + 1]
       if (!value || value.startsWith('--')) {
         throw new Error(`Missing value for ${arg}`)
@@ -58,6 +73,8 @@ function parseArgs(argv) {
       if (arg === '--page') options.page = value
       if (arg === '--target') options.target = path.resolve(value)
       if (arg === '--line') options.line = value
+      if (arg === '--depth') options.depth = value
+      if (arg === '--contract-fixture') options.contractFixture = value
       index += 1
       continue
     }
@@ -73,8 +90,64 @@ function parseArgs(argv) {
   if (!options.page) {
     throw new Error('Missing --page')
   }
+  if (!['core', 'deep'].includes(options.depth)) {
+    throw new Error('Expected --depth to be one of: core, deep')
+  }
+  if (options.contractFixture && !['quality-pass'].includes(options.contractFixture)) {
+    throw new Error('Expected --contract-fixture to be one of: quality-pass')
+  }
 
   return options
+}
+
+function buildContractFixtureReport() {
+  return {
+    schemaVersion: 'preflight-report.v1',
+    status: 'passed',
+    preflightStage: 'implementation',
+    readyForImplementation: true,
+    readyForDelivery: true,
+    deferredChecks: [],
+    page: 'src/pages/orders/index.tsx',
+    pageType: 'table-basic',
+    checks: [
+      {
+        id: 'preflightBaseline',
+        status: 'passed',
+        severity: 'info',
+        message: 'managed page preflight completed without blocking failures',
+        suggestedActionIds: [],
+      },
+    ],
+    blockingReasons: [],
+    blockingIssues: [],
+    suggestedActions: [],
+    pageTypeId: 'table-basic',
+    pageTypeLabel: '普通表格',
+    workflowStatus: 'preflight-pass',
+    preflightStatus: 'pass',
+    runtimeSmokeRequired: false,
+    runtimeSmokeStatus: 'not-required',
+    examplePath: 'examples/host-integration/src/pages/table-basic.tsx',
+    hostArchetypePath: 'src/pages/orders/host-archetype.tsx',
+    requiredRegions: ['header', 'white-body', 'query-filter', 'table', 'pagination'],
+    requiredOwnershipRoles: ['content-slot', 'white-body', 'outer-padding', 'main-scroll'],
+    requiredCapabilities: ['header-slot', 'white-body', 'query-filter', 'table', 'pagination'],
+    semanticContract: {
+      queryFilterRegionRole: 'table-query-filter',
+      dimensionSwitchControl: 'not-applicable',
+      listShellComposition: 'single-list-shell',
+      spacingOwnership: 'single-spacing-owner',
+      areaChartFill: 'not-applicable',
+    },
+    managedChartSection: 'not-declared',
+    chartGovernance:
+      'Any inserted chart still has to follow the HiUI managed chart stack. Only promote a local chart area into chart-section when the requirement forms an independent analysis block with its own section boundary.',
+    i18nStrategy: '(not-declared)',
+    formatterPolicy: [],
+    warnings: [],
+    failures: [],
+  }
 }
 
 function findUnresolvedMappings(contract) {
@@ -99,6 +172,12 @@ function findUnresolvedMappings(contract) {
   }
 
   return failures
+}
+
+function preflightStageForContract({ unresolvedMappings }) {
+  return Array.isArray(unresolvedMappings) && unresolvedMappings.length > 0
+    ? 'scaffold-baseline'
+    : 'implementation'
 }
 
 function hasManagedChartSection(contract) {
@@ -150,12 +229,347 @@ function isChartGovernanceFailure(message) {
   ].some((fragment) => String(message || '').includes(fragment))
 }
 
+export function checkIdForFailure(message) {
+  const text = String(message || '')
+  if (isLegacyRuntimeAdapterFailure(text)) {
+    return 'legacyRuntimeAdapter'
+  }
+  if (text.includes('downgrades the planner-selected managed delivery path')) {
+    return 'managedDeliveryPath'
+  }
+  if (text.includes('generationProfile.')) {
+    return 'generationProfile'
+  }
+  if (text.includes('productionContract.')) {
+    return 'productionContract'
+  }
+  if (text.includes('Missing generationProfile metadata')) {
+    return 'generationProfile'
+  }
+  if (text.includes('Missing productionContract metadata')) {
+    return 'productionContract'
+  }
+  if (text.includes('source declares pageType') && text.includes('managed contract is still')) {
+    return 'contractPageType'
+  }
+  if (
+    text.includes('regionMapping.') ||
+    text.includes('required region') ||
+    text.includes('region ')
+  ) {
+    return 'regionContract'
+  }
+  if (
+    text.includes('ownershipMapping.') ||
+    text.includes('ownership role') ||
+    text.includes('ownership ')
+  ) {
+    return 'ownershipMapping'
+  }
+  if (
+    text.includes('source marker') ||
+    text.includes('data-hiui5-page-type') ||
+    text.includes('hiui-design page-type')
+  ) {
+    return 'sourceMarker'
+  }
+  if (text.includes('example gallery') || text.includes('src/typical-page-reuse/')) {
+    return 'routeOwnership'
+  }
+  if (text.includes('directory-page entry') || text.includes('sections.module.scss')) {
+    return 'directoryArtifacts'
+  }
+  if (text.includes('translation-map')) {
+    return 'translationMap'
+  }
+  if (isChartGovernanceFailure(text)) {
+    return 'chartGovernance'
+  }
+  return 'sourceGuard'
+}
+
+function suggestedActionIdsForFailure(message) {
+  const text = String(message || '')
+  if (text.includes('source declares pageType') && text.includes('write-contract')) {
+    return ['write-contract-standard']
+  }
+  if (
+    text.includes('generationProfile.') ||
+    text.includes('productionContract.') ||
+    text.includes('Missing generationProfile metadata') ||
+    text.includes('Missing productionContract metadata')
+  ) {
+    return ['refresh-production-contract']
+  }
+  if (text.includes('translation-map')) {
+    return ['refresh-translation-map']
+  }
+  return []
+}
+
+export function failureCodeForCheckId(checkId) {
+  if (checkId === 'contractPageType') return 'CONTRACT_PAGE_TYPE_MISMATCH'
+  if (checkId === 'regionContract') return 'REGION_CONTRACT_MISMATCH'
+  if (checkId === 'ownershipMapping') return 'OWNERSHIP_MAPPING_MISMATCH'
+  if (checkId === 'legacyRuntimeAdapter') return 'LEGACY_RUNTIME_ADAPTER_MISMATCH'
+  if (checkId === 'managedDeliveryPath') return 'MANAGED_DELIVERY_PATH_DOWNGRADED'
+  if (checkId === 'sourceMarker') return 'SOURCE_MARKER_MISSING'
+  if (checkId === 'routeOwnership') return 'ROUTE_OWNER_MISSING'
+  if (checkId === 'directoryArtifacts') return 'DIRECTORY_ARTIFACTS_MISSING'
+  if (checkId === 'chartGovernance') return 'CHART_GOVERNANCE_MISMATCH'
+  if (checkId === 'translationMap') return 'TRANSLATION_MAP_STALE'
+  if (checkId === 'generationProfile') return 'GENERATION_PROFILE_MISMATCH'
+  if (checkId === 'productionContract') return 'PRODUCTION_CONTRACT_MISMATCH'
+  return 'PREFLIGHT_SOURCE_GUARD_FAILED'
+}
+
+function isLegacyRuntimeAdapterFailure(message) {
+  return String(message || '').includes('legacy runtime adapter')
+}
+
+function legacyRuntimeAdapterProofFromContract(contract) {
+  return contract?.generationProfile?.runtimeAdapterProof ||
+    contract?.productionContract?.runtimeAdapterProof ||
+    contract?.adapterContract?.runtimeAdapterProof ||
+    null
+}
+
+export function shouldRequireLegacyRuntimeAdapterProof(contract) {
+  const mode = contract?.archetypeMode || contract?.generationProfile?.mode || contract?.productionContract?.mode || ''
+  if (mode !== 'legacy-host-compatible') return false
+
+  const generationProfile = contract?.generationProfile || {}
+  const legacyStrategyId = String(generationProfile.legacyStrategyId || '').trim()
+  return (
+    legacyStrategyId === 'runtime-bridged-page-component' ||
+    generationProfile.strategy === 'page-component' ||
+    generationProfile.strategy === 'controlled-extension' ||
+    generationProfile.strategy === 'managed-analytics' ||
+    generationProfile.pageComponentStatus === 'selected' ||
+    Boolean(generationProfile.pageComponentId)
+  )
+}
+
+export function findLegacyRuntimeAdapterFailures(contract) {
+  if (!shouldRequireLegacyRuntimeAdapterProof(contract)) return []
+
+  const proof = legacyRuntimeAdapterProofFromContract(contract)
+  if (!proof) {
+    return [
+      'Missing legacy runtime adapter proof for selected page component. Regenerate the page contract from plan-page-task so adapter proof is persisted before preflight.',
+    ]
+  }
+
+  const failures = []
+  if (proof.kind !== 'legacy-runtime-adapter') {
+    failures.push(`Invalid legacy runtime adapter kind "${proof.kind || '(missing)'}"; expected "legacy-runtime-adapter".`)
+  }
+  if (proof.status !== 'available') {
+    failures.push(`Invalid legacy runtime adapter status "${proof.status || '(missing)'}"; expected "available".`)
+  }
+  if (proof.responsibility !== 'runtime-bridge-only') {
+    failures.push(`Invalid legacy runtime adapter responsibility "${proof.responsibility || '(missing)'}"; adapter must be runtime-bridge-only and must not translate components.`)
+  }
+
+  const forbiddenTerms = [
+    'translate-hiui-components-to-legacy-components',
+    'replace-query-filter-with-legacy-form',
+    'replace-managed-table-with-legacy-table',
+    'reimplement-pagination-region',
+    'wrap-typical-page-as-business-page-component',
+  ]
+  const declaredResponsibilities = [
+    ...(Array.isArray(proof.responsibilities) ? proof.responsibilities : []),
+    ...(Array.isArray(proof.allowedResponsibilities) ? proof.allowedResponsibilities : []),
+  ]
+  const forbiddenDeclared = declaredResponsibilities.filter((responsibility) =>
+    forbiddenTerms.includes(responsibility)
+  )
+  if (forbiddenDeclared.length > 0) {
+    failures.push(`Invalid legacy runtime adapter responsibilities: ${forbiddenDeclared.join(', ')}. Adapter proof cannot authorize component translation or region reimplementation.`)
+  }
+
+  return failures
+}
+
+function blockingIssuesForFailures(failures) {
+  return failures.map((failure) => {
+    const checkId = checkIdForFailure(failure)
+    const suggestedActionIds = suggestedActionIdsForFailure(failure)
+    return {
+      code: failureCodeForCheckId(checkId),
+      source: 'preflight',
+      checkId,
+      message: failure,
+      blocking: true,
+      autoFixable: suggestedActionIds.length > 0,
+      suggestedActionIds,
+    }
+  })
+}
+
+function checksForPreflight({ failures, warnings }) {
+  const failureChecks = failures.map((failure) => ({
+    id: checkIdForFailure(failure),
+    status: 'failed',
+    severity: 'blocking',
+    message: failure,
+    suggestedActionIds: suggestedActionIdsForFailure(failure),
+  }))
+
+  const warningChecks = warnings.map((warning) => ({
+    id: 'contractWarning',
+    status: 'warning',
+    severity: 'warning',
+    message: warning,
+    suggestedActionIds: [],
+  }))
+
+  if (failureChecks.length === 0 && warningChecks.length === 0) {
+    return [
+      {
+        id: 'preflightBaseline',
+        status: 'passed',
+        severity: 'info',
+        message: 'managed page preflight completed without blocking failures',
+        suggestedActionIds: [],
+      },
+    ]
+  }
+
+  return [...failureChecks, ...warningChecks]
+}
+
+function suggestedActionsForPreflight({ failures, normalizedPagePath, contract }) {
+  const actions = []
+  if (
+    failures.some((failure) =>
+      suggestedActionIdsForFailure(failure).includes('write-contract-standard')
+    )
+  ) {
+    actions.push({
+      id: 'write-contract-standard',
+      phase: 'WriteContract',
+      tool: 'npm-script',
+      command: 'typical-page:write-contract',
+      args: {
+        '--page-type': readPageTypeFromDriftFailure(failures) || '<page-type>',
+        '--page': normalizedPagePath,
+        '--mode': contract.archetypeMode || '<mode>',
+        '--preset': 'standard',
+      },
+      required: true,
+      reason: 'refresh stale managed contract before preflight',
+      produces: [],
+    })
+  }
+  if (
+    failures.some((failure) =>
+      suggestedActionIdsForFailure(failure).includes('refresh-translation-map')
+    )
+  ) {
+    actions.push({
+      id: 'refresh-translation-map',
+      phase: 'TranslationMap',
+      tool: 'npm-script',
+      command: 'typical-page:translation-map',
+      args: {
+        '--page': normalizedPagePath,
+        '--reason': 'legacy-preflight',
+      },
+      required: true,
+      reason: 'refresh stale or missing legacy translation map before preflight',
+      produces: [],
+    })
+  }
+  if (
+    failures.some((failure) =>
+      suggestedActionIdsForFailure(failure).includes('refresh-production-contract')
+    )
+  ) {
+    actions.push({
+      id: 'refresh-production-contract',
+      phase: 'WriteContract',
+      tool: 'npm-script',
+      command: 'typical-page:write-contract',
+      args: {
+        '--page-type': contract.pageTypeId || '<page-type>',
+        '--page': normalizedPagePath,
+        '--mode': contract.archetypeMode || '<mode>',
+        '--preset': 'standard',
+      },
+      required: true,
+      reason: 'refresh generationProfile and page-production-contract.v1 before preflight',
+      produces: ['generationProfile', 'productionContract'],
+    })
+  }
+  return actions
+}
+
+function readPageTypeFromDriftFailure(failures) {
+  for (const failure of failures) {
+    const match = String(failure || '').match(/source declares pageType "([^"]+)"/)
+    if (match) return match[1]
+  }
+  return ''
+}
+
 async function pathExists(targetPath) {
   try {
     await fs.access(targetPath)
     return true
   } catch {
     return false
+  }
+}
+
+async function findScaffoldBaselineSourceFailures({ contract, generatedPagePath, targetRoot }) {
+  const entryPath = path.join(targetRoot, generatedPagePath)
+  if (!(await pathExists(entryPath))) {
+    return [`${generatedPagePath} is missing. Re-run typical-page:start-page before continuing implementation.`]
+  }
+
+  const sourceRaw = await fs.readFile(entryPath, 'utf8')
+  const failures = []
+
+  if (!/data-hiui5-page-type=|hiui-design page-type:/i.test(sourceRaw)) {
+    failures.push(
+      `${generatedPagePath} is missing the managed page-type marker. Re-run typical-page:start-page so scaffold baseline markers are restored before implementation.`
+    )
+  }
+
+  if (!/data-hiui5-example=|hiui-design example:/i.test(sourceRaw)) {
+    failures.push(
+      `${generatedPagePath} is missing the managed example marker. Re-run typical-page:start-page so scaffold provenance is restored before implementation.`
+    )
+  }
+
+  if (String(contract?.layoutStrategy || '').trim() && !/data-hiui5-layout-strategy=|hiui-design layout-strategy:/i.test(sourceRaw)) {
+    failures.push(
+      `${generatedPagePath} declares layoutStrategy in contract but source is missing the matching layout-strategy marker. Re-run typical-page:start-page or restore scaffold layout markers before implementation.`
+    )
+  }
+
+  if (String(contract?.layoutArchetype || '').trim() && !/data-hiui5-layout-group=|hiui-design layout archetype:/i.test(sourceRaw)) {
+    failures.push(
+      `${generatedPagePath} declares layoutArchetype in contract but source is missing the matching layout archetype marker. Re-run typical-page:start-page or restore scaffold layout markers before implementation.`
+    )
+  }
+
+  return failures
+}
+
+async function readSourcePageTypeId({ generatedPagePath, targetRoot }) {
+  const entryPath = path.join(targetRoot, generatedPagePath)
+  try {
+    const raw = await fs.readFile(entryPath, 'utf8')
+    return (
+      raw.match(/data-hiui5-page-type=["']([^"']+)["']/)?.[1] ||
+      raw.match(/hiui-design page-type:\s*([^\s*]+)/)?.[1] ||
+      ''
+    )
+  } catch {
+    return ''
   }
 }
 
@@ -166,6 +580,15 @@ async function findDirectoryArtifactFailures({ generatedPagePath, targetRoot }) 
   const baseName = path.basename(entryPath, extension)
 
   if (baseName !== 'index') {
+    return failures
+  }
+
+  const entryRaw = await fs.readFile(entryPath, 'utf8')
+  const isManagedDirectoryEntry =
+    /hiui-design page entry:\s*managed-directory-artifacts/.test(entryRaw) ||
+    /from ['"]\.\/sections['"]/.test(entryRaw)
+
+  if (!isManagedDirectoryEntry) {
     return failures
   }
 
@@ -188,7 +611,6 @@ async function findDirectoryArtifactFailures({ generatedPagePath, targetRoot }) 
     return failures
   }
 
-  const entryRaw = await fs.readFile(entryPath, 'utf8')
   const sectionsRaw = await fs.readFile(sectionsPath, 'utf8')
 
   if (!/from ['"]\.\/sections['"]/.test(entryRaw)) {
@@ -206,24 +628,76 @@ async function findDirectoryArtifactFailures({ generatedPagePath, targetRoot }) 
   return failures
 }
 
+async function readJsonIfExists(filePath) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'))
+  } catch {
+    return null
+  }
+}
+
+function translationMapPathForPage(targetRoot, page) {
+  return path.join(getRulesOnlyOutputRoot(targetRoot), 'translation-maps', `${toContractSlug(page)}.json`)
+}
+
+async function findTranslationMapFailures({ contract, normalizedPagePath, snapshot, targetRoot }) {
+  const mode = String(contract?.archetypeMode || '').trim()
+  const pageTypeId = String(contract?.pageTypeId || '').trim()
+  if (mode !== 'legacy-host-compatible' || !HIGH_RISK_TRANSLATION_MAP_PAGE_TYPES.has(pageTypeId)) {
+    return []
+  }
+
+  const mapPath = translationMapPathForPage(targetRoot, normalizedPagePath)
+  const relativeMapPath = normalizeContractPath(targetRoot, mapPath)
+  const translationMap = await readJsonIfExists(mapPath)
+
+  if (!translationMap) {
+    return [
+      `${normalizedPagePath} requires translation-map.v1 for legacy high-risk page type "${pageTypeId}", but ${relativeMapPath} is missing. Run npm run typical-page:translation-map -- --page ${normalizedPagePath} --reason legacy-preflight`,
+    ]
+  }
+
+  if (translationMap.schemaVersion !== 'translation-map.v1') {
+    return [
+      `${relativeMapPath} must use schemaVersion "translation-map.v1" before preflight can trust legacy translation mapping. Run npm run typical-page:translation-map -- --page ${normalizedPagePath} --reason legacy-preflight`,
+    ]
+  }
+
+  if (translationMap.sourceHash !== snapshot.hash) {
+    return [
+      `${relativeMapPath} translation-map sourceHash is stale for ${normalizedPagePath}. Run npm run typical-page:translation-map -- --page ${normalizedPagePath} --reason legacy-preflight`,
+    ]
+  }
+
+  return []
+}
+
 async function writeContractArtifacts(contractEntry) {
-  await fs.writeFile(
-    contractEntry.filePath,
-    `${JSON.stringify(contractEntry.contract, null, 2)}\n`,
-    'utf8'
-  )
-  await fs.writeFile(
-    contractEntry.filePath.replace(/\.json$/, '.md'),
-    renderRulesOnlyPageContractMarkdown(contractEntry.contract),
-    'utf8'
-  )
+  await writeManagedPageContractArtifacts({
+    contract: contractEntry.contract,
+    contractJsonPath: contractEntry.filePath,
+    contractMarkdownPath: contractEntry.filePath.replace(/\.json$/, '.md'),
+  })
 }
 
 async function main() {
   try {
     const options = parseArgs(process.argv.slice(2))
+    if (options.contractFixture) {
+      console.log(JSON.stringify(buildContractFixtureReport(), null, 2))
+      return
+    }
+
     const targetRoot = path.resolve(options.target)
     const normalizedPagePath = normalizeContractPath(targetRoot, options.page)
+    const routeOwnershipError = buildTypicalPageReuseTargetError(
+      normalizedPagePath,
+      'typical-page:preflight'
+    )
+    if (routeOwnershipError) {
+      throw new Error(routeOwnershipError)
+    }
+
     const contractsResult = await loadRulesOnlyPageContracts(targetRoot)
     const contractEntry = contractsResult.contracts.find(
       (entry) => entry?.contract?.generatedPagePath === normalizedPagePath
@@ -238,6 +712,18 @@ async function main() {
     const scriptDir = path.dirname(fileURLToPath(import.meta.url))
     const skillRoot = path.resolve(scriptDir, '..')
     const { manifest } = await loadPageTypeManifest({ skillRoot, line: options.line })
+    const sourcePageTypeId = await readSourcePageTypeId({
+      generatedPagePath: normalizedPagePath,
+      targetRoot,
+    })
+    const contractPageTypeId = String(contractEntry.contract.pageTypeId || '').trim()
+    const hasPageTypeDrift =
+      Boolean(sourcePageTypeId && contractPageTypeId) && sourcePageTypeId !== contractPageTypeId
+    const pageTypeDriftFailures = hasPageTypeDrift
+      ? [
+          `${normalizedPagePath} source declares pageType "${sourcePageTypeId}" but the managed contract is still "${contractPageTypeId}". Refresh the contract before preflight so stale page-type rules do not produce misleading failures: npm run typical-page:write-contract -- --page-type ${sourcePageTypeId} --page ${normalizedPagePath} --mode ${contractEntry.contract.archetypeMode || '<mode>'} --preset standard`,
+        ]
+      : []
     const archetypeDefinition = await loadArchetypeDefinition({
       skillRoot,
       pageTypeId: contractEntry.contract.pageTypeId,
@@ -249,31 +735,58 @@ async function main() {
       'archetype-smoke-baselines.json'
     )
     const baselineSpec = JSON.parse(await fs.readFile(baselineSpecPath, 'utf8'))
-    const contractValidation = validateRulesOnlyPageContract({
-      contract: contractEntry.contract,
-      manifest,
-      targetRoot,
-      archetypeDefinition,
-      baselineSpec,
-    })
-    const unresolvedMappings = findUnresolvedMappings(contractEntry.contract)
-    const directoryArtifactFailures = await findDirectoryArtifactFailures({
-      generatedPagePath: normalizedPagePath,
-      targetRoot,
-    })
-    const sourceErrors = validateManagedPageSource({
-      contract: contractEntry.contract,
-      generatedPagePath: normalizedPagePath,
-      targetRoot,
-    })
+    const contractValidation = hasPageTypeDrift
+      ? { errors: [], warnings: [] }
+      : validateRulesOnlyPageContract({
+          contract: contractEntry.contract,
+          manifest,
+          targetRoot,
+          archetypeDefinition,
+          baselineSpec,
+        })
+    const unresolvedMappings = hasPageTypeDrift ? [] : findUnresolvedMappings(contractEntry.contract)
+    const preflightStage = preflightStageForContract({ unresolvedMappings })
+    const directoryArtifactFailures = hasPageTypeDrift
+      ? []
+      : await findDirectoryArtifactFailures({
+          generatedPagePath: normalizedPagePath,
+          targetRoot,
+        })
+    const sourceErrors = hasPageTypeDrift
+      ? []
+      : preflightStage === 'scaffold-baseline'
+        ? await findScaffoldBaselineSourceFailures({
+            contract: contractEntry.contract,
+            generatedPagePath: normalizedPagePath,
+            targetRoot,
+          })
+        : validateManagedPageSource({
+            contract: contractEntry.contract,
+            generatedPagePath: normalizedPagePath,
+            importScope: options.depth === 'deep' ? 'transitive' : 'entry-only',
+            targetRoot,
+          })
     const snapshot = computeManagedPageSourceSnapshot({
       generatedPagePath: normalizedPagePath,
       targetRoot,
     })
+    const translationMapFailures = hasPageTypeDrift
+      ? []
+      : preflightStage === 'scaffold-baseline'
+        ? []
+        : await findTranslationMapFailures({
+            contract: contractEntry.contract,
+            normalizedPagePath,
+            snapshot,
+            targetRoot,
+          })
     const failures = [
+      ...pageTypeDriftFailures,
       ...contractValidation.errors,
-      ...unresolvedMappings,
+      ...findLegacyRuntimeAdapterFailures(contractEntry.contract),
+      ...(preflightStage === 'scaffold-baseline' ? [] : unresolvedMappings),
       ...directoryArtifactFailures,
+      ...translationMapFailures,
       ...sourceErrors,
     ]
 
@@ -288,7 +801,7 @@ async function main() {
     const workflowStatus =
       wasFinalized && previousSnapshotHash && previousSnapshotHash !== snapshot.hash
         ? 'stale'
-        : failures.length === 0 && !wasFinalized
+        : failures.length === 0 && preflightStage === 'implementation' && !wasFinalized
           ? 'preflight-pass'
           : previousWorkflow.status || 'started'
 
@@ -310,7 +823,37 @@ async function main() {
     await writeContractArtifacts(contractEntry)
     await syncManagedPageRegistry(targetRoot)
 
+    const warnings = contractValidation.warnings.filter(
+      (warning) => !warning.startsWith('generated:')
+    )
+    const deferredChecks = preflightStage === 'scaffold-baseline'
+      ? ['placeholderMappings', 'translationMap', 'full-delivery-confirmation']
+      : []
+    if (preflightStage === 'scaffold-baseline') {
+      warnings.push(
+        'Contract placeholders remain. Preflight is running in scaffold-baseline stage and defers full delivery checks until TODO targets are replaced.'
+      )
+    }
+    const checks = checksForPreflight({ failures, warnings })
+    const suggestedActions = suggestedActionsForPreflight({
+      failures,
+      normalizedPagePath,
+      contract: contractEntry.contract,
+    })
+    const blockingIssues = blockingIssuesForFailures(failures)
     const payload = {
+      schemaVersion: 'preflight-report.v1',
+      status: failures.length > 0 ? 'failed' : 'passed',
+      preflightStage,
+      readyForImplementation: failures.length === 0,
+      readyForDelivery: failures.length === 0 && preflightStage === 'implementation',
+      deferredChecks,
+      page: normalizedPagePath,
+      pageType: contractEntry.contract.pageTypeId,
+      checks,
+      blockingReasons: failures,
+      blockingIssues,
+      suggestedActions,
       pageTypeId: contractEntry.contract.pageTypeId,
       pageTypeLabel: contractEntry.contract.pageTypeLabel,
       workflowStatus: contractEntry.contract.workflow?.status || '(missing)',
@@ -319,6 +862,8 @@ async function main() {
       runtimeSmokeStatus: contractEntry.contract.workflow?.runtimeSmokeStatus || '(missing)',
       examplePath: contractEntry.contract.examplePath,
       hostArchetypePath: contractEntry.contract.hostArchetypePath,
+      generationProfile: contractEntry.contract.generationProfile || null,
+      productionContract: contractEntry.contract.productionContract || null,
       requiredRegions: getRequiredRegionsForPageType(contractEntry.contract.pageTypeId),
       requiredOwnershipRoles: getRequiredOwnershipRolesForPageType(contractEntry.contract.pageTypeId),
       requiredCapabilities: contractEntry.contract.adapterContract?.requiredCapabilities || [],
@@ -326,21 +871,33 @@ async function main() {
       ...getManagedChartGovernanceSummary(contractEntry.contract),
       i18nStrategy: contractEntry.contract.i18nBaseline?.runtimePolicy || '(not-declared)',
       formatterPolicy: contractEntry.contract.i18nBaseline?.formatterPolicy || [],
-      warnings: contractValidation.warnings.filter((warning) => !warning.startsWith('generated:')),
+      warnings,
       failures,
     }
 
     if (options.json) {
       console.log(JSON.stringify(payload, null, 2))
-      process.exit(failures.length > 0 ? 1 : 0)
+      process.exitCode = failures.length > 0 ? 1 : 0
+      return
     }
 
     console.log('[typical-page:preflight] Summary:')
     console.log(`- page type: ${payload.pageTypeLabel} (${payload.pageTypeId})`)
+    console.log(`- preflight stage: ${payload.preflightStage}`)
     console.log(`- workflow status: ${payload.workflowStatus}`)
     console.log(`- preflight status: ${payload.preflightStatus}`)
     console.log(`- example path: ${payload.examplePath}`)
     console.log(`- host archetype path: ${payload.hostArchetypePath}`)
+    if (payload.generationProfile) {
+      console.log(
+        `- generation profile: mold=${payload.generationProfile.moldId || '(missing)'}, startFrom=${payload.generationProfile.startFrom || '(missing)'}, gates=${(payload.generationProfile.requiredGates || []).join(', ') || '(none)'}`
+      )
+    }
+    if (payload.productionContract) {
+      console.log(
+        `- production contract: policy=${payload.productionContract.policy || '(missing)'}, proof=${payload.productionContract.sourceProofLevel || '(missing)'}`
+      )
+    }
     console.log(
       `- runtime smoke: required=${String(payload.runtimeSmokeRequired)}, status=${payload.runtimeSmokeStatus}`
     )
@@ -356,6 +913,12 @@ async function main() {
     console.log(`- chart governance: ${payload.chartGovernance}`)
     console.log(`- i18n strategy: ${payload.i18nStrategy}`)
     console.log(`- formatter policy: ${payload.formatterPolicy.join(', ') || '(none)'}`)
+    console.log(
+      `- readiness: implementation=${String(payload.readyForImplementation)}, delivery=${String(payload.readyForDelivery)}`
+    )
+    if (payload.deferredChecks.length > 0) {
+      console.log(`- deferred checks: ${payload.deferredChecks.join(', ')}`)
+    }
 
     if (payload.warnings.length > 0) {
       console.log('- contract warnings:')
@@ -364,13 +927,15 @@ async function main() {
       })
     }
 
-    if (payload.failures.length > 0) {
+      if (payload.failures.length > 0) {
       const chartFailures = payload.failures.filter((failure) => isChartGovernanceFailure(failure))
       console.error(
         '[typical-page:preflight] Failed. Current-page implementation must stop until contract placeholders and source-level issues are cleared.'
       )
       console.error(
-        '[typical-page:preflight] Source checks include transitive local imports, so helper contamination is reported here before finalize-page.'
+        options.depth === 'deep'
+          ? '[typical-page:preflight] Source checks include transitive local imports, so helper contamination is reported here before finalize-page.'
+          : '[typical-page:preflight] Current run used core source checks only. Re-run with --depth deep when helper contamination or transitive import drift must be diagnosed before finalize-page.'
       )
       if (chartFailures.length > 0) {
         console.error(
@@ -383,7 +948,11 @@ async function main() {
       process.exit(1)
     }
 
-    console.log('[typical-page:preflight] PASS')
+    console.log(
+      payload.preflightStage === 'scaffold-baseline'
+        ? '[typical-page:preflight] PASS (scaffold baseline)'
+        : '[typical-page:preflight] PASS'
+    )
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     console.error(`[typical-page:preflight] ${message}`)
@@ -392,4 +961,8 @@ async function main() {
   }
 }
 
-main()
+const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+
+if (isDirectRun) {
+  main()
+}

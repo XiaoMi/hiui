@@ -1,0 +1,289 @@
+{
+  "schemaVersion": "hiui-asset-catalog.v1",
+  "assetType": "page-components",
+  "target": ".",
+  "items": [
+    {
+      "id": "standard-table-stat-page.v1",
+      "componentId": "standard-table-stat-page.v1",
+      "pageTypeId": "table-stat",
+      "baseMoldId": "table-stat.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-table-stat-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-table-basic-page.v1",
+      "componentId": "standard-table-basic-page.v1",
+      "pageTypeId": "table-basic",
+      "baseMoldId": "table-basic.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-table-basic-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-tree-table-page.v1",
+      "componentId": "standard-tree-table-page.v1",
+      "pageTypeId": "tree-table",
+      "baseMoldId": "tree-table.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-tree-table-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-tree-split-page.v1",
+      "componentId": "standard-tree-split-page.v1",
+      "pageTypeId": "tree-split",
+      "baseMoldId": "tree-split.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-tree-split-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-drawer-form-page.v1",
+      "componentId": "standard-drawer-form-page.v1",
+      "pageTypeId": "drawer-form",
+      "baseMoldId": "drawer-form.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-drawer-form-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-drawer-detail-page.v1",
+      "componentId": "standard-drawer-detail-page.v1",
+      "pageTypeId": "drawer-detail",
+      "baseMoldId": "drawer-detail.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-drawer-detail-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-feedback-status-page.v1",
+      "componentId": "standard-feedback-status-page.v1",
+      "pageTypeId": "feedback-status",
+      "baseMoldId": "feedback-status.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-feedback-status-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-full-page-edit-page.v1",
+      "componentId": "standard-full-page-edit-page.v1",
+      "pageTypeId": "full-page-edit",
+      "baseMoldId": "full-page-edit.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-full-page-edit-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "standard-full-page-detail-page.v1",
+      "componentId": "standard-full-page-detail-page.v1",
+      "pageTypeId": "full-page-detail",
+      "baseMoldId": "full-page-detail.managed-mold.v1",
+      "mode": "host-integration",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": true,
+      "status": "certified",
+      "certificationStatus": "certified",
+      "certificationRef": "rules/page-component-certifications/standard-full-page-detail-page.v1.json",
+      "certificationAvailable": true,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "legacy-runtime-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "host-adapted-table-basic-page.v1",
+      "componentId": "host-adapted-table-basic-page.v1",
+      "pageTypeId": "table-basic",
+      "baseMoldId": "table-basic.managed-mold.v1",
+      "mode": "rules-only",
+      "supportedModes": [
+        "rules-only"
+      ],
+      "implementationKind": "page-level-component",
+      "available": false,
+      "status": "planned",
+      "certificationStatus": "missing",
+      "certificationRef": "",
+      "certificationAvailable": false,
+      "fallbackPolicy": "managed-mold",
+      "adapterIds": [
+        "layout-search-table-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "legacy-table-basic-page.v1",
+      "componentId": "legacy-table-basic-page.v1",
+      "pageTypeId": "table-basic",
+      "baseMoldId": "table-basic.managed-mold.v1",
+      "mode": "legacy-host-compatible",
+      "supportedModes": [
+        "legacy-host-compatible"
+      ],
+      "implementationKind": "page-level-component",
+      "available": false,
+      "status": "planned",
+      "certificationStatus": "missing",
+      "certificationRef": "",
+      "certificationAvailable": false,
+      "fallbackPolicy": "fail-closed-when-selected",
+      "adapterIds": [
+        "layout-search-table-adapter"
+      ],
+      "supportedExtensionLevels": [
+        0,
+        1
+      ]
+    }
+  ]
+}

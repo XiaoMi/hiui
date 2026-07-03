@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "visual-translation-brief.v1",
+  "status": "ready",
+  "statusReasons": [],
+  "source": {"type": "prototype-screenshot", "artifacts": [{"kind": "image", "refType": "file", "ref": "file:screenshots/order.png", "available": true}]},
+  "observation": {"visibleRegions": ["filter", "table", "pagination"]},
+  "extractedFacts": {"businessObject": {"value": "订单", "confidence": "high"}, "primaryGoal": {"value": "查询订单", "confidence": "high"}},
+  "normalization": {"preserve": ["查询字段"], "discard": ["旧视觉"], "hiuiRecommendations": ["收敛为标准表格页"]},
+  "pageTypeCandidates": [{"pageType": "table-basic", "confidence": "high", "evidence": ["filter + table"]}],
+  "prePlanBlockingFacts": [],
+  "blockingIssues": [],
+  "blockingReasons": [],
+  "planningHints": {"intentSummary": "转译订单列表", "constraints": ["保留可见字段"], "evidenceRefs": ["observation.visibleRegions"]}
+}

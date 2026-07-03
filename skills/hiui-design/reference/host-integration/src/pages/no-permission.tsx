@@ -3,6 +3,7 @@ import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import noPermissionMainUrl from '../assets/no-permission-main.svg'
 import noPermissionBadgeUrl from '../assets/no-permission-badge.svg'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -90,21 +91,23 @@ function NoPermissionIndicator() {
 }
 
 export function NoPermissionPage() {
+  const { t } = useTranslation()
+
   return (
     <div style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="暂无权限"
+          title={t('暂无权限')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -115,17 +118,17 @@ export function NoPermissionPage() {
         <div style={contentStyle}>
           <EmptyState
             indicator={<NoPermissionIndicator />}
-            title={<span style={titleStyle}>暂无权限</span>}
+            title={<span style={titleStyle}>{t('暂无权限')}</span>}
             size="md"
           >
             <div style={descStyle}>
-              抱歉，您没有当前模块的访问权限，请 <span style={linkStyle}>联系管理员</span>
+              {t('抱歉，您没有当前模块的访问权限，请')} <span style={linkStyle}>{t('联系管理员')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">立即申请</Button>
+              <Button type="primary">{t('立即申请')}</Button>
             </Space>
           </EmptyState>
         </div>

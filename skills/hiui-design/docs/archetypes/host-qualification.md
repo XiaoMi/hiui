@@ -15,3 +15,12 @@ For `rules-only` and `legacy-host-compatible`, qualification is not complete unt
 - one host adapter family from `archetypes/registry/common.adapter-capabilities.json`
 
 Both must be written back into the generated page's source contract markers, together with the exact example path. If the page cannot declare that copy chain, it is not a qualified example-based page yet.
+
+For `legacy-host-compatible`, qualification is stricter because runtime translation can drift. Before generating the business page, also name:
+
+- one shell carrier path
+- one route owner
+- one ownership mode
+- the single owners for `content-slot`, `white-body`, `outer-padding`, and `main-scroll`
+
+If the page has no qualified host archetype, is the first page of that type in the host, starts from `reference-or-scaffold` or `scaffold`, changes ownership or shell carrier, or belongs to `table-stat`, `tree-split`, drawer, or full-page page types, expand Translation Drift Guard: semantic lock, translation map, and isomorphism check. Drift exceptions may explain equivalent translation only; they cannot waive mandatory components, required regions, ownership, route ownership, or source markers.

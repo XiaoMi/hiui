@@ -12,6 +12,7 @@ import {
   basicUserRoleOptions,
   basicUserStatusOptions,
 } from './typical-pages.mock'
+import { useTranslation } from '../../translation'
 
 type DrawerFormValues = {
   userName?: string
@@ -40,23 +41,36 @@ const dateProps = {
 } as const
 
 export function DrawerFormPage() {
+  const { locale, t } = useTranslation()
   const [visible, setVisible] = useState(true)
   const formRef = useRef(null) as NonNullable<SchemaFormProps<DrawerFormValues>['formRef']>
 
   const fields = useMemo(
     () => [
-      F('用户姓名', 'userName').Text().Required().val,
-      F('米聊号', 'miTalkId').Text().val,
-      F('用户电话', 'phone').Text().Required().val,
-      F('邮箱', 'email').Text().val,
-      F('用户角色', 'roleId').Select({ data: basicUserRoleOptions }).Required().val,
-      F('岗位名称', 'positionId').Select({ data: basicUserPositionOptions }).Required().val,
-      F('所属机构', 'organizationId').Select({ data: basicUserOrganizationOptions }).Required().val,
-      F('入职日期', 'entryDate').Date({ ...dateProps }).Required().val,
-      F('用户状态', 'userStatus').Select({ data: basicUserStatusOptions }).Required().val,
-      F('备注信息', 'remark').Textarea({ rows: 4 }).MWP({ span: 24 }).val,
+      F(t('用户姓名'), 'userName').Text().Required().val,
+      F(t('米聊号'), 'miTalkId').Text().val,
+      F(t('用户电话'), 'phone').Text().Required().val,
+      F(t('邮箱'), 'email').Text().val,
+      F(t('用户角色'), 'roleId')
+        .Select({ data: basicUserRoleOptions.map((option) => ({ ...option, title: t(option.title) })) })
+        .Required()
+        .val,
+      F(t('岗位名称'), 'positionId')
+        .Select({ data: basicUserPositionOptions.map((option) => ({ ...option, title: t(option.title) })) })
+        .Required()
+        .val,
+      F(t('所属机构'), 'organizationId')
+        .Select({ data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })) })
+        .Required()
+        .val,
+      F(t('入职日期'), 'entryDate').Date({ ...dateProps }).Required().val,
+      F(t('用户状态'), 'userStatus')
+        .Select({ data: basicUserStatusOptions.map((option) => ({ ...option, title: t(option.title) })) })
+        .Required()
+        .val,
+      F(t('备注信息'), 'remark').Textarea({ rows: 4 }).MWP({ span: 24 }).val,
     ],
-    []
+    [t]
   )
 
   const handleSubmit = useCallback(async () => {
@@ -66,18 +80,18 @@ export function DrawerFormPage() {
       return
     }
 
-    Message.open({ type: 'success', title: '抽屉表单已提交（示例）' })
+    Message.open({ type: 'success', title: t('抽屉表单已提交（示例）') })
     setVisible(false)
-  }, [])
+  }, [t])
 
   return (
     <>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="抽屉表单"
+          title={t('抽屉表单')}
           extra={
             <Button type="primary" onClick={() => setVisible(true)}>
-              打开抽屉
+              {t('打开抽屉')}
             </Button>
           }
         />
@@ -85,12 +99,13 @@ export function DrawerFormPage() {
 
       <div style={placeholderStyle}>
         <Button type="primary" onClick={() => setVisible(true)}>
-          打开抽屉表单
+          {t('打开抽屉表单')}
         </Button>
       </div>
 
       <ProFormDrawer
-        title="新增用户"
+        key={locale}
+        title={t('新增用户')}
         visible={visible}
         width={600}
         closeable
@@ -98,9 +113,9 @@ export function DrawerFormPage() {
         onClose={() => setVisible(false)}
         footer={
           <ProDrawerFooterActions>
-            <Button onClick={() => setVisible(false)}>取消</Button>
+            <Button onClick={() => setVisible(false)}>{t('取消')}</Button>
             <Button type="primary" onClick={handleSubmit}>
-              确定
+              {t('确认')}
             </Button>
           </ProDrawerFooterActions>
         }

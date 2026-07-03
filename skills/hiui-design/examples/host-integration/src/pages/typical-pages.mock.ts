@@ -467,7 +467,7 @@ const inventoryRows: InventoryRow[] = [
     id: 'item-001',
     categoryId: 'phone',
     index: 1,
-    name: 'Example Phone Pro 展示机',
+    name: 'Xiaomi 16 Pro 展示机',
     code: 'PHONE-001',
     unit: '台',
     serialManaged: '是',
@@ -479,7 +479,7 @@ const inventoryRows: InventoryRow[] = [
     id: 'item-002',
     categoryId: 'pad',
     index: 2,
-    name: 'Example Pad 8',
+    name: 'Xiaomi Pad 8',
     code: 'PAD-008',
     unit: '台',
     serialManaged: '是',
@@ -625,7 +625,7 @@ export const serviceMethodOptions: SelectOption[] = [
 ]
 
 export const purchaseChannelOptions: SelectOption[] = [
-  { id: 'mi-mall', title: '示例商城' },
+  { id: 'mi-mall', title: '小米商城' },
   { id: 'jd', title: '京东' },
   { id: 'offline', title: '线下门店' },
 ]
@@ -653,7 +653,7 @@ const workOrderEditDetail = {
   status: 'processing',
   ticketType: 'repair',
   serviceMethod: 'door',
-  relatedProduct: 'Example Phone Pro',
+  relatedProduct: 'Xiaomi 16 Pro',
   purchaseChannel: 'mi-mall',
   warrantyStart: '2025-08-01',
   warrantyEnd: '2027-08-01',
@@ -694,12 +694,30 @@ export async function getWorkOrderDetail() {
       status: '处理中',
       ticketType: '维修工单',
       serviceMethod: '上门服务',
-      relatedProduct: 'Example Phone Pro',
-      purchaseChannel: '示例商城',
-      warrantyStart: '2025-08-01',
-      warrantyEnd: '2027-08-01',
+      relatedProduct: 'Xiaomi 16 Pro',
+      purchaseChannel: '小米商城',
       visitReason: '整机无法正常开机',
     },
+    warrantyInfo: [
+      {
+        type: '退货',
+        remainingDays: 2,
+        startAt: '2026-04-16',
+        endAt: '2026-04-22',
+      },
+      {
+        type: '换货',
+        remainingDays: 9,
+        startAt: '2026-04-16',
+        endAt: '2026-04-30',
+      },
+      {
+        type: '维修',
+        remainingDays: 469,
+        startAt: '2025-08-01',
+        endAt: '2027-08-01',
+      },
+    ],
     customerInfo: {
       userName: '赵冉',
       userTags: '多次来访 / 会员用户',
@@ -711,5 +729,21 @@ export async function getWorkOrderDetail() {
       acceptedAt: '2026-04-17 15:20:00',
       description: '此处展示示例描述信息，可能会比较长，超出是内容换行展示',
     },
+    serviceRecords: [
+      {
+        id: 'record-001',
+        serviceTime: '2026-04-17 15:20:00',
+        serviceAction: '受理工单',
+        status: '已完成',
+        detailDescription: '客服已完成工单受理，并同步用户诉求与设备信息。',
+      },
+      {
+        id: 'record-002',
+        serviceTime: '2026-04-18 09:30:00',
+        serviceAction: '上门检测',
+        status: '处理中',
+        detailDescription: '工程师已预约上门检测，待同步备件库存后继续处理。',
+      },
+    ],
   }
 }

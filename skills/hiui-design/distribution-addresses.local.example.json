@@ -1,0 +1,10 @@
+{
+  "defaults": {
+    "teamPackage": "/tmp/hiui-design-team-package"
+  },
+  "localExamples": {
+    "maintainerSource": "/tmp/hiui-design-maintainer-source",
+    "activeSource": "/tmp/example-project/.local-context/hiui-design",
+    "openSourcePackage": "/tmp/hiui-design-open-source"
+  }
+}

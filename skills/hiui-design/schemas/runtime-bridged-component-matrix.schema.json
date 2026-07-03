@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/runtime-bridged-component-matrix.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "principles", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": "runtime-bridged-component-matrix.v1" },
+    "principles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "profileId",
+          "componentId",
+          "pageTypeId",
+          "appliesWhenModes",
+          "normalizedGenerationStrategy",
+          "userFacingGenerationStrategy",
+          "resolutionOrder",
+          "runtimeAssetSource",
+          "deliveryMode",
+          "semanticReferencePolicy",
+          "bridgeLayerPolicy",
+          "bridgeAssets",
+          "mustNot"
+        ],
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+\\.runtime-bridge\\.v[0-9]+$"
+          },
+          "componentId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+\\.v[0-9]+$"
+          },
+          "pageTypeId": { "type": "string" },
+          "appliesWhenModes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": ["host-integration", "rules-only", "legacy-host-compatible"]
+            }
+          },
+          "normalizedGenerationStrategy": { "const": "page-component" },
+          "userFacingGenerationStrategy": { "const": "runtime-bridged-page-component" },
+          "resolutionOrder": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": ["project-certified-carrier", "direct-standard-component", "explicit-fallback"]
+            }
+          },
+          "runtimeAssetSource": {
+            "type": "object",
+            "required": ["assetKind", "certificationRef", "componentShellField"],
+            "properties": {
+              "assetKind": { "const": "certified-page-component-shell" },
+              "certificationRef": { "type": "string", "minLength": 1 },
+              "componentShellField": { "const": "certificationInputs.componentShell" }
+            },
+            "additionalProperties": false
+          },
+          "deliveryMode": { "const": "runtime-component-filled-by-business-slots" },
+          "semanticReferencePolicy": {
+            "type": "object",
+            "required": ["examplePageRole", "runtimeComponentRole", "carrierPolicy"],
+            "properties": {
+              "examplePageRole": { "const": "semantic-and-structure-reference-only" },
+              "runtimeComponentRole": { "const": "primary-delivery-asset" },
+              "carrierPolicy": {
+                "const": "prefer-project-certified-carrier-before-direct-standard-component"
+              }
+            },
+            "additionalProperties": false
+          },
+          "bridgeLayerPolicy": {
+            "type": "object",
+            "required": ["wrapperRole", "slotAdapterRole", "thickness", "ownershipBoundary"],
+            "properties": {
+              "wrapperRole": { "const": "thin-runtime-wrapper" },
+              "slotAdapterRole": { "const": "slot-only-business-adapter" },
+              "thickness": { "const": "runtime-bridge-only" },
+              "ownershipBoundary": {
+                "const": "host-runtime-and-business-slot-binding-only"
+              }
+            },
+            "additionalProperties": false
+          },
+          "bridgeAssets": {
+            "type": "object",
+            "required": ["assetStatus", "wrapperTemplatePath", "slotAdapterTemplatePath"],
+            "properties": {
+              "assetStatus": { "const": "shipped" },
+              "wrapperTemplatePath": { "type": "string", "minLength": 1 },
+              "slotAdapterTemplatePath": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          },
+          "mustNot": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

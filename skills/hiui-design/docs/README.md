@@ -12,6 +12,7 @@
 
 - `onboarding/`
   接入、宿主边界、框架适配与排障说明。
+  其中 `onboarding/distribution-governance.md` 用于汇总 maintainer source / active source / global mirror / team package / open-source package 的官方仓位与流向定义；`../distribution-addresses.json` 是对应的机器可读地址草案。若与 `distribution-manifest.json`、`scripts/README.md`、`global-sync-workflow.md` 冲突，以那些真相源为准。
 - `generation/`
   规则解释层。展开页型专章、共享规则、视觉基线与兼容说明。
   若未命中典型页型，优先进入 `generation/non-typical-pages.md`。

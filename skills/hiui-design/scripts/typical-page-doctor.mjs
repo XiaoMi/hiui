@@ -4,10 +4,14 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { detectHostProfile } from './lib/detect-host-profile.mjs'
+import { loadHostProfileFact } from './lib/project-facts.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import { inspectManagedPageRegistry } from './lib/managed-page-artifacts.mjs'
+import {
+  inspectManagedPageRegistry,
+  resolveManagedPageObservedSourceSnapshotHash,
+  shouldPreferCurrentManagedPageSourceSnapshotForRuntimeSmoke,
+} from './lib/managed-page-artifacts.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
@@ -2680,6 +2684,10 @@ async function collectTypicalPageSourceSignals(rootDir) {
   for (const filePath of files) {
     const raw = await readTextCached(filePath)
     const specifiers = extractImportSpecifiers(raw)
+    const relativeFilePath = path.relative(rootDir, filePath)
+    const isNonBusinessAuxiliaryFile =
+      relativeFilePath.startsWith(`typical-page-reuse${path.sep}`) ||
+      /(?:^|[\\/])__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(filePath)
     const usesShells = specifiers.some(
       (specifier) =>
         specifier === '@hiui-design/typical-page-shells' ||
@@ -2695,7 +2703,7 @@ async function collectTypicalPageSourceSignals(rootDir) {
         specifier.endsWith('/dist/index.mjs')
     )
 
-    if (usesShells || usesPrivateShellImport) {
+    if ((usesShells || usesPrivateShellImport) && !isNonBusinessAuxiliaryFile) {
       signals.usesShells.push(filePath)
     }
 
@@ -2704,7 +2712,7 @@ async function collectTypicalPageSourceSignals(rootDir) {
         specifier.endsWith('/typical-page-host') ||
         specifier.includes('components/typical-page-host')
     )
-    const isHostIntegrationExampleFile = filePath.includes(`${path.sep}typical-page-reuse${path.sep}`)
+    const isHostIntegrationExampleFile = relativeFilePath.startsWith(`typical-page-reuse${path.sep}`)
     if (usesLocalHostAdapter && !isHostIntegrationExampleFile) {
       signals.localHostAdapterImports.push(filePath)
     }
@@ -3965,7 +3973,7 @@ async function writeDoctorReport({
   }
 
   await ensureDir(path.dirname(reportPath))
-  await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
+  await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
   return reportPath
 }
 
@@ -4174,6 +4182,24 @@ function resolveAdapterGuideLabel(outputRoot, adapterDoc) {
   return `${base}/${adapterDoc}`.replace(/\\/g, '/')
 }
 
+function sanitizePortableReportLine(line, targetRoot) {
+  if (typeof line !== 'string' || !line) return line
+
+  const normalizedRoot = String(targetRoot || '').replace(/[\\/]+$/, '')
+  let result = line
+
+  if (normalizedRoot) {
+    result = result.split(`${normalizedRoot}${path.sep}`).join('')
+    result = result.split(normalizedRoot).join('.')
+  }
+
+  return result.replace(/\\/g, '/')
+}
+
+function renderPortableReport(lines, targetRoot) {
+  return `${lines.map((line) => sanitizePortableReportLine(line, targetRoot)).join('\n')}\n`
+}
+
 async function writeSmokeReport({
   outputRoot,
   targetRoot,
@@ -4247,7 +4273,7 @@ async function writeSmokeReport({
     }
 
     await ensureDir(path.dirname(reportPath))
-    await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
+    await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
     return reportPath
   }
 
@@ -4329,7 +4355,7 @@ async function writeSmokeReport({
   lines.push('- If two or more primary smoke pages fail together, do not continue generating business pages.')
 
   await ensureDir(path.dirname(reportPath))
-  await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
+  await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
   return reportPath
 }
 
@@ -4443,8 +4469,14 @@ async function analyzeRulesOnlyManagedPageFacts({
       )
     }
 
-    const sourceSnapshotHash = String(entry.contract?.workflow?.sourceSnapshotHash || '').trim()
     const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(entry.contract)
+    const sourceSnapshotHash = resolveManagedPageObservedSourceSnapshotHash({
+      contract: entry.contract,
+      targetRoot,
+      preferCurrentSource: shouldPreferCurrentManagedPageSourceSnapshotForRuntimeSmoke(
+        entry.contract
+      ),
+    })
     const runtimeSmokeWorkflow = reconcileManagedPageRuntimeSmokeWorkflow(
       entry.contract,
       entry.contract?.workflow || {},
@@ -4530,7 +4562,7 @@ async function appendRulesOnlyManagedPageChecks({
       ok: true,
       severity: 'warn',
       summary: 'reference-only modes keep route/gallery assets out of src while still providing local reference examples',
-      detail: `No src/typical-page-reuse gallery, routes, or host bridge files are required. Generate new pages directly in the target project’s existing structure and use ${RULES_ONLY_REFERENCE_PAGES_GLOB} as the default local reference template set. If that directory is missing, fall back to .local-context/hiui-design/examples/host-integration/src/pages/*.`,
+      detail: `No src/typical-page-reuse gallery, routes, or host bridge files are required. Generate new pages directly in the target project’s existing structure and use ${RULES_ONLY_REFERENCE_PAGES_GLOB} as the default local reference template set. If that directory is missing, fall back to .local-context/hiui-design/examples/host-integration/src/pages/*. In legacy-host-compatible, this reference set is only a local baseline/fallback; ordinary typical pages may still use planner-selected page components through the certified carrier/runtimeAdapterProof path.`,
     })
   }
 
@@ -4762,8 +4794,11 @@ async function main() {
     const skillRoot = path.resolve(scriptDir, '..')
     const targetRoot = path.resolve(options.target)
     const hostOutputRoot = path.join(targetRoot, options.dest)
-    const hostProfile = await detectHostProfile(targetRoot, {
-      ignoreRelativePaths: [options.dest],
+    const hostProfile = await loadHostProfileFact({
+      targetRoot,
+      options: {
+        ignoreRelativePaths: [options.dest],
+      },
     })
     const isTypicalPageSourceRepo = await detectTypicalPageSourceRepo(targetRoot)
     const { manifest, manifestPath, lineId } = await loadManifest(skillRoot, options.line)
@@ -5088,28 +5123,13 @@ async function main() {
     }
 
     pushCheck(checks, {
-      id: 'shells-declared',
-      ok: Boolean(depSpec) || legacyCompatibilityMode,
-      severity: legacyCompatibilityMode ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
-      summary: '@hiui-design/typical-page-shells is declared',
-        detail: legacyCompatibilityMode
-        ? depSpec
-          ? `Legacy-host compatibility mode is active. @hiui-design/typical-page-shells is declared as ${depSpec}, but new pages should avoid importing it unless you first isolate a dedicated modern runtime entry.`
-          : 'Legacy-host compatibility mode is active. Reference-only generation may continue without declaring @hiui-design/typical-page-shells, as long as new pages do not import the standard shell package.'
-        : depSpec
-        ? `Declared version/range: ${depSpec}`
-        : mode === 'host-integration'
-          ? 'Dependency is not declared in package.json'
-          : 'Reference-only mode allows this before the first page is generated, but the dependency should be declared before using @hiui-design/typical-page-shells in project code',
-    })
-    pushCheck(checks, {
       id: 'managed-dependency-versions',
       ok: managedDependencyDrifts.length === 0 || legacyCompatibilityMode,
       severity: legacyCompatibilityMode ? 'warn' : 'error',
       summary:
         'typical-page managed dependencies match the verified snapshot instead of floating on loose experimental ranges',
       detail: legacyCompatibilityMode
-        ? `Legacy-host compatibility mode is active. The standard typical-page dependency snapshot is intentionally not required in this host. Detected legacy runtime reasons: ${legacyHostRuntime.reasons.join(
+        ? `Legacy host bridge mode (legacy-host-compatible) is active. The standard typical-page dependency snapshot is intentionally not required in this host main tree. Detected legacy runtime reasons: ${legacyHostRuntime.reasons.join(
             '; '
           )}`
         : managedDependencyDrifts.length === 0
@@ -5174,13 +5194,46 @@ async function main() {
     const targetSourceSignals = await collectTypicalPageSourceSignals(targetSourceRoot)
     const compatibilityGenerationOnly =
       legacyCompatibilityMode && targetSourceSignals.usesShells.length === 0
+    const directStandardShellRuntimeSelected =
+      legacyCompatibilityMode && targetSourceSignals.usesShells.length > 0
+    pushCheck(checks, {
+      id: 'shells-declared',
+      ok: Boolean(depSpec) || compatibilityGenerationOnly,
+      severity:
+        compatibilityGenerationOnly
+          ? 'warn'
+          : mode === 'host-integration' || directStandardShellRuntimeSelected
+            ? 'error'
+            : 'warn',
+      summary: '@hiui-design/typical-page-shells declaration matches the active runtime delivery mode',
+      detail: legacyCompatibilityMode
+        ? compatibilityGenerationOnly
+          ? depSpec
+            ? `Legacy host bridge mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. In the default page-component + runtime bridge + slot fill path this declaration is not required-in-current-mode; it only becomes a hard requirement if current source actually selects the direct standard shell runtime.`
+            : 'Legacy host bridge mode (legacy-host-compatible) is active. Ordinary typical pages may still use planner-selected page components through page-component + runtime bridge + slot fill, so package.json is not required to declare @hiui-design/typical-page-shells until the project explicitly selects the direct standard shell runtime.'
+          : depSpec
+            ? `Legacy host bridge mode (legacy-host-compatible) is active, and current source already imports direct standard shell runtime paths. package.json declares @hiui-design/typical-page-shells as ${depSpec}; keep that declaration aligned with the stricter runtime and source-usage checks below.`
+            : 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports direct standard shell runtime paths. package.json must now declare @hiui-design/typical-page-shells unless you remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
+        : depSpec
+        ? `Declared version/range: ${depSpec}`
+        : mode === 'host-integration'
+          ? 'Dependency is not declared in package.json'
+          : 'Reference-only mode allows this before the first page is generated, but the dependency should be declared before using @hiui-design/typical-page-shells in project code',
+    })
     pushCheck(checks, {
       id: 'shells-installed',
-      ok: legacyCompatibilityMode || (await pathExists(installedPackagePath)),
-      severity: 'warn',
-      summary: '@hiui-design/typical-page-shells appears to be installed',
+      ok:
+        compatibilityGenerationOnly ||
+        (!legacyCompatibilityMode && (await pathExists(installedPackagePath))) ||
+        (directStandardShellRuntimeSelected && (await pathExists(installedPackagePath))),
+      severity: directStandardShellRuntimeSelected ? 'error' : 'warn',
+      summary: '@hiui-design/typical-page-shells installation state matches the active runtime delivery mode',
       detail: legacyCompatibilityMode
-        ? 'Legacy-host compatibility mode does not require installing @hiui-design/typical-page-shells unless the project later isolates a dedicated standard shell runtime.'
+        ? compatibilityGenerationOnly
+          ? 'Legacy host bridge mode (legacy-host-compatible) is active. Installation is not required-in-current-mode because ordinary typical pages may still use page-component + runtime bridge + slot fill without mounting the direct standard shell runtime.'
+          : (await pathExists(installedPackagePath))
+          ? `${installedPackagePath}. Current source has selected the direct standard shell runtime, so an installed package copy is now required.`
+          : 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports package shells. Installation is now required-if-direct-standard-shell-runtime-selected; either install @hiui-design/typical-page-shells or remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
         : (await pathExists(installedPackagePath))
         ? installedPackagePath
         : 'node_modules copy was not found; run your package manager install if this project has not installed dependencies yet',
@@ -5198,7 +5251,7 @@ async function main() {
           'vendored typical-page-shells tarball keeps the HiUI5 QueryFilter contained/no-label defaults',
         detail:
           compatibilityGenerationOnly
-            ? 'Legacy-host compatibility mode does not require carrying the vendored typical-page-shells tarball unless this project later isolates and mounts the standard shell runtime.'
+            ? 'Legacy host bridge mode (legacy-host-compatible) does not require carrying the vendored typical-page-shells tarball unless this project later isolates and mounts the standard shell runtime.'
             : !vendoredShellTarball.exists
             ? `Expected vendored tarball was not found at ${targetEmbeddedShellTarballPath}`
             : vendoredShellTarball.reasons.length === 0
@@ -5240,29 +5293,38 @@ async function main() {
       ok: !legacyCompatibilityMode || compatibilityGenerationOnly,
       severity: compatibilityGenerationOnly ? 'warn' : 'error',
       summary:
-        'target project runtime is compatible with the standard hiui-design shell set or has been downgraded to compatibility generation only',
+        'target project runtime delivery mode does not conflict with direct standard shell selection',
       detail:
         !legacyCompatibilityMode
           ? 'No legacy host-compatible runtime downgrade was detected'
           : compatibilityGenerationOnly
             ? `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
-              )}. Standard @hiui-design/typical-page-shells pages should not be mounted directly in this host. Continue only with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and generate pages with the target project's own layout/container abstractions plus hiui5/local components.`
+              )}. Current state: not-required-in-current-mode. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components through page-component + runtime bridge + slot fill, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime. Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
             : `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
-              )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy-host compatibility mode.`,
+              )}. Current state: required-if-direct-standard-shell-runtime-selected. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy host bridge mode (legacy-host-compatible).`,
     })
     pushCheck(checks, {
       id: 'styles-import',
       ok: compatibilityGenerationOnly || hasStyleImport,
-      severity: compatibilityGenerationOnly ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
-      summary: 'typical-page shell styles are imported once in the app entry',
+      severity:
+        compatibilityGenerationOnly
+          ? 'warn'
+          : mode === 'host-integration' || directStandardShellRuntimeSelected
+            ? 'error'
+            : 'warn',
+      summary: 'typical-page shell style import matches the active runtime delivery mode',
       detail: compatibilityGenerationOnly
-        ? 'Legacy-host compatibility mode does not require @hiui-design/typical-page-shells/styles.css unless the project later isolates and mounts the standard shell runtime.'
+        ? 'Legacy host bridge mode (legacy-host-compatible) is active. styles.css is not required-in-current-mode for page-component + runtime bridge + slot fill; it becomes mandatory only if the project later isolates and mounts the direct standard shell runtime.'
         : hasStyleImport
-        ? entryFile
+        ? legacyCompatibilityMode && directStandardShellRuntimeSelected
+          ? `${entryFile}. Current source already imports package shells, so styles.css is required-if-direct-standard-shell-runtime-selected.`
+          : entryFile
         : mode === 'host-integration'
           ? 'Missing `import \'@hiui-design/typical-page-shells/styles.css\'` in the detected app entry'
+          : legacyCompatibilityMode && directStandardShellRuntimeSelected
+            ? 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports package shells. Add `import \'@hiui-design/typical-page-shells/styles.css\'` in the app entry, or remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
           : 'Reference-only mode does not force this yet, but once generated pages import `@hiui-design/typical-page-shells` you should add `import \'@hiui-design/typical-page-shells/styles.css\'` in the app entry',
     })
 
@@ -6145,6 +6207,19 @@ async function main() {
       detail: doctorScript
         ? 'Registered script matches the packaged doctor entry'
         : `Expected \`${expectedScripts['typical-page:doctor']}\``,
+    })
+
+    const planPageTaskScript =
+      pkg?.scripts?.['typical-page:plan-page-task'] ===
+      expectedScripts['typical-page:plan-page-task']
+    pushCheck(checks, {
+      id: 'plan-page-task-script',
+      ok: planPageTaskScript,
+      severity: 'error',
+      summary: 'package.json exposes typical-page:plan-page-task as the canonical page-task planning gate',
+      detail: planPageTaskScript
+        ? 'Registered script matches the packaged machine-plan entry'
+        : `Expected \`${expectedScripts['typical-page:plan-page-task']}\``,
     })
 
     const doctorSelfCheckScript =

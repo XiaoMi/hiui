@@ -1,0 +1,390 @@
+{
+  "schemaVersion": "runtime-bridged-component-matrix.v1",
+  "principles": [
+    "runtime-bridged-page-component is a user-facing legacy bridge label that must normalize to page-component",
+    "the actual delivery asset remains the selected certified page component or project-certified carrier",
+    "example pages are semantic-and-structure references only and never replace the runtime delivery asset",
+    "runtime shell sources must resolve from component certification via certificationInputs.componentShell",
+    "bridge wrapper and slot adapter must stay thin and must not own shell, white-body, main-scroll, pagination, or footer regions"
+  ],
+  "profiles": [
+    {
+      "profileId": "table-stat.runtime-bridge.v1",
+      "componentId": "standard-table-stat-page.v1",
+      "pageTypeId": "table-stat",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-table-stat-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "table-basic.runtime-bridge.v1",
+      "componentId": "standard-table-basic-page.v1",
+      "pageTypeId": "table-basic",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-table-basic-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "tree-table.runtime-bridge.v1",
+      "componentId": "standard-tree-table-page.v1",
+      "pageTypeId": "tree-table",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-tree-table-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "tree-split.runtime-bridge.v1",
+      "componentId": "standard-tree-split-page.v1",
+      "pageTypeId": "tree-split",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-tree-split-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "drawer-form.runtime-bridge.v1",
+      "componentId": "standard-drawer-form-page.v1",
+      "pageTypeId": "drawer-form",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-drawer-form-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "drawer-detail.runtime-bridge.v1",
+      "componentId": "standard-drawer-detail-page.v1",
+      "pageTypeId": "drawer-detail",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-drawer-detail-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "feedback-status.runtime-bridge.v1",
+      "componentId": "standard-feedback-status-page.v1",
+      "pageTypeId": "feedback-status",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-feedback-status-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "full-page-edit.runtime-bridge.v1",
+      "componentId": "standard-full-page-edit-page.v1",
+      "pageTypeId": "full-page-edit",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-full-page-edit-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    },
+    {
+      "profileId": "full-page-detail.runtime-bridge.v1",
+      "componentId": "standard-full-page-detail-page.v1",
+      "pageTypeId": "full-page-detail",
+      "appliesWhenModes": ["legacy-host-compatible"],
+      "normalizedGenerationStrategy": "page-component",
+      "userFacingGenerationStrategy": "runtime-bridged-page-component",
+      "resolutionOrder": [
+        "project-certified-carrier",
+        "direct-standard-component",
+        "explicit-fallback"
+      ],
+      "runtimeAssetSource": {
+        "assetKind": "certified-page-component-shell",
+        "certificationRef": "rules/page-component-certifications/standard-full-page-detail-page.v1.json",
+        "componentShellField": "certificationInputs.componentShell"
+      },
+      "deliveryMode": "runtime-component-filled-by-business-slots",
+      "semanticReferencePolicy": {
+        "examplePageRole": "semantic-and-structure-reference-only",
+        "runtimeComponentRole": "primary-delivery-asset",
+        "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
+      },
+      "bridgeLayerPolicy": {
+        "wrapperRole": "thin-runtime-wrapper",
+        "slotAdapterRole": "slot-only-business-adapter",
+        "thickness": "runtime-bridge-only",
+        "ownershipBoundary": "host-runtime-and-business-slot-binding-only"
+      },
+      "bridgeAssets": {
+        "assetStatus": "shipped",
+        "wrapperTemplatePath": "templates/page-components/runtime-bridge/runtime-bridge-wrapper.template.tsx",
+        "slotAdapterTemplatePath": "templates/page-components/runtime-bridge/slot-adapter.stub.ts"
+      },
+      "mustNot": [
+        "replace-runtime-component-with-example-page",
+        "translate-managed-regions-to-host-lookalikes",
+        "own-shell-or-white-body",
+        "own-main-scroll-or-pagination",
+        "expose-freeform-children-entry"
+      ]
+    }
+  ]
+}

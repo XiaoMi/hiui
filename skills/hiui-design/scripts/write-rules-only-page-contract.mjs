@@ -7,7 +7,9 @@ import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifes
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
+  writeManagedPageContractArtifacts,
 } from './lib/managed-page-artifacts.mjs'
+import { buildTypicalPageReuseTargetError } from './lib/typical-page-route-ownership.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
 import {
   buildRulesOnlyPageContract,
@@ -20,7 +22,6 @@ import {
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
-  renderRulesOnlyPageContractMarkdown,
   RULES_ONLY_OWNERSHIP_MODES,
   RULES_ONLY_SCROLL_STRATEGIES,
   toContractSlug,
@@ -29,7 +30,7 @@ import {
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/write-rules-only-page-contract.mjs" --page-type <page-type-id> --page <relative-page-path> --archetype <relative-archetype-path> [--mode <rules-only|legacy-host-compatible|host-integration>] [--scroll-strategy <${RULES_ONLY_SCROLL_STRATEGIES.join('|')}>] [--query-filter-region-role <table-query-filter|dashboard-control-strip|not-applicable>] --region <name=target> [--region <name=target> ...] [--ownership-mode <${RULES_ONLY_OWNERSHIP_MODES.join('|')}>] [--ownership <role=target> ...] [--local-bypass <package=<pkg>;gap=<capability-gap>;adapter=<relative-path>;bridge=<relative-path>;containment=<${MANAGED_PAGE_LOCAL_BYPASS_OWNER_CONTAINMENT.join('|')}>> ...] [--note <text> ...] [--deviation <text> ...] [--id <contract-id>] [--line <line-id>]
+  node ".local-context/hiui-design/scripts/write-rules-only-page-contract.mjs" --page-type <page-type-id> --page <relative-page-path> [--preset standard] [--archetype <relative-archetype-path>] [--mode <rules-only|legacy-host-compatible|host-integration>] [--scroll-strategy <${RULES_ONLY_SCROLL_STRATEGIES.join('|')}>] [--query-filter-region-role <table-query-filter|dashboard-control-strip|not-applicable>] [--region <name=target> ...] [--ownership-mode <${RULES_ONLY_OWNERSHIP_MODES.join('|')}>] [--ownership <role=target> ...] [--local-bypass <package=<pkg>;gap=<capability-gap>;adapter=<relative-path>;bridge=<relative-path>;containment=<${MANAGED_PAGE_LOCAL_BYPASS_OWNER_CONTAINMENT.join('|')}>> ...] [--note <text> ...] [--deviation <text> ...] [--id <contract-id>] [--line <line-id>]
 
 Example:
   npm run typical-page:write-contract -- \\
@@ -50,6 +51,7 @@ Example:
 Notes:
   - typical-page:write-contract only refreshes the auditable contract artifact.
   - delivery still has to finish through typical-page:finalize-page.
+  - --preset standard infers the managed template path, required regions, and ownership targets for standard typical pages. Use it when converting an existing managed page from one typical page type to another.
   - --region chart-section=<target> is additive. The writer keeps the page type's required regions and appends optional managed regions such as chart-section when the page owns an independent analysis block.
 `)
 }
@@ -67,6 +69,7 @@ function parseArgs(argv) {
     ownerships: [],
     page: '',
     pageTypeId: '',
+    preset: '',
     queryFilterRegionRole: '',
     regions: [],
     scrollStrategy: '',
@@ -83,6 +86,7 @@ function parseArgs(argv) {
       arg === '--id' ||
       arg === '--line' ||
       arg === '--mode' ||
+      arg === '--preset' ||
       arg === '--scroll-strategy' ||
       arg === '--target' ||
       arg === '--ownership-mode' ||
@@ -99,6 +103,7 @@ function parseArgs(argv) {
       if (arg === '--id') options.contractId = value
       if (arg === '--line') options.line = value
       if (arg === '--mode') options.mode = value
+      if (arg === '--preset') options.preset = value
       if (arg === '--scroll-strategy') options.scrollStrategy = value
       if (arg === '--target') options.target = value
       if (arg === '--ownership-mode') options.ownershipMode = value
@@ -138,8 +143,13 @@ function parseArgs(argv) {
 
   if (!options.pageTypeId) throw new Error('Missing --page-type')
   if (!options.page) throw new Error('Missing --page')
-  if (!options.archetype) throw new Error('Missing --archetype')
-  if (options.regions.length === 0) throw new Error('At least one --region <name=target> is required')
+  if (options.preset && options.preset !== 'standard') {
+    throw new Error('Expected --preset to be standard')
+  }
+  if (!options.archetype && !options.preset) throw new Error('Missing --archetype')
+  if (options.regions.length === 0 && !options.preset) {
+    throw new Error('At least one --region <name=target> is required')
+  }
   if (options.mode && !['rules-only', 'legacy-host-compatible', 'host-integration'].includes(options.mode)) {
     throw new Error('Expected --mode to be rules-only, legacy-host-compatible, or host-integration')
   }
@@ -225,6 +235,132 @@ function parseRegionMappings(values) {
 
     return { region, target }
   })
+}
+
+const STANDARD_REGION_TARGETS_BY_PAGE_TYPE = Object.freeze({
+  'table-basic': {
+    header: 'TablePageFrame.title+extra',
+    'white-body': 'TablePageFrame.root',
+    'query-filter': 'TablePageFrame.queryFields',
+    table: 'TablePageFrame.tableFields',
+    pagination: 'TablePageFrame.managedPagination',
+  },
+  'table-stat': {
+    header: 'StatListPageFrame.title+extra',
+    'white-body': 'StatListPageFrame.root',
+    'stat-section': 'StatOverviewGrid',
+    'query-filter': 'StatListPageFrame.queryFields',
+    table: 'StatListPageFrame.tableFields',
+    pagination: 'StatListPageFrame.managedPagination',
+  },
+  'data-visualization': {
+    header: 'DataVisualizationPageFrame.title+extra',
+    'white-body': 'DataVisualizationPageFrame.root',
+    'stat-section': 'StatOverviewGrid',
+    'query-filter': 'DataVisualizationPageFrame.queryFields',
+    'chart-section': 'managed chart-section',
+    table: 'StatListPageFrame.tableFields',
+    pagination: 'StatListPageFrame.managedPagination',
+  },
+  'tree-table': {
+    header: 'TablePageFrame.title+extra',
+    'white-body': 'TablePageFrame.root',
+    'query-filter': 'TablePageFrame.queryFields',
+    table: 'TablePageFrame.tableFields',
+    pagination: 'TablePageFrame.managedPagination',
+  },
+  'tree-split': {
+    header: 'TreeSplitPageFrame.title+extra',
+    'split-workspace': 'TreeSplitPageFrame.root',
+    'left-tree': 'TreeSplitPageFrame.leftPane',
+    'right-list': 'TreeSplitPageFrame.rightPane',
+    'query-filter': 'TreeSplitPageFrame.queryFields',
+    table: 'TreeSplitPageFrame.tableFields',
+    pagination: 'TreeSplitPageFrame.managedPagination',
+  },
+  'drawer-form': {
+    header: 'DrawerFormPageFrame.header',
+    'drawer-body': 'DrawerFormPageFrame.body',
+    'form-body': 'DrawerFormPageFrame.formBody',
+    'drawer-footer': 'DrawerFormPageFrame.footer',
+    'footer-actions': 'DrawerFormPageFrame.footerActions',
+  },
+  'drawer-detail': {
+    header: 'DrawerDetailPageFrame.header',
+    'drawer-body': 'DrawerDetailPageFrame.body',
+    'detail-body': 'DrawerDetailPageFrame.detailBody',
+    'drawer-footer': 'DrawerDetailPageFrame.footer',
+  },
+  'feedback-status': {
+    header: 'FeedbackStatusPageFrame.title+extra',
+    'white-body': 'FeedbackStatusPageFrame.root',
+    'feedback-panel': 'FeedbackStatusPageFrame.feedbackPanel',
+  },
+  'full-page-edit': {
+    header: 'ProEditPage.header',
+    'header-leading': 'ProEditPage.headerLeading',
+    'header-actions': 'ProEditPage.headerActions',
+    'white-body': 'ProEditPage.root',
+    'form-body': 'ProEditPage.formBody',
+    footer: 'ProEditPage.footer',
+    'footer-actions': 'ProEditPage.footerActions',
+  },
+  'full-page-detail': {
+    header: 'ProDetailPage.header',
+    'white-body': 'ProDetailPage.root',
+    'detail-body': 'ProDetailPage.detailBody',
+  },
+})
+
+const STANDARD_WORKSPACE_OWNER_BY_PAGE_TYPE = Object.freeze({
+  'table-basic': 'TablePageFrame',
+  'table-stat': 'StatListPageFrame',
+  'data-visualization': 'DataVisualizationPageFrame',
+  'tree-table': 'TablePageFrame',
+  'tree-split': 'TreeSplitPageFrame',
+  'feedback-status': 'FeedbackStatusPageFrame',
+  'full-page-edit': 'ProEditPage',
+  'full-page-detail': 'ProDetailPage',
+})
+
+function buildStandardRegionValues(pageTypeId) {
+  const targets = STANDARD_REGION_TARGETS_BY_PAGE_TYPE[pageTypeId]
+  if (!targets) {
+    throw new Error(`No standard region preset is defined for page type: ${pageTypeId}`)
+  }
+
+  return getRequiredRegionsForPageType(pageTypeId).map((region) => {
+    const target = targets[region]
+    if (!target) {
+      throw new Error(`Standard region preset for ${pageTypeId} is missing target for ${region}`)
+    }
+
+    return `${region}=${target}`
+  })
+}
+
+function buildStandardOwnershipValues(pageTypeId) {
+  const workspaceOwner = STANDARD_WORKSPACE_OWNER_BY_PAGE_TYPE[pageTypeId]
+  const roles = getRequiredOwnershipRolesForPageType(pageTypeId)
+  if (roles.length === 0) {
+    return []
+  }
+
+  if (!workspaceOwner) {
+    throw new Error(`No standard ownership preset is defined for page type: ${pageTypeId}`)
+  }
+
+  return roles.map((role) => {
+    const target = role === 'content-slot' ? 'TypicalPageAppFrame' : workspaceOwner
+    return `${role}=${target}`
+  })
+}
+
+function resolveStandardHostArchetypePath({ archetypeDefinition, archetypeMode }) {
+  const templateDir = String(
+    archetypeDefinition?.archetype?.modeAdapters?.[archetypeMode]?.templateDir || ''
+  ).trim()
+  return templateDir ? `${templateDir}/page.template.tsx` : ''
 }
 
 function buildRegionMappings(pageTypeId, values, existingMappings = []) {
@@ -383,7 +519,27 @@ async function main() {
     }
 
     const generatedPagePath = normalizeContractPath(targetRoot, options.page)
-    const hostArchetypePath = normalizeContractPath(targetRoot, options.archetype)
+    const routeOwnershipError = buildTypicalPageReuseTargetError(
+      generatedPagePath,
+      'typical-page:write-contract'
+    )
+    if (routeOwnershipError) {
+      throw new Error(routeOwnershipError)
+    }
+
+    const archetypeMode = options.mode || 'rules-only'
+    const inferredHostArchetypePath = options.preset
+      ? resolveStandardHostArchetypePath({ archetypeDefinition, archetypeMode })
+      : ''
+    const hostArchetypePath = normalizeContractPath(
+      targetRoot,
+      options.archetype || inferredHostArchetypePath
+    )
+    if (!hostArchetypePath) {
+      throw new Error(
+        `Unable to infer host archetype path for ${pageType.id}. Pass --archetype explicitly.`
+      )
+    }
     const contractsDir = getRulesOnlyPageContractsDir(targetRoot)
     const contractSlug =
       toContractSlug(options.contractId) ||
@@ -395,15 +551,18 @@ async function main() {
       .readFile(jsonPath, 'utf8')
       .then((raw) => JSON.parse(raw))
       .catch(() => null)
+    const shouldCarryExistingMappings = !options.preset && existingContract?.pageTypeId === pageType.id
+    const presetRegionValues = options.preset ? buildStandardRegionValues(pageType.id) : []
+    const presetOwnershipValues = options.preset ? buildStandardOwnershipValues(pageType.id) : []
     const regionMapping = buildRegionMappings(
       pageType.id,
-      options.regions,
-      existingContract?.regionMapping || []
+      [...presetRegionValues, ...options.regions],
+      shouldCarryExistingMappings ? existingContract?.regionMapping || [] : []
     )
     const ownershipMapping = buildOwnershipMappings(
       pageType.id,
-      options.ownerships,
-      existingContract?.ownershipMapping || []
+      [...presetOwnershipValues, ...options.ownerships],
+      shouldCarryExistingMappings ? existingContract?.ownershipMapping || [] : []
     )
     const localBypasses = parseLocalBypasses(options.localBypasses, targetRoot)
     const contract = buildRulesOnlyPageContract({
@@ -412,12 +571,12 @@ async function main() {
       archetypeSmokeBaseline: findArchetypeSmokeBaselineEntry(baselineSpec, pageType?.id),
       generatedPagePath,
       hostArchetypePath,
-      archetypeMode: options.mode || 'rules-only',
+      archetypeMode,
       scrollStrategy: options.scrollStrategy || getDefaultScrollStrategyForPageType(pageType?.id),
       regionMapping,
       ownershipMode:
         options.ownershipMode ||
-        String(existingContract?.ownershipMode || '').trim() ||
+        (shouldCarryExistingMappings ? String(existingContract?.ownershipMode || '').trim() : '') ||
         (getRequiredOwnershipRolesForPageType(pageType.id).length > 0
           ? 'page-surface-owns-workspace'
           : ''),
@@ -488,8 +647,11 @@ async function main() {
     }
 
     await ensureDir(contractsDir)
-    await fs.writeFile(jsonPath, `${JSON.stringify(contract, null, 2)}\n`, 'utf8')
-    await fs.writeFile(markdownPath, renderRulesOnlyPageContractMarkdown(contract), 'utf8')
+    await writeManagedPageContractArtifacts({
+      contract,
+      contractJsonPath: jsonPath,
+      contractMarkdownPath: markdownPath,
+    })
     await syncManagedPageRegistry(targetRoot)
 
     console.log(`Wrote rules-only page contract:`)

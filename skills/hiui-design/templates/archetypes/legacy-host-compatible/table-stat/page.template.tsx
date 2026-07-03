@@ -1,5 +1,8 @@
 /* generated from hiui-design strict archetype template */
 /* template asset: __HIUI_TEMPLATE_PATH__ */
+/* legacy-host-compatible note: this scaffold keeps standard shell semantics as */
+/* a managed start point. Do not read this import pattern as "legacy cannot use */
+/* page-component" or as permission to mount the standard runtime ad hoc. */
 
 import { Button, Message, Space } from '@hi-ui/hiui'
 import { DownloadOutlined } from '@hi-ui/icons'
@@ -14,7 +17,7 @@ import {
 } from '@hiui-design/typical-page-shells/pro-stat-page'
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderEllipsis(this) {
+  renderEllipsis() {
     return this.renderCell((cellValue) => renderStatTableTextEllipsis(cellValue))
   },
 })

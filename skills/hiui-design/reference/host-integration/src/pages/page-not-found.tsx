@@ -2,6 +2,7 @@ import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import pageNotFoundIndicatorUrl from '../assets/page-not-found-indicator.svg'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -80,21 +81,23 @@ function PageNotFoundIndicator() {
 }
 
 export function PageNotFoundPage() {
+  const { t } = useTranslation()
+
   return (
     <div style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="页面不存在"
+          title={t('页面不存在')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -105,17 +108,17 @@ export function PageNotFoundPage() {
         <div style={contentStyle}>
           <EmptyState
             indicator={<PageNotFoundIndicator />}
-            title={<span style={titleStyle}>页面不存在</span>}
+            title={<span style={titleStyle}>{t('页面不存在')}</span>}
             size="md"
           >
             <div style={descStyle}>
-              请先进行数据的添加和新建，或者 <span style={linkStyle}>联系管理员</span>
+              {t('请先进行数据的添加和新建，或者')} <span style={linkStyle}>{t('联系管理员')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">返回首页</Button>
+              <Button type="primary">{t('返回首页')}</Button>
             </Space>
           </EmptyState>
         </div>

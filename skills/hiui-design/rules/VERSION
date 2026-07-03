@@ -1,4 +1,4 @@
-version: 0.10.0
+version: 1.0.0
 last-updated: 2026-06-09
 source-snapshot: machine planning entry, fixture-backed public JSON contracts, runtime/preview/start contract fixtures, and global-sync-safe governance docs
 machine-facts-file: rules/common.page-types.json

@@ -303,8 +303,8 @@ async function main() {
   const componentMap = Object.fromEntries(componentEntries)
   const componentNames = new Set(componentEntries.map(([componentName]) => componentName))
   const semanticRoles = new Set(semanticRolesManifest.roles ?? [])
-  const specialTokens = new Set(componentManifest.specialTokens?.nonComponentAlternatives ?? [])
-  const allowedReferenceTokens = new Set([...componentNames, ...specialTokens])
+  const specialTerms = new Set(componentManifest.specialTerms?.nonComponentAlternatives ?? [])
+  const allowedReferenceTokens = new Set([...componentNames, ...specialTerms])
 
   for (const [componentName, component] of componentEntries) {
     if (component.name !== componentName) {
