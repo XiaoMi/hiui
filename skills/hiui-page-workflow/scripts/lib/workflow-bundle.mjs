@@ -52,6 +52,10 @@ function normalizeVersion(version) {
   return String(version || '').trim().replace(/^v/, '')
 }
 
+function isCommitSha(ref) {
+  return typeof ref === 'string' && /^[0-9a-f]{40}$/i.test(ref.trim())
+}
+
 function compareVersions(left, right) {
   const leftParts = normalizeVersion(left).split('.').map((part) => Number.parseInt(part, 10) || 0)
   const rightParts = normalizeVersion(right).split('.').map((part) => Number.parseInt(part, 10) || 0)
@@ -225,6 +229,9 @@ function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
     }
     if (entry.source.kind === 'local') {
       assertNonEmptyString(entry.source.path, `${lockPath}: skill.source.path`)
+      if (lock.channel === 'stable') {
+        throw new Error(`${lockPath}: stable bundle skills must not use source.kind=local`)
+      }
     }
     if (entry.source.kind === 'github') {
       assertNonEmptyString(entry.source.repo, `${lockPath}: skill.source.repo`)
@@ -232,12 +239,18 @@ function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
       if ('ref' in entry.source && typeof entry.source.ref !== 'string') {
         throw new Error(`${lockPath}: skill.source.ref must be a string when provided`)
       }
+      if (lock.channel === 'stable' && !isCommitSha(entry.source.ref)) {
+        throw new Error(`${lockPath}: stable github skill refs must be exact 40-character commit SHAs`)
+      }
     }
     if (entry.source.kind === 'git') {
       assertNonEmptyString(entry.source.repoUrl, `${lockPath}: skill.source.repoUrl`)
       assertNonEmptyString(entry.source.path, `${lockPath}: skill.source.path`)
       if ('ref' in entry.source && typeof entry.source.ref !== 'string') {
         throw new Error(`${lockPath}: skill.source.ref must be a string when provided`)
+      }
+      if (lock.channel === 'stable' && !isCommitSha(entry.source.ref)) {
+        throw new Error(`${lockPath}: stable git skill refs must be exact 40-character commit SHAs`)
       }
     }
   }
@@ -303,6 +316,7 @@ async function resolveSkillEntry(entry, lockDir) {
 export {
   compareVersions,
   defaultLockPath,
+  isCommitSha,
   pathExists,
   readJson,
   requestedVersionForEntry,

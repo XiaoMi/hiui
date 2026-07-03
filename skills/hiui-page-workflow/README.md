@@ -25,12 +25,12 @@
 
 ## Public Preview Install
 
-公开预览版目前通过公开 GitHub clone URL + ref + path 安装四个 skill。若你希望直接验证当前 bundle，可先拉取 upstream PR 预览 ref，然后从 skill 目录执行安装：
+公开版本通过公开 GitHub clone URL + 精确 commit SHA + path 安装四个 skill。若你希望直接验证当前 stable bundle，可先拉取 lock 中固定的 commit，然后从 skill 目录执行安装：
 
 ```bash
 git clone --depth 1 https://github.com/XiaoMi/hiui.git
 cd hiui
-git fetch --depth 1 origin refs/pull/3562/head
+git fetch --depth 1 origin bf314829649f8304037257f4fbaf0050ba577d67
 git checkout --detach FETCH_HEAD
 bash skills/hiui-page-workflow/install.sh
 ```
@@ -78,11 +78,25 @@ bash install.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是唯一真相源。公开预览版默认使用官方 GitHub 仓库加显式 `ref` 和 `path` 来定位 skill 源码；在 upstream 合并前，preview 版本通过 upstream PR ref 保持可安装，同时避免把个人 fork 作为默认公开依赖。
+`workflow-bundle.lock.json` 是唯一真相源。stable channel 默认使用官方 GitHub 仓库加显式 commit SHA 和 `path` 来定位 skill 源码，避免 PR ref、个人 fork 或漂移分支进入团队安装入口。
 
 ## Validation And Rollback
 
-发布或变更 lock 文件前，建议按顺序执行：
+发布或变更 lock 文件前，推荐先跑一遍统一 preflight：
+
+```bash
+node scripts/preflight-workflow-bundle-release.mjs --json
+```
+
+该命令会串行完成：
+
+- source verify
+- dry-run install
+- 临时目录 release smoke
+- clean `CODEX_HOME` 下的真实 bootstrap install
+- 安装后的 verify
+
+若你需要单独排查某一环，再按顺序执行：
 
 ```bash
 node scripts/verify-workflow-bundle.mjs --json
@@ -106,6 +120,6 @@ node scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 
 ## Notes For Maintainers
 
-- bundle lock 中的每个 skill 都应声明稳定的公开 source 信息
+- stable bundle lock 中的每个 skill 都应声明稳定的公开 source 信息，并优先使用不可变 commit SHA
 - 若下游公开 skill 尚未提供 `skill.manifest.json` 与 public contracts，应先补齐稳定面，再把它接入 bundle
 - 更新 lock 文件后，必须重新执行 `verify-workflow-bundle` 和 `release-workflow-bundle`

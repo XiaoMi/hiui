@@ -5,6 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   compareVersions,
+  isCommitSha,
   pathExists,
   readJson,
   requestedVersionForEntry,
@@ -176,7 +177,7 @@ function runGit(args, cwd = '') {
 }
 
 function isDirectCloneRef(ref) {
-  return Boolean(ref) && !String(ref).startsWith('refs/')
+  return Boolean(ref) && !String(ref).startsWith('refs/') && !isCommitSha(ref)
 }
 
 async function stageGitSkill(entry, stagingRoot) {

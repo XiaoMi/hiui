@@ -16,17 +16,33 @@
 - 调用 `scripts/install-workflow-bundle.mjs`
 - 透传 `--dry-run`、`--reinstall`、`--force-sync`、`--allow-downgrade` 等参数
 
-公开预览阶段，推荐从 upstream PR 预览副本执行安装：
+稳定发布前，推荐直接按 lock 中固定的 commit SHA 验证安装：
 
 ```bash
 git clone --depth 1 https://github.com/XiaoMi/hiui.git
 cd hiui
-git fetch --depth 1 origin refs/pull/3562/head
+git fetch --depth 1 origin bf314829649f8304037257f4fbaf0050ba577d67
 git checkout --detach FETCH_HEAD
 bash skills/hiui-page-workflow/install.sh
 ```
 
 ## 发布前检查
+
+维护者发版前，先跑统一 preflight：
+
+```bash
+node scripts/preflight-workflow-bundle-release.mjs --json
+```
+
+它会依次覆盖：
+
+- lock / install policy / compatibility matrix 的 source verify
+- `install-workflow-bundle --dry-run`
+- `release-workflow-bundle` 的临时目录安装 smoke
+- `CODEX_HOME=<temp>` 下通过 `install.sh` 走完整 bootstrap 入口
+- bootstrap 安装后的目标目录 verify
+
+若你需要单独定位某一步，再拆开执行：
 
 先确保 lock 文件、安装策略和兼容矩阵一致：
 
@@ -70,12 +86,12 @@ node scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 
 - `source.kind=git`
 - `source.repoUrl=<https-git-url>`
-- `source.ref=<branch-or-commit>`
+- `source.ref=<exact-commit-sha>`
 - `source.path=<skill-root-path>`
 
 只有当下游公开 skill 已经提供 `skill.manifest.json`、`requiredPaths` 和 `publicContracts` 时，才允许接入 bundle。
 
-若某个 skill 仍处于公开预览阶段，可临时跟随 upstream PR ref；但在 upstream 合并后，应尽快把 lock 切回稳定上游分支、tag 或 commit，并重新执行：
+stable channel 不应依赖 upstream PR ref、个人 fork 或漂移分支；发布前应把 lock 固定到公开可获取的精确 commit SHA，并重新执行：
 
 - `node scripts/verify-workflow-bundle.mjs --json`
 - `node scripts/release-workflow-bundle.mjs --json`
