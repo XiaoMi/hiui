@@ -2,6 +2,12 @@
 
 本文档是 `hiui-design` 现有分发规则的汇总草案，用于把“仓位定义、默认落点、同步方向、门禁要求”收口到一处。
 
+团队消费提示：
+
+- 如果你当前阅读的是内部团队 Git 分发仓，默认应把当前仓理解为 `team package`，而不是 `maintainer source`。
+- 文中保留 `maintainer source`、`active source`、`global mirror` 等角色，是为了说明这份团队包的来源和同步边界，不是为了把团队使用者重新引导到维护者仓。
+- 对团队安装、项目接入和页面生成来说，当前内部 Git 仓就是应该消费的交付视图；维护者角色只属于上游生成链。
+
 这不是新的唯一真相入口。若本文件与下列文件冲突，以它们为准：
 
 - `distribution-manifest.json`
@@ -75,7 +81,7 @@
 - 含义：面向团队项目安装 `hiui-design` 的裁剪包，不含维护者发布链、global sync 守护和 usage backend
 - 注意：
   - 它是一个“分发表达”，但当前治理决定要求内部 Git 只承载这个角色，而不是承载 maintainer source
-  - 物理地址应通过 `.distribution-addresses.local.json`、launch-agent 状态或 `--team-target` 指定；常见做法是与开源仓同级放置
+  - 默认 official team repo target 采用维护源同级目录 `<maintainer-parent>/hiui-design-team-package`
   - `check-distribution-boundary --scope team` 适用于 user zip、team-facing Git view、internal team repo
 - 现有规则依据：
   - `distribution-manifest.json` 的 `team-package`
@@ -86,12 +92,11 @@
 
 - 角色：目标项目内的 `.local-context/hiui-design`
 - 职责：
-  - 为项目提供本地脚本、规则、模板、解释层文档和参考资产
+  - 为项目提供本地脚本、规则、模板和参考资产
   - 保存项目级 outputs，作为 page contract / snapshot / doctor / gate 的项目事实源
 - 注意：
   - 这是项目视图，不等于 team-package
   - `project` scope 允许保留项目 outputs
-  - `reference/` 只承载参考资产；若需要 Agent / 维护者解释层，应落到 `docs/generation/explainers/`，不要再恢复顶层 `references/`
 - 现有规则依据：
   - `docs/onboarding/global-sync-workflow.md`
   - `scripts/check-distribution-boundary.mjs`
@@ -125,20 +130,20 @@
   - `scripts/manage-global-sync-launch-agent.mjs`
   - `scripts/sync-global-skill.mjs`
 
-## 2. 默认落点与本地覆写
+## 2. 默认落点与语义化示例地址
 
-下表区分“规则默认值”和“本地 override / 命令实参”。分发文档不再写死维护者机器绝对路径；若本机存在固定仓位，应写入 `.distribution-addresses.local.json`，或以命令参数和 `status` 输出为准。
+下表区分“规则默认值”和“语义化示例地址”。若运行参数、环境变量或 launch-agent 状态与默认值不同，应以命令实参和 `status` 输出为准。
 
-| 角色 | 规则默认地址 | 本地 override / 示例占位 |
+| 角色 | 规则默认地址 | 语义化示例地址 |
 | --- | --- | --- |
-| Maintainer Source | 无写死默认值 | `<maintainer-source-root>` |
-| Active Source | 当前项目的 `.local-context/hiui-design` | `<active-project-root>/.local-context/hiui-design` |
-| Global Mirror | `~/.codex/skills/hiui-design` | `<home>/.codex/skills/hiui-design` |
-| Team Package | 无分发层写死默认值 | `<team-package-root>` |
+| Maintainer Source | 无写死默认值 | `<maintainer-root>` |
+| Active Source | 当前项目的 `.local-context/hiui-design` | `<project-root>/.local-context/hiui-design` |
+| Global Mirror | `~/.codex/skills/hiui-design` | `<user-home>/.codex/skills/hiui-design` |
+| Team Package | `<maintainer-parent>/hiui-design-team-package` | `<maintainer-parent>/hiui-design-team-package` |
 | Project View | `<project-root>/.local-context/hiui-design` | `<project-root>/.local-context/hiui-design` |
-| User Archive | `<skill-root>/outputs/archives/hiui-design.zip` | `<maintainer-source-root>/outputs/archives/hiui-design.zip` |
-| Maintainer Archive | `<skill-root>/outputs/archives/hiui-design-maintainer.zip` | `<maintainer-source-root>/outputs/archives/hiui-design-maintainer.zip` |
-| Open Source Package | `~/.codex/skills/hiui-design-open-source` | `<open-source-package-root>` |
+| User Archive | `<skill-root>/outputs/archives/hiui-design.zip` | `<maintainer-root>/outputs/archives/hiui-design.zip` |
+| Maintainer Archive | `<skill-root>/outputs/archives/hiui-design-maintainer.zip` | `<maintainer-root>/outputs/archives/hiui-design-maintainer.zip` |
+| Open Source Package | `~/.codex/skills/hiui-design-open-source` | `<maintainer-parent>/hiui-design-open-source` |
 
 ## 3. 官方同步主链
 
@@ -218,7 +223,7 @@ flowchart LR
 - `global mirror` 只是本机运行时中转，不直接作为团队仓
 - internal team repo 必须只包含通过 `check-distribution-boundary --scope team` 的内容
 
-当前规则已具备 `team-package` 视图、边界校验，以及 `sync-team-package.mjs` / `sync-global-skill.mjs --team-target` 这两条生成入口。若维护者机器需要固定 internal team repo 目录，应把该路径登记在 `.distribution-addresses.local.json`，而不是写回可分发文档。
+当前规则已具备 `team-package` 视图、边界校验，以及 `sync-team-package.mjs` / `sync-global-skill.mjs --team-target` 这两条生成入口。默认 official internal team repo target 是维护源同级目录 `<maintainer-parent>/hiui-design-team-package`；若你的内部 Git 落点不同，再通过命令参数覆写。
 
 ### 3.5 开源同步
 
@@ -253,7 +258,7 @@ flowchart LR
 - `rules/VERSION`
 - `agents/openai.yaml`
 - `examples/host-integration/src`
-- `reference/host-integration/src`
+- `examples/host-integration/src`
 - `templates/i18n`
 - `templates/project-images` 最小图片接线骨架
 - `scripts/manage-global-sync-launch-agent.mjs`

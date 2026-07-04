@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "runtime-delivery-policy.v1",
+  "runtimePackage": {
+    "packageName": "@hiui-design/typical-page-shells",
+    "publicRegistry": "https://registry.npmjs.org",
+    "vendorSnapshotManifest": "vendor/typical-page-shells-package.json",
+    "vendoredTarballDirectory": "vendor",
+    "vendoredTarballPattern": "^hiui-design-typical-page-shells-.*\\.tgz$",
+    "publicPackageRoot": "packages/typical-page-shells"
+  },
+  "deliveryChannels": {
+    "runtime-mirror": {
+      "runtimeResolution": "vendored-tarball",
+      "registryResolution": "forbidden",
+      "vendoredTarballPolicy": "required"
+    },
+    "team-package": {
+      "runtimeResolution": "vendored-tarball",
+      "registryResolution": "forbidden",
+      "vendoredTarballPolicy": "required"
+    },
+    "project-view": {
+      "runtimeResolution": "vendored-tarball",
+      "registryResolution": "forbidden",
+      "vendoredTarballPolicy": "required"
+    },
+    "open-source-package": {
+      "runtimeResolution": "vendored-tarball",
+      "registryResolution": "forbidden",
+      "vendoredTarballPolicy": "required"
+    },
+    "open-source-dev-bundle": {
+      "runtimeResolution": "vendored-tarball",
+      "registryResolution": "forbidden",
+      "vendoredTarballPolicy": "required"
+    }
+  },
+  "releaseGates": {
+    "public-runtime-publish-readiness": {
+      "verifierScript": "scripts/check-public-runtime-publish-readiness.mjs",
+      "requiredFor": [
+        "public-npm-publish"
+      ],
+      "requiredChecks": [
+        "vendor-snapshot-manifest-present",
+        "vendored-tarball-present",
+        "public-package-root-present",
+        "snapshot-version-matches-public-package-version",
+        "npm-pack-dry-run-passes",
+        "npm-publish-dry-run-passes"
+      ]
+    },
+    "public-runtime-release": {
+      "verifierScript": "scripts/verify-public-runtime-release.mjs",
+      "prerequisiteGate": "public-runtime-publish-readiness",
+      "requiredFor": [
+        "public-registry-install-claim"
+      ],
+      "requiredChecks": [
+        "vendor-snapshot-manifest-present",
+        "vendored-tarball-present",
+        "public-package-root-present",
+        "snapshot-version-matches-public-package-version",
+        "npm-registry-has-exact-public-package-version",
+        "npm-pack-dry-run-passes"
+      ]
+    }
+  }
+}

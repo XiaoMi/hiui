@@ -192,7 +192,7 @@
 ### 项目没有现成 i18n runtime
 
 - 可以默认接入 `react-intl-universal` 或等价 runtime
-- `setup-for-designers.mjs`、`apply-in-current-project.mjs` 与 `bootstrap-target-project.mjs` 默认不再自动补齐 `src/translation/*` 基线；只有显式传入 `--init-i18n` 或后续单独执行 `typical-page:i18n:init` 时才初始化
+- `setup-for-designers.mjs`、`apply-in-current-project.mjs` 与 `bootstrap-target-project.mjs` 默认会自动补齐 `src/translation/*` 基线
 - 若目标项目尚未建立翻译目录，或后续需要重同步 locale 文件，可执行 `pnpm typical-page:i18n:init` 或 `npm run typical-page:i18n:init`
 - 默认语言资源可按下述结构组织：
 
@@ -209,7 +209,7 @@ src/translation/
 ```
 
 - 默认允许中文原文作为 key；新增翻译时保持同一风格
-- `typical-page:i18n:init` 默认会补或重同步 `index.ts`、`messages.ts`、`zh-CN/en-US` seed、其余 locale fallback 文件，以及本地 `i18n:sync`；生成的 bridge 兼容 React 16 / ES5 宿主，不要求 `useSyncExternalStore`
+- `typical-page:i18n:init` 默认会补或重同步 `index.ts`、`messages.ts`、`zh-CN/en-US` seed、其余 locale fallback 文件，以及本地 `i18n:sync`
 - 同步出来的 `src/translation/demo-overrides.ts` 是目标项目自己的业务词条兜底位；`templates/i18n/src/translation/demo-overrides.ts` 只允许保留 hiui-design 内置示例页所需的通用演示词条。两者是“模板 seed -> 目标项目”的单向关系，禁止把当前项目的 `src/translation/**`、页面标题、mock 数据、队伍 / 商品 / 活动等业务词库反向写回 skill 模板。
 - 维护者同步或发布前必须通过 `scripts/check-i18n-template-boundary.mjs`。若该脚本报出 `business-term-in-i18n-template` 或 `custom-template-translation-override-constant`，先清理 `.local-context/hiui-design/templates/i18n/**`，再让 launch agent 同步全局与开源包。
 - 若业务线后续已有统一翻译平台，可在不改页面结构契约的前提下替换 runtime

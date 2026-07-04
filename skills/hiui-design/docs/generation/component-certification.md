@@ -55,7 +55,7 @@
 
 - `CleanContentMount` 证明旧宿主只提供干净内容挂载点，不重复提供页头、白底主体、分页 owner 或页面主滚动。
 - `RuntimeAdapter` 证明路由、权限、请求、字典、主题和用户能力通过显式 props / provider 注入，而不是页面组件读取项目全局变量。
-- `RuntimeBridge` 证明 request、auth、permission、user、route-navigation、theme 可用且来源可追踪；`dictionary / i18n` 只在项目明确要求国际化时作为可选桥接能力补证。
+- `RuntimeBridge` 证明 request、auth、permission、user、dictionary、route-navigation、theme 可用且来源可追踪。
 - `StyleBoundary` 证明旧宿主全局 CSS 不会破坏页面组件的表格、分页、表单、抽屉、状态标签和间距。
 - `PortalBoundary` 证明下拉、气泡、弹窗、抽屉等浮层挂载位置和层级不会被裁切；若宿主未显式改写浮层容器，则允许沿用组件库默认挂载能力。
 - `AdapterRegistry` 证明 adapter 只做 runtime bridge，禁止 `translate-hiui-components-to-legacy-components`、`replace-query-filter-with-legacy-form`、`replace-managed-table-with-legacy-table`、`reimplement-pagination-region` 或 `wrap-typical-page-as-business-page-component`。

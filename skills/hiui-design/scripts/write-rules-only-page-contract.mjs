@@ -7,7 +7,6 @@ import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifes
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
-  writeManagedPageContractArtifacts,
 } from './lib/managed-page-artifacts.mjs'
 import { buildTypicalPageReuseTargetError } from './lib/typical-page-route-ownership.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
@@ -22,6 +21,7 @@ import {
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
+  renderRulesOnlyPageContractMarkdown,
   RULES_ONLY_OWNERSHIP_MODES,
   RULES_ONLY_SCROLL_STRATEGIES,
   toContractSlug,
@@ -647,11 +647,8 @@ async function main() {
     }
 
     await ensureDir(contractsDir)
-    await writeManagedPageContractArtifacts({
-      contract,
-      contractJsonPath: jsonPath,
-      contractMarkdownPath: markdownPath,
-    })
+    await fs.writeFile(jsonPath, `${JSON.stringify(contract, null, 2)}\n`, 'utf8')
+    await fs.writeFile(markdownPath, renderRulesOnlyPageContractMarkdown(contract), 'utf8')
     await syncManagedPageRegistry(targetRoot)
 
     console.log(`Wrote rules-only page contract:`)

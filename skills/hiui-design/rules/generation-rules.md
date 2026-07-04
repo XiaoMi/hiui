@@ -220,8 +220,6 @@ Translation Drift Guard 只包含三件事：
 
 `driftExceptions` 只能记录等价转译，不能豁免 mandatory components、required regions、ownership、关键交互锚点、route owner 或 source marker。例如允许“`QueryFilter` 由 `LegacyQueryFilterAdapter` 承接且保留 submit / reset / collapse 语义”；不允许“宿主没有 `QueryFilter`，所以改成普通 `SearchForm`”。
 
-一旦 planner 已锁定 `generationStrategy=page-component`、`startFrom=page-component`，且 legacy `runtimeAdapterProof.status=available` / `generationProfile.runtimeBridgeStatus=available`，当前任务的默认交付物就必须是 `artifactRole=business-managed-page` 的受管页面实例。此时不允许把业务页默认实现偷偷降级成 compatibility 手写页、translated reference、自由 scaffold、reference 默认翻译页，或“先拼一个差不多的白底页再说”。
-
 legacy 快速路径命中下面任一情况必须 fail closed：
 
 - `Semantic Lock`、`Translation Map` 或 `Isomorphism Check` 无法建立
@@ -240,7 +238,6 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 - Plan Gateway 返回的 `mode` / `projectMode`、`topology`、`pageType`、`generationStrategy` / `generationStrategyId`、`primaryGenerationAsset`、`fallbackGenerationAsset`、`customizationLevel`、`analyticsContractRequired`、`startFrom` 兼容字段、`fastPath`、`requiredDocs`、`requiredCommands` 是本次页面任务的执行边界；后续 doctor、host-profile 或人工判断只能补充诊断，不能覆写这些事实，除非重新执行 Plan Gateway。
 - 若计划包含 `blockingReasons`，先补齐事实或修复脚本入口；不得用“先生成一个页面再调整”的方式绕过阻断。
 - `host-integration`、`rules-only` / `legacy-host-compatible` 页面，在进入真实实现前必须先锁定主生成资产；普通典型页优先 certified page component，数据可视化优先 `managed-analytics`，只有组件不可用、结构升级或特殊宿主约束时才使用 `startFrom` / template / archetype / scaffold fallback。
-- 当计划已经锁定 `page-component` 为主生成资产时，后续生成、contract、preflight 与最终回复都必须沿同一主链保持 `business-managed-page` 交付语义；不得把“legacy 主树不能 direct import standard shell runtime”重新解释成“可以默认交付兼容手拼页”。若确实需要 fallback，只能先重新执行 Plan Gateway，让计划显式把 `generationStrategy` 切到 `managed-fallback` 或其它合法 fallback。
 - 对声明 `requiredStartFromExample=true` 的典型页，只有 `generationStrategy=managed-fallback` 或计划明确要求 fallback 时，`typical-page:start-page` 才按机器计划里的 `startFrom` 起步：`template` 直接复制 `page.template.tsx|jsx`，`host-archetype` 复制宿主 archetype，`reference-or-scaffold` 使用受管 reference / scaffold 承接同一页壳契约。只有这些受管起点都缺失时才失败；不得回退到自由壳层 scaffold。
 - 当计划选择 `generationStrategy=page-component` 时，进入实现前只执行 `ComponentAvailabilityGate`：确认 component 已 certified / available、`baseMoldId` 与当前 `pageType` 匹配、当前任务只写入标准槽位或 Level 1 受控扩展；组件缺失、未认证、认证过期或扩展越界时，不得把组件当起点，也不得在业务生成阶段临时重认证组件。
 - 当计划选择 `generationStrategy=managed-analytics` 或 `analyticsContractRequired=true` 时，必须先建立 `chartUsageContract`，再进入图表 JSX 与配置实现；不得把数据可视化退化为普通统计表、自由图表墙、手写 primitives 或图表库默认主题。
@@ -351,7 +348,6 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 ### 原则 5：组件与交互继承优先
 
 - 命中 HiUI 已有语义组件时，默认优先复用真实组件，而不是手写等价 DOM。
-- `Timeline` 一旦命中，默认沿用 HiUI 官网 timeline 的信息流样式；除非设计稿或上游组件文档有明确书面依据，不得切换成自造卡片流、左右对拍或其它变体排版。
 - 非典型页面允许自由拼装 section，但默认先锁定 HiUI 语义组件，再组织 section；不要先造 `summaryStrip / heroCard / fieldCard / customInfoBlock`，再回头补 `Descriptions / Timeline / shared chart helper`。
 - `shared component inheritance`、`style inheritance contract`、`interaction inheritance contract` 统一以 kickoff 输出和 contract 为准，不在本文件重复展开字段表。
 
@@ -378,7 +374,6 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 - 业务页只填 `title / onBack / extra` 等槽位，不重建第二套标题壳，也不在内容区再造可见 header 白条。
 - 若页面存在返回路径，默认优先落在 `PageHeader onBack`；不要在 `extra` 再重复放“返回列表 / 返回上一页”一类回退按钮，除非 deviation 已明确批准双入口。
 - 业务页不得通过 `classNames`、`styles`、本地 `.hi-v5-*` 选择器或其它内部 slot 覆写方式去改 `PageHeader`、`Descriptions`、`Timeline`、`Table` 等公共组件骨架；统一基线只能在宿主 carrier、shared shell 或 archetype 层处理。
-- `Timeline` 的官网信息流基线属于默认视觉 contract；未在 design deviation、上游组件文档或任务说明中获批前，不得通过局部容器、额外装饰节点或布局重组把它改写成另一种时间轴风格。
 - 对 detail-shell 中的 `Descriptions`，允许且要求通过组件 props 显式声明布局不变量；不允许再用页面级 `.hi-v5-*` / `th` / `label` CSS 补救上游默认值漂移。
 
 ### 原则 6：国际化按任务模式纳入边界

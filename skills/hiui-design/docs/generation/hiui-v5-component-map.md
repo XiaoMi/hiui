@@ -64,7 +64,7 @@
 - `Table`：统一结构数据的主表达；不要退回手写 grid、列表拼接或自造 data panel。
 - `List`：异构条目、活动流、简单列表项阅读；不要在需要列对齐和排序能力时替代表格。
 - `Descriptions`：只读字段主表达；不要把标题下紧邻元信息带、摘要指标带误升格成 `Descriptions`。
-- `Timeline`：按时间线表达事件、日志、流程记录；默认使用 HiUI 官网 timeline 的信息流样式，不要用普通列表硬拼时间轴。
+- `Timeline`：按时间线表达事件、日志、流程记录；不要用普通列表硬拼时间轴。
 - `Tree`：层级结构浏览或节点操作；不要在需要树语义时退回嵌套列表。
 - `Tag`：状态、分类、风险、轻量标签语义；不要手写彩色胶囊 `span`。
 - `Badge`：未读、数量、红点、角标提醒；不要把状态主表达误写成 `Badge`。
@@ -169,7 +169,7 @@
 - 列表筛选区：优先 `QueryFilter`，不要手拼 `Search + Select + DatePicker`
 - 状态语义：优先 `Tag / Alert / Result / EmptyState`，不要手写彩色块
 - 页面主容器：优先固定页壳 / shared shell，局部补充才用 `Card`，不要让 `Card` 变成整页白底 owner
-- 时间记录：优先 `Timeline`，默认使用 HiUI 官网 timeline 的信息流样式；不要普通 `List` 硬拼时间点
+- 时间记录：优先 `Timeline`，不要普通 `List` 硬拼时间点
 - 树选择：优先 `TreeSelect / CheckTreeSelect`，不要普通 `Select` 平铺层级项
 - 危险确认：优先 `PopConfirm` 或明确的 `Modal`，不要在行内静态文字提醒后直接执行
 
@@ -266,7 +266,7 @@
 | `Tag` | `components/tag.mdx` | `high` | `secondary` | `抽屉与详情` | 有新消息提示时 常见于图标、文本标题、按钮等位置 |
 | `TagInput` | `components/tag-input.mdx` | `medium` | `secondary` | - | 以标签形式录入和展示多值内容，常用于关键词、成员等集合型数据 |
 | `Textarea` | `components/textarea.mdx` | `high` | `secondary` | `表单` | 提供多行文本输入区域，适合填写备注、描述等长文本 |
-| `Timeline` | `components/timeline.mdx` | `high` | `primary` | - | 信息呈现的方式以时间流形式展示时 信息发生的时间粒度较小，且间隔较为均匀 常用在行为记录、日志、日程提醒、物流等场景 默认使用官网信息流样式 |
+| `Timeline` | `components/timeline.mdx` | `high` | `primary` | - | 信息呈现的方式以时间流形式展示时 信息发生的时间粒度较小，且间隔较为均匀 常用在行为记录、日志、日程提醒、物流等场景 |
 | `TimePicker` | `components/time-picker.mdx` | `medium` | `secondary` | - | 在弹出面板上选择时间，以便捷完成时间输入的控件 |
 | `Toast` | `components/toast.mdx` | `medium` | `secondary` | - | 全局轻量通知组件，自动消失提示操作结果或系统状态 |
 | `Tooltip` | `components/tooltip.mdx` | `medium` | `helper` | - | 词汇注释，生僻专业词汇，动作描述 图标代表的含义 |

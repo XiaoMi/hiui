@@ -2,7 +2,7 @@
 /* template asset: __HIUI_TEMPLATE_PATH__ */
 /* runtime bridge profile: __HIUI_RUNTIME_BRIDGE_PROFILE_ID__ */
 /* selected component: __HIUI_PAGE_COMPONENT_ID__ */
-/* bridge rule: slot adapter may bind business slots only; do not translate QueryFilter/Table/Pagination/PageHeader or re-wrap managed regions */
+/* bridge rule: slot adapter may bind business slots only; do not translate managed regions */
 
 export type __HIUI_SLOT_ADAPTER_PROPS__ = {
   businessSlots: Record<string, unknown>

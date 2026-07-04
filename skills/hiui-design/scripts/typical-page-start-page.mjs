@@ -4,13 +4,11 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import { loadHostProfileFact } from './lib/project-facts.mjs'
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
-  writeManagedPageContractArtifacts,
-  writeUtf8FileIfChanged,
 } from './lib/managed-page-artifacts.mjs'
 import { buildTypicalPageReuseTargetError } from './lib/typical-page-route-ownership.mjs'
 import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifest.mjs'
@@ -27,12 +25,12 @@ import {
   buildRulesOnlyPageContract,
   findArchetypeSmokeBaselineEntry,
   getDefaultScrollStrategyForPageType,
-  getManagedPageSemanticContract,
   getManagedPageRuntimeSmokeDefaultStatus,
   getRequiredOwnershipRolesForPageType,
   getRequiredRegionsForPageType,
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
+  renderRulesOnlyPageContractMarkdown,
   toContractSlug,
   validateRulesOnlyPageContract,
 } from './lib/rules-only-page-contracts.mjs'
@@ -162,72 +160,15 @@ function buildPlannerChangeText(pageType) {
   return `新增一个${pageType?.label || pageType?.id || '典型页'}页面`
 }
 
-function parseStartPlanPayload(raw, sourceLabel) {
-  try {
-    return JSON.parse(raw)
-  } catch (error) {
-    throw new Error(`typical-page:start-page could not parse ${sourceLabel}: ${error.message}`)
-  }
-}
-
-function validateProvidedStartPlan(plan, { pageTypeId }) {
-  if (!plan || typeof plan !== 'object' || Array.isArray(plan)) {
-    throw new Error('typical-page:start-page expected the provided plan to be a JSON object')
-  }
-
-  if (plan.schemaVersion !== 'page-task-plan.v1') {
-    throw new Error(
-      `typical-page:start-page expected page-task-plan.v1 but received ${plan.schemaVersion || 'unknown-schema'}`
-    )
-  }
-
-  if (plan.status !== 'ready') {
-    throw new Error(
-      `typical-page:start-page requires a ready plan, received status=${plan.status || 'unknown'}`
-    )
-  }
-
-  const rootPageTypeId = String(plan?.pageType?.id || '').trim()
-  const matchingUnits = Array.isArray(plan?.pageUnits)
-    ? plan.pageUnits.filter((unit) => unit?.pageType?.id === pageTypeId)
-    : []
-
-  if (rootPageTypeId === pageTypeId || matchingUnits.length === 1) {
-    return plan
-  }
-
-  if (matchingUnits.length > 1) {
-    throw new Error(
-      `typical-page:start-page found multiple pageUnits for ${pageTypeId} in the provided plan; pass a single-page plan or narrow the target page type`
-    )
-  }
-
-  throw new Error(
-    `typical-page:start-page expected the provided plan to include pageType=${pageTypeId}, received root pageType=${rootPageTypeId || 'none'}`
-  )
-}
-
-async function loadProvidedStartPlan({ planFile, planJson, pageTypeId, targetRoot }) {
-  if (!planFile && !planJson) {
-    return null
-  }
-
-  const sourceLabel = planFile
-    ? normalizeContractPath(targetRoot, planFile)
-    : '--plan-json'
-  const raw = planFile
-    ? await fs.readFile(path.resolve(targetRoot, planFile), 'utf8')
-    : planJson
-
-  return validateProvidedStartPlan(parseStartPlanPayload(raw, sourceLabel), { pageTypeId })
-}
-
 function runPlanPageTaskForStartPage({
+  layoutStrategy,
   mode,
+  nonTypicalScope = [],
   pagePath,
   pageType,
   skillRoot,
   targetRoot,
+  topology,
 }) {
   const args = [
     path.join(skillRoot, 'scripts', 'plan-page-task.mjs'),
@@ -244,6 +185,18 @@ function runPlanPageTaskForStartPage({
     '--json',
   ]
 
+  if (String(topology || '').trim()) {
+    args.push('--topology', String(topology).trim())
+  }
+
+  if (String(layoutStrategy || '').trim()) {
+    args.push('--layout-strategy', String(layoutStrategy).trim())
+  }
+
+  for (const scope of Array.isArray(nonTypicalScope) ? nonTypicalScope : []) {
+    args.push('--non-typical-scope', scope)
+  }
+
   const result = spawnSync(process.execPath, args, {
     cwd: targetRoot,
     encoding: 'utf8',
@@ -259,129 +212,6 @@ function runPlanPageTaskForStartPage({
   }
 
   return JSON.parse(result.stdout)
-}
-
-function normalizeStartPlanRuntimeSmokePlan(plan) {
-  if (!plan || typeof plan !== 'object' || typeof plan.required !== 'boolean') {
-    return null
-  }
-
-  return {
-    required: plan.required,
-    reason: plan.required
-      ? 'derived from page-task-plan runtime smoke requirement'
-      : 'page-task-plan marks runtime smoke as not-required for this scaffold start',
-  }
-}
-
-function normalizeStartPlanContractSeed(plan) {
-  if (!plan || typeof plan !== 'object') {
-    return null
-  }
-
-  return {
-    topology: plan.topology || '',
-    layoutStrategy: String(plan.layoutStrategy || '').trim(),
-    layoutArchetype: String(plan.layoutArchetype || '').trim(),
-    nonTypicalScope: Array.isArray(plan.nonTypicalScope)
-      ? plan.nonTypicalScope.map((item) => String(item || '').trim()).filter(Boolean)
-      : [],
-    mandatoryComponents: Array.isArray(plan.mandatoryComponents)
-      ? plan.mandatoryComponents.map((item) => String(item || '').trim()).filter(Boolean)
-      : [],
-    compositionGuardrails: Array.isArray(plan.compositionGuardrails)
-      ? plan.compositionGuardrails.map((item) => String(item || '').trim()).filter(Boolean)
-      : [],
-    strategyEvidence: Array.isArray(plan.strategyEvidence)
-      ? plan.strategyEvidence.map((item) => String(item || '').trim()).filter(Boolean)
-      : [],
-    ownershipPlan: plan.ownershipPlan && typeof plan.ownershipPlan === 'object'
-      ? {
-          ownershipMode: String(plan.ownershipPlan.ownershipMode || '').trim(),
-          targetHints: Array.isArray(plan.ownershipPlan.targetHints)
-            ? plan.ownershipPlan.targetHints
-                .map((item) => ({
-                  role: String(item?.role || '').trim(),
-                  target: String(item?.target || '').trim(),
-                }))
-                .filter((item) => item.role && item.target)
-            : [],
-        }
-      : null,
-    runtimeSmokePlan: normalizeStartPlanRuntimeSmokePlan(plan.runtimeSmokePlan),
-    generationProfile: plan.generationProfile && typeof plan.generationProfile === 'object'
-      ? plan.generationProfile
-      : null,
-    docBundle:
-      plan?.generationInputs?.docBundle &&
-      typeof plan.generationInputs.docBundle === 'object'
-        ? {
-            profile: String(plan.generationInputs.docBundle.profile || '').trim(),
-            source: String(plan.generationInputs.docBundle.source || '').trim(),
-            bundleIds: Array.isArray(plan.generationInputs.docBundle.bundleIds)
-              ? plan.generationInputs.docBundle.bundleIds
-                  .map((item) => String(item || '').trim())
-                  .filter(Boolean)
-              : [],
-          }
-        : null,
-    fastPathSummary:
-      plan?.generationInputs?.fastPathSummary &&
-      typeof plan.generationInputs.fastPathSummary === 'object'
-        ? {
-            eligible: plan.generationInputs.fastPathSummary.eligible === true,
-            executionMode: String(plan.generationInputs.fastPathSummary.executionMode || '').trim(),
-            pageShellPolicy: String(plan.generationInputs.fastPathSummary.pageShellPolicy || '').trim(),
-            queryFilterPolicy: String(plan.generationInputs.fastPathSummary.queryFilterPolicy || '').trim(),
-            upgradeSignals: Array.isArray(plan.generationInputs.fastPathSummary.upgradeSignals)
-              ? plan.generationInputs.fastPathSummary.upgradeSignals
-                  .map((item) => String(item || '').trim())
-                  .filter(Boolean)
-              : [],
-          }
-        : null,
-  }
-}
-
-function buildOwnershipMappingFromPlanHints(explicitOwnerships, ownershipPlan) {
-  if (explicitOwnerships.length > 0) {
-    return explicitOwnerships.map(({ key, target }) => ({ role: key, target }))
-  }
-
-  const hintedMappings = Array.isArray(ownershipPlan?.targetHints)
-    ? ownershipPlan.targetHints
-        .map((item) => ({
-          role: String(item?.role || '').trim(),
-          target: String(item?.target || '').trim(),
-        }))
-        .filter((item) => item.role && item.target)
-    : []
-
-  return hintedMappings
-}
-
-function ensureStartPageGenerationProfileRequiredGates(generationProfile, mode) {
-  if (!generationProfile || typeof generationProfile !== 'object') {
-    return null
-  }
-
-  const modeId = String(mode || '').trim()
-  const strategy = String(generationProfile.strategy || '').trim()
-  const startFrom = String(generationProfile.startFrom || '').trim()
-  const requiredBaseline =
-    modeId === 'legacy-host-compatible'
-      ? strategy === 'page-component' && startFrom === 'page-component'
-        ? ['slot-gate', 'preflight']
-        : ['source-gate', 'preflight']
-      : ['slot-gate', 'preflight']
-  const existingGates = Array.isArray(generationProfile.requiredGates)
-    ? generationProfile.requiredGates.map((item) => String(item || '').trim()).filter(Boolean)
-    : []
-
-  return {
-    ...generationProfile,
-    requiredGates: Array.from(new Set([...requiredBaseline, ...existingGates])),
-  }
 }
 
 function isLegacyPageComponentFastPathPlan(plan) {
@@ -408,48 +238,18 @@ function buildLegacyPageComponentStartBlockReason(plan, pageTypeId) {
     `runtimeAdapterProof=${plan?.pageComponent?.runtimeAdapterProof?.status || 'missing'}`,
   ]
 
-  return `typical-page:start-page cannot scaffold ${pageTypeId} in legacy-host-compatible until plan-page-task resolves the page-component fast path. Expected selected certified page component plus available runtime bridge asset; received ${details.join(', ')}. Resolve runtime adapter / certification facts first and refresh the planner contract.`
-}
-
-function assertComponentSemanticStartPlan(plan, pageTypeId) {
-  const support = plan?.projectTypicalPageSupport
-  if (!support?.enforcePageComponentSemantics) {
-    return
-  }
-
-  if (support.status !== 'ready') {
-    const blockingReasons = Array.isArray(support.blockingReasons)
-      ? support.blockingReasons.filter(Boolean)
-      : []
-    throw new Error(
-      `typical-page:start-page cannot scaffold ${pageTypeId} because component-semantic typical page support is ${support.status}. ${
-        blockingReasons.length > 0 ? `Blocking reasons: ${blockingReasons.join(' | ')}` : 'Refresh the planner contract and repair the shared page-component support first.'
-      }`
-    )
-  }
-
-  if (plan?.generationStrategyId !== 'page-component') {
-    throw new Error(
-      `typical-page:start-page requires page-component semantics for ${pageTypeId}. Received generationStrategyId=${plan?.generationStrategyId || 'unknown'}. Refresh the planner contract instead of reusing a stale managed-fallback plan.`
-    )
-  }
-
-  if (String(plan?.startFrom?.id || '').trim() !== 'page-component') {
-    throw new Error(
-      `typical-page:start-page requires startFrom=page-component for component-semantic page ${pageTypeId}. Received startFrom=${plan?.startFrom?.id || 'unknown'}. Refresh the planner contract before scaffolding.`
-    )
-  }
+  return `typical-page:start-page cannot scaffold ${pageTypeId} in legacy-host-compatible until plan-page-task resolves the page-component fast path. Expected selected certified page component plus available runtime bridge asset; received ${details.join(', ')}. Resolve runtime adapter / certification facts first, or explicitly fall back through the managed-fallback path.`
 }
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/typical-page-start-page.mjs" --page-type <page-type-id> --page <relative-page-path> [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--topology <typical|non-typical-overlay>] [--layout-strategy <strategy-id>] [--non-typical-scope <scope-id[,scope-id...]> ...] [--runtime-smoke <auto|required|not-required>] [--archetype <relative-host-archetype-path>] [--query-filter-region-role <table-query-filter|dashboard-control-strip|not-applicable>] [--region <name=target> ...] [--ownership-mode <${RULES_ONLY_OWNERSHIP_MODES.join('|')}>] [--ownership <role=target> ...] [--local-bypass <package=<pkg>;gap=<capability-gap>;adapter=<relative-path>;bridge=<relative-path>;containment=<${MANAGED_PAGE_LOCAL_BYPASS_OWNER_CONTAINMENT.join('|')}>> ...] [--plan-file <relative-plan-json-path> | --plan-json <json>] [--line <line-id>] [--target <project-root>] [--force] [--json] [--contract-fixture <table-basic-started>]
+  node ".local-context/hiui-design/scripts/typical-page-start-page.mjs" --page-type <page-type-id> --page <relative-page-path> [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--topology <typical|non-typical-overlay>] [--layout-strategy <strategy-id>] [--non-typical-scope <scope-id[,scope-id...]> ...] [--runtime-smoke <auto|required|not-required>] [--archetype <relative-host-archetype-path>] [--query-filter-region-role <table-query-filter|dashboard-control-strip|not-applicable>] [--region <name=target> ...] [--ownership-mode <${RULES_ONLY_OWNERSHIP_MODES.join('|')}>] [--ownership <role=target> ...] [--local-bypass <package=<pkg>;gap=<capability-gap>;adapter=<relative-path>;bridge=<relative-path>;containment=<${MANAGED_PAGE_LOCAL_BYPASS_OWNER_CONTAINMENT.join('|')}>> ...] [--line <line-id>] [--target <project-root>] [--force] [--json] [--contract-fixture <table-basic-started>]
 
 Default behavior:
   1. resolve the packaged page type + archetype
   2. write a started contract stub with workflow.status=started
   3. stamp default semantic-contract rules such as query-filter role and single spacing-owner policy
-  4. create the planner-aligned scaffold: certified page-component paths copy the certified component source (legacy additionally emits the runtime-bridge wrapper + slot adapter), while managed-fallback paths keep the structured scaffold / template flow
+  4. create the planner-aligned scaffold: legacy page-component fast path emits a runtime-bridge wrapper + slot adapter, while fallback paths keep the managed structured scaffold / template flow
   4. stop before delivery; fast typical pages complete with current-page preview + preflight + explainable lint/build, while formal acceptance still requires typical-page:finalize-page
 `)
 }
@@ -530,8 +330,6 @@ function parseArgs(argv) {
     ownershipMode: '',
     ownerships: [],
     page: '',
-    planFile: '',
-    planJson: '',
     pageTypeId: '',
     queryFilterRegionRole: '',
     regions: [],
@@ -560,8 +358,6 @@ function parseArgs(argv) {
       arg === '--archetype' ||
       arg === '--line' ||
       arg === '--layout-strategy' ||
-      arg === '--plan-file' ||
-      arg === '--plan-json' ||
       arg === '--target' ||
       arg === '--topology' ||
       arg === '--ownership-mode' ||
@@ -580,8 +376,6 @@ function parseArgs(argv) {
       if (arg === '--archetype') options.archetype = value
       if (arg === '--line') options.line = value
       if (arg === '--layout-strategy') options.layoutStrategy = value
-      if (arg === '--plan-file') options.planFile = value
-      if (arg === '--plan-json') options.planJson = value
       if (arg === '--target') options.target = path.resolve(value)
       if (arg === '--topology') options.topology = value
       if (arg === '--ownership-mode') options.ownershipMode = value
@@ -621,9 +415,6 @@ function parseArgs(argv) {
 
   if (!options.pageTypeId) throw new Error('Missing --page-type')
   if (!options.page) throw new Error('Missing --page')
-  if (options.planFile && options.planJson) {
-    throw new Error('Use either --plan-file or --plan-json, not both')
-  }
   if (options.runtimeSmoke && !['auto', 'required', 'not-required'].includes(options.runtimeSmoke)) {
     throw new Error('Expected --runtime-smoke to be one of: auto, required, not-required')
   }
@@ -804,46 +595,6 @@ function getContractSlotManifest(contract) {
     : []
 }
 
-function getStructuredQueryFilterPlaceholderComment(contract) {
-  const semanticContract = getManagedPageSemanticContract(contract)
-
-  if (semanticContract.queryFilterRegionRole === 'table-query-filter') {
-    return 'TODO: mount the real QueryFilter carrier here; keep contained/showLabel=false defaults plus upstream field-map/provider wiring. Do not rebuild this region as a form grid, SearchForm, or dashboard control strip'
-  }
-
-  if (semanticContract.queryFilterRegionRole === 'dashboard-control-strip') {
-    return 'TODO: mount the shared dashboard control strip here; keep segmented/radio/tab view switches outside QueryFilter semantics'
-  }
-
-  return 'TODO: keep this region aligned with the managed semantic contract'
-}
-
-function getStructuredTablePlaceholderComment(contract) {
-  const semanticContract = getManagedPageSemanticContract(contract)
-
-  if (semanticContract.listShellComposition === 'page-type-shell') {
-    return 'TODO: mount the managed list/table shell here; keep pagination inside the same carrier and do not rebuild the table region with ad hoc wrappers'
-  }
-
-  return 'TODO: mount the managed table region here'
-}
-
-function getStructuredRegionPlaceholderComment(contract, regionName) {
-  if (regionName === 'query-filter') {
-    return getStructuredQueryFilterPlaceholderComment(contract)
-  }
-
-  if (regionName === 'stat-section') {
-    return 'TODO: mount shared stat-grid / stat-card primitives here; keep this top-level block flat and let the white-body own the surface'
-  }
-
-  if (regionName === 'chart-section') {
-    return 'TODO: mount the shared chart section + adaptive chart-body carriers here'
-  }
-
-  return `TODO: replace with the managed ${regionName} content`
-}
-
 function renderLegacySlotTodoLines(slotManifest, indent = '      ') {
   if (slotManifest.length === 0) {
     return [
@@ -951,7 +702,7 @@ async function buildLegacyRuntimeBridgeArtifacts({ contract, pagePath, skillRoot
   entrySource = replaceAllText(
     entrySource,
     'export default function __HIUI_RUNTIME_BRIDGE_WRAPPER_NAME__(\n  props: __HIUI_RUNTIME_BRIDGE_WRAPPER_PROPS__\n) {\n  const adaptedSlots = __HIUI_SLOT_ADAPTER_NAME__(props)\n',
-    `export default function ${componentName}() {\n${slotAdapterInputDeclaration}    businessSlots: {\n${renderLegacySlotTodoLines(slotManifest, '      ')}\n    },\n    controlledExtensions: {\n      // TODO: add Level 1 controlled extensions only when the selected page component allows them\n    },\n    runtimeBridge: {\n      // TODO: bind request / response / message / i18n / permission / routeNavigation / theme at bridge scope only; never translate QueryFilter / Table / Pagination / PageHeader\n    },\n  }\n  const adaptedSlots = ${slotAdapterFactoryName}(slotAdapterInput)\n`
+    `export default function ${componentName}() {\n${slotAdapterInputDeclaration}    businessSlots: {\n${renderLegacySlotTodoLines(slotManifest, '      ')}\n    },\n    controlledExtensions: {\n      // TODO: add Level 1 controlled extensions only when the selected page component allows them\n    },\n    runtimeBridge: {\n      // TODO: bind request / response / message / i18n / permission / routeNavigation / theme at bridge scope only\n    },\n  }\n  const adaptedSlots = ${slotAdapterFactoryName}(slotAdapterInput)\n`
   )
   entrySource = replaceAllText(entrySource, '__HIUI_RUNTIME_BRIDGE_WRAPPER_NAME__', componentName)
   entrySource = replaceAllText(entrySource, '__HIUI_RUNTIME_BRIDGE_PROFILE_ID__', runtimeBridgeProfileId)
@@ -1008,7 +759,7 @@ async function buildLegacyRuntimeBridgeArtifacts({ contract, pagePath, skillRoot
       `export function ${slotAdapterFactoryName}({\n  businessSlots,\n  controlledExtensions = {},\n  runtimeBridge = {},\n}: ${slotAdapterInputType}) {`
     )
   } else {
-    slotAdapterSource = `/* generated by typical-page:start-page */\n/* generated from hiui-design runtime bridge slot adapter template */\n/* template asset: templates/page-components/runtime-bridge/slot-adapter.stub.ts */\n/* runtime bridge profile: ${runtimeBridgeProfileId} */\n/* selected component: ${pageComponentId} */\n/* bridge rule: slot adapter may bind business slots only; do not translate QueryFilter/Table/Pagination/PageHeader or re-wrap managed regions */\n\nexport function ${slotAdapterFactoryName}({\n  businessSlots,\n  controlledExtensions = {},\n  runtimeBridge = {},\n}) {\n  return {\n    businessSlots,\n    controlledExtensions,\n    runtimeBridge,\n  }\n}\n\nexport default ${slotAdapterFactoryName}\n`
+    slotAdapterSource = `/* generated by typical-page:start-page */\n/* generated from hiui-design runtime bridge slot adapter template */\n/* template asset: templates/page-components/runtime-bridge/slot-adapter.stub.ts */\n/* runtime bridge profile: ${runtimeBridgeProfileId} */\n/* selected component: ${pageComponentId} */\n/* bridge rule: slot adapter may bind business slots only; do not translate managed regions */\n\nexport function ${slotAdapterFactoryName}({\n  businessSlots,\n  controlledExtensions = {},\n  runtimeBridge = {},\n}) {\n  return {\n    businessSlots,\n    controlledExtensions,\n    runtimeBridge,\n  }\n}\n\nexport default ${slotAdapterFactoryName}\n`
   }
 
   return [
@@ -1157,22 +908,6 @@ void hiuiDesignSourceContract
 `
 }
 
-function renderPageComponentSourcePrelude(contract, { pageComponentId, certificationRef, componentSource }) {
-  const commentLines = getManagedPageSourceCommentLines(contract)
-  const rootAttrs = getManagedPageSourceRootAttributes(contract)
-
-  return `/* generated by typical-page:start-page */
-/* copied from the certified page-component source; replace business slots only */
-/* selected component: ${pageComponentId} */
-/* certification ref: ${certificationRef} */
-/* component source: ${componentSource} */
-/* source contract markers */
-${commentLines.map((line) => `/* ${line} */`).join('\n')}
-const hiuiDesignSourceContract = ${renderJsObjectLiteral(rootAttrs)}
-void hiuiDesignSourceContract
-`
-}
-
 function injectHostIntegrationPrelude(source, contract) {
   const insertionPoint = findInitialImportBlockEnd(source)
   const prelude = renderHostIntegrationSourcePrelude(contract)
@@ -1182,37 +917,6 @@ function injectHostIntegrationPrelude(source, contract) {
   }
 
   return `${source.slice(0, insertionPoint)}\n${prelude}\n${source.slice(insertionPoint)}`
-}
-
-function injectPageComponentSourcePrelude(source, contract, metadata) {
-  const insertionPoint = findInitialImportBlockEnd(source)
-  const prelude = renderPageComponentSourcePrelude(contract, metadata)
-
-  if (insertionPoint <= 0) {
-    return `${prelude}\n${source}`
-  }
-
-  return `${source.slice(0, insertionPoint)}\n${prelude}\n${source.slice(insertionPoint)}`
-}
-
-async function resolvePathFromSkillOrTarget({ relativePath, skillRoot, targetRoot }) {
-  const normalized = String(relativePath || '').trim().replace(/\\/g, '/')
-  if (!normalized) {
-    return ''
-  }
-
-  const candidates = [
-    path.join(targetRoot, normalized),
-    path.join(skillRoot, normalized),
-  ]
-
-  for (const candidate of candidates) {
-    if (await pathExists(candidate)) {
-      return candidate
-    }
-  }
-
-  return ''
 }
 
 async function resolveHostIntegrationExampleSourcePath({ contract, pageType, skillRoot, targetRoot }) {
@@ -1282,7 +986,6 @@ async function collectHostIntegrationExampleFiles({
   entrySourcePath,
   pagePath,
   targetRoot,
-  entrySourceInjector = null,
 }) {
   const sourceToArtifact = new Map([[path.resolve(entrySourcePath), pagePath]])
   const queue = [path.resolve(entrySourcePath)]
@@ -1355,10 +1058,8 @@ async function collectHostIntegrationExampleFiles({
       source: normalizeCopiedSourceForArtifact({
         artifactPath,
         source:
-          sourcePath &&
-          path.resolve(sourcePath) === path.resolve(entrySourcePath) &&
-          typeof entrySourceInjector === 'function'
-            ? entrySourceInjector(source)
+          sourcePath && path.resolve(sourcePath) === path.resolve(entrySourcePath)
+            ? injectHostIntegrationPrelude(source, contract)
             : source,
         sourcePath,
       }),
@@ -1389,129 +1090,6 @@ async function buildHostIntegrationExampleArtifacts({ contract, pagePath, pageTy
     entrySourcePath,
     pagePath,
     targetRoot,
-    entrySourceInjector: (source) => injectHostIntegrationPrelude(source, contract),
-  })
-}
-
-async function resolvePageComponentSourceDescriptor({
-  certificationRef,
-  pageComponentId,
-  skillRoot,
-  targetRoot,
-}) {
-  if (!certificationRef) {
-    throw new Error(
-      `typical-page:start-page cannot materialize page-component scaffolding for ${pageComponentId || 'unknown component'} without a certificationRef.`
-    )
-  }
-
-  const certificationPath = await resolvePathFromSkillOrTarget({
-    relativePath: certificationRef,
-    skillRoot,
-    targetRoot,
-  })
-  if (!certificationPath) {
-    throw new Error(
-      `typical-page:start-page cannot resolve certificationRef ${certificationRef} for page-component ${pageComponentId || 'unknown component'}.`
-    )
-  }
-
-  const certification = JSON.parse(await fs.readFile(certificationPath, 'utf8'))
-  const componentSource = String(certification?.certificationInputs?.componentSource || '').trim()
-  if (!componentSource) {
-    throw new Error(
-      `typical-page:start-page cannot materialize page-component scaffolding for ${pageComponentId || 'unknown component'} because certificationInputs.componentSource is empty in ${certificationRef}.`
-    )
-  }
-
-  const componentSourcePath = await resolvePathFromSkillOrTarget({
-    relativePath: componentSource,
-    skillRoot,
-    targetRoot,
-  })
-  if (!componentSourcePath) {
-    throw new Error(
-      `typical-page:start-page cannot resolve componentSource ${componentSource} for page-component ${pageComponentId || 'unknown component'}.`
-    )
-  }
-
-  return {
-    certificationRef,
-    certificationPath,
-    componentSource,
-    componentSourcePath,
-  }
-}
-
-async function buildCertifiedPageComponentArtifacts({
-  contract,
-  pagePath,
-  skillRoot,
-  targetRoot,
-  startPlan,
-}) {
-  const generationProfile = contract?.generationProfile || {}
-  if (
-    contract?.archetypeMode === 'legacy-host-compatible' ||
-    generationProfile.strategy !== 'page-component' ||
-    generationProfile.startFrom !== 'page-component'
-  ) {
-    return null
-  }
-
-  const pageComponentId = String(
-    generationProfile.pageComponentId ||
-      startPlan?.pageComponent?.componentId ||
-      startPlan?.assetResolution?.componentId ||
-      ''
-  ).trim()
-  const certificationRef = String(
-    startPlan?.assetResolution?.certificationRef ||
-      startPlan?.pageComponent?.certificationRef ||
-      ''
-  ).trim()
-  const componentSourceDescriptor = await resolvePageComponentSourceDescriptor({
-    certificationRef,
-    pageComponentId,
-    skillRoot,
-    targetRoot,
-  })
-
-  const renderCertifiedComponentSource = (source) => {
-    const rawSource = String(source || '')
-    if (
-      !rawSource.includes('__COMPONENT_NAME__') &&
-      !rawSource.includes('__HIUI_SOURCE_CONTRACT_MARKERS__') &&
-      !rawSource.includes('__HIUI_OPTIONAL_CHART_SECTION__')
-    ) {
-      return rawSource
-    }
-
-    return renderStrictTemplateSource({
-      contract,
-      pagePath,
-      templateAsset: {
-        relativePath: componentSourceDescriptor.componentSource,
-        source: rawSource,
-      },
-    })
-  }
-
-  return collectHostIntegrationExampleFiles({
-    contract,
-    entrySourcePath: componentSourceDescriptor.componentSourcePath,
-    pagePath,
-    targetRoot,
-    entrySourceInjector: (source) =>
-      injectPageComponentSourcePrelude(
-        renderCertifiedComponentSource(source),
-        contract,
-        {
-          pageComponentId,
-          certificationRef: componentSourceDescriptor.certificationRef,
-          componentSource: componentSourceDescriptor.componentSource,
-        }
-      ),
   })
 }
 
@@ -2175,7 +1753,7 @@ function buildStructuredManagedPageScaffold(pagePath, contract) {
         '        <section',
         `          data-hiui5-region="table"`,
         '        >',
-        `          {/* ${getStructuredTablePlaceholderComment(contract)} */}`,
+        '          {/* TODO: mount the shared joined-table shell here; keep pagination inside the same container */}',
         '          <div data-hiui5-region="pagination">',
         '            {/* TODO: replace with real pagination inside the table shell */}',
         '          </div>',
@@ -2184,11 +1762,20 @@ function buildStructuredManagedPageScaffold(pagePath, contract) {
       continue
     }
 
+    const regionSpecificComment =
+      regionName === 'query-filter'
+        ? 'TODO: mount the shared dashboard control strip here; do not rebuild this region as a form grid'
+        : regionName === 'stat-section'
+          ? 'TODO: mount shared stat-grid / stat-card primitives here; keep this top-level block flat and let the white-body own the surface'
+          : regionName === 'chart-section'
+            ? 'TODO: mount the shared chart section + adaptive chart-body carriers here'
+            : `TODO: replace with the managed ${regionName} content`
+
     regionLines.push(
       '        <section',
       `          data-hiui5-region="${regionName}"`,
       '        >',
-      `          {/* ${getStructuredRegionPlaceholderComment(contract, regionName)} */}`,
+      `          {/* ${regionSpecificComment} */}`,
       '        </section>'
     )
   }
@@ -2267,7 +1854,7 @@ function buildStructuredManagedPageArtifacts(pagePath, contract) {
         '        data-hiui5-region="table"',
         '      >',
         '        <div className={styles.sectionPlaceholder}>',
-        `          ${getStructuredTablePlaceholderComment(contract)}`,
+        '          TODO: mount the shared joined-table shell here; keep pagination inside the same container',
         '        </div>',
         '        <div className={styles.paginationPlaceholder} data-hiui5-region="pagination">',
         '          TODO: replace with real pagination inside the table shell',
@@ -2277,12 +1864,21 @@ function buildStructuredManagedPageArtifacts(pagePath, contract) {
       continue
     }
 
+    const regionSpecificComment =
+      regionName === 'query-filter'
+        ? 'TODO: mount the shared dashboard control strip here; do not rebuild this region as a form grid'
+        : regionName === 'stat-section'
+          ? 'TODO: mount shared stat-grid / stat-card primitives here; keep this top-level block flat and let the white-body own the surface'
+          : regionName === 'chart-section'
+            ? 'TODO: mount the shared chart section + adaptive chart-body carriers here'
+            : `TODO: replace with the managed ${regionName} content`
+
     sectionLines.push(
       '      <section',
       '        className={styles.sectionBlock}',
       `        data-hiui5-region="${regionName}"`,
       '      >',
-      `        <div className={styles.sectionPlaceholder}>${getStructuredRegionPlaceholderComment(contract, regionName)}</div>`,
+      `        <div className={styles.sectionPlaceholder}>${regionSpecificComment}</div>`,
       '      </section>'
     )
   }
@@ -2543,18 +2139,7 @@ function getDeclaredBodyRegionOrder(contract) {
     : []
 }
 
-async function buildScaffoldArtifacts({ skillRoot, pagePath, pageType, targetRoot, contract, startPlan }) {
-  const certifiedPageComponentArtifacts = await buildCertifiedPageComponentArtifacts({
-    contract,
-    pagePath,
-    skillRoot,
-    targetRoot,
-    startPlan,
-  })
-  if (certifiedPageComponentArtifacts) {
-    return certifiedPageComponentArtifacts
-  }
-
+async function buildScaffoldArtifacts({ skillRoot, pagePath, pageType, targetRoot, contract }) {
   const hostIntegrationExampleArtifacts = await buildHostIntegrationExampleArtifacts({
     contract,
     pagePath,
@@ -2635,43 +2220,8 @@ function buildStartPageReport({
   requestedPagePath,
   scaffoldArtifacts,
 }) {
-  const generationProfile = contract.generationProfile || {}
-  const legacyRuntimeBridgeReady =
-    mode === 'legacy-host-compatible' &&
-    (String(generationProfile.legacyStrategyId || '').trim() === 'runtime-bridged-page-component' ||
-      (String(generationProfile.strategy || '').trim() === 'page-component' &&
-        String(generationProfile.runtimeBridgeProfileId || '').trim()))
-  const pageComponentManagedPath =
-    legacyRuntimeBridgeReady || String(generationProfile.strategy || '').trim() === 'page-component'
-  const executionDecisionSummary = {
-    defaultAction: pageComponentManagedPath
-      ? 'fill-business-slots-inside-managed-page-component'
-      : 'complete-managed-start-point-before-business-filling',
-    deliveryPath: legacyRuntimeBridgeReady
-      ? 'page-component-plus-runtime-bridge-plus-slot-fill'
-      : pageComponentManagedPath
-        ? 'page-component-plus-slot-fill'
-        : 'managed-scaffold-or-fallback-start-point',
-    shellImportPolicy: legacyRuntimeBridgeReady
-      ? 'legacy-main-tree-forbid-ad-hoc-standard-shell-import'
-      : 'follow-selected-delivery-asset',
-    runtimeDeliveryMode: String(generationProfile.runtimeBridgeDeliveryMode || '').trim() || '',
-    allowedEditBoundary: pageComponentManagedPath
-      ? 'business-slots-and-level-1-controlled-extensions-only'
-      : 'follow-selected-contract-boundary',
-    doNotDo: legacyRuntimeBridgeReady
-      ? [
-          'do-not-use-reference-as-runtime-delivery-asset',
-          'do-not-rebuild-managed-regions-from-primitives',
-        ]
-      : pageComponentManagedPath
-        ? ['do-not-rebuild-managed-regions-from-primitives']
-        : [],
-  }
-
   return {
     status: 'started',
-    artifactRole: 'business-managed-page',
     pageType: {
       id: pageType.id,
       label: pageType.label,
@@ -2679,11 +2229,7 @@ function buildStartPageReport({
     mode,
     topology: contract.topology || null,
     layoutStrategy: contract.layoutStrategy || '',
-    layoutArchetype: contract.layoutArchetype || '',
     nonTypicalScope: contract.nonTypicalScope || [],
-    mandatoryComponents: contract.mandatoryComponents || [],
-    compositionGuardrails: contract.compositionGuardrails || [],
-    strategyEvidence: contract.strategyEvidence || [],
     runtimeSmokePlan: contract.runtimeSmokePlan || null,
     requestedPagePath,
     pagePath,
@@ -2694,7 +2240,6 @@ function buildStartPageReport({
     requiredCapabilities: contract.adapterContract.requiredCapabilities,
     localBypasses: contract.adapterContract.localBypasses,
     scaffoldArtifacts: scaffoldArtifacts.map((artifact) => ({ filePath: artifact.filePath })),
-    executionDecisionSummary,
     contract: {
       jsonPath: contractJsonPath,
       markdownPath: contractMarkdownPath,
@@ -2722,20 +2267,11 @@ function buildStartPageReport({
 function buildContractFixtureReport() {
   return {
     status: 'started',
-    artifactRole: 'business-managed-page',
     pageType: {
       id: 'table-basic',
       label: '普通表格',
     },
     mode: 'rules-only',
-    topology: null,
-    layoutStrategy: '',
-    layoutArchetype: '',
-    nonTypicalScope: [],
-    mandatoryComponents: [],
-    compositionGuardrails: [],
-    strategyEvidence: [],
-    runtimeSmokePlan: null,
     requestedPagePath: 'src/pages/orders/index.tsx',
     pagePath: 'src/pages/orders/index.tsx',
     examplePath: 'examples/host-integration/src/pages/table-basic.tsx',
@@ -2745,14 +2281,6 @@ function buildContractFixtureReport() {
     requiredCapabilities: ['header-slot', 'white-body', 'query-filter', 'table', 'pagination'],
     localBypasses: [],
     scaffoldArtifacts: [{ filePath: 'src/pages/orders/index.tsx' }],
-    executionDecisionSummary: {
-      defaultAction: 'complete-managed-start-point-before-business-filling',
-      deliveryPath: 'managed-scaffold-or-fallback-start-point',
-      shellImportPolicy: 'follow-selected-delivery-asset',
-      runtimeDeliveryMode: '',
-      allowedEditBoundary: 'follow-selected-contract-boundary',
-      doNotDo: [],
-    },
     contract: {
       jsonPath: '.local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.json',
       markdownPath: '.local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.md',
@@ -2792,7 +2320,7 @@ async function main() {
     const scriptDir = path.dirname(fileURLToPath(import.meta.url))
     const skillRoot = path.resolve(scriptDir, '..')
     const pkg = await readTargetPackageJson(targetRoot)
-    const hostProfile = await loadHostProfileFact({ targetRoot })
+    const hostProfile = await detectHostProfile(targetRoot)
     const projectModeFact = await readProjectModeFact(targetRoot)
     const modeResult = inferMode(pkg, hostProfile, options.mode, projectModeFact)
     const mode = modeResult.id
@@ -2827,13 +2355,6 @@ async function main() {
       pagePath = toDirectoryArtifactEntryPagePath(pagePath)
     }
 
-    const providedStartPlan = await loadProvidedStartPlan({
-      planFile: options.planFile,
-      planJson: options.planJson,
-      pageTypeId: pageType.id,
-      targetRoot,
-    })
-
     const archetypeDefinition = await loadArchetypeDefinition({
       skillRoot,
       pageTypeId: pageType.id,
@@ -2847,7 +2368,10 @@ async function main() {
     const baselineSpec = JSON.parse(await fs.readFile(baselineSpecPath, 'utf8'))
     const explicitRegions = parseKeyValueList(options.regions, '--region')
     const explicitOwnerships = parseKeyValueList(options.ownerships, '--ownership')
-    const explicitNonTypicalScope = parseStringList(options.nonTypicalScope)
+    const runtimeSmokePlan = buildRuntimeSmokePlan({
+      runtimeSmoke: options.runtimeSmoke,
+      topology: options.topology,
+    })
     const regionMapping =
       mode === 'host-integration'
         ? buildHostIntegrationRegionMapping(pageType, explicitRegions)
@@ -2857,71 +2381,32 @@ async function main() {
         ? buildHostIntegrationOwnershipMapping(pageType, explicitOwnerships)
         : buildPlaceholderOwnershipMapping(pageType.id, explicitOwnerships)
     const localBypasses = parseLocalBypasses(options.localBypasses, targetRoot)
-    const startPlan =
-      providedStartPlan ||
-      runPlanPageTaskForStartPage({
-        mode,
-        pagePath,
-        pageType,
-        skillRoot,
-        targetRoot,
-      })
-
-    if (startPlan) {
-      assertComponentSemanticStartPlan(startPlan, pageType.id)
-    }
-
-    if (startPlan && isLegacyPageComponentFastPathPlan(startPlan) && !isLegacyPageComponentFastPathReady(startPlan)) {
-      throw new Error(buildLegacyPageComponentStartBlockReason(startPlan, pageType.id))
-    }
-
-    if (startPlan && startPlan.status !== 'ready') {
-      const blockingReasons = Array.isArray(startPlan.blockingReasons)
-        ? startPlan.blockingReasons.filter(Boolean)
-        : []
-      throw new Error(
-        `typical-page:start-page requires a ready page-task-plan before scaffolding ${pageType.id}. ${
-          blockingReasons.length > 0 ? `Blocking reasons: ${blockingReasons.join(' | ')}` : `Received status=${startPlan.status || 'unknown'}`
-        }`
-      )
-    }
-
-    const startPlanSeed = normalizeStartPlanContractSeed(startPlan)
-    const resolvedTopology = String(options.topology || '').trim()
-      ? options.topology
-      : startPlanSeed?.topology || ''
-    const resolvedLayoutStrategy = String(options.layoutStrategy || '').trim() || startPlanSeed?.layoutStrategy || ''
-    const resolvedLayoutArchetype = startPlanSeed?.layoutArchetype || ''
-    const resolvedNonTypicalScope =
-      explicitNonTypicalScope.length > 0 ? explicitNonTypicalScope : startPlanSeed?.nonTypicalScope || []
-    const runtimeSmokePlan =
-      buildRuntimeSmokePlan({
-        runtimeSmoke: options.runtimeSmoke,
-        topology: resolvedTopology,
-      }) || startPlanSeed?.runtimeSmokePlan
-    const legacyFastPathGenerationProfile =
-      startPlan && isLegacyPageComponentFastPathReady(startPlan)
-        ? startPlan.generationProfile
+    const legacyStartPlan =
+      mode === 'legacy-host-compatible' && !options.archetype
+        ? runPlanPageTaskForStartPage({
+            layoutStrategy: options.layoutStrategy,
+            mode,
+            nonTypicalScope: options.nonTypicalScope,
+            pagePath,
+            pageType,
+            skillRoot,
+            targetRoot,
+            topology: options.topology,
+          })
         : null
-    const resolvedGenerationProfile = ensureStartPageGenerationProfileRequiredGates(
-      legacyFastPathGenerationProfile || startPlanSeed?.generationProfile || null,
-      mode
-    )
-    const hintedOwnershipMapping = buildOwnershipMappingFromPlanHints(explicitOwnerships, startPlanSeed?.ownershipPlan)
+    if (legacyStartPlan && isLegacyPageComponentFastPathPlan(legacyStartPlan) && !isLegacyPageComponentFastPathReady(legacyStartPlan)) {
+      throw new Error(buildLegacyPageComponentStartBlockReason(legacyStartPlan, pageType.id))
+    }
+    const legacyFastPathGenerationProfile =
+      legacyStartPlan && isLegacyPageComponentFastPathReady(legacyStartPlan)
+        ? legacyStartPlan.generationProfile
+        : null
     const resolvedRegionMapping = legacyFastPathGenerationProfile
       ? buildLegacyPageComponentRegionMapping(pageType.id, explicitRegions)
       : regionMapping
     const resolvedOwnershipMapping = legacyFastPathGenerationProfile
       ? buildLegacyPageComponentOwnershipMapping(pageType.id, explicitOwnerships)
-      : hintedOwnershipMapping.length > 0
-        ? hintedOwnershipMapping
-        : ownershipMapping
-    const resolvedOwnershipMode =
-      options.ownershipMode ||
-      startPlanSeed?.ownershipPlan?.ownershipMode ||
-      (getRequiredOwnershipRolesForPageType(pageType.id).length > 0
-        ? 'page-surface-owns-workspace'
-        : '')
+      : ownershipMapping
     const contract = buildRulesOnlyPageContract({
       pageType,
       archetypeDefinition,
@@ -2932,24 +2417,23 @@ async function main() {
         : normalizeContractPath(
             targetRoot,
             options.archetype ||
-              startPlan?.startFrom?.hostArchetypePath ||
               (mode === 'host-integration'
                 ? getDefaultHostIntegrationArchetypePath(pageType)
                 : `TODO: set host archetype path for ${pagePath}`)
           ),
       archetypeMode: mode,
       scrollStrategy: getDefaultScrollStrategyForPageType(pageType.id),
-      topology: resolvedTopology,
-      layoutStrategy: resolvedLayoutStrategy,
-      layoutArchetype: resolvedLayoutArchetype,
-      nonTypicalScope: resolvedNonTypicalScope,
-      mandatoryComponents: startPlanSeed?.mandatoryComponents || [],
-      compositionGuardrails: startPlanSeed?.compositionGuardrails || [],
-      strategyEvidence: startPlanSeed?.strategyEvidence || [],
+      topology: options.topology,
+      layoutStrategy: options.layoutStrategy,
+      nonTypicalScope: parseStringList(options.nonTypicalScope),
       runtimeSmokePlan,
-      generationProfile: resolvedGenerationProfile,
+      generationProfile: legacyFastPathGenerationProfile,
       regionMapping: resolvedRegionMapping,
-      ownershipMode: resolvedOwnershipMode,
+      ownershipMode:
+        options.ownershipMode ||
+        (getRequiredOwnershipRolesForPageType(pageType.id).length > 0
+          ? 'page-surface-owns-workspace'
+          : ''),
       ownershipMapping: resolvedOwnershipMapping,
       adapterContract: {
         localBypasses,
@@ -2960,21 +2444,6 @@ async function main() {
       notes: [
         'Generated by typical-page:start-page.',
         'Replace TODO targets with concrete host regions/ownership before preflight; run finalize-page only for formal acceptance, release, or shell/ownership/marker changes.',
-        ...(startPlanSeed?.docBundle?.profile === 'minimal-doc-fast-path'
-          ? ['Planner doc profile=minimal-doc-fast-path; keep implementation inside the selected carrier/slot path before reopening fallback scaffold strategies.']
-          : []),
-        ...(startPlanSeed?.fastPathSummary?.pageShellPolicy
-          ? [`Planner shell policy=${startPlanSeed.fastPathSummary.pageShellPolicy}; keep white-body/query-filter/table/pagination ownership on the managed carrier.`]
-          : []),
-        ...(startPlanSeed?.fastPathSummary?.queryFilterPolicy === 'managed-query-filter'
-          ? ['Planner query-filter policy is managed-query-filter; mount the real QueryFilter carrier and preserve contained/showLabel=false defaults instead of rebuilding this region as a form grid or dashboard strip.']
-          : []),
-        ...(startPlanSeed?.fastPathSummary?.queryFilterPolicy === 'managed-right-query-filter'
-          ? ['Planner query-filter policy is managed-right-query-filter; keep the right-list search carrier on the managed QueryFilter path instead of translating it into free-form controls.']
-          : []),
-        ...(startPlanSeed?.layoutArchetype
-          ? ['Planner layout facts were materialized into the started contract so scaffold and overlay guidance stay in sync from the first write.']
-          : []),
         ...(legacyFastPathGenerationProfile
           ? ['Planner selected the legacy page-component fast path, so this scaffold uses the runtime bridge wrapper plus business-slot adapter instead of host archetype translation.']
           : []),
@@ -2995,7 +2464,6 @@ async function main() {
       pageType,
       targetRoot,
       contract,
-      startPlan,
     })
 
     const validation = validateRulesOnlyPageContract({
@@ -3049,7 +2517,7 @@ async function main() {
     for (const artifact of scaffoldArtifacts) {
       const artifactAbsPath = path.join(targetRoot, artifact.filePath)
       await ensureParentDir(artifactAbsPath)
-      await writeUtf8FileIfChanged(artifactAbsPath, artifact.source)
+      await fs.writeFile(artifactAbsPath, artifact.source, 'utf8')
     }
     await ensureParentDir(contractJsonPath)
     const snapshot = computeManagedPageSourceSnapshot({
@@ -3063,11 +2531,8 @@ async function main() {
       runtimeSmokeReportPath: '',
       sourceSnapshotHash: snapshot.hash,
     }
-    await writeManagedPageContractArtifacts({
-      contract,
-      contractJsonPath,
-      contractMarkdownPath,
-    })
+    await fs.writeFile(contractJsonPath, `${JSON.stringify(contract, null, 2)}\n`, 'utf8')
+    await fs.writeFile(contractMarkdownPath, renderRulesOnlyPageContractMarkdown(contract), 'utf8')
     await syncManagedPageRegistry(targetRoot)
 
     if (options.json) {
@@ -3089,65 +2554,20 @@ async function main() {
     console.log('[typical-page:start-page] Started managed page scaffold:')
     console.log(`- page type: ${pageType.label} (${pageType.id})`)
     console.log(`- mode: ${mode}`)
-    console.log(`- artifact role: business-managed-page`)
     if (contract.topology?.id) {
       console.log(`- topology: ${contract.topology.id}`)
     }
     if (contract.layoutStrategy) {
       console.log(`- layout strategy: ${contract.layoutStrategy}`)
     }
-    if (contract.layoutArchetype) {
-      console.log(`- layout archetype: ${contract.layoutArchetype}`)
-    }
     if (contract.nonTypicalScope?.length > 0) {
       console.log(`- non-typical scope: ${contract.nonTypicalScope.join(', ')}`)
-    }
-    if (contract.mandatoryComponents?.length > 0) {
-      console.log(`- mandatory components: ${contract.mandatoryComponents.join(', ')}`)
     }
     if (contract.runtimeSmokePlan) {
       console.log(
         `- runtime smoke plan: ${contract.runtimeSmokePlan.required ? 'required' : 'not-required'}`
       )
     }
-    const generationProfile = contract.generationProfile || {}
-    const legacyRuntimeBridgeReady =
-      mode === 'legacy-host-compatible' &&
-      (String(generationProfile.legacyStrategyId || '').trim() === 'runtime-bridged-page-component' ||
-        (String(generationProfile.strategy || '').trim() === 'page-component' &&
-          String(generationProfile.runtimeBridgeProfileId || '').trim()))
-    const pageComponentManagedPath =
-      legacyRuntimeBridgeReady || String(generationProfile.strategy || '').trim() === 'page-component'
-    console.log(
-      `- default action: ${
-        pageComponentManagedPath
-          ? 'fill-business-slots-inside-managed-page-component'
-          : 'complete-managed-start-point-before-business-filling'
-      }`
-    )
-    console.log(
-      `- delivery path: ${
-        legacyRuntimeBridgeReady
-          ? 'page-component-plus-runtime-bridge-plus-slot-fill'
-          : pageComponentManagedPath
-            ? 'page-component-plus-slot-fill'
-            : 'managed-scaffold-or-fallback-start-point'
-      }`
-    )
-    console.log(
-      `- shell import policy: ${
-        legacyRuntimeBridgeReady
-          ? 'legacy-main-tree-forbid-ad-hoc-standard-shell-import'
-          : 'follow-selected-delivery-asset'
-      }`
-    )
-    console.log(
-      `- allowed edit boundary: ${
-        pageComponentManagedPath
-          ? 'business-slots-and-level-1-controlled-extensions-only'
-          : 'follow-selected-contract-boundary'
-      }`
-    )
     if (requestedPagePath !== pagePath) {
       console.log(`- requested page path: ${requestedPagePath}`)
       console.log(`- normalized entry page: ${pagePath}`)

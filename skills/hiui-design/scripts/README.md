@@ -1,6 +1,6 @@
 # HiUI Design Scripts
 
-This public package keeps only the reusable page-generation and validation scripts that can be shipped to downstream projects. Private publishing, internal telemetry, Feishu sync, and global-sync automation are intentionally excluded.
+This public package keeps only the reusable page-generation and validation scripts that can be shipped to downstream projects. It keeps the vendored typical-page runtime tgz so downstream users can clone or download the repository and use it directly, while private publishing, internal telemetry, Feishu sync, and global-sync automation stay excluded.
 
 ## Machine Public CLI
 
@@ -8,6 +8,8 @@ The stable machine-readable contract surface is listed in `scripts/public-cli-co
 
 - Planning and delivery loop: `plan-page-task.mjs`, `typical-page-start-page.mjs`, `typical-page-preflight.mjs`, `typical-page-runtime-smoke.mjs`, `typical-page-preview-ready.mjs`, `render-final-report.mjs`
 - Asset facts and previews: `typical-page-capabilities.mjs`, `typical-page-list-assets.mjs`, `typical-page-inspect-asset.mjs`, `typical-page-add-asset.mjs`, `typical-page-diff-asset.mjs`, `typical-page-update-asset.mjs`
+- Public runtime release gates: `check-public-runtime-publish-readiness.mjs`, `verify-public-runtime-release.mjs`
+  These are optional gates for publishing `packages/typical-page-shells` to public npm. The vendored tgz checked into this repository remains the default runtime delivery contract for direct-use installs.
 
 ## Project Setup and Host Integration
 

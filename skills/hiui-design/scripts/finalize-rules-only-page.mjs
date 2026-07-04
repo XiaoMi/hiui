@@ -10,12 +10,12 @@ import {
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
+  renderRulesOnlyPageContractMarkdown,
   toContractSlug,
 } from './lib/rules-only-page-contracts.mjs'
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
-  writeManagedPageContractArtifacts,
 } from './lib/managed-page-artifacts.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 
@@ -352,21 +352,15 @@ async function main() {
       process.exit(1)
     }
 
+    const finalizedAt = new Date().toISOString()
     const sourceSnapshot = computeManagedPageSourceSnapshot({
       generatedPagePath: pagePath,
       targetRoot: options.target,
     })
-    const previousWorkflow = contract.workflow || {}
-    const previousSnapshotHash = String(previousWorkflow.sourceSnapshotHash || '').trim()
-    const finalizedAt =
-      String(previousWorkflow.status || '').trim() === 'finalized' &&
-      previousSnapshotHash === sourceSnapshot.hash
-        ? String(previousWorkflow.finalizedAt || '').trim() || new Date().toISOString()
-        : new Date().toISOString()
     const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(contract)
     const runtimeSmokeWorkflow = reconcileManagedPageRuntimeSmokeWorkflow(
       contract,
-      previousWorkflow,
+      contract.workflow || {},
       sourceSnapshot.hash
     )
 
@@ -383,10 +377,10 @@ async function main() {
     }
 
     contract.workflow = buildManagedPageWorkflowMetadata({
-      ...previousWorkflow,
+      ...(contract.workflow || {}),
       status: 'finalized',
       deliveryStatus: 'finalized',
-      startedAt: previousWorkflow.startedAt || contract.createdAt || finalizedAt,
+      startedAt: contract.workflow?.startedAt || contract.createdAt || finalizedAt,
       finalizedAt,
       preflightStatus: 'pass',
       sourceGateStatus: 'pass',
@@ -401,11 +395,8 @@ async function main() {
       lastCommand: 'typical-page:finalize-page',
     })
 
-    await writeManagedPageContractArtifacts({
-      contract,
-      contractJsonPath,
-      contractMarkdownPath,
-    })
+    await fs.writeFile(contractJsonPath, `${JSON.stringify(contract, null, 2)}\n`, 'utf8')
+    await fs.writeFile(contractMarkdownPath, renderRulesOnlyPageContractMarkdown(contract), 'utf8')
     await syncManagedPageRegistry(options.target)
 
     console.log('finalize-rules-only-page: success')

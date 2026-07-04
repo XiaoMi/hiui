@@ -27,7 +27,6 @@
 - 默认不把模版页面、route gallery、宿主桥接文件同步到目标项目 `src/`
 - 默认不自动 patch 路由
 - 默认不自动 patch Vite alias
-- `project integration ready` 只表示项目接入、依赖与宿主前提已就绪；某个典型页是否能命中标准 `page-component`，由 planner 在页面阶段按资产事实单独判断
 
 生成方式：
 
@@ -65,7 +64,6 @@
 - 可选自动 patch Vite alias
 - 可对接 `typical-page:doctor` 和 `SMOKE_REPORT.md` 做示例页基线联调
 - 若目标项目被识别为 `existing-system`，即使显式使用 `host-integration`，也只同步 smoke/gallery 资产与桥接示例，不自动并入正式路由树
-- `project integration ready` 只表示 host assets / 依赖 / 路由接线已完成；普通典型页是否可直接走 `page-component + slot-fill`，仍由 planner 的资产解析结果决定
 
 使用方式：
 
@@ -88,7 +86,6 @@
 - 不自动补标准 `@hiui-design/typical-page-shells` 依赖线，不把标准壳运行时当作 legacy 主树的默认接入前提
 - 不同步 route gallery / 宿主桥接文件到目标项目 `src/`
 - 生成时继续使用页型、结构节奏、contract 与 doctor 约束；普通典型页主链路仍优先 `pageComponent + runtimeAdapterProof`，而 legacy 主树里的具体运行时承载默认回到宿主自己的布局/容器/`hiui5` alias / 本地组件。若已隔离出独立现代运行时入口，则改走 `isolated-standard-shell`
-- 该模式下 `project integration ready` 还必须覆盖 project-certified carrier / runtime bridge 这类项目级桥接事实；这是 legacy 独有的接入门禁，不向 `rules-only` / `host-integration` 扩散
 
 使用方式：
 

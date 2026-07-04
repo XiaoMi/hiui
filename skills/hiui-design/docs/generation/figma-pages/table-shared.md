@@ -34,7 +34,6 @@
 - 本节中的搜索框表现、字段顺序、按钮节奏、标签展示与桥接默认值都属于硬门槛；除本文件明确允许的豁免口外，不允许按项目习惯自行改写
 - 多个可搜字段默认合并为 1 个 `SearchInput`
 - 所有表格类页面的筛选必须使用真实 `hiui5` / `@hi-ui/query-filter` `QueryFilter`；不允许回退到宿主 schema 搜索壳、`searchConfig.fields` 兼容壳或任何手写筛选栏
-- `typical-page:start-page` 给表格类页型生成的 `query-filter` scaffold placeholder，默认就代表“接入真实 `QueryFilter` carrier”；若看到普通表格页被解释成 dashboard control strip，应先修生成器或承载路径，不要顺势把页面做成控制条
 - `SearchInput` 维持 HiUI5 默认灰底；`Select` / `DatePicker` / `CheckSelect` 等筛选控件沿用 HiUI5 `QueryFilter` 默认外观，不要手动把它们统一改成 `filled`
 - 在 split 左栏、树面板或其它受限 pane 中直接使用 `SearchInput` 时，必须显式覆盖其默认固定宽度并回接 pane contract；至少回答“由谁承接 `width: 100% + min-width: 0`”。不要把组件默认宽度泄漏到 pane 里，导致搜索框无法贴合左栏
 - 若 `QueryFilter` 字段来自 schema / field config，页面必须接入 `FieldMapProvider` 或 `TypicalPageFieldMapProvider`；若 provider 明确位于更上游宿主，结果中需要写清承载位置，并在源码附近显式加注释 `hiui-design allow-queryfilter-with-upstream-fieldmap`，不要放任字段渲染退化成默认文本控件
@@ -89,9 +88,8 @@
 - 本节中的白底主体、高度链、样式资源生效都按硬门槛验收；任何“先把业务页跑起来、样式以后再补”的路径都视为未通过
 - 普通 `TablePageFrame` 列表页的主区白底必须和筛选区、表格区、分页区保持同一个白卡主体，并纵向铺满主槽到底部；不要出现分页下方露出宿主灰底的情况
 - 普通表格 / 树形表格若声明 `shell=TablePageFrame`，运行时必须直接挂 `TablePageFrame`，或通过命名 shared shell-carrier 显式继承其结构；禁止在业务页局部手写 `PageHeader + QueryFilter + Table` 后只补 region marker 伪装成标准壳
-- 若 `start-page` scaffold 已经声明“managed list/table shell”或“real QueryFilter carrier”，实现阶段应直接接入该受管壳与真实 `QueryFilter`，不要把 placeholder 当作允许自由拼壳的信号
 - `TablePageFrame` 的表格区水平 inset 是硬契约：筛选区通常有 `20px` 左右留白，表格区也必须保留 `tableContainer` 级 `padding-inline: 20px` / `padding: 0 20px`；不要让表格表头、固定操作列或分页贴到白底主体边缘
-- 列表页主白底遵循 `rules/page-governance.md` 与 `../hiui5-visual-baseline.md` 的全局视觉克制基线；若需要层级，只依靠分隔线、描边与留白，不要叠 `box-shadow`
+- 列表页主白底禁止额外投影；若需要层级，只依靠分隔线、描边与留白，不要叠 `box-shadow`
 - `pro-table-page` 与 `pro-stat-page` 一样依赖宿主内容区的高度链收口：内容列 / 路由出口至少满足 `display: flex`、`flex-direction: column`、`flex: 1 1 0%`、`min-height: 0`、必要时 `overflow: hidden`
 - 表格类典型页所在宿主内容区必须允许 `flex: 1 1 0%` + `min-height: 0`，不要让列表页处在普通文档流中自然撑高
 - 只有示例页本身采用吸底分页的表格类页型，才要求分页作为白底主体底部的吸底区存在；不要把该规则外溢到 `data-visualization` 等未在示例中要求吸底分页的页型

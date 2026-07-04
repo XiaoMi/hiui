@@ -17,6 +17,10 @@ import { writeProjectIntegrationState } from './lib/project-integration-state.mj
 import { RULES_ONLY_REFERENCE_DEST, RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import {
+  formatNodeRuntimeRequirementDetail,
+  getProjectNodeRuntimeRequirement,
+} from './lib/node-runtime-requirements.mjs'
+import {
   buildLegacyRuntimeGuardIssues,
   collectLegacyHiUiEsImports,
   inspectInstalledRootRuntime,
@@ -39,10 +43,10 @@ Options:
   --route-file  Target route config file to patch. Optional. If omitted, common locations are probed.
   --shells-spec Dependency version/range for @hiui-design/typical-page-shells. Default: ^<local-version>
   --install     Run the target project's package manager install command after patching package.json
-  --install-timeout-ms  Timeout for dependency install command. Default: 60000
+  --install-timeout-ms  Timeout for dependency install command. Default: 300000
   --force       Overwrite synced asset files in host-integration mode.
-  --init-i18n   Explicitly provision the optional src/translation baseline.
-  --skip-i18n-init  Skip src/translation baseline provisioning. Kept for compatibility.
+  --init-i18n   Explicitly provision src/translation even outside host-integration.
+  --skip-i18n-init  Skip src/translation baseline provisioning, including the host-integration default.
   --skip-project-images-init  Skip automatic src/typical-page-reuse/assets project image catalog scaffold provisioning.
 `)
 }
@@ -52,7 +56,7 @@ function parseArgs(argv) {
     dest: 'src/typical-page-reuse',
     force: false,
     install: false,
-    installTimeoutMs: 60000,
+    installTimeoutMs: 300000,
     line: '',
     mode: 'auto',
     routeFile: '',
@@ -205,11 +209,7 @@ function upsertManagedDependency({ dependencies, devDependencies, peerDeps, depN
 }
 
 async function loadLocalShellPackage(skillRoot) {
-  const embeddedPackageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
-  const fallbackPackageJsonPath = path.resolve(skillRoot, '..', '..', 'packages', 'typical-page-shells', 'package.json')
-  const packageJsonPath = (await pathExists(embeddedPackageJsonPath))
-    ? embeddedPackageJsonPath
-    : fallbackPackageJsonPath
+  const packageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
   const raw = await fs.readFile(packageJsonPath, 'utf8')
   return JSON.parse(raw)
 }
@@ -223,6 +223,161 @@ async function resolveEmbeddedShellsSpec(skillRoot, version) {
   }
 
   return `file:.local-context/hiui-design/vendor/${filename}`
+}
+
+async function loadRuntimeDeliveryPolicy(skillRoot) {
+  return readJsonFile(path.join(skillRoot, 'rules', 'runtime-delivery-policy.json'))
+}
+
+function resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage) {
+  const configuredRegistry = String(
+    shellPackage?.runtimeDelivery?.publicRegistry ||
+      runtimeDeliveryPolicy?.runtimePackage?.publicRegistry ||
+      'https://registry.npmjs.org'
+  ).trim()
+
+  return configuredRegistry || 'https://registry.npmjs.org'
+}
+
+function parseNpmViewVersion(stdout) {
+  const text = String(stdout || '').trim()
+  if (!text) {
+    throw new Error('npm view returned empty stdout')
+  }
+
+  try {
+    const parsed = JSON.parse(text)
+    if (typeof parsed === 'string') return parsed
+    if (Array.isArray(parsed) && typeof parsed[0] === 'string') return parsed[0]
+    if (parsed && typeof parsed === 'object' && typeof parsed.version === 'string') return parsed.version
+  } catch {
+    // Fall back to plain text parsing.
+  }
+
+  return text.replace(/^"+|"+$/g, '')
+}
+
+function runNpmCommand(args, cwd, registry = '') {
+  const result = spawnSync('npm', args, {
+    cwd,
+    encoding: 'utf8',
+    env: registry
+      ? {
+          ...process.env,
+          npm_config_registry: registry,
+        }
+      : process.env,
+    maxBuffer: 32 * 1024 * 1024,
+  })
+
+  if (result.status !== 0) {
+    const failureText = [result.stderr, result.stdout].filter(Boolean).join('\n').trim()
+    throw new Error(failureText || `npm ${args.join(' ')} failed`)
+  }
+
+  return result
+}
+
+async function detectCurrentRuntimeDeliveryChannel(skillRoot) {
+  const markerPath = path.join(skillRoot, 'GENERATED_DO_NOT_EDIT.md')
+  if (!(await pathExists(markerPath))) {
+    return 'project-view'
+  }
+
+  const marker = await fs.readFile(markerPath, 'utf8')
+  const targetMatch = marker.match(/^- target:\s+(.+)$/m)
+  return targetMatch?.[1]?.trim() || 'project-view'
+}
+
+async function resolveManagedShellsSpec({
+  explicitShellsSpec,
+  runtimeDeliveryPolicy,
+  shellPackage,
+  skillRoot,
+}) {
+  if (explicitShellsSpec) {
+    return {
+      shellsSpec: explicitShellsSpec,
+      source: 'user-override',
+    }
+  }
+
+  const currentChannel = await detectCurrentRuntimeDeliveryChannel(skillRoot)
+  const channelPolicy =
+    runtimeDeliveryPolicy.deliveryChannels[currentChannel] ||
+    runtimeDeliveryPolicy.deliveryChannels['project-view'] ||
+    {}
+  const embeddedShellsSpec = await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
+  if (embeddedShellsSpec) {
+    return {
+      shellsSpec: embeddedShellsSpec,
+      source: channelPolicy.runtimeResolution || 'vendored-tarball',
+    }
+  }
+
+  if (channelPolicy.registryResolution === 'forbidden') {
+    const expectedTarballPath = path.join(
+      skillRoot,
+      runtimeDeliveryPolicy.runtimePackage.vendoredTarballDirectory,
+      `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
+    )
+
+    throw new BootstrapValidationError(
+      `Missing vendored runtime tarball for ${shellPackage.name}@${shellPackage.version}: expected ${path.relative(skillRoot, expectedTarballPath)}. The current install source (${currentChannel}) requires vendored runtime delivery and does not allow npm registry fallback.`
+    )
+  }
+
+  const publicPackageJsonPath = path.join(skillRoot, runtimeDeliveryPolicy.runtimePackage.publicPackageRoot, 'package.json')
+  if (await pathExists(publicPackageJsonPath)) {
+    const publicPackage = await readJsonFile(publicPackageJsonPath)
+    const publicRegistry = resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage)
+    if (publicPackage.name !== shellPackage.name) {
+      throw new BootstrapValidationError(
+        `Public runtime package name mismatch: expected ${shellPackage.name}, received ${publicPackage.name}`
+      )
+    }
+    if (publicPackage.version !== shellPackage.version) {
+      throw new BootstrapValidationError(
+        `Vendored shell snapshot version ${shellPackage.version} does not match public package version ${publicPackage.version}`
+      )
+    }
+
+    let publishedVersion = ''
+    try {
+      const npmViewResult = runNpmCommand(
+        ['view', `${publicPackage.name}@${publicPackage.version}`, 'version', '--json'],
+        skillRoot,
+        publicRegistry
+      )
+      publishedVersion = parseNpmViewVersion(npmViewResult.stdout)
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : String(error)
+      throw new BootstrapValidationError(
+        `Registry-backed bootstrap requires ${publicPackage.name}@${publicPackage.version} to be published to npm before writing the dependency. npm view against ${publicRegistry} failed: ${detail}`
+      )
+    }
+
+    if (publishedVersion !== publicPackage.version) {
+      throw new BootstrapValidationError(
+        `Registry-backed bootstrap requires npm to expose ${publicPackage.name}@${publicPackage.version}, but npm view returned ${publishedVersion || 'empty response'}`
+      )
+    }
+
+    return {
+      shellsSpec: publicPackage.version,
+      source: runtimeDeliveryPolicy.deliveryChannels['open-source-package'].runtimeResolution,
+    }
+  }
+
+  const expectedTarballPath = path.join(
+    skillRoot,
+    runtimeDeliveryPolicy.runtimePackage.vendoredTarballDirectory,
+    `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
+  )
+
+  throw new BootstrapValidationError(
+    `Missing vendored runtime tarball for ${shellPackage.name}@${shellPackage.version}: expected ${path.relative(skillRoot, expectedTarballPath)}. This install source must ship the vendored tarball or the generated public package with a published npm release.`
+  )
 }
 
 async function readJsonFile(jsonPath) {
@@ -962,7 +1117,7 @@ function getInstallArgs(manager) {
   }
 }
 
-async function runInstall({ targetRoot, timeoutMs }) {
+async function runInstall({ targetRoot, timeoutMs, nodeRuntimeRequirement = null }) {
   const packageJsonPath = path.join(targetRoot, 'package.json')
   if (!(await pathExists(packageJsonPath))) {
     return {
@@ -975,6 +1130,13 @@ async function runInstall({ targetRoot, timeoutMs }) {
   const manager = await detectPackageManager(targetRoot)
   const args = getInstallArgs(manager)
   const command = [manager, ...args].join(' ')
+  if (nodeRuntimeRequirement?.required && !nodeRuntimeRequirement.ok) {
+    return {
+      status: 'failed',
+      command,
+      message: formatNodeRuntimeRequirementDetail(nodeRuntimeRequirement),
+    }
+  }
   const result = spawnSync(manager, args, {
     cwd: targetRoot,
     encoding: 'utf8',
@@ -1058,12 +1220,18 @@ function skippedI18nInitResult({ explicitSkip = false } = {}) {
   return {
     status: explicitSkip
       ? 'skipped (--skip-i18n-init)'
-      : 'not-requested (pass --init-i18n to provision src/translation baseline)',
+      : 'not-requested (rules-only/legacy; pass --init-i18n to provision src/translation baseline)',
     command: '',
     generatedPath: '',
     locales: '',
     syncedFiles: '',
   }
+}
+
+function shouldProvisionI18nBaseline({ mode, skipI18nInit, explicitSkip }) {
+  if (explicitSkip) return false
+  if (!skipI18nInit) return true
+  return mode === 'host-integration'
 }
 
 function parseProjectImagesInitOutput(stdout, targetRoot) {
@@ -1678,15 +1846,27 @@ async function patchGreenfieldAppFrame({ targetRoot, outputRoot, hostProfile }) 
   const importLine = `import { ${importIdentifier} } from '${appFrameImportPath}'`
 
   if (!routesImportMatch) {
-    const isStarterLikeApp =
+    const isMinimalPlaceholderApp =
       /\.(?:jsx|tsx|js)$/.test(appFile) &&
+      !raw.includes('import ') &&
       !raw.includes('useRoutes(') &&
       !raw.includes('react-router-dom') &&
-      (/import\s+['"]\.\/App\.css['"]/.test(raw) ||
+      !raw.includes('TypicalPageAppFrame') &&
+      !raw.includes('BrowserRouter') &&
+      raw.split('\n').length <= 12 &&
+      /export\s+default\s+function\s+App\s*\(\)\s*\{\s*return\s+<div[\s\S]*<\/div>\s*;?\s*\}\s*$/m.test(
+        raw.trim()
+      )
+    const isStarterLikeApp =
+      isMinimalPlaceholderApp ||
+      (/\.(?:jsx|tsx|js)$/.test(appFile) &&
+        !raw.includes('useRoutes(') &&
+        !raw.includes('react-router-dom') &&
+        (/import\s+['"]\.\/App\.css['"]/.test(raw) ||
         /Vite \+ React/.test(raw) ||
         /count is/i.test(raw) ||
         /className=["']card["']/.test(raw) ||
-        /className=["']logo["']/.test(raw))
+        /className=["']logo["']/.test(raw)))
 
     if (isStarterLikeApp) {
       const nextRaw = [
@@ -1960,14 +2140,25 @@ async function patchGreenfieldRootStyles({ targetRoot, hostProfile }) {
     return { status: 'already-patched', cssFile, detail: '' }
   }
 
-  const hasViteStarterRootConflict =
-    /body\s*\{[\s\S]*place-items\s*:\s*center/i.test(raw) ||
-    /body\s*\{[\s\S]*display\s*:\s*flex/i.test(raw) ||
-    /#root\s*\{[\s\S]*max-width\s*:\s*1280px/i.test(raw) ||
-    /#root\s*\{[\s\S]*text-align\s*:\s*center/i.test(raw) ||
-    /#root\s*\{[\s\S]*padding\s*:\s*2rem/i.test(raw)
+  const hasHtmlHeightChain =
+    /html\s*,\s*body\s*\{[\s\S]*\b(?:height|min-height)\s*:\s*100%/i.test(raw) ||
+    (/html\s*\{[\s\S]*\b(?:height|min-height)\s*:\s*100%/i.test(raw) &&
+      /body\s*\{[\s\S]*\b(?:height|min-height)\s*:\s*100%/i.test(raw))
+  const bodyHasOverflowHidden = /body\s*\{[\s\S]*\boverflow\s*:\s*hidden/i.test(raw)
+  const rootHasHeightChain = /#root\s*\{[\s\S]*\b(?:height|min-height)\s*:\s*100%/i.test(raw)
+  const rootHasOverflowHidden = /#root\s*\{[\s\S]*\boverflow\s*:\s*hidden/i.test(raw)
+  const rootIsFlexColumn =
+    /#root\s*\{[\s\S]*\bdisplay\s*:\s*flex/i.test(raw) &&
+    /#root\s*\{[\s\S]*\bflex-direction\s*:\s*column/i.test(raw)
 
-  if (!hasViteStarterRootConflict) {
+  const hasRequiredHostRootChain =
+    hasHtmlHeightChain &&
+    bodyHasOverflowHidden &&
+    rootHasHeightChain &&
+    rootHasOverflowHidden &&
+    rootIsFlexColumn
+
+  if (hasRequiredHostRootChain) {
     return { status: 'not-needed', cssFile, detail: '' }
   }
 
@@ -2032,6 +2223,7 @@ async function writeBootstrapSummary({
   i18nInitResult,
   projectImagesInitResult,
   packageResult,
+  runtimeDelivery,
   styleResult,
   routerEntryResult,
   rootStyleResult,
@@ -2040,6 +2232,7 @@ async function writeBootstrapSummary({
   viteResult,
   installResult,
   installRequested,
+  nodeRuntimeRequirement,
   installedRootRuntime,
   legacyHiUiEsImports,
   legacyRuntimeGuardIssues,
@@ -2111,6 +2304,7 @@ async function writeBootstrapSummary({
     ...(line ? [`- business line: ${line}`] : []),
     `- asset sync: ${syncStatus}`,
     `- package.json: ${packageResult.status}`,
+    `- typical-page runtime delivery: ${runtimeDelivery.source}`,
     `- i18n baseline: ${i18nInitResult.status}`,
     `- project image scaffold: ${projectImagesInitResult.status}`,
     `- style import: ${styleResult.status}`,
@@ -2120,6 +2314,8 @@ async function writeBootstrapSummary({
     `- app frame integration: ${appFrameResult.status}`,
     `- vite schema-types alias: ${viteResult.status}`,
     `- dependency install: ${installRequested ? installResult.status : 'not-requested'}`,
+    `- current node runtime: ${nodeRuntimeRequirement.currentVersion}`,
+    `- node runtime gate: ${nodeRuntimeRequirement.required ? (nodeRuntimeRequirement.ok ? 'pass' : 'fail') : 'not-applicable'}`,
     `- project integration ready: ${integrationStateResult.state.integrationReady ? 'yes' : 'no'}`,
     `- project-certified carrier validation: ${carrierValidation.status}`,
     `- legacy bridge validation: ${legacyBridgeValidation.status}`,
@@ -2297,6 +2493,10 @@ async function writeBootstrapSummary({
   lines.push('', '## Next steps')
   lines.push(`- Host profile: ${hostProfile.reason}`)
 
+  if (nodeRuntimeRequirement.required && !nodeRuntimeRequirement.ok) {
+    lines.push(`- Switch this workspace to ${nodeRuntimeRequirement.minimumVersionLabel} before running install/dev/build. ${nodeRuntimeRequirement.reason}. Current runtime: ${nodeRuntimeRequirement.currentVersion}.`)
+  }
+
   if (installRequested && installResult.status === 'failed') {
     lines.push(`- Re-run \`${installResult.command}\` in the target project. Failure detail: ${installResult.message}`)
   } else if (legacyRuntimeGuardIssues.length > 0) {
@@ -2377,8 +2577,10 @@ async function writeBootstrapSummary({
   if (packageResult.addedScripts.includes('typical-page:designer-setup') || packageResult.status !== 'missing') {
     lines.push('- For non-technical designers, prefer `pnpm typical-page:designer-setup` or `npm run typical-page:designer-setup`; that entry now auto-runs doctor and stops on hard failures.')
   }
-  if (packageResult.addedScripts.includes('typical-page:i18n:init') || packageResult.status !== 'missing') {
+  if (i18nInitResult.status === 'auto-synced') {
     lines.push('- The target project already received the default locale resources, formatter bridge, and RTL baseline during bootstrap. Re-run `pnpm typical-page:i18n:init` or `npm run typical-page:i18n:init` only when you want to resync locale files or refresh the wrapper template.')
+  } else if (packageResult.addedScripts.includes('typical-page:i18n:init') || packageResult.status !== 'missing') {
+    lines.push('- The packaged i18n bridge remains available via `pnpm typical-page:i18n:init` or `npm run typical-page:i18n:init`. Use it when the target project needs the shipped locale resources and formatter bridge.')
   }
   if (packageResult.addedScripts.includes('typical-page:images:init') || packageResult.status !== 'missing') {
     lines.push('- The target project already received the project image catalog scaffold during bootstrap. Re-run `pnpm typical-page:images:init` or `npm run typical-page:images:init` only when you want to refresh the scaffold or seed a fresh project.')
@@ -2456,8 +2658,13 @@ async function main() {
       ignoreRelativePaths: [options.dest],
     })
     const shellPackage = await loadLocalShellPackage(skillRoot)
+    const runtimeDeliveryPolicy = await loadRuntimeDeliveryPolicy(skillRoot)
     const originalTargetPkg = await readTargetPackageJson(targetRoot)
     const legacyHiUi4Deps = detectLegacyHiUi4VisualDeps(originalTargetPkg)
+    const nodeRuntimeRequirement = getProjectNodeRuntimeRequirement({
+      pkg: originalTargetPkg,
+      hostProfile,
+    })
     const legacyHostRuntime = await detectLegacyHostRuntimeMode({
       targetRoot,
       pkg: originalTargetPkg,
@@ -2474,8 +2681,13 @@ async function main() {
       installedRootRuntime,
       legacyHiUiEsImports,
     })
-    const embeddedShellsSpec = await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
-    const shellsSpec = options.shellsSpec || embeddedShellsSpec || shellPackage.version
+    const runtimeDelivery = await resolveManagedShellsSpec({
+      explicitShellsSpec: options.shellsSpec,
+      runtimeDeliveryPolicy,
+      shellPackage,
+      skillRoot,
+    })
+    const shellsSpec = runtimeDelivery.shellsSpec
     const recommendedMode = getRecommendedMode({
       hostProfile,
       legacyHostRuntime,
@@ -2546,9 +2758,14 @@ async function main() {
       line: lineId,
       legacyCompatibilityOnly: mode === 'legacy-host-compatible',
     })
-    const i18nInitResult = options.skipI18nInit
-      ? skippedI18nInitResult({ explicitSkip: options.i18nInitExplicitlySkipped })
-      : runI18nInit({ skillRoot, targetRoot })
+    const shouldRunI18nInit = shouldProvisionI18nBaseline({
+      mode,
+      skipI18nInit: options.skipI18nInit,
+      explicitSkip: options.i18nInitExplicitlySkipped,
+    })
+    const i18nInitResult = shouldRunI18nInit
+      ? runI18nInit({ skillRoot, targetRoot })
+      : skippedI18nInitResult({ explicitSkip: options.i18nInitExplicitlySkipped })
     const projectImagesInitResult = options.skipProjectImagesInit
       ? {
           status: 'skipped (--skip-project-images-init)',
@@ -2650,7 +2867,11 @@ async function main() {
           : { status: 'not-applied (rules-only)', viteFile: '', snippetPath: '' }
 
     const installResult = options.install && mode !== 'legacy-host-compatible'
-      ? await runInstall({ targetRoot, timeoutMs: options.installTimeoutMs })
+      ? await runInstall({
+          targetRoot,
+          timeoutMs: options.installTimeoutMs,
+          nodeRuntimeRequirement,
+        })
       : mode === 'legacy-host-compatible'
         ? { status: 'skipped (legacy-host-compatibility)', command: '', message: '' }
         : { status: 'not-requested', command: '', message: '' }
@@ -2676,6 +2897,7 @@ async function main() {
       i18nInitResult,
       projectImagesInitResult,
       packageResult,
+      runtimeDelivery,
       styleResult,
       routerEntryResult,
       rootStyleResult,
@@ -2684,6 +2906,7 @@ async function main() {
       viteResult,
       installResult,
       installRequested: options.install,
+      nodeRuntimeRequirement,
       installedRootRuntime,
       legacyHiUiEsImports,
       legacyRuntimeGuardIssues,
@@ -2796,6 +3019,14 @@ async function main() {
     if (options.install && installResult.message) {
       console.log(`  detail: ${installResult.message}`)
     }
+    console.log(`- current node runtime: ${nodeRuntimeRequirement.currentVersion}`)
+    console.log(
+      `- node runtime gate: ${nodeRuntimeRequirement.required ? (nodeRuntimeRequirement.ok ? 'PASS' : 'FAIL') : 'N/A'}`
+    )
+    if (nodeRuntimeRequirement.required || nodeRuntimeRequirement.advisory) {
+      console.log(`  detail: ${formatNodeRuntimeRequirementDetail(nodeRuntimeRequirement)}`)
+    }
+    console.log(`- typical-page runtime delivery: ${runtimeDelivery.source}`)
     console.log(`- summary file: ${summaryPath}`)
 
     const typicalPageSupport = integrationStateResult.state.typicalPageSupport || {

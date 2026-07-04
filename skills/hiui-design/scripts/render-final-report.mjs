@@ -2,10 +2,6 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import {
-  loadRulesOnlyPageContracts,
-  normalizeContractPath,
-} from './lib/rules-only-page-contracts.mjs'
 
 const DEFAULT_STATUS_FIELDS = {
   pageStatus: ['not_started', 'generated', 'modified', 'blocked', 'failed'],
@@ -161,38 +157,6 @@ async function readJsonFile(targetRoot, filePath) {
   if (!filePath) return null
   const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(targetRoot, filePath)
   return JSON.parse(await fs.readFile(absolutePath, 'utf8'))
-}
-
-function normalizePagePathCandidate(targetRoot, value) {
-  const rawValue = String(value || '').trim()
-  if (!rawValue) return ''
-  return normalizeContractPath(targetRoot, rawValue)
-}
-
-async function resolveManagedContractForFinalReport(targetRoot, plan, preflight) {
-  const pageCandidates = [
-    normalizePagePathCandidate(targetRoot, preflight?.page),
-    normalizePagePathCandidate(targetRoot, plan?.targetPage?.path),
-  ].filter(Boolean)
-
-  if (pageCandidates.length === 0) {
-    return null
-  }
-
-  const { contracts } = await loadRulesOnlyPageContracts(targetRoot)
-
-  for (const candidate of pageCandidates) {
-    const match = contracts.find((entry) => {
-      if (!entry?.contract) return false
-      return normalizePagePathCandidate(targetRoot, entry.contract.generatedPagePath) === candidate
-    })
-
-    if (match?.contract) {
-      return match.contract
-    }
-  }
-
-  return null
 }
 
 function buildContractFixtureInputs() {
@@ -358,7 +322,7 @@ function assertAllowedStatus(contract, field, value) {
   }
 }
 
-function collectWarnings(preflight, managedContract) {
+function collectWarnings(preflight) {
   const warnings = []
   if (Array.isArray(preflight?.warnings)) warnings.push(...preflight.warnings)
   if (Array.isArray(preflight?.checks)) {
@@ -369,32 +333,13 @@ function collectWarnings(preflight, managedContract) {
         .filter(Boolean)
     )
   }
-  if (String(managedContract?.workflow?.status || '').trim() === 'stale') {
-    warnings.push(
-      String(managedContract?.workflow?.staleReason || '').trim() ||
-        'Managed page contract is stale for the current source snapshot.'
-    )
-  }
   return warnings
 }
 
-function nextActionsForStatuses({
-  managedContract,
-  preflightStatus,
-  usageStatsStatus,
-  formalAcceptanceStatus,
-  pageStatus,
-  preflight,
-}) {
+function nextActionsForStatuses({ preflightStatus, usageStatsStatus, formalAcceptanceStatus, pageStatus, preflight }) {
   const actions = []
   if (pageStatus === 'blocked') {
     actions.push('Resolve plan blockingIssues and rerun typical-page:plan-page-task before implementation.')
-  }
-  if (String(managedContract?.workflow?.status || '').trim() === 'stale') {
-    actions.push(
-      String(managedContract?.workflow?.staleReason || '').trim() ||
-        'Page source changed after the last finalize-page result. Rerun preflight and finalize-page on the latest source snapshot.'
-    )
   }
   if (preflightStatus === 'failed') {
     const suggested = Array.isArray(preflight?.suggestedActions) ? preflight.suggestedActions : []
@@ -435,16 +380,15 @@ function nextActionsForStatuses({
   return [...new Set(actions)]
 }
 
-function buildProductionLineSummary(preflight, managedContract) {
-  const productionContract = preflight?.productionContract || managedContract?.productionContract || null
-  const generationProfile = preflight?.generationProfile || managedContract?.generationProfile || null
+function buildProductionLineSummary(preflight) {
+  const productionContract = preflight?.productionContract || null
+  const generationProfile = preflight?.generationProfile || null
   const blockingIssues = Array.isArray(preflight?.blockingIssues) ? preflight.blockingIssues : []
   const productionBlockingIssues = blockingIssues.filter((issue) =>
     ['generationProfile', 'productionContract'].includes(issue?.checkId)
   )
-  const workflowStatus = String(managedContract?.workflow?.status || '').trim()
 
-  if (!preflight && !managedContract) {
+  if (!preflight) {
     return {
       status: 'not_run',
       policy: '',
@@ -459,14 +403,8 @@ function buildProductionLineSummary(preflight, managedContract) {
   return {
     status: productionBlockingIssues.length > 0
       ? 'failed'
-      : !preflight && workflowStatus === 'stale'
-        ? 'stale'
       : productionContract && generationProfile
-        ? preflight?.status === 'passed' ||
-          workflowStatus === 'finalized' ||
-          String(managedContract?.workflow?.preflightStatus || '').trim() === 'pass'
-          ? 'passed'
-          : 'declared'
+        ? 'passed'
         : 'not_declared',
     policy: productionContract?.policy || '',
     moldId: productionContract?.moldId || generationProfile?.moldId || '',
@@ -481,17 +419,8 @@ function buildProductionLineSummary(preflight, managedContract) {
   }
 }
 
-function buildDesignerSummary({
-  blockingIssues,
-  managedContract,
-  plan,
-  preflight,
-  productionLine,
-  statuses,
-  warnings,
-}) {
-  const generationProfile =
-    plan?.generationProfile || preflight?.generationProfile || managedContract?.generationProfile || null
+function buildDesignerSummary({ blockingIssues, plan, preflight, productionLine, statuses, warnings }) {
+  const generationProfile = plan?.generationProfile || preflight?.generationProfile || null
   const lockedRegions = Array.isArray(generationProfile?.lockedRegions) ? generationProfile.lockedRegions : []
   const slotManifest = Array.isArray(generationProfile?.slotManifest) ? generationProfile.slotManifest : []
   const editableSlots = Array.isArray(generationProfile?.editableSlots) ? generationProfile.editableSlots : []
@@ -503,13 +432,7 @@ function buildDesignerSummary({
   return {
     schemaVersion: 'designer-summary.v1',
     optional: true,
-    pageType:
-      plan?.pageType?.label ||
-      plan?.pageType?.id ||
-      preflight?.pageType ||
-      managedContract?.pageTypeLabel ||
-      managedContract?.pageTypeId ||
-      '',
+    pageType: plan?.pageType?.label || plan?.pageType?.id || preflight?.pageType || '',
     mold: productionLine.moldId || generationProfile?.moldId || '',
     structure,
     editableAreas,
@@ -528,80 +451,20 @@ function buildDesignerSummary({
   }
 }
 
-function resolvePreflightStatus(preflight, managedContract) {
-  if (preflight) {
-    return normalizeStatus(preflight?.status === 'passed' ? 'passed' : preflight?.status, 'not_run')
-  }
-
-  const workflowStatus = String(managedContract?.workflow?.status || '').trim()
-  if (workflowStatus === 'stale') {
-    return 'not_run'
-  }
-
-  const workflowPreflightStatus = String(managedContract?.workflow?.preflightStatus || '').trim()
-  if (workflowPreflightStatus === 'pass') return 'passed'
-  if (workflowPreflightStatus === 'fail') return 'failed'
-  return 'not_run'
-}
-
-function resolvePageStatus(pageStatus, plan, managedContract) {
-  const explicitPageStatus = normalizeStatus(pageStatus, '')
-  if (explicitPageStatus) {
-    return explicitPageStatus
-  }
-
-  if (plan.status === 'blocked') {
-    return 'blocked'
-  }
-
-  const workflowStatus = String(managedContract?.workflow?.status || '').trim()
-  const sourceSnapshotHash = String(managedContract?.workflow?.sourceSnapshotHash || '').trim()
-  if (workflowStatus === 'stale') {
-    return 'modified'
-  }
-  if (
-    sourceSnapshotHash &&
-    ['contract-written', 'started', 'preflight-pass', 'finalized'].includes(workflowStatus)
-  ) {
-    return 'generated'
-  }
-
-  return 'not_started'
-}
-
-function resolveFormalAcceptanceStatus(formalStatus, contract, managedContract) {
-  if (!contract.sections.includes('formalAcceptanceStatus')) {
-    return 'not_requested'
-  }
-
-  const explicitFormalStatus = normalizeStatus(formalStatus, '')
-  if (explicitFormalStatus) {
-    return explicitFormalStatus
-  }
-
-  return String(managedContract?.workflow?.status || '').trim() === 'finalized' ? 'passed' : 'not_run'
-}
-
-function renderFinalReport({
-  changedFiles,
-  executedActions,
-  formalStatus,
-  managedContract,
-  pageStatus,
-  plan,
-  preflight,
-  usage,
-  validationCommands,
-}) {
+function renderFinalReport({ changedFiles, executedActions, formalStatus, pageStatus, plan, preflight, usage, validationCommands }) {
   const contract = plan.finalReportContract || fallbackFinalReportContract(plan)
-  const preflightStatus = resolvePreflightStatus(preflight, managedContract)
-  const usageStatsStatus = normalizeStatus(usage?.usageStatsStatus, 'skipped')
-  const formalAcceptanceStatus = resolveFormalAcceptanceStatus(
-    formalStatus,
-    contract,
-    managedContract
+  const preflightStatus = normalizeStatus(
+    preflight?.status === 'passed' ? 'passed' : preflight?.status,
+    'not_run'
   )
-  const normalizedPageStatus = resolvePageStatus(pageStatus, plan, managedContract)
+  const usageStatsStatus = normalizeStatus(usage?.usageStatsStatus, 'skipped')
+  const formalAcceptanceStatus = contract.sections.includes('formalAcceptanceStatus')
+    ? normalizeStatus(formalStatus, 'not_run')
+    : 'not_requested'
+  const normalizedPageStatus = normalizeStatus(
+    pageStatus,
+    plan.status === 'blocked' ? 'blocked' : 'not_started'
+  )
 
   const statuses = {
     pageStatus: normalizedPageStatus,
@@ -623,19 +486,17 @@ function renderFinalReport({
     ...(Array.isArray(plan?.blockingIssues) ? plan.blockingIssues : []),
     ...(Array.isArray(preflight?.blockingIssues) ? preflight.blockingIssues : []),
   ]
-  const warnings = collectWarnings(preflight, managedContract)
+  const warnings = collectWarnings(preflight)
   const nextActions = nextActionsForStatuses({
     formalAcceptanceStatus,
-    managedContract,
     pageStatus: normalizedPageStatus,
     preflight,
     preflightStatus,
     usageStatsStatus,
   })
-  const productionLine = buildProductionLineSummary(preflight, managedContract)
+  const productionLine = buildProductionLineSummary(preflight)
   const designerSummary = buildDesignerSummary({
     blockingIssues,
-    managedContract,
     plan,
     preflight,
     productionLine,
@@ -674,28 +535,16 @@ async function main() {
     const targetRoot = path.resolve(options.target)
     const inputs = options.contractFixture
       ? buildContractFixtureInputs()
-      : await (async () => {
-          const plan = await readJsonFile(targetRoot, options.plan)
-          const preflight = await readJsonFile(targetRoot, options.preflight)
-          const usage = await readJsonFile(targetRoot, options.usage)
-          const managedContract = await resolveManagedContractForFinalReport(
-            targetRoot,
-            plan,
-            preflight
-          )
-
-          return {
-            changedFiles: options.changedFiles,
-            executedActions: options.executedActions,
-            formalStatus: options.formalStatus,
-            managedContract,
-            pageStatus: options.pageStatus,
-            plan,
-            preflight,
-            usage,
-            validationCommands: options.validationCommands,
-          }
-        })()
+      : {
+          changedFiles: options.changedFiles,
+          executedActions: options.executedActions,
+          formalStatus: options.formalStatus,
+          pageStatus: options.pageStatus,
+          plan: await readJsonFile(targetRoot, options.plan),
+          preflight: await readJsonFile(targetRoot, options.preflight),
+          usage: await readJsonFile(targetRoot, options.usage),
+          validationCommands: options.validationCommands,
+        }
 
     const payload = renderFinalReport(inputs)
     console.log(JSON.stringify(payload, null, 2))
