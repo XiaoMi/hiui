@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -5,7 +6,7 @@ import noPermissionMainUrl from '../assets/no-permission-main.svg'
 import noPermissionBadgeUrl from '../assets/no-permission-badge.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle = {
+const pageStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
@@ -13,7 +14,7 @@ const pageStyle = {
   background: '#F5F8FC',
 }
 
-const panelStyle = {
+const panelStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -26,44 +27,44 @@ const panelStyle = {
   justifyContent: 'center',
 }
 
-const contentStyle = {
+const contentStyle: CSSProperties = {
   width: 400,
   textAlign: 'center',
 }
 
-const titleStyle = {
+const titleStyle: CSSProperties = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
 }
 
-const descStyle = {
+const descStyle: CSSProperties = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
 }
 
-const linkStyle = {
+const linkStyle: CSSProperties = {
   color: '#2660FF',
 }
 
-const headerActionsStyle = {
+const headerActionsStyle: CSSProperties = {
   gap: 12,
 }
 
-const actionsStyle = {
+const actionsStyle: CSSProperties = {
   marginTop: 12,
   justifyContent: 'center',
 }
 
-const indicatorWrapStyle = {
+const indicatorWrapStyle: CSSProperties = {
   position: 'relative',
   width: 100,
   height: 100,
 }
 
-const mainIndicatorStyle = {
+const mainIndicatorStyle: CSSProperties = {
   position: 'absolute',
   left: 13.07,
   top: 13.13,
@@ -72,7 +73,7 @@ const mainIndicatorStyle = {
   display: 'block',
 }
 
-const badgeIndicatorStyle = {
+const badgeIndicatorStyle: CSSProperties = {
   position: 'absolute',
   left: 61.25,
   top: 64.58,

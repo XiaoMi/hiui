@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -7,7 +8,7 @@ import underConstructionLine2Url from '../assets/under-construction-line-2.svg'
 import underConstructionLine3Url from '../assets/under-construction-line-3.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle = {
+const pageStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
@@ -15,7 +16,7 @@ const pageStyle = {
   background: '#F5F8FC',
 }
 
-const panelStyle = {
+const panelStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -28,44 +29,44 @@ const panelStyle = {
   justifyContent: 'center',
 }
 
-const contentStyle = {
+const contentStyle: CSSProperties = {
   width: 400,
   textAlign: 'center',
 }
 
-const titleStyle = {
+const titleStyle: CSSProperties = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
 }
 
-const descStyle = {
+const descStyle: CSSProperties = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
 }
 
-const linkStyle = {
+const linkStyle: CSSProperties = {
   color: '#2660FF',
 }
 
-const headerActionsStyle = {
+const headerActionsStyle: CSSProperties = {
   gap: 12,
 }
 
-const actionsStyle = {
+const actionsStyle: CSSProperties = {
   marginTop: 12,
   justifyContent: 'center',
 }
 
-const indicatorWrapStyle = {
+const indicatorWrapStyle: CSSProperties = {
   position: 'relative',
   width: 100,
   height: 100,
 }
 
-const mainIndicatorStyle = {
+const mainIndicatorStyle: CSSProperties = {
   position: 'absolute',
   left: 13.13,
   top: 26.46,
@@ -74,7 +75,7 @@ const mainIndicatorStyle = {
   display: 'block',
 }
 
-const line1Style = {
+const line1Style: CSSProperties = {
   position: 'absolute',
   left: 87.67,
   top: 19.17,
@@ -85,7 +86,7 @@ const line1Style = {
   transformOrigin: 'center',
 }
 
-const line2Style = {
+const line2Style: CSSProperties = {
   position: 'absolute',
   left: 82.67,
   top: 10.83,
@@ -96,7 +97,7 @@ const line2Style = {
   transformOrigin: 'center',
 }
 
-const line3Style = {
+const line3Style: CSSProperties = {
   position: 'absolute',
   left: 75.17,
   top: 11.67,

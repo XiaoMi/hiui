@@ -381,11 +381,11 @@ const orgTreeTableRows: OrgTreeTableRow[] = [
   },
 ]
 
-function filterOrgTreeRows(list: OrgTreeTableRow[], values: Record<string, unknown>) {
+function filterOrgTreeRows(list: OrgTreeTableRow[], values: Record<string, unknown>): OrgTreeTableRow[] {
   const keyword = values.keyword != null ? String(values.keyword) : ''
 
   return list.flatMap((item) => {
-    const children = item.children ? filterOrgTreeRows(item.children, values) : []
+    const children: OrgTreeTableRow[] = item.children ? filterOrgTreeRows(item.children, values) : []
     const selfMatched =
       (!values.managerId || item.managerId === values.managerId) &&
       (!values.organizationId || item.organizationId === values.organizationId) &&

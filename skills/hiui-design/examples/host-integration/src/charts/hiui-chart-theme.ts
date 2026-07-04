@@ -235,7 +235,10 @@ export function createHiuiBandColorScale(
 function mergeHiuiBandScale(
   baseScale: Record<string, unknown>,
   axis: 'x' | 'y',
-  bandPadding: typeof hiuiBandPadding
+  bandPadding: {
+    paddingInner: number
+    paddingOuter: number
+  }
 ) {
   const axisScale = (baseScale[axis] as Record<string, unknown> | undefined) ?? {}
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Button, PageHeader } from '@hi-ui/hiui'
 import type { DescriptionsProps } from '@hi-ui/hiui'
-import { D, G } from '@hi-ui/schema-core'
+import { D, G, extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { GroupMapProvider, SchemaGroup } from '@hi-ui/schema-group'
 import { SchemaDescriptionsBridge } from '@hi-ui/schema-group/descriptions'
 import { SchemaTableBridge } from '@hi-ui/schema-group/table'
@@ -20,6 +20,8 @@ const detailGroupMap = {
   descriptions: SchemaDescriptionsBridge,
   table: SchemaTableBridge,
 }
+
+const T = extendDsl(ReadonlyFieldCreator, {})
 
 type WarrantyInfoItem = {
   type: string
@@ -123,10 +125,10 @@ function FullPageDetailInner() {
       G(t('服务记录'), 'serviceRecords')
         .Table({
           fields: [
-            D(t('服务时间'), 'serviceTime').W(180).val,
-            D(t('服务动作'), 'serviceAction').W(160).val,
-            D(t('状态'), 'status').W(120).val,
-            D(t('详情描述'), 'detailDescription').W(360).val,
+            T(t('服务时间'), 'serviceTime').W(180).val,
+            T(t('服务动作'), 'serviceAction').W(160).val,
+            T(t('状态'), 'status').W(120).val,
+            T(t('详情描述'), 'detailDescription').W(360).val,
           ],
           props: {
             className: styles.serviceRecordTable,

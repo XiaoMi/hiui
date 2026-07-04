@@ -39,6 +39,8 @@ type MenuDataItem = {
   children?: MenuDataItem[]
 }
 
+type MenuValue = string | number
+
 const LOCALE_OPTIONS: Array<{ id: SupportedLocale; nativeLabel: string }> = [
   { id: 'zh-CN', nativeLabel: '简体中文' },
   { id: 'zh-TW', nativeLabel: '繁體中文' },
@@ -449,13 +451,13 @@ export function TypicalPageAppFrame({
     [],
   )
   const [collapsed, setCollapsed] = React.useState(true)
-  const [activeAppId, setActiveAppId] = React.useState<React.ReactText>(APP_LIST_ITEMS[0].id)
+  const [activeAppId, setActiveAppId] = React.useState<MenuValue>(APP_LIST_ITEMS[0].id)
   const [appListPopoverVisible, setAppListPopoverVisible] = React.useState(false)
   const [profileVisible, setProfileVisible] = React.useState(false)
-  const [activeMenuId, setActiveMenuId] = React.useState<React.ReactText>(() =>
+  const [activeMenuId, setActiveMenuId] = React.useState<MenuValue>(() =>
     findMenuActiveIdForPath(routes, currentPath || '/'),
   )
-  const [selectMenuId, setSelectMenuId] = React.useState<React.ReactText>('')
+  const [selectMenuId, setSelectMenuId] = React.useState<MenuValue>('')
   const appListData = React.useMemo(
     () =>
       APP_LIST_ITEMS.map((item) => ({
@@ -559,7 +561,7 @@ export function TypicalPageAppFrame({
           })),
         },
       ],
-      onChange: (_value: Record<string, React.ReactText>, targetItem: { id?: React.ReactText }) => {
+      onChange: (_value: Record<string, MenuValue>, targetItem: { id?: MenuValue }) => {
         const nextLocale = String(targetItem.id ?? '')
         if (LOCALE_OPTIONS.some((option) => option.id === nextLocale)) {
           setLocale(nextLocale as SupportedLocale)

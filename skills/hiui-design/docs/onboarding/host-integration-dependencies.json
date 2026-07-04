@@ -3,6 +3,7 @@
     "@ant-design/charts": "2.6.7",
     "@hi-ui/avatar": "5.0.0-experimental.1",
     "@hi-ui/descriptions": "5.0.0-experimental.1",
+    "@hi-ui/form": "5.0.0",
     "@hi-ui/icons": "5.0.0-experimental.1",
     "@hi-ui/layout": "5.0.0-experimental.3",
     "@hi-ui/menu": "5.0.0-experimental.3",

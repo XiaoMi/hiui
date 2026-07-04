@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -7,7 +8,7 @@ import intranetOfflineBadgeUrl from '../assets/intranet-offline-badge.svg'
 import intranetOfflineBadgeSlashUrl from '../assets/intranet-offline-badge-slash.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle = {
+const pageStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
@@ -15,7 +16,7 @@ const pageStyle = {
   background: '#F5F8FC',
 }
 
-const panelStyle = {
+const panelStyle: CSSProperties = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -28,44 +29,44 @@ const panelStyle = {
   justifyContent: 'center',
 }
 
-const contentStyle = {
+const contentStyle: CSSProperties = {
   width: 400,
   textAlign: 'center',
 }
 
-const titleStyle = {
+const titleStyle: CSSProperties = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
 }
 
-const descStyle = {
+const descStyle: CSSProperties = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
 }
 
-const linkStyle = {
+const linkStyle: CSSProperties = {
   color: '#2660FF',
 }
 
-const headerActionsStyle = {
+const headerActionsStyle: CSSProperties = {
   gap: 12,
 }
 
-const actionsStyle = {
+const actionsStyle: CSSProperties = {
   marginTop: 12,
   justifyContent: 'center',
 }
 
-const indicatorWrapStyle = {
+const indicatorWrapStyle: CSSProperties = {
   position: 'relative',
   width: 100,
   height: 100,
 }
 
-const baseStyle = {
+const baseStyle: CSSProperties = {
   position: 'absolute',
   left: 13.13,
   top: 13.33,
@@ -74,7 +75,7 @@ const baseStyle = {
   display: 'block',
 }
 
-const globeStyle = {
+const globeStyle: CSSProperties = {
   position: 'absolute',
   left: 29.35,
   top: 42.66,
@@ -83,7 +84,7 @@ const globeStyle = {
   display: 'block',
 }
 
-const badgeStyle = {
+const badgeStyle: CSSProperties = {
   position: 'absolute',
   left: 56.46,
   top: 59.99,
@@ -92,7 +93,7 @@ const badgeStyle = {
   display: 'block',
 }
 
-const badgeSlashAssetStyle = {
+const badgeSlashAssetStyle: CSSProperties = {
   position: 'absolute',
   left: 63.89,
   top: 67.22,
@@ -101,7 +102,7 @@ const badgeSlashAssetStyle = {
   display: 'block',
 }
 
-const badgeSlashWrapStyle = {
+const badgeSlashWrapStyle: CSSProperties = {
   position: 'absolute',
   left: 63.33,
   top: 66.67,
@@ -112,7 +113,7 @@ const badgeSlashWrapStyle = {
   justifyContent: 'center',
 }
 
-const badgeSlashLineStyle = {
+const badgeSlashLineStyle: CSSProperties = {
   width: 1.67,
   height: 21.67,
   borderRadius: 5,
