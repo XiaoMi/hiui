@@ -6,9 +6,12 @@ lib/
 !scripts/hiui-cli/lib/
 !skills/hiui-page-workflow/scripts/lib/
 !skills/hiui-page-workflow/scripts/lib/*.mjs
+!skills/hiui-design/scripts/lib/
+!skills/hiui-design/scripts/lib/**/*.mjs
 es/
 # locally packed package
 *.tgz
+!skills/hiui-design/vendor/*.tgz
 
 # Editor generate files
 .idea/
