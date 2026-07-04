@@ -1,10 +1,14 @@
 # 数据可视化
 
+`data-visualization` 的生成策略固定为 `managed-analytics`。它可以有典型页面示例和受管承载组件，但不走普通 `page-component-only` 流程；页面组件只负责页头、单一白底主体、指标区、图表区、明细表区、滚动和间距，真正的图表表达由 `chart usage contract`、数据可视化 token 与图表组件规则决定。
+
 ## 何时使用
 
 - 页面主结构是“指标卡 + 多图表 + 明细表”
 - 需要在同一白底工作区里承接趋势、构成、排行、双轴、漏斗等多种图表
 - 图表只是页面主体，不是某个表格页里的附属小卡片
+
+若普通表格页中新增局部辅助图表，先归类为 `analytics-extension`；只有当图表形成独立业务分析块、多图表阅读线或“指标卡 + 多图表 + 明细表”的主体结构时，才升级为 `managed-analytics`。
 
 ## 示例起点
 
@@ -22,16 +26,17 @@
 
 `data-visualization` 的安全实现顺序固定为：
 
-1. 锁定 `page type`
-2. 锁定 `shell inheritance`
-3. 冻结 `white-body / outer-padding / main-scroll` ownership
-4. 写 `chart usage contract`
-5. 判断内部 `layout strategy`
-6. 最后才进入业务 JSX 与图表配置实现
+1. 读取项目 mode lock 与 `page-task-plan.v1`
+2. 锁定 `generationStrategy=managed-analytics`
+3. 锁定 `page type` 与 `shell inheritance`
+4. 冻结 `white-body / outer-padding / main-scroll` ownership
+5. 写 `chart usage contract`
+6. 判断内部 `layout strategy`
+7. 最后才进入业务 JSX 与图表配置实现
 
 注意：
 
-- 第 4 步前置的是“图表职责判断”，不是“图表容器实现”
+- 第 5 步前置的是“图表职责判断”，不是“图表容器实现”
 - 不要把“先想图表”执行成“先搭图表壳层”
 - 不要为了安放图表，在 `white-body` 外额外新增页面级白底、描边、圆角或统一 inset 容器
 

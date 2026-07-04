@@ -23,9 +23,74 @@ async function readTargetPackageJson(targetRoot) {
   }
 }
 
-function inferMode(pkg, hostProfile, requestedMode) {
+function normalizeModeId(mode) {
+  const value = String(mode || '').trim()
+  if (value === 'host-compatible') return 'legacy-host-compatible'
+  if (['host-integration', 'rules-only', 'legacy-host-compatible'].includes(value)) return value
+  return ''
+}
+
+function parseBootstrapSummaryMode(raw) {
+  const modeMatch = String(raw || '').match(/^- mode:\s*(\S+)/m)
+  const recommendedModeMatch = String(raw || '').match(/^- recommended mode:\s*(\S+)/m)
+  return normalizeModeId(modeMatch?.[1]) || normalizeModeId(recommendedModeMatch?.[1])
+}
+
+async function readProjectModeFact(targetRoot) {
+  const lockPath = path.join(targetRoot, '.local-context', 'hiui-design', 'outputs', 'project-mode.json')
+  try {
+    const lock = JSON.parse(await fs.readFile(lockPath, 'utf8'))
+    const id = normalizeModeId(lock.mode || lock.id)
+    if (id) {
+      return {
+        id,
+        source: 'project-lock',
+        factPath: '.local-context/hiui-design/outputs/project-mode.json',
+      }
+    }
+  } catch {
+    // Optional for older installs.
+  }
+
+  const bootstrapSummaryPaths = [
+    path.join(targetRoot, 'src', 'typical-page-reuse', 'BOOTSTRAP_SUMMARY.md'),
+    path.join(targetRoot, '.local-context', 'hiui-design', 'BOOTSTRAP_SUMMARY.md'),
+  ]
+
+  for (const summaryPath of bootstrapSummaryPaths) {
+    try {
+      const raw = await fs.readFile(summaryPath, 'utf8')
+      const id = parseBootstrapSummaryMode(raw)
+      if (id) {
+        return {
+          id,
+          source: 'bootstrap-summary',
+          factPath: path.relative(targetRoot, summaryPath),
+        }
+      }
+    } catch {
+      // Optional for older installs.
+    }
+  }
+
+  return null
+}
+
+function inferMode(pkg, hostProfile, requestedMode, projectModeFact = null) {
   if (requestedMode && requestedMode !== 'auto') {
-    return requestedMode
+    return {
+      id: normalizeModeId(requestedMode) || requestedMode,
+      source: requestedMode === 'host-compatible' ? 'explicit-alias:host-compatible' : 'explicit',
+    }
+  }
+
+  if (projectModeFact?.id) {
+    return {
+      id: projectModeFact.id,
+      source: projectModeFact.source,
+      factPath: projectModeFact.factPath,
+      confirmed: true,
+    }
   }
 
   const dependencies = {
@@ -44,10 +109,13 @@ function inferMode(pkg, hostProfile, requestedMode) {
     (reactDomMajor > 0 && reactDomMajor < 18) ||
     (hasHiui5Alias && hiuiMajor > 0 && hiuiMajor < 5)
   ) {
-    return 'legacy-host-compatible'
+    return { id: 'legacy-host-compatible', source: 'detected-dependencies' }
   }
 
-  return hostProfile?.recommendedMode || 'rules-only'
+  return {
+    id: hostProfile?.recommendedMode || 'rules-only',
+    source: hostProfile?.recommendedMode ? 'host-profile' : 'default',
+  }
 }
 
 function printUsage() {
@@ -115,7 +183,9 @@ async function main() {
 
     const hostProfile = await detectHostProfile(options.target)
     const pkg = (await readTargetPackageJson(options.target)) || hostProfile.pkg
-    const mode = inferMode(pkg, hostProfile, options.mode)
+    const projectModeFact = await readProjectModeFact(options.target)
+    const modeResult = inferMode(pkg, hostProfile, options.mode, projectModeFact)
+    const mode = modeResult.id
     const archetypeDefinition = await loadArchetypeDefinition({
       skillRoot,
       pageTypeId: pageType.id,
@@ -125,6 +195,8 @@ async function main() {
       pageTypeId: pageType.id,
       pageTypeLabel: pageType.label,
       mode,
+      modeSource: modeResult.source,
+      modeFactPath: modeResult.factPath || '',
       examplePath: archetypeDefinition?.archetype?.examplePath || pageType.assetExamplePath || '',
       archetypeId: archetypeDefinition?.archetype?.id || '',
       archetypeLabel: archetypeDefinition?.archetype?.label || '',
@@ -145,7 +217,7 @@ async function main() {
 
     console.log('Selected archetype:')
     console.log(`- page type: ${payload.pageTypeLabel} (${payload.pageTypeId})`)
-    console.log(`- mode: ${payload.mode}`)
+    console.log(`- mode: ${payload.mode}${payload.modeSource ? ` (${payload.modeSource})` : ''}`)
     console.log(`- example path: ${payload.examplePath}`)
     console.log(`- archetype id: ${payload.archetypeId}`)
     console.log(`- shell: ${payload.shell}`)

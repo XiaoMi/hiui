@@ -29,13 +29,13 @@
 
 | 页型 | `fileKey` | `nodeId` | 专章 |
 |------|-----------|----------|------|
-| 全页编辑 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/edit.md`](figma-pages/edit.md) |
-| 抽屉表单 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/drawer-form.md`](figma-pages/drawer-form.md) |
-| 抽屉详情 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/drawer-detail.md`](figma-pages/drawer-detail.md) |
-| 全页分组详情 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/detail-group.md`](figma-pages/detail-group.md) |
-| 数据统计表 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/table-stat.md`](figma-pages/table-stat.md) |
-| 左树右表 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/tree-split.md`](figma-pages/tree-split.md) |
-| 树形表格 | `jlYnxIW1FFGG8fK1sVcL5C` | `<figma-node-id>` | [`figma-pages/tree-table.md`](figma-pages/tree-table.md) |
+| 全页编辑 | `jlYnxIW1FFGG8fK1sVcL5C` | `51257:102808` | [`figma-pages/edit.md`](figma-pages/edit.md) |
+| 抽屉表单 | `jlYnxIW1FFGG8fK1sVcL5C` | `51728:128145` | [`figma-pages/drawer-form.md`](figma-pages/drawer-form.md) |
+| 抽屉详情 | `jlYnxIW1FFGG8fK1sVcL5C` | `51728:131344` | [`figma-pages/drawer-detail.md`](figma-pages/drawer-detail.md) |
+| 全页分组详情 | `jlYnxIW1FFGG8fK1sVcL5C` | `52409:60782` | [`figma-pages/detail-group.md`](figma-pages/detail-group.md) |
+| 数据统计表 | `jlYnxIW1FFGG8fK1sVcL5C` | `51257:107076` | [`figma-pages/table-stat.md`](figma-pages/table-stat.md) |
+| 左树右表 | `jlYnxIW1FFGG8fK1sVcL5C` | `51257:107202` | [`figma-pages/tree-split.md`](figma-pages/tree-split.md) |
+| 树形表格 | `jlYnxIW1FFGG8fK1sVcL5C` | `51257:107314` | [`figma-pages/tree-table.md`](figma-pages/tree-table.md) |
 
 ## 通用陷阱
 

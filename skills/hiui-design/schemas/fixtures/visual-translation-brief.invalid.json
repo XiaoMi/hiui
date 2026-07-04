@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "visual-translation-brief.v1",
+  "status": "invalid",
+  "statusReasons": ["contains forbidden field targetPage"],
+  "source": {"type": "prototype-screenshot", "artifacts": [{"kind": "image", "refType": "file", "ref": "file:screenshots/order.png", "available": true}]},
+  "targetPage": "src/pages/order/index.tsx"
+}

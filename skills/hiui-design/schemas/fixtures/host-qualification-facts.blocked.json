@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "host-qualification-facts.v1",
+  "status": "blocked",
+  "statusReasons": ["manual-observed cannot make legacy host facts ready"],
+  "automationLevel": "manual-observed",
+  "freshness": {"status": "unknown", "staleReasons": []},
+  "componentQualification": {"allowedComponentSource": {"value": "local-adapter", "sourceType": "file", "sourcePath": ".local-context/hiui-design/src/adapter", "confidence": "medium", "verified": false}},
+  "unverifiedObservations": [{"field": "componentQualification.allowedComponentSource", "reason": "manual observation only"}],
+  "blockingIssues": [],
+  "blockingReasons": ["需要 script-derived host facts"],
+  "warnings": []
+}

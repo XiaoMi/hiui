@@ -11,7 +11,7 @@ function printUsage() {
 Default behavior:
   - create src/typical-page-reuse/assets/project-product-images.ts when missing
   - create src/typical-page-reuse/assets/product-catalog/ when missing
-  - seed the default product image pack without overwriting existing project assets
+  - seed the project image catalog scaffold without overwriting existing project assets
 `)
 }
 
@@ -215,18 +215,18 @@ async function main() {
       preservedFiles.push(path.relative(targetRoot, path.join(productCatalogDir, relativePath)))
     }
 
-    console.log('[init-project-images] default image pack is ready.')
+    console.log('[init-project-images] project image catalog scaffold is ready.')
     console.log(`- target: ${targetRoot}`)
     console.log(`- registry: ${path.relative(targetRoot, registryPath)}`)
     console.log(`- asset dir: ${path.relative(targetRoot, productCatalogDir)}`)
-    console.log(`- synced image files: ${catalogSyncResult.copiedFiles.filter((file) => file.endsWith('.png')).length}`)
+    console.log(`- synced scaffold files: ${catalogSyncResult.copiedFiles.length}`)
     if (seededFiles.length > 0) {
       console.log(`- seeded files: ${seededFiles.join(', ')}`)
     }
     if (preservedFiles.length > 0) {
       console.log(`- preserved existing files: ${preservedFiles.join(', ')}`)
     }
-    console.log('- next: if the project already has official product images, replace the default pack by dropping the real assets into the same catalog and updating the registry with `--force` only when you explicitly want to refresh the baseline files.')
+    console.log('- next: if the project already has real product images, drop the assets into the same catalog and update the registry; use `--force` only when you explicitly want to refresh scaffold files.')
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     console.error(`[init-project-images] failed: ${message}`)

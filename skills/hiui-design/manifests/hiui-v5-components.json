@@ -17,7 +17,7 @@
     "importSource": "@hi-ui/hiui",
     "iconImportSource": "@hi-ui/icons"
   },
-  "specialTokens": {
+  "specialTerms": {
     "nonComponentAlternatives": [
       "customInfoBlock",
       "fieldCard",
@@ -402,7 +402,7 @@
       ],
       "defaultPriority": "secondary",
       "notes": [
-        "prefer-for-mid-task-edit-or-detail-with-context-kept"
+        "prefer middle task edit or detail with context kept"
       ]
     },
     "Dropdown": {

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hiui-design/host-qualification-facts.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "status", "statusReasons", "automationLevel"],
+  "properties": {
+    "schemaVersion": {"const": "host-qualification-facts.v1"},
+    "status": {"enum": ["ready", "blocked", "invalid"]},
+    "statusReasons": {"type": "array", "items": {"type": "string"}},
+    "modeLock": {"type": "object"},
+    "runtime": {"type": "object"},
+    "componentQualification": {"type": "object"},
+    "translationMapRefs": {"type": "object"},
+    "preGenerationQualification": {"type": "object"},
+    "postGenerationIsomorphism": {"type": "object"},
+    "unverifiedObservations": {"type": "array", "items": {"type": "object"}},
+    "blockingIssues": {"type": "array", "items": {"type": "object"}},
+    "blockingReasons": {"type": "array", "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "automationLevel": {"enum": ["manual-observed", "script-derived"]},
+    "freshness": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["fresh", "stale", "invalid", "unknown"]},
+        "staleReasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

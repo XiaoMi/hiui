@@ -15,6 +15,7 @@
 - 首轮输出格式：`../docs/generation/ai-kickoff-template.md`
 - 生成原则与阶段门槛：`generation-rules.md`
 - contract 字段：`contract-regions.md`
+- 受管页面治理、source snapshot、acceptance contract、guard profile 与 runtime smoke 灰度：`page-governance.md`
 - 组合页增量要求：`../docs/generation/implementation-checklist-template.md`
 - 最终回复前统计收口：`PRIVACY.md`
 
@@ -23,9 +24,11 @@
 ## 宿主层证据
 
 - 项目画像与接入模式一致
-- 已提供 `TypicalPageHostProvider` 所需 header / footer 挂载点
+- 若当前页直接使用标准壳运行时（`host-integration`、现代 `rules-only` 或 `isolated-standard-shell`），已提供 `TypicalPageHostProvider` 所需 header / footer 挂载点
+- 若当前页走 `legacy-host-compatible` 主树，已提供 `runtimeAdapterProof` / `hostAdapter` 所要求的宿主页头、主体、`white-body` 与滚动承接链；不把 `TypicalPageHostProvider` 当作通过前提
 - 典型页所在内容列满足连续高度链：`flex`、`min-height: 0`，必要时 `overflow: hidden`
-- `@hiui-design/typical-page-shells` 样式资源已正常生效
+- 若当前页直接使用标准壳运行时，`@hiui-design/typical-page-shells` 样式资源已正常生效
+- 若当前页走 `legacy-host-compatible` 主树，宿主自有布局 / 组件封装与 bridge 样式前提已通过 `runtimeAdapterProof` 或等价证据说明；不把标准壳 `styles.css` 当作通过前提
 - 若为已有系统，模板页面没有整包同步进正式 `src/`
 - 若左侧导航由 `TypicalPageAppFrame` 驱动，一级菜单分组都显式带语义化 `icon`
 - 若 `host-integration` 保留同步典型页 gallery，`TypicalPageAppFrame routes` 必须传宿主级菜单树；禁止裸传 `typicalPageReuseRoutes`
@@ -38,22 +41,37 @@
 
 ## Contract / Workflow 证据
 
+- 页面任务开始前已通过 Plan Gateway 取得机器计划：优先 `npm run typical-page:plan-page-task -- --json`，旧项目兜底 `node ".local-context/hiui-design/scripts/plan-page-task.mjs" --json`
+- `package.json` 暴露 `typical-page:plan-page-task`，避免多项目工作区或父目录 cwd 导致 Agent 跳过机器计划入口
+- 当前页的 `mode` 结论来自 project mode lock / bootstrap summary 或机器计划；doctor / host-profile 的重新检测没有覆盖该结论
 - 当前页 contract 已落盘且可被工具正常解析
 - `rules-only` / `legacy-host-compatible` 当前页已通过 `typical-page:start-page` 进入受管流程
-- 当前页若在上一次 finalize 后继续发生源码变化，已经基于**最新源码**重新执行一次 `typical-page:finalize-page`
+- `rules-only` 当前页已能追溯唯一隐藏结构基线：`example path`、`startFrom` 对应的 template / reference / scaffold / host archetype、`host adapter`、`shell carrier path`、`route owner` 与 `menu group` 均已落到 contract 或 source marker；reference 示例没有进入业务菜单或接管宿主路由
+- `legacy-host-compatible` 当前页已能追溯主生成链：当 `generationStrategy=page-component` 时，`pageComponent`、`runtimeAdapterProof`、`hostAdapter`、`shellCarrierPath`、`routeOwner`、`ownershipMode` 已落到 contract 或 source marker；若计划进入 fallback / 漂移治理，再补 `examplePath`、`hostArchetypePath` 或 adapter scaffold plan、`Translation Map` 等证据；若未明确进入已证明的直接标准壳接入边界，则标准壳运行时 import 没有进入 legacy 主树
+- `legacy-host-compatible` 若命中漂移风险触发条件，已落盘或说明 `Semantic Lock`、`Translation Map` 与 `Isomorphism Check` 结果；`driftExceptions` 只记录等价转译，没有豁免 mandatory components、required regions、ownership 或关键交互锚点
+- 当前页若在上一次 finalize 后继续发生页壳、ownership、mandatory components、source marker 或运行时修复，已经基于**最新源码**重新执行一次 `typical-page:finalize-page`
+- 普通典型页快速生成只替换业务槽位时，允许先以当前页 preflight / preview / lint / build 作为生成完成信号；正式验收或发布仍必须回到最新源码的 `finalize-page`
 - `.local-context/hiui-design/outputs/managed-pages.index.{json,md}` 与当前受管页源码、contract 保持一致
-- 当前页的 `source gate`、`doctor` 已通过
+- 正式验收 / 发布场景下，当前页的 `source gate`、`doctor` 已通过；普通典型页快速生成可先以当前页 preflight / preview / lint / build 作为完成信号
 - `doctor PASS` 未被误当成替代 `finalize-page` 的完成信号
+- 迁移 / 重架构页在实现前已生成机器提取的 `pre-migration-snapshot.v1`，且 `confidence=high`；`medium` 已补事实但没有覆盖已提取事实
+- 迁移 / 重架构页已有 `page-acceptance-contract.v1`，并引用 source snapshot、page contract、用户需求与 pageType baseline；blocking requirement 均带 provenance
+- 当前页已按 page profile 产出 `hiui-page-governance-report.v1`；`new-managed`、`migration`、`managed`、`release` profile 下不存在 blocking failure
+- final report 没有把 `preflight failed`、hard profile governance failed、snapshot 缺失 / 低置信度或 acceptance contract 缺 provenance 描述为完成
 
 ## 页面结构证据
 
 - 页面使用固定页壳，而不是手拼壳层
+- 典型页 shell 继承能由合法 shell carrier registry 与 AST 证明；注释 marker / `data-hiui5-shell` 没有被单独当作通过证据
 - 菜单标题与 `PageHeader title` 一致
 - 不存在双层主工作区、双层外层留白或双滚动容器
 - 不存在“标题下方大段空白 / 页面整体下推”这类双宿主症状
 - 若在 DevTools 中看到宿主 content slot、页面根、局部 `white-body` / `section-root` 三层同时持有 `padding / background / border-radius / overflow`，按结构失败处理
 - 若页面声明 `host-slot-shell` 或等价 owner 组合，DevTools 中业务页根节点只能表现为布局填充层；若它同时持有 page-level padding、非透明背景、圆角或 `overflow:auto|scroll`，按结构失败处理
 - 受管业务页不得包含 `PromptCopyFloatingButton`、`examplePrompt`、`typicalExamplePrompts` 或从示例 gallery 继承的“复制提示词”页头动作；这些只属于示例浏览器快捷入口
+- `rules-only` 受管业务页不得保留 `ExampleAppShell`、示例 route config、示例菜单分组或不属于宿主业务运行链的 host provider
+- `legacy-host-compatible` 受管业务页不得保留标准壳 package import、`TypicalPageHostProvider`、`TypicalPageHeaderPortal`、标准壳组件名 import、示例 route config、示例菜单分组或不属于旧宿主业务运行链的 provider
+- `legacy-host-compatible` 的 required regions 与 reference 保持同构；pagination / footer / drawer body / full-page footer 没有漂移到错误层级，`white-body / outer-padding / main-scroll` owner 仍然唯一
 - 不存在由 `grid` / `flex` 默认 `stretch` 引起的等高误拉伸；卡片、图表区、详情区、时间线区都按内容自然高度收口
 
 ## 非典型 / Overlay 证据
@@ -84,11 +102,14 @@
 
 ## 国际化证据
 
-- 页面标题、按钮文案、列标题、字段 label、placeholder、反馈文案、图表标题来自 locale 资源或上游 bridge，而不是直接硬编码
-- 日期、时间、数字、金额、百分比、排序与大小写处理走 locale-aware formatter / API
-- 页面未继续使用物理方向属性 `margin-left/right`、`padding-left/right`、`border-left/right`、`left/right`、`text-align:left/right`
+- `i18nMode` 已明确为 `none`、`key-only` 或 `full`
+- `none`：允许直接中文业务文案；日期、时间、数字、金额、百分比优先复用项目已有 formatter
+- `key-only`：页面标题、按钮文案、列标题、字段 label、placeholder、反馈文案、图表标题沿用宿主 `t()` / `intl.get()` / `formatMessage()` 或等价 bridge
+- `full`：页面标题、按钮文案、列标题、字段 label、placeholder、反馈文案、图表标题来自 locale 资源或上游 bridge，而不是直接硬编码
+- `full`：日期、时间、数字、金额、百分比、排序与大小写处理走 locale-aware formatter / API
+- `full`：页面未继续使用物理方向属性 `margin-left/right`、`padding-left/right`、`border-left/right`、`left/right`、`text-align:left/right`
 - 若支持 `ar-SA`，页面根方向、抽屉方向、浮层对齐与文本顺序已随 `dir="rtl"` 正常切换
-- `de-DE / th-TH / ar-SA` 的长文本没有撑坏页头、表头、按钮、字段管理项、详情主信息与表单栅格；必要位置已补 `ellipsis + tooltip`
+- `full`：`de-DE / th-TH / ar-SA` 的长文本没有撑坏页头、表头、按钮、字段管理项、详情主信息与表单栅格；必要位置已补 `ellipsis + tooltip`
 
 ## 组件继承证据
 
@@ -102,6 +123,8 @@
 - `ProDetailPage`、`ProListPageProvider`、`ProDetailPageProvider` 等页壳运行时要求仍被满足；不存在只保留外观、漏掉 provider / context 链的实现
 - 若存在绕开现成组件的实现，结果中已有明确的书面 bypass 原因
 - 若存在绕开现成组件的实现，源码中能看到明确的 adapter / bridge 承接层；第三方组件没有散落在页面根、共享 shell 或多个一级分组边界上
+- 受管业务页没有裸用 `hiui5` primitive 承担 shell、header、white-body、query-filter、table、pagination 等关键 region 职责；底层 `hiui5` 使用收口在合法 shell carrier、Managed 组件、adapter 或带 owner+expiry 的 local bypass 中
+- adapter 不是纯 re-export；`ManagedTable`、`ManagedSearchInput`、`ManagedPageHeader` 等组件已注入规范默认值，且强制 baseline 不允许被业务 props 静默关闭
 - 若存在绕开现成组件的实现，第三方组件的可见 palette、字号、圆角、阴影和 surface 层级已通过 HiUI token bridge 收口；没有把库默认 theme 直接暴露到业务页
 - 若存在绕开现成组件的实现，第三方组件没有接管 `outer-padding`、`white-body`、`main-scroll` 或共享页头 ownership，也没有替换本应保留的 mandatory components
 
@@ -111,6 +134,8 @@
 
 - 行内筛选真实使用 `QueryFilter`
 - 全部筛选真实使用 `FilterDrawer`
+- 行内字段集合、抽屉字段集合、可选字段集合与 `page-acceptance-contract.v1` / `fieldVisibility` 一致；字段从行内迁移到抽屉时有 provenance 和变更原因
+- 迁移页没有静默丢失 source snapshot 中记录的筛选字段、页头动作、表格列、分页位置或空态行为
 - 真实预览中能看到关键词搜索框、至少一个筛选控件、`全部筛选` 与 `重置`
 - split 左栏若直接使用 `SearchInput`，真实预览中搜索框已贴合 pane 宽度；没有暴露组件默认固定宽度导致的“搜索框未贴满左栏”
 - 不存在手工追加的“查询”主按钮
@@ -175,6 +200,8 @@
 - 没有标题下方大面积空白
 - `PageHeader` / `QueryFilter` / `Table` 没有被宿主样式挤坏
 - 没有残留 `hi-v4-*` / `--hi-v4-*` 历史选择器和变量
+- 当前页源码与它导入的页面本地样式已通过 `visual-token-baseline` 检查：直接写出的 `font-size` 只使用 `hiui5-visual-baseline.md` 登记字阶（`12px`、`14px`、`16px`、`18px`，指标主值可用 `24px`），不存在 `13px` 或其它未登记字号
+- 对业务自定义文本，字号不只值合法，还能回指到 `hiui5-visual-baseline.md` 的角色矩阵；不能把 `24px` 等指标 token 当成普通正文、标题或卡片装饰字号
 
 ## 页面完成定义
 
@@ -182,7 +209,8 @@
 
 - 当前页不存在未解决的 hard fail
 - 与当前页直接相关的 warning 没有被以“先交付再补”方式保留
-- `rules-only` / `legacy-host-compatible` 当前页已基于最新源码完成 `finalize-page`
+- 正式验收 / 发布 / 结构修复场景下，`rules-only` / `legacy-host-compatible` 当前页已基于最新源码完成 `finalize-page`
+- 普通典型页快速生成场景下，当前页已完成可预览核验，且当前页 preflight / lint / build 结果可解释；不得被无关历史页面的全局 doctor 问题阻断
 - 强制场景下的 `runtime smoke` 结果已与当前 `sourceSnapshotHash` 绑定
 - 已完成一次真实页面 / DOM / 控制台核验
 - 已完成一次视觉验收信号核对

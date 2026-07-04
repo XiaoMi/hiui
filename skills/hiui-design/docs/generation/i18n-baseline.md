@@ -6,7 +6,7 @@
 
 它解决的是：
 
-- 受管页面生成时默认具备多语言、RTL 与本地化格式适配能力
+- 当任务进入 `i18nMode=full` 时，受管页面具备多语言、RTL 与本地化格式适配能力
 - 不同业务线在进入真实翻译接入前，先统一页面层的 i18n 设计与源码边界
 - 让国际化问题优先按“结构 / 组件 / formatter / 文案来源”处理，而不是后期补丁
 
@@ -25,11 +25,25 @@
 
 ## 何时读
 
-- 任何存在用户可见文案的页面都要读
-- 任何包含日期、时间、数字、金额、百分比、排序或图表文本的页面都要读
-- 任何需要支持阿拉伯语 RTL 或西文长文本适配的页面都要读
+- 用户明确要求多语言、国际化、i18n、英文、RTL、locale 验收时要读
+- 任务目标是正式国际化验收、国际化修复或 locale 资源补齐时要读
+- 页面需要支持阿拉伯语 RTL、西文长文本适配、跨 locale 日期 / 数字 / 金额格式验收时要读
 
-## 默认支持语言
+普通典型页快速生成、内部原型、或仅要求生成中文业务页时，不默认读取本文件，也不把 full i18n 作为实现前阻断项。
+
+## i18nMode
+
+页面任务先声明一个 `i18nMode`：
+
+| 模式 | 适用场景 | 生成要求 |
+| --- | --- | --- |
+| `none` | 普通中文业务页、快速原型、用户未提出国际化要求 | 允许直接使用中文业务文案；日期 / 数字优先沿用项目已有 formatter；不补多语言资源 |
+| `key-only` | 宿主项目已有 `t()` / `intl.get()` / `formatMessage()` 等写法 | 沿用宿主 key 风格和 formatter；只补当前页面必要 key 或沿用中文 key；不强制补齐 7 语言资源 |
+| `full` | 明确要求 i18n / 多语言 / 英文 / RTL / locale 验收，或正式国际化交付 | 执行本文全部硬门槛、默认支持语言、RTL、formatter 与文本膨胀验收 |
+
+`rules-only` 典型页快速路径默认使用 `none`；若目标项目已经统一使用翻译函数，则使用 `key-only`。`legacy-host-compatible` / `host-compatible` 默认跟随宿主既有文案与 i18n 风格。只有进入 `full` 时，本文件后续的硬门槛全部生效。
+
+## full 模式默认支持语言
 
 | 语言 | Locale | 膨胀系数 | RTL | 备注 |
 | --- | --- | --- | --- | --- |
@@ -41,11 +55,11 @@
 | 德语 | `de-DE` | `2.5x` | 否 | 复合词极长 |
 | 阿拉伯语 | `ar-SA` | `2.0x` | 是 | 页面需整体 RTL |
 
-默认生成与验收按以上 7 种语言准备。若业务线只上线其中一部分，可在结果中写明实际交付语言，但页面结构不得破坏这套基线。
+`i18nMode=full` 的生成与验收按以上 7 种语言准备。若业务线只上线其中一部分，可在结果中写明实际交付语言，但页面结构不得破坏这套基线。`none` / `key-only` 不要求补齐这些 locale 文件。
 
 ## 编码前阻断输出
 
-开始写页面代码前，除页型与壳层阻断项外，还必须额外写出：
+进入 `i18nMode=full` 后，开始写页面代码前，除页型与壳层阻断项外，还必须额外写出：
 
 - `i18n strategy`
 
@@ -68,9 +82,9 @@
 - `direction strategy`：`ar-SA` 通过根节点 `dir="rtl"` 与顶层 Provider 同步方向
 - `text expansion strategy`：说明页面如何处理西文/泰文/阿拉伯语的文本膨胀与换行
 
-未明确 `i18n strategy` 前，不要继续写业务文案、列标题、按钮文案、图表标题、反馈文案或 mock 数据展示文本。
+`i18nMode=none` / `key-only` 只需在任务说明或 contract 中写清模式与依据，不要求展开完整 `i18n strategy`。`full` 模式未明确 `i18n strategy` 前，不要继续写业务文案、列标题、按钮文案、图表标题、反馈文案或 mock 数据展示文本。
 
-## 硬门槛
+## full 模式硬门槛
 
 ### 1. 用户可见文案不得硬编码
 
@@ -124,7 +138,7 @@
 - 当前语言高亮，切换后立即生效
 - 切换器不得挤压主操作按钮
 
-## 页面级适配规则
+## full 模式页面级适配规则
 
 ### 页头 / 导航
 
@@ -166,7 +180,7 @@
 - `chart-section` 的 i18n 口径必须和页面正文保持一致；不要让图表继续吃库默认英文文案
 - 涨跌颜色若业务确实要求随地区习惯变化，必须通过 locale 或市场配置显式切换；不要把红涨绿跌写死在页面局部
 
-## 默认实现策略
+## full 模式默认实现策略
 
 ### 项目已有 i18n runtime
 
@@ -196,7 +210,8 @@ src/translation/
 
 - 默认允许中文原文作为 key；新增翻译时保持同一风格
 - `typical-page:i18n:init` 默认会补或重同步 `index.ts`、`messages.ts`、`zh-CN/en-US` seed、其余 locale fallback 文件，以及本地 `i18n:sync`
-- 同步出来的 `src/translation/demo-overrides.ts` 只是空白 scaffold，用于承接当前项目自己的业务词条兜底；`hiui-design` 基线不会把某个 demo 项目的业务词库整体下发到新项目
+- 同步出来的 `src/translation/demo-overrides.ts` 是目标项目自己的业务词条兜底位；`templates/i18n/src/translation/demo-overrides.ts` 只允许保留 hiui-design 内置示例页所需的通用演示词条。两者是“模板 seed -> 目标项目”的单向关系，禁止把当前项目的 `src/translation/**`、页面标题、mock 数据、队伍 / 商品 / 活动等业务词库反向写回 skill 模板。
+- 维护者同步或发布前必须通过 `scripts/check-i18n-template-boundary.mjs`。若该脚本报出 `business-term-in-i18n-template` 或 `custom-template-translation-override-constant`，先清理 `.local-context/hiui-design/templates/i18n/**`，再让 launch agent 同步全局与开源包。
 - 若业务线后续已有统一翻译平台，可在不改页面结构契约的前提下替换 runtime
 - 这里的“自动补齐基线”只负责建立语言切换、locale store、formatter、RTL 与 fallback 规则，不负责自动翻译新业务文案；新增页面若引入新的标题、按钮、列头、placeholder、反馈文案或 mock 展示值，仍需同步补齐 locale 资源
 
@@ -208,7 +223,7 @@ src/translation/
 
 ## 验收口径
 
-默认至少验证：
+`i18nMode=full` 默认至少验证：
 
 - 切换 `zh-CN / en-US / de-DE / th-TH / ar-SA` 时页面无报错
 - `de-DE / th-TH / ar-SA` 的长文本不会撑坏页头、表头、按钮、字段管理项与详情主信息

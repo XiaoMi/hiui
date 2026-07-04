@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "purpose": "Supporting registry for hiui-design distribution roles, default paths, local examples, and override mechanisms. This file does not replace the canonical rules in distribution-manifest.json, docs/onboarding/global-sync-workflow.md, scripts/README.md, or the sync/build scripts.",
+  "sourcesOfTruth": [
+    "distribution-manifest.json",
+    "docs/onboarding/global-sync-workflow.md",
+    "scripts/README.md",
+    "scripts/assert-maintainer-source.mjs",
+    "scripts/check-distribution-boundary.mjs",
+    "scripts/build-skill-archive.mjs",
+    "scripts/release-skill-archive.mjs",
+    "scripts/manage-global-sync-launch-agent.mjs",
+    "scripts/sync-global-skill.mjs"
+  ],
+  "officialFlow": [
+    "maintainerSource",
+    "projectView",
+    "activeSource",
+    "globalMirror",
+    "teamPackage",
+    "userArchive",
+    "maintainerArchive",
+    "openSourceDevBundle",
+    "openSourcePackage"
+  ],
+  "defaults": {
+    "maintainerSource": null,
+    "activeSource": "<project-root>/.local-context/hiui-design",
+    "globalMirror": "~/.codex/skills/hiui-design",
+    "teamPackage": "<maintainer-parent>/hiui-design-team-package",
+    "projectView": "<project-root>/.local-context/hiui-design",
+    "userArchive": "<skill-root>/outputs/archives/hiui-design.zip",
+    "maintainerArchive": "<skill-root>/outputs/archives/hiui-design-maintainer.zip",
+    "openSourceDevBundle": "<maintainer-parent>/hiui-design-open-source-dev-bundle",
+    "openSourcePackage": "~/.codex/skills/hiui-design-open-source"
+  },
+  "roles": {
+    "maintainerSource": {
+      "canonicalName": "maintainer source",
+      "addressKind": "local-maintainer-root",
+      "isSourceOfTruth": true,
+      "manualEditsPolicy": "long-term",
+      "defaultPath": null,
+      "pathPattern": null,
+      "validationScope": "maintainer",
+      "generatedBy": null,
+      "notes": [
+        "The only long-term maintenance source for rules, scripts, docs, templates, and publishing logic.",
+        "This role is local-only under the current governance decision and should not be published as a Git distribution repository.",
+        "Current rules do not hardcode a single default filesystem path."
+      ]
+    },
+    "activeSource": {
+      "canonicalName": "active source",
+      "addressKind": "project-local-root",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "debug-only",
+      "defaultPath": null,
+      "pathPattern": "<project-root>/.local-context/hiui-design",
+      "validationScope": "maintainer-source-qualification",
+      "generatedBy": "scripts/activate-current-project-global-sync.mjs and scripts/manage-global-sync-launch-agent.mjs",
+      "notes": [
+        "Only one active source should be registered at a time.",
+        "The directory must pass scripts/assert-maintainer-source.mjs before activation.",
+        "The physical directory often matches projectView but the governance role is different."
+      ]
+    },
+    "globalMirror": {
+      "canonicalName": "global mirror",
+      "addressKind": "fixed-default-path",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "~/.codex/skills/hiui-design",
+      "pathPattern": "~/.codex/skills/<skill-name>",
+      "validationScope": "runtime-mirror",
+      "generatedBy": "scripts/sync-global-skill.mjs or scripts/manage-global-sync-launch-agent.mjs",
+      "notes": [
+        "Machine-wide runtime landing zone and release staging root.",
+        "Not the long-term maintenance truth source."
+      ]
+    },
+    "teamPackage": {
+      "canonicalName": "team package",
+      "addressKind": "fixed-local-git-target",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "<maintainer-parent>/hiui-design-team-package",
+      "pathPattern": "<maintainer-parent>/hiui-design-team-package",
+      "validationScope": "team",
+      "generatedBy": "scripts/build-runtime-mirror.mjs --target team-package",
+      "notes": [
+        "Derived team-facing distribution view with maintainer-only publishing and backend files removed.",
+        "This is the only role that should be published to an internal Git delivery repository when Git-based internal distribution is required.",
+        "The default official internal team repo target is the sibling directory <maintainer-parent>/hiui-design-team-package.",
+        "Not the same as projectView."
+      ]
+    },
+    "projectView": {
+      "canonicalName": "project view",
+      "addressKind": "project-local-root",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "project-scoped",
+      "defaultPath": null,
+      "pathPattern": "<project-root>/.local-context/hiui-design",
+      "validationScope": "project",
+      "generatedBy": "scripts/apply-in-current-project.mjs",
+      "notes": [
+        "Project-local runtime view used for installation, debugging, and project facts.",
+        "Project outputs are allowed here as page facts."
+      ]
+    },
+    "userArchive": {
+      "canonicalName": "user archive",
+      "addressKind": "fixed-relative-path",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "<skill-root>/outputs/archives/hiui-design.zip",
+      "pathPattern": "<skill-root>/outputs/archives/<skill-name>.zip",
+      "validationScope": "team",
+      "generatedBy": "scripts/build-skill-archive.mjs and scripts/release-skill-archive.mjs",
+      "notes": [
+        "Public-facing zip archive for team or external delivery.",
+        "Human-facing release copy may still call this the zip package."
+      ]
+    },
+    "maintainerArchive": {
+      "canonicalName": "maintainer archive",
+      "addressKind": "fixed-relative-path",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "<skill-root>/outputs/archives/hiui-design-maintainer.zip",
+      "pathPattern": "<skill-root>/outputs/archives/<skill-name>-maintainer.zip",
+      "validationScope": "maintainer-release-bundle",
+      "generatedBy": "scripts/build-skill-archive.mjs and scripts/release-skill-archive.mjs",
+      "notes": [
+        "Full maintainer bundle kept alongside the public archive."
+      ]
+    },
+    "openSourceDevBundle": {
+      "canonicalName": "open-source developer bundle",
+      "addressKind": "fixed-local-git-target",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "<maintainer-parent>/hiui-design-open-source-dev-bundle",
+      "pathPattern": "<maintainer-parent>/hiui-design-open-source-dev-bundle",
+      "validationScope": "open-source-dev-bundle",
+      "generatedBy": "scripts/build-runtime-mirror.mjs --target open-source-dev-bundle",
+      "notes": [
+        "Local public-facing developer bundle used to validate the open-source package build and direct-use contract before publishing.",
+        "Keeps the vendored runtime tgz and public distribution helpers, but remains a generated view rather than a truth source."
+      ]
+    },
+    "openSourcePackage": {
+      "canonicalName": "open-source package",
+      "addressKind": "fixed-default-path",
+      "isSourceOfTruth": false,
+      "manualEditsPolicy": "generated-only",
+      "defaultPath": "~/.codex/skills/hiui-design-open-source",
+      "pathPattern": "~/.codex/skills/<skill-name>-open-source",
+      "validationScope": "open-source-package",
+      "generatedBy": "scripts/sync-open-source-package.mjs or scripts/sync-global-skill.mjs",
+      "notes": [
+        "Sanitized public package with usage collection disabled and private publishing/backends removed.",
+        "The physical target path can be overridden; current rules do not hardcode a single Git remote."
+      ]
+    }
+  },
+  "localExamples": {
+    "maintainerSource": "<maintainer-root>",
+    "activeSource": "<project-root>/.local-context/hiui-design",
+    "globalMirror": "<user-home>/.codex/skills/hiui-design",
+    "teamPackage": "<maintainer-parent>/hiui-design-team-package",
+    "projectView": "<project-root>/.local-context/hiui-design",
+    "openSourceDevBundle": "<maintainer-parent>/hiui-design-open-source-dev-bundle",
+    "openSourcePackage": "<maintainer-parent>/hiui-design-open-source",
+    "userArchive": "<maintainer-root>/outputs/archives/hiui-design.zip",
+    "maintainerArchive": "<maintainer-root>/outputs/archives/hiui-design-maintainer.zip"
+  },
+  "overrideMechanisms": [
+    {
+      "role": "teamPackage",
+      "mechanisms": [
+        "scripts/sync-global-skill.mjs --team-target <path>",
+        "scripts/manage-global-sync-launch-agent.mjs --team-target <path>",
+        "scripts/sync-team-package.mjs --target <path>"
+      ]
+    },
+    {
+      "role": "globalMirror",
+      "mechanisms": [
+        "scripts/sync-global-skill.mjs --global <path>",
+        "scripts/manage-global-sync-launch-agent.mjs --global <path>"
+      ]
+    },
+    {
+      "role": "openSourceDevBundle",
+      "mechanisms": [
+        "scripts/build-runtime-mirror.mjs --target open-source-dev-bundle --output <path>"
+      ]
+    },
+    {
+      "role": "openSourcePackage",
+      "mechanisms": [
+        "scripts/sync-global-skill.mjs --open-source-target <path>",
+        "scripts/manage-global-sync-launch-agent.mjs --open-source-target <path>",
+        "scripts/sync-open-source-package.mjs --target <path>"
+      ]
+    },
+    {
+      "role": "activeSource",
+      "mechanisms": [
+        "scripts/assert-maintainer-source.mjs --source <path>",
+        "scripts/manage-global-sync-launch-agent.mjs --source <path>",
+        "scripts/activate-current-project-global-sync.mjs"
+      ]
+    },
+    {
+      "role": "userArchive",
+      "mechanisms": [
+        "scripts/build-skill-archive.mjs --output <zip-path>",
+        "scripts/release-skill-archive.mjs --output <zip-path>"
+      ]
+    },
+    {
+      "role": "maintainerArchive",
+      "mechanisms": [
+        "scripts/build-skill-archive.mjs --maintainer-output <zip-path>"
+      ]
+    }
+  ],
+  "notes": [
+    "The current governance model is one local maintainer source plus multiple derived views, not multiple peer truth repositories.",
+    "Maintainer source is local-only; internal Git delivery should point to a generated teamPackage view instead.",
+    "projectView and activeSource can share the same physical directory but should not be described as the same governance role.",
+    "teamPackage defaults to the sibling directory <maintainer-parent>/hiui-design-team-package unless the sync command overrides it.",
+    "openSourceDevBundle defaults to the sibling directory <maintainer-parent>/hiui-design-open-source-dev-bundle for local public-package validation.",
+    "openSourcePackage should be generated from the sync/build pipeline rather than hand-maintained as a truth source."
+  ]
+}

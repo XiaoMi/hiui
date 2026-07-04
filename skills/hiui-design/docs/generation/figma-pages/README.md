@@ -15,15 +15,15 @@
 
 | 页型 | 文档 | 默认 `nodeId` |
 |------|------|---------------|
-| 全页编辑 / 新建 | [`edit.md`](edit.md) | `<figma-node-id>` |
-| 抽屉表单 / 编辑 | [`drawer-form.md`](drawer-form.md) | `<figma-node-id>` |
-| 抽屉只读详情 | [`drawer-detail.md`](drawer-detail.md) | `<figma-node-id>` |
-| 全页分组详情 | [`detail-group.md`](detail-group.md) | `<figma-node-id>` |
-| 数据统计表 | [`table-stat.md`](table-stat.md) | `<figma-node-id>` |
+| 全页编辑 / 新建 | [`edit.md`](edit.md) | `51257:102808` |
+| 抽屉表单 / 编辑 | [`drawer-form.md`](drawer-form.md) | `51728:128145` |
+| 抽屉只读详情 | [`drawer-detail.md`](drawer-detail.md) | `51728:131344` |
+| 全页分组详情 | [`detail-group.md`](detail-group.md) | `52409:60782` |
+| 数据统计表 | [`table-stat.md`](table-stat.md) | `51257:107076` |
 | 数据可视化 | [`data-visualization.md`](data-visualization.md) | 无独立默认节点 |
 | 异常反馈页 | [`feedback.md`](feedback.md) | 无独立默认节点 |
-| 左树右表 | [`tree-split.md`](tree-split.md) | `<figma-node-id>` |
-| 树形表格 | [`tree-table.md`](tree-table.md) | `<figma-node-id>` |
+| 左树右表 | [`tree-split.md`](tree-split.md) | `51257:107202` |
+| 树形表格 | [`tree-table.md`](tree-table.md) | `51257:107314` |
 
 ## 共享规则
 

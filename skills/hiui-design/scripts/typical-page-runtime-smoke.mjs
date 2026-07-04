@@ -10,6 +10,7 @@ import {
 import {
   getManagedPageRuntimeSmokeRequirement,
   getManagedPageSplitPaneContract,
+  getManagedPageTopologyId,
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
@@ -322,7 +323,13 @@ async function main() {
         : null
 
       const result = await page.evaluate((config) => {
-        const { mode, rootSelector, splitPaneContract } = config
+        const {
+          mode,
+          rootSelector,
+          splitPaneContract,
+          strictListCarrierRollout,
+          strictTableStatCarrierRollout,
+        } = config
         const root = document.querySelector(rootSelector)
         if (!(root instanceof HTMLElement)) {
           return {
@@ -331,6 +338,17 @@ async function main() {
         }
 
         const getRect = (element) => {
+          if (!(element instanceof HTMLElement)) {
+            return {
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              width: 0,
+              height: 0,
+            }
+          }
+
           const rect = element.getBoundingClientRect()
           return {
             top: rect.top + window.scrollY,
@@ -584,92 +602,188 @@ async function main() {
           }
         }
 
+        const contractPageTypeId = String(contractContext?.contract?.pageTypeId || '').trim()
+        const resolvedPageTypeId = String(root.dataset.hiui5PageType || contractPageTypeId || '').trim()
+        const isFullPageEditPage = resolvedPageTypeId === 'full-page-edit'
+        const isDrawerFormPage = resolvedPageTypeId === 'drawer-form'
+        const isFullPageDetailPage = resolvedPageTypeId === 'full-page-detail'
         const headerRegion = document.querySelector('[data-hiui5-region="header"]')
         const headerTitle = headerRegion?.querySelector('.hi-v5-page-header__title')
         const headerExtra = headerRegion?.querySelector('.hi-v5-page-header__extra')
         const whiteBody = root.querySelector('[data-hiui5-region="white-body"]')
+        const statSection = root.querySelector('[data-hiui5-region="stat-section"]')
+        const leftTreeRegion = root.querySelector('[data-hiui5-region="left-tree"]')
+        const rightListRegion = root.querySelector('[data-hiui5-region="right-list"]')
+        const splitWorkspaceRegion = root.querySelector('[data-hiui5-region="split-workspace"]')
+        const drawerShellRegion =
+          document.querySelector('[data-hiui5-owner-drawer-shell="true"]') ||
+          document.querySelector('[data-hiui5-region="drawer-shell"]') ||
+          document.querySelector('[data-hiui5-shell="ProFormDrawer"]')
+        const drawerBodyRegion = document.querySelector('[data-hiui5-region="drawer-body"]')
+        const detailBodyRegion = root.querySelector('[data-hiui5-region="detail-body"]')
+        const formBodyRegion = isDrawerFormPage
+          ? document.querySelector('[data-hiui5-region="form-body"]')
+          : root.querySelector('[data-hiui5-region="form-body"]')
+        const footerRegion = root.querySelector('[data-hiui5-region="footer"]')
+        const drawerFooterRegion = document.querySelector('[data-hiui5-region="drawer-footer"]')
+        const footerActionsRegion = isDrawerFormPage
+          ? document.querySelector('[data-hiui5-region="footer-actions"]')
+          : root.querySelector('[data-hiui5-region="footer-actions"]')
         const queryFilter = root.querySelector('[data-hiui5-region="query-filter"]')
         const tableRegion = root.querySelector('[data-hiui5-region="table"]')
 
-        if (!(whiteBody instanceof HTMLElement)) {
+        if (!isDrawerFormPage && !(whiteBody instanceof HTMLElement)) {
           return { fatal: 'Missing [data-hiui5-region="white-body"]' }
         }
 
-        if (!(queryFilter instanceof HTMLElement)) {
+        if (!isFullPageEditPage && !isDrawerFormPage && !isFullPageDetailPage && !(queryFilter instanceof HTMLElement)) {
           return { fatal: 'Missing [data-hiui5-region="query-filter"]' }
         }
 
-        if (!(tableRegion instanceof HTMLElement)) {
+        if (!isFullPageEditPage && !isDrawerFormPage && !isFullPageDetailPage && !(tableRegion instanceof HTMLElement)) {
           return { fatal: 'Missing [data-hiui5-region="table"]' }
         }
 
+        const queryFilterLabelCount =
+          queryFilter instanceof HTMLElement
+            ? Array.from(
+                queryFilter.querySelectorAll(
+                  'label, .hi-v5-form-item__label, [class*="form-item__label"]'
+                )
+              ).filter((element) => element instanceof HTMLElement).length
+            : 0
+        const queryFilterTextControl =
+          queryFilter instanceof HTMLElement
+            ? queryFilter.querySelector('input:not([type="hidden"])') ||
+              queryFilter.querySelector('textarea')
+            : null
+        const resolveControlSurfaceBackground = (element) => {
+          let current = element instanceof HTMLElement ? element : null
+          let depth = 0
+
+          while (current instanceof HTMLElement && current !== queryFilter && depth < 6) {
+            const style = window.getComputedStyle(current)
+            const backgroundColor = String(style.backgroundColor || '').trim()
+            if (
+              backgroundColor &&
+              backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+              backgroundColor !== 'transparent'
+            ) {
+              return backgroundColor
+            }
+
+            current = current.parentElement
+            depth += 1
+          }
+
+          return ''
+        }
+        const queryFilterControlSurfaceBackground =
+          queryFilterTextControl instanceof HTMLElement
+            ? resolveControlSurfaceBackground(queryFilterTextControl)
+            : ''
+
+        const whiteSurfaceHost = whiteBody instanceof HTMLElement ? whiteBody : root
         const headerRect = getRect(headerRegion)
         const headerTitleRect = getRect(headerTitle)
         const headerExtraRect = getRect(headerExtra)
         const headerPaddingBox = getPaddingBox(headerRegion)
         const rootRect = getRect(root)
-        const whiteRect = getRect(whiteBody)
+        const whiteRect = getRect(whiteSurfaceHost)
+        const statRect = getRect(statSection)
+        const detailBodyRect = getRect(detailBodyRegion)
+        const drawerBodyRect = getRect(drawerBodyRegion)
+        const formBodyRect = getRect(formBodyRegion)
+        const footerRect = getRect(footerRegion)
+        const drawerFooterRect = getRect(drawerFooterRegion)
+        const footerActionsRect = getRect(footerActionsRegion)
         const filterRect = getRect(queryFilter)
         const tableRect = getRect(tableRegion)
         const paginationRegion = root.querySelector('[data-hiui5-region="pagination"]')
         const paginationRect = getRect(paginationRegion)
+        const inlineTreeMarker =
+          root.getAttribute('data-hiui5-tree-table-presentation') === 'inline-tree' ||
+          (tableRegion instanceof HTMLElement &&
+            tableRegion.getAttribute('data-hiui5-tree-table-presentation') === 'inline-tree')
+        const inlineTreeSignalElement =
+          (tableRegion instanceof HTMLElement &&
+            (tableRegion.querySelector('[aria-expanded]') ||
+              tableRegion.querySelector('[aria-level]') ||
+              tableRegion.querySelector('[class*="tree-switch"]') ||
+              tableRegion.querySelector('[class*="tree-switcher"]') ||
+              tableRegion.querySelector('[class*="switcher"]'))) ||
+          null
         const rootHorizontalMetrics = inspectHorizontalBox(root)
-        const whiteHorizontalMetrics = inspectHorizontalBox(whiteBody)
-        const tableHorizontalMetrics = inspectHorizontalBox(tableRegion)
-        const tableHorizontalOwner = resolveHorizontalScrollOwnerWithin(tableRegion)
-        const firstTierSectionSurfaceViolations = Array.from(whiteBody.children)
-          .filter((element) => element instanceof HTMLElement)
-          .map((element) => {
-            const region = element.getAttribute('data-hiui5-region') || ''
-            const surface = getSurfaceBox(element)
-            const hasVisibleSurface =
-              surface.backgroundColor !== 'rgba(0, 0, 0, 0)' ||
-              surface.borderRadius > 0 ||
-              surface.borderTopWidth > 0
-            const hasLocalInset =
-              surface.paddingTop > 4 ||
-              surface.paddingRight > 4 ||
-              surface.paddingBottom > 4 ||
-              surface.paddingLeft > 4
-            const allowSurface =
-              region === 'query-filter' ||
-              (region === 'table' && element.getAttribute('data-hiui5-table-shell') === 'joined')
-
-            return {
-              label: describeElement(element),
-              region,
-              hasLocalInset,
-              hasVisibleSurface,
-              violates: !allowSurface && hasVisibleSurface && hasLocalInset,
-            }
-          })
-          .filter((item) => item.violates)
-        const articleOverlapViolations = Array.from(whiteBody.querySelectorAll('article'))
-          .filter((element) => element instanceof HTMLElement)
-          .flatMap((article) => {
-            const children = Array.from(article.children).filter((item) => item instanceof HTMLElement)
-            const articleLabel = describeElement(article)
-            const overlaps = []
-
-            for (let i = 0; i < children.length; i += 1) {
-              for (let j = i + 1; j < children.length; j += 1) {
-                const leftRect = children[i].getBoundingClientRect()
-                const rightRect = children[j].getBoundingClientRect()
-                const verticalOverlap =
-                  Math.min(leftRect.bottom, rightRect.bottom) - Math.max(leftRect.top, rightRect.top)
-                const horizontalOverlap =
-                  Math.min(leftRect.right, rightRect.right) - Math.max(leftRect.left, rightRect.left)
-
-                if (verticalOverlap > 2 && horizontalOverlap > 24) {
-                  overlaps.push(
-                    `${articleLabel}: child ${i + 1} overlaps child ${j + 1} by ${Math.round(verticalOverlap)}px`
-                  )
-                }
+        const whiteHorizontalMetrics = inspectHorizontalBox(whiteSurfaceHost)
+        const tableHorizontalMetrics =
+          tableRegion instanceof HTMLElement
+            ? inspectHorizontalBox(tableRegion)
+            : {
+                clientWidth: 0,
+                scrollWidth: 0,
+                overflow: { overflow: '', overflowX: '', overflowY: '' },
               }
-            }
+        const tableHorizontalOwner =
+          tableRegion instanceof HTMLElement
+            ? resolveHorizontalScrollOwnerWithin(tableRegion)
+            : null
+        const firstTierSectionSurfaceViolations = isDrawerFormPage
+          ? []
+          : Array.from(whiteSurfaceHost.children)
+              .filter((element) => element instanceof HTMLElement)
+              .map((element) => {
+                const region = element.getAttribute('data-hiui5-region') || ''
+                const surface = getSurfaceBox(element)
+                const hasVisibleSurface =
+                  surface.backgroundColor !== 'rgba(0, 0, 0, 0)' ||
+                  surface.borderRadius > 0 ||
+                  surface.borderTopWidth > 0
+                const hasLocalInset =
+                  surface.paddingTop > 4 ||
+                  surface.paddingRight > 4 ||
+                  surface.paddingBottom > 4 ||
+                  surface.paddingLeft > 4
+                const allowSurface =
+                  region === 'query-filter' ||
+                  (region === 'table' && element.getAttribute('data-hiui5-table-shell') === 'joined')
 
-            return overlaps
-          })
+                return {
+                  label: describeElement(element),
+                  region,
+                  hasLocalInset,
+                  hasVisibleSurface,
+                  violates: !allowSurface && hasVisibleSurface && hasLocalInset,
+                }
+              })
+              .filter((item) => item.violates)
+        const articleOverlapViolations = isDrawerFormPage
+          ? []
+          : Array.from(whiteSurfaceHost.querySelectorAll('article'))
+              .filter((element) => element instanceof HTMLElement)
+              .flatMap((article) => {
+                const children = Array.from(article.children).filter((item) => item instanceof HTMLElement)
+                const articleLabel = describeElement(article)
+                const overlaps = []
+
+                for (let i = 0; i < children.length; i += 1) {
+                  for (let j = i + 1; j < children.length; j += 1) {
+                    const leftRect = children[i].getBoundingClientRect()
+                    const rightRect = children[j].getBoundingClientRect()
+                    const verticalOverlap =
+                      Math.min(leftRect.bottom, rightRect.bottom) - Math.max(leftRect.top, rightRect.top)
+                    const horizontalOverlap =
+                      Math.min(leftRect.right, rightRect.right) - Math.max(leftRect.left, rightRect.left)
+
+                    if (verticalOverlap > 2 && horizontalOverlap > 24) {
+                      overlaps.push(
+                        `${articleLabel}: child ${i + 1} overlaps child ${j + 1} by ${Math.round(verticalOverlap)}px`
+                      )
+                    }
+                  }
+                }
+
+                return overlaps
+              })
 
         const pageScrollOwner = resolvePageScrollOwner()
         const pageScrollOwnerLabel = describeElement(pageScrollOwner)
@@ -685,7 +799,8 @@ async function main() {
         const afterScrollTop = pageScrollOwner ? pageScrollOwner.scrollTop : window.scrollY
 
         return {
-          pageType: root.dataset.hiui5PageType || '',
+          pageType: resolvedPageTypeId,
+          topology: root.dataset.hiui5Topology || '',
           scrollStrategy: root.dataset.hiui5ScrollStrategy || '',
           headerExists: headerRegion instanceof HTMLElement,
           headerExtraExists: headerExtra instanceof HTMLElement,
@@ -693,8 +808,84 @@ async function main() {
           headerTitleRect,
           headerExtraRect,
           headerPaddingBox,
+          strictListCarrierRollout,
+          strictTableStatCarrierRollout,
+          strictTreeTableCarrierRollout,
+          strictFullPageDetailCarrierRollout:
+            resolvedPageTypeId === 'full-page-detail' &&
+            String(
+              contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+            ).trim() === 'project-certified-carrier',
+          strictDrawerFormCarrierRollout:
+            resolvedPageTypeId === 'drawer-form' &&
+            String(
+              contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+            ).trim() === 'project-certified-carrier',
           rootRect,
           whiteRect,
+          statSectionExists: statSection instanceof HTMLElement,
+          statRect,
+          statSectionChildCount:
+            statSection instanceof HTMLElement ? statSection.children.length : 0,
+          leftTreeExists: leftTreeRegion instanceof HTMLElement,
+          rightListExists: rightListRegion instanceof HTMLElement,
+          splitWorkspaceExists: splitWorkspaceRegion instanceof HTMLElement,
+          detailBodyExists: detailBodyRegion instanceof HTMLElement,
+          detailBodyRect,
+          detailBodyOverflow:
+            detailBodyRegion instanceof HTMLElement
+              ? getOverflow(detailBodyRegion)
+              : { overflow: '', overflowX: '', overflowY: '' },
+          detailBodyInsideWhiteBody:
+            whiteBody instanceof HTMLElement &&
+            detailBodyRegion instanceof HTMLElement &&
+            whiteBody.contains(detailBodyRegion),
+          drawerShellExists: drawerShellRegion instanceof HTMLElement,
+          drawerBodyExists: drawerBodyRegion instanceof HTMLElement,
+          drawerBodyRect,
+          drawerBodyOverflow:
+            drawerBodyRegion instanceof HTMLElement
+              ? getOverflow(drawerBodyRegion)
+              : { overflow: '', overflowX: '', overflowY: '' },
+          drawerBodyInsideShell:
+            drawerShellRegion instanceof HTMLElement &&
+            drawerBodyRegion instanceof HTMLElement &&
+            drawerShellRegion.contains(drawerBodyRegion),
+          formBodyExists: formBodyRegion instanceof HTMLElement,
+          formBodyRect,
+          formBodyOverflow:
+            formBodyRegion instanceof HTMLElement
+              ? getOverflow(formBodyRegion)
+              : { overflow: '', overflowX: '', overflowY: '' },
+          footerExists: footerRegion instanceof HTMLElement,
+          footerRect,
+          drawerFooterExists: drawerFooterRegion instanceof HTMLElement,
+          drawerFooterRect,
+          drawerFooterInsideShell:
+            drawerShellRegion instanceof HTMLElement &&
+            drawerFooterRegion instanceof HTMLElement &&
+            drawerShellRegion.contains(drawerFooterRegion),
+          footerActionsExists: footerActionsRegion instanceof HTMLElement,
+          footerActionsRect,
+          footerInsideFormBody:
+            formBodyRegion instanceof HTMLElement &&
+            footerRegion instanceof HTMLElement &&
+            formBodyRegion.contains(footerRegion),
+          footerSharesParentWithFormBody:
+            formBodyRegion instanceof HTMLElement &&
+            footerRegion instanceof HTMLElement &&
+            formBodyRegion.parentElement === footerRegion.parentElement,
+          drawerFooterInsideFormBody:
+            formBodyRegion instanceof HTMLElement &&
+            drawerFooterRegion instanceof HTMLElement &&
+            formBodyRegion.contains(drawerFooterRegion),
+          drawerFooterSharesParentWithFormBody:
+            formBodyRegion instanceof HTMLElement &&
+            drawerFooterRegion instanceof HTMLElement &&
+            formBodyRegion.parentElement === drawerFooterRegion.parentElement,
+          inlineTreeMarker,
+          inlineTreeSignalExists: inlineTreeSignalElement instanceof HTMLElement,
+          inlineTreeSignalLabel: describeElement(inlineTreeSignalElement),
           filterRect,
           tableRect,
           paginationExists: paginationRegion instanceof HTMLElement,
@@ -705,8 +896,14 @@ async function main() {
           pageScrollOwner: pageScrollOwnerLabel,
           pageScrollOwnerClientHeight,
           pageScrollOwnerScrollHeight,
-          whiteOverflow: getOverflow(whiteBody),
-          tableOverflow: getOverflow(tableRegion),
+          queryFilterLabelCount,
+          queryFilterHasTextControl: queryFilterTextControl instanceof HTMLElement,
+          queryFilterControlSurfaceBackground,
+          whiteOverflow: getOverflow(whiteSurfaceHost),
+          tableOverflow:
+            tableRegion instanceof HTMLElement
+              ? getOverflow(tableRegion)
+              : { overflow: '', overflowX: '', overflowY: '' },
           rootClientWidth: rootHorizontalMetrics.clientWidth,
           rootScrollWidth: rootHorizontalMetrics.scrollWidth,
           rootHorizontalOverflow: rootHorizontalMetrics.overflow,
@@ -725,7 +922,9 @@ async function main() {
           firstTierSectionSurfaceViolations,
           articleOverlapViolations,
           paginationWithinTable:
-            paginationRegion instanceof HTMLElement && tableRegion.contains(paginationRegion),
+            paginationRegion instanceof HTMLElement &&
+            tableRegion instanceof HTMLElement &&
+            tableRegion.contains(paginationRegion),
         }
       }, {
         mode:
@@ -737,6 +936,33 @@ async function main() {
             : 'page-scroll',
         rootSelector,
         splitPaneContract,
+        strictListCarrierRollout:
+          ['table-basic', 'table-stat', 'tree-table'].includes(
+            String(contractContext?.contract?.pageTypeId || '').trim()
+          ) &&
+          String(
+            contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+          ).trim() === 'project-certified-carrier',
+        strictTableStatCarrierRollout:
+          String(contractContext?.contract?.pageTypeId || '').trim() === 'table-stat' &&
+          String(
+            contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+          ).trim() === 'project-certified-carrier',
+        strictTreeTableCarrierRollout:
+          String(contractContext?.contract?.pageTypeId || '').trim() === 'tree-table' &&
+          String(
+            contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+          ).trim() === 'project-certified-carrier',
+        strictFullPageEditCarrierRollout:
+          String(contractContext?.contract?.pageTypeId || '').trim() === 'full-page-edit' &&
+          String(
+            contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+          ).trim() === 'project-certified-carrier',
+        strictDrawerFormCarrierRollout:
+          String(contractContext?.contract?.pageTypeId || '').trim() === 'drawer-form' &&
+          String(
+            contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+          ).trim() === 'project-certified-carrier',
       })
 
       if (result.fatal) {
@@ -852,12 +1078,34 @@ async function main() {
           )
         )
       } else {
+        const expectedScrollStrategy = String(
+          contractContext?.contract?.scrollStrategy || 'page-scroll'
+        ).trim()
+        const topologyId =
+          getManagedPageTopologyId(contractContext?.contract) || String(result.topology || '').trim()
+        const isNonTypicalOverlay = topologyId === 'non-typical-overlay'
+        const isFullPageEditPage = String(result.pageType || '').trim() === 'full-page-edit'
+        const isDrawerFormPage = String(result.pageType || '').trim() === 'drawer-form'
+        const isFullPageDetailPage = String(result.pageType || '').trim() === 'full-page-detail'
+        const strictListCarrierRollout = Boolean(result.strictListCarrierRollout)
+        const strictTableStatCarrierRollout = Boolean(result.strictTableStatCarrierRollout)
+        const strictTreeTableCarrierRollout = Boolean(result.strictTreeTableCarrierRollout)
+        const strictFullPageDetailCarrierRollout = Boolean(result.strictFullPageDetailCarrierRollout)
+        const strictFullPageEditCarrierRollout = Boolean(result.strictFullPageEditCarrierRollout)
+        const strictDrawerFormCarrierRollout = Boolean(result.strictDrawerFormCarrierRollout)
         const pageFitsViewport =
           result.pageScrollOwnerScrollHeight <= result.pageScrollOwnerClientHeight + 24
         const pageCanScroll =
           pageFitsViewport ||
           (result.pageScrollOwnerScrollHeight > result.pageScrollOwnerClientHeight + 24 &&
             result.pageScrollMoves)
+        const headerExistsWhenRequired =
+          !(
+            strictListCarrierRollout ||
+            strictFullPageDetailCarrierRollout ||
+            strictFullPageEditCarrierRollout ||
+            strictDrawerFormCarrierRollout
+          ) || result.headerExists
         const headerKeepsSixtyPxBaseline =
           Math.round(result.headerRect.height) === 60 &&
           result.headerPaddingBox.paddingTop <= 1 &&
@@ -881,35 +1129,163 @@ async function main() {
           !result.headerExtraExists ||
           result.headerExtraRect.left >= result.headerTitleRect.right + 16
         const whiteBodyStartsNearHeader =
-          !result.headerExists || result.whiteRect.top - result.headerRect.bottom <= 8
-        const whiteBodyContinuous = result.whiteRect.bottom >= result.tableRect.bottom - 4
-        const tableAfterFilter = result.tableRect.top >= result.filterRect.bottom - 4
+          isDrawerFormPage ||
+          !result.headerExists ||
+          result.whiteRect.top - result.headerRect.bottom <= 8
+        const whiteBodyContinuous = isFullPageDetailPage
+          ? result.whiteRect.bottom >= result.detailBodyRect.bottom - 4
+          : isFullPageEditPage ||
+            isDrawerFormPage ||
+            result.whiteRect.bottom >= result.tableRect.bottom - 4
+        const tableAfterFilter =
+          isNonTypicalOverlay ||
+          isFullPageEditPage ||
+          isDrawerFormPage ||
+          isFullPageDetailPage ||
+          result.tableRect.top >= result.filterRect.bottom - 4
         const dashboardControlStripCompact =
-          result.pageType !== 'data-visualization' || result.filterRect.height <= 72
+          isNonTypicalOverlay ||
+          isFullPageEditPage ||
+          isDrawerFormPage ||
+          isFullPageDetailPage ||
+          result.pageType !== 'data-visualization' ||
+          result.filterRect.height <= 72
+        const scrollStrategyMatchesContract =
+          expectedScrollStrategy ? result.scrollStrategy === expectedScrollStrategy : Boolean(result.scrollStrategy)
         const whiteBodyDoesNotClip =
+          isDrawerFormPage ||
           !['hidden', 'auto', 'scroll'].includes(result.whiteOverflow.overflowY) &&
           !['hidden', 'auto', 'scroll'].includes(result.whiteOverflow.overflow)
         const tableWrapperDoesNotScroll =
+          isDrawerFormPage ||
+          isFullPageDetailPage ||
           !['auto', 'scroll'].includes(result.tableOverflow.overflowY) &&
           !['auto', 'scroll'].includes(result.tableOverflow.overflow)
         const rootDoesNotOverflowHorizontally = result.rootScrollWidth <= result.rootClientWidth + 4
         const whiteBodyDoesNotOverflowHorizontally =
+          isDrawerFormPage ||
           result.whiteScrollWidth <= result.whiteClientWidth + 4
-        const tableRegionDoesNotOwnHorizontalOverflow = !result.tableRegionOwnsHorizontalOverflow
+        const tableRegionDoesNotOwnHorizontalOverflow =
+          isDrawerFormPage || isFullPageDetailPage || !result.tableRegionOwnsHorizontalOverflow
         const tableHorizontalOverflowIsContained =
+          isDrawerFormPage ||
+          isFullPageDetailPage ||
           !result.tableHorizontalOwnerExists ||
           (result.tableHorizontalOwnerWithinTable && !result.tableHorizontalOwnerIsRegion)
+        const normalizedQueryFilterSurface = String(
+          result.queryFilterControlSurfaceBackground || ''
+        )
+          .replace(/\s+/g, '')
+          .toLowerCase()
+        const queryFilterHasNoExternalLabels =
+          !strictListCarrierRollout || result.queryFilterLabelCount === 0
+        const queryFilterKeepsFilledSurface =
+          !strictListCarrierRollout ||
+          !result.queryFilterHasTextControl ||
+          ![
+            '',
+            'transparent',
+            'rgba(0,0,0,0)',
+            'rgb(255,255,255)',
+            'rgba(255,255,255,1)',
+          ].includes(normalizedQueryFilterSurface)
+        const statSectionExistsWhenRequired =
+          !strictTableStatCarrierRollout || result.statSectionExists
+        const statSectionLooksPopulated =
+          !strictTableStatCarrierRollout ||
+          (result.statSectionChildCount > 0 && Math.round(result.statRect.height) >= 40)
+        const statSectionBeforeQueryFilter =
+          !strictTableStatCarrierRollout || result.filterRect.top >= result.statRect.bottom - 4
+        const treeTableAvoidsSplitWorkspace =
+          !strictTreeTableCarrierRollout ||
+          (!result.leftTreeExists && !result.rightListExists && !result.splitWorkspaceExists)
+        const treeTableShowsInlineTreeAffordance =
+          !strictTreeTableCarrierRollout ||
+          result.inlineTreeMarker ||
+          result.inlineTreeSignalExists
+        const detailBodyExistsWhenRequired =
+          !strictFullPageDetailCarrierRollout || result.detailBodyExists
+        const detailBodyInsideWhiteBodyWhenRequired =
+          !strictFullPageDetailCarrierRollout ||
+          (result.detailBodyExists && result.detailBodyInsideWhiteBody)
+        const detailBodyKeepsPageScrollWhenRequired =
+          !strictFullPageDetailCarrierRollout ||
+          (!['hidden', 'auto', 'scroll'].includes(result.detailBodyOverflow.overflowY) &&
+            !['hidden', 'auto', 'scroll'].includes(result.detailBodyOverflow.overflow))
+        const detailBodyLooksPopulatedWhenRequired =
+          !strictFullPageDetailCarrierRollout ||
+          Math.round(result.detailBodyRect.height) >= 40
+        const formBodyExistsWhenRequired =
+          !strictFullPageEditCarrierRollout || result.formBodyExists
+        const footerExistsWhenRequired =
+          !strictFullPageEditCarrierRollout || result.footerExists
+        const footerActionsExistWhenRequired =
+          !strictFullPageEditCarrierRollout || result.footerActionsExists
+        const drawerFormBodyExistsWhenRequired =
+          !strictDrawerFormCarrierRollout || result.formBodyExists
+        const drawerFooterActionsExistWhenRequired =
+          !strictDrawerFormCarrierRollout || result.footerActionsExists
+        const formBodyKeepsScrollOwnerWhenRequired =
+          !strictFullPageEditCarrierRollout ||
+          ['auto', 'scroll'].includes(result.formBodyOverflow.overflowY) ||
+          ['auto', 'scroll'].includes(result.formBodyOverflow.overflow)
+        const footerStaysOutsideFormBody =
+          !strictFullPageEditCarrierRollout ||
+          (result.formBodyExists &&
+            result.footerExists &&
+            !result.footerInsideFormBody &&
+            result.footerSharesParentWithFormBody)
+        const footerActionsDockRightWhenRequired =
+          !strictFullPageEditCarrierRollout ||
+          !result.footerActionsExists ||
+          Math.abs(result.footerRect.right - result.footerActionsRect.right) <= 24
         const topLevelSectionsKeepSingleWhiteBodySurface =
+          isDrawerFormPage ||
           result.firstTierSectionSurfaceViolations.length === 0
-        const articlesDoNotOverlap = result.articleOverlapViolations.length === 0
+        const articlesDoNotOverlap =
+          isDrawerFormPage || result.articleOverlapViolations.length === 0
+        const drawerShellExistsWhenRequired =
+          !strictDrawerFormCarrierRollout || result.drawerShellExists
+        const drawerBodyExistsWhenRequired =
+          !strictDrawerFormCarrierRollout || result.drawerBodyExists
+        const drawerFooterExistsWhenRequired =
+          !strictDrawerFormCarrierRollout || result.drawerFooterExists
+        const drawerBodyKeepsScrollOwnerWhenRequired =
+          !strictDrawerFormCarrierRollout ||
+          ['auto', 'scroll'].includes(result.drawerBodyOverflow.overflowY) ||
+          ['auto', 'scroll'].includes(result.drawerBodyOverflow.overflow)
+        const drawerRegionsStayInsideShellWhenRequired =
+          !strictDrawerFormCarrierRollout ||
+          ((result.drawerBodyExists ? result.drawerBodyInsideShell : true) &&
+            (result.drawerFooterExists ? result.drawerFooterInsideShell : true))
+        const drawerFooterStaysOutsideFormBody =
+          !strictDrawerFormCarrierRollout ||
+          (result.formBodyExists &&
+            result.drawerFooterExists &&
+            !result.drawerFooterInsideFormBody &&
+            result.drawerFooterSharesParentWithFormBody)
+        const drawerFooterActionsDockRightWhenRequired =
+          !strictDrawerFormCarrierRollout ||
+          !result.footerActionsExists ||
+          Math.abs(result.drawerFooterRect.right - result.footerActionsRect.right) <= 24
         const paginationStaysInsideTableShell =
-          result.paginationExists && result.paginationWithinTable
+          isFullPageEditPage ||
+          isDrawerFormPage ||
+          isFullPageDetailPage ||
+          (result.paginationExists && result.paginationWithinTable)
 
         checks.push(
           formatCheck(
-            result.scrollStrategy === 'page-scroll',
-            'scroll strategy is page-scroll',
-            `actual: ${result.scrollStrategy || '(missing)'}`
+            headerExistsWhenRequired,
+            'strict rollout carriers expose a machine-checkable header region',
+            `strictCarrier=${String(strictListCarrierRollout)}, headerExists=${String(result.headerExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            scrollStrategyMatchesContract,
+            'scroll strategy matches contract',
+            `expected: ${expectedScrollStrategy || '(declared)'}, actual: ${result.scrollStrategy || '(missing)'}`
           )
         )
         checks.push(
@@ -964,22 +1340,218 @@ async function main() {
         checks.push(
           formatCheck(
             whiteBodyContinuous,
-            'white-body extends through the table region',
-            `whiteBody.bottom=${Math.round(result.whiteRect.bottom)}, table.bottom=${Math.round(result.tableRect.bottom)}`
+            isFullPageDetailPage
+              ? 'white-body extends through the managed detail-body region'
+              : 'white-body extends through the table region',
+            isFullPageDetailPage
+              ? `whiteBody.bottom=${Math.round(result.whiteRect.bottom)}, detailBody.bottom=${Math.round(result.detailBodyRect.bottom)}`
+              : `whiteBody.bottom=${Math.round(result.whiteRect.bottom)}, table.bottom=${Math.round(result.tableRect.bottom)}`
           )
         )
         checks.push(
           formatCheck(
             dashboardControlStripCompact,
-            'dashboard control strip stays compact on the desktop baseline viewport',
-            `pageType=${result.pageType || '(missing)'}, filter.height=${Math.round(result.filterRect.height)}`
+            isNonTypicalOverlay
+              ? 'overlay query-filter is allowed to render as a managed side pane'
+              : isFullPageDetailPage
+                ? 'full-page-detail does not require a query-filter control strip'
+              : 'dashboard control strip stays compact on the desktop baseline viewport',
+            `topology=${topologyId || '(not-declared)'}, pageType=${result.pageType || '(missing)'}, filter.height=${Math.round(result.filterRect.height)}`
           )
         )
         checks.push(
           formatCheck(
             tableAfterFilter,
-            'table region remains visible below query filter',
-            `filter.bottom=${Math.round(result.filterRect.bottom)}, table.top=${Math.round(result.tableRect.top)}`
+            isNonTypicalOverlay
+              ? 'overlay table region is allowed to sit beside the query-filter pane'
+              : isFullPageDetailPage
+                ? 'full-page-detail does not require a managed table region below QueryFilter'
+              : 'table region remains visible below query filter',
+            isFullPageDetailPage
+              ? `detailBody.top=${Math.round(result.detailBodyRect.top)}, whiteBody.top=${Math.round(result.whiteRect.top)}`
+              : `filter.bottom=${Math.round(result.filterRect.bottom)}, table.top=${Math.round(result.tableRect.top)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            statSectionExistsWhenRequired,
+            'strict table-stat carriers expose a machine-checkable stat-section region',
+            `strictTableStat=${String(strictTableStatCarrierRollout)}, statSectionExists=${String(result.statSectionExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            statSectionLooksPopulated,
+            'strict table-stat carriers keep a visible metric card section before the list content',
+            `strictTableStat=${String(strictTableStatCarrierRollout)}, statHeight=${Math.round(result.statRect.height)}, childCount=${result.statSectionChildCount}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            statSectionBeforeQueryFilter,
+            'strict table-stat carriers keep stat-section above QueryFilter',
+            `strictTableStat=${String(strictTableStatCarrierRollout)}, stat.bottom=${Math.round(result.statRect.bottom)}, filter.top=${Math.round(result.filterRect.top)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            treeTableAvoidsSplitWorkspace,
+            'strict tree-table carriers keep tree semantics inside the single table region',
+            `strictTreeTable=${String(strictTreeTableCarrierRollout)}, leftTree=${String(result.leftTreeExists)}, rightList=${String(result.rightListExists)}, splitWorkspace=${String(result.splitWorkspaceExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            treeTableShowsInlineTreeAffordance,
+            'strict tree-table carriers keep a visible inline-tree affordance in the table region',
+            `strictTreeTable=${String(strictTreeTableCarrierRollout)}, marker=${String(result.inlineTreeMarker)}, signalExists=${String(result.inlineTreeSignalExists)}, signal=${result.inlineTreeSignalLabel || '(missing)'}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            detailBodyExistsWhenRequired,
+            'strict full-page-detail carriers expose a machine-checkable detail-body region',
+            `strictFullPageDetail=${String(strictFullPageDetailCarrierRollout)}, detailBodyExists=${String(result.detailBodyExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            detailBodyInsideWhiteBodyWhenRequired,
+            'strict full-page-detail carriers keep detail-body inside the managed white-body workspace',
+            `strictFullPageDetail=${String(strictFullPageDetailCarrierRollout)}, detailBodyInsideWhiteBody=${String(result.detailBodyInsideWhiteBody)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            detailBodyKeepsPageScrollWhenRequired,
+            'strict full-page-detail carriers keep page scroll on the shell instead of creating a nested detail-body scroll',
+            `strictFullPageDetail=${String(strictFullPageDetailCarrierRollout)}, overflow=${result.detailBodyOverflow.overflow}, overflowY=${result.detailBodyOverflow.overflowY}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            detailBodyLooksPopulatedWhenRequired,
+            'strict full-page-detail carriers keep a visible detail-body workspace',
+            `strictFullPageDetail=${String(strictFullPageDetailCarrierRollout)}, detailBody.height=${Math.round(result.detailBodyRect.height)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            formBodyExistsWhenRequired,
+            'strict full-page-edit carriers expose a machine-checkable form-body region',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, formBodyExists=${String(result.formBodyExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            footerExistsWhenRequired,
+            'strict full-page-edit carriers expose a machine-checkable footer region',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, footerExists=${String(result.footerExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            footerActionsExistWhenRequired,
+            'strict full-page-edit carriers expose a machine-checkable footer-actions region',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, footerActionsExists=${String(result.footerActionsExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            formBodyKeepsScrollOwnerWhenRequired,
+            'strict full-page-edit carriers keep form-body as the scroll owner',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, overflow=${result.formBodyOverflow.overflow}, overflowY=${result.formBodyOverflow.overflowY}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            footerStaysOutsideFormBody,
+            'strict full-page-edit carriers keep footer outside form-body as a sticky sibling',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, footerInsideFormBody=${String(result.footerInsideFormBody)}, sharesParent=${String(result.footerSharesParentWithFormBody)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            footerActionsDockRightWhenRequired,
+            'strict full-page-edit carriers keep footer actions docked to the right edge',
+            `strictFullPageEdit=${String(strictFullPageEditCarrierRollout)}, footer.right=${Math.round(result.footerRect.right)}, footerActions.right=${Math.round(result.footerActionsRect.right)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerShellExistsWhenRequired,
+            'strict drawer-form carriers expose a machine-checkable drawer shell',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerShellExists=${String(result.drawerShellExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerBodyExistsWhenRequired,
+            'strict drawer-form carriers expose a machine-checkable drawer-body region',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerBodyExists=${String(result.drawerBodyExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerFormBodyExistsWhenRequired,
+            'strict drawer-form carriers expose a machine-checkable form-body region',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, formBodyExists=${String(result.formBodyExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerFooterExistsWhenRequired,
+            'strict drawer-form carriers expose a machine-checkable drawer-footer region',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerFooterExists=${String(result.drawerFooterExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerFooterActionsExistWhenRequired,
+            'strict drawer-form carriers expose a machine-checkable footer-actions region',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, footerActionsExists=${String(result.footerActionsExists)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerBodyKeepsScrollOwnerWhenRequired,
+            'strict drawer-form carriers keep drawer-body as the scroll owner',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, overflow=${result.drawerBodyOverflow.overflow}, overflowY=${result.drawerBodyOverflow.overflowY}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerRegionsStayInsideShellWhenRequired,
+            'strict drawer-form carriers keep drawer-body and drawer-footer inside the governed drawer shell',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerBodyInsideShell=${String(result.drawerBodyInsideShell)}, drawerFooterInsideShell=${String(result.drawerFooterInsideShell)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerFooterStaysOutsideFormBody,
+            'strict drawer-form carriers keep drawer-footer outside form-body as a bottom sibling',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerFooterInsideFormBody=${String(result.drawerFooterInsideFormBody)}, sharesParent=${String(result.drawerFooterSharesParentWithFormBody)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            drawerFooterActionsDockRightWhenRequired,
+            'strict drawer-form carriers keep footer actions docked to the right edge of drawer-footer',
+            `strictDrawerForm=${String(strictDrawerFormCarrierRollout)}, drawerFooter.right=${Math.round(result.drawerFooterRect.right)}, footerActions.right=${Math.round(result.footerActionsRect.right)}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            queryFilterHasNoExternalLabels,
+            'strict rollout carriers keep QueryFilter on the no-label baseline',
+            `strictCarrier=${String(strictListCarrierRollout)}, labelCount=${result.queryFilterLabelCount}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            queryFilterKeepsFilledSurface,
+            'strict rollout carriers keep query inputs on a non-white filled surface',
+            `strictCarrier=${String(strictListCarrierRollout)}, hasTextControl=${String(result.queryFilterHasTextControl)}, surface=${result.queryFilterControlSurfaceBackground || '(missing)'}`
           )
         )
         checks.push(
@@ -1058,6 +1630,7 @@ async function main() {
         `- url: ${options.url}`,
         `- page: ${options.page || '(not-bound-to-contract)'}`,
         `- page type: ${result.pageType || '(missing)'}`,
+        `- topology: ${result.topology || getManagedPageTopologyId(contractContext?.contract) || '(not-declared)'}`,
         `- scroll strategy: ${result.scrollStrategy || '(missing)'}`,
         ...(result.mode === 'split-pane'
           ? [

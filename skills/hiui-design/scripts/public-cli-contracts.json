@@ -21,45 +21,1397 @@
         ],
         "fixture": "scripts/tests/fixtures/public-cli/plan-page-task.table-stat.json",
         "requiredTopLevelFields": [
+          "schemaVersion",
           "version",
           "contractVersion",
           "taskLevel",
+          "deliveryLevel",
           "mode",
+          "topology",
+          "intentUnits",
+          "pageUnits",
           "pageType",
           "isNonTypical",
           "layoutOverlayRequired",
+          "fastPath",
+          "generationStrategy",
+          "generationRecipe",
+          "deliverySummaryProfile",
+          "analyticsContractRequired",
+          "customizationLevel",
+          "fallbackGenerationAsset",
+          "primaryGenerationAsset",
+          "generationStrategyId",
+          "projectMode",
+          "extensionPolicy",
+          "pageComponent",
+          "i18nMode",
+          "pageTypeDocs",
+          "startFrom",
           "requiredDocs",
           "requiredCommands",
+          "formalAcceptanceCommands",
           "conditionalCommands",
           "contractFieldsNeeded",
           "kickoffSkeleton",
           "runtimeSmokePlan",
           "usagePolicy",
           "factsSource",
+          "targetPage",
           "canStartImplementation",
           "blockingReasons",
-          "decisionTracePath"
+          "blockingIssues",
+          "formalAcceptanceActions",
+          "acceptanceReasons",
+          "acceptanceLevel",
+          "acceptanceProfile",
+          "requiredActions",
+          "status",
+          "suggestedPageTypes",
+          "decisionTracePath",
+          "finalReportContract",
+          "projectCapabilities"
         ],
         "requiredNestedFields": [
           {
-            "path": ["taskLevel"],
-            "fields": ["id", "source"]
+            "path": [
+              "taskLevel"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
           },
           {
-            "path": ["mode"],
-            "fields": ["id", "source"]
+            "path": [
+              "deliveryLevel"
+            ],
+            "fields": [
+              "id",
+              "label",
+              "source",
+              "reason"
+            ]
           },
           {
-            "path": ["pageType"],
-            "fields": ["id", "label", "source"]
+            "path": [
+              "mode"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
           },
           {
-            "path": ["runtimeSmokePlan"],
-            "fields": ["required", "command"]
+            "path": [
+              "pageType"
+            ],
+            "fields": [
+              "id",
+              "label",
+              "source"
+            ]
           },
           {
-            "path": ["usagePolicy"],
-            "fields": ["mode", "source", "requireNetworkAuthorization"]
+            "path": [
+              "topology"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "confidence",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "fastPath"
+            ],
+            "fields": [
+              "eligible",
+              "entry",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "generationStrategy"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "reason",
+              "normalizedId"
+            ]
+          },
+          {
+            "path": [
+              "generationRecipe"
+            ],
+            "fields": [
+              "startingPoint",
+              "assemblyOrder",
+              "requiredAssets",
+              "forbiddenMoves"
+            ]
+          },
+          {
+            "path": [
+              "extensionPolicy"
+            ],
+            "fields": [
+              "schemaVersion",
+              "source",
+              "status",
+              "defaultLevel",
+              "maxLightweightLevel",
+              "supportedLevels",
+              "rules"
+            ]
+          },
+          {
+            "path": [
+              "pageComponent"
+            ],
+            "fields": [
+              "schemaVersion",
+              "selected",
+              "componentId",
+              "pageTypeId",
+              "mode",
+              "source",
+              "reason",
+              "candidates"
+            ]
+          },
+          {
+            "path": [
+              "startFrom"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "templatePath",
+              "examplePath",
+              "hostArchetypePath",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "i18nMode"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "runtimeSmokePlan"
+            ],
+            "fields": [
+              "required",
+              "command"
+            ]
+          },
+          {
+            "path": [
+              "usagePolicy"
+            ],
+            "fields": [
+              "mode",
+              "source",
+              "requireNetworkAuthorization"
+            ]
+          },
+          {
+            "path": [
+              "requiredActions",
+              "0"
+            ],
+            "fields": [
+              "id",
+              "phase",
+              "tool",
+              "command",
+              "args",
+              "required",
+              "reason",
+              "produces",
+              "displayCommand"
+            ]
+          },
+          {
+            "path": [
+              "acceptanceReasons",
+              "0"
+            ],
+            "fields": [
+              "source",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "acceptanceProfile"
+            ],
+            "fields": [
+              "level",
+              "source",
+              "reason",
+              "formalRequired",
+              "defaultActions",
+              "finalReportSections"
+            ]
+          },
+          {
+            "path": [
+              "finalReportContract"
+            ],
+            "fields": [
+              "schemaVersion",
+              "sections",
+              "requiredStatusFields",
+              "statusFields",
+              "requiredEvidence",
+              "riskFields",
+              "rules"
+            ]
+          },
+          {
+            "path": [
+              "projectCapabilities"
+            ],
+            "fields": [
+              "schemaVersion",
+              "projectRootValid",
+              "mode",
+              "assets",
+              "missingCapabilities"
+            ]
+          },
+          {
+            "path": [
+              "primaryGenerationAsset"
+            ],
+            "fields": [
+              "type",
+              "id",
+              "status",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "fallbackGenerationAsset"
+            ],
+            "fields": [
+              "type",
+              "id",
+              "status",
+              "trigger",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "deliverySummaryProfile"
+            ],
+            "fields": [
+              "schemaVersion",
+              "id",
+              "defaultOutput",
+              "fullReportRequired",
+              "requiredFields",
+              "fullReportTriggers"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "plan-page-task-formal",
+        "script": "scripts/plan-page-task.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--change",
+          "正式验收一个数据统计表页面，跑 source-gate doctor finalize",
+          "--page-type",
+          "table-stat",
+          "--mode",
+          "rules-only",
+          "--target",
+          "<skillRoot>",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/plan-page-task.table-stat-formal.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "version",
+          "contractVersion",
+          "taskLevel",
+          "deliveryLevel",
+          "mode",
+          "topology",
+          "intentUnits",
+          "pageUnits",
+          "pageType",
+          "isNonTypical",
+          "layoutOverlayRequired",
+          "fastPath",
+          "generationStrategy",
+          "generationRecipe",
+          "extensionPolicy",
+          "pageComponent",
+          "i18nMode",
+          "pageTypeDocs",
+          "startFrom",
+          "requiredDocs",
+          "requiredCommands",
+          "formalAcceptanceCommands",
+          "conditionalCommands",
+          "contractFieldsNeeded",
+          "kickoffSkeleton",
+          "runtimeSmokePlan",
+          "usagePolicy",
+          "factsSource",
+          "targetPage",
+          "canStartImplementation",
+          "blockingReasons",
+          "blockingIssues",
+          "formalAcceptanceActions",
+          "acceptanceReasons",
+          "acceptanceLevel",
+          "acceptanceProfile",
+          "requiredActions",
+          "status",
+          "suggestedPageTypes",
+          "decisionTracePath",
+          "finalReportContract",
+          "projectCapabilities"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "taskLevel"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "deliveryLevel"
+            ],
+            "fields": [
+              "id",
+              "label",
+              "source",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "mode"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "pageType"
+            ],
+            "fields": [
+              "id",
+              "label",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "topology"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "confidence",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "fastPath"
+            ],
+            "fields": [
+              "eligible",
+              "entry",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "generationStrategy"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "generationRecipe"
+            ],
+            "fields": [
+              "startingPoint",
+              "assemblyOrder",
+              "requiredAssets",
+              "forbiddenMoves"
+            ]
+          },
+          {
+            "path": [
+              "extensionPolicy"
+            ],
+            "fields": [
+              "schemaVersion",
+              "source",
+              "status",
+              "defaultLevel",
+              "maxLightweightLevel",
+              "supportedLevels",
+              "rules"
+            ]
+          },
+          {
+            "path": [
+              "pageComponent"
+            ],
+            "fields": [
+              "schemaVersion",
+              "selected",
+              "componentId",
+              "pageTypeId",
+              "mode",
+              "source",
+              "reason",
+              "candidates"
+            ]
+          },
+          {
+            "path": [
+              "startFrom"
+            ],
+            "fields": [
+              "id",
+              "source",
+              "templatePath",
+              "examplePath",
+              "hostArchetypePath",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "i18nMode"
+            ],
+            "fields": [
+              "id",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "runtimeSmokePlan"
+            ],
+            "fields": [
+              "required",
+              "command"
+            ]
+          },
+          {
+            "path": [
+              "usagePolicy"
+            ],
+            "fields": [
+              "mode",
+              "source",
+              "requireNetworkAuthorization"
+            ]
+          },
+          {
+            "path": [
+              "requiredActions",
+              "0"
+            ],
+            "fields": [
+              "id",
+              "phase",
+              "tool",
+              "command",
+              "args",
+              "required",
+              "reason",
+              "produces",
+              "displayCommand"
+            ]
+          },
+          {
+            "path": [
+              "acceptanceReasons",
+              "0"
+            ],
+            "fields": [
+              "source",
+              "reason"
+            ]
+          },
+          {
+            "path": [
+              "acceptanceProfile"
+            ],
+            "fields": [
+              "level",
+              "source",
+              "reason",
+              "formalRequired",
+              "defaultActions",
+              "finalReportSections"
+            ]
+          },
+          {
+            "path": [
+              "finalReportContract"
+            ],
+            "fields": [
+              "schemaVersion",
+              "sections",
+              "requiredStatusFields",
+              "statusFields",
+              "requiredEvidence",
+              "riskFields",
+              "rules"
+            ]
+          },
+          {
+            "path": [
+              "projectCapabilities"
+            ],
+            "fields": [
+              "schemaVersion",
+              "projectRootValid",
+              "mode",
+              "assets",
+              "missingCapabilities"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-capabilities",
+        "script": "scripts/typical-page-capabilities.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/capabilities.skill-root.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "projectRoot",
+          "projectRootValid",
+          "mode",
+          "versions",
+          "assets",
+          "routing",
+          "i18n",
+          "managedPages",
+          "governance",
+          "missingCapabilities"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "mode"
+            ],
+            "fields": [
+              "id",
+              "locked",
+              "source"
+            ]
+          },
+          {
+            "path": [
+              "assets"
+            ],
+            "fields": [
+              "molds",
+              "adapters",
+              "regions"
+            ]
+          },
+          {
+            "path": [
+              "routing"
+            ],
+            "fields": [
+              "type",
+              "businessPageRoot",
+              "status"
+            ]
+          },
+          {
+            "path": [
+              "i18n"
+            ],
+            "fields": [
+              "mode",
+              "status",
+              "source"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-project-capabilities.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-list-assets-molds",
+        "script": "scripts/typical-page-list-assets.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "molds",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/list-assets.molds.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "target",
+          "items"
+        ],
+        "requiredNestedFields": [],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-list-assets-page-components",
+        "script": "scripts/typical-page-list-assets.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "page-components",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/list-assets.page-components.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "target",
+          "items"
+        ],
+        "requiredNestedFields": [],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-inspect-asset-mold-table-basic",
+        "script": "scripts/typical-page-inspect-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "mold",
+          "--id",
+          "table-basic",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.table-basic.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "assetId",
+          "moldId",
+          "designSummary",
+          "machineRules"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "designSummary"
+            ],
+            "fields": [
+              "pageType",
+              "suitableFor",
+              "structure",
+              "editableAreas",
+              "lockedAreas",
+              "risks"
+            ]
+          },
+          {
+            "path": [
+              "machineRules"
+            ],
+            "fields": [
+              "requiredRegions",
+              "lockedRegions",
+              "editableSlots",
+              "requiredValidation"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-inspect-asset-page-component-legacy-table-basic",
+        "script": "scripts/typical-page-inspect-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "page-component",
+          "--id",
+          "legacy-table-basic-page.v1",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.legacy-table-basic-page.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "assetId",
+          "componentId",
+          "pageTypeId",
+          "baseMoldId",
+          "mode",
+          "designSummary",
+          "machineRules"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "designSummary"
+            ],
+            "fields": [
+              "purpose",
+              "structureSource",
+              "editableAreas",
+              "lockedAreas",
+              "controlledExtensions",
+              "risks"
+            ]
+          },
+          {
+            "path": [
+              "machineRules"
+            ],
+            "fields": [
+              "implementationKind",
+              "status",
+              "certificationStatus",
+              "fallbackPolicy",
+              "inheritedLockedRegions",
+              "inheritedEditableSlots",
+              "requiredValidation"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-add-asset-mold-table-basic-dry-run",
+        "script": "scripts/typical-page-add-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "mold",
+          "--id",
+          "table-basic",
+          "--dry-run",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/add-asset.table-basic-dry-run.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "target",
+          "asset",
+          "sideEffects",
+          "plannedFiles",
+          "blockingReasons",
+          "requiredConfirmations",
+          "suggestedRequiredAction"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id",
+              "moldId"
+            ]
+          },
+          {
+            "path": [
+              "sideEffects"
+            ],
+            "fields": [
+              "writesBusinessSource",
+              "overwritesExistingFiles",
+              "changesRoutes",
+              "changesGlobalTemplates"
+            ]
+          },
+          {
+            "path": [
+              "suggestedRequiredAction"
+            ],
+            "fields": [
+              "id",
+              "dryRunOnly"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-add-preview.v1 and status=preview",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "dry-run only; repeated runs do not change project or skill files",
+        "sideEffects": "none in v1.0 because --dry-run is required"
+      },
+      {
+        "id": "typical-page-list-assets-adapters",
+        "script": "scripts/typical-page-list-assets.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "adapters",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/list-assets.adapters.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "target",
+          "items"
+        ],
+        "requiredNestedFields": [],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-inspect-asset-adapter-layout-search-table",
+        "script": "scripts/typical-page-inspect-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "adapter",
+          "--id",
+          "layout-search-table-adapter",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.layout-search-table-adapter.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "assetType",
+          "assetId",
+          "designSummary",
+          "machineRules"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "designSummary"
+            ],
+            "fields": [
+              "name",
+              "suitableFor",
+              "editableAreas",
+              "lockedAreas",
+              "risks"
+            ]
+          },
+          {
+            "path": [
+              "machineRules"
+            ],
+            "fields": [
+              "supportedModes",
+              "allowedResponsibilities",
+              "forbiddenResponsibilities",
+              "requiredValidation"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-add-asset-adapter-layout-search-table-dry-run",
+        "script": "scripts/typical-page-add-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "adapter",
+          "--id",
+          "layout-search-table-adapter",
+          "--dry-run",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/add-asset.layout-search-table-adapter-dry-run.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "target",
+          "asset",
+          "sideEffects",
+          "plannedFiles",
+          "blockingReasons",
+          "requiredConfirmations",
+          "suggestedRequiredAction"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id"
+            ]
+          },
+          {
+            "path": [
+              "sideEffects"
+            ],
+            "fields": [
+              "writesBusinessSource",
+              "overwritesExistingFiles",
+              "changesRoutes",
+              "changesGlobalTemplates"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-add-preview.v1 and status=preview",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "dry-run only; repeated runs do not change project or skill files",
+        "sideEffects": "none in v1.1 because --dry-run is required"
+      },
+      {
+        "id": "typical-page-diff-asset-mold-table-basic",
+        "script": "scripts/typical-page-diff-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "mold",
+          "--id",
+          "table-basic",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/diff-asset.table-basic.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "target",
+          "asset",
+          "status",
+          "riskLevel",
+          "changes",
+          "blockingReasons",
+          "evidence"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id"
+            ]
+          },
+          {
+            "path": [
+              "evidence"
+            ],
+            "fields": [
+              "sourcePath",
+              "sourceDigest",
+              "assetDigest",
+              "comparison"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and status=preview",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-diff-asset-adapter-layout-search-table",
+        "script": "scripts/typical-page-diff-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "adapter",
+          "--id",
+          "layout-search-table-adapter",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/diff-asset.layout-search-table-adapter.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "target",
+          "asset",
+          "status",
+          "riskLevel",
+          "changes",
+          "blockingReasons",
+          "evidence"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id"
+            ]
+          },
+          {
+            "path": [
+              "evidence"
+            ],
+            "fields": [
+              "sourcePath",
+              "sourceDigest",
+              "assetDigest",
+              "comparison"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and status=preview",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "read-only; repeated runs do not change project or skill files",
+        "sideEffects": "none"
+      },
+      {
+        "id": "typical-page-update-asset-mold-table-basic-dry-run",
+        "script": "scripts/typical-page-update-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "mold",
+          "--id",
+          "table-basic",
+          "--dry-run",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/update-asset.table-basic-dry-run.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "target",
+          "asset",
+          "status",
+          "riskLevel",
+          "changes",
+          "blockingReasons",
+          "updatePreview",
+          "evidence"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id"
+            ]
+          },
+          {
+            "path": [
+              "updatePreview"
+            ],
+            "fields": [
+              "dryRunOnly",
+              "writesBusinessSource",
+              "overwritesExistingFiles",
+              "changesRoutes",
+              "changesGlobalTemplates",
+              "forceSupported"
+            ]
+          },
+          {
+            "path": [
+              "evidence"
+            ],
+            "fields": [
+              "sourcePath",
+              "sourceDigest",
+              "assetDigest",
+              "comparison"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and updatePreview.dryRunOnly=true",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "dry-run only; repeated runs do not change project or skill files",
+        "sideEffects": "none in v1.2 because --dry-run is required"
+      },
+      {
+        "id": "typical-page-update-asset-adapter-layout-search-table-dry-run",
+        "script": "scripts/typical-page-update-asset.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--skill-root",
+          "<skillRoot>",
+          "--type",
+          "adapter",
+          "--id",
+          "layout-search-table-adapter",
+          "--dry-run",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/update-asset.layout-search-table-adapter-dry-run.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "target",
+          "asset",
+          "status",
+          "riskLevel",
+          "changes",
+          "blockingReasons",
+          "updatePreview",
+          "evidence"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "asset"
+            ],
+            "fields": [
+              "type",
+              "id"
+            ]
+          },
+          {
+            "path": [
+              "updatePreview"
+            ],
+            "fields": [
+              "dryRunOnly",
+              "writesBusinessSource",
+              "overwritesExistingFiles",
+              "changesRoutes",
+              "changesGlobalTemplates",
+              "forceSupported"
+            ]
+          },
+          {
+            "path": [
+              "evidence"
+            ],
+            "fields": [
+              "sourcePath",
+              "sourceDigest",
+              "assetDigest",
+              "comparison"
+            ]
+          }
+        ],
+        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and updatePreview.dryRunOnly=true",
+        "failureSignal": "exit code 1 and status=invalid",
+        "idempotency": "dry-run only; repeated runs do not change project or skill files",
+        "sideEffects": "none in v1.2 because --dry-run is required"
+      },
+      {
+        "id": "typical-page-preflight",
+        "script": "scripts/typical-page-preflight.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page",
+          "src/pages/orders/index.tsx",
+          "--contract-fixture",
+          "quality-pass",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/preflight.quality-pass.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "page",
+          "pageType",
+          "checks",
+          "blockingReasons",
+          "blockingIssues",
+          "suggestedActions",
+          "pageTypeId",
+          "pageTypeLabel",
+          "workflowStatus",
+          "preflightStatus",
+          "runtimeSmokeRequired",
+          "runtimeSmokeStatus",
+          "warnings",
+          "failures"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "semanticContract"
+            ],
+            "fields": [
+              "queryFilterRegionRole",
+              "dimensionSwitchControl",
+              "listShellComposition",
+              "spacingOwnership",
+              "areaChartFill"
+            ]
+          },
+          {
+            "path": [
+              "checks",
+              "0"
+            ],
+            "fields": [
+              "id",
+              "status",
+              "severity",
+              "message",
+              "suggestedActionIds"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-translation-map",
+        "script": "scripts/generate-translation-map.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page",
+          "src/pages/orders/index.tsx",
+          "--contract-fixture",
+          "quality-pass",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/translation-map.quality-pass.json",
+        "requiredTopLevelFields": [
+          "status",
+          "outputPath",
+          "translationMap"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "translationMap"
+            ],
+            "fields": [
+              "schemaVersion",
+              "generatedBy",
+              "generatedAt",
+              "page",
+              "pageType",
+              "mode",
+              "reason",
+              "sourceHash",
+              "previousSourceHash",
+              "stale",
+              "staleReason",
+              "invalidatesWhen",
+              "mappings"
+            ]
+          },
+          {
+            "path": [
+              "translationMap",
+              "mappings",
+              "0"
+            ],
+            "fields": [
+              "kind",
+              "source",
+              "target"
+            ]
           }
         ]
       },
@@ -95,12 +1447,26 @@
         ],
         "requiredNestedFields": [
           {
-            "path": ["visualEvidence"],
-            "fields": ["required", "status", "baselinePolicy", "screenshotDir", "screenshots"]
+            "path": [
+              "visualEvidence"
+            ],
+            "fields": [
+              "required",
+              "status",
+              "baselinePolicy",
+              "screenshotDir",
+              "screenshots"
+            ]
           },
           {
-            "path": ["artifacts"],
-            "fields": ["markdownReportPath", "jsonReportPath", "screenshots"]
+            "path": [
+              "artifacts"
+            ],
+            "fields": [
+              "markdownReportPath",
+              "jsonReportPath",
+              "screenshots"
+            ]
           }
         ]
       },
@@ -135,13 +1501,89 @@
           "runtimeSmokeRequirementReason",
           "sourceSnapshotHash",
           "usedStaticFallback",
+          "usageStatsStatus",
           "usage",
           "usageEvents"
         ],
         "requiredNestedFields": [
           {
-            "path": ["usage"],
-            "fields": ["exit_code", "message", "ok", "requires_network_authorization", "status", "usage"]
+            "path": [
+              "usage"
+            ],
+            "fields": [
+              "exit_code",
+              "message",
+              "ok",
+              "requires_network_authorization",
+              "status",
+              "usage"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-final-report",
+        "script": "scripts/render-final-report.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--contract-fixture",
+          "quality-pass",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/final-report.quality-pass.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "contractSchemaVersion",
+          "sections",
+          "statuses",
+          "evidence",
+          "risks",
+          "source"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "statuses"
+            ],
+            "fields": [
+              "pageStatus",
+              "preflightStatus",
+              "formalAcceptanceStatus",
+              "usageStatsStatus"
+            ]
+          },
+          {
+            "path": [
+              "evidence"
+            ],
+            "fields": [
+              "executedActions",
+              "changedFiles",
+              "validationCommands"
+            ]
+          },
+          {
+            "path": [
+              "risks"
+            ],
+            "fields": [
+              "blockingIssues",
+              "warnings",
+              "nextActions"
+            ]
+          },
+          {
+            "path": [
+              "source"
+            ],
+            "fields": [
+              "planSchemaVersion",
+              "preflightSchemaVersion",
+              "usageStatsStatus"
+            ]
           }
         ]
       },
@@ -184,16 +1626,41 @@
         ],
         "requiredNestedFields": [
           {
-            "path": ["pageType"],
-            "fields": ["id", "label"]
+            "path": [
+              "pageType"
+            ],
+            "fields": [
+              "id",
+              "label"
+            ]
           },
           {
-            "path": ["contract"],
-            "fields": ["jsonPath", "markdownPath", "workflow", "strictTemplateRequired", "templateStatus", "archetypeTemplatePath"]
+            "path": [
+              "contract"
+            ],
+            "fields": [
+              "jsonPath",
+              "markdownPath",
+              "workflow",
+              "strictTemplateRequired",
+              "templateStatus",
+              "archetypeTemplatePath"
+            ]
           },
           {
-            "path": ["contract", "workflow"],
-            "fields": ["status", "deliveryStatus", "preflightStatus", "sourceGateStatus", "doctorStatus", "runtimeSmokeStatus", "sourceSnapshotHash"]
+            "path": [
+              "contract",
+              "workflow"
+            ],
+            "fields": [
+              "status",
+              "deliveryStatus",
+              "preflightStatus",
+              "sourceGateStatus",
+              "doctorStatus",
+              "runtimeSmokeStatus",
+              "sourceSnapshotHash"
+            ]
           }
         ]
       }

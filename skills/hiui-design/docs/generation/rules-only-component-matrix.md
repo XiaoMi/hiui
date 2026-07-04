@@ -15,12 +15,13 @@
 
 1. 先读 `generation-principles.md`
 2. 再读 `page-type-map.md` 判页型
-3. 命中 `rules-only` 时，先读本文件完成组件落点映射
-4. 再读 `rules-only-example-alignment.md`，确认当前页必须对齐的示例结构
-5. 再读 `figma-page-rules.md`
-6. 最后读命中的 `figma-pages/*.md`
+3. 运行 `plan-page-task`，若命中 `generationStrategy=page-component`，优先使用 `pageComponent.componentId` 或 `pageComponent.components[]` 声明的认证组件
+4. 只有组件不可用、结构升级、宿主 adapter 约束或 `generationStrategy=managed-fallback` 时，才读本文件完成区域到组件语义 / 宿主基座的映射
+5. 再读 `rules-only-example-alignment.md`，确认当前页必须对齐的示例结构
+6. 再读 `figma-page-rules.md`
+7. 最后读命中的 `figma-pages/*.md`
 
-若 doctor 已提示目标项目命中旧宿主兼容模式，再把本文件与 `legacy-host-compatibility.md` 对照阅读。
+若 doctor 或机器计划已提示目标项目命中旧宿主桥接接入模式，再把本文件与 `legacy-host-compatibility.md` 对照阅读；这属于 bridge 约束补充，不把普通典型页默认降级成翻译链。
 
 ## 读法
 
@@ -28,6 +29,8 @@
 - “兼容宿主落点”指目标项目不直接落标准壳，而复用宿主自己的页面基座、布局槽位和 hiui5 alias
 - 组件映射优先级低于页型专章；若专章给出了更窄的要求，以专章为准
 - 本文件只定义“区域应该落到哪里”；`rules-only-example-alignment.md` 定义“这些区域最终必须与哪一个示例保持同构”
+
+`rules-only` 不等于禁用页面级组件。它只是不把 host-integration 示例 gallery 作为接入产物；当 `rules/page-component-registry.json` 中的认证组件通过 `supportedModes` 声明支持 `rules-only` 时，普通典型页必须优先走组件链路，再由本矩阵作为 fallback / adapter / 结构对齐解释。
 
 ## 跨页区域矩阵
 
@@ -129,6 +132,17 @@
 
 ## 落地顺序
 
+### 典型页快速路径例外
+
+若当前页已经命中固定模板、示例、已命名宿主 archetype 或机器计划里的 `reference-or-scaffold` 受管起点，并且本次只替换标题、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据、行操作等业务槽位，则本矩阵只作为 fallback / 排错参考，不要求在实现前完整展开区域映射。
+
+只有出现下面情况时，才回到本节完整矩阵流程：
+
+- 固定模板、示例、宿主 archetype 与受管 scaffold 起点均缺失，或 `startFrom=unresolved`
+- 模板 / source marker / contract 中的 `example path`、`host archetype path` 或 `host adapter` 互相冲突
+- 本次修改了页壳、ownership、region、mandatory components 或 source marker
+- `pageType` 不确定，或页面进入非典型 / overlay 判断
+
 生成 `rules-only` 页面时，按下面顺序执行：
 
 1. 判页型
@@ -142,4 +156,4 @@
 - 标题区、筛选区、主体区、分页/底栏都能在本矩阵中找到对应落点
 - 生成说明里已经明确写出唯一对应的示例页路径，而不是把多个示例混着拼
 - 生成说明里已经明确写出“示例区域 -> 宿主槽位 / 基座”的一一映射，没有出现示例有而目标页额外新增的结构区块
-- 若目标项目命中旧宿主兼容模式，生成说明里已经明确写出“当前页分别映射到宿主哪一个页面基座 / 槽位 / 组件封装”
+- 若目标项目命中旧宿主桥接接入模式，生成说明里已经明确写出“当前页分别映射到宿主哪一个页面基座 / 槽位 / 组件封装”

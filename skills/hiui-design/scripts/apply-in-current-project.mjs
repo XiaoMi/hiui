@@ -14,7 +14,7 @@ Default behavior:
   - dependency install: enabled
   - mode: auto
   - auto-provision src/translation i18n baseline assets unless --skip-i18n-init is passed
-  - auto-provision src/typical-page-reuse/assets default product image pack unless --skip-project-images-init is passed
+  - auto-provision src/typical-page-reuse/assets project image catalog scaffold unless --skip-project-images-init is passed
   - after a successful host-integration bootstrap, auto-start a local dev server when needed and open the first typical-page sample unless --skip-open-browser is passed
 `)
 }

@@ -50,6 +50,7 @@
   "runtimeSmokeRequirementReason": "",
   "sourceSnapshotHash": "preview-ready-contract-fixture-source",
   "usedStaticFallback": true,
+  "usageStatsStatus": "completed",
   "usage": {
     "exit_code": 0,
     "message": "DRY_RUN",

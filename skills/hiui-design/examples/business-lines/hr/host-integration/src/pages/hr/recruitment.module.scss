@@ -1,0 +1,367 @@
+.pageRoot {
+  height: 100%;
+  min-height: 0;
+}
+
+.pageHeader {
+  margin-bottom: 0;
+}
+
+.whiteBody {
+  display: flex;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.filterContainer {
+  flex: 0 0 auto;
+}
+
+.loadingWrap {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0%;
+  flex-direction: column;
+}
+
+.contentWrap {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metricGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.metricCard {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid #e5e6eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.metricTitle {
+  color: #60636b;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.metricValue {
+  color: #1a1d26;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.metricValueDanger {
+  color: #fa4646;
+}
+
+.metricMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #7b8190;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.rateCard {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #e5e6eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.rateHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rateLabel {
+  color: #1a1d26;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.rateHint {
+  color: #91959e;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.rateNumbers {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rateValue {
+  color: #1a1d26;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.rateCompare {
+  color: #60636b;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.boardGrid {
+  display: grid;
+  min-height: 0;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.boardCard {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  border: 1px solid #e5e6eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 0;
+}
+
+.sectionTitle {
+  color: #1a1d26;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.sectionDescription {
+  margin-top: 4px;
+  color: #60636b;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.cardBody {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0%;
+  flex-direction: column;
+  padding: 16px 18px 18px;
+}
+
+.insightBlock {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.insightLine {
+  color: #4e5969;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.tabsWrap {
+  padding: 0 18px;
+}
+
+.detailTabsWrap {
+  flex: 0 0 auto;
+}
+
+.detailTabs :global(.hi-v5-tabs__content) {
+  display: none;
+}
+
+.progressTabs :global(.hi-v5-tabs__content) {
+  display: none;
+}
+
+.tableWrap {
+  min-height: 0;
+  flex: 1 1 0%;
+}
+
+.inlineLinkButton {
+  padding: 0;
+}
+
+.detailCard {
+  border: 1px solid #e5e6eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.detailCardBody {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+}
+
+.detailMetrics {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detailMetric {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.detailMetricLabel {
+  color: #7b8190;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.detailMetricValue {
+  margin-top: 4px;
+  color: #1a1d26;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.statusTag {
+  min-width: 56px;
+  justify-content: center;
+}
+
+.emptyWrap {
+  display: flex;
+  min-height: 320px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.emptyTip {
+  margin-top: 8px;
+  color: #91959e;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.tabTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabCount {
+  display: inline-flex;
+  min-width: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #f2f3f5;
+  color: #60636b;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.funnelContent {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.funnelRateList {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 0;
+  align-content: center;
+  gap: 8px;
+}
+
+.funnelChartWrap {
+  min-width: 0;
+  flex: 1 1 0;
+  width: 100%;
+}
+
+.funnelRateRow {
+  display: flex;
+  width: 280px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #4e5969;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.funnelRateWeak {
+  color: #fa8c16;
+  font-weight: 600;
+}
+
+@media (max-width: 1120px) {
+  .metricGrid,
+  .detailMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .boardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .whiteBody {
+    padding: 16px;
+  }
+
+  .metricGrid,
+  .detailMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryBanner,
+  .rateHeader,
+  .sectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .funnelContent {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .funnelRateList {
+    flex-basis: auto;
+  }
+}

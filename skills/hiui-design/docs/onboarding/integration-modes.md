@@ -41,7 +41,7 @@
 
 - `rules-only` 不能只判页型，不判组件落点
 - 进入真实业务页生成前，先用 `rules-only-component-matrix.md` 明确页头、筛选区、表格区、分页区、底栏分别落到哪一类 HiUI 5 组件语义或宿主基座
-- 如果目标项目命中旧宿主兼容模式，还要把该矩阵与 `legacy-host-compatibility.md` 一起读，写清楚当前页映射到宿主哪个页面基座
+- 如果目标项目后续被提升为 `legacy-host-compatible`（旧宿主桥接接入模式），则不再按本节 `rules-only` 口径执行；改把该矩阵与 `legacy-host-compatibility.md` 一起读，写清楚当前页映射到宿主哪个页面基座
 
 参考示例：
 
@@ -72,20 +72,20 @@
 - `bootstrap-target-project.mjs --mode host-integration`
 - 或脚本别名：`typical-page:apply:host-assets`
 
-## 显式模式：`legacy-host-compatible`
+## 显式模式：`legacy-host-compatible`（旧宿主桥接接入模式）
 
 适用：
 
 - 目标项目主运行时仍是 React 16/17 或等价旧宿主
 - 目标项目以 `hiui5` alias / 本地封装的方式局部接入 HiUI 5
-- Module Federation / 老后台宿主不允许直接挂标准 `@hiui-design/typical-page-shells` 运行时
+- Module Federation / 老后台宿主主树默认不预设可直接承载标准 `@hiui-design/typical-page-shells` 运行时
 
 行为：
 
 - 继续保留 `.local-context/hiui-design/` 与 reference-only 示例页
-- 不补标准 `@hiui-design/typical-page-shells` 依赖线，不要求安装标准壳运行时
+- 不自动补标准 `@hiui-design/typical-page-shells` 依赖线，不把标准壳运行时当作 legacy 主树的默认接入前提
 - 不同步 route gallery / 宿主桥接文件到目标项目 `src/`
-- 生成时继续使用页型、结构节奏、contract 与 doctor 约束，但实现层必须回到宿主自己的布局/容器/`hiui5` alias / 本地组件
+- 生成时继续使用页型、结构节奏、contract 与 doctor 约束；普通典型页主链路仍优先 `pageComponent + runtimeAdapterProof`，而 legacy 主树里的具体运行时承载默认回到宿主自己的布局/容器/`hiui5` alias / 本地组件。若已隔离出独立现代运行时入口，则改走 `isolated-standard-shell`
 
 使用方式：
 

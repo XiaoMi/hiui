@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "legacy-host-family-registry.v1",
+  "families": [
+    {
+      "hostFamilyId": "generic-clean-content-legacy.v1",
+      "label": "Generic legacy host with clean content mount",
+      "status": "planned",
+      "supportedModes": [
+        "legacy-host-compatible"
+      ],
+      "matchPolicy": {
+        "minimumConfidence": "medium",
+        "requiredSignals": [
+          "project-mode:legacy-host-compatible",
+          "clean-content-mount",
+          "runtime-bridge"
+        ],
+        "optionalSignals": [
+          "react-legacy-runtime",
+          "hiui5-alias",
+          "module-federation-host",
+          "host-route-owner"
+        ]
+      },
+      "runtimeProfile": {
+        "react": "legacy-or-host-provided",
+        "reactDom": "legacy-or-host-provided",
+        "ahooks": "legacy-or-host-provided",
+        "hiui": "legacy-host-owned",
+        "hiui5": "alias-or-local-package",
+        "moduleFederation": "allowed"
+      },
+      "mountContract": {
+        "contractId": "clean-content-mount.v1",
+        "providedByHost": [
+          "global-navigation",
+          "sidebar-navigation",
+          "business-route-owner",
+          "stable-content-mount"
+        ],
+        "ownedByPageComponent": [
+          "page-header",
+          "white-body",
+          "query-filter",
+          "table-or-form-or-detail-body",
+          "pagination-or-footer",
+          "page-main-scroll"
+        ],
+        "forbiddenHostResponsibilities": [
+          "page-header",
+          "white-body",
+          "query-filter",
+          "table-shell",
+          "pagination-owner",
+          "drawer-footer",
+          "full-page-footer",
+          "business-scroll-owner"
+        ],
+        "layoutReset": [
+          "padding",
+          "background",
+          "overflow",
+          "min-height"
+        ],
+        "scrollOwnership": "page-component",
+        "requiredEvidence": [
+          "no-double-page-header",
+          "no-double-white-body",
+          "no-double-scroll",
+          "pagination-remains-inside-page-component",
+          "stable-content-height"
+        ]
+      },
+      "runtimeBridge": {
+        "contractId": "runtime-bridge.v1",
+        "requiredCapabilities": [
+          "request",
+          "auth",
+          "permission",
+          "user",
+          "dictionary",
+          "route-navigation",
+          "theme"
+        ],
+        "optionalCapabilities": [
+          "i18n",
+          "analytics",
+          "feature-flags",
+          "portal-root"
+        ],
+        "forbiddenCoupling": [
+          "project-global-business-variable",
+          "implicit-window-request-client",
+          "hardcoded-menu-path"
+        ]
+      },
+      "styleBoundary": {
+        "contractId": "style-boundary.v1",
+        "isolationStrategy": "scoped-reset-or-safe-prefix",
+        "protectedSurfaces": [
+          "typography",
+          "table",
+          "pagination",
+          "form",
+          "drawer",
+          "modal",
+          "tag-status",
+          "layout-spacing"
+        ],
+        "requiredEvidence": [
+          "host-global-css-does-not-override-page-component",
+          "component-spacing-preserved",
+          "status-tag-style-preserved"
+        ]
+      },
+      "portalBoundary": {
+        "contractId": "portal-boundary.v1",
+        "requiredSurfaces": [
+          "select-dropdown",
+          "tooltip",
+          "popover",
+          "modal",
+          "drawer"
+        ],
+        "requiredEvidence": [
+          "portal-root-resolved",
+          "z-index-not-clipped",
+          "overflow-not-clipped"
+        ]
+      },
+      "adapterPack": {
+        "adapterPackId": "generic-clean-content-adapter-pack.v1",
+        "hostContentAdapter": "HostContentAdapter",
+        "runtimeBridge": "RuntimeBridge",
+        "styleBoundary": "StyleBoundary",
+        "portalBoundary": "PortalBoundary",
+        "adapterIds": [
+          "layout-search-table-adapter"
+        ]
+      },
+      "componentMatrix": [
+        {
+          "pageTypeId": "table-basic",
+          "componentId": "legacy-table-basic-page.v1",
+          "status": "planned",
+          "certificationStatus": "missing"
+        }
+      ]
+    }
+  ]
+}

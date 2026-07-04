@@ -7,6 +7,7 @@
 - contract 最小字段
 - region / ownership / semantic contract 的定义
 - `shell inheritance strategy` / `shell carrier path` 的定义
+- `header layout contract` 的定义
 - `split pane contract` 的定义
 
 它不负责：
@@ -29,20 +30,41 @@
 每个 contract 至少包含：
 
 - `example path`
-- `host archetype path`
 - `region mapping`
 - `ownership mode`
 - `ownership mapping`
 - `semantic contract`
 
+当 `generationStrategy` 进入 `managed-fallback`、`translated-reference`、宿主 archetype / scaffold 起点时，还必须包含：
+
+- `host archetype path`
+
+当 `generationStrategy=page-component` 时，还必须包含：
+
+- `page component id`
+- `base mold id`
+- `component certification ref`
+- `runtime bridge profile id`（legacy bridge 场景）
+- `instance validation status`
+- `extension policy`（若使用受控扩展）
+
+当 contract 声明 `header` region，或页级动作 owner 仍是 `PageHeader extra` 时，还必须包含：
+
+- `header layout contract`
+
+这些字段只记录组件实现与页面实例证据；`lockedRegions` / `editableSlots` 仍以 `base mold id` 指向的 `rules/page-mold-registry.json` 为准，不得在 contract 中平行维护第二套结构事实。`legacy-host-compatible` 的 page-component fast path 默认不再强制 `host archetype path`；只有计划显式退回 fallback / translated-reference 分支时，才重新要求 archetype provenance。
+
 ## example binding contract
 
-- `example path` 是典型页生成的结构事实源，不是灵感链接；命中典型页型后，contract 必须锁定唯一示例页。
-- 若页型声明 `requiredStartFromExample=true`，生成必须从该页型绑定的 `page.template.tsx|jsx` 或对应示例运行时骨架起步；模板缺失时应失败，而不是回退到自由 scaffold。
+- `example path` 是典型页生成的隐藏结构基线，不是展示页面、灵感链接或截图参考；命中典型页型后，contract 必须锁定唯一示例页，并把它作为页型、区域层级、壳层语义、关键节奏和 mandatory components 的结构事实源。
+- 若页型声明 `requiredStartFromExample=true`，生成必须从机器计划里的受管 `startFrom` 起步：`page.template.tsx|jsx`、宿主 archetype、对应示例运行时骨架，或 `start-page` 的 reference / scaffold 分支。模板缺失不等于失败；只有没有任何受管模板、示例、宿主 archetype 或 scaffold 起点时才失败。任何情况下都不得回退到自由 scaffold。
 - 业务页只允许替换示例里的业务槽位，例如标题、查询字段、表格列、表单字段、详情字段、接口函数和按钮文案。
 - 页壳类型、关键 region 数量、region 嵌套关系、白底主体收口方式、主滚动 owner、分页 / footer 挂载语义和 shared 组件骨架不属于业务槽位，不能在业务页局部重写。
+- `header layout contract` 也是页壳事实，不属于业务槽位；业务页不得通过局部 wrapper / style 抢走
+  `header` 的 stretch、right-dock 或 vertical rhythm owner。
 - 若当前模式不能直接挂标准壳组件，必须通过 `shell inheritance strategy` 与 `shell carrier path` 把示例壳翻译到命名 shared shell / host adapter 上。
 - 不允许仅凭 comment、`data-hiui5-region`、变量名或截图相似度声称“来自示例”；源码必须能证明直接挂了标准壳，或挂了命名 shell carrier。
+- `rules-only` 下 reference 可以定义结构，但不能拥有路由；生成页必须同时在 contract 中证明 `route owner` / `menu group` 属于宿主业务结构，不能把 reference、gallery route 或 `src/typical-page-reuse/**` 当作业务页交付路径。
 - `rules-only` / `legacy-host-compatible` 的详细示例对齐流程看 `../docs/generation/rules-only-example-alignment.md`；本节只定义 contract 层的不变量。
 
 对 `rules-only` 下的 `table-basic` / `table-stat` / `data-visualization` / `tree-table`，还必须额外包含：
@@ -58,12 +80,40 @@
 
 - `shell inheritance strategy` 只允许回答：`直接挂标准页壳`、`共享骨架 helper 翻译`、`宿主适配骨架翻译`
 - `shell carrier path` 必须回答真实运行时结构链，至少说明 `header`、`query-filter`、`table` / `chart-section`、`pagination` 到底挂在哪个 shared shell / helper / host slot 下
+- 若结构链包含 `header`，`shell carrier path` 只能回答“页头挂在哪”；它本身不能单独证明
+  `PageHeader` root 已 stretch、`extra` 已 right-docked 或 `60px` 节奏 owner 正确，仍必须补
+  `header layout contract`
 - 这条要求不只适用于列表 / 统计 / 可视化壳；若页面声明 `layout archetype = context-main-split`，也必须能回答 split 壳到底由谁承接
 - 不允许只写“复用 `PageHeader` / `Table` / `Pagination` 组件”，却不回答这些区域是不是仍然挂在同一个 runtime shell carrier 上
 - 不允许只在 comment、contract label、变量名里声明 `shell=StatListPageFrame` 一类标签，却不提供运行时承接路径
 - 若页面直接挂标准页壳，`shell carrier path` 应指向真实页壳文件或受管壳组件
 - 若页面走共享骨架 helper / 宿主适配翻译，`shell carrier path` 应指向实际承接 `PageHeader`、控制区、图表区、表格区和分页区的 helper / host bridge / content slot 结构链
 - 这些字段只解决“运行时骨架由谁承接”；它们不替代 `region mapping`、`ownership mapping` 或 `semantic contract`
+
+## header layout contract
+
+- 只要 contract 声明 `header` region，或页级动作仍通过 `PageHeader extra` 暴露，就必须声明
+  `headerLayoutContract`
+- `headerLayoutContract` 至少回答：
+  - `header carrier owner`
+  - `header stretch owner`
+  - `header actions docking`
+  - `header vertical rhythm owner`
+  - `header business slots`
+  - `header forbidden local overrides`
+  - `header layout evidence`
+- `header actions docking` 的默认事实应是 `PageHeader.extra right-docked`；若页面没有页级动作，可显式回答
+  `not-applicable`，但不能省略字段
+- `header business slots` 默认只允许 `title`、`onBack`、`extra`、`statusText` 这类业务内容；
+  不允许开放 `renderAnything`、自定义 flex 壳或二次布局入口
+- `header forbidden local overrides` 至少应覆盖：`page-header-geometry`、
+  `hi-v5-page-header-skeleton`、`local-header-flex-shell`、`button-height-follows-header`
+- `header layout evidence` 必须能回指真实证明来源，例如 component certification、
+  host facts、runtime smoke selector 或 shared shell 文件；“已使用 `PageHeader`”本身不是证据
+- 若 `header stretch owner` 不属于 shared shell / host slot / certified page component，
+  则当前页不能宣称自己仍在“只填业务槽位”的主链路里
+- `60px` 页头节奏必须由 `header vertical rhythm owner` 承接；不得把这条节奏回写到
+  `PageHeader` 根节点、页级按钮高度或业务页局部 wrapper 上
 
 ## shell inheritance source marker normalization
 
@@ -102,12 +152,30 @@
 - `full-page-detail`
   `header`、`white-body`、`detail-body`
 
+## non-typical / overlay contract facts
+
+非典型 / overlay 页面只说明“不能直接套典型页默认组织”，不说明“必须采用某个固定区块”。contract 必须记录策略事实，而不是固定 region 清单。
+
+必填事实：
+
+- `layoutStrategy`：与 source marker `hiui-design layout-strategy:` 和 runtime `data-hiui5-layout-strategy` 一致。
+- `layoutArchetype`：与 source marker `hiui-design layout archetype:` 或 runtime `data-hiui5-layout-group` 一致。
+- `nonTypicalScope`：描述非典型自由编排只发生在哪些业务内容区，不得包含 header / shell / white-body / main-scroll 等 carrier-critical region。
+- `compositionGuardrails`：声明哪些 carrier 锁定、哪些槽位可编辑、哪些 HiUI 组件骨架不得本地重写。
+- `strategyEvidence`：声明源码和运行时可验证的 marker / 语义组件 / 一级分组证据。
+
+校验口径：
+
+- 只有 `topology=non-typical-overlay` 但没有上述策略事实时，contract 不完整。
+- 不要求固定出现 `summary-section`、`detail-main`、`side-actions`；这些只能作为某个 layout strategy 的证据。
+- 若 strategy evidence 与实际源码 / runtime marker 对不上，必须回到计划或 contract 阶段修正，不得用自然语言解释为通过。
+
 ## 全局图表规范适用范围
 
 - 任何页面中新增的图表，都必须遵循 `hiui-design` 的数据可视化规范。
 - 这条规则不以 `page type = data-visualization` 为前提。
 - 这条规则也不以是否声明 `chart-section` 为前提。
-- 只要页面实际渲染图表，就必须继续使用正式图表栈、共享 HiUI chart baseline、共享 color contract，以及图表标题 / tooltip / legend / 时间维度文案的 formatter 与 i18n 基线。
+- 只要页面实际渲染图表，就必须继续使用正式图表栈、共享 HiUI chart baseline、共享 color contract，以及图表标题 / tooltip / legend / 时间维度文案的 formatter；若 `i18nMode=full`，再执行完整 i18n 基线。
 - `chart-section` 只负责结构治理、region 显式声明与更强的 ownership / source gate 校验；它不是图表规范生效开关。
 
 ## 独立图表区判定口径

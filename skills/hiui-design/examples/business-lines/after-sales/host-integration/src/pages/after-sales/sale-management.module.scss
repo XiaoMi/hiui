@@ -1,0 +1,309 @@
+.pageRoot {
+  height: 100%;
+  min-height: 0;
+}
+
+.mainSplit {
+  min-height: 0;
+}
+
+.leftPane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  background: #fff;
+}
+
+.leftSearchPanel {
+  display: grid;
+  gap: 8px;
+  padding: 20px 12px 12px;
+}
+
+.leftSearchInput {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.leftStatusPanel {
+  padding: 0 12px 12px;
+  border-bottom: 1px solid #edeff2;
+}
+
+.leftScroll {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 12px 16px;
+}
+
+.orderCardButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.orderCardButton + .orderCardButton {
+  margin-top: 12px;
+}
+
+.orderCard {
+  border-radius: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.orderCardSelected {
+  border-color: #5d7bff;
+  box-shadow: 0 0 0 1px rgba(93, 123, 255, 0.08);
+}
+
+.orderHeading {
+  min-width: 0;
+}
+
+.orderNo {
+  margin-bottom: 4px;
+  color: #5e6c84;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.orderName {
+  color: #1f2733;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.orderDepartment {
+  margin-bottom: 12px;
+  color: #7b8aa0;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: minmax(68px, 0.9fr) minmax(68px, 0.9fr) minmax(112px, 1.35fr);
+  gap: 8px;
+}
+
+.metricBlock {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f7f9fc;
+}
+
+.metricLabel {
+  display: block;
+  color: #8b95a7;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.metricValue {
+  display: block;
+  margin-top: 4px;
+  color: #1f2733;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.emptyList,
+.emptyDetail {
+  display: flex;
+  min-height: 220px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+}
+
+.emptyTip {
+  margin-top: 8px;
+  color: #8b95a7;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.rightPane {
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+}
+
+.detailBody {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 20px 0;
+}
+
+.summaryCard {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.summaryInfo {
+  min-width: 0;
+}
+
+.summaryMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.summaryTitle {
+  color: #1f2733;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.summaryMetaItem {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  color: #5e6c84;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.summaryMetaLabel {
+  color: #7b8aa0;
+}
+
+.summaryMetaValue {
+  color: #1f2733;
+}
+
+.summaryMetrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.summaryMetric {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.summaryMetricLabel {
+  color: #7b8aa0;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.summaryMetricValue {
+  margin-top: 6px;
+  overflow: hidden;
+  color: #1f2733;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.detailTabs {
+  flex: 1 1 0%;
+  min-height: 0;
+
+  :global(.hi-v5-tabs__item--active) .tabTitle {
+    color: #2660ff;
+  }
+
+  :global(.hi-v5-tabs__item--active) .tabBadge {
+    background: #edf2ff;
+    color: #2660ff;
+  }
+}
+
+.tabTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1f2733;
+  transition: color 0.2s ease;
+}
+
+.tabBadge {
+  display: inline-flex;
+  min-width: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #f2f4f7;
+  color: #5e6c84;
+  font-size: 12px;
+  line-height: 20px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tableRegion {
+  height: 100%;
+  min-height: 0;
+  padding: 0 20px 20px;
+}
+
+.primaryCell {
+  color: #2b6de5;
+  font-weight: 600;
+}
+
+@media (max-width: 1360px) {
+  .metricGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .detailBody {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .summaryHeader {
+    flex-direction: column;
+  }
+
+  .summaryMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .tableRegion {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

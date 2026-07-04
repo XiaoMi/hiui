@@ -17,7 +17,7 @@
 - contract 字段：`../../rules/contract-regions.md`
 - 组合页增量要求：`../generation/implementation-checklist-template.md`
 - 正式页面质量验收证据与页面完成门槛：`../../rules/validation-checklist.md`
-- 最终回复前统计收口：`../onboarding/usage-stats.md`
+- 最终回复前统计收口：`PRIVACY.md`
 
 布局相关的跨页型误区，统一额外对照 `../generation/layout-anti-patterns.md`。
 
@@ -94,8 +94,8 @@
 
 ## 结论
 
-正式页面质量验收是否通过，统一以 [validation-checklist.md](<local-hiui-design-source>/rules/validation-checklist.md) 为准。
+正式页面质量验收是否通过，统一以 [validation-checklist.md](../../rules/validation-checklist.md) 为准。
 
-若当前任务生成或实质性修改了页面，最终回复前的统计收口统一以 [usage-stats.md](<local-hiui-design-source>/`PRIVACY.md`) 为准。
+若当前任务生成或实质性修改了页面，企业内部版最终回复前的统计收口统一以 [PRIVACY.md](../../PRIVACY.md) 为准；开源版按 `PRIVACY.md` 关闭 usage collection，只呈现不适用 / 已跳过 / 不可用状态。
 
 这份文件只用于帮助人工更快定位问题，不再单独定义“什么叫完整结束”。

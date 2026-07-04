@@ -2,6 +2,9 @@
 
 `docs/` 是解释层，不是默认决策层。
 
+如果你当前看到的是内部团队 Git 分发仓里的 `hiui-design`，默认应把这份包理解为 `team package` 视图，而不是 `maintainer source`。
+文档中出现的 `maintainer source`、`active source`、`global mirror` 等词，主要用于解释这份包的来源、同步方向和治理边界，不代表团队使用者应该改去下载或修改另一个维护者仓。
+
 先读 [`../rules/QUICK-START.md`](../rules/QUICK-START.md)，只有在需要接入说明、页型正文或排障细节时再进入本目录。
 
 - AI 默认先读 `../rules/`
@@ -12,6 +15,7 @@
 
 - `onboarding/`
   接入、宿主边界、框架适配与排障说明。
+  其中 `onboarding/distribution-governance.md` 用于汇总 maintainer source / active source / global mirror / team package / open-source package 的官方仓位与流向定义；`../distribution-addresses.json` 是对应的机器可读地址草案。若与 `distribution-manifest.json`、`scripts/README.md`、`global-sync-workflow.md` 冲突，以那些真相源为准。
 - `generation/`
   规则解释层。展开页型专章、共享规则、视觉基线与兼容说明。
   若未命中典型页型，优先进入 `generation/non-typical-pages.md`。

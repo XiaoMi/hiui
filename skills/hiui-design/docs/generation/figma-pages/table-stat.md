@@ -9,7 +9,7 @@
 ## 默认稿
 
 - `fileKey`: `jlYnxIW1FFGG8fK1sVcL5C`
-- `nodeId`: `<figma-node-id>`
+- `nodeId`: `51257:107076`
 
 ## 适用
 
@@ -62,9 +62,9 @@
 - 不要把 `Area` / `Line` / `Bar` 直接裸挂在通用白卡 children 上；图表应落在受管 chart body / approved chart carrier 中。
 - 若页面主体已经变成“指标卡 + 多图表 + 明细表 / 明细分析区”，应升级为 `data-visualization`，不要继续停留在 `table-stat`。
 
-### 当前项目覆盖：<legacy-host-project>
+### 当前项目覆盖：asp-fwt-common-front
 
-若当前仓库是 `<legacy-host-project>`，还必须额外遵守：
+若当前仓库是 `asp-fwt-common-front`，还必须额外遵守：
 
 - 正式业务页只允许在旧宿主右侧内容区切换，不能生成新的一级导航或独立 layout
 - `table-stat` 专章优先于“优先复用宿主 `PageTable`”的通用建议
@@ -107,8 +107,8 @@
 - 不要把行操作写成 `type="line"` / 黑色文本按钮
 - 不要把统计页中的独立图表分析块写成普通白卡子元素后绕开受管 `chart-section`
 - 不要因为当前页仍是 `table-stat`，就让图表回退到库默认 theme、默认 palette 或手写图形 primitives
-- 对 `<legacy-host-project>`，不要因为仓库里已有 `PageTable` 就默认把统计页落成 `PageTable` 变体
-- 对 `<legacy-host-project>`，不要把 isolated shell 页面直接作为正式业务页接入旧宿主主树
+- 对 `asp-fwt-common-front`，不要因为仓库里已有 `PageTable` 就默认把统计页落成 `PageTable` 变体
+- 对 `asp-fwt-common-front`，不要把 isolated shell 页面直接作为正式业务页接入旧宿主主树
 
 ## 自检
 
@@ -124,7 +124,7 @@
 - footer 是否与兄弟列表一致
 - 页头、指标卡、筛选和表格之间是否没有贴边坍塌
 - 样式资源和宿主高度链是否已确认正常
-- 对 `<legacy-host-project>`，点击入口后是否表现为“旧宿主单层导航 + 右侧内容区切换”
+- 对 `asp-fwt-common-front`，点击入口后是否表现为“旧宿主单层导航 + 右侧内容区切换”
 
 ## 失败信号
 

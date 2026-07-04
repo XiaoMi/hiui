@@ -1,10 +1,10 @@
-# rules-only 示例对齐契约
+# rules-only 隐藏结构基线对齐契约
 
 ## 目的
 
 这份文件只解决一个问题：
 
-- `rules-only` 生成的业务页，怎样才能与 `hiui-design/examples/host-integration/src/pages/*` 中的对应示例保持一致
+- `rules-only` 生成的业务页，怎样才能以 reference-only 示例作为隐藏结构基线，并落回宿主真实业务结构
 
 这里说的一致，不是要求业务字段、接口名、按钮文案完全相同，而是要求：
 
@@ -13,7 +13,80 @@
 3. 壳层语义一致
 4. 关键节奏一致
 
-换句话说，示例页不是“灵感参考”，而是 `rules-only` / `legacy-host-compatible` 的唯一母版。
+换句话说，示例页不是“灵感参考”、展示页面或截图参考，而是 `rules-only` / `legacy-host-compatible` 的隐藏结构基线。reference 可以定义结构，但不能拥有路由、菜单或正式交付路径；真实业务页必须落回项目既有业务目录，并由宿主业务路由承接。
+
+当 `plan-page-task` 选择 `generationStrategy=page-component` 时，`rules-only` 业务页的主生成资产是已认证页面级组件；reference / 示例页只作为组件认证、结构基线和 fallback 起点的证据，不再要求每次业务生成都从示例复制。`rules-only` 与 `host-integration` 的差异是“不接入示例 gallery / 示例路由”，不是“不能使用已认证组件”。
+
+## 快速路径：结构基线派生 + 替换业务槽位
+
+当用户需求已经清晰命中一个典型页型，且没有特殊布局、跨页型组合、非典型 section、复杂新增图表或正式 i18n 验收要求时，`rules-only` / `legacy-host-compatible` 默认直接走快速路径：
+
+1. 先按机器计划的 `startFrom` 锁定固定模板、reference / scaffold 或宿主 archetype
+2. 前置确认宿主运行链、route owner、shell carrier、region / ownership mapping
+3. 从受管起点派生真实业务页
+4. 替换业务槽位
+5. 剥离示例专用内容
+6. 最后做当前页验证
+
+优先级：
+
+- `rules-only`：完全服从机器计划的 `startFrom`。`template` 直接复制 `templates/archetypes/rules-only/<pageType>/page.template.tsx|jsx`；`reference-or-scaffold` 使用 `start-page` 的受管 scaffold / reference 分支；`host-archetype` 先绑定宿主 archetype，再把 reference 壳层语义翻译到该 archetype；任何情况下都不要自由手写页面
+- `legacy-host-compatible` / `host-compatible`：默认先消费机器计划给出的 `pageComponent` 与 `runtimeAdapterProof`，直接走普通典型页主链路；只有组件不可用、结构升级、宿主约束特殊，或计划显式进入 `managed-fallback` 时，才优先复制当前仓库同页型宿主 archetype，再使用兼容示例 / reference，仍缺失时才退回 rules-only 标准模板或受管 scaffold 起点。legacy fallback 分支里的复制对象是典型页结构契约，不是标准壳运行时；缺少合格 host archetype、首次适配页型、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership / shell carrier、出现 warning 或进入正式验收时，必须按 `legacy-host-compatibility.md` 展开 Translation Drift Guard
+
+允许快速替换的业务槽位：
+
+- 页面标题、返回目标、路由 path
+- 查询字段、筛选默认值、提交时间 / 时间范围字段
+- 指标卡文案与数值来源
+- 表格列、行数据映射、行操作
+- 表单 / 详情字段
+- 接口函数、mock 数据、权限开关
+
+不允许在快速路径中替换的结构事实：
+
+- 页壳类型与宿主承接链
+- region 数量与嵌套关系
+- 主白底主体、外层留白、主滚动 owner
+- 页头、分页、底栏的挂载语义
+- row action link 语义
+- source marker 与 contract 字段
+
+快速路径不要求在写代码前展开长篇示例映射说明；若使用固定模板、已命名宿主 archetype 或 `reference-or-scaffold` 受管起点，模板 / archetype / scaffold 中已经固化的 region 与 ownership 可作为默认映射。实现前只需写清：`startFrom`、`template / example / host archetype / scaffold`、本次替换的业务槽位、`i18nMode`、route owner、当前页验证计划。正式验收、发布、跨页型重构或 ownership 被修改时，再展开完整映射并执行全量 finalize 链路。
+
+## 调试模式执行顺序
+
+调试 `rules-only` 生成链路时，按下面顺序排查和实现；不要先改业务字段再回头补宿主结构。
+
+1. `Plan Gateway`：先取得 `plan-page-task -- --json` 结果；没有机器计划时不得生成。
+2. `Mode Lock`：确认 `mode=rules-only` 来自 project mode lock / bootstrap summary / 机器计划。
+3. `Topology / PageType Gate`：确认是 `single-typical-page`，或 `multi-page-workflow` 中的典型页单元。
+4. `FastPath Gate`：确认 `fastPath.eligible=true`，且当前页只替换业务槽位。
+5. `StartFrom Gate`：完全按 `startFrom` 选择 template / reference-or-scaffold / host-archetype / page-units；`unresolved` 时停止。
+6. `Structural Baseline Binding`：绑定唯一 `example path`，并锁定当前受管起点的 template / reference / scaffold / host archetype。
+7. `Host Runtime Binding`：前置确认 `host archetype path`、`host adapter family`、`shell inheritance strategy`、`shell carrier path`、`route owner`、`menu group`、权限与布局 owner。
+8. `Contract Mapping`：建立 `region mapping`、`ownership mapping`、`semantic contract`，明确 `content-slot / white-body / outer-padding / main-scroll` 的唯一 owner。
+9. `Business Page Derivation`：从受管起点派生真实业务页；派生可以是复制模板、使用 scaffold、或把 reference 壳层语义翻译到宿主 archetype，不等于整页复制 reference 后交付。
+10. `Slot Replacement`：只替换标题、路由 path、查询字段、指标、表格列、表单 / 详情字段、接口 / mock、权限开关和操作文案。
+11. `Demo-only Stripping`：剥离 `PromptCopyFloatingButton`、`examplePrompt`、`typicalExamplePrompts`、示例 gallery 页头动作、示例路由配置、示例菜单分组、`ExampleAppShell` 与不属于业务运行链的 host provider。
+12. `Business Route Integration`：页面写入真实业务目录，注册到宿主业务 route owner；不得写入 `.local-context/hiui-design/reference/**`、`src/typical-page-reuse/**` 或 `examples/host-integration/**`。
+13. `Page Verification`：执行当前页 `preflight`、预览，以及必要的 lint / build / typecheck 解释。
+14. `Formal Acceptance`：发布、提测、合入、无 warning、`source-gate`、`doctor`、`runtime-smoke` 或 `finalize-page` 要求出现时，再追加正式验收链路。
+
+## 快速路径 fail-closed 条件
+
+命中下面任一条件时，必须停止快速路径，先补事实或升级到标准 / 严格链路：
+
+- 没有 Plan Gateway 结果，或 `blockingReasons` 非空
+- `topology=unresolved|single-page-composite|non-typical-overlay`
+- `pageType` 未命中标准槽位型典型页，或 `fastPath.eligible` 不是 `true`
+- `startFrom=unresolved`
+- 找不到唯一 `example path`
+- 找不到可承接的 template / reference / scaffold / host archetype
+- `host archetype` 与 reference 的核心 region 无法对齐
+- `route owner`、`shell carrier path` 或 `ownership mapping` 写不清
+- 需要修改页壳、滚动、ownership、region 或 mandatory components
+- 业务页目标路径落入 `.local-context/hiui-design/reference/**`、`src/typical-page-reuse/**` 或 `examples/host-integration/**`
+- reference / gallery 的 demo-only 内容无法剥离
 
 ## 架构原则
 
@@ -96,7 +169,7 @@
 5. 当前页使用的 host adapter family
 6. 当前页绑定的宿主 archetype 路径会回写到 source contract comment 中
 7. 当前页绑定的示例路径会直接回写到 source contract comment 和 root attr 中
-8. 若 archetype 声明 `requiredStartFromExample=true` 且当前 mode 已配置 `templateDir`，当前页绑定的固定模板路径
+8. 若 archetype 声明 `requiredStartFromExample=true`，当前页绑定的受管起点：固定模板路径、宿主 archetype 路径、示例运行时骨架或 `start-page` scaffold / reference 分支
 
 最少写成下面这种格式：
 
@@ -111,11 +184,16 @@
   - white-body -> 页面根白底主体
   - main scroll -> 宿主 scroll body
 - host adapter: `<adapter family from common.adapter-capabilities.json>`
-- template path: `templates/archetypes/<mode>/<page-type>/page.template.tsx`
+- startFrom: `<template | host-archetype | reference-or-scaffold>`
+- start asset: `<template path | host archetype path | example path + scaffold branch>`
 
-如果这四项写不出来，说明当前生成方案还没有完成结构对齐。
+如果这些关键项写不出来，说明当前生成方案还没有完成结构对齐。
 
-若是 `rules-only` 或 `legacy-host-compatible`，上面的四项变成七项；若还命中固定模板 archetype，则至少变成八项。缺少 `host adapter`、缺少明确的 `host archetype` 绑定、缺少明确的 `example path` 绑定，或该写却没写 `template path`，同样不能开始生成。
+快速路径例外：若当前页直接复制固定模板、已命名宿主 archetype，或使用机器计划里的 `reference-or-scaffold` 受管起点，且本次只替换业务槽位，则上述映射可由模板 / archetype / scaffold 默认承接，不要求在实现前手工写成完整说明。此时必须至少写清 `startFrom`、模板 / 示例 / 宿主 archetype / scaffold 路径、业务槽位替换清单、`i18nMode` 与当前页验证计划；一旦修改页壳、ownership、region、source marker 或 mandatory components，就立即退出快速路径，补全本节完整映射。
+
+若是 `rules-only` 或 `legacy-host-compatible`，上面的四项变成七项；若还命中固定模板、宿主 archetype 或 `reference-or-scaffold` 受管起点，则至少变成八项。缺少 `host adapter`、缺少明确的 `host archetype` 绑定、缺少明确的 `example path` 绑定，或机器计划已有 `startFrom` 但说明中没有写出对应起点路径 / 分支，同样不能开始生成。
+
+快速路径下，这些字段优先从已复制的模板 / 宿主 archetype / 受管 scaffold / source marker 中继承，不要求在聊天说明中重复展开；但源码与 contract 中仍必须最终能追溯到唯一 `startFrom`、`template path` / `example path` / `host archetype path` / scaffold 分支与 `host adapter`。如果这些来源不存在或互相冲突，快速路径必须停止，回到完整映射流程。
 
 对列表 / 统计 / 可视化，以及声明 `layout archetype = context-main-split` 的 split 页面，再额外补两项：
 
@@ -170,14 +248,17 @@ npm run typical-page:finalize-page -- \
   --ownership main-scroll=<single-scroll-owner>
 ```
 
-这样 `example path + archetype path + region mapping` 才会变成生成物，而不是只留在口头描述里；同时 doctor 也会立刻回看当前项目，只要还有未允许 warning 或硬失败，生成流程就不能算完成。
+这样 `example path + archetype path + region mapping` 才会变成生成物，而不是只留在口头描述里。进入正式验收 / 发布链路时，`finalize-page` 会同步触发 source gate 与 doctor；只要当前页仍有未允许 warning 或 hard fail，正式交付就不能算完成。
+
+普通典型页快速生成只替换业务槽位时，可以先以当前页 `preflight / preview / lint / build` 作为生成完成信号；`source gate / doctor / finalize-page` 保留为正式验收、发布、结构修复或 ownership / marker 变更后的闭环动作。
 
 这里的“未允许 warning”默认按当前页解释：只要 warning 与本次页面直接相关，就不能以“先交付再补”方式放行；仅历史遗留且与本次页面无关的 warning 才允许保留，并且必须在结果中显式写出。
 
 对 `rules-only` / `legacy-host-compatible` 再额外补一条硬规则：
 
 - `typical-page:finalize-page` 的成功结果只对**当次源码快照**有效
-- 只要当前页在 finalize 之后继续发生结构、ownership、页壳、mandatory components、source marker、运行时修复或用户可见文案变更，就必须重新 finalize
+- 只要当前页在 finalize 之后继续发生结构、ownership、页壳、mandatory components、source marker 或运行时修复，就必须重新 finalize
+- 普通典型页快速生成中，仅替换中文业务文案、字段、列或 mock 数据时，可以先以当前页 preflight / preview / lint / build 作为生成完成信号；进入正式验收或发布前再重新 finalize
 - 旧 contract、旧截图、旧 `doctor PASS`、旧浏览器验收结果都不得继续代表当前页
 - 若当前页修复过白屏、Provider/Portal 缺失、滚动链错误、双白底/双工作区、组件语义错误等运行时问题，默认视为 contract 已失效，必须重新闭环
 

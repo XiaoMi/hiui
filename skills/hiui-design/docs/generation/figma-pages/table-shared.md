@@ -116,4 +116,4 @@
 - 不要把 `bordered={false}`、`striped={false}`、`fixedToColumn` 继续当成“宿主自己会处理”的隐式默认值
 - 不要通过“一个单元格塞多个字段”去节省列数；那会破坏扫读和字段管理语义
 - 不要在已有 `StatListPageFrame` / `StatOverviewGrid` 的项目里重新手写统计页白卡壳层
-- 不要把列标题、搜索占位、筛选文案、分页文案或行操作文案直接硬编码在页面里；这些文本默认接受 locale 资源与 formatter
+- 列标题、搜索占位、筛选文案、分页文案或行操作文案先按 `i18nMode` 处理；`none` 模式允许直接中文，`key-only` 模式沿用宿主翻译函数，`full` 模式必须进入 locale 资源与 formatter

@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@ant-design/charts": "2.6.7",
+    "@hi-ui/avatar": "5.0.0-experimental.1",
+    "@hi-ui/descriptions": "5.0.0-experimental.1",
+    "@hi-ui/icons": "5.0.0-experimental.1",
+    "@hi-ui/layout": "5.0.0-experimental.3",
+    "@hi-ui/menu": "5.0.0-experimental.3",
+    "@hi-ui/popover": "5.0.0-experimental.2",
+    "@hi-ui/tree": "5.0.0-experimental.4",
+    "react-router-dom": "6.30.3",
+    "sass-embedded": "^1.97.2"
+  }
+}
