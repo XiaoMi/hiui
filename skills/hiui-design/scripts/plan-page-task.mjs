@@ -38,6 +38,7 @@ import {
 import {
   loadHostProfileFact,
   loadLegacyDeliveryPolicyFact,
+  loadLegacyStyleBoundaryFact,
   loadProjectCarrierRealizationFact,
   loadLegacyHostFamilyFact,
   loadProjectCapabilitiesFact,
@@ -3734,6 +3735,53 @@ function compiledTypicalBaselineForPlan({
   })
 }
 
+function legacyBridgeOwnershipFactsForPlan({
+  generationStrategy,
+  legacyHostHardGates,
+  mode,
+  pageComponent,
+  pageTypeId,
+}) {
+  if (
+    mode !== 'legacy-host-compatible' ||
+    normalizedGenerationStrategyId(generationStrategy) !== 'page-component' ||
+    pageComponent?.runtimeAdapterProof?.status !== 'available'
+  ) {
+    return null
+  }
+
+  const requiredRegions = getRequiredRegionsForPageType(pageTypeId)
+  const semanticContract = buildManagedPageSemanticContract(pageTypeId)
+  const legacyDriftSignals = uniqueValues([
+    ...(Array.isArray(legacyHostHardGates?.baselineHardGates)
+      ? legacyHostHardGates.baselineHardGates.flatMap((gate) =>
+          Array.isArray(gate?.driftSignals) ? gate.driftSignals : []
+        )
+      : []),
+  ])
+
+  return {
+    schemaVersion: 'legacy-bridge-ownership-facts.v1',
+    source: legacyHostHardGates?.sourcePath || 'rules/legacy-host-hard-gates.json',
+    shellCarrier: 'selected-page-component-or-project-certified-carrier',
+    whiteBodyOwner: requiredRegions.includes('white-body') ? 'page-component-carrier' : 'not-applicable',
+    mainScrollOwner: requiredRegions.includes('white-body') ? 'page-component-carrier' : 'not-applicable',
+    paginationOwner: requiredRegions.includes('pagination')
+      ? 'managed-list-workspace'
+      : 'not-applicable',
+    queryFilterCarrier: semanticContract.queryFilterRegionRole === 'table-query-filter'
+      ? 'managed-query-filter-inside-selected-carrier'
+      : 'not-applicable',
+    bodyTopNavigationPlacement: TABLE_RECIPE_PAGE_TYPES.has(pageTypeId)
+      ? 'white-body-top-before-query-filter-if-present'
+      : 'not-applicable',
+    headerTabsPolicy: requiredRegions.includes('header')
+      ? 'header-only-when-contract-declares-tab-replaces-title-lg'
+      : 'not-applicable',
+    driftSignals: legacyDriftSignals,
+  }
+}
+
 function generationInputsForPlan({
   extensionPolicy,
   deliveryLevel,
@@ -3744,6 +3792,7 @@ function generationInputsForPlan({
   generationRecipe,
   isNonTypical,
   legacyHostHardGates,
+  legacyStyleBoundary,
   mode,
   nonTypicalLayoutFacts,
   pageComponent,
@@ -3789,6 +3838,21 @@ function generationInputsForPlan({
         : startFrom?.id === 'host-archetype'
           ? 'locked-by-host-archetype'
           : 'locked-by-managed-mold-or-template'
+  const legacyFastPathSummary =
+    mode === 'legacy-host-compatible'
+      ? {
+          bodyTopNavigationPolicy: topology?.id === 'multi-page-workflow'
+            ? 'not-applicable'
+            : TABLE_RECIPE_PAGE_TYPES.has(resolvedPageTypeId)
+              ? 'body-top-before-query-filter-if-present'
+              : 'not-applicable',
+          headerTabsPolicy: isNonTypical
+            ? 'not-applicable'
+            : getRequiredRegionsForPageType(resolvedPageTypeId).includes('header')
+              ? 'header-only-when-contract-declares-tab-replaces-title-lg'
+              : 'not-applicable',
+        }
+      : null
   const upgradeSignals = uniqueValues([
     topology?.id === 'single-page-composite' ? 'composite-layout-contract' : '',
     topology?.id === 'non-typical-overlay' ? 'non-typical-layout' : '',
@@ -3808,6 +3872,28 @@ function generationInputsForPlan({
         pageUnits,
         topology,
       })
+  const legacyBridgeOwnership = isNonTypical
+    ? null
+    : legacyBridgeOwnershipFactsForPlan({
+        generationStrategy,
+        legacyHostHardGates,
+        mode,
+        pageComponent,
+        pageTypeId: resolvedPageTypeId,
+      })
+  const styleRiskSignals =
+    isNonTypical || mode !== 'legacy-host-compatible' || !TABLE_RECIPE_PAGE_TYPES.has(resolvedPageTypeId)
+      ? null
+      : {
+          schemaVersion: 'legacy-style-risk-signals.v1',
+          factPath: String(legacyStyleBoundary?.factPath || '').trim(),
+          factStatus: String(legacyStyleBoundary?.status || 'missing').trim() || 'missing',
+          riskLevel: String(legacyStyleBoundary?.riskLevel || 'low').trim() || 'low',
+          requiredProbe: String(legacyStyleBoundary?.status || '').trim() === 'risk',
+          signals: Array.isArray(legacyStyleBoundary?.riskSignals)
+            ? legacyStyleBoundary.riskSignals.map((signal) => String(signal || '').trim()).filter(Boolean)
+            : [],
+        }
 
   return {
     schemaVersion: 'generation-inputs.v1',
@@ -3826,6 +3912,8 @@ function generationInputsForPlan({
           'requiredAssets',
           'editableSlots',
           ...(compiledTypicalBaseline ? ['compiledTypicalBaseline'] : []),
+          ...(legacyBridgeOwnership ? ['legacyBridgeOwnership'] : []),
+          ...(styleRiskSignals ? ['styleRiskSignals'] : []),
         ],
     requiredDocs: requiredDocEntries.map((doc) => ({
       path: doc.path,
@@ -3844,6 +3932,7 @@ function generationInputsForPlan({
       executionMode,
       pageShellPolicy,
       queryFilterPolicy,
+      ...(legacyFastPathSummary || {}),
       upgradeSignals,
     },
     entryActions: compatibilityActions.filter((action) =>
@@ -3865,6 +3954,8 @@ function generationInputsForPlan({
       componentId: pageComponent?.componentId || '',
     },
     ...(compiledTypicalBaseline ? { compiledTypicalBaseline } : {}),
+    ...(legacyBridgeOwnership ? { legacyBridgeOwnership } : {}),
+    ...(styleRiskSignals ? { styleRiskSignals } : {}),
     ...(isNonTypical
       ? {
           layoutFacts: {
@@ -3883,21 +3974,44 @@ function generationInputsForPlan({
 
 function inlineChecksForPlan({
   generationRecipe,
+  legacyBridgeOwnership,
   requiredActions,
 }) {
   const compatibilityActions = Array.isArray(requiredActions) ? requiredActions : []
   const commandChecks = compatibilityActions.filter((action) =>
     ['typical-page:slot-gate', 'typical-page:source-gate', 'typical-page:preflight'].includes(action.command)
   )
+  const recipeChecks = Array.isArray(generationRecipe?.inlineChecks)
+    ? generationRecipe.inlineChecks.map((item, index) => ({
+        id: `recipe-inline-${index + 1}`,
+        description: item,
+      }))
+    : []
+
+  if (legacyBridgeOwnership) {
+    recipeChecks.push(
+      {
+        id: 'legacy-bridge-inline-1',
+        description: 'legacy bridge keeps white-body and main-scroll ownership inside the selected carrier',
+      },
+      {
+        id: 'legacy-bridge-inline-2',
+        description: 'legacy pagination remains inside the managed list workspace owned by the selected carrier',
+      },
+      {
+        id: 'legacy-bridge-inline-3',
+        description: 'legacy bodyTopNavigation, if present, stays inside white-body above QueryFilter',
+      },
+      {
+        id: 'legacy-bridge-inline-4',
+        description: 'legacy header tabs are only allowed when contract declares a title-replacing lg tabs variant',
+      }
+    )
+  }
 
   return {
     schemaVersion: 'inline-checks.v1',
-    recipeChecks: Array.isArray(generationRecipe?.inlineChecks)
-      ? generationRecipe.inlineChecks.map((item, index) => ({
-          id: `recipe-inline-${index + 1}`,
-          description: item,
-        }))
-      : [],
+    recipeChecks,
     commandChecks: commandChecks.map((action) => ({
       id: action.id,
       command: action.command,
@@ -4497,6 +4611,10 @@ async function buildPlan(options) {
     modeOverride: mode.id,
     projectCarrierRealization,
   })
+  const legacyStyleBoundary = await loadLegacyStyleBoundaryFact({
+    targetRoot: options.target,
+    modeOverride: mode.id,
+  })
   const legacyDeliveryPolicy = await loadLegacyDeliveryPolicyFact({
     targetRoot: options.target,
     skillRoot,
@@ -4865,6 +4983,7 @@ async function buildPlan(options) {
     generationRecipe,
     isNonTypical: layoutOverlayRequired,
     legacyHostHardGates,
+    legacyStyleBoundary,
     mode: mode.id,
     nonTypicalLayoutFacts: nonTypicalLayoutFacts || {
       layoutStrategy,
@@ -4890,6 +5009,7 @@ async function buildPlan(options) {
   })
   const inlineChecks = inlineChecksForPlan({
     generationRecipe,
+    legacyBridgeOwnership: generationInputs.legacyBridgeOwnership || null,
     requiredActions,
   })
   const deliveryChecks = deliveryChecksForPlan({
@@ -4930,6 +5050,7 @@ async function buildPlan(options) {
     projectCapabilities,
     projectCarrierRealization,
     projectTypicalPageSupport: effectivePageComponentSupport,
+    legacyStyleBoundary,
     legacyDeliveryPolicy: legacyDeliveryPolicySupport,
     assetResolution,
     mode,

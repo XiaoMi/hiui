@@ -79,6 +79,12 @@ HiUI Typical Standard -> PageType -> ManagedMold -> Adapter/Carrier Proof -> Cer
 - 对表格类 `page-component`，`QueryFilter`、`Table` 与 `pagination` 都属于 carrier 内部语义；
   业务页 / bridge slot adapter 只允许填 `queryFields`、表格列、行操作和 Level 1 受控扩展，
   不允许再额外包一层外部样式容器、自由筛选栏，或把 `QueryFilter` 翻译成宿主 `SearchForm`。
+- 对 legacy 表格类 bridge，业务页、本地 wrapper 与 slot adapter 还不得再合成第二层
+  `white-body shell`、`main-scroll shell`、`pagination shell` 或 `query shell`。这些几何责任必须
+  保持在 selected certified page component 或 project-certified carrier 内部。
+- 若页面需要 `bodyTopNavigation`、筛选区前提示条或结果工具条，这些能力只能来自 page component
+  已声明的标准 slot / Level 1 受控扩展；legacy bridge 不得通过外层 wrapper 把它们提升成新的
+  page-level carrier，也不得把主体导航回流到 header region。
 - 这类 bridge 规则的唯一真相是 `rules/runtime-bridged-component-matrix.json`；它只补充
   `page-component` 在 legacy 中的交付方式，不复制 `page-component-registry`、mold registry
   或 component certification 已经表达的事实。

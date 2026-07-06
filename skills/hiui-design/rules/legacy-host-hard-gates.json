@@ -16,12 +16,23 @@
     {
       "id": "shell-ownership",
       "label": "shell ownership stable",
-      "requirement": "shell ownership, carrier owner, and main scroll owner may not drift into the business page"
+      "requirement": "shell ownership, carrier owner, and main scroll owner may not drift into the business page",
+      "driftSignals": [
+        "WHITE_BODY_OWNER_DRIFT",
+        "MAIN_SCROLL_OWNER_DRIFT",
+        "PAGINATION_MOUNT_DRIFT",
+        "QUERY_FILTER_CARRIER_DRIFT"
+      ]
     },
     {
       "id": "governed-business-slots",
       "label": "business edits stay in governed slots",
-      "requirement": "business implementation may only fill governed slots and may not synthesize local shell/header/layout owners"
+      "requirement": "business implementation may only fill governed slots and may not synthesize local shell/header/layout owners",
+      "driftSignals": [
+        "TOP_NAV_REGION_DRIFT",
+        "QUERY_FILTER_CARRIER_DRIFT",
+        "PAGINATION_MOUNT_DRIFT"
+      ]
     }
   ],
   "conditionalHardGates": [
@@ -54,7 +65,8 @@
   "notes": [
     "Baseline hard gates stay at 4.",
     "When header is part of the governed page structure, the conditional header gate is added and the effective gate count becomes 5.",
-    "Current shipped ordinary typical page molds usually include header, so maintainers should expect 5 effective hard gates in most legacy page plans."
+    "Current shipped ordinary typical page molds usually include header, so maintainers should expect 5 effective hard gates in most legacy page plans.",
+    "The new drift signals are scoped to legacy-host-compatible ownership hardening; they refine existing shell-ownership and governed-business-slots gates instead of creating new baseline gates."
   ],
   "sourceRefs": {
     "skill": "SKILL.md",

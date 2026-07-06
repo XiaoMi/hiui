@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { buildProjectCapabilities } from './asset-control-surface.mjs'
 import { detectHostProfile } from './detect-host-profile.mjs'
@@ -92,10 +93,26 @@ const PROJECT_LEGACY_DELIVERY_POLICY_FINGERPRINT_PATHS = [
   '.local-context/hiui-design/outputs/project-integration-state.json',
 ]
 
+const PROJECT_LEGACY_STYLE_BOUNDARY_FINGERPRINT_PATHS = [
+  'package.json',
+  'pnpm-lock.yaml',
+  'src',
+  'src/styles',
+  'src/index.scss',
+  'src/index.css',
+  'src/app.scss',
+  'src/app.css',
+  '.local-context/hiui-design/outputs/legacy-host-boundary.json',
+  'node_modules/@hi-ui/query-filter',
+  'node_modules/@hi-ui/input',
+  'node_modules/hiui5',
+]
+
 const PROJECT_FACTS_SCHEMA_VERSION = 'project-fact-cache.v1'
 const LEGACY_PAGE_TYPE_DELIVERY_POLICY_RULES_RELATIVE_PATH = 'rules/legacy-page-type-delivery-policy.json'
 const LEGACY_PAGE_TYPE_DELIVERY_POLICY_OUTPUT_TEMPLATE =
   '.local-context/hiui-design/outputs/page-type-delivery-policy.%MODE%.json'
+const requireForProjectFacts = createRequire(import.meta.url)
 
 function normalizeModeKey(modeOverride = '') {
   const value = String(modeOverride || '').trim()
@@ -112,6 +129,47 @@ function resolveFactModeId(modeOverride = '') {
 
 function uniqueValues(values = []) {
   return Array.from(new Set(values.filter(Boolean)))
+}
+
+function normalizePathForFact(value = '') {
+  return String(value || '').replace(/\\/g, '/')
+}
+
+function releaseTrackForVersion(version = '') {
+  const normalizedVersion = String(version || '').trim()
+  const trackMatch = normalizedVersion.match(/-(alpha|beta|canary|experimental|rc)(?:[.-]\d+)?/i)
+
+  return trackMatch ? trackMatch[1].toLowerCase() : normalizedVersion ? 'stable' : ''
+}
+
+function packageJsonPathForResolvedEntry(resolvedEntryPath = '') {
+  if (!resolvedEntryPath) {
+    return ''
+  }
+
+  const normalizedPath = normalizePathForFact(resolvedEntryPath)
+  const nodeModulesToken = '/node_modules/'
+  const nodeModulesIndex = normalizedPath.lastIndexOf(nodeModulesToken)
+
+  if (nodeModulesIndex < 0) {
+    return ''
+  }
+
+  const packageStart = nodeModulesIndex + nodeModulesToken.length
+  const packageSegments = normalizedPath.slice(packageStart).split('/')
+  const packageName = packageSegments[0]?.startsWith('@')
+    ? packageSegments.slice(0, 2).join('/')
+    : packageSegments[0]
+
+  if (!packageName) {
+    return ''
+  }
+
+  return path.join(
+    normalizedPath.slice(0, nodeModulesIndex + nodeModulesToken.length),
+    packageName,
+    'package.json'
+  )
 }
 
 async function pathStamp(targetPath) {
@@ -151,6 +209,14 @@ async function readJsonIfExists(filePath) {
   }
 }
 
+async function readTextIfExists(filePath) {
+  try {
+    return await fs.readFile(filePath, 'utf8')
+  } catch {
+    return ''
+  }
+}
+
 async function cacheRootExists(targetRoot) {
   try {
     const stat = await fs.stat(path.join(targetRoot, '.local-context', 'hiui-design'))
@@ -164,6 +230,109 @@ async function writeDerivedOutput(targetRoot, relativePath, payload) {
   const filePath = path.join(targetRoot, relativePath)
   await fs.mkdir(path.dirname(filePath), { recursive: true })
   await fs.writeFile(filePath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8')
+}
+
+function resolvePackageEntryFromRoot(targetRoot, packageName, fromDir = targetRoot) {
+  try {
+    return requireForProjectFacts.resolve(packageName, { paths: [fromDir, targetRoot] })
+  } catch {
+    return ''
+  }
+}
+
+async function loadInstalledPackageInfo(targetRoot, packageName, fromDir = targetRoot) {
+  const resolvedEntryPath = resolvePackageEntryFromRoot(targetRoot, packageName, fromDir)
+  const packageJsonPath = packageJsonPathForResolvedEntry(resolvedEntryPath)
+
+  if (!resolvedEntryPath || !packageJsonPath) {
+    return {
+      packageName,
+      version: '',
+      releaseTrack: '',
+      resolvedEntryPath: '',
+      packageJsonPath: '',
+      packageDir: '',
+      found: false,
+    }
+  }
+
+  const packageJson = await readJsonIfExists(packageJsonPath)
+  const packageDir = packageJsonPath ? path.dirname(packageJsonPath) : ''
+  const version = String(packageJson?.version || '').trim()
+
+  return {
+    packageName,
+    version,
+    releaseTrack: releaseTrackForVersion(version),
+    resolvedEntryPath: normalizePathForFact(resolvedEntryPath),
+    packageJsonPath: normalizePathForFact(packageJsonPath),
+    packageDir: normalizePathForFact(packageDir),
+    found: Boolean(packageJson),
+  }
+}
+
+async function listFilesRecursively(rootPath) {
+  try {
+    const entries = await fs.readdir(rootPath, { withFileTypes: true })
+    const nested = await Promise.all(
+      entries.map(async (entry) => {
+        const entryPath = path.join(rootPath, entry.name)
+        if (entry.isDirectory()) {
+          return listFilesRecursively(entryPath)
+        }
+        return [entryPath]
+      })
+    )
+    return nested.flat()
+  } catch {
+    return []
+  }
+}
+
+async function collectGlobalStyleFiles(targetRoot) {
+  const candidatePaths = [
+    'src/index.scss',
+    'src/index.css',
+    'src/app.scss',
+    'src/app.css',
+    'src/styles/global.scss',
+    'src/styles/global.css',
+    'src/styles/index.scss',
+    'src/styles/index.css',
+  ]
+  const collected = new Set()
+
+  for (const candidatePath of candidatePaths) {
+    const absolutePath = path.join(targetRoot, candidatePath)
+    const stat = await pathStamp(absolutePath)
+    if (stat.exists && stat.kind === 'file') {
+      collected.add(absolutePath)
+    }
+  }
+
+  const stylesRoot = path.join(targetRoot, 'src', 'styles')
+  const styleFiles = await listFilesRecursively(stylesRoot)
+  styleFiles
+    .filter((entryPath) => /\.(css|scss|sass|less)$/i.test(entryPath) && !/\.module\./i.test(entryPath))
+    .forEach((entryPath) => collected.add(entryPath))
+
+  return Array.from(collected)
+}
+
+function detectGlobalInputOverrideSnippets(styleSource = '') {
+  const source = String(styleSource || '')
+  const patterns = [
+    /\.hi-v5-input(?:__inner|--appearance-filled|\b)/g,
+    /\.hi-v5-query-filter-search-input/g,
+    /\.hi-v5-query-filter-form/g,
+  ]
+  const matches = []
+
+  for (const pattern of patterns) {
+    matches.push(...Array.from(source.matchAll(pattern), (match) => match[0]))
+  }
+
+  return uniqueValues(matches).slice(0, 6)
 }
 
 function cacheFilePath(targetRoot, factId, modeKey = '') {
@@ -686,6 +855,173 @@ export async function loadProjectTypicalPageSupportFact({
           .filter((pageType) => pageType.supportStatus === 'unsupported')
           .map((pageType) => pageType.pageTypeId),
         pageTypes,
+      }
+    },
+  })
+}
+
+export async function loadLegacyStyleBoundaryFact({
+  targetRoot,
+  modeOverride = '',
+}) {
+  const modeKey = normalizeModeKey(modeOverride)
+  const effectiveMode = resolveFactModeId(modeOverride)
+
+  return loadCachedProjectFact({
+    targetRoot,
+    factId: 'legacy-style-boundary',
+    modeKey,
+    fingerprintPaths: PROJECT_LEGACY_STYLE_BOUNDARY_FINGERPRINT_PATHS,
+    compute: async () => {
+      if (effectiveMode !== 'legacy-host-compatible') {
+        return {
+          schemaVersion: 'legacy-style-boundary.v1',
+          mode: effectiveMode || modeKey,
+          factPath: `.local-context/hiui-design/outputs/project-facts/legacy-style-boundary.${modeKey || 'auto'}.json`,
+          status: 'not-applicable',
+          riskLevel: 'low',
+          riskSignals: [],
+          packageVersions: {},
+          packageResolution: {},
+          styleBoundary: {},
+          globalStyleOverrides: [],
+          blockingReasons: [],
+        }
+      }
+
+      const legacyBoundaryPath = path.join(
+        targetRoot,
+        '.local-context',
+        'hiui-design',
+        'outputs',
+        'legacy-host-boundary.json'
+      )
+      const legacyBoundary = await readJsonIfExists(legacyBoundaryPath)
+      const rootPackageJson = await readJsonIfExists(path.join(targetRoot, 'package.json'))
+      const declaredHiui5Version = String(
+        rootPackageJson?.dependencies?.hiui5 || rootPackageJson?.devDependencies?.hiui5 || ''
+      ).trim()
+      const hiui5Info = await loadInstalledPackageInfo(targetRoot, 'hiui5')
+      const queryFilterInfo = await loadInstalledPackageInfo(targetRoot, '@hi-ui/query-filter')
+      const inputInfo = queryFilterInfo.packageDir
+        ? await loadInstalledPackageInfo(targetRoot, '@hi-ui/input', queryFilterInfo.packageDir)
+        : await loadInstalledPackageInfo(targetRoot, '@hi-ui/input')
+      const queryFilterEntrySource = queryFilterInfo.resolvedEntryPath
+        ? await readTextIfExists(queryFilterInfo.resolvedEntryPath)
+        : ''
+      const queryFilterStyleImportDetected = /styles\/index\.scss\.js/.test(queryFilterEntrySource)
+      const queryFilterStyleEntryPath = queryFilterInfo.resolvedEntryPath
+        ? normalizePathForFact(
+            path.join(path.dirname(queryFilterInfo.resolvedEntryPath), 'styles', 'index.scss.js')
+          )
+        : ''
+      const queryFilterStyleSource = queryFilterStyleEntryPath
+        ? await readTextIfExists(queryFilterStyleEntryPath)
+        : ''
+      const searchInputFilledSkinAvailable =
+        /query-filter-search-input/.test(queryFilterStyleSource) &&
+        /appearance-filled/.test(queryFilterStyleSource)
+      const styleFiles = await collectGlobalStyleFiles(targetRoot)
+      const globalOverrideEntries = []
+
+      for (const styleFilePath of styleFiles) {
+        const styleSource = await readTextIfExists(styleFilePath)
+        const overrideSnippets = detectGlobalInputOverrideSnippets(styleSource)
+
+        if (overrideSnippets.length > 0) {
+          globalOverrideEntries.push({
+            file: normalizePathForFact(path.relative(targetRoot, styleFilePath)),
+            selectors: overrideSnippets,
+          })
+        }
+      }
+
+      const releaseTracks = uniqueValues([
+        releaseTrackForVersion(declaredHiui5Version),
+        hiui5Info.releaseTrack,
+        queryFilterInfo.releaseTrack,
+        inputInfo.releaseTrack,
+      ]).filter(Boolean)
+      const inputPackageResolutionAligned = Boolean(
+        hiui5Info.version &&
+        queryFilterInfo.version &&
+        inputInfo.version &&
+        releaseTracks.length <= 1
+      )
+      const queryFilterCssLoadedRisk =
+        !queryFilterInfo.found || !queryFilterStyleImportDetected || !searchInputFilledSkinAvailable
+      const hostGlobalInputOverrideRisk = globalOverrideEntries.length > 0
+      const riskSignals = []
+
+      if (!queryFilterInfo.found) {
+        riskSignals.push('@hi-ui/query-filter package is missing or unresolved from target root')
+      }
+
+      if (!inputInfo.found) {
+        riskSignals.push('@hi-ui/input package is missing or unresolved from query-filter context')
+      }
+
+      if (
+        queryFilterInfo.found &&
+        inputInfo.found &&
+        hiui5Info.found &&
+        !inputPackageResolutionAligned
+      ) {
+        riskSignals.push(
+          `HiUI package release tracks are not aligned (declared hiui5=${releaseTrackForVersion(
+            declaredHiui5Version
+          ) || '(missing)'}, resolved hiui5=${hiui5Info.releaseTrack || '(missing)'}, query-filter=${
+            queryFilterInfo.releaseTrack || '(missing)'
+          }, input=${inputInfo.releaseTrack || '(missing)'})`
+        )
+      }
+
+      if (!queryFilterStyleImportDetected) {
+        riskSignals.push('@hi-ui/query-filter entry does not expose its style side-effect import')
+      }
+
+      if (!searchInputFilledSkinAvailable) {
+        riskSignals.push('@hi-ui/query-filter styles do not expose the filled search-input skin rule')
+      }
+
+      if (hostGlobalInputOverrideRisk) {
+        riskSignals.push(
+          `global style files directly target hi-v5 input/query-filter selectors (${globalOverrideEntries
+            .map((entry) => entry.file)
+            .join(', ')})`
+        )
+      }
+
+      return {
+        schemaVersion: 'legacy-style-boundary.v1',
+        mode: effectiveMode || modeKey,
+        factPath: `.local-context/hiui-design/outputs/project-facts/legacy-style-boundary.${modeKey || 'auto'}.json`,
+        status: riskSignals.length > 0 ? 'risk' : 'ready',
+        riskLevel: riskSignals.length > 0 ? 'high' : 'low',
+        riskSignals,
+        packageVersions: {
+          declaredHiui5Version,
+          resolvedHiui5Version: hiui5Info.version,
+          queryFilterVersion: queryFilterInfo.version,
+          inputVersion: inputInfo.version,
+        },
+        packageResolution: {
+          hiui5EntryPath: hiui5Info.resolvedEntryPath,
+          queryFilterEntryPath: queryFilterInfo.resolvedEntryPath,
+          queryFilterResolvesInputPath: inputInfo.resolvedEntryPath,
+          inputPackageResolutionAligned,
+          releaseTracks,
+        },
+        styleBoundary: {
+          boundaryStatus: String(legacyBoundary?.styleBoundary?.status || '').trim() || 'missing',
+          queryFilterStyleImportDetected,
+          queryFilterStyleEntryPath,
+          searchInputFilledSkinAvailable,
+          queryFilterCssLoadedRisk,
+          hostGlobalInputOverrideRisk,
+        },
+        globalStyleOverrides: globalOverrideEntries,
+        blockingReasons: [],
       }
     },
   })
