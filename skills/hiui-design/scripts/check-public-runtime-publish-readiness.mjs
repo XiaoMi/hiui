@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import {
+  loadRuntimeDeliveryContext,
+  readJson,
+  resolveDeclaredVendoredTarball,
+  resolvePublicPackagePaths,
+} from './lib/runtime-delivery.mjs'
 
 const DEFAULT_PUBLIC_NPM_REGISTRY = 'https://registry.npmjs.org'
 
@@ -62,21 +67,6 @@ Checks that the vendored typical-page-shells snapshot and generated public packa
   return options
 }
 
-async function readJson(targetPath) {
-  return JSON.parse(await fs.readFile(targetPath, 'utf8'))
-}
-
-async function findVendoredTarball(sourceRoot, tarballDirectory, tarballPattern) {
-  const vendorRoot = path.join(sourceRoot, tarballDirectory)
-  const pattern = new RegExp(tarballPattern)
-  const entries = await fs.readdir(vendorRoot)
-  const matches = entries.filter((entry) => pattern.test(entry)).sort()
-  if (matches.length === 0) {
-    throw new Error(`Missing vendored runtime tarball under ${path.relative(sourceRoot, vendorRoot) || tarballDirectory}`)
-  }
-  return path.join(vendorRoot, matches[matches.length - 1])
-}
-
 function runNpm(args, cwd, registry) {
   const result = spawnSync('npm', args, {
     cwd,
@@ -101,20 +91,20 @@ async function main() {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url))
   const sourceRoot = path.resolve(options.sourceRoot || path.join(scriptDir, '..'))
   const publicRoot = path.resolve(options.publicRoot || sourceRoot)
-  const policy = await readJson(path.join(sourceRoot, 'rules', 'runtime-delivery-policy.json'))
+  const sourceContext = await loadRuntimeDeliveryContext(sourceRoot)
+  const publicContext = await loadRuntimeDeliveryContext(publicRoot)
+  const policy = sourceContext.policy
   const registry =
-    String(options.registry || policy.runtimePackage.publicRegistry || DEFAULT_PUBLIC_NPM_REGISTRY).trim() ||
+    String(options.registry || sourceContext.runtimePackage.publicRegistry || DEFAULT_PUBLIC_NPM_REGISTRY).trim() ||
     DEFAULT_PUBLIC_NPM_REGISTRY
-  const runtimePackage = policy.runtimePackage
+  const runtimePackage = sourceContext.runtimePackage
   const releaseGate = policy.releaseGates['public-runtime-publish-readiness']
-  const snapshot = await readJson(path.join(sourceRoot, runtimePackage.vendorSnapshotManifest))
-  const publicPackageRoot = path.join(publicRoot, runtimePackage.publicPackageRoot)
-  const publicPackageJsonPath = path.join(publicPackageRoot, 'package.json')
-  const vendoredTarballPath = await findVendoredTarball(
-    sourceRoot,
-    runtimePackage.vendoredTarballDirectory,
-    runtimePackage.vendoredTarballPattern
-  )
+  const snapshot = sourceContext.snapshot
+  const publicSnapshot = publicContext.snapshot
+  const sourceVendoredTarball = await resolveDeclaredVendoredTarball(sourceRoot, sourceContext)
+  const publicVendoredTarball = await resolveDeclaredVendoredTarball(publicRoot, publicContext)
+  const { packageRoot: publicPackageRoot, packageJsonPath: publicPackageJsonPath, packageJsonRelativePath } =
+    resolvePublicPackagePaths(publicRoot, publicContext)
   const publicPackage = await readJson(publicPackageJsonPath)
 
   const checks = []
@@ -122,21 +112,49 @@ async function main() {
   checks.push({
     check: 'vendor-snapshot-manifest-present',
     status: 'passed',
-    path: path.relative(sourceRoot, path.join(sourceRoot, runtimePackage.vendorSnapshotManifest)),
+    path: sourceContext.snapshotRelativePath,
   })
   checks.push({
     check: 'vendored-tarball-present',
     status: 'passed',
-    path: path.relative(sourceRoot, vendoredTarballPath),
+    path: sourceVendoredTarball.relativePath,
+  })
+  checks.push({
+    check: 'public-vendor-snapshot-manifest-present',
+    status: 'passed',
+    path: publicContext.snapshotRelativePath,
+  })
+  checks.push({
+    check: 'public-vendored-tarball-present',
+    status: 'passed',
+    path: publicVendoredTarball.relativePath,
   })
   checks.push({
     check: 'public-package-root-present',
     status: 'passed',
-    path: path.relative(publicRoot, publicPackageJsonPath),
+    path: packageJsonRelativePath,
   })
 
   if (snapshot.name !== runtimePackage.packageName) {
     throw new Error(`Vendored snapshot package name mismatch: expected ${runtimePackage.packageName}, received ${snapshot.name}`)
+  }
+
+  if (publicSnapshot.name !== runtimePackage.packageName) {
+    throw new Error(
+      `Public vendored snapshot package name mismatch: expected ${runtimePackage.packageName}, received ${publicSnapshot.name}`
+    )
+  }
+
+  if (snapshot.version !== publicSnapshot.version) {
+    throw new Error(
+      `Public vendored snapshot version ${publicSnapshot.version} does not match source vendored snapshot version ${snapshot.version}`
+    )
+  }
+
+  if (snapshot.runtimeDelivery?.vendoredTarball !== publicSnapshot.runtimeDelivery?.vendoredTarball) {
+    throw new Error(
+      `Public vendored tarball declaration ${publicSnapshot.runtimeDelivery?.vendoredTarball || '<missing>'} does not match source vendored tarball declaration ${snapshot.runtimeDelivery?.vendoredTarball || '<missing>'}`
+    )
   }
 
   if (publicPackage.name !== runtimePackage.packageName) {

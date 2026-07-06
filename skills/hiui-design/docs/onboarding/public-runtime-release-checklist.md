@@ -57,6 +57,8 @@ node scripts/check-public-runtime-publish-readiness.mjs \
 
 - vendor snapshot 存在
 - vendored tgz 存在
+- 开源仓 vendor snapshot 存在
+- 开源仓 vendored tgz 存在
 - 开源仓 `packages/typical-page-shells/package.json` 存在
 - snapshot 版本与公开包版本一致
 - `npm pack --dry-run` 通过
@@ -71,8 +73,10 @@ npm_config_registry=https://registry.npmjs.org npm whoami
 若返回 `ENEEDAUTH`，先执行：
 
 ```bash
-npm adduser --registry https://registry.npmjs.org
+npm login --registry https://registry.npmjs.org --auth-type web
 ```
+
+若还没有 npm 账号，先去 npm 官网完成注册，再回到 CLI 执行上面的 `npm login`。
 
 5. 执行真正的公开 npm 发布。
 
@@ -93,6 +97,8 @@ node scripts/verify-public-runtime-release.mjs \
 
 - vendor snapshot 存在
 - vendored tgz 存在
+- 开源仓 vendor snapshot 存在
+- 开源仓 vendored tgz 存在
 - 开源仓 `packages/typical-page-shells/package.json` 存在
 - snapshot 版本与公开包版本一致
 - npm registry 已存在 exact version
@@ -118,15 +124,15 @@ node scripts/release-skill-archive.mjs
 若第 3 步失败，优先按下面顺序处理：
 
 1. 先看 `vendor/typical-page-shells-package.json` 和 `packages/typical-page-shells/package.json` 的版本是否一致。
-2. 再看 vendored tgz 是否真的刷新到了同一版本。
+2. 再看 maintainer source 和开源仓里的 vendored tgz / vendor snapshot 是否真的刷新到了同一版本。
 3. 若 `npm pack --dry-run` 或 `npm publish --dry-run` 失败，先修公开包结构，再重新执行门禁。
 
-若第 4 步失败，说明这台机器还没有登录公开 npm，先完成 `npm adduser` 或配置可用 token。
+若第 4 步失败，说明这台机器还没有登录公开 npm，先完成 npm 官网注册或 `npm login --auth-type web`。
 
 若第 6 步失败，优先按下面顺序处理：
 
 1. 先确认第 5 步是否真的把 exact version 发布到了 `https://registry.npmjs.org`。
-2. 再看 `vendor/typical-page-shells-package.json` 和 `packages/typical-page-shells/package.json` 的版本是否一致。
+2. 再看 maintainer source 和开源仓里的 `vendor/typical-page-shells-package.json`、vendored tgz、`packages/typical-page-shells/package.json` 是否一致。
 3. 再确认 npm registry 返回的是 exact version，而不是近似版本或旧版本缓存。
 
 在第 6 步通过前，不要把依赖声明切到 registry，也不要把“公开可安装”写进文档或发布说明。

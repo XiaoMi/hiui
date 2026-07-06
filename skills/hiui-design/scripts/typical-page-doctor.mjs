@@ -4,14 +4,10 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { loadHostProfileFact } from './lib/project-facts.mjs'
+import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import {
-  inspectManagedPageRegistry,
-  resolveManagedPageObservedSourceSnapshotHash,
-  shouldPreferCurrentManagedPageSourceSnapshotForRuntimeSmoke,
-} from './lib/managed-page-artifacts.mjs'
+import { inspectManagedPageRegistry } from './lib/managed-page-artifacts.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
@@ -214,223 +210,41 @@ async function detectLegacyHostRuntimeMode(targetRoot, pkg) {
 }
 
 async function loadShellPackageSnapshot(skillRoot) {
-  return readJsonIfExists(path.join(skillRoot, 'vendor', 'typical-page-shells-package.json'))
+  const embeddedPackageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
+  const fallbackPackageJsonPath = path.resolve(
+    skillRoot,
+    '..',
+    '..',
+    'packages',
+    'typical-page-shells',
+    'package.json'
+  )
+  const packageJsonPath = (await pathExists(embeddedPackageJsonPath))
+    ? embeddedPackageJsonPath
+    : fallbackPackageJsonPath
+  return readJsonIfExists(packageJsonPath)
 }
 
-async function loadRuntimeDeliveryPolicy(skillRoot) {
-  return readJsonIfExists(path.join(skillRoot, 'rules', 'runtime-delivery-policy.json'))
+async function resolveEmbeddedShellsSpec(skillRoot, version) {
+  if (!version) return ''
+
+  const filename = `hiui-design-typical-page-shells-${version}.tgz`
+  const embeddedTarballPath = path.join(skillRoot, 'vendor', filename)
+
+  if (!(await pathExists(embeddedTarballPath))) {
+    return ''
+  }
+
+  return `file:.local-context/hiui-design/vendor/${filename}`
 }
 
-function parseNpmViewVersion(stdout) {
-  const text = String(stdout || '').trim()
-  if (!text) {
-    throw new Error('npm view returned empty stdout')
-  }
+async function resolveEmbeddedShellTarballPath(skillRoot, version) {
+  if (!version) return ''
 
-  try {
-    const parsed = JSON.parse(text)
-    if (typeof parsed === 'string') return parsed
-    if (Array.isArray(parsed) && typeof parsed[0] === 'string') return parsed[0]
-    if (parsed && typeof parsed === 'object' && typeof parsed.version === 'string') return parsed.version
-  } catch {
-    // Fall back to plain text parsing.
-  }
+  const filename = `hiui-design-typical-page-shells-${version}.tgz`
+  const embeddedTarballPath = path.join(skillRoot, 'vendor', filename)
 
-  return text.replace(/^"+|"+$/g, '')
-}
-
-function resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage) {
-  const configuredRegistry = String(
-    shellPackage?.runtimeDelivery?.publicRegistry ||
-      runtimeDeliveryPolicy?.runtimePackage?.publicRegistry ||
-      'https://registry.npmjs.org'
-  ).trim()
-
-  return configuredRegistry || 'https://registry.npmjs.org'
-}
-
-function runNpmCommand(args, cwd, registry = '') {
-  const result = spawnSync('npm', args, {
-    cwd,
-    encoding: 'utf8',
-    env: registry
-      ? {
-          ...process.env,
-          npm_config_registry: registry,
-        }
-      : process.env,
-    maxBuffer: 32 * 1024 * 1024,
-  })
-
-  if (result.status !== 0) {
-    const failureText = [result.stderr, result.stdout].filter(Boolean).join('\n').trim()
-    throw new Error(failureText || `npm ${args.join(' ')} failed`)
-  }
-
-  return result
-}
-
-async function resolveShellRuntimeDelivery(skillRoot, shellPackage, runtimeDeliveryPolicy) {
-  if (!shellPackage) {
-    return {
-      deliverySource: 'missing-snapshot',
-      expectedShellSpecs: [],
-      expectedShellSpecDetail: 'Missing vendor/typical-page-shells-package.json runtime snapshot',
-      publicRegistryCheck: {
-        required: false,
-        ok: true,
-        detail: 'Runtime snapshot is missing; cannot determine delivery policy.',
-      },
-      vendoredTarballPath: '',
-      vendoredTarballRequired: false,
-    }
-  }
-
-  const runtimeDelivery = shellPackage.runtimeDelivery ?? {}
-  const vendoredTarballRelativePath =
-    runtimeDelivery.vendoredTarball ||
-    `vendor/hiui-design-typical-page-shells-${shellPackage.version}.tgz`
-  const vendoredTarballPath = path.join(skillRoot, vendoredTarballRelativePath)
-  if (await pathExists(vendoredTarballPath)) {
-    return {
-      deliverySource: 'vendored-tarball',
-      expectedShellSpecs: [`file:.local-context/hiui-design/vendor/${path.basename(vendoredTarballRelativePath)}`],
-      expectedShellSpecDetail: `Expected vendored tgz dependency: file:.local-context/hiui-design/vendor/${path.basename(
-        vendoredTarballRelativePath
-      )}`,
-      publicRegistryCheck: {
-        required: false,
-        ok: true,
-        detail: 'Vendored runtime delivery is active; npm registry is not part of the current install contract.',
-      },
-      vendoredTarballPath,
-      vendoredTarballRequired: true,
-    }
-  }
-
-  const publicPackageRoot =
-    runtimeDelivery.publicPackageRoot || runtimeDeliveryPolicy?.runtimePackage?.publicPackageRoot || ''
-  const publicPackageJsonPath = publicPackageRoot
-    ? path.join(skillRoot, publicPackageRoot, 'package.json')
-    : ''
-  const publicPackage = publicPackageJsonPath ? await readJsonIfExists(publicPackageJsonPath) : null
-
-  if (runtimeDeliveryPolicy?.deliveryChannels?.['open-source-package']?.runtimeResolution === 'vendored-tarball') {
-    return {
-      deliverySource: 'missing-runtime-delivery',
-      expectedShellSpecs: [],
-      expectedShellSpecDetail: `Missing vendored tgz at ${path.relative(
-        skillRoot,
-        vendoredTarballPath
-      )} for a skill view that requires vendored runtime delivery`,
-      publicRegistryCheck: {
-        required: false,
-        ok: false,
-        detail: 'This skill view requires the vendored tgz. Public package metadata does not change the active install contract.',
-      },
-      vendoredTarballPath,
-      vendoredTarballRequired: true,
-    }
-  }
-
-  if (publicPackage) {
-    const publicRegistry = resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage)
-    if (publicPackage.name !== shellPackage.name) {
-      return {
-        deliverySource: 'invalid-public-package',
-        expectedShellSpecs: [],
-        expectedShellSpecDetail: `Public package name mismatch: expected ${shellPackage.name}, received ${publicPackage.name}`,
-        publicRegistryCheck: {
-          required: true,
-          ok: false,
-          detail: `Public package name mismatch at ${publicPackageJsonPath}: expected ${shellPackage.name}, received ${publicPackage.name}`,
-        },
-        vendoredTarballPath: '',
-        vendoredTarballRequired: false,
-      }
-    }
-
-    if (publicPackage.version !== shellPackage.version) {
-      return {
-        deliverySource: 'invalid-public-package',
-        expectedShellSpecs: [],
-        expectedShellSpecDetail: `Public package version mismatch: vendor snapshot=${shellPackage.version}, public package=${publicPackage.version}`,
-        publicRegistryCheck: {
-          required: true,
-          ok: false,
-          detail: `Public package version mismatch at ${publicPackageJsonPath}: vendor snapshot=${shellPackage.version}, public package=${publicPackage.version}`,
-        },
-        vendoredTarballPath: '',
-        vendoredTarballRequired: false,
-      }
-    }
-
-    try {
-      const npmViewResult = runNpmCommand(
-        ['view', `${publicPackage.name}@${publicPackage.version}`, 'version', '--json'],
-        skillRoot,
-        publicRegistry
-      )
-      const publishedVersion = parseNpmViewVersion(npmViewResult.stdout)
-      if (publishedVersion !== publicPackage.version) {
-        return {
-          deliverySource: 'public-registry-unverified',
-          expectedShellSpecs: [],
-          expectedShellSpecDetail: `Open-source runtime delivery cannot rely on npm until ${publicPackage.name}@${publicPackage.version} is publicly published`,
-          publicRegistryCheck: {
-            required: true,
-            ok: false,
-            detail: `npm view against ${publicRegistry} returned ${publishedVersion || 'empty response'} for ${publicPackage.name}@${publicPackage.version}`,
-          },
-          vendoredTarballPath: '',
-          vendoredTarballRequired: false,
-        }
-      }
-
-      return {
-        deliverySource: 'public-registry',
-        expectedShellSpecs: [publicPackage.version],
-        expectedShellSpecDetail: `Expected published npm version: ${publicPackage.version}`,
-        publicRegistryCheck: {
-          required: true,
-          ok: true,
-          detail: `${publicPackage.name}@${publicPackage.version} is published to ${publicRegistry} and matches packages/typical-page-shells/package.json.`,
-        },
-        vendoredTarballPath: '',
-        vendoredTarballRequired: false,
-      }
-    } catch (error) {
-      const detail = error instanceof Error ? error.message : String(error)
-      return {
-        deliverySource: 'public-registry-unverified',
-        expectedShellSpecs: [],
-        expectedShellSpecDetail: `Open-source runtime delivery cannot rely on npm until ${publicPackage.name}@${publicPackage.version} is publicly published`,
-        publicRegistryCheck: {
-          required: true,
-          ok: false,
-          detail: `npm view against ${publicRegistry} failed for ${publicPackage.name}@${publicPackage.version}: ${detail}`,
-        },
-        vendoredTarballPath: '',
-        vendoredTarballRequired: false,
-      }
-    }
-  }
-
-  return {
-    deliverySource: 'missing-runtime-delivery',
-    expectedShellSpecs: [],
-    expectedShellSpecDetail: `Missing vendored tgz at ${path.relative(
-      skillRoot,
-      vendoredTarballPath
-    )} and no public package root is available for published-registry delivery`,
-    publicRegistryCheck: {
-      required: false,
-      ok: false,
-      detail: 'Neither vendored tgz nor public packages/typical-page-shells metadata is available.',
-    },
-    vendoredTarballPath,
-    vendoredTarballRequired: true,
-  }
+  return (await pathExists(embeddedTarballPath)) ? embeddedTarballPath : ''
 }
 
 async function loadHostIntegrationDependencySnapshot(skillRoot) {
@@ -534,10 +348,11 @@ function findDependency(pkg, depName) {
   )
 }
 
-function isAcceptableShellSpec(spec, allowedSpecs = [], { allowLinkedShellSpec = false } = {}) {
+function isAcceptableShellSpec(spec, version, embeddedShellsSpec = '') {
   if (!spec) return false
-  if (allowedSpecs.includes(spec)) return true
-  if (allowLinkedShellSpec && spec.startsWith('link:')) return true
+  if (spec === version) return true
+  if (embeddedShellsSpec && spec === embeddedShellsSpec) return true
+  if (spec.startsWith('link:')) return true
   return false
 }
 
@@ -605,24 +420,20 @@ async function inspectManagedDataVisualizationSharedShells(entries, targetRoot) 
 function collectManagedDependencyVersionDrift({
   pkg,
   shellPackage,
-  allowedShellSpecs,
-  allowLinkedShellSpec,
-  shellExpectedDetail,
+  embeddedShellsSpec,
   hostIntegrationDependencies,
   mode,
 }) {
   const drifts = []
   const shellSpec = findDependency(pkg, '@hiui-design/typical-page-shells')
 
-  if (!isAcceptableShellSpec(shellSpec, allowedShellSpecs, { allowLinkedShellSpec })) {
+  if (!isAcceptableShellSpec(shellSpec, shellPackage.version, embeddedShellsSpec)) {
     drifts.push({
       depName: '@hiui-design/typical-page-shells',
       actual: shellSpec || '(missing)',
-      expected:
-        shellExpectedDetail ||
-        (allowedShellSpecs.length > 0
-          ? `${allowedShellSpecs.join(' or ')}${allowLinkedShellSpec ? ' or link: local package spec' : ''}`
-          : 'no accepted runtime delivery spec is currently available'),
+      expected: embeddedShellsSpec
+        ? `${shellPackage.version}, ${embeddedShellsSpec}, or a link: local package spec`
+        : `${shellPackage.version} or a link: local package spec`,
     })
   }
 
@@ -2869,10 +2680,6 @@ async function collectTypicalPageSourceSignals(rootDir) {
   for (const filePath of files) {
     const raw = await readTextCached(filePath)
     const specifiers = extractImportSpecifiers(raw)
-    const relativeFilePath = path.relative(rootDir, filePath)
-    const isNonBusinessAuxiliaryFile =
-      relativeFilePath.startsWith(`typical-page-reuse${path.sep}`) ||
-      /(?:^|[\\/])__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(filePath)
     const usesShells = specifiers.some(
       (specifier) =>
         specifier === '@hiui-design/typical-page-shells' ||
@@ -2888,7 +2695,7 @@ async function collectTypicalPageSourceSignals(rootDir) {
         specifier.endsWith('/dist/index.mjs')
     )
 
-    if ((usesShells || usesPrivateShellImport) && !isNonBusinessAuxiliaryFile) {
+    if (usesShells || usesPrivateShellImport) {
       signals.usesShells.push(filePath)
     }
 
@@ -2897,7 +2704,7 @@ async function collectTypicalPageSourceSignals(rootDir) {
         specifier.endsWith('/typical-page-host') ||
         specifier.includes('components/typical-page-host')
     )
-    const isHostIntegrationExampleFile = relativeFilePath.startsWith(`typical-page-reuse${path.sep}`)
+    const isHostIntegrationExampleFile = filePath.includes(`${path.sep}typical-page-reuse${path.sep}`)
     if (usesLocalHostAdapter && !isHostIntegrationExampleFile) {
       signals.localHostAdapterImports.push(filePath)
     }
@@ -4654,14 +4461,8 @@ async function analyzeRulesOnlyManagedPageFacts({
       )
     }
 
+    const sourceSnapshotHash = String(entry.contract?.workflow?.sourceSnapshotHash || '').trim()
     const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(entry.contract)
-    const sourceSnapshotHash = resolveManagedPageObservedSourceSnapshotHash({
-      contract: entry.contract,
-      targetRoot,
-      preferCurrentSource: shouldPreferCurrentManagedPageSourceSnapshotForRuntimeSmoke(
-        entry.contract
-      ),
-    })
     const runtimeSmokeWorkflow = reconcileManagedPageRuntimeSmokeWorkflow(
       entry.contract,
       entry.contract?.workflow || {},
@@ -4979,11 +4780,8 @@ async function main() {
     const skillRoot = path.resolve(scriptDir, '..')
     const targetRoot = path.resolve(options.target)
     const hostOutputRoot = path.join(targetRoot, options.dest)
-    const hostProfile = await loadHostProfileFact({
-      targetRoot,
-      options: {
-        ignoreRelativePaths: [options.dest],
-      },
+    const hostProfile = await detectHostProfile(targetRoot, {
+      ignoreRelativePaths: [options.dest],
     })
     const isTypicalPageSourceRepo = await detectTypicalPageSourceRepo(targetRoot)
     const { manifest, manifestPath, lineId } = await loadManifest(skillRoot, options.line)
@@ -4997,15 +4795,12 @@ async function main() {
     const requiredArchetypeBaselineIds = getRequiredArchetypeBaselineIds(baselineSpec)
     const baselineSpecEntries = mapArchetypeSmokeBaselineSpecEntries(baselineSpec)
     const shellPackage = await loadShellPackageSnapshot(skillRoot)
-    const runtimeDeliveryPolicy = await loadRuntimeDeliveryPolicy(skillRoot)
-    const runtimeShellDelivery = await resolveShellRuntimeDelivery(
-      skillRoot,
-      shellPackage,
-      runtimeDeliveryPolicy
-    )
-    const embeddedShellsSpec =
-      runtimeShellDelivery.expectedShellSpecs.find((spec) => spec.startsWith('file:')) || ''
-    const embeddedShellTarballPath = runtimeShellDelivery.vendoredTarballPath
+    const embeddedShellsSpec = shellPackage
+      ? await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
+      : ''
+    const embeddedShellTarballPath = shellPackage
+      ? await resolveEmbeddedShellTarballPath(skillRoot, shellPackage.version)
+      : ''
     const hostIntegrationDependencies = await loadHostIntegrationDependencySnapshot(skillRoot)
     const checks = []
 
@@ -5047,7 +4842,6 @@ async function main() {
       requestedMode,
       legacyHostRuntime,
     })
-    const allowLinkedShellSpec = isTypicalPageSourceRepo
     const legacyCompatibilityMode = mode === 'legacy-host-compatible'
     const referenceOnlyMode = isReferenceOnlyMode(mode)
     const outputRoot =
@@ -5110,9 +4904,7 @@ async function main() {
         ? collectManagedDependencyVersionDrift({
             pkg,
             shellPackage,
-            allowedShellSpecs: runtimeShellDelivery.expectedShellSpecs,
-            allowLinkedShellSpec,
-            shellExpectedDetail: runtimeShellDelivery.expectedShellSpecDetail,
+            embeddedShellsSpec,
             hostIntegrationDependencies,
             mode,
           })
@@ -5314,6 +5106,21 @@ async function main() {
     }
 
     pushCheck(checks, {
+      id: 'shells-declared',
+      ok: Boolean(depSpec) || legacyCompatibilityMode,
+      severity: legacyCompatibilityMode ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
+      summary: '@hiui-design/typical-page-shells is declared',
+        detail: legacyCompatibilityMode
+        ? depSpec
+          ? `Legacy host bridge mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. Ordinary typical pages may still use planner-selected page components, but new pages should avoid ad hoc standard-shell imports on the legacy host main tree unless you first isolate a dedicated modern runtime entry.`
+          : 'Legacy host bridge mode (legacy-host-compatible) is active. Reference-only generation may continue without declaring @hiui-design/typical-page-shells. Ordinary typical pages may still use planner-selected page components; the restriction is only that new pages must not add ad hoc standard-shell imports on the legacy host main tree.'
+        : depSpec
+        ? `Declared version/range: ${depSpec}`
+        : mode === 'host-integration'
+          ? 'Dependency is not declared in package.json'
+          : 'Reference-only mode allows this before the first page is generated, but the dependency should be declared before using @hiui-design/typical-page-shells in project code',
+    })
+    pushCheck(checks, {
       id: 'managed-dependency-versions',
       ok: managedDependencyDrifts.length === 0 || legacyCompatibilityMode,
       severity: legacyCompatibilityMode ? 'warn' : 'error',
@@ -5342,14 +5149,6 @@ async function main() {
           : legacyCompatibilityMode
             ? `Legacy host compatibility mode stays active because the repository still contains ${legacyHiUiEsImports.length} @hi-ui/hiui/es* consumers. Any root-package upgrade must preserve that ABI or be isolated away from the host runtime. Examples: ${summarizeLegacyImportHits(targetRoot, legacyHiUiEsImports)}`
             : `Source still imports @hi-ui/hiui/es* even though this project was not classified as a legacy host. Examples: ${summarizeLegacyImportHits(targetRoot, legacyHiUiEsImports)}`,
-    })
-    pushCheck(checks, {
-      id: 'public-shell-registry-release',
-      ok: !runtimeShellDelivery.publicRegistryCheck.required || runtimeShellDelivery.publicRegistryCheck.ok,
-      severity: runtimeShellDelivery.publicRegistryCheck.required ? 'error' : 'warn',
-      summary:
-        'runtime delivery source is verified before @hiui-design/typical-page-shells falls back to public npm',
-      detail: runtimeShellDelivery.publicRegistryCheck.detail,
     })
     pushCheck(checks, {
       id: 'installed-root-runtime-drift',
@@ -5381,70 +5180,31 @@ async function main() {
       'query-filter.js'
     )
     const targetEmbeddedShellTarballPath = shellPackage
-      ? isTypicalPageSourceRepo
-        ? embeddedShellTarballPath
-        : path.join(
-            targetRoot,
-            '.local-context',
-            'hiui-design',
-            'vendor',
-            `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
-          )
+      ? path.join(
+          targetRoot,
+          '.local-context',
+          'hiui-design',
+          'vendor',
+          `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
+        )
       : ''
     const targetSourceRoot = path.join(targetRoot, 'src')
     const targetSourceSignals = await collectTypicalPageSourceSignals(targetSourceRoot)
     const compatibilityGenerationOnly =
       legacyCompatibilityMode && targetSourceSignals.usesShells.length === 0
-    const directStandardShellRuntimeSelected =
-      legacyCompatibilityMode && targetSourceSignals.usesShells.length > 0
-    pushCheck(checks, {
-      id: 'shells-declared',
-      ok:
-        compatibilityGenerationOnly ||
-        isAcceptableShellSpec(depSpec, runtimeShellDelivery.expectedShellSpecs, {
-          allowLinkedShellSpec,
-        }),
-      severity:
-        compatibilityGenerationOnly
-          ? 'warn'
-          : mode === 'host-integration' || directStandardShellRuntimeSelected
-            ? 'error'
-            : 'warn',
-      summary: '@hiui-design/typical-page-shells declaration matches the active runtime delivery mode',
-      detail: legacyCompatibilityMode
-        ? compatibilityGenerationOnly
-          ? depSpec
-            ? `Legacy host bridge mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. In the default page-component + runtime bridge + slot fill path this declaration is not required-in-current-mode; it only becomes a hard requirement if current source actually selects the direct standard shell runtime.`
-            : 'Legacy host bridge mode (legacy-host-compatible) is active. Ordinary typical pages may still use planner-selected page components through page-component + runtime bridge + slot fill, so package.json is not required to declare @hiui-design/typical-page-shells until the project explicitly selects the direct standard shell runtime.'
-          : depSpec
-            ? `Legacy host bridge mode (legacy-host-compatible) is active, and current source already imports direct standard shell runtime paths. package.json declares @hiui-design/typical-page-shells as ${depSpec}; keep that declaration aligned with the stricter runtime and source-usage checks below.`
-            : 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports direct standard shell runtime paths. package.json must now declare @hiui-design/typical-page-shells unless you remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
-        : depSpec
-        ? `Declared version/range: ${depSpec}. ${runtimeShellDelivery.expectedShellSpecDetail}`
-        : mode === 'host-integration'
-          ? `Dependency is not declared in package.json. ${runtimeShellDelivery.expectedShellSpecDetail}`
-          : `Reference-only mode allows this before the first page is generated, but the dependency should be declared before using @hiui-design/typical-page-shells in project code. ${runtimeShellDelivery.expectedShellSpecDetail}`,
-    })
     pushCheck(checks, {
       id: 'shells-installed',
-      ok:
-        compatibilityGenerationOnly ||
-        (!legacyCompatibilityMode && (await pathExists(installedPackagePath))) ||
-        (directStandardShellRuntimeSelected && (await pathExists(installedPackagePath))),
-      severity: directStandardShellRuntimeSelected ? 'error' : 'warn',
-      summary: '@hiui-design/typical-page-shells installation state matches the active runtime delivery mode',
+      ok: legacyCompatibilityMode || (await pathExists(installedPackagePath)),
+      severity: 'warn',
+      summary: '@hiui-design/typical-page-shells appears to be installed',
       detail: legacyCompatibilityMode
-        ? compatibilityGenerationOnly
-          ? 'Legacy host bridge mode (legacy-host-compatible) is active. Installation is not required-in-current-mode because ordinary typical pages may still use page-component + runtime bridge + slot fill without mounting the direct standard shell runtime.'
-          : (await pathExists(installedPackagePath))
-          ? `${installedPackagePath}. Current source has selected the direct standard shell runtime, so an installed package copy is now required.`
-          : 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports package shells. Installation is now required-if-direct-standard-shell-runtime-selected; either install @hiui-design/typical-page-shells or remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
+        ? 'Legacy host bridge mode (legacy-host-compatible) does not require installing @hiui-design/typical-page-shells unless the project later isolates a dedicated standard shell runtime.'
         : (await pathExists(installedPackagePath))
         ? installedPackagePath
         : 'node_modules copy was not found; run your package manager install if this project has not installed dependencies yet',
     })
 
-    if (targetEmbeddedShellTarballPath && runtimeShellDelivery.vendoredTarballRequired) {
+    if (targetEmbeddedShellTarballPath) {
       const vendoredShellTarball = await inspectQueryFilterBridgeTarball(targetEmbeddedShellTarballPath)
       pushCheck(checks, {
         id: 'vendored-shells-query-filter-defaults',
@@ -5498,38 +5258,29 @@ async function main() {
       ok: !legacyCompatibilityMode || compatibilityGenerationOnly,
       severity: compatibilityGenerationOnly ? 'warn' : 'error',
       summary:
-        'target project runtime delivery mode does not conflict with direct standard shell selection',
+        'target project runtime is compatible with the standard hiui-design shell set or has been downgraded to compatibility generation only',
       detail:
         !legacyCompatibilityMode
           ? 'No legacy host-compatible runtime downgrade was detected'
           : compatibilityGenerationOnly
             ? `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
-              )}. Current state: not-required-in-current-mode. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components through page-component + runtime bridge + slot fill, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime. Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
+              )}. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime. Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
             : `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
-              )}. Current state: required-if-direct-standard-shell-runtime-selected. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy host bridge mode (legacy-host-compatible).`,
+              )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy host bridge mode (legacy-host-compatible).`,
     })
     pushCheck(checks, {
       id: 'styles-import',
       ok: compatibilityGenerationOnly || hasStyleImport,
-      severity:
-        compatibilityGenerationOnly
-          ? 'warn'
-          : mode === 'host-integration' || directStandardShellRuntimeSelected
-            ? 'error'
-            : 'warn',
-      summary: 'typical-page shell style import matches the active runtime delivery mode',
+      severity: compatibilityGenerationOnly ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
+      summary: 'typical-page shell styles are imported once in the app entry',
       detail: compatibilityGenerationOnly
-        ? 'Legacy host bridge mode (legacy-host-compatible) is active. styles.css is not required-in-current-mode for page-component + runtime bridge + slot fill; it becomes mandatory only if the project later isolates and mounts the direct standard shell runtime.'
+        ? 'Legacy host bridge mode (legacy-host-compatible) does not require @hiui-design/typical-page-shells/styles.css unless the project later isolates and mounts the standard shell runtime.'
         : hasStyleImport
-        ? legacyCompatibilityMode && directStandardShellRuntimeSelected
-          ? `${entryFile}. Current source already imports package shells, so styles.css is required-if-direct-standard-shell-runtime-selected.`
-          : entryFile
+        ? entryFile
         : mode === 'host-integration'
           ? 'Missing `import \'@hiui-design/typical-page-shells/styles.css\'` in the detected app entry'
-          : legacyCompatibilityMode && directStandardShellRuntimeSelected
-            ? 'Legacy host bridge mode (legacy-host-compatible) is active, but current source already imports package shells. Add `import \'@hiui-design/typical-page-shells/styles.css\'` in the app entry, or remove the direct shell imports and return to page-component + runtime bridge + slot fill.'
           : 'Reference-only mode does not force this yet, but once generated pages import `@hiui-design/typical-page-shells` you should add `import \'@hiui-design/typical-page-shells/styles.css\'` in the app entry',
     })
 

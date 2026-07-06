@@ -115,7 +115,6 @@
 - `primaryGenerationAsset.type` 仍为 `page-component`
 - `assetResolution.strategy` 仍为 `page-component`
 - 下游消费方一律按 `normalizedId` 判定主链路，不得因为用户可读 id 新增而分叉为平行体系
-- legacy 主树若禁止 ad hoc direct shell import，只影响 standard shell 的直接挂载方式；不得据此把 `normalizedId=page-component` 的 ready 计划重新解释成默认 fallback 或 hand-built compatibility page
 
 计划可附加 `runtimeBridgeProfile` 作为 additive object，用于说明 legacy 桥接交付语义。推荐结构：
 
@@ -155,18 +154,6 @@
   翻译为宿主 look-alike primitives，应视为 contract drift 并 fail closed。
 - 若 `generationStrategy.id=runtime-bridged-page-component`，但 `runtimeBridgeProfile` 缺失、
   profile 不可解析或 runtime shell 来源不可解，则计划必须 `blocked`。
-- 若 `generationStrategy.normalizedId=page-component`、`runtimeBridgeProfile.status=available`
-  且 `runtimeAdapterProof.status=available`，执行层不得因为 direct shell import 在 legacy 主树中被禁止，就擅自降级到 reference 默认翻译、兼容手拼页或自由 fallback。
-- 当 legacy `page-component + runtime bridge + slot fill` 主链成立时，planner 应通过
-  `generationInputs` 与 `inlineChecks` 暴露 bridge ownership facts，而不是把这些事实推迟到
-  runtime 排障阶段才解释。第一批推荐事实只限：`white-body owner`、`main-scroll owner`、
-  `pagination owner`、`query-filter carrier` 与 `bodyTopNavigation/header tabs` 的合法落位策略；
-  这些字段只在 `legacy-host-compatible` 下补充，不升级成全模式通用 contract。
-- 对 `legacy-host-compatible` 的表格类 `page-component`，planner 还可以追加轻量
-  `styleRiskSignals` 引用，用来提示 legacy `StyleBoundary` 风险事实，例如
-  `QueryFilter/SearchInput` 皮肤链漂移、全局 `.hi-v5-input*` 污染或需要额外的 runtime style probe。
-  该对象只做 risk signal / probe hint，不承担完整视觉 contract；它与 ownership facts 一样只在
-  `legacy-host-compatible` 下补充，不升级成全模式通用 schema。
 
 ## Structured Actions
 

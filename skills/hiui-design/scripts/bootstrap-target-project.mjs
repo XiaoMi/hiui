@@ -8,13 +8,6 @@ import { syncArchetypeAssets } from './lib/archetypes/sync-archetype-assets.mjs'
 import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import {
-  loadLegacyHostFamilyFact,
-  loadLegacyDeliveryPolicyFact,
-  loadProjectCarrierRealizationFact,
-  loadProjectTypicalPageSupportFact,
-} from './lib/project-facts.mjs'
-import { writeProjectIntegrationState } from './lib/project-integration-state.mjs'
 import { RULES_ONLY_REFERENCE_DEST, RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import {
@@ -25,11 +18,9 @@ import {
   summarizeLegacyImportHits,
 } from './lib/legacy-runtime-guard.mjs'
 
-class BootstrapValidationError extends Error {}
-
 function printUsage() {
   console.log(`Usage:
-  node scripts/bootstrap-target-project.mjs --target <project-root> [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--install-timeout-ms <ms>] [--force] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init]
+  node scripts/bootstrap-target-project.mjs --target <project-root> [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--install-timeout-ms <ms>] [--force] [--skip-i18n-init] [--skip-project-images-init]
 
 Options:
   --target      Target project root. Required.
@@ -42,8 +33,7 @@ Options:
   --install     Run the target project's package manager install command after patching package.json
   --install-timeout-ms  Timeout for dependency install command. Default: 60000
   --force       Overwrite synced asset files in host-integration mode.
-  --init-i18n   Explicitly provision the optional src/translation baseline.
-  --skip-i18n-init  Skip src/translation baseline provisioning. Kept for compatibility.
+  --skip-i18n-init  Skip automatic src/translation baseline provisioning.
   --skip-project-images-init  Skip automatic src/typical-page-reuse/assets project image catalog scaffold provisioning.
 `)
 }
@@ -58,8 +48,7 @@ function parseArgs(argv) {
     mode: 'auto',
     routeFile: '',
     shellsSpec: '',
-    i18nInitExplicitlySkipped: false,
-    skipI18nInit: true,
+    skipI18nInit: false,
     skipProjectImagesInit: false,
     target: '',
   }
@@ -77,15 +66,8 @@ function parseArgs(argv) {
       continue
     }
 
-    if (arg === '--init-i18n') {
-      options.skipI18nInit = false
-      options.i18nInitExplicitlySkipped = false
-      continue
-    }
-
     if (arg === '--skip-i18n-init') {
       options.skipI18nInit = true
-      options.i18nInitExplicitlySkipped = true
       continue
     }
 
@@ -157,18 +139,6 @@ function parseArgs(argv) {
   return options
 }
 
-function shouldSkipI18nInitForMode(options, mode) {
-  if (options.i18nInitExplicitlySkipped) {
-    return true
-  }
-
-  if (mode === 'host-integration') {
-    return false
-  }
-
-  return options.skipI18nInit
-}
-
 async function pathExists(targetPath) {
   try {
     await fs.access(targetPath)
@@ -218,7 +188,11 @@ function upsertManagedDependency({ dependencies, devDependencies, peerDeps, depN
 }
 
 async function loadLocalShellPackage(skillRoot) {
-  const packageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
+  const embeddedPackageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
+  const fallbackPackageJsonPath = path.resolve(skillRoot, '..', '..', 'packages', 'typical-page-shells', 'package.json')
+  const packageJsonPath = (await pathExists(embeddedPackageJsonPath))
+    ? embeddedPackageJsonPath
+    : fallbackPackageJsonPath
   const raw = await fs.readFile(packageJsonPath, 'utf8')
   return JSON.parse(raw)
 }
@@ -232,146 +206,6 @@ async function resolveEmbeddedShellsSpec(skillRoot, version) {
   }
 
   return `file:.local-context/hiui-design/vendor/${filename}`
-}
-
-async function loadRuntimeDeliveryPolicy(skillRoot) {
-  return readJsonFile(path.join(skillRoot, 'rules', 'runtime-delivery-policy.json'))
-}
-
-function resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage) {
-  const configuredRegistry = String(
-    shellPackage?.runtimeDelivery?.publicRegistry ||
-      runtimeDeliveryPolicy?.runtimePackage?.publicRegistry ||
-      'https://registry.npmjs.org'
-  ).trim()
-
-  return configuredRegistry || 'https://registry.npmjs.org'
-}
-
-function parseNpmViewVersion(stdout) {
-  const text = String(stdout || '').trim()
-  if (!text) {
-    throw new Error('npm view returned empty stdout')
-  }
-
-  try {
-    const parsed = JSON.parse(text)
-    if (typeof parsed === 'string') return parsed
-    if (Array.isArray(parsed) && typeof parsed[0] === 'string') return parsed[0]
-    if (parsed && typeof parsed === 'object' && typeof parsed.version === 'string') return parsed.version
-  } catch {
-    // Fall back to plain text parsing.
-  }
-
-  return text.replace(/^"+|"+$/g, '')
-}
-
-function runNpmCommand(args, cwd, registry = '') {
-  const result = spawnSync('npm', args, {
-    cwd,
-    encoding: 'utf8',
-    env: registry
-      ? {
-          ...process.env,
-          npm_config_registry: registry,
-        }
-      : process.env,
-    maxBuffer: 32 * 1024 * 1024,
-  })
-
-  if (result.status !== 0) {
-    const failureText = [result.stderr, result.stdout].filter(Boolean).join('\n').trim()
-    throw new Error(failureText || `npm ${args.join(' ')} failed`)
-  }
-
-  return result
-}
-
-async function resolveManagedShellsSpec({
-  explicitShellsSpec,
-  runtimeDeliveryPolicy,
-  shellPackage,
-  skillRoot,
-}) {
-  if (explicitShellsSpec) {
-    return {
-      shellsSpec: explicitShellsSpec,
-      source: 'user-override',
-    }
-  }
-
-  const embeddedShellsSpec = await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
-  if (embeddedShellsSpec) {
-    return {
-      shellsSpec: embeddedShellsSpec,
-      source: runtimeDeliveryPolicy.deliveryChannels['project-view'].runtimeResolution,
-    }
-  }
-
-  const openSourceDelivery = runtimeDeliveryPolicy.deliveryChannels['open-source-package']
-  if (openSourceDelivery?.runtimeResolution === 'vendored-tarball') {
-    const expectedTarballPath = path.join(
-      skillRoot,
-      runtimeDeliveryPolicy.runtimePackage.vendoredTarballDirectory,
-      `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
-    )
-
-    throw new BootstrapValidationError(
-      `Missing vendored runtime tarball for ${shellPackage.name}@${shellPackage.version}: expected ${path.relative(skillRoot, expectedTarballPath)}. This install source must ship the vendored tarball before bootstrap can continue.`
-    )
-  }
-
-  const publicPackageJsonPath = path.join(skillRoot, runtimeDeliveryPolicy.runtimePackage.publicPackageRoot, 'package.json')
-  if (await pathExists(publicPackageJsonPath)) {
-    const publicPackage = await readJsonFile(publicPackageJsonPath)
-    const publicRegistry = resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage)
-    if (publicPackage.name !== shellPackage.name) {
-      throw new BootstrapValidationError(
-        `Public runtime package name mismatch: expected ${shellPackage.name}, received ${publicPackage.name}`
-      )
-    }
-    if (publicPackage.version !== shellPackage.version) {
-      throw new BootstrapValidationError(
-        `Vendored shell snapshot version ${shellPackage.version} does not match public package version ${publicPackage.version}`
-      )
-    }
-
-    let publishedVersion = ''
-    try {
-      const npmViewResult = runNpmCommand(
-        ['view', `${publicPackage.name}@${publicPackage.version}`, 'version', '--json'],
-        skillRoot,
-        publicRegistry
-      )
-      publishedVersion = parseNpmViewVersion(npmViewResult.stdout)
-    } catch (error) {
-      const detail = error instanceof Error ? error.message : String(error)
-      throw new BootstrapValidationError(
-        `Open-source bootstrap requires ${publicPackage.name}@${publicPackage.version} to be published to npm before writing the dependency. npm view against ${publicRegistry} failed: ${detail}`
-      )
-    }
-
-    if (publishedVersion !== publicPackage.version) {
-      throw new BootstrapValidationError(
-        `Open-source bootstrap requires npm to expose ${publicPackage.name}@${publicPackage.version}, but npm view returned ${publishedVersion || 'empty response'}`
-      )
-    }
-
-    return {
-      shellsSpec: publicPackage.version,
-      source: runtimeDeliveryPolicy.deliveryChannels['open-source-package'].runtimeResolution,
-    }
-  }
-
-  const expectedTarballPath = path.join(
-    skillRoot,
-    runtimeDeliveryPolicy.runtimePackage.vendoredTarballDirectory,
-    `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
-  )
-
-  throw new BootstrapValidationError(
-    `Missing vendored runtime tarball for ${shellPackage.name}@${shellPackage.version}: expected ${path.relative(skillRoot, expectedTarballPath)}. This install source must ship the vendored tarball or the generated public package with a published npm release.`
-  )
 }
 
 async function readJsonFile(jsonPath) {
@@ -1201,18 +1035,6 @@ function runI18nInit({ skillRoot, targetRoot }) {
   }
 
   return parseI18nInitOutput(result.stdout, targetRoot)
-}
-
-function skippedI18nInitResult({ explicitSkip = false } = {}) {
-  return {
-    status: explicitSkip
-      ? 'skipped (--skip-i18n-init)'
-      : 'not-requested (pass --init-i18n to provision src/translation baseline)',
-    command: '',
-    generatedPath: '',
-    locales: '',
-    syncedFiles: '',
-  }
 }
 
 function parseProjectImagesInitOutput(stdout, targetRoot) {
@@ -2168,7 +1990,6 @@ async function patchGreenfieldRootStyles({ targetRoot, hostProfile }) {
 async function writeBootstrapSummary({
   archetypeAssetCount,
   targetRoot,
-  skillRoot,
   hostProfile,
   recommendedMode,
   hostAdapterSnippetPath,
@@ -2181,7 +2002,6 @@ async function writeBootstrapSummary({
   i18nInitResult,
   projectImagesInitResult,
   packageResult,
-  runtimeDelivery,
   styleResult,
   routerEntryResult,
   rootStyleResult,
@@ -2209,51 +2029,6 @@ async function writeBootstrapSummary({
     confirmedAt: new Date().toISOString(),
     bootstrapSummary: path.relative(targetRoot, summaryPath),
   }
-  await ensureDir(path.dirname(summaryPath))
-  await ensureDir(path.dirname(projectModePath))
-  await fs.writeFile(projectModePath, `${JSON.stringify(projectMode, null, 2)}\n`, 'utf8')
-  const legacyHostFamily = await loadLegacyHostFamilyFact({
-    targetRoot,
-    skillRoot,
-    modeOverride: mode,
-  })
-  const projectCarrierRealization = await loadProjectCarrierRealizationFact({
-    targetRoot,
-    skillRoot,
-    modeOverride: mode,
-  })
-  const projectTypicalPageSupport = await loadProjectTypicalPageSupportFact({
-    targetRoot,
-    skillRoot,
-    modeOverride: mode,
-    legacyHostFamily,
-    projectCarrierRealization,
-  })
-  const legacyDeliveryPolicy = await loadLegacyDeliveryPolicyFact({
-    targetRoot,
-    skillRoot,
-    modeOverride: mode,
-    projectTypicalPageSupport,
-  })
-  const integrationStateResult = await writeProjectIntegrationState({
-    targetRoot,
-    mode,
-    recommendedMode,
-    source: 'bootstrap',
-    confirmedAt: projectMode.confirmedAt,
-    bootstrapSummary: path.relative(targetRoot, summaryPath),
-    projectModeFactPath: path.relative(targetRoot, projectModePath),
-    hostProfile,
-    legacyHostFamilySummary: legacyHostFamily,
-    legacyDeliveryPolicySummary: legacyDeliveryPolicy,
-    typicalPageSupportSummary: projectTypicalPageSupport,
-  })
-  const carrierValidation = integrationStateResult.state.carrierValidation
-  const legacyBridgeValidation = integrationStateResult.state.legacyBridgeValidation
-  const legacyRuntimeReady = integrationStateResult.state.legacyRuntimeReady
-  const legacyCarrierReady = integrationStateResult.state.legacyCarrierReady
-  const typicalPageSupport = integrationStateResult.state.typicalPageSupport
-  const typicalPageSupportReady = typicalPageSupport.status !== 'blocked'
   const lines = [
     '# Typical Page Reuse Bootstrap Summary',
     '',
@@ -2266,11 +2041,9 @@ async function writeBootstrapSummary({
     `- recommended mode: ${recommendedMode}`,
     `- mode: ${mode}`,
     `- project mode lock: ${path.relative(targetRoot, projectModePath)}`,
-    '- project integration state: .local-context/hiui-design/outputs/project-integration-state.json',
     ...(line ? [`- business line: ${line}`] : []),
     `- asset sync: ${syncStatus}`,
     `- package.json: ${packageResult.status}`,
-    `- typical-page runtime delivery: ${runtimeDelivery.source}`,
     `- i18n baseline: ${i18nInitResult.status}`,
     `- project image scaffold: ${projectImagesInitResult.status}`,
     `- style import: ${styleResult.status}`,
@@ -2280,56 +2053,7 @@ async function writeBootstrapSummary({
     `- app frame integration: ${appFrameResult.status}`,
     `- vite schema-types alias: ${viteResult.status}`,
     `- dependency install: ${installRequested ? installResult.status : 'not-requested'}`,
-    `- project integration ready: ${integrationStateResult.state.integrationReady ? 'yes' : 'no'}`,
-    `- project-certified carrier validation: ${carrierValidation.status}`,
-    `- legacy bridge validation: ${legacyBridgeValidation.status}`,
-    `- legacy runtime ready: ${
-      legacyRuntimeReady === null || legacyRuntimeReady === undefined ? 'not-applicable' : legacyRuntimeReady ? 'yes' : 'no'
-    }`,
-    `- legacy carrier ready: ${
-      legacyCarrierReady === null || legacyCarrierReady === undefined ? 'not-applicable' : legacyCarrierReady ? 'yes' : 'no'
-    }`,
-    `- page-type delivery policy: ${legacyDeliveryPolicy.status}`,
-    `- typical page component support: ${typicalPageSupport.status}`,
   ]
-
-  if (carrierValidation.status !== 'not-applicable') {
-    lines.push(
-      `- project-certified carriers checked: ${carrierValidation.checkedComponentCount}`,
-      `- project-certified carriers blocked: ${carrierValidation.blockedComponentCount}`
-    )
-  }
-
-  if (legacyBridgeValidation.status !== 'not-applicable') {
-    lines.push(
-      `- legacy host family status: ${legacyBridgeValidation.hostFamilyStatus}`,
-      `- legacy bridge missing facts: ${legacyBridgeValidation.missingFacts.length}`
-    )
-    if (legacyBridgeValidation.hostFamilyId) {
-      lines.push(`- legacy host family: ${legacyBridgeValidation.hostFamilyId}`)
-    }
-  }
-
-  if (typicalPageSupport.status !== 'not-applicable') {
-    lines.push(
-      `- component-semantic typical pageTypes ready: ${typicalPageSupport.readyPageTypeIds.length}`,
-      `- component-semantic typical pageTypes blocked: ${typicalPageSupport.blockedPageTypeIds.length}`
-    )
-    if (typicalPageSupport.readyPageTypeIds.length > 0) {
-      lines.push(`- ready typical pageTypes: ${typicalPageSupport.readyPageTypeIds.join(', ')}`)
-    }
-    if (typicalPageSupport.blockedPageTypeIds.length > 0) {
-      lines.push(`- blocked typical pageTypes: ${typicalPageSupport.blockedPageTypeIds.join(', ')}`)
-    }
-  }
-
-  if (legacyDeliveryPolicy.status !== 'not-applicable') {
-    lines.push(
-      `- carrier-first required pageTypes: ${legacyDeliveryPolicy.carrierFirstRequiredPageTypes.length}`,
-      `- direct-standard allowed pageTypes: ${legacyDeliveryPolicy.directStandardAllowedPageTypes.length}`,
-      `- page-type delivery policy fact: ${legacyDeliveryPolicy.factPath}`
-    )
-  }
 
   if (packageResult.addedDeps.length > 0) {
     lines.push(`- added dependencies: ${packageResult.addedDeps.join(', ')}`)
@@ -2348,7 +2072,7 @@ async function writeBootstrapSummary({
   }
 
   if (i18nInitResult.generatedPath) {
-    lines.push(`- generated translation catalog: ${i18nInitResult.generatedPath}`)
+    lines.push(`- generated translation entry: ${i18nInitResult.generatedPath}`)
   }
 
   if (i18nInitResult.locales) {
@@ -2460,15 +2184,6 @@ async function writeBootstrapSummary({
     lines.push(`- install command: ${installResult.command}`)
   }
 
-  if (carrierValidation.status === 'blocked') {
-    const blockedComponentIds = carrierValidation.components
-      .filter((component) => component.status === 'blocked')
-      .map((component) => component.componentId)
-    if (blockedComponentIds.length > 0) {
-      lines.push(`- blocked project-certified carriers: ${blockedComponentIds.join(', ')}`)
-    }
-  }
-
   lines.push('', '## Next steps')
   lines.push(`- Host profile: ${hostProfile.reason}`)
 
@@ -2487,35 +2202,6 @@ async function writeBootstrapSummary({
     lines.push('- This host was detected as a legacy compatibility runtime. The legacy host main tree was not auto-patched into a generic `@hiui-design/typical-page-shells` host-integration runtime; ordinary typical pages should instead follow the planner-selected carrier / runtimeAdapterProof path.')
   } else if (!installRequested) {
     lines.push('- Run your target project package manager install command after reviewing package.json changes.')
-  }
-
-  if (legacyBridgeValidation.status === 'blocked') {
-    lines.push('- Legacy bridge readiness is blocked. Repair the legacy host family facts and runtime bridge evidence before treating this project as an integrated legacy typical-page host.')
-    if (legacyBridgeValidation.blockingReasons.length > 0) {
-      lines.push(`- Legacy bridge blocking reasons: ${legacyBridgeValidation.blockingReasons.join('; ')}`)
-    }
-  }
-
-  if (carrierValidation.status === 'blocked') {
-    if (mode === 'legacy-host-compatible') {
-      lines.push('- Project integration is not ready because one or more legacy project-certified carriers do not resolve to real source files or exports yet.')
-      lines.push('- Repair the shared carrier layer first so legacy planner contracts can reuse verified project bridge assets instead of deferring carrier debt to business-page generation.')
-    } else if (typicalPageSupportReady) {
-      lines.push('- Project-certified carrier debt was found, but component-semantic typical page support is already ready. Supported typical pages can still generate through page-component + slot-fill, preferring project carriers when ready and falling back to direct standard components otherwise.')
-      lines.push('- Repair the blocked project-certified carriers to restore carrier-first delivery for the affected pageTypes, but do not patch an individual business page just to compensate for shared carrier debt.')
-    } else {
-      lines.push('- Project-certified carrier diagnostics and page-component asset support are both blocked. This does not invalidate modern-mode onboarding by itself, but it does mean the affected typical pageTypes cannot currently enter the page-component + slot-fill path.')
-      lines.push('- Read `.local-context/hiui-design/outputs/project-integration-state.json` for carrier diagnostics and the typical page support summary before repairing shared assets.')
-    }
-  }
-
-  if (typicalPageSupport.status === 'blocked') {
-    const blockedPageTypes = typicalPageSupport.pageTypes
-      .filter((pageType) => pageType.supportStatus === 'blocked')
-      .map((pageType) => pageType.pageTypeId)
-    if (blockedPageTypes.length > 0) {
-      lines.push(`- Fix the blocked component-semantic typical pageTypes before generating business pages: ${blockedPageTypes.join(', ')}`)
-    }
   }
 
   if (legacyHiUi4Deps.length > 0) {
@@ -2593,8 +2279,11 @@ async function writeBootstrapSummary({
   }
   lines.push('')
 
+  await ensureDir(path.dirname(summaryPath))
+  await ensureDir(path.dirname(projectModePath))
+  await fs.writeFile(projectModePath, `${JSON.stringify(projectMode, null, 2)}\n`, 'utf8')
   await fs.writeFile(summaryPath, `${lines.join('\n')}\n`, 'utf8')
-  return { summaryPath, integrationStateResult }
+  return summaryPath
 }
 
 function runSyncScript({ skillRoot, targetRoot, dest, force, line = '', syncMode = 'host-integration' }) {
@@ -2631,7 +2320,6 @@ async function main() {
       ignoreRelativePaths: [options.dest],
     })
     const shellPackage = await loadLocalShellPackage(skillRoot)
-    const runtimeDeliveryPolicy = await loadRuntimeDeliveryPolicy(skillRoot)
     const originalTargetPkg = await readTargetPackageJson(targetRoot)
     const legacyHiUi4Deps = detectLegacyHiUi4VisualDeps(originalTargetPkg)
     const legacyHostRuntime = await detectLegacyHostRuntimeMode({
@@ -2650,13 +2338,8 @@ async function main() {
       installedRootRuntime,
       legacyHiUiEsImports,
     })
-    const runtimeDelivery = await resolveManagedShellsSpec({
-      explicitShellsSpec: options.shellsSpec,
-      runtimeDeliveryPolicy,
-      shellPackage,
-      skillRoot,
-    })
-    const shellsSpec = runtimeDelivery.shellsSpec
+    const embeddedShellsSpec = await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
+    const shellsSpec = options.shellsSpec || embeddedShellsSpec || shellPackage.version
     const recommendedMode = getRecommendedMode({
       hostProfile,
       legacyHostRuntime,
@@ -2727,8 +2410,8 @@ async function main() {
       line: lineId,
       legacyCompatibilityOnly: mode === 'legacy-host-compatible',
     })
-    const i18nInitResult = shouldSkipI18nInitForMode(options, mode)
-      ? skippedI18nInitResult({ explicitSkip: options.i18nInitExplicitlySkipped })
+    const i18nInitResult = options.skipI18nInit
+      ? { status: 'skipped (--skip-i18n-init)', command: '', generatedPath: '', locales: '', syncedFiles: '' }
       : runI18nInit({ skillRoot, targetRoot })
     const projectImagesInitResult = options.skipProjectImagesInit
       ? {
@@ -2841,10 +2524,9 @@ async function main() {
       recommendedModeOverride: recommendedMode,
     })
 
-    const { summaryPath, integrationStateResult } = await writeBootstrapSummary({
+    const summaryPath = await writeBootstrapSummary({
       archetypeAssetCount: archetypeSyncResult.copiedFiles.length,
       targetRoot,
-      skillRoot,
       hostProfile,
       recommendedMode,
       hostAdapterSnippetPath,
@@ -2857,7 +2539,6 @@ async function main() {
       i18nInitResult,
       projectImagesInitResult,
       packageResult,
-      runtimeDelivery,
       styleResult,
       routerEntryResult,
       rootStyleResult,
@@ -2903,7 +2584,7 @@ async function main() {
     console.log(`- i18n baseline: ${i18nInitResult.status}`)
     console.log(`- project image scaffold: ${projectImagesInitResult.status}`)
     if (i18nInitResult.generatedPath) {
-      console.log(`  generated catalog: ${i18nInitResult.generatedPath}`)
+      console.log(`  generated: ${i18nInitResult.generatedPath}`)
     }
     if (i18nInitResult.locales) {
       console.log(`  locales: ${i18nInitResult.locales}`)
@@ -2978,50 +2659,11 @@ async function main() {
     if (options.install && installResult.message) {
       console.log(`  detail: ${installResult.message}`)
     }
-    console.log(`- typical-page runtime delivery: ${runtimeDelivery.source}`)
     console.log(`- summary file: ${summaryPath}`)
-
-    const typicalPageSupport = integrationStateResult.state.typicalPageSupport || {
-      status: 'not-applicable',
-      pageTypes: [],
-    }
-    const typicalPageSupportReady = typicalPageSupport.status !== 'blocked'
-
-    if (integrationStateResult.state.integrationReady === false) {
-      const carrierValidation = integrationStateResult.state.carrierValidation
-      const legacyBridgeValidation = integrationStateResult.state.legacyBridgeValidation || {
-        status: 'not-applicable',
-      }
-      const firstReasons = Array.isArray(integrationStateResult.state.blockingReasons)
-        ? integrationStateResult.state.blockingReasons.slice(0, 5)
-        : []
-      console.error('- project integration ready: no')
-      console.error(
-        `- project-certified carrier validation: ${carrierValidation.status} (${carrierValidation.blockedComponentCount}/${carrierValidation.checkedComponentCount} blocked)`
-      )
-      console.error(`- legacy bridge validation: ${legacyBridgeValidation.status}`)
-      console.error(`- typical page component support: ${typicalPageSupport.status}`)
-      for (const reason of firstReasons) {
-        console.error(`  - ${reason}`)
-      }
-      const totalReasons = (integrationStateResult.state.blockingReasons || []).length
-      if (totalReasons > firstReasons.length) {
-        console.error(
-          `  - ... ${totalReasons - firstReasons.length} more blocking reason(s); see .local-context/hiui-design/outputs/project-integration-state.json`
-        )
-      }
-      throw new BootstrapValidationError(
-        'project integration is incomplete: repair project-level integration or legacy bridge facts before generating pages'
-      )
-    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    if (error instanceof BootstrapValidationError) {
-      console.error(`bootstrap-target-project blocked: ${message}`)
-    } else {
-      console.error(`bootstrap-target-project failed: ${message}`)
-      printUsage()
-    }
+    console.error(`bootstrap-target-project failed: ${message}`)
+    printUsage()
     process.exit(1)
   }
 }

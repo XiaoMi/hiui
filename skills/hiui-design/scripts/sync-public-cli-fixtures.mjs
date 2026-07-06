@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/sync-public-cli-fixtures.mjs" [--check] [--id <entry-id>]
+  node scripts/sync-public-cli-fixtures.mjs [--check] [--id <entry-id>]
 
 Notes:
   - Rebuilds shipped machine-public JSON fixtures from scripts/public-cli-contracts.json.

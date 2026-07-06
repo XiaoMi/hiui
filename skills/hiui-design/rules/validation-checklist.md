@@ -59,16 +59,6 @@
 - 当前页已按 page profile 产出 `hiui-page-governance-report.v1`；`new-managed`、`migration`、`managed`、`release` profile 下不存在 blocking failure
 - final report 没有把 `preflight failed`、hard profile governance failed、snapshot 缺失 / 低置信度或 acceptance contract 缺 provenance 描述为完成
 
-## 升级保护证据
-
-命中页面升级、迁移、重写或旧系统现代化任务时，至少具备：
-
-- 原有关键功能集合仍然存在；不存在未批准的功能删除、入口隐藏或 `silent degradation`
-- 原有关键区块仍然存在；不存在未批准的区块删除、内容降级、默认折叠后不可发现或迁移到别处却未说明
-- 原有关键业务动作语义未变；入口位置允许做视觉重排，但动作含义、对象、触发条件与承载方式没有静默漂移
-- 当前实现没有未批准地修改业务逻辑、接口地址、请求参数、返回字段消费方式、字段映射或统计口径
-- 当前实现没有未审批地改变一级分组、阅读顺序、主辅关系、工作区拓扑或页型身份
-
 ## 页面结构证据
 
 - 页面使用固定页壳，而不是手拼壳层
@@ -127,7 +117,6 @@
 - 风险/状态类标签复用 `Tag` 或 shared status renderer；不存在业务页手写 `span + 胶囊背景色`
 - 可点击的状态筛选若本质仍是状态语义切换，继续复用 `Tag` / shared status renderer，并在交互层补 click / keyboard；不要因为“可点击”就回退成 `Button`
 - `PageHeader`、`QueryFilter`、`Table`、`Descriptions`、`Timeline`、`Empty`、`Progress`、`Steps` 的骨架层没有被业务页重写成另一套结构
-- 若命中 `Timeline`，默认仍使用 HiUI 官网 timeline 的信息流样式；不存在无依据的卡片化、双列化或自造轴线变体
 - 业务页没有通过 `classNames`、`styles`、slot semantic override 或本地 `.hi-v5-*` 选择器去改 `PageHeader`、`Descriptions`、`Timeline`、`Table` 等公共组件骨架
 - detail-shell 的 vertical `Descriptions` 没有依赖隐藏默认值；关键布局不变量在源码边界显式冻结，而不是靠浏览器默认 `th` 行为或第三方 bridge 默认值碰巧成立
 - 若页面使用 `SchemaDescriptionsBridge`，已显式写出 `labelPlacement: 'left'`，并清空 bridge 继承的固定 `labelWidth`；没有把 left 对齐修补下放到页面级 CSS
@@ -213,10 +202,6 @@
 - 没有残留 `hi-v4-*` / `--hi-v4-*` 历史选择器和变量
 - 当前页源码与它导入的页面本地样式已通过 `visual-token-baseline` 检查：直接写出的 `font-size` 只使用 `hiui5-visual-baseline.md` 登记字阶（`12px`、`14px`、`16px`、`18px`，指标主值可用 `24px`），不存在 `13px` 或其它未登记字号
 - 对业务自定义文本，字号不只值合法，还能回指到 `hiui5-visual-baseline.md` 的角色矩阵；不能把 `24px` 等指标 token 当成普通正文、标题或卡片装饰字号
-- 没有标题与内容错配、图表与图例错配、状态与语义错配、按钮与对象错配这类关键内容错乱
-- 没有文本溢出不可读、关键内容裁切、图表主体越界、关键操作遮挡、浮层被宿主裁切或固定区覆盖内容
-- 没有通过未批准的投影、渐变、发光、纹理、装饰性背景或纯视觉 filler 制造层级、状态或“升级感”
-- 页面层级、选中态、风险表达和主次关系仍以既有语义组件、token、留白、描边和结构关系为主；没有退化成装饰优先的视觉表达
 
 ## 页面完成定义
 

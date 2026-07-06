@@ -191,6 +191,7 @@ flowchart LR
 
 `sync-global-skill.mjs` 的默认一轮同步顺序是：
 
+0. 若 source 是独立 Git 维护仓，先执行 `check-rules-version-alignment.mjs`
 1. 检查 i18n template boundary
 2. 本地 sync hiui-v5 manifest / quick reference / component map / docs / validation
 3. 在 source 项目侧执行 `release-skill-archive --no-feishu-remote`
@@ -204,6 +205,7 @@ flowchart LR
 
 - 当前脚本实现仍保留把 `global mirror` 直接 `git push` 的兼容能力，但这不再是官方治理口径
 - 在“维护源不进 Git、团队不可见维护侧文件”的前提下，internal Git 应承接 `team package`，而不是承接 `global mirror`
+- `check-rules-version-alignment.mjs` 当前只对“独立 Git maintainer source 根目录”强制执行；项目内 `.local-context/hiui-design` 和非 Git 运行镜像会返回 `skipped`，避免把运行副本误判成真相源
 
 ### 3.3 发布与外部分发
 
@@ -237,6 +239,8 @@ flowchart LR
 - 若 `--open-source-target` 指向存在的目标目录，则继续同步
 - 默认 target 是 `~/.codex/skills/hiui-design-open-source`
 - 可选携带 `--open-source-commit` / `--open-source-push`
+- 若 `sync-open-source-package.mjs --source <path>` 的 source 本身是独立 Git 维护仓根目录，脚本会先执行 `check-rules-version-alignment.mjs`；guarded 变更未 bump `rules/VERSION` 时直接 fail closed
+- `scripts/public-cli-contracts.json` 中 `machine-public` tier 声明为 `status=shipped` 且 `jsonContract=shipped` 的 fixture，属于公开分发契约的一部分；open-source package 必须稳定携带这些 `scripts/tests/fixtures/public-cli/*.json`，不能只保留文档或契约引用而丢失文件实体
 - 若本次同步涉及 `@hiui-design/typical-page-shells` 版本变化，发布前必须先执行 `node scripts/check-public-runtime-publish-readiness.mjs --source-root <global-mirror> --public-root <open-source-package-root>`，确认 vendor snapshot、vendored tgz、`packages/typical-page-shells/package.json` 和 dry-run 都一致；真实发布后再执行 `node scripts/verify-public-runtime-release.mjs --source-root <global-mirror> --public-root <open-source-package-root>`，确认 npm registry 已暴露 exact version
 - 未通过上述门禁前，不要把“开源仓已生成 `packages/typical-page-shells`”误读成“公开 npm 已可安装”
 - 具体执行顺序见 `public-runtime-release-checklist.md`

@@ -22,7 +22,6 @@ export const HOST_ARCHETYPE_MARKER_PREFIX = 'hiui-design host-archetype:'
 export const SCROLL_STRATEGY_MARKER_PREFIX = 'hiui-design scroll-strategy:'
 export const TOPOLOGY_MARKER_PREFIX = 'hiui-design topology:'
 export const LAYOUT_STRATEGY_MARKER_PREFIX = 'hiui-design layout-strategy:'
-export const LAYOUT_ARCHETYPE_MARKER_PREFIX = 'hiui-design layout archetype:'
 const FIXED_TEMPLATE_PAGE_TYPES = new Set([
   'data-visualization',
   'table-stat',
@@ -2299,10 +2298,6 @@ function buildSourceContractCommentLines(contract) {
     commentLines.push(`${LAYOUT_STRATEGY_MARKER_PREFIX} ${contract.layoutStrategy}`)
   }
 
-  if (contract.layoutArchetype) {
-    commentLines.push(`${LAYOUT_ARCHETYPE_MARKER_PREFIX} ${contract.layoutArchetype}`)
-  }
-
   const requiredHostAdapterId = getRequiredHostAdapterId(contract)
   if (requiredHostAdapterId) {
     commentLines.push(`${HOST_ADAPTER_MARKER_PREFIX} ${requiredHostAdapterId}`)
@@ -2351,13 +2346,6 @@ export function getManagedPageSourceRootAttributes(contract) {
     rootAttrs.push({
       name: 'data-hiui5-layout-strategy',
       value: contract.layoutStrategy,
-    })
-  }
-
-  if (contract.layoutArchetype) {
-    rootAttrs.push({
-      name: 'data-hiui5-layout-group',
-      value: contract.layoutArchetype,
     })
   }
 
@@ -2412,7 +2400,6 @@ function isLegacyPageComponentFastPathContract(contract) {
 
 function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLabel }) {
   const errors = []
-  let downgradedManagedDeliveryPath = false
   const generationProfile = contract?.generationProfile || {}
   const runtimeComponentSource = String(generationProfile.runtimeComponentSource || '').trim()
   const runtimeBridgeProfileId = String(generationProfile.runtimeBridgeProfileId || '').trim()
@@ -2420,7 +2407,6 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
 
   for (const line of buildSourceContractCommentLines(contract)) {
     if (!sourceRaw.includes(line)) {
-      downgradedManagedDeliveryPath = true
       errors.push(`${pathLabel} is missing source contract marker "${line}".`)
     }
   }
@@ -2432,7 +2418,6 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   ]
   for (const marker of requiredRuntimeBridgeMarkers) {
     if (!sourceRaw.includes(marker)) {
-      downgradedManagedDeliveryPath = true
       errors.push(
         `${pathLabel} is missing runtime bridge marker "${marker}". Legacy page-component fast path must keep the selected component and bridge profile machine-checkable.`
       )
@@ -2440,129 +2425,32 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   }
 
   if (!/slot-adapter\.stub/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not import the runtime bridge slot adapter stub. Legacy page-component fast path must bind business slots through an explicit slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.businessSlots\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not route businessSlots through adaptedSlots.businessSlots. Legacy page-component fast path must fill certified business slots instead of rebuilding shell regions locally.`
     )
   }
 
   if (!/\badaptedSlots\.controlledExtensions\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.controlledExtensions. Legacy page-component fast path must keep Level 1 controlled extensions on the slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.runtimeBridge\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.runtimeBridge. Legacy page-component fast path must keep runtime inputs at the bridge boundary instead of in local shell reimplementation.`
     )
   }
 
   if (!/\bRuntimeBridgeShellAny\b/.test(sourceRaw) && !/\bRuntimeBridgeShell\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not mount the resolved runtime bridge shell. Legacy page-component fast path must render the planner-selected runtime shell instead of page-local white-body/header/table primitives.`
-    )
-  }
-
-  if (downgradedManagedDeliveryPath) {
-    errors.unshift(
-      `${pathLabel} downgrades the planner-selected managed delivery path. Legacy page-component fast path must stay on page-component + runtime bridge + slot fill; do not replace it with a handwritten compatibility page, translated reference, or free fallback.`
-    )
-  }
-
-  return errors
-}
-
-function extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw) {
-  const runtimeShellMatch = /<RuntimeBridgeShell(?:Any)?\b/.exec(String(sourceRaw || ''))
-  if (!runtimeShellMatch) return ''
-
-  const shellIndex = runtimeShellMatch.index
-  const returnIndex = String(sourceRaw || '').lastIndexOf('return', shellIndex)
-  if (returnIndex < 0) return ''
-
-  return String(sourceRaw || '').slice(returnIndex, shellIndex)
-}
-
-function extractLeadingRuntimeWrapperComponentNames(sourceRaw) {
-  const allowedWrapperTags = new Set(['Fragment', 'React.Fragment', 'Suspense', 'React.Suspense'])
-  return [
-    ...new Set(
-      Array.from(
-        String(sourceRaw || '').matchAll(/<\s*([A-Z][\w.]*)\b/g),
-        (match) => String(match[1] || '').trim()
-      ).filter((name) => name && !allowedWrapperTags.has(name))
-    ),
-  ]
-}
-
-function validateLegacyThinRuntimeWrapperBoundary({ contract, sourceRaw, pathLabel }) {
-  const errors = []
-  const ownershipRoles = ['content-slot', 'white-body', 'outer-padding', 'main-scroll']
-  const contractRegions = getContractRegionNames(contract)
-  const wrapperLeadSnippet = extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw)
-  const leadingWrapperComponents = extractLeadingRuntimeWrapperComponentNames(wrapperLeadSnippet)
-
-  for (const role of ownershipRoles) {
-    const scopedAttrName = getRoleSpecificOwnershipAttrName(role)
-    if (
-      new RegExp(escapeRegExp(scopedAttrName)).test(sourceRaw) ||
-      new RegExp(`data-hiui5-owner\\s*=\\s*["']${escapeRegExp(role)}["']`).test(sourceRaw)
-    ) {
-      errors.push(
-        `${pathLabel} declares ${scopedAttrName} in the legacy runtime wrapper. Business pages may expose source and runtime-bridge markers only; workspace ownership must stay inside the selected project-certified carrier.`
-      )
-    }
-  }
-
-  for (const region of contractRegions) {
-    if (new RegExp(`data-hiui5-region\\s*=\\s*["']${escapeRegExp(region)}["']`).test(sourceRaw)) {
-      errors.push(
-        `${pathLabel} declares data-hiui5-region="${region}" in the legacy runtime wrapper. Required shell regions must stay inside the selected carrier; the business wrapper may only bind business slots and controlled extensions.`
-      )
-    }
-  }
-
-  if (/data-hiui5-shell\s*=/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} declares data-hiui5-shell in the legacy runtime wrapper. Runtime shell identity belongs to the selected carrier/runtime bridge, not to the page-local business wrapper.`
-    )
-  }
-
-  if (
-    hasAnyPattern(sourceRaw, [
-      /<\s*PageHeader\b/,
-      /<\s*ManagedPageHeader\b/,
-      /<\s*HostPageHeaderPortal\b/,
-      /<\s*TypicalPageHeaderPortal\b/,
-    ])
-  ) {
-    errors.push(
-      `${pathLabel} renders header carrier primitives in the legacy runtime wrapper. Header geometry and docking must stay inside the selected carrier instead of being rebuilt by the page-local wrapper.`
-    )
-  }
-
-  if (/<\s*(div|section|main|article|aside|header|footer)\b/.test(wrapperLeadSnippet)) {
-    errors.push(
-      `${pathLabel} wraps the runtime bridge shell in a page-local JSX container before mount. legacy-host-compatible fast path requires a thin runtime wrapper: emit source markers, adapt business slots, and mount the selected carrier directly without extra layout containers.`
-    )
-  }
-
-  if (leadingWrapperComponents.length > 0) {
-    errors.push(
-      `${pathLabel} wraps the runtime bridge shell with page-local wrapper components (${leadingWrapperComponents.join(
-        ', '
-      )}) before mount. legacy-host-compatible fast path requires a thin runtime wrapper: mount the selected carrier directly instead of introducing local shell-like wrapper components.`
     )
   }
 
@@ -5483,7 +5371,7 @@ export function renderManagedPageSourceContractSnippet(contract) {
   return lines.join('\n')
 }
 
-export function validateManagedPageSource({ contract, generatedPagePath, targetRoot, importScope = 'transitive' }) {
+export function validateManagedPageSource({ contract, generatedPagePath, targetRoot }) {
   const sourceAbsPath = path.join(targetRoot, generatedPagePath)
   const sourceRaw = readTextIfExists(sourceAbsPath)
   const pathLabel = path.relative(targetRoot, sourceAbsPath) || generatedPagePath
@@ -5492,23 +5380,10 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     return [`${pathLabel} does not exist or cannot be read.`]
   }
 
-  const importedLocalContext =
-    importScope === 'entry-only'
-      ? {
-          sourceRaw,
-          styleRaw: readImportedStyleSources(sourceAbsPath, sourceRaw),
-          fileSources: [
-            {
-              filePath: sourceAbsPath,
-              sourceRaw,
-            },
-          ],
-          styleSources: [],
-        }
-      : collectImportedLocalContext({
-          entryFilePath: sourceAbsPath,
-          targetRoot,
-        })
+  const importedLocalContext = collectImportedLocalContext({
+    entryFilePath: sourceAbsPath,
+    targetRoot,
+  })
   const extendedSourceRaw = importedLocalContext.sourceRaw || sourceRaw
   const extendedStyleRaw = importedLocalContext.styleRaw || readImportedStyleSources(sourceAbsPath, sourceRaw)
 
@@ -5516,12 +5391,7 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     return [
       ...validateLegacyPageComponentFastPathSource({
         contract,
-        sourceRaw,
-        pathLabel,
-      }),
-      ...validateLegacyThinRuntimeWrapperBoundary({
-        contract,
-        sourceRaw,
+        sourceRaw: extendedSourceRaw,
         pathLabel,
       }),
       ...validateProjectCertifiedCarrierListBaseline({

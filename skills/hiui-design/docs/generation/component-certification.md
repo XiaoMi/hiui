@@ -54,14 +54,9 @@
 ### Legacy runtime adapter 额外检查
 
 - `CleanContentMount` 证明旧宿主只提供干净内容挂载点，不重复提供页头、白底主体、分页 owner 或页面主滚动。
-- `CleanContentMount` 还必须证明 legacy 宿主或业务页本地 wrapper 没有重新接管 `white-body`、
-  `main-scroll` 或 `pagination` 的几何责任；若出现第二层 page surface / query shell /
-  sticky pagination shell，应视为 owner drift。
 - `RuntimeAdapter` 证明路由、权限、请求、字典、主题和用户能力通过显式 props / provider 注入，而不是页面组件读取项目全局变量。
-- `RuntimeAdapter` 不得重做 `QueryFilter` carrier、`pagination` carrier 或 `bodyTopNavigation`
-  carrier；这些区域只能继续由 selected page component / project-certified carrier 承接。
-- `RuntimeBridge` 证明 request、auth、permission、user、route-navigation、theme 可用且来源可追踪；`dictionary / i18n` 只在项目明确要求国际化时作为可选桥接能力补证。
-- `StyleBoundary` 证明旧宿主全局 CSS 不会破坏页面组件的表格、分页、表单、抽屉、状态标签和间距；对 legacy 表格类页型，还应覆盖搜索输入灰底、Tabs 落位、排序图标间距与分页吸底等高频几何污染风险。
+- `RuntimeBridge` 证明 request、auth、permission、user、dictionary、route-navigation、theme 可用且来源可追踪。
+- `StyleBoundary` 证明旧宿主全局 CSS 不会破坏页面组件的表格、分页、表单、抽屉、状态标签和间距。
 - `PortalBoundary` 证明下拉、气泡、弹窗、抽屉等浮层挂载位置和层级不会被裁切；若宿主未显式改写浮层容器，则允许沿用组件库默认挂载能力。
 - `AdapterRegistry` 证明 adapter 只做 runtime bridge，禁止 `translate-hiui-components-to-legacy-components`、`replace-query-filter-with-legacy-form`、`replace-managed-table-with-legacy-table`、`reimplement-pagination-region` 或 `wrap-typical-page-as-business-page-component`。
 

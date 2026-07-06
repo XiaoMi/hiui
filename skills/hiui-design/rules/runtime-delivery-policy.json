@@ -44,6 +44,8 @@
       "requiredChecks": [
         "vendor-snapshot-manifest-present",
         "vendored-tarball-present",
+        "public-vendor-snapshot-manifest-present",
+        "public-vendored-tarball-present",
         "public-package-root-present",
         "snapshot-version-matches-public-package-version",
         "npm-pack-dry-run-passes",
@@ -59,6 +61,8 @@
       "requiredChecks": [
         "vendor-snapshot-manifest-present",
         "vendored-tarball-present",
+        "public-vendor-snapshot-manifest-present",
+        "public-vendored-tarball-present",
         "public-package-root-present",
         "snapshot-version-matches-public-package-version",
         "npm-registry-has-exact-public-package-version",

@@ -1,10 +1,5 @@
 import type { GetDataSourceParamsType } from '@hi-ui/schema-core'
 
-type QueryFilterItem = {
-  id?: string
-  value?: unknown
-}
-
 export type PagedResponse<T> = {
   list: T[]
   total: number
@@ -13,14 +8,14 @@ export type PagedResponse<T> = {
 }
 
 export function getKeywordValue(params: GetDataSourceParamsType) {
-  const keywordFilter = ((params.filters ?? []) as QueryFilterItem[]).find((item) => item.id === 'keyword')
+  const keywordFilter = (params.filters ?? []).find((item) => item.id === 'keyword')
   return keywordFilter?.value != null ? String(keywordFilter.value).trim().toLowerCase() : ''
 }
 
 export function getParamsWithoutKeyword(params: GetDataSourceParamsType): GetDataSourceParamsType {
   return {
     ...params,
-    filters: ((params.filters ?? []) as QueryFilterItem[]).filter((item) => item.id !== 'keyword'),
+    filters: (params.filters ?? []).filter((item) => item.id !== 'keyword'),
   }
 }
 

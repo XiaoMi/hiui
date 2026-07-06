@@ -935,7 +935,7 @@ function VisualizationStatSection() {
         legend: {
           color: {
             ...chartLegendConfig.color,
-            itemMarker: (team: string) =>
+            itemMarker: (team) =>
               team === radarTeams[0] ? 'hyphen' : 'diamond',
           },
         },

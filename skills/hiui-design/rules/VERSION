@@ -1,9 +1,12 @@
 version: 1.0.0
-last-updated: 2026-06-09
+last-updated: 2026-07-06
 source-snapshot: machine planning entry, fixture-backed public JSON contracts, runtime/preview/start contract fixtures, and global-sync-safe governance docs
 machine-facts-file: rules/common.page-types.json
 machine-public-cli: shipped plan-page-task, typical-page-runtime-smoke, typical-page-preview-ready, typical-page-start-page
 notes:
+  - promoted scripts/tests/fixtures/public-cli/*.json to explicit open-source distribution assets and added a fail-closed maintainer check so shipped machine-public contract fixtures cannot drift out of the public package
+  - enforced a maintainer-source version gate so guarded changes under rules/, scripts/, SKILL.md, and distribution-manifest.json must bump rules/VERSION before sync or release
+  - restored fail-closed runtime delivery on vendored typical-page-shells tgz for open-source sync, including legacy-host-hard-gates and project-facts runtime dependencies
   - split maintainer runtime out of skill-root outputs into ~/.codex/maintainers/hiui-design/runtime, with HIUI_DESIGN_MAINTAINER_HOME as the explicit override point
   - reorganized scripts/lib into shared, public, and maintainer layers while keeping root-level shim exports for compatibility
   - added maintainer-side qualification checks so activate-current-project-global-sync and launch-agent activation reject incomplete or version-stale local skill mirrors before they can become the machine-level source
