@@ -188,14 +188,15 @@ function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
   assertNonEmptyString(lock.installPolicyRef, `${lockPath}: installPolicyRef`)
   assertNonEmptyString(lock.compatibilityMatrixRef, `${lockPath}: compatibilityMatrixRef`)
 
-  if (!lock.codexCompatibility || typeof lock.codexCompatibility !== 'object') {
-    throw new Error(`${lockPath}: codexCompatibility must be an object`)
+  const runtimeCompatibility = lock.runtimeCompatibility || lock.codexCompatibility
+  if (!runtimeCompatibility || typeof runtimeCompatibility !== 'object') {
+    throw new Error(`${lockPath}: runtimeCompatibility must be an object`)
   }
   assertStringArray(
-    lock.codexCompatibility.requiredRuntimes,
-    `${lockPath}: codexCompatibility.requiredRuntimes`,
+    runtimeCompatibility.requiredRuntimes,
+    `${lockPath}: runtimeCompatibility.requiredRuntimes`,
   )
-  assertStringArray(lock.codexCompatibility.notes, `${lockPath}: codexCompatibility.notes`)
+  assertStringArray(runtimeCompatibility.notes, `${lockPath}: runtimeCompatibility.notes`)
 
   if (!Array.isArray(lock.skills) || lock.skills.length === 0) {
     throw new Error(`${lockPath}: skills must be a non-empty array`)

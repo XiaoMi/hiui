@@ -5,7 +5,7 @@
   "channel": "canary",
   "installPolicyRef": "install-policy.json",
   "compatibilityMatrixRef": "compatibility-matrix.json",
-  "codexCompatibility": {
+  "runtimeCompatibility": {
     "requiredRuntimes": [
       "node",
       "python3"

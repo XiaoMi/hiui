@@ -1,27 +1,30 @@
 # Workflow Bundle Release
 
-`hiui-page-workflow` 除了是端到端交付 skill，也承担 workflow bundle 的组合发布入口。
+`hiui-page-workflow` 是团队通用 workflow；当前文档描述的是它的默认安装与发布控制面。
 
 ## 角色边界
 
-- `SKILL.md`、`references/` 与 `agents/` 继续定义页面交付 workflow 本身。
-- `bundle/` 与 `scripts/*workflow-bundle*.mjs` 属于 bundle 控制面，用于安装、验证、回滚和发布 smoke。
-- bundle 控制面不改变 `hiui-page-workflow` 的核心用途；它只负责声明和验证下游 skill 组合。
+- `SKILL.md` 与 `references/` 继续定义页面交付 workflow 本身。
+- `agents/`、`skill.manifest.json`、`install-workflow.sh` 与 `scripts/*workflow-bundle*.mjs` 属于安装与发布控制面。
+- `bundle/` 负责声明 workflow 组合事实；默认安装入口负责把这些组合安装到本地 skills 目录。
+- 安装与发布控制面不改变 `hiui-page-workflow` 的核心用途；它只负责声明、安装和验证下游 skill 组合。
 
 ## Public Install Entry
 
-根目录 `install.sh` 是公开 bundle 的 bootstrap 入口，负责：
+根目录 `install-workflow.sh` 是公开 bundle 的默认 bootstrap 入口，负责：
 
 - 检查 `git`、`node` 和 `python3`
 - 调用 `scripts/install-workflow-bundle.mjs`
 - 透传 `--dry-run`、`--reinstall`、`--force-sync`、`--allow-downgrade` 等参数
+
+`install.sh` 与旧入口脚本仍然保留，但只作为兼容壳转调 `install-workflow.sh`。
 
 灰度阶段，推荐直接从公开 fork 的灰度分支执行安装：
 
 ```bash
 git clone --depth 1 --branch gray-skill-bundle-20260703 https://github.com/1108guorui-web/hiui.git
 cd hiui
-bash skills/hiui-page-workflow/install.sh
+bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
 ## 发布前检查

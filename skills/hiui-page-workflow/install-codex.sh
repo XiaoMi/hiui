@@ -10,6 +10,6 @@ if [[ ! -f "$TARGET_SCRIPT" ]]; then
   exit 1
 fi
 
-echo "[compat] install.sh now forwards to install-workflow.sh. Please switch to the new name." >&2
+echo "[compat] install-codex.sh now forwards to install-workflow.sh. Please switch to the new name." >&2
 
 exec bash "$TARGET_SCRIPT" "$@"

@@ -1,18 +1,39 @@
 # HiUI Page Workflow
 
-`hiui-page-workflow` 同时承担两类职责：
+`hiui-page-workflow` 的产品定位是 **内部团队通用 workflow**，用于把 React / HiUI 页面从需求细化、页面生成、工程验收到 UX 验收串成闭环。
 
-- 作为 `hiui-page-workflow` skill 本身，编排需求细化、页面生成、工程验收和 UX 验收闭环。
-- 作为 workflow bundle 控制面，给公开版本提供四个 skill 的统一安装、升级、校验和回滚入口。
+当前仓库里同时存在两类内容：
 
-当前公开 bundle 默认安装以下四个 skill：
+- workflow core：流程规则、交接契约、验收标准、报告模板
+- distribution assets：安装、校验、回滚和发布 smoke 所需脚本与配置
+
+当前仓库已提供默认安装入口，可将 workflow bundle 安装到本地 skills 目录；如需隔离环境或改写落点，可显式指定目标目录。
+
+## What Is In This Package
+
+- 作为 `hiui-page-workflow` skill 本身，编排需求细化、页面生成、工程验收和 UX 验收闭环
+- 作为 workflow bundle 控制面，给一组关联 skill 提供统一安装、升级、校验和回滚入口
+
+当前 bundle 组合的 skill 包括：
 
 - `hiui-page-workflow`
 - `refine-product-requirements`
 - `hiui-design`
 - `ux-walkthrough`
 
-## Prerequisites
+## Distribution Status
+
+当前已提供：
+
+- 默认安装入口
+- bundle 校验、回滚与发布 smoke 脚本
+
+正在收敛中的方向：
+
+- project adapter：项目内接入 `.local-context/`、模板、桥接规则
+- other agent adapters：面向其他 AI 工具的规则导出或包装
+
+## Install
 
 执行安装前，需要保证本机具备：
 
@@ -21,49 +42,57 @@
 - `python3`
 - 对公开 GitHub 仓库和分支的访问能力
 
-默认安装目标目录为 `~/.codex/skills`。
+默认安装会写入当前环境的本地 skills 目录。若需指定其他位置，可使用 `--target`，或在 shell 中设置 `WORKFLOW_HOME`。
 
-## Public Preview Install
+### Public Preview Install
 
-当前灰度版通过你的公开 fork 分支直接安装四个 skill。若你希望验证在线安装，可直接拉取灰度分支并执行 bundle 安装：
+当前灰度版通过公开 fork 分支安装四个 skill。若你希望验证在线安装，可直接拉取灰度分支并执行默认安装入口：
 
 ```bash
 git clone --depth 1 --branch gray-skill-bundle-20260703 https://github.com/1108guorui-web/hiui.git
 cd hiui
-bash skills/hiui-page-workflow/install.sh
+bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
 也可以在已有仓库副本中直接运行：
 
 ```bash
-bash skills/hiui-page-workflow/install.sh
+bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
-## Common Commands
+### Common Commands
 
 安装或升级到 bundle 推荐版本：
 
 ```bash
-bash install.sh
+bash install-workflow.sh
 ```
 
 只查看安装计划，不真正写入：
 
 ```bash
-bash install.sh --dry-run --json
+bash install-workflow.sh --dry-run --json
 ```
 
 重新覆盖安装同版本：
 
 ```bash
-bash install.sh --reinstall
+bash install-workflow.sh --reinstall
 ```
 
 强制按 lock 文件同步本地版本：
 
 ```bash
-bash install.sh --force-sync
+bash install-workflow.sh --force-sync
 ```
+
+### Compatibility Notes
+
+旧入口脚本仍然保留，但只作为兼容壳转调 `install-workflow.sh`。后续文档和脚本示例统一使用 `install-workflow.sh`。
+
+## Project Usage
+
+如果你的目标是把 workflow 接到项目里，应通过 project adapter 把规则、模板和桥接资产落到业务仓库；如果你的目标是复用 workflow 规则，可直接使用 `SKILL.md`、`references/` 和 `bundle/` 里的约束与模板。
 
 ## Version Policy
 
@@ -76,12 +105,12 @@ bash install.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是唯一真相源。当前灰度版默认使用公开 fork 的固定灰度分支加显式 `ref` 和 `path` 来定位 skill 源码，方便做一次完整的在线安装验证；完成灰度验证后，应再切回稳定上游分支、tag 或 commit。
+`workflow-bundle.lock.json` 是组合分发的真相源。当前灰度版默认使用公开 fork 的固定灰度分支加显式 `ref` 和 `path` 来定位 skill 源码，方便做一次完整的在线安装验证；完成灰度验证后，应再切回稳定上游分支、tag 或 commit。
 
-若你只想在临时目录验证在线安装，不污染本机 `$CODEX_HOME`，可先指定一个临时目录：
+若你只想在临时目录验证安装，不污染本机默认落点，可先指定一个临时目录：
 
 ```bash
-CODEX_HOME=/tmp/codex-gray-test bash skills/hiui-page-workflow/install.sh
+WORKFLOW_HOME=/tmp/workflow-gray-test bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
 ## Validation And Rollback
@@ -102,14 +131,15 @@ node scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 
 ## Repository Layout
 
-- `SKILL.md`: `hiui-page-workflow` skill 主说明
-- `bundle/`: bundle lock、安装策略、兼容矩阵
+- `SKILL.md`: `hiui-page-workflow` workflow 主说明
+- `references/`: workflow 的验收矩阵、交接契约和最终报告模板
+- `bundle/`: workflow 组合定义、安装策略、兼容矩阵
 - `scripts/`: 安装、验证、回滚、发布 smoke 脚本
-- `docs/`: bundle 发布与维护文档
-- `references/`: workflow skill 的参考资料
+- `docs/`: workflow bundle 的发布与维护文档
 
 ## Notes For Maintainers
 
-- bundle lock 中的每个 skill 都应声明稳定的公开 source 信息
+- 对外表述时，应始终把 `hiui-page-workflow` 说明为“团队通用 workflow”，不要把某个工具或目录写成产品默认形态
+- `install-workflow.sh` 只是默认安装入口；不要把它当成 project adapter 或其他工具适配器的替代品
 - 若下游公开 skill 尚未提供 `skill.manifest.json` 与 public contracts，应先补齐稳定面，再把它接入 bundle
 - 更新 lock 文件后，必须重新执行 `verify-workflow-bundle` 和 `release-workflow-bundle`

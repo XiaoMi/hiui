@@ -13,16 +13,18 @@ import {
   versionModeForEntry,
 } from './workflow-bundle.mjs'
 
-function codexHome() {
-  return process.env.CODEX_HOME || path.join(os.homedir(), '.codex')
+function workflowHome() {
+  return process.env.WORKFLOW_HOME || process.env.CODEX_HOME || path.join(os.homedir(), '.codex')
 }
 
 function defaultTargetRoot() {
-  return path.join(codexHome(), 'skills')
+  return process.env.WORKFLOW_SKILLS_HOME
+    ? path.resolve(process.env.WORKFLOW_SKILLS_HOME)
+    : path.join(workflowHome(), 'skills')
 }
 
 function defaultInstallerPath() {
-  return path.join(codexHome(), 'skills', '.system', 'skill-installer', 'scripts', 'install-skill-from-github.py')
+  return path.join(workflowHome(), 'skills', '.system', 'skill-installer', 'scripts', 'install-skill-from-github.py')
 }
 
 function timestampLabel() {
