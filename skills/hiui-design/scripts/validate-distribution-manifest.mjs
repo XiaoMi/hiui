@@ -33,7 +33,7 @@ function parseArgs(argv) {
       continue
     }
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/validate-distribution-manifest.mjs [--target runtime-mirror|team-package|open-source-package|open-source-dev-bundle] [--root <skill-root>] [--json]')
+      console.log('Usage: node scripts/validate-distribution-manifest.mjs [--target runtime-mirror|team-package|open-source-package] [--root <skill-root>] [--json]')
       process.exit(0)
     }
     throw new Error(`Unknown argument: ${arg}`)

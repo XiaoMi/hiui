@@ -1,0 +1,100 @@
+.detailBody {
+  margin: 2px 0 0;
+  box-sizing: border-box;
+  min-width: 0;
+
+  :global(.group-container.schema-group__container) {
+    gap: 16px;
+  }
+
+  :global(.hi-v5-card.group-panel[data-nest-level='1'] > .hi-v5-card__body) {
+    padding-inline: 20px;
+  }
+}
+
+.warrantyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+
+.warrantyCard {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e4e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.warrantyType {
+  color: #1f2733;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.warrantyRemaining {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 12px;
+  color: #1f2733;
+}
+
+.warrantyRemainingValue {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.warrantyRemainingUnit {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.warrantyMeta {
+  margin-top: 2px;
+  color: #7a8494;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.warrantyDates {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  dt {
+    flex: 0 0 auto;
+    color: #7a8494;
+  }
+
+  dd {
+    min-width: 0;
+    color: #3c4658;
+    text-align: end;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .warrantyGrid {
+    grid-template-columns: 1fr;
+  }
+}

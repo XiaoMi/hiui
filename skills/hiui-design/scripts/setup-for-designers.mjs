@@ -12,14 +12,14 @@ const GIT_REGISTRY = process.env.HIUI_DESIGN_LCM_GIT_REGISTRY || ''
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/setup-for-designers.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--skip-link] [--skip-lcm] [--skip-doctor-gate] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
+  node ".local-context/hiui-design/scripts/setup-for-designers.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--skip-link] [--skip-lcm] [--skip-doctor-gate] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
 
 Default behavior:
   - if lcm exists, initialize project context and link to Cursor when available
   - detect the target project type automatically
   - greenfield React/Vite apps default to host-integration
   - existing systems default to non-gallery installation paths, and incompatible legacy runtimes are routed into legacy-host-compatible bridge mode, which still allows typical-page components through planner-selected carrier / runtimeAdapterProof paths
-  - auto-provision src/translation i18n baseline assets unless --skip-i18n-init is passed
+  - do not provision src/translation i18n baseline unless --init-i18n is passed
   - auto-provision src/typical-page-reuse/assets project image catalog scaffold unless --skip-project-images-init is passed
   - run typical-page:doctor immediately after setup and stop on doctor failures
   - after a successful host-integration setup, auto-start a local dev server when needed and open the first typical-page sample unless --skip-open-browser is passed
@@ -71,6 +71,7 @@ function parseArgs(argv) {
       arg === '--install' ||
       arg === '--no-install' ||
       arg === '--force' ||
+      arg === '--init-i18n' ||
       arg === '--skip-i18n-init' ||
       arg === '--skip-project-images-init'
     ) {
@@ -338,7 +339,7 @@ async function main() {
     console.log('- 如果识别为已有框架，默认不会把模版页面、路由或宿主桥接挂进项目源码；请直接在目标项目既有目录结构中生成业务页')
     console.log(`- 旧系统会默认把一份 reference-only 示例页同步到：${RULES_ONLY_REFERENCE_PAGES_GLOB}；这只是本地参考/回退资产，不表示 legacy-host-compatible 禁用典型页组件`)
     console.log('- 若 reference 目录被手工清理，再回退使用 skill 内示例：.local-context/hiui-design/examples/host-integration/src/pages/*')
-    console.log('- 若当前项目走 reference-only 路径（rules-only 或 legacy-host-compatible），先用 `pnpm typical-page:plan-page-task -- --page-type <id> --page <generated-page-path> --json` 锁定计划，再用 `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` 生成带 source contract 的起手骨架。若 legacy-host-compatible 计划已选中 pageComponent，则优先走 planner 选中的 carrier / runtimeAdapterProof 链路，而不是把 reference 当成默认翻译结果。')
+    console.log('- 若当前项目走 rules-only，或 legacy-host-compatible 但尚未命中 page-component fast path，先用 `pnpm typical-page:plan-page-task -- --page-type <id> --page <generated-page-path> --json` 锁定计划，再用 `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` 生成带 source contract 的起手骨架。若 legacy-host-compatible 计划已选中 pageComponent，则默认主链是 `page-component + runtime bridge + slot fill`；此时 reference 只作本地参考/回退资产，不是默认翻译结果。')
     console.log('- 页面实现过程中，先补齐 host region / ownership 映射，再执行 `pnpm typical-page:preflight -- --page <generated-page-path>` 提前暴露 contract 占位符、source marker 与 transitive helper 污染。')
     console.log('- 快速典型页完成口径是当前页可预览、preflight 通过、lint / build 可解释；正式验收、发布、结构修复或 ownership / marker 变化时才执行 `typical-page:finalize-page`。')
     console.log('- 如果是数据统计页，参考 table-stat.tsx；如果是全页编辑，参考 full-page-edit.tsx，但不要把 reference-only 目录当成正式 gallery 接进项目，也不要把它误解成 legacy-host-compatible 只能走 reference/fallback。')

@@ -78,11 +78,11 @@
           "auth",
           "permission",
           "user",
-          "dictionary",
           "route-navigation",
           "theme"
         ],
         "optionalCapabilities": [
+          "dictionary",
           "i18n",
           "analytics",
           "feature-flags",

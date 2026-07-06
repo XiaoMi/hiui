@@ -118,12 +118,46 @@ function detectBusinessPageRoot(targetRoot) {
   return ''
 }
 
-function detectI18n(targetRoot) {
+function detectI18n(targetRoot, dependencies = {}) {
   const candidates = ['src/translation', 'src/i18n', 'src/locales']
+  const runtimeDependencyIds = [
+    'react-intl',
+    'react-intl-universal',
+    'i18next',
+    'react-i18next',
+    '@umijs/plugin-locale',
+    'umi-plugin-locale',
+  ]
+
   for (const candidate of candidates) {
-    if (fs.existsSync(path.join(targetRoot, candidate))) {
+    const absoluteCandidate = path.join(targetRoot, candidate)
+    if (!fs.existsSync(absoluteCandidate)) {
+      continue
+    }
+
+    const localeFiles = (() => {
+      try {
+        return fs.readdirSync(absoluteCandidate).filter((name) => /^[a-z]{2}(?:-[A-Z]{2})?\.json$/.test(name))
+      } catch {
+        return []
+      }
+    })()
+    const hasEntry =
+      ['index.ts', 'index.tsx', 'index.js', 'index.jsx'].some((name) =>
+        fs.existsSync(path.join(absoluteCandidate, name))
+      ) ||
+      ['messages.ts', 'messages.js'].some((name) => fs.existsSync(path.join(absoluteCandidate, name)))
+    const hasRuntimeDependency = runtimeDependencyIds.some((depName) => Boolean(dependencies[depName]))
+
+    if (hasRuntimeDependency) {
       return { mode: 'full', status: 'ready', source: candidate }
     }
+
+    if (hasEntry || localeFiles.length > 0) {
+      return { mode: 'baseline', status: 'seeded', source: candidate }
+    }
+
+    return { mode: 'partial', status: 'detected', source: candidate }
   }
   return { mode: 'none', status: 'missing', source: '' }
 }
@@ -150,17 +184,18 @@ function readModeFact(targetRoot) {
   return { id: 'unknown', locked: false, source: '' }
 }
 
-export function buildProjectCapabilities({ targetRoot, skillRoot, modeOverride = '' }) {
+export function buildProjectCapabilities({ targetRoot, skillRoot, modeOverride = '', legacyHostFamilyOverride = null }) {
   const pkg = readPackage(targetRoot)
   const dependencies = dependenciesFromPackage(pkg)
   const localSkillRoot = path.join(targetRoot, '.local-context', 'hiui-design')
   const projectRootValid = Boolean(pkg && fs.existsSync(localSkillRoot))
   const pageRoot = detectBusinessPageRoot(targetRoot)
-  const i18n = detectI18n(targetRoot)
+  const i18n = detectI18n(targetRoot, dependencies)
   const moldRegistry = loadPageMoldRegistry({ skillRoot })
   const adapterRegistry = loadAdapterRegistry({ skillRoot })
   const pageComponentRegistry = loadPageComponentRegistry({ skillRoot, targetRoot })
-  const legacyHostFamily = detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride })
+  const legacyHostFamily =
+    legacyHostFamilyOverride || detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride })
   const pageComponentMatrix = pageComponentRegistry.components.map((component) => {
     const certification = loadPageComponentCertification(component, { skillRoot })
     return {

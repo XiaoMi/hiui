@@ -30,10 +30,6 @@ import {
   parseLeadingMajorVersion,
   summarizeLegacyImportHits,
 } from './lib/legacy-runtime-guard.mjs'
-import {
-  formatNodeRuntimeRequirementDetail,
-  getProjectNodeRuntimeRequirement,
-} from './lib/node-runtime-requirements.mjs'
 
 function printUsage() {
   console.log(`Usage:
@@ -274,17 +270,6 @@ function runNpmCommand(args, cwd, registry = '') {
   return result
 }
 
-async function detectCurrentRuntimeDeliveryChannel(skillRoot) {
-  const markerPath = path.join(skillRoot, 'GENERATED_DO_NOT_EDIT.md')
-  if (!(await pathExists(markerPath))) {
-    return 'project-view'
-  }
-
-  const marker = await fs.readFile(markerPath, 'utf8')
-  const targetMatch = marker.match(/^- target:\s+(.+)$/m)
-  return targetMatch?.[1]?.trim() || 'project-view'
-}
-
 async function resolveShellRuntimeDelivery(skillRoot, shellPackage, runtimeDeliveryPolicy) {
   if (!shellPackage) {
     return {
@@ -306,14 +291,9 @@ async function resolveShellRuntimeDelivery(skillRoot, shellPackage, runtimeDeliv
     runtimeDelivery.vendoredTarball ||
     `vendor/hiui-design-typical-page-shells-${shellPackage.version}.tgz`
   const vendoredTarballPath = path.join(skillRoot, vendoredTarballRelativePath)
-  const currentChannel = await detectCurrentRuntimeDeliveryChannel(skillRoot)
-  const channelPolicy =
-    runtimeDeliveryPolicy?.deliveryChannels?.[currentChannel] ||
-    runtimeDeliveryPolicy?.deliveryChannels?.['project-view'] ||
-    {}
   if (await pathExists(vendoredTarballPath)) {
     return {
-      deliverySource: channelPolicy.runtimeResolution || 'vendored-tarball',
+      deliverySource: 'vendored-tarball',
       expectedShellSpecs: [`file:.local-context/hiui-design/vendor/${path.basename(vendoredTarballRelativePath)}`],
       expectedShellSpecDetail: `Expected vendored tgz dependency: file:.local-context/hiui-design/vendor/${path.basename(
         vendoredTarballRelativePath
@@ -328,33 +308,30 @@ async function resolveShellRuntimeDelivery(skillRoot, shellPackage, runtimeDeliv
     }
   }
 
-  if (channelPolicy.registryResolution === 'forbidden') {
-    return {
-      deliverySource: 'missing-runtime-delivery',
-      expectedShellSpecs: [],
-      expectedShellSpecDetail: `Missing vendored tgz at ${path.relative(
-        skillRoot,
-        vendoredTarballPath
-      )}. The current install source (${currentChannel}) requires vendored runtime delivery and does not allow npm registry fallback.`,
-      publicRegistryCheck: {
-        required: true,
-        ok: false,
-        detail: `Current delivery channel ${currentChannel} requires vendored tgz delivery, but the vendored runtime tarball is missing at ${path.relative(
-          skillRoot,
-          vendoredTarballPath
-        )}.`,
-      },
-      vendoredTarballPath,
-      vendoredTarballRequired: true,
-    }
-  }
-
   const publicPackageRoot =
     runtimeDelivery.publicPackageRoot || runtimeDeliveryPolicy?.runtimePackage?.publicPackageRoot || ''
   const publicPackageJsonPath = publicPackageRoot
     ? path.join(skillRoot, publicPackageRoot, 'package.json')
     : ''
   const publicPackage = publicPackageJsonPath ? await readJsonIfExists(publicPackageJsonPath) : null
+
+  if (runtimeDeliveryPolicy?.deliveryChannels?.['open-source-package']?.runtimeResolution === 'vendored-tarball') {
+    return {
+      deliverySource: 'missing-runtime-delivery',
+      expectedShellSpecs: [],
+      expectedShellSpecDetail: `Missing vendored tgz at ${path.relative(
+        skillRoot,
+        vendoredTarballPath
+      )} for a skill view that requires vendored runtime delivery`,
+      publicRegistryCheck: {
+        required: false,
+        ok: false,
+        detail: 'This skill view requires the vendored tgz. Public package metadata does not change the active install contract.',
+      },
+      vendoredTarballPath,
+      vendoredTarballRequired: true,
+    }
+  }
 
   if (publicPackage) {
     const publicRegistry = resolvePublicRuntimeRegistry(runtimeDeliveryPolicy, shellPackage)
@@ -5045,10 +5022,6 @@ async function main() {
       summary: 'package.json exists',
       detail: pkg ? packageJsonPath : `Missing ${packageJsonPath}`,
     })
-    const nodeRuntimeRequirement = getProjectNodeRuntimeRequirement({
-      pkg,
-      hostProfile,
-    })
     const legacyHostRuntime = pkg ? await detectLegacyHostRuntimeMode(targetRoot, pkg) : null
     const legacyHiUiEsImports = await collectLegacyHiUiEsImports(path.join(targetRoot, 'src'))
     const installedRootRuntime = pkg
@@ -5151,15 +5124,6 @@ async function main() {
       summary: 'target project host profile is detected before choosing an integration strategy',
       detail: `${hostProfile.projectType} / ${hostProfile.framework} / ${hostProfile.runtime} / ${hostProfile.routing}`,
     })
-    if (nodeRuntimeRequirement.required || nodeRuntimeRequirement.advisory) {
-      pushCheck(checks, {
-        id: 'node-runtime',
-        ok: !nodeRuntimeRequirement.required || nodeRuntimeRequirement.ok,
-        severity: nodeRuntimeRequirement.required ? 'error' : 'warn',
-        summary: 'current Node runtime satisfies the detected target-project build-tool baseline',
-        detail: formatNodeRuntimeRequirementDetail(nodeRuntimeRequirement),
-      })
-    }
     pushCheck(checks, {
       id: 'recommended-install-strategy',
       ok:
@@ -5384,7 +5348,7 @@ async function main() {
       ok: !runtimeShellDelivery.publicRegistryCheck.required || runtimeShellDelivery.publicRegistryCheck.ok,
       severity: runtimeShellDelivery.publicRegistryCheck.required ? 'error' : 'warn',
       summary:
-        'runtime delivery source remains valid for the active @hiui-design/typical-page-shells install contract',
+        'runtime delivery source is verified before @hiui-design/typical-page-shells falls back to public npm',
       detail: runtimeShellDelivery.publicRegistryCheck.detail,
     })
     pushCheck(checks, {

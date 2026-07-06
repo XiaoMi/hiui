@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "preflight-report.v1",
+  "status": "passed",
+  "preflightStage": "implementation",
+  "readyForImplementation": true,
+  "readyForDelivery": true,
+  "deferredChecks": [],
+  "page": "src/pages/orders/index.tsx",
+  "pageType": "table-basic",
+  "checks": [
+    {
+      "id": "preflightBaseline",
+      "status": "passed",
+      "severity": "info",
+      "message": "managed page preflight completed without blocking failures",
+      "suggestedActionIds": []
+    }
+  ],
+  "blockingReasons": [],
+  "blockingIssues": [],
+  "suggestedActions": [],
+  "pageTypeId": "table-basic",
+  "pageTypeLabel": "普通表格",
+  "workflowStatus": "preflight-pass",
+  "preflightStatus": "pass",
+  "runtimeSmokeRequired": false,
+  "runtimeSmokeStatus": "not-required",
+  "examplePath": "examples/host-integration/src/pages/table-basic.tsx",
+  "hostArchetypePath": "src/pages/orders/host-archetype.tsx",
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "semanticContract": {
+    "queryFilterRegionRole": "table-query-filter",
+    "dimensionSwitchControl": "not-applicable",
+    "listShellComposition": "single-list-shell",
+    "spacingOwnership": "single-spacing-owner",
+    "areaChartFill": "not-applicable"
+  },
+  "managedChartSection": "not-declared",
+  "chartGovernance": "Any inserted chart still has to follow the HiUI managed chart stack. Only promote a local chart area into chart-section when the requirement forms an independent analysis block with its own section boundary.",
+  "i18nStrategy": "(not-declared)",
+  "formatterPolicy": [],
+  "warnings": [],
+  "failures": []
+}

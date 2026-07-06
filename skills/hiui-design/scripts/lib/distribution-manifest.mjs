@@ -34,7 +34,7 @@ function validateDistributionManifest(manifest) {
     throw new Error('distribution manifest targets are required')
   }
 
-  for (const targetName of ['runtime-mirror', 'team-package', 'open-source-package', 'open-source-dev-bundle']) {
+  for (const targetName of ['runtime-mirror', 'team-package', 'open-source-package']) {
     const target = manifest.targets[targetName]
     if (!target || typeof target !== 'object') {
       throw new Error(`distribution target missing: ${targetName}`)
@@ -113,13 +113,15 @@ async function assertTargetRequirements(root, targetName, target, selectedFiles)
 
   for (const requiredPath of target.required) {
     const normalized = normalizeRelativePath(requiredPath)
-    if (selectedSet.has(normalized)) {
+    const absolutePath = path.join(root, normalized)
+    if (!(selectedSet.has(normalized) || await pathExists(absolutePath))) {
+      missing.push(normalized)
       continue
     }
-
-    const hasChild = selectedFiles.some((file) => file.startsWith(`${normalized}/`))
-    if (!hasChild) {
-      missing.push(normalized)
+    if (!selectedSet.has(normalized)) {
+      const hasChild = selectedFiles.some((file) => file.startsWith(`${normalized}/`))
+      const isExistingDirectory = (await pathExists(absolutePath)) && hasChild
+      if (!isExistingDirectory) missing.push(normalized)
     }
   }
 

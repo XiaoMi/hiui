@@ -13,6 +13,11 @@
       "ok": true
     },
     {
+      "detail": "managed chart section=not-declared; Any inserted chart still has to stay on the approved HiUI chart stack. Only independent analysis blocks should be promoted into chart-section.",
+      "key": "chart-governance",
+      "ok": true
+    },
+    {
       "detail": "No preview URL was provided. Accepted static file-exists fallback.",
       "key": "browser-preview",
       "ok": true,
@@ -21,6 +26,8 @@
   ],
   "normalizedPagePath": "src/pages/orders/index.tsx",
   "pageTypeId": "table-basic",
+  "managedChartSection": "not-declared",
+  "chartGovernance": "Any inserted chart still has to stay on the approved HiUI chart stack. Only independent analysis blocks should be promoted into chart-section.",
   "qualityChecks": [
     {
       "detail": "Found managed page contract: .local-context/hiui-design/contracts/src-pages-orders-index.json",
@@ -49,77 +56,5 @@
   "runtimeSmokeRequired": false,
   "runtimeSmokeRequirementReason": "",
   "sourceSnapshotHash": "preview-ready-contract-fixture-source",
-  "usedStaticFallback": true,
-  "usageStatsStatus": "completed",
-  "usage": {
-    "exit_code": 0,
-    "message": "DRY_RUN",
-    "ok": true,
-    "requires_network_authorization": false,
-    "status": "completed",
-    "usage": {
-      "dryRun": true,
-      "payload": {
-        "event": "page_artifact_created",
-        "prompt": "preview-ready contract fixture",
-        "report_mode": "rules-only",
-        "run_id": "preview-ready-contract-fixture:page_artifact_created",
-        "skill_name": "hiui-design",
-        "skill_version": "0.0.0-contract-fixture",
-        "success": true,
-        "timestamp": "2026-01-01T00:00:00.000Z",
-        "user_email": ""
-      }
-    }
-  },
-  "usageEvents": [
-    {
-      "event": "page_artifact_created",
-      "usage": {
-        "exit_code": 0,
-        "message": "DRY_RUN",
-        "ok": true,
-        "requires_network_authorization": false,
-        "status": "completed",
-        "usage": {
-          "dryRun": true,
-          "payload": {
-            "event": "page_artifact_created",
-            "prompt": "preview-ready contract fixture",
-            "report_mode": "rules-only",
-            "run_id": "preview-ready-contract-fixture:page_artifact_created",
-            "skill_name": "hiui-design",
-            "skill_version": "0.0.0-contract-fixture",
-            "success": true,
-            "timestamp": "2026-01-01T00:00:00.000Z",
-            "user_email": ""
-          }
-        }
-      }
-    },
-    {
-      "event": "page_quality_verified",
-      "usage": {
-        "exit_code": 0,
-        "message": "DRY_RUN",
-        "ok": true,
-        "requires_network_authorization": false,
-        "status": "completed",
-        "usage": {
-          "dryRun": true,
-          "payload": {
-            "event": "page_quality_verified",
-            "prompt": "preview-ready contract fixture",
-            "report_mode": "rules-only",
-            "run_id": "preview-ready-contract-fixture:page_quality_verified",
-            "skill_name": "hiui-design",
-            "skill_version": "0.0.0-contract-fixture",
-            "success": true,
-            "timestamp": "2026-01-01T00:00:00.000Z",
-            "user_email": ""
-          }
-        }
-      }
-    }
-  ]
+  "usedStaticFallback": true
 }

@@ -2,9 +2,6 @@
 
 `docs/` 是解释层，不是默认决策层。
 
-如果你当前看到的是内部团队 Git 分发仓里的 `hiui-design`，默认应把这份包理解为 `team package` 视图，而不是 `maintainer source`。
-文档中出现的 `maintainer source`、`active source`、`global mirror` 等词，主要用于解释这份包的来源、同步方向和治理边界，不代表团队使用者应该改去下载或修改另一个维护者仓。
-
 先读 [`../rules/QUICK-START.md`](../rules/QUICK-START.md)，只有在需要接入说明、页型正文或排障细节时再进入本目录。
 
 - AI 默认先读 `../rules/`

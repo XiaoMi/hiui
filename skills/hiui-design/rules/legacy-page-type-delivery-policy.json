@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "legacy-page-type-delivery-policy.v1",
+  "mode": "legacy-host-compatible",
+  "pageTypes": [
+    {
+      "pageTypeId": "table-basic",
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "table list shells frequently drift in header/query-filter/table/pagination ownership when the host boundary is not absorbed by a shared carrier"
+    },
+    {
+      "pageTypeId": "table-stat",
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "stat/search/table shells need a stable shared carrier to keep metric, query-filter, table, and pagination sequencing machine-checkable"
+    },
+    {
+      "pageTypeId": "tree-table",
+      "deliveryPolicy": "direct-standard-allowed",
+      "reason": "single-workspace inline-tree tables can remain on the direct standard component path when runtime bridge proof is already available"
+    },
+    {
+      "pageTypeId": "tree-split",
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "split workspace shells require governed shared carriers so split ownership and scroll boundaries do not drift into business pages"
+    },
+    {
+      "pageTypeId": "drawer-form",
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "drawer shell ownership, header rhythm, and footer docking should be frozen at the project carrier layer before business slot fill"
+    },
+    {
+      "pageTypeId": "drawer-detail",
+      "deliveryPolicy": "direct-standard-allowed",
+      "reason": "detail drawer pages can keep using the direct standard component path while project carriers are still optional"
+    },
+    {
+      "pageTypeId": "feedback-status",
+      "deliveryPolicy": "direct-standard-allowed",
+      "reason": "feedback pages have low skeleton variance and can remain on the runtime-bridged standard component path"
+    },
+    {
+      "pageTypeId": "full-page-edit",
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "header/footer/action ownership on full-page-edit should be stabilized through a shared project carrier before rollout"
+    },
+    {
+      "pageTypeId": "full-page-detail",
+      "deliveryPolicy": "direct-standard-allowed",
+      "reason": "detail shells can stay on the direct standard component path when no project-specific host carrier is required"
+    }
+  ],
+  "allowedPolicies": [
+    "direct-standard-allowed",
+    "carrier-first-required",
+    "managed-analytics-only",
+    "explicit-fallback-only"
+  ],
+  "notes": [
+    "This file only applies to legacy-host-compatible delivery policy planning.",
+    "It does not create a parallel generation family; page-component remains the normalized primary chain.",
+    "Projects may still override or extend these defaults through project facts, but planner decisions must remain policy-driven."
+  ]
+}

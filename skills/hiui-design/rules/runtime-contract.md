@@ -115,6 +115,7 @@
 - `primaryGenerationAsset.type` 仍为 `page-component`
 - `assetResolution.strategy` 仍为 `page-component`
 - 下游消费方一律按 `normalizedId` 判定主链路，不得因为用户可读 id 新增而分叉为平行体系
+- legacy 主树若禁止 ad hoc direct shell import，只影响 standard shell 的直接挂载方式；不得据此把 `normalizedId=page-component` 的 ready 计划重新解释成默认 fallback 或 hand-built compatibility page
 
 计划可附加 `runtimeBridgeProfile` 作为 additive object，用于说明 legacy 桥接交付语义。推荐结构：
 
@@ -154,6 +155,8 @@
   翻译为宿主 look-alike primitives，应视为 contract drift 并 fail closed。
 - 若 `generationStrategy.id=runtime-bridged-page-component`，但 `runtimeBridgeProfile` 缺失、
   profile 不可解析或 runtime shell 来源不可解，则计划必须 `blocked`。
+- 若 `generationStrategy.normalizedId=page-component`、`runtimeBridgeProfile.status=available`
+  且 `runtimeAdapterProof.status=available`，执行层不得因为 direct shell import 在 legacy 主树中被禁止，就擅自降级到 reference 默认翻译、兼容手拼页或自由 fallback。
 
 ## Structured Actions
 

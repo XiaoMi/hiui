@@ -1,0 +1,30 @@
+.treeSearch {
+  padding: 20px 12px 12px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.treeSearchInput {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  :global(.hi-v5-input) {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.treeScroll {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: 16px;
+}
+
+.treePanel {
+  border-radius: 8px;
+  overflow: hidden;
+}

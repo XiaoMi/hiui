@@ -93,8 +93,8 @@
 - `src/typical-page-reuse/components/managed-page/data-visualization-primitives.tsx`
 - `examples/host-integration/src/components/managed-page/fixed-dashboard-page-frame.tsx`
 - `examples/host-integration/src/components/managed-page/data-visualization-primitives.tsx`
-- `examples/host-integration/src/components/managed-page/fixed-dashboard-page-frame.tsx`
-- `examples/host-integration/src/components/managed-page/data-visualization-primitives.tsx`
+- `reference/host-integration/src/components/managed-page/fixed-dashboard-page-frame.tsx`
+- `reference/host-integration/src/components/managed-page/data-visualization-primitives.tsx`
 
 页面入口只保留 source marker 与业务 region：
 

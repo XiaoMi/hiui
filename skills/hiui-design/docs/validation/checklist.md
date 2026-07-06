@@ -53,6 +53,7 @@
 先确认没有把语义组件重新翻译成业务页自造 DOM：
 
 - `PageHeader`、`QueryFilter`、`Table`、`Descriptions`、`Timeline`、`Empty`、`Tag`、`Progress`、`Steps` 保持真实复用
+- 若命中 `Timeline`，默认使用 HiUI 官网 timeline 的信息流样式；不要无依据改成卡片流、双列流或自造轴线样式
 - 风险 / 状态表达继续走 `Tag` 或 shared renderer
 - 若存在绕开现成组件的实现，必须有明确 bypass 原因
 

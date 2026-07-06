@@ -1,0 +1,76 @@
+{
+  "status": "started",
+  "artifactRole": "business-managed-page",
+  "pageType": {
+    "id": "table-basic",
+    "label": "普通表格"
+  },
+  "mode": "rules-only",
+  "topology": null,
+  "layoutStrategy": "",
+  "layoutArchetype": "",
+  "nonTypicalScope": [],
+  "mandatoryComponents": [],
+  "compositionGuardrails": [],
+  "strategyEvidence": [],
+  "runtimeSmokePlan": null,
+  "requestedPagePath": "src/pages/orders/index.tsx",
+  "pagePath": "src/pages/orders/index.tsx",
+  "examplePath": "examples/host-integration/src/pages/table-basic.tsx",
+  "hostArchetypePath": "src/pages/orders/host-archetype.tsx",
+  "requiredRegions": [
+    "header",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "requiredOwnershipRoles": [
+    "content-slot",
+    "white-body",
+    "outer-padding",
+    "main-scroll"
+  ],
+  "requiredCapabilities": [
+    "header-slot",
+    "white-body",
+    "query-filter",
+    "table",
+    "pagination"
+  ],
+  "localBypasses": [],
+  "scaffoldArtifacts": [
+    {
+      "filePath": "src/pages/orders/index.tsx"
+    }
+  ],
+  "executionDecisionSummary": {
+    "defaultAction": "complete-managed-start-point-before-business-filling",
+    "deliveryPath": "managed-scaffold-or-fallback-start-point",
+    "shellImportPolicy": "follow-selected-delivery-asset",
+    "runtimeDeliveryMode": "",
+    "allowedEditBoundary": "follow-selected-contract-boundary",
+    "doNotDo": []
+  },
+  "contract": {
+    "jsonPath": ".local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.json",
+    "markdownPath": ".local-context/hiui-design/outputs/page-contracts/src__pages__orders__index.md",
+    "workflow": {
+      "status": "started",
+      "deliveryStatus": "not-finalized",
+      "preflightStatus": "not-run",
+      "sourceGateStatus": "not-run",
+      "doctorStatus": "not-run",
+      "runtimeSmokeStatus": "not-required",
+      "sourceSnapshotHash": "start-page-contract-fixture-source"
+    },
+    "strictTemplateRequired": true,
+    "templateStatus": "executable",
+    "archetypeTemplatePath": "templates/archetypes/rules-only/table-basic"
+  },
+  "nextSteps": [
+    "replace TODO contract targets",
+    "run typical-page:preflight",
+    "for fast typical pages, verify current-page preview plus lint/build; run finalize-page only for formal acceptance, release, or shell/ownership/marker changes"
+  ]
+}

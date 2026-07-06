@@ -84,6 +84,77 @@ async function writeBaseHostIntegrationFixture(tempRoot) {
   )
 }
 
+async function writeBaseLegacyFixture(tempRoot) {
+  await ensureDir(path.join(tempRoot, 'src'))
+  await fs.writeFile(
+    path.join(tempRoot, 'package.json'),
+    `${JSON.stringify(
+      {
+        name: 'doctor-legacy-regression-fixture',
+        private: true,
+        version: '0.0.0',
+        dependencies: {
+          react: '16.13.1',
+          'react-dom': '16.13.1',
+        },
+      },
+      null,
+      2
+    )}\n`,
+    'utf8'
+  )
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'main.jsx'),
+    "export default function LegacyFixtureEntry() { return null }\n",
+    'utf8'
+  )
+}
+
+async function writeLegacyBridgeOnlyFixture(tempRoot) {
+  await writeBaseLegacyFixture(tempRoot)
+}
+
+async function writeLegacyDirectShellFixture(tempRoot) {
+  await writeBaseLegacyFixture(tempRoot)
+  await ensureDir(path.join(tempRoot, 'src', 'pages'))
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'pages', 'orders.jsx'),
+    `import { ProListPage } from '@hiui-design/typical-page-shells/pro-list-page'
+
+export default function OrdersPage() {
+  return <ProListPage queryFields={[]} tableFields={[]} />
+}
+`,
+    'utf8'
+  )
+}
+
+async function writeLegacyAuxiliaryShellFixture(tempRoot) {
+  await writeBaseLegacyFixture(tempRoot)
+  await ensureDir(path.join(tempRoot, 'src', 'typical-page-reuse'))
+  await ensureDir(path.join(tempRoot, 'src', 'views', 'orders'))
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'typical-page-reuse', 'demo.jsx'),
+    `import { ProListPage } from '@hiui-design/typical-page-shells/pro-list-page'
+
+export default function DemoPage() {
+  return <ProListPage queryFields={[]} tableFields={[]} />
+}
+`,
+    'utf8'
+  )
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'views', 'orders', '__codex_hiui_reference__.tsx'),
+    `import { ProListPage } from '@hiui-design/typical-page-shells/pro-list-page'
+
+export default function OrdersReference() {
+  return <ProListPage queryFields={[]} tableFields={[]} />
+}
+`,
+    'utf8'
+  )
+}
+
 function indentSnippet(snippet, indent = '    ') {
   return String(snippet || '')
     .split('\n')
@@ -335,10 +406,10 @@ export default function App() {
   )
 }
 
-function runDoctorJson(targetRoot) {
+function runDoctorJson(targetRoot, mode = 'host-integration') {
   const result = spawnSync(
     process.execPath,
-    [doctorScriptPath, '--target', targetRoot, '--mode', 'host-integration', '--json'],
+    [doctorScriptPath, '--target', targetRoot, '--mode', mode, '--json'],
     {
       cwd: skillRoot,
       encoding: 'utf8',
@@ -376,6 +447,9 @@ async function main() {
   const goodRouteMenuRoot = path.join(tempRoot, 'host-good-route-menu')
   const badIconSemanticRoot = path.join(tempRoot, 'host-bad-icon-semantics')
   const goodIconSemanticRoot = path.join(tempRoot, 'host-good-icon-semantics')
+  const legacyBridgeOnlyRoot = path.join(tempRoot, 'legacy-bridge-only')
+  const legacyDirectShellRoot = path.join(tempRoot, 'legacy-direct-shell')
+  const legacyAuxiliaryShellRoot = path.join(tempRoot, 'legacy-auxiliary-shell')
 
   try {
     await writeBaseHostIntegrationFixture(noArtifactsRoot)
@@ -384,6 +458,9 @@ async function main() {
     await writeHostRouteMenuFixture(goodRouteMenuRoot, 'good')
     await writeTopLevelMenuIconFixture(badIconSemanticRoot, 'bad')
     await writeTopLevelMenuIconFixture(goodIconSemanticRoot, 'good')
+    await writeLegacyBridgeOnlyFixture(legacyBridgeOnlyRoot)
+    await writeLegacyDirectShellFixture(legacyDirectShellRoot)
+    await writeLegacyAuxiliaryShellFixture(legacyAuxiliaryShellRoot)
 
     const noArtifactsPayload = runDoctorJson(noArtifactsRoot)
     const noArtifactsCheckIds = new Set(noArtifactsPayload.checks.map((item) => item.id))
@@ -465,6 +542,109 @@ async function main() {
       'Expected doctor to pass when first-level route groups use distinct semantic Filled icons.'
     )
 
+    const legacyBridgeOnlyPayload = runDoctorJson(
+      legacyBridgeOnlyRoot,
+      'legacy-host-compatible'
+    )
+    const legacyBridgeOnlyRuntimeCheck = getCheck(
+      legacyBridgeOnlyPayload,
+      'standard-typical-page-runtime'
+    )
+    assert(legacyBridgeOnlyRuntimeCheck, 'Expected doctor to emit standard-typical-page-runtime.')
+    assert.equal(
+      legacyBridgeOnlyRuntimeCheck.ok,
+      true,
+      'Expected legacy bridge-only projects to stay valid without direct shell runtime imports.'
+    )
+    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /not-required-in-current-mode/)
+    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /page-component \+ runtime bridge \+ slot fill/)
+
+    const legacyBridgeOnlyShellDeclCheck = getCheck(legacyBridgeOnlyPayload, 'shells-declared')
+    assert(legacyBridgeOnlyShellDeclCheck, 'Expected doctor to emit shells-declared.')
+    assert.equal(
+      legacyBridgeOnlyShellDeclCheck.ok,
+      true,
+      'Expected legacy bridge-only projects to allow missing @hiui-design/typical-page-shells declarations.'
+    )
+    assert.match(legacyBridgeOnlyShellDeclCheck.detail, /not required to declare/)
+
+    const legacyBridgeOnlyStyleCheck = getCheck(legacyBridgeOnlyPayload, 'styles-import')
+    assert(legacyBridgeOnlyStyleCheck, 'Expected doctor to emit styles-import.')
+    assert.equal(
+      legacyBridgeOnlyStyleCheck.ok,
+      true,
+      'Expected legacy bridge-only projects to allow missing styles.css imports.'
+    )
+    assert.match(legacyBridgeOnlyStyleCheck.detail, /not required-in-current-mode/)
+
+    const legacyDirectShellPayload = runDoctorJson(
+      legacyDirectShellRoot,
+      'legacy-host-compatible'
+    )
+    const legacyDirectShellRuntimeCheck = getCheck(
+      legacyDirectShellPayload,
+      'standard-typical-page-runtime'
+    )
+    assert(legacyDirectShellRuntimeCheck, 'Expected doctor to emit standard-typical-page-runtime.')
+    assert.equal(
+      legacyDirectShellRuntimeCheck.ok,
+      false,
+      'Expected legacy projects with direct shell imports to fail the downgraded runtime check.'
+    )
+    assert.match(legacyDirectShellRuntimeCheck.detail, /required-if-direct-standard-shell-runtime-selected/)
+
+    const legacyDirectShellDeclCheck = getCheck(legacyDirectShellPayload, 'shells-declared')
+    assert(legacyDirectShellDeclCheck, 'Expected doctor to emit shells-declared.')
+    assert.equal(
+      legacyDirectShellDeclCheck.ok,
+      false,
+      'Expected legacy projects with direct shell imports to require a package.json declaration.'
+    )
+    assert.match(legacyDirectShellDeclCheck.detail, /must now declare/)
+
+    const legacyDirectShellInstallCheck = getCheck(legacyDirectShellPayload, 'shells-installed')
+    assert(legacyDirectShellInstallCheck, 'Expected doctor to emit shells-installed.')
+    assert.equal(
+      legacyDirectShellInstallCheck.ok,
+      false,
+      'Expected legacy projects with direct shell imports to require an installed package copy.'
+    )
+    assert.match(legacyDirectShellInstallCheck.detail, /required-if-direct-standard-shell-runtime-selected/)
+
+    const legacyDirectShellStyleCheck = getCheck(legacyDirectShellPayload, 'styles-import')
+    assert(legacyDirectShellStyleCheck, 'Expected doctor to emit styles-import.')
+    assert.equal(
+      legacyDirectShellStyleCheck.ok,
+      false,
+      'Expected legacy projects with direct shell imports to require styles.css.'
+    )
+    assert.match(legacyDirectShellStyleCheck.detail, /Add `import '@hiui-design\/typical-page-shells\/styles\.css'`/)
+
+    const legacyAuxiliaryShellPayload = runDoctorJson(
+      legacyAuxiliaryShellRoot,
+      'legacy-host-compatible'
+    )
+    const legacyAuxiliaryRuntimeCheck = getCheck(
+      legacyAuxiliaryShellPayload,
+      'standard-typical-page-runtime'
+    )
+    assert(legacyAuxiliaryRuntimeCheck, 'Expected doctor to emit standard-typical-page-runtime.')
+    assert.equal(
+      legacyAuxiliaryRuntimeCheck.ok,
+      true,
+      'Expected gallery/reference-only shell imports to stay on the legacy bridge path.'
+    )
+    assert.match(legacyAuxiliaryRuntimeCheck.detail, /not-required-in-current-mode/)
+
+    const legacyAuxiliaryDeclCheck = getCheck(legacyAuxiliaryShellPayload, 'shells-declared')
+    assert(legacyAuxiliaryDeclCheck, 'Expected doctor to emit shells-declared.')
+    assert.equal(
+      legacyAuxiliaryDeclCheck.ok,
+      true,
+      'Expected auxiliary shell imports under typical-page-reuse or __codex references to avoid direct-shell escalation.'
+    )
+    assert.doesNotMatch(legacyAuxiliaryDeclCheck.detail, /must now declare/)
+
     console.log('[verify-typical-page-doctor-rules-only-regressions] PASS')
     console.log('- host-integration without managed artifacts does not emit rules-only doctor checks')
     console.log('- host-integration with managed page artifacts emits rules-only doctor checks before finalize-time gates')
@@ -472,6 +652,9 @@ async function main() {
     console.log('- host-integration doctor accepts shared top-level 示例 gallery route menus')
     console.log('- host-integration doctor rejects duplicated first-level AppStoreFilled placeholders')
     console.log('- host-integration doctor accepts distinct semantic first-level Filled icons')
+    console.log('- legacy bridge-only doctor treats shell dependency/style imports as not-required-in-current-mode')
+    console.log('- legacy direct-shell doctor upgrades dependency/style/runtime checks to required-if-direct-standard-shell-runtime-selected')
+    console.log('- legacy auxiliary gallery/reference shell imports do not escalate into direct-shell runtime mode')
   } finally {
     await removeTree(tempRoot)
   }

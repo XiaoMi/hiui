@@ -203,7 +203,7 @@ function inferRuntimeBridgeFromProjectStructure(targetRoot, family) {
   const dependencies = dependenciesFromPackage(readJsonIfExists(path.join(targetRoot, 'package.json')) || {})
   const requiredCapabilities = Array.isArray(family?.runtimeBridge?.requiredCapabilities)
     ? family.runtimeBridge.requiredCapabilities
-    : ['request', 'auth', 'permission', 'user', 'dictionary', 'route-navigation', 'theme']
+    : ['request', 'auth', 'permission', 'user', 'route-navigation', 'theme']
   const capabilityEvidence = []
 
   const requestFile = readFirstMatchingFile(targetRoot, files, [
@@ -260,9 +260,13 @@ function inferRuntimeBridgeFromProjectStructure(targetRoot, family) {
   capabilityEvidence.push(
     makeCapabilityEvidence({
       id: 'dictionary',
-      status: dictionaryFile || hasTranslationDir ? 'passed' : 'missing',
+      status: dictionaryFile ? 'passed' : hasTranslationDir ? 'partial' : 'missing',
       source: dictionaryFile?.relativePath || (hasTranslationDir ? 'src/translation|src/i18n|src/locales' : ''),
-      reason: dictionaryFile || hasTranslationDir ? 'dictionary/i18n source found' : 'no dictionary or i18n source found',
+      reason: dictionaryFile
+        ? 'dictionary/i18n source found'
+        : hasTranslationDir
+          ? 'translation directory exists, but no concrete dictionary bridge or locale catalog source was proven'
+          : 'no dictionary or i18n source found',
     })
   )
 

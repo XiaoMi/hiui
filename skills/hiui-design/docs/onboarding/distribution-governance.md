@@ -2,12 +2,6 @@
 
 本文档是 `hiui-design` 现有分发规则的汇总草案，用于把“仓位定义、默认落点、同步方向、门禁要求”收口到一处。
 
-团队消费提示：
-
-- 如果你当前阅读的是内部团队 Git 分发仓，默认应把当前仓理解为 `team package`，而不是 `maintainer source`。
-- 文中保留 `maintainer source`、`active source`、`global mirror` 等角色，是为了说明这份团队包的来源和同步边界，不是为了把团队使用者重新引导到维护者仓。
-- 对团队安装、项目接入和页面生成来说，当前内部 Git 仓就是应该消费的交付视图；维护者角色只属于上游生成链。
-
 这不是新的唯一真相入口。若本文件与下列文件冲突，以它们为准：
 
 - `distribution-manifest.json`
@@ -81,22 +75,25 @@
 - 含义：面向团队项目安装 `hiui-design` 的裁剪包，不含维护者发布链、global sync 守护和 usage backend
 - 注意：
   - 它是一个“分发表达”，但当前治理决定要求内部 Git 只承载这个角色，而不是承载 maintainer source
-  - 默认 official team repo target 采用维护源同级目录 `<maintainer-parent>/hiui-design-team-package`
+  - 物理地址应通过 `.distribution-addresses.local.json`、launch-agent 状态或 `--team-target` 指定；常见做法是与开源仓同级放置
   - `check-distribution-boundary --scope team` 适用于 user zip、team-facing Git view、internal team repo
+  - 对 `@hiui-design/typical-page-shells`，team package 必须保留 vendored tgz；`bootstrap-target-project.mjs` 在 team / project 内部链路上不再允许因为 tgz 缺失而静默回退到 npm registry
 - 现有规则依据：
   - `distribution-manifest.json` 的 `team-package`
   - `scripts/check-distribution-boundary.mjs`
   - `scripts/build-runtime-mirror.mjs`
+  - `rules/runtime-delivery-policy.json`
 
 ### 1.5 Project View
 
 - 角色：目标项目内的 `.local-context/hiui-design`
 - 职责：
-  - 为项目提供本地脚本、规则、模板和参考资产
+  - 为项目提供本地脚本、规则、模板、解释层文档和参考资产
   - 保存项目级 outputs，作为 page contract / snapshot / doctor / gate 的项目事实源
 - 注意：
   - 这是项目视图，不等于 team-package
   - `project` scope 允许保留项目 outputs
+  - `reference/` 只承载参考资产；若需要 Agent / 维护者解释层，应落到 `docs/generation/explainers/`，不要再恢复顶层 `references/`
 - 现有规则依据：
   - `docs/onboarding/global-sync-workflow.md`
   - `scripts/check-distribution-boundary.mjs`
@@ -124,26 +121,31 @@
 - 注意：
   - 规则只写了默认目标地址和裁剪规则
   - 实际 Git 仓可通过 `--open-source-target` 或 `sync-open-source-package.mjs --target` 覆盖
+  - 开源仓当前仍应保留 vendored `hiui-design-typical-page-shells-*.tgz` 与 `vendor/typical-page-shells-package.json`，确保外部 clone 后可直接走 fail-closed 的 tgz 安装链；`packages/typical-page-shells/**` 继续作为公开 runtime 包源码存在
+  - “公开 npm 可安装”不是默认假设；发布前要先过 `scripts/check-public-runtime-publish-readiness.mjs`，发布后还要再过 `scripts/verify-public-runtime-release.mjs`，确认公开包 exact version 已存在于 npm registry，才允许把 registry 安装能力当成额外对外声明
 - 现有规则依据：
   - `distribution-manifest.json` 的 `open-source-package`
   - `scripts/sync-open-source-package.mjs`
   - `scripts/manage-global-sync-launch-agent.mjs`
   - `scripts/sync-global-skill.mjs`
+  - `scripts/check-public-runtime-publish-readiness.mjs`
+  - `scripts/verify-public-runtime-release.mjs`
+  - `rules/runtime-delivery-policy.json`
 
-## 2. 默认落点与语义化示例地址
+## 2. 默认落点与本地覆写
 
-下表区分“规则默认值”和“语义化示例地址”。若运行参数、环境变量或 launch-agent 状态与默认值不同，应以命令实参和 `status` 输出为准。
+下表区分“规则默认值”和“本地 override / 命令实参”。分发文档不再写死维护者机器绝对路径；若本机存在固定仓位，应写入 `.distribution-addresses.local.json`，或以命令参数和 `status` 输出为准。
 
-| 角色 | 规则默认地址 | 语义化示例地址 |
+| 角色 | 规则默认地址 | 本地 override / 示例占位 |
 | --- | --- | --- |
-| Maintainer Source | 无写死默认值 | `<maintainer-root>` |
-| Active Source | 当前项目的 `.local-context/hiui-design` | `<project-root>/.local-context/hiui-design` |
-| Global Mirror | `~/.codex/skills/hiui-design` | `<user-home>/.codex/skills/hiui-design` |
-| Team Package | `<maintainer-parent>/hiui-design-team-package` | `<maintainer-parent>/hiui-design-team-package` |
+| Maintainer Source | 无写死默认值 | `<maintainer-source-root>` |
+| Active Source | 当前项目的 `.local-context/hiui-design` | `<active-project-root>/.local-context/hiui-design` |
+| Global Mirror | `~/.codex/skills/hiui-design` | `<home>/.codex/skills/hiui-design` |
+| Team Package | 无分发层写死默认值 | `<team-package-root>` |
 | Project View | `<project-root>/.local-context/hiui-design` | `<project-root>/.local-context/hiui-design` |
-| User Archive | `<skill-root>/outputs/archives/hiui-design.zip` | `<maintainer-root>/outputs/archives/hiui-design.zip` |
-| Maintainer Archive | `<skill-root>/outputs/archives/hiui-design-maintainer.zip` | `<maintainer-root>/outputs/archives/hiui-design-maintainer.zip` |
-| Open Source Package | `~/.codex/skills/hiui-design-open-source` | `<maintainer-parent>/hiui-design-open-source` |
+| User Archive | `<skill-root>/outputs/archives/hiui-design.zip` | `<maintainer-source-root>/outputs/archives/hiui-design.zip` |
+| Maintainer Archive | `<skill-root>/outputs/archives/hiui-design-maintainer.zip` | `<maintainer-source-root>/outputs/archives/hiui-design-maintainer.zip` |
+| Open Source Package | `~/.codex/skills/hiui-design-open-source` | `<open-source-package-root>` |
 
 ## 3. 官方同步主链
 
@@ -223,7 +225,7 @@ flowchart LR
 - `global mirror` 只是本机运行时中转，不直接作为团队仓
 - internal team repo 必须只包含通过 `check-distribution-boundary --scope team` 的内容
 
-当前规则已具备 `team-package` 视图、边界校验，以及 `sync-team-package.mjs` / `sync-global-skill.mjs --team-target` 这两条生成入口。默认 official internal team repo target 是维护源同级目录 `<maintainer-parent>/hiui-design-team-package`；若你的内部 Git 落点不同，再通过命令参数覆写。
+当前规则已具备 `team-package` 视图、边界校验，以及 `sync-team-package.mjs` / `sync-global-skill.mjs --team-target` 这两条生成入口。若维护者机器需要固定 internal team repo 目录，应把该路径登记在 `.distribution-addresses.local.json`，而不是写回可分发文档。
 
 ### 3.5 开源同步
 
@@ -235,6 +237,9 @@ flowchart LR
 - 若 `--open-source-target` 指向存在的目标目录，则继续同步
 - 默认 target 是 `~/.codex/skills/hiui-design-open-source`
 - 可选携带 `--open-source-commit` / `--open-source-push`
+- 若本次同步涉及 `@hiui-design/typical-page-shells` 版本变化，发布前必须先执行 `node scripts/check-public-runtime-publish-readiness.mjs --source-root <global-mirror> --public-root <open-source-package-root>`，确认 vendor snapshot、vendored tgz、`packages/typical-page-shells/package.json` 和 dry-run 都一致；真实发布后再执行 `node scripts/verify-public-runtime-release.mjs --source-root <global-mirror> --public-root <open-source-package-root>`，确认 npm registry 已暴露 exact version
+- 未通过上述门禁前，不要把“开源仓已生成 `packages/typical-page-shells`”误读成“公开 npm 已可安装”
+- 具体执行顺序见 `public-runtime-release-checklist.md`
 
 ## 4. 现有规则已经明确的边界
 
@@ -258,7 +263,7 @@ flowchart LR
 - `rules/VERSION`
 - `agents/openai.yaml`
 - `examples/host-integration/src`
-- `examples/host-integration/src`
+- `reference/host-integration/src`
 - `templates/i18n`
 - `templates/project-images` 最小图片接线骨架
 - `scripts/manage-global-sync-launch-agent.mjs`
@@ -318,6 +323,7 @@ flowchart LR
 - 开源仓只能由 `sync-open-source-package.mjs` 生成
 - 不接受手工补回内部能力
 - 开源同步前必须 review 生成 diff
+- vendored tgz 继续随当前开源仓主链一起分发；若 `@hiui-design/typical-page-shells` 版本发生变化，必须先过 `check-public-runtime-publish-readiness.mjs` 再执行真实发布，发布后还要过 `verify-public-runtime-release.mjs`，然后才能额外对外假设“npm 可安装”
 
 ## 5. 建议收口成的治理规则
 

@@ -11,6 +11,8 @@
 
 - `@hiui-design/typical-page-shells`
 
+这里的“运行时依赖已接入”只回答项目是否具备标准壳运行时前提，不直接等价于“每个典型页 page-component 都已经 ready”。后者属于 planner 消费的资产事实与页型支持事实。
+
 `legacy-host-compatible` 默认不是标准壳运行时的自动接入：
 
 - 默认不要自动补装 `@hiui-design/typical-page-shells`

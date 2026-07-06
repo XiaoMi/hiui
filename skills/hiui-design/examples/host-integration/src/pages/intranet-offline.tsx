@@ -8,15 +8,15 @@ import intranetOfflineBadgeUrl from '../assets/intranet-offline-badge.svg'
 import intranetOfflineBadgeSlashUrl from '../assets/intranet-offline-badge-slash.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle: CSSProperties = {
+const pageStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
   flexDirection: 'column',
   background: '#F5F8FC',
-}
+} satisfies CSSProperties
 
-const panelStyle: CSSProperties = {
+const panelStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -27,82 +27,82 @@ const panelStyle: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const contentStyle: CSSProperties = {
+const contentStyle = {
   width: 400,
   textAlign: 'center',
-}
+} satisfies CSSProperties
 
-const titleStyle: CSSProperties = {
+const titleStyle = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
-}
+} satisfies CSSProperties
 
-const descStyle: CSSProperties = {
+const descStyle = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
-}
+} satisfies CSSProperties
 
-const linkStyle: CSSProperties = {
+const linkStyle = {
   color: '#2660FF',
-}
+} satisfies CSSProperties
 
-const headerActionsStyle: CSSProperties = {
+const headerActionsStyle = {
   gap: 12,
-}
+} satisfies CSSProperties
 
-const actionsStyle: CSSProperties = {
+const actionsStyle = {
   marginTop: 12,
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const indicatorWrapStyle: CSSProperties = {
+const indicatorWrapStyle = {
   position: 'relative',
   width: 100,
   height: 100,
-}
+} satisfies CSSProperties
 
-const baseStyle: CSSProperties = {
+const baseStyle = {
   position: 'absolute',
   left: 13.13,
   top: 13.33,
   width: 73.528,
   height: 75.22,
   display: 'block',
-}
+} satisfies CSSProperties
 
-const globeStyle: CSSProperties = {
+const globeStyle = {
   position: 'absolute',
   left: 29.35,
   top: 42.66,
   width: 34.625,
   height: 30.882,
   display: 'block',
-}
+} satisfies CSSProperties
 
-const badgeStyle: CSSProperties = {
+const badgeStyle = {
   position: 'absolute',
   left: 56.46,
   top: 59.99,
   width: 30.417,
   height: 30.223,
   display: 'block',
-}
+} satisfies CSSProperties
 
-const badgeSlashAssetStyle: CSSProperties = {
+const badgeSlashAssetStyle = {
   position: 'absolute',
   left: 63.89,
   top: 67.22,
   width: 15.67,
   height: 15.56,
   display: 'block',
-}
+} satisfies CSSProperties
 
-const badgeSlashWrapStyle: CSSProperties = {
+const badgeSlashWrapStyle = {
   position: 'absolute',
   left: 63.33,
   top: 66.67,
@@ -111,9 +111,9 @@ const badgeSlashWrapStyle: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const badgeSlashLineStyle: CSSProperties = {
+const badgeSlashLineStyle = {
   width: 1.67,
   height: 21.67,
   borderRadius: 5,
@@ -122,7 +122,7 @@ const badgeSlashLineStyle: CSSProperties = {
   boxSizing: 'border-box',
   transform: 'rotate(135deg)',
   transformOrigin: 'center',
-}
+} satisfies CSSProperties
 
 function IntranetOfflineIndicator() {
   return (

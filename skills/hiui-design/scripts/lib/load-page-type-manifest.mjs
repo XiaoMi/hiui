@@ -125,10 +125,9 @@ async function resolveOverlayPath(skillRoot, line) {
 }
 
 export async function loadPageTypeManifest({ skillRoot, line = '' }) {
-  const baseManifestPath = path.join(skillRoot, 'rules', 'common.page-types.json')
-  if (!(await pathExists(baseManifestPath))) {
-    throw new Error(`Missing canonical page-type manifest: ${baseManifestPath}`)
-  }
+  const nextBaseManifestPath = path.join(skillRoot, 'rules', 'common.page-types.json')
+  const legacyBaseManifestPath = path.join(skillRoot, 'docs', 'generation', 'page-types.manifest.json')
+  const baseManifestPath = (await pathExists(nextBaseManifestPath)) ? nextBaseManifestPath : legacyBaseManifestPath
   const baseManifest = await readJson(baseManifestPath)
   const rulesVersionPath = path.join(skillRoot, 'rules', 'VERSION')
   const rulesVersionMetadata = (await pathExists(rulesVersionPath))

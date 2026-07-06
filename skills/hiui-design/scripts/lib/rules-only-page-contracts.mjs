@@ -75,14 +75,14 @@ function expectedGenerationProfileSemantics({ mode, profile }) {
   return {
     hostArchetypeRequired: !legacyPageComponentFastPath,
     requiredGates: legacyPageComponentFastPath
-      ? ['slot-gate', 'preflight']
+      ? ['source-gate', 'preflight', 'page-instance-validation']
       : mode === 'legacy-host-compatible'
         ? ['source-gate', 'preflight']
         : ['slot-gate', 'preflight'],
     sourceProofLevel:
-      legacyPageComponentFastPath || mode !== 'legacy-host-compatible'
-        ? 'slot-boundary-proof'
-        : 'strict-source-adapter-proof',
+      mode === 'legacy-host-compatible'
+        ? 'strict-source-adapter-proof'
+        : 'slot-boundary-proof',
   }
 }
 
@@ -158,6 +158,35 @@ function buildDefaultProductionContract({
     fallback: generationProfile?.fallback || '',
     sourceProofLevel: generationProfile?.sourceProofLevel || '',
     policy: 'generate-from-managed-mold-and-fill-business-slots-only',
+  }
+}
+
+function buildManagedPageDisplayProfile({ archetypeMode, generationProfile }) {
+  const normalizedProfile = normalizeGenerationProfile(generationProfile) || {}
+  const strategy = String(normalizedProfile.strategy || '').trim()
+  const legacyStrategyId = String(normalizedProfile.legacyStrategyId || '').trim()
+  const legacyRuntimeBridgeReady =
+    String(archetypeMode || '').trim() === 'legacy-host-compatible' &&
+    (legacyStrategyId === 'runtime-bridged-page-component' ||
+      (strategy === 'page-component' && String(normalizedProfile.runtimeBridgeProfileId || '').trim()))
+  const pageComponentManagedPath = legacyRuntimeBridgeReady || strategy === 'page-component'
+
+  return {
+    artifactRole: 'business-managed-page',
+    deliverySemantics: pageComponentManagedPath
+      ? 'page-component-plus-slot-fill'
+      : 'managed-start-point-plus-business-fill',
+    runtimeDeliveryMode:
+      String(normalizedProfile.runtimeBridgeDeliveryMode || '').trim() ||
+      (legacyRuntimeBridgeReady ? 'runtime-component-filled-by-business-slots' : ''),
+    shellImportPolicy: legacyRuntimeBridgeReady
+      ? 'legacy-main-tree-forbid-ad-hoc-standard-shell-import'
+      : 'follow-selected-delivery-asset',
+    managedPath: legacyRuntimeBridgeReady
+      ? 'runtime-bridge-wrapper-plus-business-slot-adapter'
+      : pageComponentManagedPath
+        ? 'selected-page-component-or-certified-carrier'
+        : 'managed-template-or-host-archetype-start-point',
   }
 }
 
@@ -806,7 +835,11 @@ export function buildRulesOnlyPageContract({
   scrollStrategy = '',
   topology = '',
   layoutStrategy = '',
+  layoutArchetype = '',
   nonTypicalScope = [],
+  mandatoryComponents = [],
+  compositionGuardrails = [],
+  strategyEvidence = [],
   runtimeSmokePlan = null,
   generationProfile = null,
   productionContract = null,
@@ -820,7 +853,11 @@ export function buildRulesOnlyPageContract({
   const createdAt = new Date().toISOString()
   const topologyContract = normalizeManagedPageTopology(topology)
   const normalizedLayoutStrategy = String(layoutStrategy || '').trim()
+  const normalizedLayoutArchetype = String(layoutArchetype || '').trim()
   const normalizedNonTypicalScope = normalizeManagedPageStringList(nonTypicalScope)
+  const normalizedMandatoryComponents = normalizeManagedPageStringList(mandatoryComponents)
+  const normalizedCompositionGuardrails = normalizeManagedPageStringList(compositionGuardrails)
+  const normalizedStrategyEvidence = normalizeManagedPageStringList(strategyEvidence)
   const normalizedRuntimeSmokePlan = normalizeManagedPageRuntimeSmokePlan(runtimeSmokePlan)
   const resolvedGenerationProfile = normalizeGenerationProfile(generationProfile) || buildDefaultGenerationProfile({
     pageTypeId: pageType.id,
@@ -837,6 +874,7 @@ export function buildRulesOnlyPageContract({
   return {
     version: RULES_ONLY_PAGE_CONTRACT_VERSION,
     createdAt,
+    artifactRole: 'business-managed-page',
     pageTypeId: pageType.id,
     pageTypeLabel: pageType.label,
     shell: pageType.shell ?? '',
@@ -853,6 +891,10 @@ export function buildRulesOnlyPageContract({
     archetypeSmokeBaseline: buildArchetypeSmokeBaselineContractEntry(archetypeSmokeBaseline),
     scrollStrategy: scrollStrategy || getDefaultScrollStrategyForPageType(pageType.id),
     generationProfile: resolvedGenerationProfile,
+    displayProfile: buildManagedPageDisplayProfile({
+      archetypeMode,
+      generationProfile: resolvedGenerationProfile,
+    }),
     productionContract: normalizeProductionContract(productionContract) || buildDefaultProductionContract({
       generatedPagePath,
       pageTypeId: pageType.id,
@@ -861,7 +903,11 @@ export function buildRulesOnlyPageContract({
     }),
     ...(topologyContract ? { topology: topologyContract } : {}),
     ...(normalizedLayoutStrategy ? { layoutStrategy: normalizedLayoutStrategy } : {}),
+    ...(normalizedLayoutArchetype ? { layoutArchetype: normalizedLayoutArchetype } : {}),
     ...(normalizedNonTypicalScope.length > 0 ? { nonTypicalScope: normalizedNonTypicalScope } : {}),
+    ...(normalizedMandatoryComponents.length > 0 ? { mandatoryComponents: normalizedMandatoryComponents } : {}),
+    ...(normalizedCompositionGuardrails.length > 0 ? { compositionGuardrails: normalizedCompositionGuardrails } : {}),
+    ...(normalizedStrategyEvidence.length > 0 ? { strategyEvidence: normalizedStrategyEvidence } : {}),
     ...(normalizedRuntimeSmokePlan ? { runtimeSmokePlan: normalizedRuntimeSmokePlan } : {}),
     i18nBaseline: buildDefaultManagedPageI18nBaseline(),
     regionMapping,
@@ -1115,6 +1161,7 @@ export function validateRulesOnlyPageContract({
 
   const semanticContract = getManagedPageSemanticContract(contract)
   const splitPaneContract = getManagedPageSplitPaneContract(contract)
+  const topologyId = getManagedPageTopologyId(contract)
   if (!contract.semanticContract || typeof contract.semanticContract !== 'object') {
     warnings.push(
       'Missing semanticContract metadata. Re-write the contract with the current writer so query-filter role, list-shell drift policy, spacing ownership, and area-chart fill rules stay machine-checkable.'
@@ -1182,6 +1229,32 @@ export function validateRulesOnlyPageContract({
       warnings.push(
         `data-visualization should keep semanticContract.areaChartFill=same-series-color-fill-0.2 so single-series area charts do not drift into per-metric fillOpacity variants.`
       )
+    }
+  }
+
+  if (topologyId === 'non-typical-overlay') {
+    if (!String(contract.layoutStrategy || '').trim()) {
+      errors.push('Missing layoutStrategy. non-typical-overlay pages must declare the selected layout strategy before scaffolding.')
+    }
+
+    if (!String(contract.layoutArchetype || '').trim()) {
+      errors.push('Missing layoutArchetype. non-typical-overlay pages must declare the selected layout archetype before scaffolding.')
+    }
+
+    if (!Array.isArray(contract.nonTypicalScope) || contract.nonTypicalScope.length === 0) {
+      errors.push('Missing nonTypicalScope. non-typical-overlay pages must declare which一级组织 is free to recompose.')
+    }
+
+    if (!Array.isArray(contract.strategyEvidence) || contract.strategyEvidence.length === 0) {
+      errors.push('Missing strategyEvidence. non-typical-overlay pages must declare how layout strategy/archetype will be proven in contract or source markers.')
+    }
+
+    if (!Array.isArray(contract.compositionGuardrails) || contract.compositionGuardrails.length === 0) {
+      warnings.push('compositionGuardrails is empty. Re-write the contract so non-typical scaffolds keep carrier and component override boundaries machine-readable.')
+    }
+
+    if (!Array.isArray(contract.mandatoryComponents) || contract.mandatoryComponents.length === 0) {
+      warnings.push('mandatoryComponents is empty. Re-write the contract so non-typical scaffolds keep required HiUI semantic components visible from the start.')
     }
   }
 
@@ -1705,11 +1778,18 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
   const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(contract)
   const topologyId = getManagedPageTopologyId(contract)
   const generationProfile = contract.generationProfile || {}
+  const displayProfile =
+    (contract.displayProfile && typeof contract.displayProfile === 'object' ? contract.displayProfile : null) ||
+    buildManagedPageDisplayProfile({
+      archetypeMode: contract.archetypeMode,
+      generationProfile,
+    })
   const productionContract = contract.productionContract || {}
   const lines = [
-    '# Rules-only Page Contract',
+    '# Managed Page Contract',
     '',
     '## Identity',
+    `- artifact role: ${contract.artifactRole || displayProfile.artifactRole || '(not-declared)'}`,
     `- page type: ${contract.pageTypeLabel} (\`${contract.pageTypeId}\`)`,
     `- shell target: ${contract.shell || '(not-declared)'}`,
     `- generated page: \`${contract.generatedPagePath}\``,
@@ -1722,11 +1802,21 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
     `- archetype template path: \`${contract.archetypeTemplatePath || '(not-declared)'}\``,
     `- strict example generation: ${String(contract.strictExampleGeneration)}`,
     `- scroll strategy: ${contract.scrollStrategy || '(not-declared)'}`,
+    `- delivery semantics: ${displayProfile.deliverySemantics || '(not-declared)'}`,
+    `- runtime delivery mode: ${displayProfile.runtimeDeliveryMode || '(not-applicable)'}`,
+    `- shell import policy: ${displayProfile.shellImportPolicy || '(not-declared)'}`,
+    `- managed path: ${displayProfile.managedPath || '(not-declared)'}`,
     `- topology: ${topologyId || '(not-declared)'}`,
     `- layout strategy: ${contract.layoutStrategy || '(not-declared)'}`,
+    `- layout archetype: ${contract.layoutArchetype || '(not-declared)'}`,
     `- non-typical scope: ${
       Array.isArray(contract.nonTypicalScope) && contract.nonTypicalScope.length > 0
         ? contract.nonTypicalScope.join(', ')
+        : '(not-declared)'
+    }`,
+    `- mandatory components: ${
+      Array.isArray(contract.mandatoryComponents) && contract.mandatoryComponents.length > 0
+        ? contract.mandatoryComponents.join(', ')
         : '(not-declared)'
     }`,
     `- created at: ${contract.createdAt}`,
@@ -1779,6 +1869,14 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
     '',
     '## I18n Baseline',
   ]
+
+  if (Array.isArray(contract.compositionGuardrails) && contract.compositionGuardrails.length > 0) {
+    lines.splice(21, 0, `- composition guardrails: ${contract.compositionGuardrails.join(' | ')}`)
+  }
+
+  if (Array.isArray(contract.strategyEvidence) && contract.strategyEvidence.length > 0) {
+    lines.splice(21, 0, `- strategy evidence: ${contract.strategyEvidence.join(' | ')}`)
+  }
 
   if (!contract.i18nBaseline) {
     lines.push('- (not-declared)')

@@ -5,15 +5,15 @@ import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import pageNotFoundIndicatorUrl from '../assets/page-not-found-indicator.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle: CSSProperties = {
+const pageStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
   flexDirection: 'column',
   background: '#F5F8FC',
-}
+} satisfies CSSProperties
 
-const panelStyle: CSSProperties = {
+const panelStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -24,46 +24,46 @@ const panelStyle: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const contentStyle: CSSProperties = {
+const contentStyle = {
   width: 400,
   textAlign: 'center',
-}
+} satisfies CSSProperties
 
-const titleStyle: CSSProperties = {
+const titleStyle = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
-}
+} satisfies CSSProperties
 
-const descStyle: CSSProperties = {
+const descStyle = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
-}
+} satisfies CSSProperties
 
-const linkStyle: CSSProperties = {
+const linkStyle = {
   color: '#2660FF',
-}
+} satisfies CSSProperties
 
-const headerActionsStyle: CSSProperties = {
+const headerActionsStyle = {
   gap: 12,
-}
+} satisfies CSSProperties
 
-const actionsStyle: CSSProperties = {
+const actionsStyle = {
   marginTop: 12,
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const indicatorWrapStyle: CSSProperties = {
+const indicatorWrapStyle = {
   position: 'relative',
   width: 100,
   height: 100,
-}
+} satisfies CSSProperties
 
-const indicatorImageStyle: CSSProperties = {
+const indicatorImageStyle = {
   position: 'absolute',
   top: 12.84,
   left: '50%',
@@ -71,7 +71,7 @@ const indicatorImageStyle: CSSProperties = {
   height: 77.373,
   transform: 'translateX(-50%)',
   display: 'block',
-}
+} satisfies CSSProperties
 
 function PageNotFoundIndicator() {
   return (

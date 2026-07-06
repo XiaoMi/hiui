@@ -1451,7 +1451,8 @@
       ],
       "defaultPriority": "primary",
       "notes": [
-        "prefer-for-event-log-and-time-flow"
+        "prefer-for-event-log-and-time-flow",
+        "default-to-official-information-flow-variant"
       ]
     },
     "Toast": {

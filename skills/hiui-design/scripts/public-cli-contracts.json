@@ -33,9 +33,19 @@
           "pageType",
           "isNonTypical",
           "layoutOverlayRequired",
+          "layoutStrategy",
+          "layoutArchetype",
+          "nonTypicalScope",
+          "mandatoryComponents",
+          "compositionGuardrails",
+          "strategyEvidence",
+          "ownershipPlan",
           "fastPath",
           "generationStrategy",
           "generationRecipe",
+          "generationInputs",
+          "inlineChecks",
+          "deliveryChecks",
           "deliverySummaryProfile",
           "analyticsContractRequired",
           "customizationLevel",
@@ -58,6 +68,9 @@
           "usagePolicy",
           "factsSource",
           "targetPage",
+          "targetDeliverySemantics",
+          "currentExecutionState",
+          "executionDecisionSummary",
           "canStartImplementation",
           "blockingReasons",
           "blockingIssues",
@@ -157,6 +170,119 @@
           },
           {
             "path": [
+              "generationInputs"
+            ],
+            "fields": [
+              "schemaVersion",
+              "requiredFacts",
+              "requiredDocs",
+              "docBundle",
+              "fastPathSummary",
+              "entryActions",
+              "startFrom",
+              "primaryGenerationAsset",
+              "pageComponent"
+            ]
+          },
+          {
+            "path": [
+              "generationInputs",
+              "docBundle"
+            ],
+            "fields": [
+              "schemaVersion",
+              "source",
+              "profile",
+              "bundleIds"
+            ]
+          },
+          {
+            "path": [
+              "generationInputs",
+              "fastPathSummary"
+            ],
+            "fields": [
+              "schemaVersion",
+              "eligible",
+              "executionMode",
+              "pageShellPolicy",
+              "queryFilterPolicy",
+              "upgradeSignals"
+            ]
+          },
+          {
+            "path": [
+              "targetDeliverySemantics"
+            ],
+            "fields": [
+              "schemaVersion",
+              "defaultAction",
+              "deliveryPath",
+              "shellImportPolicy",
+              "runtimeDeliveryPolicy",
+              "allowedEditBoundary",
+              "referenceAssetRole",
+              "doNotDo"
+            ]
+          },
+          {
+            "path": [
+              "currentExecutionState"
+            ],
+            "fields": [
+              "schemaVersion",
+              "status",
+              "canStartImplementation",
+              "primaryAction",
+              "executablePath",
+              "currentPhase",
+              "allowedCommandSurface",
+              "nextCommand",
+              "nextPhase",
+              "queuedCommands",
+              "blockerCodes",
+              "targetDefaultAction",
+              "targetDeliveryPath"
+            ]
+          },
+          {
+            "path": [
+              "executionDecisionSummary"
+            ],
+            "fields": [
+              "defaultAction",
+              "deliveryPath",
+              "shellImportPolicy",
+              "runtimeDeliveryPolicy",
+              "allowedEditBoundary",
+              "referenceAssetRole",
+              "doNotDo"
+            ]
+          },
+          {
+            "path": [
+              "inlineChecks"
+            ],
+            "fields": [
+              "schemaVersion",
+              "recipeChecks",
+              "commandChecks"
+            ]
+          },
+          {
+            "path": [
+              "deliveryChecks"
+            ],
+            "fields": [
+              "schemaVersion",
+              "projectQuality",
+              "previewConfirmation",
+              "runtimeGovernance",
+              "formalAcceptance"
+            ]
+          },
+          {
+            "path": [
               "extensionPolicy"
             ],
             "fields": [
@@ -199,11 +325,32 @@
           },
           {
             "path": [
+              "ownershipPlan"
+            ],
+            "fields": [
+              "ownershipMode",
+              "requiredRoles",
+              "targetHints"
+            ]
+          },
+          {
+            "path": [
               "i18nMode"
             ],
             "fields": [
               "id",
               "source"
+            ]
+          },
+          {
+            "path": [
+              "requiredDocs",
+              "0"
+            ],
+            "fields": [
+              "path",
+              "readMode",
+              "reason"
             ]
           },
           {
@@ -377,6 +524,9 @@
           "usagePolicy",
           "factsSource",
           "targetPage",
+          "targetDeliverySemantics",
+          "currentExecutionState",
+          "executionDecisionSummary",
           "canStartImplementation",
           "blockingReasons",
           "blockingIssues",
@@ -475,6 +625,55 @@
           },
           {
             "path": [
+              "targetDeliverySemantics"
+            ],
+            "fields": [
+              "schemaVersion",
+              "defaultAction",
+              "deliveryPath",
+              "shellImportPolicy",
+              "runtimeDeliveryPolicy",
+              "allowedEditBoundary",
+              "referenceAssetRole",
+              "doNotDo"
+            ]
+          },
+          {
+            "path": [
+              "currentExecutionState"
+            ],
+            "fields": [
+              "schemaVersion",
+              "status",
+              "canStartImplementation",
+              "primaryAction",
+              "executablePath",
+              "currentPhase",
+              "allowedCommandSurface",
+              "nextCommand",
+              "nextPhase",
+              "queuedCommands",
+              "blockerCodes",
+              "targetDefaultAction",
+              "targetDeliveryPath"
+            ]
+          },
+          {
+            "path": [
+              "executionDecisionSummary"
+            ],
+            "fields": [
+              "defaultAction",
+              "deliveryPath",
+              "shellImportPolicy",
+              "runtimeDeliveryPolicy",
+              "allowedEditBoundary",
+              "referenceAssetRole",
+              "doNotDo"
+            ]
+          },
+          {
+            "path": [
               "extensionPolicy"
             ],
             "fields": [
@@ -522,6 +721,17 @@
             "fields": [
               "id",
               "source"
+            ]
+          },
+          {
+            "path": [
+              "requiredDocs",
+              "0"
+            ],
+            "fields": [
+              "path",
+              "readMode",
+              "reason"
             ]
           },
           {
@@ -1317,6 +1527,10 @@
         "requiredTopLevelFields": [
           "schemaVersion",
           "status",
+          "preflightStage",
+          "readyForImplementation",
+          "readyForDelivery",
+          "deferredChecks",
           "page",
           "pageType",
           "checks",
@@ -1480,10 +1694,6 @@
           "<skillRoot>",
           "--page",
           "src/pages/orders/index.tsx",
-          "--report-mode",
-          "rules-only",
-          "--prompt",
-          "preview-ready contract fixture",
           "--contract-fixture",
           "quality-pass"
         ],
@@ -1500,26 +1710,9 @@
           "runtimeSmokeRequired",
           "runtimeSmokeRequirementReason",
           "sourceSnapshotHash",
-          "usedStaticFallback",
-          "usageStatsStatus",
-          "usage",
-          "usageEvents"
+          "usedStaticFallback"
         ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "usage"
-            ],
-            "fields": [
-              "exit_code",
-              "message",
-              "ok",
-              "requires_network_authorization",
-              "status",
-              "usage"
-            ]
-          }
-        ]
+        "requiredNestedFields": []
       },
       {
         "id": "typical-page-final-report",
@@ -1610,8 +1803,17 @@
         "fixture": "scripts/tests/fixtures/public-cli/start-page.table-basic-started.json",
         "requiredTopLevelFields": [
           "status",
+          "artifactRole",
           "pageType",
           "mode",
+          "topology",
+          "layoutStrategy",
+          "layoutArchetype",
+          "nonTypicalScope",
+          "mandatoryComponents",
+          "compositionGuardrails",
+          "strategyEvidence",
+          "runtimeSmokePlan",
           "requestedPagePath",
           "pagePath",
           "examplePath",
@@ -1621,6 +1823,7 @@
           "requiredCapabilities",
           "localBypasses",
           "scaffoldArtifacts",
+          "executionDecisionSummary",
           "contract",
           "nextSteps"
         ],
@@ -1632,6 +1835,19 @@
             "fields": [
               "id",
               "label"
+            ]
+          },
+          {
+            "path": [
+              "executionDecisionSummary"
+            ],
+            "fields": [
+              "defaultAction",
+              "deliveryPath",
+              "shellImportPolicy",
+              "runtimeDeliveryMode",
+              "allowedEditBoundary",
+              "doNotDo"
             ]
           },
           {

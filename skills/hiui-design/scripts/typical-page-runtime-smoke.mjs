@@ -6,6 +6,8 @@ import process from 'node:process'
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
+  writeManagedPageContractArtifacts,
+  writeUtf8FileIfChanged,
 } from './lib/managed-page-artifacts.mjs'
 import {
   getManagedPageRuntimeSmokeRequirement,
@@ -14,7 +16,6 @@ import {
   getRulesOnlyPageContractsDir,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
-  renderRulesOnlyPageContractMarkdown,
   toContractSlug,
 } from './lib/rules-only-page-contracts.mjs'
 
@@ -152,7 +153,7 @@ async function persistRuntimeSmokeResult({
   const reportDir = path.join(outputRoot, 'runtime-smoke')
   const reportPath = path.join(reportDir, `${contractContext.contractSlug}.md`)
   await fs.mkdir(reportDir, { recursive: true })
-  await fs.writeFile(reportPath, `${reportLines.join('\n')}\n`, 'utf8')
+  await writeUtf8FileIfChanged(reportPath, `${reportLines.join('\n')}\n`)
 
   const requirement = getManagedPageRuntimeSmokeRequirement(contractContext.contract)
   const reconciled = reconcileManagedPageRuntimeSmokeWorkflow(
@@ -178,16 +179,11 @@ async function persistRuntimeSmokeResult({
     reportLines.push('', `Note: runtime smoke is not a required gate for this page. Recorded status: ${status}.`)
   }
 
-  await fs.writeFile(
-    contractContext.contractJsonPath,
-    `${JSON.stringify(contractContext.contract, null, 2)}\n`,
-    'utf8'
-  )
-  await fs.writeFile(
-    contractContext.contractMarkdownPath,
-    renderRulesOnlyPageContractMarkdown(contractContext.contract),
-    'utf8'
-  )
+  await writeManagedPageContractArtifacts({
+    contract: contractContext.contract,
+    contractJsonPath: contractContext.contractJsonPath,
+    contractMarkdownPath: contractContext.contractMarkdownPath,
+  })
   await syncManagedPageRegistry(targetRoot)
 }
 
@@ -327,8 +323,15 @@ async function main() {
           mode,
           rootSelector,
           splitPaneContract,
+          contractPageTypeId,
+          contractScrollStrategy,
+          contractTopologyId,
+          selectedDeliveryAssetKind,
           strictListCarrierRollout,
           strictTableStatCarrierRollout,
+          strictTreeTableCarrierRollout,
+          strictFullPageEditCarrierRollout,
+          strictDrawerFormCarrierRollout,
         } = config
         const root = document.querySelector(rootSelector)
         if (!(root instanceof HTMLElement)) {
@@ -602,7 +605,6 @@ async function main() {
           }
         }
 
-        const contractPageTypeId = String(contractContext?.contract?.pageTypeId || '').trim()
         const resolvedPageTypeId = String(root.dataset.hiui5PageType || contractPageTypeId || '').trim()
         const isFullPageEditPage = resolvedPageTypeId === 'full-page-edit'
         const isDrawerFormPage = resolvedPageTypeId === 'drawer-form'
@@ -802,6 +804,8 @@ async function main() {
           pageType: resolvedPageTypeId,
           topology: root.dataset.hiui5Topology || '',
           scrollStrategy: root.dataset.hiui5ScrollStrategy || '',
+          contractScrollStrategy,
+          contractTopologyId,
           headerExists: headerRegion instanceof HTMLElement,
           headerExtraExists: headerExtra instanceof HTMLElement,
           headerRect,
@@ -813,14 +817,10 @@ async function main() {
           strictTreeTableCarrierRollout,
           strictFullPageDetailCarrierRollout:
             resolvedPageTypeId === 'full-page-detail' &&
-            String(
-              contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
-            ).trim() === 'project-certified-carrier',
+            selectedDeliveryAssetKind === 'project-certified-carrier',
           strictDrawerFormCarrierRollout:
             resolvedPageTypeId === 'drawer-form' &&
-            String(
-              contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
-            ).trim() === 'project-certified-carrier',
+            selectedDeliveryAssetKind === 'project-certified-carrier',
           rootRect,
           whiteRect,
           statSectionExists: statSection instanceof HTMLElement,
@@ -936,6 +936,12 @@ async function main() {
             : 'page-scroll',
         rootSelector,
         splitPaneContract,
+        contractPageTypeId: String(contractContext?.contract?.pageTypeId || '').trim(),
+        contractScrollStrategy: String(contractContext?.contract?.scrollStrategy || '').trim(),
+        contractTopologyId: getManagedPageTopologyId(contractContext?.contract),
+        selectedDeliveryAssetKind: String(
+          contractContext?.contract?.generationProfile?.selectedDeliveryAssetKind || ''
+        ).trim(),
         strictListCarrierRollout:
           ['table-basic', 'table-stat', 'tree-table'].includes(
             String(contractContext?.contract?.pageTypeId || '').trim()
@@ -1079,10 +1085,10 @@ async function main() {
         )
       } else {
         const expectedScrollStrategy = String(
-          contractContext?.contract?.scrollStrategy || 'page-scroll'
+          result.contractScrollStrategy || 'page-scroll'
         ).trim()
         const topologyId =
-          getManagedPageTopologyId(contractContext?.contract) || String(result.topology || '').trim()
+          String(result.contractTopologyId || '').trim() || String(result.topology || '').trim()
         const isNonTypicalOverlay = topologyId === 'non-typical-overlay'
         const isFullPageEditPage = String(result.pageType || '').trim() === 'full-page-edit'
         const isDrawerFormPage = String(result.pageType || '').trim() === 'drawer-form'

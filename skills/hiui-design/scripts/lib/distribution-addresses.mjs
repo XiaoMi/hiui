@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import os from 'node:os'
+
+const LOCAL_OVERRIDE_FILE = '.distribution-addresses.local.json'
 
 async function pathExists(targetPath) {
   try {
@@ -18,28 +19,31 @@ async function readDistributionAddresses(skillRoot) {
   }
 
   const raw = await fs.readFile(filePath, 'utf8')
-  return JSON.parse(raw)
+  const registry = JSON.parse(raw)
+  const overridePath = path.join(skillRoot, LOCAL_OVERRIDE_FILE)
+
+  if (!(await pathExists(overridePath))) {
+    return registry
+  }
+
+  const overrideRaw = await fs.readFile(overridePath, 'utf8')
+  const override = JSON.parse(overrideRaw)
+  return mergeObjects(registry, override)
 }
 
-function expandAddressTemplate(rawPath, skillRoot) {
-  const value = typeof rawPath === 'string' ? rawPath.trim() : ''
-  if (!value) {
-    return ''
+function mergeObjects(base, override) {
+  if (Array.isArray(base) || Array.isArray(override)) {
+    return Array.isArray(override) ? override : base
   }
 
-  const replacements = new Map([
-    ['<maintainer-root>', skillRoot],
-    ['<skill-root>', skillRoot],
-    ['<maintainer-parent>', path.dirname(skillRoot)],
-    ['<user-home>', os.homedir()],
-  ])
+  if (!base || typeof base !== 'object') return override
+  if (!override || typeof override !== 'object') return base
 
-  let resolved = value
-  for (const [token, replacement] of replacements.entries()) {
-    resolved = resolved.split(token).join(replacement)
+  const merged = { ...base }
+  for (const [key, value] of Object.entries(override)) {
+    merged[key] = key in base ? mergeObjects(base[key], value) : value
   }
-
-  return resolved
+  return merged
 }
 
 async function resolveOfficialTeamPackagePath(skillRoot) {
@@ -51,18 +55,22 @@ async function resolveOfficialTeamPackagePath(skillRoot) {
   const defaultsPath = typeof registry.defaults?.teamPackage === 'string'
     ? registry.defaults.teamPackage.trim()
     : ''
-  if (defaultsPath) {
-    return expandAddressTemplate(defaultsPath, skillRoot)
+  if (isConcretePath(defaultsPath)) {
+    return defaultsPath
   }
 
   const examplePath = typeof registry.localExamples?.teamPackage === 'string'
     ? registry.localExamples.teamPackage.trim()
     : ''
-  return expandAddressTemplate(examplePath, skillRoot)
+  return isConcretePath(examplePath) ? examplePath : ''
+}
+
+function isConcretePath(value) {
+  return Boolean(value) && !/[<>]/.test(value)
 }
 
 export {
-  expandAddressTemplate,
+  LOCAL_OVERRIDE_FILE,
   readDistributionAddresses,
   resolveOfficialTeamPackagePath,
 }

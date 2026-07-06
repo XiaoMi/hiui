@@ -8,15 +8,15 @@ import underConstructionLine2Url from '../assets/under-construction-line-2.svg'
 import underConstructionLine3Url from '../assets/under-construction-line-3.svg'
 import { useTranslation } from '../../translation'
 
-const pageStyle: CSSProperties = {
+const pageStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   display: 'flex',
   flexDirection: 'column',
   background: '#F5F8FC',
-}
+} satisfies CSSProperties
 
-const panelStyle: CSSProperties = {
+const panelStyle = {
   flex: '1 1 0%',
   minHeight: 0,
   margin: 0,
@@ -27,55 +27,55 @@ const panelStyle: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const contentStyle: CSSProperties = {
+const contentStyle = {
   width: 400,
   textAlign: 'center',
-}
+} satisfies CSSProperties
 
-const titleStyle: CSSProperties = {
+const titleStyle = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
-}
+} satisfies CSSProperties
 
-const descStyle: CSSProperties = {
+const descStyle = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
-}
+} satisfies CSSProperties
 
-const linkStyle: CSSProperties = {
+const linkStyle = {
   color: '#2660FF',
-}
+} satisfies CSSProperties
 
-const headerActionsStyle: CSSProperties = {
+const headerActionsStyle = {
   gap: 12,
-}
+} satisfies CSSProperties
 
-const actionsStyle: CSSProperties = {
+const actionsStyle = {
   marginTop: 12,
   justifyContent: 'center',
-}
+} satisfies CSSProperties
 
-const indicatorWrapStyle: CSSProperties = {
+const indicatorWrapStyle = {
   position: 'relative',
   width: 100,
   height: 100,
-}
+} satisfies CSSProperties
 
-const mainIndicatorStyle: CSSProperties = {
+const mainIndicatorStyle = {
   position: 'absolute',
   left: 13.13,
   top: 26.46,
   width: 73.75,
   height: 63.75,
   display: 'block',
-}
+} satisfies CSSProperties
 
-const line1Style: CSSProperties = {
+const line1Style = {
   position: 'absolute',
   left: 87.67,
   top: 19.17,
@@ -84,9 +84,9 @@ const line1Style: CSSProperties = {
   display: 'block',
   transform: 'scaleX(-1) rotate(-12.65deg) skewX(0.99deg)',
   transformOrigin: 'center',
-}
+} satisfies CSSProperties
 
-const line2Style: CSSProperties = {
+const line2Style = {
   position: 'absolute',
   left: 82.67,
   top: 10.83,
@@ -95,9 +95,9 @@ const line2Style: CSSProperties = {
   display: 'block',
   transform: 'scaleX(-1) rotate(-12.65deg) skewX(0.99deg)',
   transformOrigin: 'center',
-}
+} satisfies CSSProperties
 
-const line3Style: CSSProperties = {
+const line3Style = {
   position: 'absolute',
   left: 75.17,
   top: 11.67,
@@ -106,7 +106,7 @@ const line3Style: CSSProperties = {
   display: 'block',
   transform: 'scaleX(-1) rotate(-12.65deg) skewX(0.99deg)',
   transformOrigin: 'center',
-}
+} satisfies CSSProperties
 
 function UnderConstructionIndicator() {
   return (

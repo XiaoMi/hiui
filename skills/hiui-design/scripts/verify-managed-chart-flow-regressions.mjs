@@ -108,11 +108,6 @@ async function readJson(targetPath) {
 }
 
 async function main() {
-  if (!(await pathExists(previewReadyScriptPath))) {
-    console.log('[verify-managed-chart-flow-regressions] SKIP: report-preview-ready-usage.mjs is not shipped in this package scope.')
-    return
-  }
-
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'hiui-managed-chart-flow-'))
   const detailRoot = path.join(tempRoot, 'full-page-detail-chart-section')
   const statRoot = path.join(tempRoot, 'table-stat-chart-section')
@@ -176,10 +171,19 @@ async function main() {
     )
     assert.strictEqual(
       detailPreflightResult.status,
-      1,
-      'full-page-detail preflight fixture should still fail because TODO mappings remain unresolved.'
+      0,
+      'full-page-detail preflight should now pass in scaffold-baseline stage while TODO mappings remain unresolved.'
     )
     const detailPreflightJson = parseJsonOutput(detailPreflightResult, 'full-page-detail preflight')
+    assert.strictEqual(detailPreflightJson.status, 'passed')
+    assert.strictEqual(detailPreflightJson.preflightStage, 'scaffold-baseline')
+    assert.strictEqual(detailPreflightJson.readyForImplementation, true)
+    assert.strictEqual(detailPreflightJson.readyForDelivery, false)
+    assert(
+      Array.isArray(detailPreflightJson.deferredChecks) &&
+        detailPreflightJson.deferredChecks.includes('placeholderMappings'),
+      'full-page-detail scaffold-baseline preflight should defer placeholder mapping checks until implementation.'
+    )
     assert.strictEqual(detailPreflightJson.managedChartSection, 'declared')
     assert.match(
       String(detailPreflightJson.chartGovernance || ''),

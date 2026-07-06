@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { buildProjectCapabilities, parseCommonArgs, writeError, writeJson } from './lib/asset-control-surface.mjs'
+import { parseCommonArgs, writeError, writeJson } from './lib/asset-control-surface.mjs'
+import { loadLegacyHostFamilyFact, loadProjectCapabilitiesFact } from './lib/project-facts.mjs'
 
 function printUsage() {
   console.log(`Usage:
@@ -8,16 +9,26 @@ function printUsage() {
 `)
 }
 
-try {
+async function main() {
   const options = parseCommonArgs(process.argv.slice(2), { allowType: false, allowId: false })
   if (options.help) {
     printUsage()
     process.exit(0)
   }
-  const result = buildProjectCapabilities({ targetRoot: options.target, skillRoot: options.skillRoot })
+  const legacyHostFamily = await loadLegacyHostFamilyFact({
+    targetRoot: options.target,
+    skillRoot: options.skillRoot,
+  })
+  const result = await loadProjectCapabilitiesFact({
+    targetRoot: options.target,
+    skillRoot: options.skillRoot,
+    legacyHostFamily,
+  })
   if (options.json) writeJson(result)
   else console.log(`projectRootValid=${result.projectRootValid} mode=${result.mode.id}`)
-} catch (error) {
+}
+
+main().catch((error) => {
   writeError(error, { json: process.argv.includes('--json'), schemaVersion: 'hiui-project-capabilities.v1' })
   process.exit(1)
-}
+})
