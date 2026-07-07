@@ -1,5 +1,8 @@
 /* generated from hiui-design strict archetype template */
 /* template asset: __HIUI_TEMPLATE_PATH__ */
+/* legacy-host-compatible note: this scaffold keeps standard shell semantics as */
+/* a managed start point. Do not read this import pattern as "legacy cannot use */
+/* page-component" or as permission to mount the standard runtime ad hoc. */
 
 import { Button, PageHeader, Space } from '@hi-ui/hiui'
 import { HostPageHeaderPortal } from '__HOST_PAGE_HEADER_PORTAL_IMPORT__'

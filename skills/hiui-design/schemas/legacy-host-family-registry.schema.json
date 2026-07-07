@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/legacy-host-family-registry.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "families"],
+  "properties": {
+    "schemaVersion": { "const": "legacy-host-family-registry.v1" },
+    "families": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "hostFamilyId",
+          "label",
+          "status",
+          "supportedModes",
+          "matchPolicy",
+          "runtimeProfile",
+          "mountContract",
+          "runtimeBridge",
+          "styleBoundary",
+          "portalBoundary",
+          "adapterPack",
+          "componentMatrix"
+        ],
+        "properties": {
+          "hostFamilyId": { "type": "string", "pattern": "^[a-z0-9-]+\\.v[0-9]+$" },
+          "label": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["planned", "candidate", "certified", "deprecated", "blocked"] },
+          "supportedModes": {
+            "type": "array",
+            "items": { "const": "legacy-host-compatible" },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "matchPolicy": { "type": "object" },
+          "runtimeProfile": { "type": "object" },
+          "mountContract": { "type": "object" },
+          "runtimeBridge": { "type": "object" },
+          "styleBoundary": { "type": "object" },
+          "portalBoundary": { "type": "object" },
+          "adapterPack": {
+            "type": "object",
+            "required": ["adapterPackId", "hostContentAdapter", "runtimeBridge", "styleBoundary", "portalBoundary", "adapterIds"],
+            "properties": {
+              "adapterPackId": { "type": "string", "pattern": "^[a-z0-9-]+\\.v[0-9]+$" },
+              "hostContentAdapter": { "type": "string" },
+              "runtimeBridge": { "type": "string" },
+              "styleBoundary": { "type": "string" },
+              "portalBoundary": { "type": "string" },
+              "adapterIds": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          },
+          "componentMatrix": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pageTypeId", "componentId", "status", "certificationStatus"],
+              "properties": {
+                "pageTypeId": { "type": "string" },
+                "componentId": { "type": "string" },
+                "status": { "enum": ["planned", "candidate", "certified", "deprecated", "blocked"] },
+                "certificationStatus": { "enum": ["missing", "certified", "expired", "blocked"] }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

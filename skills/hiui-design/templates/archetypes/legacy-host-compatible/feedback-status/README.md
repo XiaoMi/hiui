@@ -1,5 +1,7 @@
 # Legacy Feedback Status Adapter
 
+This adapter belongs to the `legacy-host-compatible` bridge path. The mode still allows typical-page components; prefer a planner-selected project-certified carrier or runtimeAdapterProof-backed standard component first, and use this adapter path only when the plan requires translated host semantics.
+
 Keep the feedback panel inside one white-body workspace and avoid borrowing list/form shells.
 
 ## I18n Defaults

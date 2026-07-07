@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/page-component.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "components"],
+  "properties": {
+    "schemaVersion": { "const": "page-component-registry.v1" },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "componentId",
+          "pageTypeId",
+          "baseMoldId",
+          "mode",
+          "implementationKind",
+          "status",
+          "certificationStatus",
+          "fallbackPolicy",
+          "supportedExtensionLevels"
+        ],
+        "properties": {
+          "componentId": { "type": "string", "pattern": "^[a-z0-9-]+\\.v[0-9]+$" },
+          "pageTypeId": { "type": "string" },
+          "baseMoldId": { "type": "string", "pattern": "^[a-z0-9-]+\\.managed-mold\\.v[0-9]+$" },
+          "mode": { "enum": ["host-integration", "rules-only", "legacy-host-compatible"] },
+          "implementationKind": { "const": "page-level-component" },
+          "status": { "enum": ["planned", "candidate", "certified", "deprecated", "blocked"] },
+          "certificationStatus": { "enum": ["missing", "certified", "expired", "blocked"] },
+          "certificationRef": { "type": "string" },
+          "templatePath": { "type": "string" },
+          "supportedModes": {
+            "type": "array",
+            "items": { "enum": ["host-integration", "rules-only", "legacy-host-compatible"] },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "fallbackPolicy": { "enum": ["managed-mold", "fail-closed-when-selected", "blocked"] },
+          "adapterIds": { "type": "array", "items": { "type": "string" } },
+          "supportedExtensionLevels": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0, "maximum": 3 },
+            "minItems": 1
+          },
+          "allowedExtensions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["slotId", "region", "contentType", "maxComplexity", "forbidden"],
+              "properties": {
+                "slotId": { "type": "string" },
+                "region": { "type": "string" },
+                "contentType": { "type": "array", "items": { "type": "string" } },
+                "maxComplexity": { "enum": ["simple", "section", "composition"] },
+                "forbidden": { "type": "array", "items": { "type": "string" } }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": { "const": "certified" },
+                "certificationStatus": { "const": "certified" }
+              },
+              "required": ["status", "certificationStatus"]
+            },
+            "then": {
+              "required": ["certificationRef"],
+              "properties": {
+                "certificationRef": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { DEMO_TRANSLATION_OVERRIDES } from './demo-overrides'
 import { TRANSLATION_MESSAGES } from './messages'
 
@@ -19,7 +19,7 @@ type TranslationCatalog = Record<string, string>
 type LocaleDirection = 'ltr' | 'rtl'
 
 const DEFAULT_LOCALE: SupportedLocale = 'zh-CN'
-const RTL_LOCALES = new Set<SupportedLocale>(['ar-SA'])
+const RTL_LOCALES: SupportedLocale[] = ['ar-SA']
 const LOCALE_STORAGE_KEY = 'hiui-demo-locale'
 const TEXT_EXPANSION_MULTIPLIER: Record<SupportedLocale, number> = {
   'zh-CN': 1,
@@ -32,10 +32,14 @@ const TEXT_EXPANSION_MULTIPLIER: Record<SupportedLocale, number> = {
 }
 
 let currentLocale: SupportedLocale = DEFAULT_LOCALE
-const listeners = new Set<() => void>()
+let listeners: Array<() => void> = []
 
 function isSupportedLocale(locale: string): locale is SupportedLocale {
-  return SUPPORTED_LOCALES.includes(locale as SupportedLocale)
+  return SUPPORTED_LOCALES.indexOf(locale as SupportedLocale) >= 0
+}
+
+function isRtlLocale(locale: SupportedLocale) {
+  return RTL_LOCALES.indexOf(locale) >= 0
 }
 
 function getCatalog(locale: SupportedLocale): TranslationCatalog {
@@ -109,7 +113,7 @@ function interpolate(template: string, params?: TranslationParams) {
 
 function applyDocumentLocale(locale: SupportedLocale) {
   if (typeof document === 'undefined') return
-  const direction = RTL_LOCALES.has(locale) ? 'rtl' : 'ltr'
+  const direction = isRtlLocale(locale) ? 'rtl' : 'ltr'
   document.documentElement.lang = locale
   document.documentElement.dir = direction
 }
@@ -120,7 +124,7 @@ function persistLocale(locale: SupportedLocale) {
 }
 
 function notifyListeners() {
-  for (const listener of listeners) {
+  for (const listener of listeners.slice()) {
     listener()
   }
 }
@@ -130,7 +134,7 @@ export function getCurrentLocale(): SupportedLocale {
 }
 
 export function getDirection(locale: SupportedLocale = currentLocale): LocaleDirection {
-  return RTL_LOCALES.has(locale) ? 'rtl' : 'ltr'
+  return isRtlLocale(locale) ? 'rtl' : 'ltr'
 }
 
 export function getTextExpansionMultiplier(locale: SupportedLocale = currentLocale) {
@@ -151,8 +155,12 @@ export function setLocale(locale: string) {
 }
 
 export function subscribeLocale(listener: () => void) {
-  listeners.add(listener)
-  return () => listeners.delete(listener)
+  if (listeners.indexOf(listener) === -1) {
+    listeners.push(listener)
+  }
+  return () => {
+    listeners = listeners.filter((item) => item !== listener)
+  }
 }
 
 export function getTranslation(key: string, params?: TranslationParams, locale: SupportedLocale = currentLocale) {
@@ -210,7 +218,11 @@ export function getLocaleCollator(locale: SupportedLocale = currentLocale, optio
 }
 
 export function useLocale() {
-  return useSyncExternalStore(subscribeLocale, getCurrentLocale, getCurrentLocale)
+  const [locale, setLocaleState] = useState<SupportedLocale>(() => getCurrentLocale())
+
+  useEffect(() => subscribeLocale(() => setLocaleState(getCurrentLocale())), [])
+
+  return locale
 }
 
 export function useTranslation() {

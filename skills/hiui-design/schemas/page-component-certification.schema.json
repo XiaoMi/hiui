@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/page-component-certification.schema.json",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "componentId",
+    "baseMoldId",
+    "mode",
+    "status",
+    "certificationInputs",
+    "checks"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "page-component-certification.v1" },
+    "componentId": { "type": "string" },
+    "baseMoldId": { "type": "string" },
+    "mode": { "enum": ["host-integration", "rules-only", "legacy-host-compatible"] },
+    "componentVersion": { "type": "string" },
+    "status": { "enum": ["certified", "blocked", "expired", "preview-only"] },
+    "certifiedAt": { "type": "string" },
+    "certificationInputs": {
+      "type": "object",
+      "required": ["moldDigest", "componentDigest", "adapterDigests", "runtimeProfile"],
+      "properties": {
+        "moldDigest": { "type": "string" },
+        "componentDigest": { "type": "string" },
+        "adapterDigests": { "type": "object", "additionalProperties": { "type": "string" } },
+        "runtimeProfile": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "regionValidation": { "enum": ["passed", "failed", "not_run"] },
+        "slotValidation": { "enum": ["passed", "failed", "not_run"] },
+        "extensionValidation": { "enum": ["passed", "failed", "not_run"] },
+        "adapterValidation": { "enum": ["passed", "failed", "not_run"] },
+        "visualPreview": { "enum": ["passed", "failed", "not_run"] },
+        "runtimeSmoke": { "enum": ["passed", "failed", "not_run"] }
+      },
+      "additionalProperties": false
+    },
+    "knownLimitations": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

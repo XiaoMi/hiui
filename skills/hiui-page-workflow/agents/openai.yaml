@@ -1,0 +1,4 @@
+interface:
+  display_name: "HiUI Page Workflow"
+  short_description: "Gate-driven HiUI requirements, generation, and UX validation"
+  default_prompt: "Use $hiui-page-workflow to refine requirements, confirm generation inputs, generate the HiUI page, run engineering checks, perform gated UX validation with before/after screenshots, and close the fix loop."

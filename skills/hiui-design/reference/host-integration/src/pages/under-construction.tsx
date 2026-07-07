@@ -5,6 +5,7 @@ import underConstructionMainUrl from '../assets/under-construction-main.svg'
 import underConstructionLine1Url from '../assets/under-construction-line-1.svg'
 import underConstructionLine2Url from '../assets/under-construction-line-2.svg'
 import underConstructionLine3Url from '../assets/under-construction-line-3.svg'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -118,21 +119,23 @@ function UnderConstructionIndicator() {
 }
 
 export function UnderConstructionPage() {
+  const { t } = useTranslation()
+
   return (
     <div style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="页面建设中"
+          title={t('页面建设中')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -143,17 +146,17 @@ export function UnderConstructionPage() {
         <div style={contentStyle}>
           <EmptyState
             indicator={<UnderConstructionIndicator />}
-            title={<span style={titleStyle}>页面建设中</span>}
+            title={<span style={titleStyle}>{t('页面建设中')}</span>}
             size="md"
           >
             <div style={descStyle}>
-              抱歉，当前页面建设中，详情请 <span style={linkStyle}>联系管理员</span>
+              {t('抱歉，当前页面建设中，详情请')} <span style={linkStyle}>{t('联系管理员')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">返回首页</Button>
+              <Button type="primary">{t('返回首页')}</Button>
             </Space>
           </EmptyState>
         </div>

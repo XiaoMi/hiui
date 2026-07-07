@@ -59,7 +59,7 @@ export function EmptyStatePage() {
   const { t } = useTranslation()
 
   return (
-    <div style={pageStyle}>
+    <div data-hiui5-shell-carrier="FeedbackStatePanel" style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
           title={t('暂无数据')}

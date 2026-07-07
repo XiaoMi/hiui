@@ -1,0 +1,5 @@
+interface:
+  display_name: "产品需求细化助手"
+  short_description: "结合需求与当前项目上下文，细化方案、产品PRD、页面提示词和交接包"
+  default_prompt: >-
+    使用 $refine-product-requirements 细化产品需求。默认从最小可用交付模式开始，不要把“帮我细化需求”自动降成 quick-refine。若需求与当前项目业务明显相关，先按 `references/project-context-loading.md` 做最小仓库预载，并把仓库证据只当作上下文，不当作用户确认。交付模式、PRD 与生成包分层、飞书/Markdown 输出协议、以及 `full-prd-to-generation` 的升级条件，统一遵守 `references/delivery-modes.md` 与 `references/product-prd-template.md`。若准备进入页面生成、HiUI 生成、原型生成或 UX 验收，必须先满足生成输入门禁；未获确认时，只能停在 `ready-for-review`、`assumption-authorized` 或继续确认。

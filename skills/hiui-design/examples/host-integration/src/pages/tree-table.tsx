@@ -27,10 +27,10 @@ import {
 import { useTranslation } from '../../translation'
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderTreeName(this) {
+  renderTreeName() {
     return this.renderCell((cellValue) => renderTreeTableTextEllipsis(cellValue))
   },
-  renderEllipsis(this) {
+  renderEllipsis() {
     return this.renderCell((cellValue) => renderTableTextEllipsis(cellValue))
   },
 })

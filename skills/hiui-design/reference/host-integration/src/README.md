@@ -53,19 +53,20 @@ page types plus the shared data-visualization / feedback capability pages.
 3. If the target project uses the generated `src/translation` bridge, keep the top-level app wrapped in `LocaleProvider` and merge `en-US` into `id-ID / th-TH / de-DE / ar-SA` before mounting, so HiUI component copy stays aligned with the selected locale while page-level business text still follows the translation bridge.
 4. Copy the host-side layout slot pattern from `src/components/layout/`.
 5. For greenfield React Router apps, mount `src/app-frame.tsx` around the route outlet so the synced gallery renders inside an application-level sidebar shell that matches the current repository.
-6. If the target project does not already have a real host header/footer contract, wrap the route outlet with `TypicalPageHostBridge` or build routes with `createTypicalPageReuseRoutes({ wrapInShell: true })`.
-7. If the target project already has its own layout header, do not wrap each example page with `ExampleAppShell`; reuse the existing host so the page header only mounts once.
-8. Do not build a second top-level preview workspace with `ExampleAppShell + custom sidebar/nav + createTypicalPageReuseRoutes(...)`. In greenfield host-integration, `src/app-frame.tsx` is the single owner of navigation, header/footer portals, background, and outlet height chain.
-9. Keep the `src/app-frame.tsx` host contract intact: `LayoutContentProvider`, `TypicalPageHostBridge`, the header slot, the route outlet, the footer slot, and the route-title fallback ref all need to stay in the chain together.
-10. When mounting the synced gallery into navigation, keep the icon on the top-level `示例` menu node. `表格`, `图表`, `表单`, `详情`, and `异常` are second-level groups under that node.
-11. When adding real business first-level groups beside `示例`, choose semantic `@hi-ui/icons` Filled icons for each domain. `AppStoreFilled` is reserved for the `示例` gallery and must not be copied to `业务`, `项目`, `订单`, or `工单`.
-12. Build pages with package imports:
+6. Use the sidebar app switcher, search trigger, help / feedback actions, and the avatar entry at the bottom to verify the full host shell behavior against the synced example pages.
+7. If the target project does not already have a real host header/footer contract, wrap the route outlet with `TypicalPageHostBridge` or build routes with `createTypicalPageReuseRoutes({ wrapInShell: true })`.
+8. If the target project already has its own layout header, do not wrap each example page with `ExampleAppShell`; reuse the existing host so the page header only mounts once.
+9. Do not build a second top-level preview workspace with `ExampleAppShell + custom sidebar/nav + createTypicalPageReuseRoutes(...)`. In greenfield host-integration, `src/app-frame.tsx` is the single owner of navigation, header/footer portals, background, and outlet height chain.
+10. Keep the `src/app-frame.tsx` host contract intact: `LayoutContentProvider`, `TypicalPageHostBridge`, the header slot, the route outlet, the footer slot, and the route-title fallback ref all need to stay in the chain together.
+11. When mounting the synced gallery into navigation, keep the icon on the top-level `示例` menu node. `表格`, `图表`, `表单`, `详情`, and `异常` are second-level groups under that node.
+12. When adding real business first-level groups beside `示例`, choose semantic `@hi-ui/icons` Filled icons for each domain. `AppStoreFilled` is reserved for the `示例` gallery and must not be copied to `业务`, `项目`, `订单`, or `工单`.
+13. Build pages with package imports:
    - `@hiui-design/typical-page-shells`
    - `@hiui-design/typical-page-shells/host`
-13. Keep route wiring, layout CSS, and real portals inside the host project.
-14. If the target project uses Vite, alias `@hi-ui/schema-types` to `src/typical-page-reuse/shims/schema-types-empty.js`.
-15. Keep the host header slot full width so `PageHeader extra` actions stay right-aligned after portal mounting.
-16. If a page writes raw `SchemaForm` and contains `CheckSelect`, wrap it with `TypicalPageFieldMapProvider` from `@hiui-design/typical-page-shells`.
+14. Keep route wiring, layout CSS, and real portals inside the host project.
+15. If the target project uses Vite, alias `@hi-ui/schema-types` to `src/typical-page-reuse/shims/schema-types-empty.js`.
+16. Keep the host header slot full width so `PageHeader extra` actions stay right-aligned after portal mounting.
+17. If a page writes raw `SchemaForm` and contains `CheckSelect`, wrap it with `TypicalPageFieldMapProvider` from `@hiui-design/typical-page-shells`.
 
 ## Host portal hard rule
 
@@ -142,6 +143,7 @@ page types plus the shared data-visualization / feedback capability pages.
 - `src/typical-page-reuse/` in the app is the synced runtime copy used for smoke checks and gallery verification.
 - The default route export no longer auto-wraps each page with `ExampleAppShell`. That wrapper is only for standalone smoke hosts that do not already provide a real page-header portal target.
 - `ExampleAppShell` is not the root application shell for greenfield host-integration. If it appears in the top-level `App.*` together with custom nav/sidebar markup, treat that as a deprecated preview pattern and replace it with `TypicalPageAppFrame`.
+- The avatar entry in `src/app-frame.tsx` is part of the host example layer, not the runtime page-shell package. It exists so new projects can observe locale switching without inventing their own debug entry first.
 - The example intentionally uses package imports instead of local `src/components/pro-*` paths.
 - If stat cards degrade into plain text or the page shell loses its white card layout, first check whether the target project imported `@hiui-design/typical-page-shells/styles.css`.
 - Greenfield `react-vite-router` projects now try to auto-patch both the route file and the top-level App shell. If that patch cannot be applied safely, bootstrap writes `APP_FRAME_SNIPPET.md` next to the synced assets.

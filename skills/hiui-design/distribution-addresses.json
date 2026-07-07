@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "defaults": {
+    "globalMirror": "~/.codex/skills/hiui-design",
+    "teamPackage": "",
+    "openSourcePackage": "~/.codex/skills/hiui-design-open-source",
+    "userArchive": "outputs/archives/hiui-design.zip",
+    "maintainerArchive": "outputs/archives/hiui-design-maintainer.zip"
+  },
+  "localExamples": {
+    "maintainerSource": "<maintainer-source-root>",
+    "activeSource": "<active-project-root>/.local-context/hiui-design",
+    "teamPackage": "<team-package-root>",
+    "openSourcePackage": "<open-source-package-root>"
+  }
+}

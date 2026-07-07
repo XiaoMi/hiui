@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "visual-translation-brief.v1",
+  "status": "blocked",
+  "statusReasons": ["target page path is required by PlanTask"],
+  "source": {"type": "legacy-page-screenshot", "artifacts": [{"kind": "image", "refType": "file", "ref": "file:screenshots/order.png", "available": true}]},
+  "observation": {"visibleRegions": ["filter", "table"]},
+  "extractedFacts": {"businessObject": {"value": "订单", "confidence": "high"}},
+  "normalization": {"preserve": ["可见字段"], "discard": ["旧视觉"], "hiuiRecommendations": ["收敛为标准列表"]},
+  "pageTypeCandidates": [{"pageType": "table-basic", "confidence": "medium"}],
+  "prePlanBlockingFacts": [{"field": "targetPage", "owner": "PlanTask", "blocking": true}],
+  "blockingIssues": [],
+  "blockingReasons": ["请确认目标页面路径"],
+  "planningHints": {"intentSummary": "转译旧订单页面", "constraints": ["不继承旧视觉"]}
+}

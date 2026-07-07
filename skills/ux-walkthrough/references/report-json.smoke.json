@@ -1,0 +1,35 @@
+{
+  "title": "Smoke Test 体验走查报告",
+  "project": "smoke-test",
+  "source": "code",
+  "generated_at": "2026-06-12T10:00:00+08:00",
+  "scope": "scripts/smoke_test.sh 自动化验证",
+  "summary": {
+    "overall": "Smoke test 用例，无截图。",
+    "key_points": [
+      "验证 report.json 结构",
+      "验证 docx 生成链路"
+    ],
+    "improvement_direction": "无。"
+  },
+  "issues": [
+    {
+      "index": 1,
+      "severity": "P2",
+      "title": "Smoke test 占位问题",
+      "category": "样式问题",
+      "location": "N/A",
+      "description": "用于验证 generate_docx.py 在无截图时仍可生成 docx。",
+      "suggestion": "无需改动。",
+      "evidence_note": "无截图",
+      "images": []
+    }
+  ],
+  "appendix": {
+    "note": "本文件仅供 smoke test，不代表真实走查结论。",
+    "items": [
+      "走查依据：UX 走查清单",
+      "来源：report-json.smoke.json"
+    ]
+  }
+}

@@ -25,7 +25,18 @@ const HOST_SLOT_ROOT_CHROME_MARKER = 'declares a host-slot-shell ownership chain
 const HOST_SLOT_SPLIT_OWNER_MARKER = 'splits host-slot ownership'
 const DEMO_PROMPT_TOOLING_MARKER = 'includes demo prompt-copy tooling'
 const SHELL_AUTHENTICITY_MARKER = 'must start from the executable example shell'
+const SHELL_DOM_ALIAS_MARKER = 'as a DOM/string alias'
+const HIDDEN_SHELL_PROOF_MARKER = 'as a hidden proof node'
+const SELF_HOST_ARCHETYPE_MARKER = 'hostArchetypePath as the generated page itself'
+const UNKNOWN_HOST_ADAPTER_MARKER = 'does not register that adapter'
+const LOCAL_BYPASS_CONTAINMENT_MARKER = 'is not allowed by adapter-registry entry'
 const TABLE_FRAME_INSET_MARKER = 'does not expose the TablePageFrame table-body horizontal inset contract'
+const CRITICAL_QUERY_FILTER_PROOF_MARKER = 'hand-builds its filter region from primitive Input/Select/DatePicker controls'
+const CRITICAL_DETAIL_PROOF_MARKER = 'does not reference Descriptions semantics'
+const CRITICAL_FORM_PROOF_MARKER = 'neither mounts <ProEditPage>'
+const PAGE_LOCAL_HEADER_PORTAL_MARKER = 'page-local header portal component'
+const PAGE_LOCAL_HEADER_GEOMETRY_MARKER = 'overrides PageHeader geometry'
+const NON_TYPICAL_STRATEGY_PROOF_MARKER = 'without complete layout strategy proof'
 
 const currentFilePath = fileURLToPath(import.meta.url)
 const scriptDir = path.dirname(currentFilePath)
@@ -104,7 +115,7 @@ function buildFullPageDetailContract(generatedPagePath, options = {}) {
     adapterContract: {
       hostAdapterId: '',
       hostAdapterLabel: '',
-      requiredCapabilities: [],
+      requiredCapabilities: ['detail-body'],
       allowedOverrides: [],
       forbiddenEscapes: [],
       localBypasses: [],
@@ -162,6 +173,55 @@ function buildTableBasicContract(generatedPagePath) {
     },
     semanticContract: {
       queryFilterRegionRole: 'table-query-filter',
+      dimensionSwitchControl: 'not-applicable',
+      listShellComposition: 'page-type-shell',
+      spacingOwnership: 'single-owner',
+      areaChartFill: 'not-applicable',
+    },
+    splitPaneContract: {
+      enabled: false,
+      leftPaneSelector: '',
+      rightPaneSelector: '',
+      tableRegionSelector: '',
+      leftPaneScroll: 'not-applicable',
+      rightPaneScroll: 'not-applicable',
+    },
+  }
+}
+
+function buildFullPageEditContract(generatedPagePath) {
+  return {
+    pageTypeId: 'full-page-edit',
+    shell: 'ProEditPage',
+    generatedPagePath,
+    examplePath: 'examples/host-integration/src/pages/full-page-edit.tsx',
+    hostArchetypePath: '',
+    archetypeId: 'full-page-edit-core',
+    archetypeMode: 'rules-only',
+    strictExampleGeneration: false,
+    scrollStrategy: 'page-scroll',
+    ownershipMode: 'page-surface-owns-workspace',
+    ownershipMapping: [
+      { role: 'content-slot', target: 'host content slot' },
+      { role: 'white-body', target: 'form body' },
+      { role: 'outer-padding', target: 'form body' },
+      { role: 'main-scroll', target: 'form body' },
+    ],
+    regionMapping: [
+      { region: 'header', target: 'edit header' },
+      { region: 'form-body', target: 'form body' },
+      { region: 'footer', target: 'form footer' },
+    ],
+    adapterContract: {
+      hostAdapterId: '',
+      hostAdapterLabel: '',
+      requiredCapabilities: ['form-body'],
+      allowedOverrides: [],
+      forbiddenEscapes: [],
+      localBypasses: [],
+    },
+    semanticContract: {
+      queryFilterRegionRole: 'not-applicable',
       dimensionSwitchControl: 'not-applicable',
       listShellComposition: 'page-type-shell',
       spacingOwnership: 'single-owner',
@@ -566,6 +626,64 @@ export function SyntheticFullPageDetailChartPage() {
 `
 }
 
+function buildPageLocalHeaderPortalSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+
+  return `import { PageHeader } from '@hi-ui/hiui'
+import { ProDetailPage } from '@hiui-design/typical-page-shells/pro-detail-page'
+import { createPortal } from 'react-dom'
+import styles from './local-header-portal.module.scss'
+
+function LocalHeaderPortal({ children }) {
+  const target = document.querySelector('[data-host-header]')
+  return target ? createPortal(children, target) : null
+}
+
+export default function LocalHeaderPortalDetail() {
+  return (
+    <ProDetailPage ${renderJsxAttributes(rootAttrs)}>
+${commentLines.map((line) => `      ${line}`).join('\n')}
+      <LocalHeaderPortal>
+        <PageHeader className={styles.header} title="本地页头" onBack={() => void 0} />
+      </LocalHeaderPortal>
+      <div data-hiui5-region="detail-body">详情内容</div>
+    </ProDetailPage>
+  )
+}
+`
+}
+
+function buildPageLocalHeaderPortalStyle() {
+  return `.header {
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+`
+}
+
+function buildNonTypicalMissingStrategySource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+
+  return `import { PageHeader } from '@hi-ui/hiui'
+import { ProDetailPage } from '@hiui-design/typical-page-shells/pro-detail-page'
+
+export default function MissingStrategyDetail() {
+  return (
+    <ProDetailPage ${renderJsxAttributes(rootAttrs)} data-hiui5-topology="non-typical-overlay">
+${commentLines.map((line) => `      ${line}`).join('\n')}
+      <PageHeader title="非典型详情" onBack={() => void 0} />
+      <div data-hiui5-region="detail-body">仅普通详情字段</div>
+    </ProDetailPage>
+  )
+}
+`
+}
+
 function buildSyntheticFullPageDetailStyle() {
   return `.detailBody {
   margin: 2px 0 0;
@@ -708,6 +826,47 @@ ${commentLines.map((line) => `      ${line}`).join('\n')}
 `
 }
 
+function buildDomAliasTablePageSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const comments = commentLines.map((line) => `      ${line}`).join('\n')
+
+  return `import styles from './synthetic-table-basic.module.scss'
+
+const TablePageFrame = 'div'
+
+export default function DomAliasTablePage() {
+  return (
+    <div className={styles.pageRoot} ${renderJsxAttributes(rootAttrs)}>
+${comments}
+      <TablePageFrame style={{ display: 'none' }} />
+      <div data-hiui5-region="white-body" />
+    </div>
+  )
+}
+`
+}
+
+function buildHiddenShellTablePageSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const comments = commentLines.map((line) => `      ${line}`).join('\n')
+
+  return `import { TablePageFrame } from '@hiui-design/typical-page-shells/pro-list-page'
+import styles from './synthetic-table-basic.module.scss'
+
+export default function HiddenShellTablePage() {
+  return (
+    <div className={styles.pageRoot} ${renderJsxAttributes(rootAttrs)}>
+${comments}
+      <TablePageFrame style={{ display: 'none' }} />
+      <div data-hiui5-region="white-body" />
+    </div>
+  )
+}
+`
+}
+
 function buildSyntheticPseudoTablePageStyle() {
   return `.pageRoot {
   display: flex;
@@ -736,6 +895,188 @@ function buildSyntheticPseudoTablePageStyle() {
   min-height: 0;
 }
 `
+}
+
+function buildManualGridQueryFilterSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const ownershipAttrs = new Map(
+    getManagedPageSourceOwnershipAttributes(contract).map((attr) => [attr.role, attr])
+  )
+  const comments = commentLines.map((line) => `      ${line}`).join('\n')
+
+  return `import { Input, Select, DatePicker, Pagination, Table } from '@hi-ui/hiui'
+import styles from './manual-grid-query-filter.module.scss'
+
+export default function ManualGridQueryFilter() {
+  return (
+    <div
+      className={styles.pageRoot}
+      ${renderJsxAttributes(rootAttrs)}
+      ${ownershipAttrs.get('content-slot')?.name || 'data-hiui5-owner-content-slot'}="true"
+      ${ownershipAttrs.get('outer-padding')?.name || 'data-hiui5-owner-outer-padding'}="true"
+      ${ownershipAttrs.get('main-scroll')?.name || 'data-hiui5-owner-main-scroll'}="true"
+    >
+${comments}
+      <div className={styles.whiteBody} data-hiui5-region="white-body" ${ownershipAttrs.get('white-body')?.name || 'data-hiui5-owner-white-body'}="true">
+        <div className={styles.queryGrid} data-hiui5-region="query-filter">
+          <Input placeholder="请输入" />
+          <Select data={[]} />
+          <DatePicker type="daterange" />
+        </div>
+        <div className={styles.tableRegion} data-hiui5-region="table"><Table /></div>
+        <div data-hiui5-region="pagination"><Pagination total={0} /></div>
+      </div>
+    </div>
+  )
+}
+`
+}
+
+function buildManualGridQueryFilterStyle() {
+  return `.pageRoot { display: flex; flex-direction: column; min-height: 0; }
+.whiteBody { display: flex; flex: 1 1 0%; flex-direction: column; min-height: 0; background: #fff; }
+.queryGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px 20px; }
+.tableRegion { display: flex; flex: 1 1 0%; min-height: 0; padding-inline: 20px; }
+`
+}
+
+function buildManualDetailSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const comments = commentLines.map((line) => `      ${line}`).join('\n')
+
+  return `import styles from './manual-detail.module.scss'
+
+export default function ManualDetail() {
+  return (
+    <div className={styles.pageRoot} ${renderJsxAttributes(rootAttrs)}>
+${comments}
+      <div className={styles.whiteBody} data-hiui5-region="white-body" data-hiui5-owner-white-body="true">
+        <div className={styles.detailBody} data-hiui5-region="detail-body">
+          <div><span>工单号</span><strong>SO-001</strong></div>
+          <div><span>状态</span><strong>处理中</strong></div>
+        </div>
+      </div>
+    </div>
+  )
+}
+`
+}
+
+function buildManualDetailStyle() {
+  return `.pageRoot { min-height: 0; }
+.whiteBody { background: #fff; padding: 20px; }
+.detailBody { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+`
+}
+
+function buildManualFormSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const comments = commentLines.map((line) => `      ${line}`).join('\n')
+
+  return `import { Input, Button } from '@hi-ui/hiui'
+import styles from './manual-form.module.scss'
+
+export default function ManualForm() {
+  return (
+    <div className={styles.pageRoot} ${renderJsxAttributes(rootAttrs)}>
+${comments}
+      <div className={styles.formBody} data-hiui5-region="form-body">
+        <label>名称<Input /></label>
+        <label>编码<Input /></label>
+      </div>
+      <div className={styles.footer} data-hiui5-region="footer"><Button>保存</Button></div>
+    </div>
+  )
+}
+`
+}
+
+function buildManualFormStyle() {
+  return `.pageRoot { min-height: 0; background: #fff; }
+.formBody { display: grid; gap: 16px; padding: 20px; }
+.footer { padding: 16px 20px; }
+`
+}
+
+function buildLocalBypassAdapterSource() {
+  return `import { Button } from 'legacy-ui-kit'
+
+export function LegacyCellAction() {
+  return <Button>处理</Button>
+}
+`
+}
+
+function buildLocalBypassTokenBridgeSource() {
+  return `export const legacyUiTokenBridge = {
+  colorPrimary: '#2b5aed',
+}
+`
+}
+
+function buildLocalBypassTableSource(contract) {
+  const commentLines = getManagedPageSourceCommentLines(contract)
+  const rootAttrs = getManagedPageSourceRootAttributes(contract)
+  const ownershipAttrs = new Map(
+    getManagedPageSourceOwnershipAttributes(contract).map((attr) => [attr.role, attr])
+  )
+
+  return `import { LegacyCellAction } from './local-bypass-adapter'
+import styles from './synthetic-table-basic.module.scss'
+
+function TablePageFrame({ children }) {
+  return <section data-hiui5-shell="TablePageFrame" data-hiui5-host-adapter="${contract.adapterContract.hostAdapterId}" data-hiui5-real-shell="true">{children}</section>
+}
+
+export default function LocalBypassTable() {
+  return (
+    <TablePageFrame>
+      <div
+        className={styles.pageRoot}
+        ${renderJsxAttributes(rootAttrs)}
+        ${ownershipAttrs.get('content-slot')?.name || 'data-hiui5-owner-content-slot'}="true"
+        ${ownershipAttrs.get('outer-padding')?.name || 'data-hiui5-owner-outer-padding'}="true"
+        ${ownershipAttrs.get('main-scroll')?.name || 'data-hiui5-owner-main-scroll'}="true"
+      >
+${commentLines.map((line) => `        ${line}`).join('\n')}
+        <div data-hiui5-region="header">标题</div>
+        <div className={styles.whiteBody} data-hiui5-region="white-body" ${ownershipAttrs.get('white-body')?.name || 'data-hiui5-owner-white-body'}="true">
+          <div data-hiui5-region="query-filter"><input /></div>
+          <div className={styles.tableRegion} data-hiui5-region="table"><LegacyCellAction /></div>
+          <div data-hiui5-region="pagination" />
+        </div>
+      </div>
+    </TablePageFrame>
+  )
+}
+`
+}
+
+async function writeLocalBypassWorkspace(tempRoot, contract) {
+  await ensureDir(path.join(tempRoot, 'src', 'pages'))
+  await fs.writeFile(
+    path.join(tempRoot, contract.generatedPagePath),
+    buildLocalBypassTableSource(contract),
+    'utf8'
+  )
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'pages', 'local-bypass-adapter.tsx'),
+    buildLocalBypassAdapterSource(),
+    'utf8'
+  )
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'pages', 'local-bypass-token-bridge.ts'),
+    buildLocalBypassTokenBridgeSource(),
+    'utf8'
+  )
+  await fs.writeFile(
+    path.join(tempRoot, 'src', 'pages', 'synthetic-table-basic.module.scss'),
+    buildSyntheticPseudoTablePageStyle(),
+    'utf8'
+  )
 }
 
 async function writeSyntheticHostSlotWorkbenchWorkspace(tempRoot, contract, options = {}) {
@@ -1033,6 +1374,70 @@ async function main() {
       )
     }
 
+    const localHeaderPortalGeneratedPagePath = path.join('src', 'pages', 'local-header-portal.tsx')
+    const localHeaderPortalContract = buildFullPageDetailContract(localHeaderPortalGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, localHeaderPortalGeneratedPagePath),
+      buildPageLocalHeaderPortalSource(localHeaderPortalContract),
+      'utf8'
+    )
+    await fs.writeFile(
+      path.join(tempRoot, 'src', 'pages', 'local-header-portal.module.scss'),
+      buildPageLocalHeaderPortalStyle(),
+      'utf8'
+    )
+    const localHeaderPortalErrors = validateManagedPageSource({
+      contract: localHeaderPortalContract,
+      generatedPagePath: localHeaderPortalGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const localHeaderPortalMessage = findMarkerMessage(
+      localHeaderPortalErrors,
+      PAGE_LOCAL_HEADER_PORTAL_MARKER
+    )
+    const localHeaderGeometryMessage = findMarkerMessage(
+      localHeaderPortalErrors,
+      PAGE_LOCAL_HEADER_GEOMETRY_MARKER
+    )
+
+    if (!localHeaderPortalMessage) {
+      throw new Error(
+        'Page-local header portal regression was not detected. The source guard should fail when a business page defines its own PageHeader portal instead of inheriting a certified adapter/example.'
+      )
+    }
+
+    if (!localHeaderGeometryMessage) {
+      throw new Error(
+        'Page-local header geometry regression was not detected. The source guard should fail when business styles own PageHeader height/padding/align-items.'
+      )
+    }
+
+    const missingStrategyGeneratedPagePath = path.join('src', 'pages', 'non-typical-missing-strategy.tsx')
+    const missingStrategyContract = {
+      ...buildFullPageDetailContract(missingStrategyGeneratedPagePath),
+      topology: 'non-typical-overlay',
+    }
+    await fs.writeFile(
+      path.join(tempRoot, missingStrategyGeneratedPagePath),
+      buildNonTypicalMissingStrategySource(missingStrategyContract),
+      'utf8'
+    )
+    const missingStrategyErrors = validateManagedPageSource({
+      contract: missingStrategyContract,
+      generatedPagePath: missingStrategyGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const missingStrategyMessage = findMarkerMessage(
+      missingStrategyErrors,
+      NON_TYPICAL_STRATEGY_PROOF_MARKER
+    )
+
+    if (!missingStrategyMessage) {
+      throw new Error(
+        'Non-typical strategy proof regression was not detected. The source guard should fail when non-typical-overlay lacks layout strategy/archetype proof.'
+      )
+    }
+
     const pseudoTableGeneratedPagePath = path.join('src', 'pages', 'synthetic-table-basic.tsx')
     const pseudoTableContract = buildTableBasicContract(pseudoTableGeneratedPagePath)
     await fs.writeFile(
@@ -1068,6 +1473,230 @@ async function main() {
       )
     }
 
+    const domAliasGeneratedPagePath = path.join('src', 'pages', 'dom-alias-table-basic.tsx')
+    const domAliasContract = buildTableBasicContract(domAliasGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, domAliasGeneratedPagePath),
+      buildDomAliasTablePageSource(domAliasContract),
+      'utf8'
+    )
+    const domAliasErrors = validateManagedPageSource({
+      contract: domAliasContract,
+      generatedPagePath: domAliasGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const domAliasMessage = findMarkerMessage(domAliasErrors, SHELL_DOM_ALIAS_MARKER)
+
+    if (!domAliasMessage) {
+      throw new Error(
+        'DOM alias managed shell regression was not detected. The source guard should fail when TablePageFrame is aliased to a div to satisfy markers.'
+      )
+    }
+
+    const hiddenShellGeneratedPagePath = path.join('src', 'pages', 'hidden-shell-table-basic.tsx')
+    const hiddenShellContract = buildTableBasicContract(hiddenShellGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, hiddenShellGeneratedPagePath),
+      buildHiddenShellTablePageSource(hiddenShellContract),
+      'utf8'
+    )
+    const hiddenShellErrors = validateManagedPageSource({
+      contract: hiddenShellContract,
+      generatedPagePath: hiddenShellGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const hiddenShellMessage = findMarkerMessage(hiddenShellErrors, HIDDEN_SHELL_PROOF_MARKER)
+
+    if (!hiddenShellMessage) {
+      throw new Error(
+        'Hidden managed shell proof regression was not detected. The source guard should fail when a page hides TablePageFrame as proof instead of using it as real geometry.'
+      )
+    }
+
+    const selfHostArchetypeGeneratedPagePath = path.join('src', 'pages', 'self-host-archetype.tsx')
+    const selfHostArchetypeContract = {
+      ...buildTableBasicContract(selfHostArchetypeGeneratedPagePath),
+      archetypeMode: 'legacy-host-compatible',
+      hostArchetypePath: selfHostArchetypeGeneratedPagePath,
+      adapterContract: {
+        ...buildTableBasicContract(selfHostArchetypeGeneratedPagePath).adapterContract,
+        hostAdapterId: 'layout-search-table-adapter',
+      },
+    }
+    await fs.writeFile(
+      path.join(tempRoot, selfHostArchetypeGeneratedPagePath),
+      buildSyntheticPseudoTablePageSource(selfHostArchetypeContract),
+      'utf8'
+    )
+    await fs.writeFile(
+      path.join(tempRoot, 'src', 'pages', 'self-host-archetype.module.scss'),
+      buildSyntheticPseudoTablePageStyle(),
+      'utf8'
+    )
+    const selfHostArchetypeErrors = validateManagedPageSource({
+      contract: selfHostArchetypeContract,
+      generatedPagePath: selfHostArchetypeGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const selfHostArchetypeMessage = findMarkerMessage(
+      selfHostArchetypeErrors,
+      SELF_HOST_ARCHETYPE_MARKER
+    )
+
+    if (!selfHostArchetypeMessage) {
+      throw new Error(
+        'Self-provenance host archetype regression was not detected. The source guard should fail when hostArchetypePath points at the generated page itself.'
+      )
+    }
+
+    const unknownAdapterGeneratedPagePath = path.join('src', 'pages', 'unknown-adapter-table.tsx')
+    const unknownAdapterContract = {
+      ...buildTableBasicContract(unknownAdapterGeneratedPagePath),
+      archetypeMode: 'legacy-host-compatible',
+      adapterContract: {
+        ...buildTableBasicContract(unknownAdapterGeneratedPagePath).adapterContract,
+        hostAdapterId: 'unregistered-table-adapter',
+      },
+    }
+    await fs.writeFile(
+      path.join(tempRoot, unknownAdapterGeneratedPagePath),
+      buildHiddenShellTablePageSource(unknownAdapterContract),
+      'utf8'
+    )
+    const unknownAdapterErrors = validateManagedPageSource({
+      contract: unknownAdapterContract,
+      generatedPagePath: unknownAdapterGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const unknownAdapterMessage = findMarkerMessage(
+      unknownAdapterErrors,
+      UNKNOWN_HOST_ADAPTER_MARKER
+    )
+
+    if (!unknownAdapterMessage) {
+      throw new Error(
+        'Unknown host adapter regression was not detected. The source guard should fail when a page contract names an adapter that is absent from adapter-registry.json.'
+      )
+    }
+
+    const invalidContainmentGeneratedPagePath = path.join('src', 'pages', 'invalid-bypass-table.tsx')
+    const invalidContainmentContract = {
+      ...buildTableBasicContract(invalidContainmentGeneratedPagePath),
+      adapterContract: {
+        ...buildTableBasicContract(invalidContainmentGeneratedPagePath).adapterContract,
+        hostAdapterId: 'layout-search-table-adapter',
+        localBypasses: [
+          {
+            packageSpec: 'legacy-ui-kit',
+            reason: 'legacy control not yet available in managed shell',
+            adapterPath: 'src/pages/local-bypass-adapter.tsx',
+            tokenBridgePath: 'src/pages/local-bypass-token-bridge.ts',
+            ownerContainment: 'white-body',
+          },
+        ],
+      },
+    }
+    await writeLocalBypassWorkspace(tempRoot, invalidContainmentContract)
+    const invalidContainmentErrors = validateManagedPageSource({
+      contract: invalidContainmentContract,
+      generatedPagePath: invalidContainmentGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const invalidContainmentMessage = findMarkerMessage(
+      invalidContainmentErrors,
+      LOCAL_BYPASS_CONTAINMENT_MARKER
+    )
+
+    if (!invalidContainmentMessage) {
+      throw new Error(
+        'Local bypass containment regression was not detected. The source guard should fail when a declared third-party adapter tries to own a locked white-body region.'
+      )
+    }
+
+    const manualFilterGeneratedPagePath = path.join('src', 'pages', 'manual-grid-query-filter.tsx')
+    const manualFilterContract = buildTableBasicContract(manualFilterGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, manualFilterGeneratedPagePath),
+      buildManualGridQueryFilterSource(manualFilterContract),
+      'utf8'
+    )
+    await fs.writeFile(
+      path.join(tempRoot, 'src', 'pages', 'manual-grid-query-filter.module.scss'),
+      buildManualGridQueryFilterStyle(),
+      'utf8'
+    )
+    const manualFilterErrors = validateManagedPageSource({
+      contract: manualFilterContract,
+      generatedPagePath: manualFilterGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const manualFilterProofMessage = findMarkerMessage(
+      manualFilterErrors,
+      CRITICAL_QUERY_FILTER_PROOF_MARKER
+    )
+
+    if (!manualFilterProofMessage) {
+      throw new Error(
+        'Manual query-filter carrier proof regression was not detected. The source guard should fail when a table page declares query-filter but implements it with primitive Input/Select/DatePicker grid controls.'
+      )
+    }
+
+    const manualDetailGeneratedPagePath = path.join('src', 'pages', 'manual-detail.tsx')
+    const manualDetailContract = buildFullPageDetailContract(manualDetailGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, manualDetailGeneratedPagePath),
+      buildManualDetailSource(manualDetailContract),
+      'utf8'
+    )
+    await fs.writeFile(
+      path.join(tempRoot, 'src', 'pages', 'manual-detail.module.scss'),
+      buildManualDetailStyle(),
+      'utf8'
+    )
+    const manualDetailErrors = validateManagedPageSource({
+      contract: manualDetailContract,
+      generatedPagePath: manualDetailGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const manualDetailProofMessage = findMarkerMessage(
+      manualDetailErrors,
+      CRITICAL_DETAIL_PROOF_MARKER
+    )
+
+    if (!manualDetailProofMessage) {
+      throw new Error(
+        'Manual detail carrier proof regression was not detected. The source guard should fail when a detail page declares detail-body but implements label/value content with manual DOM.'
+      )
+    }
+
+    const manualFormGeneratedPagePath = path.join('src', 'pages', 'manual-form.tsx')
+    const manualFormContract = buildFullPageEditContract(manualFormGeneratedPagePath)
+    await fs.writeFile(
+      path.join(tempRoot, manualFormGeneratedPagePath),
+      buildManualFormSource(manualFormContract),
+      'utf8'
+    )
+    await fs.writeFile(
+      path.join(tempRoot, 'src', 'pages', 'manual-form.module.scss'),
+      buildManualFormStyle(),
+      'utf8'
+    )
+    const manualFormErrors = validateManagedPageSource({
+      contract: manualFormContract,
+      generatedPagePath: manualFormGeneratedPagePath,
+      targetRoot: tempRoot,
+    })
+    const manualFormProofMessage = findMarkerMessage(
+      manualFormErrors,
+      CRITICAL_FORM_PROOF_MARKER
+    )
+
+    if (!manualFormProofMessage) {
+      throw new Error(
+        'Manual form carrier proof regression was not detected. The source guard should fail when an edit page declares form-body but implements it with manual labels and primitive inputs.'
+      )
+    }
+
     console.log('[verify-managed-page-source-guard-regressions] PASS')
     console.log(`- area-point spread regression caught: ${areaPointMessage}`)
     console.log(`- localized chart-label color regression caught: ${labelAsColorMessage}`)
@@ -1082,6 +1711,14 @@ async function main() {
     console.log(`- hidden SchemaDescriptionsBridge default regression caught: ${detailHiddenSchemaDefaultsMessage}`)
     console.log(`- pseudo TablePageFrame shell regression caught: ${shellAuthenticityMessage}`)
     console.log(`- table body inset regression caught: ${tableFrameInsetMessage}`)
+    console.log(`- DOM alias managed shell regression caught: ${domAliasMessage}`)
+    console.log(`- hidden managed shell proof regression caught: ${hiddenShellMessage}`)
+    console.log(`- self-provenance host archetype regression caught: ${selfHostArchetypeMessage}`)
+    console.log(`- unknown host adapter registry regression caught: ${unknownAdapterMessage}`)
+    console.log(`- local bypass containment regression caught: ${invalidContainmentMessage}`)
+    console.log(`- manual query-filter carrier proof regression caught: ${manualFilterProofMessage}`)
+    console.log(`- manual detail carrier proof regression caught: ${manualDetailProofMessage}`)
+    console.log(`- manual form carrier proof regression caught: ${manualFormProofMessage}`)
   } finally {
     await removeTree(tempRoot)
   }

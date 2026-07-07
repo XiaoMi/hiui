@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-page-workflow",
+  "notes": [
+    "The public preview bundle resolves all skill sources from public GitHub clone URLs plus explicit ref/path entries.",
+    "Until upstream merge is complete, preview refs may point to upstream pull-request refs that carry the required skill manifests."
+  ],
+  "testedBundles": [
+    {
+      "bundleVersion": "1.0.1",
+      "channel": "canary",
+      "skills": {
+        "hiui-page-workflow": "1.0.1",
+        "refine-product-requirements": "1.0.0",
+        "hiui-design": "1.0.0",
+        "ux-walkthrough": "1.0.1"
+      },
+      "status": "planned"
+    }
+  ]
+}

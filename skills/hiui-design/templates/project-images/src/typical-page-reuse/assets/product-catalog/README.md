@@ -2,6 +2,8 @@
 
 把后续 `hiui-design` 生成页面要复用的真实商品图放在这里。
 
+当前 skill 只下发图片接线骨架；归档里不包含任何内置图片文件。
+
 接入步骤：
 
 1. 将真实图片文件放入当前目录
@@ -13,7 +15,7 @@
 
 - 业务页不允许回退到临时插画
 - 业务页不允许回退到内联 `data:image`
-- 当前页面如果缺少真实图片，会自动不显示图片区
+- 当前页面如果缺少真实图片，会自动隐藏图片区
 
 ## 推荐文件名
 
@@ -43,23 +45,7 @@
 - `washer.png`
 - `water-purifier.png`
 
-## 当前这批图片建议优先放入
+## 默认状态
 
-基于你已经提供的图片，当前最优先的是：
-
-- `phone-family.png`
-- `phone-premium.png`
-- `phone.png`
-- `earbuds.png`
-- `laptop.png`
-- `tablet.png`
-- `tv.png`
-- `refrigerator.png`
-- `air-conditioner.png`
-- `washer.png`
-- `water-purifier.png`
-- `robot-vacuum.png`
-- `range-hood.png`
-- `smart-lock.png`
-- `router.png`
-- `smart-display.png`
+- 目录骨架存在，但允许暂时没有任何真实图片文件
+- 页面命中图片位时，应优先复用项目真实图片；如果当前没有真实图片，则隐藏图片区，而不是回退到包内示意图、临时插画或内联图片

@@ -1,112 +1,153 @@
 ---
 name: ux-walkthrough
-version: 1.0.0
+version: 1.0.1
 description: 体验走查 skill。适用于代码库、URL、截图三种输入，输出结构化体验问题报告，并同步生成本地 docx 报告。触发词：体验走查、UX review、交互走查、界面审查、体验问题。
 ---
 
 # UX Walkthrough
 
-对产品进行系统性体验走查，输出结构化体验问题报告，并生成本地 `.docx` 报告。
+对产品进行系统性体验走查，输出结构化报告与生成本地 `.docx`。
 
-## 角色定位
+## 路径约定
 
-你是资深 B 端体验设计专家。目标不是罗列主观意见，而是基于统一标准识别高价值问题，并给出可执行的改进建议。
-
-## 判断标准
-
-以 HiUI 设计原则为主标准。  
-Nielsen、WCAG、品牌规范等只作为辅助判断依据，不能覆盖主标准。  
-若多套标准冲突，以“是否影响效率、理解成本、错误恢复、专业感”为最终判断依据。
-
-## 输入识别
-
-- 本地项目目录：进入代码走查
-- `http/https` 链接：进入 URL 走查
-- 图片：进入截图走查
-- 无法判断：只问一句最小必要澄清
-
-## 执行主线
-
-主流程按 `docs/onboarding/execution-sop.md` 执行。只要未通过其中的阶段门禁，就不能把任务说成“已完整完成”。
-
-### 先做前置检查
+**`<SKILL_ROOT>`** = 本 skill 目录的绝对路径。
 
 ```bash
-python3 {SKILL_DIR}/scripts/precheck_walkthrough.py <输入> ... --json
+python3 <SKILL_ROOT>/scripts/<脚本>.py ...
 ```
 
-- 一次性确认模式、代码扫描门禁和证据门禁
-- 优先读取 `next_action`
-- 若返回 `continue_walkthrough`，才进入正式问题判断与报告编写
+## 角色与标准
 
-### 再做正式交付
+- 角色：资深 B 端体验设计专家；给可执行建议，不是主观吐槽
+- 主标准：`references/ux-checklist.md`（UX 体验规则）
+- HiUI 典型页：`references/hiui-template-baseline.md`（Delta 走查；模板库全部典型页型，见该文页型索引）
+- 辅助：Nielsen、WCAG、品牌规范；冲突时以效率、理解成本、错误恢复、专业感为准
+- 优先级：以 `references/severity-rubric.md` 为准，不用 checklist 预设 P 级代替
 
-- 证据门禁通过后，再进入正式问题判断与报告编写
-- 先输出完整报告，再整理 `report.json`
-- 最后调用 `scripts/generate_docx.py` 生成本地 `.docx`
+## 输入 → 模式
 
-### 只在排查问题时，才拆到底层脚本
+| 输入 | 模式 | 文档 |
+|------|------|------|
+| 本地项目目录 | `code` | `references/mode.md#code` |
+| `http(s)` URL | `url` | `references/mode.md#url` |
+| 图片 | `screenshot` | `references/mode.md#screenshot` |
+
+无法判断时，只问一句最小必要澄清。
+
+---
+
+## 三阶段主流程
+
+```
+A 前置检查 → B 走查与报告 → C 生 docx 与完成自检
+```
+
+### 阶段 A：前置检查
 
 ```bash
-python3 {SKILL_DIR}/scripts/detect_input_mode.py <输入> --json
-python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source <code|url|screenshot> ... --json
+python3 <SKILL_ROOT>/scripts/precheck_walkthrough.py <输入> --json
 ```
 
-代码仓库若是 monorepo、微前端或多包结构，可补充：
+- 只读 `next_action`、`mode`、`status`、`gate`；code 模式额外读 `runtime_probe`
+- `continue_walkthrough` → 进入 B；否则补证据 / 澄清 / 失败说明，不写完整报告
+- code 输入且 gate 通过后，`next_action` 可能被 runtime 探测改写：
+  - `try_url_walkthrough` → 对 `runtime_probe.reachable_urls[0]` 再跑 URL precheck，阶段 B 按 url 走
+  - `start_dev_server_then_url_walkthrough` → 先启动 `runtime_probe.suggested_dev_command`；成功则 URL precheck，失败则收窄 code
+  - `fallback_code_walkthrough` → 阶段 B 按 code 走，但须遵守体验边界（见 `mode-code.md` § 体验边界）
+
+### 阶段 B：走查与报告
+
+**code 运行时优先（混合走查）：**
+
+1. 若 A 返回 `try_url_walkthrough` 或启动 dev 后拿到本地 URL → 切换 url 模式：浏览器截图 + 标注图，`report.json` 的 `source=url`
+2. 若 dev 启动失败或 A 返回 `fallback_code_walkthrough` → `source=code`，附录注明「未启动项目，结论基于代码推断」；只强报 code 可确定的体验问题
+
+**顺序（不可变）：**
+
+0. HiUI 前置（若适用）：识别页型 → 读 `references/hiui-template-baseline.md` 对应节（页型索引列全量页型）
+1. 逐项过 `references/ux-checklist.md`；每命中一条且需参考时，读该条 `related_examples` 指向的锚点（禁止通读 `issue-examples/*.md` 全文）；HiUI 页先问是否与 baseline 合规默认一致
+2. `references/ignore-list.md`（含 §5 HiUI）→ 去掉误报
+3. `references/severity-rubric.md` → 定 P0/P1/P2
+
+**输出：** 对话中完整 Markdown 报告（`references/report-template.md`）
+
+- 禁止在交付报告中输出「HiUI 模板对齐」模块（HiUI Delta 仅走查阶段内部使用；issue 描述可保留 `[HiUI-偏离]` / `[业务域]` 标签）
+- 标题格式：`序号. [P级]标题`
+- URL/截图模式：确定 issue 须有标注图与 `images[].bbox`
+- 证据不足 → 标「待确认 / 待交互验证」，不写确定问题；仍不足则回到阶段 A，不硬写完整报告
+
+### 阶段 C：生 docx 与完成自检
+
+1. 标注（screenshot / url 必做）：禁止手估 `--box`；须用 `annotate_issue.py`（或 `locate_in_screenshot.py` + `preview_bbox.py` + `annotate.py`），输出到 `output/annotations/*-annotated.png`（流程见 `annotation-style.md` § 标注流程）
+2. 按 `references/report-json.md` 整理 `report.json`；URL/截图模式的 `issues[].images[]` 须指向标注版、设 `"annotated": true`，并记录 `"bbox": [x,y,w,h]`
+3. 校验标注门禁：
 
 ```bash
-python3 {SKILL_DIR}/scripts/precheck_walkthrough.py --repo-path <仓库根目录> --entry packages/web --json
+python3 <SKILL_ROOT>/scripts/validate_report_annotations.py --report-json <report.json> --json
 ```
 
-## 分阶段读取
+4. 执行：
 
-不要在一开始一次性展开全部参考文件，按阶段读取即可：
+```bash
+python3 <SKILL_ROOT>/scripts/generate_docx.py \
+  --report-json <report.json> \
+  --output <SKILL_ROOT>/output/<项目名>-ux-report-<YYYYMMDD>.docx \
+  --json
+```
 
-1. 启动阶段：
-   - `docs/onboarding/execution-sop.md`
-   - 对应模式说明：
-     - 代码走查：`references/mode-code.md`
-     - URL 走查：`references/mode-url.md`
-     - 截图走查：`references/mode-screenshot.md`
-2. 问题判断阶段：
-   - `references/ux-checklist.md`
-   - `references/issue-examples.md`
-   - `references/severity-rubric.md`
-   - `references/ignore-list.md`
-3. 交付阶段：
-   - `references/report-template.md`
-   - `references/report-json.md`
-   - `references/report-docx.md`
+- 命名、嵌图与交付边界：`references/report-json.md` § DOCX
+- screenshot / url：`generate_docx.py` 默认校验标注；未通过则不得 success 完成判断
+- 标注图：`references/annotation-style.md`（先 § 标注流程，再 § 样式）；推荐工具：`annotate_issue.py`
+- 失败 → 说明卡住位置和直接原因，不能说已完整完成
 
-## 关键门禁
+---
 
-- 未完成模式判定前，不进入正式走查
-- 未满足证据门禁前，不输出完整报告
-- 未生成本地 `.docx` 前，不把任务说成完整完成
-- 命中固定失败出口时，直接明确说明原因，不继续假装任务还能完整交付
+## 完成定义（缺一不可）
 
-## 输出要求
+1. A：precheck 已通过，或已明确说明无法继续的原因
+2. B：对话中已输出完整报告（非摘要）
+3. C：success 路径 docx 已 `generated`；失败路径已说明失败阶段和原因
 
-- 最终交付必须包含两份内容：对话中的完整报告 + 本地 `.docx` 报告
-- 对话中应直接展示完整报告正文，不要只给摘要
-- 每个问题标题前必须带序号，问题标题格式固定为：`序号. [P级]标题`
-- URL 走查和截图走查中，截图证据是完整交付的必要条件
-- 正文结构、字段写法和对话展示方式统一按 `references/report-template.md` 执行
-- 生成本地 `.docx` 时，先整理结构化 `report.json`，再调用 `scripts/generate_docx.py`
-- 本地 `.docx` 的文件命名、嵌图和无截图处理统一按 `references/report-docx.md` 执行
-- 若需生成标注图，优先按 `references/annotation-style.md` 执行，必要时可直接调用 `scripts/annotate.py`
+已分析 / 已出报告 / 已生 json 均不等于完成，docx 未生成不算完整完成。
 
-## 参考文件导航
+---
 
-- `docs/onboarding/execution-sop.md`：阶段化执行协议
-- `references/mode-code.md`：代码走查模式说明
-- `references/mode-url.md`：URL 走查模式说明
-- `references/mode-screenshot.md`：截图走查模式说明
-- `references/severity-rubric.md`：P0 / P1 / P2 判断表
-- `references/ux-checklist.md`：完整检查项
-- `references/issue-examples.md`：问题示例库
-- `references/ignore-list.md`：忽略问题清单
-- `references/report-template.md`：报告模板
-- `references/report-json.md`：结构化 report.json 约定
-- `references/report-docx.md`：本地 docx 报告生成要求
-- `references/annotation-style.md`：问题标注图样式规范
+## 分阶段读文档
+
+| 阶段 | 必读 | 按需 |
+|------|------|------|
+| A | `mode.md` 对应锚点 | — |
+| B | hiui-template-baseline（HiUI 时）, checklist, ignore-list, severity-rubric | — |
+| C | report-template, report-json, annotation-style | `annotate_issue.py`, `validate_report_annotations.py` |
+
+**默认不读：** 底层脚本源码及与单次走查无关的维护说明
+
+---
+
+## 底层脚本（仅单层调试）
+
+```bash
+python3 <SKILL_ROOT>/scripts/detect_input_mode.py <输入> --json
+python3 <SKILL_ROOT>/scripts/probe_dev_server.py <项目路径> --json
+python3 <SKILL_ROOT>/scripts/check_evidence_gate.py --source <mode> ... --json
+```
+
+---
+
+## 交付前自检
+
+- [ ] 报告完整，非摘要
+- [ ] 每问题有：位置、描述、改进建议
+- [ ] 标题：`序号. [P级]标题`
+- [ ] URL/截图：每问题有标注图，且 `images[].bbox` 已记录
+- [ ] `validate_report_annotations.py` 已通过
+- [ ] docx 已生成，或已说明失败原因
+- [ ] 末尾附 docx 绝对路径（success 时）
+
+---
+
+## 附录
+
+- 检查清单：`references/ux-checklist.md`
+- 报告模板：`references/report-template.md`
+- 标注规范：`references/annotation-style.md`

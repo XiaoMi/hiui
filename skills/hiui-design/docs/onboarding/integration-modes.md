@@ -27,6 +27,7 @@
 - 默认不把模版页面、route gallery、宿主桥接文件同步到目标项目 `src/`
 - 默认不自动 patch 路由
 - 默认不自动 patch Vite alias
+- `project integration ready` 只表示项目接入、依赖与宿主前提已就绪；某个典型页是否能命中标准 `page-component`，由 planner 在页面阶段按资产事实单独判断
 
 生成方式：
 
@@ -41,7 +42,7 @@
 
 - `rules-only` 不能只判页型，不判组件落点
 - 进入真实业务页生成前，先用 `rules-only-component-matrix.md` 明确页头、筛选区、表格区、分页区、底栏分别落到哪一类 HiUI 5 组件语义或宿主基座
-- 如果目标项目命中旧宿主兼容模式，还要把该矩阵与 `legacy-host-compatibility.md` 一起读，写清楚当前页映射到宿主哪个页面基座
+- 如果目标项目后续被提升为 `legacy-host-compatible`（旧宿主桥接接入模式），则不再按本节 `rules-only` 口径执行；改把该矩阵与 `legacy-host-compatibility.md` 一起读，写清楚当前页映射到宿主哪个页面基座
 
 参考示例：
 
@@ -64,6 +65,7 @@
 - 可选自动 patch Vite alias
 - 可对接 `typical-page:doctor` 和 `SMOKE_REPORT.md` 做示例页基线联调
 - 若目标项目被识别为 `existing-system`，即使显式使用 `host-integration`，也只同步 smoke/gallery 资产与桥接示例，不自动并入正式路由树
+- `project integration ready` 只表示 host assets / 依赖 / 路由接线已完成；普通典型页是否可直接走 `page-component + slot-fill`，仍由 planner 的资产解析结果决定
 
 使用方式：
 
@@ -72,20 +74,21 @@
 - `bootstrap-target-project.mjs --mode host-integration`
 - 或脚本别名：`typical-page:apply:host-assets`
 
-## 显式模式：`legacy-host-compatible`
+## 显式模式：`legacy-host-compatible`（旧宿主桥接接入模式）
 
 适用：
 
 - 目标项目主运行时仍是 React 16/17 或等价旧宿主
 - 目标项目以 `hiui5` alias / 本地封装的方式局部接入 HiUI 5
-- Module Federation / 老后台宿主不允许直接挂标准 `@hiui-design/typical-page-shells` 运行时
+- Module Federation / 老后台宿主主树默认不预设可直接承载标准 `@hiui-design/typical-page-shells` 运行时
 
 行为：
 
 - 继续保留 `.local-context/hiui-design/` 与 reference-only 示例页
-- 不补标准 `@hiui-design/typical-page-shells` 依赖线，不要求安装标准壳运行时
+- 不自动补标准 `@hiui-design/typical-page-shells` 依赖线，不把标准壳运行时当作 legacy 主树的默认接入前提
 - 不同步 route gallery / 宿主桥接文件到目标项目 `src/`
-- 生成时继续使用页型、结构节奏、contract 与 doctor 约束，但实现层必须回到宿主自己的布局/容器/`hiui5` alias / 本地组件
+- 生成时继续使用页型、结构节奏、contract 与 doctor 约束；普通典型页主链路仍优先 `pageComponent + runtimeAdapterProof`，而 legacy 主树里的具体运行时承载默认回到宿主自己的布局/容器/`hiui5` alias / 本地组件。若已隔离出独立现代运行时入口，则改走 `isolated-standard-shell`
+- 该模式下 `project integration ready` 还必须覆盖 project-certified carrier / runtime bridge 这类项目级桥接事实；这是 legacy 独有的接入门禁，不向 `rules-only` / `host-integration` 扩散
 
 使用方式：
 

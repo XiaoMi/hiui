@@ -10,7 +10,6 @@ UX Walkthrough - 统一前置检查脚本
 用法：
 - python3 precheck_walkthrough.py <输入> --json
 - python3 precheck_walkthrough.py --repo-path /path/to/repo --json
-- python3 precheck_walkthrough.py --repo-path /path/to/repo --entry packages/web --json
 - python3 precheck_walkthrough.py --url https://example.com --current-url https://example.com --page-title 标题 --json
 - python3 precheck_walkthrough.py --image-path a.png --image-path b.png --json
 """
@@ -29,6 +28,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 DETECT_SCRIPT = SCRIPT_DIR / "detect_input_mode.py"
 SCAN_SCRIPT = SCRIPT_DIR / "scan-pages.py"
 GATE_SCRIPT = SCRIPT_DIR / "check_evidence_gate.py"
+PROBE_SCRIPT = SCRIPT_DIR / "probe_dev_server.py"
 PYTHON_BIN = sys.executable or "python3"
 
 
@@ -45,7 +45,6 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="统一执行 ux-walkthrough 的前置检查")
     parser.add_argument("input", nargs="?", default="")
     parser.add_argument("--repo-path", default="")
-    parser.add_argument("--entry", default="")
     parser.add_argument("--url", default="")
     parser.add_argument("--image-path", action="append", default=[])
     parser.add_argument("--project", default="")
@@ -100,8 +99,6 @@ def _run_detect(args: argparse.Namespace) -> dict:
 
     if input_kind == "repo":
         command.extend(["--repo-path", value])
-        if args.entry.strip():
-            command.extend(["--entry", args.entry.strip()])
     elif input_kind == "url":
         command.extend(["--url", value])
     elif input_kind == "image":
@@ -120,19 +117,18 @@ def _run_detect(args: argparse.Namespace) -> dict:
         "ok": False,
         "script_exit_code": completed.returncode,
         "should_continue": False,
+        "should_report_completion": False,
         "status": "needs_input",
         "stderr": (completed.stderr or "").strip(),
         "stdout": (completed.stdout or "").strip(),
     }
 
 
-def _run_scan(project_path: str, entry: str = "") -> dict:
+def _run_scan(project_path: str) -> dict:
     with tempfile.NamedTemporaryFile(prefix="uxw-scan-", suffix=".json", delete=False) as handle:
         output_path = Path(handle.name)
 
     command = [PYTHON_BIN, str(SCAN_SCRIPT), project_path, "--output", str(output_path)]
-    if entry.strip():
-        command.extend(["--entry", entry.strip()])
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
 
     scan_json: dict = {}
@@ -152,6 +148,44 @@ def _run_scan(project_path: str, entry: str = "") -> dict:
         "succeeded": completed.returncode == 0 and bool(scan_json),
         "summary": summary if isinstance(summary, dict) else {},
     }
+
+
+def _run_runtime_probe(project_path: str) -> dict:
+    command = [PYTHON_BIN, str(PROBE_SCRIPT), project_path, "--json"]
+    result, completed = _run_json_command(command)
+    if result:
+        return result
+
+    return {
+        "attempted": True,
+        "exit_code": completed.returncode,
+        "fallback_reason": "probe_script_failed",
+        "message": "dev server 探测脚本没有返回可解析 JSON，默认收窄 code 走查。",
+        "next_action": "fallback_code_walkthrough",
+        "ok": False,
+        "runtime_available": False,
+        "reachable_urls": [],
+        "stderr": (completed.stderr or "").strip(),
+        "stdout": (completed.stdout or "").strip(),
+    }
+
+
+def _apply_code_runtime_probe(result: dict, project_path: str) -> None:
+    probe_result = _run_runtime_probe(project_path)
+    result["runtime_probe"] = probe_result
+
+    gate_ok = bool(result.get("ok"))
+    gate_continue = str(result.get("next_action", "")).strip() == "continue_walkthrough"
+    if not gate_ok or not gate_continue:
+        return
+
+    runtime_action = str(probe_result.get("next_action", "")).strip()
+    runtime_message = str(probe_result.get("message", "")).strip()
+    if runtime_action:
+        result["next_action"] = runtime_action
+    if runtime_message:
+        result["message"] = runtime_message
+    result["precheck_stage"] = "runtime_probe"
 
 
 def _run_gate(args: argparse.Namespace, source: str, scan: dict | None = None) -> dict:
@@ -206,6 +240,7 @@ def _run_gate(args: argparse.Namespace, source: str, scan: dict | None = None) -
         "ok": False,
         "script_exit_code": completed.returncode,
         "should_continue": False,
+        "should_report_completion": False,
         "source": source,
         "status": "needs_input",
         "stderr": (completed.stderr or "").strip(),
@@ -218,7 +253,6 @@ def _base_result(args: argparse.Namespace, detect_result: dict) -> dict:
         "input": {
             "input": args.input.strip(),
             "repo_path": args.repo_path.strip(),
-            "entry": args.entry.strip(),
             "url": args.url.strip(),
             "image_paths": [value.strip() for value in args.image_path if value.strip()],
             "project": args.project.strip(),
@@ -229,6 +263,7 @@ def _base_result(args: argparse.Namespace, detect_result: dict) -> dict:
         "ok": bool(detect_result.get("ok", False)),
         "precheck_stage": "detect",
         "should_continue": bool(detect_result.get("should_continue", False)),
+        "should_report_completion": bool(detect_result.get("should_report_completion", False)),
         "source": str(detect_result.get("mode", "")).strip(),
         "status": str(detect_result.get("status", "")).strip(),
     }
@@ -261,6 +296,7 @@ def build_result(args: argparse.Namespace) -> dict:
                 "ok": bool(detect_result.get("ok", False)),
                 "precheck_stage": "detect",
                 "should_continue": bool(detect_result.get("should_continue", False)),
+                "should_report_completion": bool(detect_result.get("should_report_completion", False)),
                 "source": mode if mode in {"code", "url", "screenshot"} else "",
                 "status": detect_status or "needs_input",
             }
@@ -277,14 +313,8 @@ def build_result(args: argparse.Namespace) -> dict:
 
     scan_result: dict | None = None
     if mode == "code":
-        project_path = (
-            str(detect_result.get("repo_root", "")).strip()
-            or args.repo_path.strip()
-            or str(detect_result.get("path", "")).strip()
-            or args.input.strip()
-        )
-        entry = str(detect_result.get("entry", "")).strip() or args.entry.strip()
-        scan_result = _run_scan(project_path, entry)
+        project_path = str(detect_result.get("path", "")).strip() or args.repo_path.strip() or args.input.strip()
+        scan_result = _run_scan(project_path)
         result["scan"] = scan_result
 
     gate_result = _run_gate(args, mode, scan_result)
@@ -296,6 +326,7 @@ def build_result(args: argparse.Namespace) -> dict:
             "ok": bool(gate_result.get("ok", False)),
             "precheck_stage": "gate",
             "should_continue": bool(gate_result.get("should_continue", False)),
+            "should_report_completion": bool(gate_result.get("should_report_completion", False)),
             "source": str(gate_result.get("source", mode)).strip(),
             "status": str(gate_result.get("status", "")).strip() or "needs_input",
         }
@@ -308,6 +339,11 @@ def build_result(args: argparse.Namespace) -> dict:
         result["failure_reason"] = gate_result["failure_reason"]
     if gate_result.get("failure_detail"):
         result["failure_detail"] = gate_result["failure_detail"]
+
+    if mode == "code" and bool(result.get("ok")) and str(result.get("next_action", "")).strip() == "continue_walkthrough":
+        project_path = str(detect_result.get("path", "")).strip() or args.repo_path.strip() or args.input.strip()
+        if project_path:
+            _apply_code_runtime_probe(result, project_path)
 
     return result
 

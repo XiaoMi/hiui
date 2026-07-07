@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "host-qualification-facts.v1",
+  "status": "ready",
+  "statusReasons": [],
+  "automationLevel": "script-derived",
+  "freshness": {"status": "fresh", "staleReasons": []},
+  "modeLock": {"value": "legacy-host-compatible", "sourceType": "mode-lock", "sourcePath": ".local-context/hiui-design/outputs/project-mode.json", "confidence": "high", "verified": true},
+  "componentQualification": {
+    "hiuiV5Available": {"value": false, "sourceType": "package-json", "sourcePath": "package.json", "confidence": "high", "verified": true},
+    "allowedComponentSource": {"value": "local-adapter", "sourceType": "script-output", "sourcePath": ".local-context/hiui-design/outputs/host-facts.json", "outputRef": {"type": "file", "path": ".local-context/hiui-design/outputs/host-facts.json", "hash": "sha256:test", "summary": "adapter ok", "exitCode": 0}, "confidence": "high", "verified": true},
+    "adapterExists": {"value": true, "sourceType": "file", "sourcePath": ".local-context/hiui-design/src/adapter", "confidence": "high", "verified": true}
+  },
+  "translationMapRefs": {
+    "shellCarrier": {"value": "host-slot", "sourceType": "translation-map", "sourcePath": ".local-context/hiui-design/outputs/translation-map.json", "confidence": "high", "verified": true},
+    "contentSlotOwner": {"value": "host", "sourceType": "translation-map", "sourcePath": ".local-context/hiui-design/outputs/translation-map.json", "confidence": "high", "verified": true},
+    "mainScrollOwner": {"value": "local", "sourceType": "translation-map", "sourcePath": ".local-context/hiui-design/outputs/translation-map.json", "confidence": "high", "verified": true},
+    "footerOwner": {"value": "local-sticky-footer", "sourceType": "translation-map", "sourcePath": ".local-context/hiui-design/outputs/translation-map.json", "confidence": "high", "verified": true},
+    "routeOwnership": {"value": "host-route", "sourceType": "runtime-contract", "sourcePath": ".local-context/hiui-design/outputs/runtime-contract.json", "confidence": "high", "verified": true}
+  },
+  "preGenerationQualification": {"hostQualificationStatus": {"value": "passed", "sourceType": "script-output", "sourcePath": ".local-context/hiui-design/outputs/host-facts.json", "confidence": "high", "verified": true}},
+  "postGenerationIsomorphism": {"status": "not-run-before-generation", "owner": "preflight-or-formal-acceptance"},
+  "unverifiedObservations": [],
+  "blockingIssues": [],
+  "blockingReasons": [],
+  "warnings": []
+}

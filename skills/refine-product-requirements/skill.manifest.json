@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "refine-product-requirements",
+  "version": "1.0.0",
+  "distributionScope": "single-skill",
+  "entry": "SKILL.md",
+  "requiredPaths": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "references/delivery-modes.md",
+    "references/confirmation-model.md",
+    "references/output-templates.md",
+    "references/hiui-handoff-template.md",
+    "references/product-prd-template.md",
+    "references/project-context-loading.md",
+    "references/forward-test-examples.md"
+  ],
+  "publicContracts": {
+    "files": [
+      "SKILL.md",
+      "references/delivery-modes.md",
+      "references/confirmation-model.md",
+      "references/output-templates.md",
+      "references/hiui-handoff-template.md",
+      "references/product-prd-template.md",
+      "references/project-context-loading.md",
+      "references/forward-test-examples.md"
+    ],
+    "directories": [
+      "agents",
+      "references"
+    ]
+  },
+  "dependencies": []
+}
