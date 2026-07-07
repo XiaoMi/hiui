@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "final-page-report.v1",
+  "contractSchemaVersion": "final-report-contract.v1",
+  "sections": [
+    "pageStatus",
+    "preflightStatus",
+    "formalAcceptanceStatus",
+    "usageStatsStatus"
+  ],
+  "statuses": {
+    "pageStatus": "generated",
+    "preflightStatus": "passed",
+    "usageStatsStatus": "completed",
+    "formalAcceptanceStatus": "passed"
+  },
+  "productionLine": {
+    "status": "passed",
+    "policy": "generate-from-managed-mold-and-fill-business-slots-only",
+    "moldId": "table-stat.managed-mold.v1",
+    "startFrom": "template",
+    "requiredGates": [
+      "slot-gate",
+      "preflight"
+    ],
+    "sourceProofLevel": "slot-boundary-proof",
+    "blockingIssues": []
+  },
+  "designerSummary": {
+    "schemaVersion": "designer-summary.v1",
+    "optional": true,
+    "pageType": "数据统计表",
+    "mold": "table-stat.managed-mold.v1",
+    "structure": [
+      "页头",
+      "指标区",
+      "查询区",
+      "数据表格",
+      "分页区"
+    ],
+    "editableAreas": [
+      "页面标题",
+      "页头右侧操作/信息",
+      "筛选字段",
+      "指标卡",
+      "表格列",
+      "行操作",
+      "示例数据",
+      "接口绑定"
+    ],
+    "lockedAreas": [
+      "页面壳",
+      "页头",
+      "白底主体",
+      "指标区",
+      "查询区",
+      "数据表格",
+      "分页区",
+      "主滚动容器"
+    ],
+    "keyInteractions": [],
+    "acceptance": {
+      "pageStatus": "generated",
+      "preflightStatus": "passed",
+      "formalAcceptanceStatus": "passed",
+      "usageStatsStatus": "completed"
+    },
+    "remainingDesignRisks": [],
+    "questionsForDesigner": []
+  },
+  "evidence": {
+    "executedActions": [
+      "start-page-table-stat",
+      "preflight-table-stat",
+      "formal-source-gate",
+      "formal-doctor",
+      "formal-finalize-page",
+      "preview-ready-usage"
+    ],
+    "changedFiles": [
+      "src/pages/orders/index.tsx",
+      ".local-context/hiui-design/contracts/src-pages-orders-index.json"
+    ],
+    "validationCommands": [
+      {
+        "command": "npm run typical-page:preflight -- --page src/pages/orders/index.tsx --json",
+        "status": "passed"
+      },
+      {
+        "command": "npm run typical-page:source-gate -- --page src/pages/orders/index.tsx",
+        "status": "passed"
+      },
+      {
+        "command": "npm run typical-page:preview-ready -- --page src/pages/orders/index.tsx",
+        "status": "passed"
+      }
+    ]
+  },
+  "risks": {
+    "blockingIssues": [],
+    "warnings": [],
+    "nextActions": []
+  },
+  "source": {
+    "planSchemaVersion": "page-task-plan.v1",
+    "preflightSchemaVersion": "preflight-report.v1",
+    "usageStatsStatus": "completed"
+  }
+}

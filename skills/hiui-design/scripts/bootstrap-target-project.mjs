@@ -34,7 +34,7 @@ Options:
   --install-timeout-ms  Timeout for dependency install command. Default: 60000
   --force       Overwrite synced asset files in host-integration mode.
   --skip-i18n-init  Skip automatic src/translation baseline provisioning.
-  --skip-project-images-init  Skip automatic src/typical-page-reuse/assets default product image pack provisioning.
+  --skip-project-images-init  Skip automatic src/typical-page-reuse/assets project image catalog scaffold provisioning.
 `)
 }
 
@@ -2017,6 +2017,18 @@ async function writeBootstrapSummary({
   referencePagesPathLabel,
 }) {
   const summaryPath = path.join(outputRoot, 'BOOTSTRAP_SUMMARY.md')
+  const projectModePath = path.join(targetRoot, '.local-context', 'hiui-design', 'outputs', 'project-mode.json')
+  const projectMode = {
+    mode,
+    source: 'bootstrap',
+    recommendedMode,
+    framework: hostProfile.framework,
+    projectType: hostProfile.projectType,
+    runtime: hostProfile.runtime,
+    routing: hostProfile.routing,
+    confirmedAt: new Date().toISOString(),
+    bootstrapSummary: path.relative(targetRoot, summaryPath),
+  }
   const lines = [
     '# Typical Page Reuse Bootstrap Summary',
     '',
@@ -2028,11 +2040,12 @@ async function writeBootstrapSummary({
     `- recommended strategy: ${hostProfile.strategy}`,
     `- recommended mode: ${recommendedMode}`,
     `- mode: ${mode}`,
+    `- project mode lock: ${path.relative(targetRoot, projectModePath)}`,
     ...(line ? [`- business line: ${line}`] : []),
     `- asset sync: ${syncStatus}`,
     `- package.json: ${packageResult.status}`,
     `- i18n baseline: ${i18nInitResult.status}`,
-    `- project image pack: ${projectImagesInitResult.status}`,
+    `- project image scaffold: ${projectImagesInitResult.status}`,
     `- style import: ${styleResult.status}`,
     `- app entry router: ${routerEntryResult.status}`,
     `- starter root styles: ${rootStyleResult.status}`,
@@ -2186,7 +2199,7 @@ async function writeBootstrapSummary({
       )
     }
   } else if (mode === 'legacy-host-compatible') {
-    lines.push('- This host was detected as a legacy compatibility runtime. Standard `@hiui-design/typical-page-shells` dependencies were intentionally not patched into package.json.')
+    lines.push('- This host was detected as a legacy compatibility runtime. The legacy host main tree was not auto-patched into a generic `@hiui-design/typical-page-shells` host-integration runtime; ordinary typical pages should instead follow the planner-selected carrier / runtimeAdapterProof path.')
   } else if (!installRequested) {
     lines.push('- Run your target project package manager install command after reviewing package.json changes.')
   }
@@ -2229,15 +2242,17 @@ async function writeBootstrapSummary({
     lines.push('- The target project already received the default locale resources, formatter bridge, and RTL baseline during bootstrap. Re-run `pnpm typical-page:i18n:init` or `npm run typical-page:i18n:init` only when you want to resync locale files or refresh the wrapper template.')
   }
   if (packageResult.addedScripts.includes('typical-page:images:init') || packageResult.status !== 'missing') {
-    lines.push('- The target project already received the default product image pack and registry baseline during bootstrap. Re-run `pnpm typical-page:images:init` or `npm run typical-page:images:init` only when you want to restore the baseline pack or seed a fresh project.')
+    lines.push('- The target project already received the project image catalog scaffold during bootstrap. Re-run `pnpm typical-page:images:init` or `npm run typical-page:images:init` only when you want to refresh the scaffold or seed a fresh project.')
   }
 
   if (mode === 'host-integration') {
-    lines.push('- If you used this advanced bootstrap/apply entry directly instead of `typical-page:designer-setup`, run `pnpm typical-page:doctor` or `npm run typical-page:doctor` before generating business pages.')
+    lines.push('- 接入阶段的 mode 已写入 project mode lock；后续页面生成默认读取并确认该 mode，不再重新判定接入模式。')
+    lines.push('- 页面生成前先运行 `pnpm typical-page:plan-page-task -- --json ...` 或 `npm run typical-page:plan-page-task -- --json ...` 获取机器计划；不要从父级工作区或 skill 源码目录手工拼流程。')
+    lines.push('- 接入阶段 doctor 已作为安装门槛；只有手工改宿主、依赖、路由或样式入口后，才需要重新执行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`。')
     lines.push(`- Review \`${path.join(outputRoot, 'SMOKE_REPORT.md')}\` and open the listed smoke pages before generating business pages.`)
     lines.push('- If the synced smoke/gallery assets drift behind the source-of-truth examples, refresh them with `pnpm typical-page:apply:host-assets:force` or `npm run typical-page:apply:host-assets:force`.')
-    lines.push('- Copy the closest page from `src/typical-page-reuse/pages/` and replace business fields only.')
-    lines.push('- Verify the result against `src/typical-page-reuse/CHECKLIST.md` before merging.')
+    lines.push('- 槽位型典型页默认复制最接近的 `src/typical-page-reuse/pages/*` / reference 示例并只替换业务槽位。')
+    lines.push('- 快速链路完成口径是当前页可预览、当前页 preflight 通过、lint / build 结果可解释；正式验收 / 发布时才追加 source-gate、doctor 与 finalize-page。')
   } else {
     lines.push('- No route gallery or host bridge files were wired into the target project source tree.')
     lines.push(`- A reference-only typical-page baseline was synced to \`${referencePagesPathLabel}\`. It is for generation guidance only, not for production routes or host bridging.`)
@@ -2248,22 +2263,25 @@ async function writeBootstrapSummary({
         ? '- When generating a page in this host, read `.local-context/hiui-design/rules/generation-rules.md`, then `rules/page-type-map.md`, then `docs/generation/legacy-host-compatibility.md`, then `docs/generation/figma-page-rules.md`, then the matched `docs/generation/figma-pages/*.md` chapter.'
         : '- When generating a page, first read `.local-context/hiui-design/rules/generation-rules.md`, then `rules/page-type-map.md`, then `docs/generation/figma-page-rules.md`, then the matched `docs/generation/figma-pages/*.md` chapter.'
     )
+    lines.push('- 接入阶段的 mode 已写入 project mode lock；后续页面生成默认读取并确认该 mode，不再重新判定接入模式。')
     lines.push('- Before generating a page, run `pnpm typical-page:select-archetype -- --page-type <id>` or the npm equivalent to lock the packaged example, mode template, and required regions/ownership contract.')
-    lines.push('- Then start the managed page with `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` so the file is born with source markers, root data attributes, and a started contract.')
+    lines.push('- Then plan the page with `pnpm typical-page:plan-page-task -- --page-type <id> --page <generated-page-path> --json`, and start the managed page with `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` so the file is born with source markers, root data attributes, and a started contract.')
     lines.push(`- Use \`${referencePagesPathLabel}\` as the default local reference template set. If that directory is removed manually, fall back to \`.local-context/hiui-design/examples/host-integration/src/pages/*\`.`)
     lines.push('- Before visual/detail polish, run `pnpm typical-page:preflight -- --page <generated-page-path>` so placeholder mappings, source marker gaps, and transitive import contamination fail early.')
-    lines.push('- Delivery only completes through `pnpm typical-page:finalize-page -- --page-type <id> --page <generated-page-path> --archetype <host-archetype-path> --region <name=target> ...`; `typical-page:write-contract` is maintenance-only.')
+    lines.push('- 快速链路完成口径是当前页可预览、当前页 preflight 通过、lint / build 结果可解释；正式验收 / 发布、结构修复或 ownership / marker 变化时才执行 `typical-page:finalize-page`。')
     lines.push(
       mode === 'legacy-host-compatible'
-        ? '- In legacy-host compatibility mode, do not import `@hiui-design/typical-page-shells`. Rebuild the page with the target project’s own layout/container abstractions and `hiui5` / local component set while preserving the same page type, white-body structure, and scroll-chain constraints.'
+        ? '- In legacy-host-compatible (legacy host bridge) mode, do not treat the legacy host main tree as a generic direct mount for `@hiui-design/typical-page-shells`. Ordinary typical pages may still use planner-selected page components through a project-certified carrier or runtimeAdapterProof-backed standard component; only ad hoc host-integration-style shell imports remain out of bounds for the legacy main tree. If you later isolate a dedicated modern runtime entry, re-evaluate standard shell imports there instead of in the host main tree.'
         : '- If the generated page imports `@hiui-design/typical-page-shells`, then add `@hiui-design/typical-page-shells/styles.css` and the Vite `@hi-ui/schema-types` alias in the target project.'
     )
     lines.push('- Only when you explicitly want a baseline gallery and host bridge demo, run `pnpm typical-page:apply:host-assets` or `npm run typical-page:apply:host-assets`.')
-    lines.push('- If you used this advanced bootstrap/apply entry directly instead of `typical-page:designer-setup`, run `pnpm typical-page:doctor` or `npm run typical-page:doctor` before generating business pages.')
+    lines.push('- 接入阶段 doctor 已作为安装门槛；只有手工改宿主、依赖、路由或样式入口后，才需要重新执行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`。')
   }
   lines.push('')
 
   await ensureDir(path.dirname(summaryPath))
+  await ensureDir(path.dirname(projectModePath))
+  await fs.writeFile(projectModePath, `${JSON.stringify(projectMode, null, 2)}\n`, 'utf8')
   await fs.writeFile(summaryPath, `${lines.join('\n')}\n`, 'utf8')
   return summaryPath
 }
@@ -2564,7 +2582,7 @@ async function main() {
     console.log(`- host adapter snippet: ${hostAdapterSnippetPath}`)
     console.log(`- package.json: ${packageResult.status}`)
     console.log(`- i18n baseline: ${i18nInitResult.status}`)
-    console.log(`- project image pack: ${projectImagesInitResult.status}`)
+    console.log(`- project image scaffold: ${projectImagesInitResult.status}`)
     if (i18nInitResult.generatedPath) {
       console.log(`  generated: ${i18nInitResult.generatedPath}`)
     }

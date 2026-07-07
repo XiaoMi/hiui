@@ -9,8 +9,8 @@ function printUsage() {
   console.log(`Usage:
   node scripts/typical-page-preview-ready.mjs --contract-fixture quality-pass
 
-The public edition keeps only the stable fixture-backed JSON contract for preview-ready.
-Private usage telemetry and network reporting are intentionally excluded.
+The open-source package keeps only the stable fixture-backed JSON contract for preview-ready.
+Usage collection and network reporting are intentionally excluded.
 `)
 }
 
@@ -24,7 +24,7 @@ async function main() {
   const fixtureIndex = args.indexOf('--contract-fixture')
   const fixture = fixtureIndex >= 0 ? args[fixtureIndex + 1] : ''
   if (fixture !== 'quality-pass') {
-    console.error('The public edition supports typical-page-preview-ready only with --contract-fixture quality-pass.')
+    console.error('The open-source package supports typical-page-preview-ready only with --contract-fixture quality-pass.')
     process.exit(2)
   }
 

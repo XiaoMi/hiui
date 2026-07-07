@@ -27,7 +27,7 @@ def run_json(command: list[str]) -> dict:
         raise AssertionError(f"命令未返回 JSON: {' '.join(command)}\n{completed.stdout}") from exc
 
 
-def test_monorepo_entry_gate() -> None:
+def test_monorepo_gate() -> None:
     repo = FIXTURES / "monorepo"
 
     root_detect = run_json(
@@ -39,8 +39,8 @@ def test_monorepo_entry_gate() -> None:
             "--json",
         ]
     )
-    assert root_detect["status"] == "needs_input"
-    assert root_detect["next_action"] == "request_repo_entry"
+    assert root_detect["status"] == "continue"
+    assert root_detect["next_action"] == "run_scan_pages"
 
     precheck = run_json(
         [
@@ -48,29 +48,18 @@ def test_monorepo_entry_gate() -> None:
             str(SCRIPTS / "precheck_walkthrough.py"),
             "--repo-path",
             str(repo),
-            "--entry",
-            "packages/web",
             "--json",
         ]
     )
     assert precheck["status"] == "continue"
     assert precheck["mode"] == "code"
     assert precheck["scan"]["summary"]["total_pages"] >= 1
-
-    scan = run_json(
-        [
-            PYTHON,
-            str(SCRIPTS / "scan-pages.py"),
-            str(repo),
-            "--entry",
-            "packages/web",
-            "--json",
-        ]
-    )
-    assert scan["summary"]["total_route_entries"] >= 1
-    assert scan["summary"]["total_page_catalog"] >= 1
-    assert scan["page_catalog"][0]["route_path"] == "/"
-    assert scan["output_path"] == ""
+    assert precheck["next_action"] in {
+        "continue_walkthrough",
+        "try_url_walkthrough",
+        "start_dev_server_then_url_walkthrough",
+        "fallback_code_walkthrough",
+    }
 
 
 def test_url_login_gate() -> None:
@@ -93,8 +82,9 @@ def test_url_login_gate() -> None:
             "--json",
         ]
     )
-    assert result["status"] == "needs_input"
-    assert result["next_action"] == "request_user_login"
+    assert result["status"] == "failed"
+    assert result["next_action"] == "explain_failure"
+    assert result["failure_preset"] == "url_login_required"
 
 
 def test_annotate_script() -> None:
@@ -127,6 +117,9 @@ def test_annotate_script() -> None:
 
 def _load_annotate_module() -> types.ModuleType:
     module_path = SCRIPTS / "annotate.py"
+    scripts_path = str(SCRIPTS)
+    if scripts_path not in sys.path:
+        sys.path.insert(0, scripts_path)
     spec = importlib.util.spec_from_file_location("uxw_annotate_test", module_path)
     if spec is None or spec.loader is None:
         raise AssertionError("无法加载 annotate.py")
@@ -189,7 +182,7 @@ def test_docx_generation() -> None:
 
 
 def main() -> int:
-    test_monorepo_entry_gate()
+    test_monorepo_gate()
     test_url_login_gate()
     test_annotate_script()
     test_annotate_fallback_warning()

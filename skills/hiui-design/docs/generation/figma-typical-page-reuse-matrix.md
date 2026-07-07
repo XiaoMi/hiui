@@ -1,6 +1,6 @@
 <!-- Generated from rules/common.page-types.json by scripts/sync-manifest-docs.mjs. -->
 <!-- Do not edit page-type facts directly in this file. Canonical machine facts live in rules/common.page-types.json. -->
-<!-- Rules version: 0.10.0 (2026-06-09). -->
+<!-- Rules version: 1.0.0 (2026-06-09). -->
 
 # Figma Typical Page Reuse Matrix
 
@@ -22,16 +22,16 @@
 
 | 页型 | 默认 `nodeId` | 固定页壳 | 示例起点 |
 | --- | --- | --- | --- |
-| 数据统计表 | `<figma-node-id>` | `StatListPageFrame` | `examples/host-integration/src/pages/table-stat.tsx` |
+| 数据统计表 | `51257:107076` | `StatListPageFrame` | `examples/host-integration/src/pages/table-stat.tsx` |
 | 数据可视化 | `无独立默认节点` | `StatListPageFrame` | `examples/host-integration/src/pages/data-visualization.tsx` |
 | 普通表格 | `无独立默认节点` | `TablePageFrame` | `examples/host-integration/src/pages/basic-table.tsx` |
-| 树形表格 | `<figma-node-id>` | `TablePageFrame` | `examples/host-integration/src/pages/tree-table.tsx` |
-| 左树右表 | `<figma-node-id>` | `TreeSplitPageFrame` | `examples/host-integration/src/pages/inventory-split.tsx` |
-| 抽屉表单 | `<figma-node-id>` | `ProFormDrawer` | `examples/host-integration/src/pages/drawer-form.tsx` |
-| 抽屉详情 | `<figma-node-id>` | `ProDetailDrawer` | `examples/host-integration/src/pages/drawer-detail.tsx` |
+| 树形表格 | `51257:107314` | `TablePageFrame` | `examples/host-integration/src/pages/tree-table.tsx` |
+| 左树右表 | `51257:107202` | `TreeSplitPageFrame` | `examples/host-integration/src/pages/inventory-split.tsx` |
+| 抽屉表单 | `51728:128145` | `ProFormDrawer` | `examples/host-integration/src/pages/drawer-form.tsx` |
+| 抽屉详情 | `51728:131344` | `ProDetailDrawer` | `examples/host-integration/src/pages/drawer-detail.tsx` |
 | 异常反馈页 | `无独立默认节点` | `FeedbackStatePanel` | `examples/host-integration/src/pages/empty-state.tsx` |
-| 全页编辑 | `<figma-node-id>` | `ProEditPage` | `examples/host-integration/src/pages/full-page-edit.tsx` |
-| 全页详情 | `<figma-node-id>` | `ProDetailPage` | `examples/host-integration/src/pages/full-page-detail.tsx` |
+| 全页编辑 | `51257:102808` | `ProEditPage` | `examples/host-integration/src/pages/full-page-edit.tsx` |
+| 全页详情 | `52409:60782` | `ProDetailPage` | `examples/host-integration/src/pages/full-page-detail.tsx` |
 
 ## 使用顺序
 

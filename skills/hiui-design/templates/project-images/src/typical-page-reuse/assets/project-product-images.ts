@@ -1,20 +1,3 @@
-import airConditionerImage from './product-catalog/air-conditioner.png'
-import earbudsImage from './product-catalog/earbuds.png'
-import laptopImage from './product-catalog/laptop.png'
-import phoneFamilyImage from './product-catalog/phone-family.png'
-import phonePremiumImage from './product-catalog/phone-premium.png'
-import phoneImage from './product-catalog/phone.png'
-import rangeHoodImage from './product-catalog/range-hood.png'
-import refrigeratorImage from './product-catalog/refrigerator.png'
-import robotVacuumImage from './product-catalog/robot-vacuum.png'
-import routerImage from './product-catalog/router.png'
-import smartDisplayImage from './product-catalog/smart-display.png'
-import smartLockImage from './product-catalog/smart-lock.png'
-import tabletImage from './product-catalog/tablet.png'
-import tvImage from './product-catalog/tv.png'
-import washerImage from './product-catalog/washer.png'
-import waterPurifierImage from './product-catalog/water-purifier.png'
-
 export type ProjectProductImageKey =
   | 'phone'
   | 'phone-family'
@@ -46,6 +29,7 @@ export type ProjectProductImageEntry = {
   usage: string
 }
 
+// Suggested project-owned filenames. The skill ships no binary image assets here.
 export const expectedProductImageFilenames: Record<ProjectProductImageKey, string> = {
   phone: 'phone.png',
   'phone-family': 'phone-family.png',
@@ -98,24 +82,8 @@ export const projectProductImageCatalogEntries: ProjectProductImageEntry[] = [
   { key: 'water-purifier', aliases: ['purifier', 'water-filter'], usage: '净水设备' },
 ]
 
-const projectProductImageMap: Partial<Record<ProjectProductImageKey, string>> = {
-  phone: phoneImage,
-  'phone-family': phoneFamilyImage,
-  'phone-premium': phonePremiumImage,
-  tablet: tabletImage,
-  earbuds: earbudsImage,
-  laptop: laptopImage,
-  tv: tvImage,
-  refrigerator: refrigeratorImage,
-  'robot-vacuum': robotVacuumImage,
-  router: routerImage,
-  'range-hood': rangeHoodImage,
-  'smart-display': smartDisplayImage,
-  'smart-lock': smartLockImage,
-  'air-conditioner': airConditionerImage,
-  washer: washerImage,
-  'water-purifier': waterPurifierImage,
-}
+// The scaffold ships catalog metadata only. Projects add real assets here when available.
+const projectProductImageMap: Partial<Record<ProjectProductImageKey, string>> = {}
 
 export function getProjectProductImage(key?: ProjectProductImageKey) {
   if (!key) {

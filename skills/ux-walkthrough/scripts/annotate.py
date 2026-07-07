@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-UX Walkthrough - 标注图生成脚本
+UX Walkthrough - 在原截图上叠加问题标注（浅红高亮 + 说明条）。
 
 示例：
-python3 annotate.py \
-  --input raw.png \
-  --output issue-1.png \
-  --box 120,80,240,96 \
-  --label "主按钮文案不清晰，用户难以判断后果" \
+python3 annotate.py \\
+  --input raw.png \\
+  --output output/annotations/issue-1-annotated.png \\
+  --box 120,80,240,96 \\
+  --label "主按钮不够突出" \\
   --json
 """
 
@@ -19,7 +19,6 @@ import os
 from pathlib import Path
 
 from PIL import Image, ImageColor, ImageDraw, ImageFont
-
 
 HIGHLIGHT_FILL = (255, 82, 82, 48)
 HIGHLIGHT_STROKE = (220, 38, 38, 220)
@@ -43,22 +42,21 @@ FONT_CANDIDATES = [
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="根据问题区域与说明文字生成标注图")
+    parser = argparse.ArgumentParser(description="根据 bbox 与说明在原图上生成标注版截图")
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--box", action="append", default=[], help="格式：x,y,w,h，可重复")
-    parser.add_argument("--label", action="append", default=[], help="与 --box 一一对应，可重复")
+    parser.add_argument("--box", action="append", default=[], help="x,y,w,h，可重复")
+    parser.add_argument("--label", action="append", default=[], help="与 --box 一一对应")
+    parser.add_argument("--padding", type=int, default=0, help="在 box 四周扩展像素（已含 padding 的坐标请传 0）")
     parser.add_argument("--json", action="store_true")
     return parser
 
 
+from bbox_utils import apply_padding, parse_box as _parse_box_xywh
+
+
 def _parse_box(raw: str) -> tuple[int, int, int, int]:
-    parts = [part.strip() for part in raw.split(",")]
-    if len(parts) != 4:
-        raise ValueError(f"无法识别 box 参数：{raw}")
-    x, y, w, h = [int(part) for part in parts]
-    if w <= 0 or h <= 0:
-        raise ValueError(f"box 宽高必须大于 0：{raw}")
+    x, y, w, h = _parse_box_xywh(raw)
     return x, y, x + w, y + h
 
 
@@ -77,7 +75,7 @@ def _font_warnings(font_source: str) -> list[str]:
     if font_source != "PIL_default":
         return []
     return [
-        "当前未找到可用中文字体，已退回 PIL 默认字体；中文说明文字可能显示为方块，建议补充字体文件或设置 UXW_FONT_PATH。"
+        "未找到可用中文字体，已退回 PIL 默认字体；可设置 UXW_FONT_PATH 指向 .ttf/.ttc。"
     ]
 
 
@@ -180,6 +178,15 @@ def build_result(args: argparse.Namespace) -> dict:
     font, font_source = _load_font()
 
     boxes = [_parse_box(item) for item in args.box]
+    if args.padding:
+        padded_boxes = []
+        w_img, h_img = image.size
+        for left, top, right, bottom in boxes:
+            x, y = left, top
+            bw, bh = right - left, bottom - top
+            px, py, pw, ph = apply_padding(x, y, bw, bh, args.padding, w_img, h_img)
+            padded_boxes.append((px, py, px + pw, py + ph))
+        boxes = padded_boxes
     for box, label in zip(boxes, args.label):
         _draw_annotation(image, draw, font, box, label)
 
@@ -191,14 +198,10 @@ def build_result(args: argparse.Namespace) -> dict:
     result = {
         "annotation_count": len(boxes),
         "font_source": font_source,
-        "input_path": str(input_path),
-        "message": (
-            "Annotated image generated"
-            if not warnings
-            else "Annotated image generated with fallback font warning"
-        ),
+        "input_path": str(input_path.resolve()),
+        "message": "Annotated image generated" if not warnings else "Annotated image generated with font warning",
         "ok": True,
-        "output_path": str(output_path),
+        "output_path": str(output_path.resolve()),
         "status": "generated",
     }
     if warnings:

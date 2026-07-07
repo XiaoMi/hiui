@@ -30,9 +30,6 @@
 
 - 页面统一使用包导入，而不是复制当前仓库 `src/components/pro-*`
 - 新页面已先按 `.local-context/hiui-design/rules/page-type-map.md` 判页型，再按 `.local-context/hiui-design/docs/generation/figma-page-rules.md` 命中默认页型规则
-- 若页面属于“左列表右详情 / 左树右表 / 数据统计区 + 表格 / 主从布局 + 复杂表格”这类组合页，编码前已先完成 `.local-context/hiui-design/docs/generation/implementation-checklist-template.md`
-- 对上述组合页，已先写出 4 个硬检查项：`split ratio`、`right pane min width`、`table width budget`、`fixed column strategy`
-- 参考页只用于结构和视觉，不直接照搬宽度常量、列宽分配和固定列策略
 - 数据统计页使用 `StatListPageFrame`
 - 普通表格 / 树形表格使用 `TablePageFrame`
 - 左树右表使用 `TreeSplitPageFrame`
@@ -52,8 +49,6 @@
 
 - 已运行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`
 - 已查看 `src/typical-page-reuse/SMOKE_REPORT.md`
-- 若页面属于“左列表右详情 / 左树右表 / 数据统计区 + 表格 / 主从布局 + 复杂表格”这类组合页，已在真实页面完成至少两档视口走查
-- 对上述组合页，已确认分栏比例、右栏最小宽度、关键列露出情况、固定列降级策略、横向滚动容器都符合预期
 - 页头标题正确挂载到宿主 header 区
 - 宿主 header 槽允许 `PageHeader` 铺满整行宽度，操作区仍然贴右
 - 无 `PageHeader` 重复渲染在内容区
@@ -65,6 +60,7 @@
 - 直接写 `SchemaForm` 且字段里含 `CheckSelect` 时，已包 `TypicalPageFieldMapProvider`
 - 宿主内容区高度链能承接统计页 / 表格页，不是普通文档流页面
 - 已先核对多组已同步示例页；若多个页型同时失真，已先修接入而不是继续生成业务页
+- 侧边栏底部头像入口可打开用户卡片与语言子菜单，切换语言后页面示例会立即刷新
 - 数据统计表与左树右表没有混用筛选区 `padding`
 - 抽屉页和全页页型没有跨越 `16` 项边界误用
 - picker 类筛选浮层宽度和层级正常

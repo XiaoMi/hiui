@@ -1,6 +1,7 @@
 import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -55,21 +56,23 @@ const actionsStyle = {
 }
 
 export function EmptyStatePage() {
+  const { t } = useTranslation()
+
   return (
-    <div style={pageStyle}>
+    <div data-hiui5-shell-carrier="FeedbackStatePanel" style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="暂无数据"
+          title={t('暂无数据')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -78,15 +81,15 @@ export function EmptyStatePage() {
 
       <div style={panelStyle}>
         <div style={contentStyle}>
-          <EmptyState title={<span style={titleStyle}>暂无数据</span>} size="md">
+          <EmptyState title={<span style={titleStyle}>{t('暂无数据')}</span>} size="md">
             <div style={descStyle}>
-              请先进行数据的添加和新建，或者 <span style={linkStyle}>查看说明文档</span>
+              {t('请先进行数据的添加和新建，或者')} <span style={linkStyle}>{t('查看说明文档')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">立即创建</Button>
+              <Button type="primary">{t('立即创建')}</Button>
             </Space>
           </EmptyState>
         </div>

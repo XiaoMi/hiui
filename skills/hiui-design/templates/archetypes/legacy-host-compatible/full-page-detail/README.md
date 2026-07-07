@@ -1,5 +1,7 @@
 # Legacy Full-page Detail Adapter
 
+This adapter belongs to the `legacy-host-compatible` bridge path. The mode still allows typical-page components; prefer a planner-selected project-certified carrier or runtimeAdapterProof-backed standard component first, and use this adapter path only when the plan requires translated host semantics.
+
 Keep one header and one detail workspace. Do not rebuild the page as a free-form field grid.
 
 ## I18n Defaults

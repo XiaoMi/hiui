@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "hiui-design",
+  "version": "1.0.0",
+  "distributionScope": "single-skill",
+  "entry": "SKILL.md",
+  "requiredPaths": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "rules/VERSION",
+    "scripts/plan-page-task.mjs",
+    "scripts/README.md"
+  ],
+  "publicContracts": {
+    "files": [
+      "SKILL.md",
+      "rules/VERSION",
+      "scripts/plan-page-task.mjs",
+      "scripts/public-cli-contracts.json",
+      "scripts/README.md"
+    ],
+    "directories": [
+      "agents",
+      "docs",
+      "references",
+      "rules",
+      "scripts",
+      "schemas"
+    ]
+  },
+  "dependencies": []
+}

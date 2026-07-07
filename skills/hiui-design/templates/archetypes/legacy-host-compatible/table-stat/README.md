@@ -1,6 +1,6 @@
 # Legacy Table-stat Adapter
 
-Use this adapter when the target project must preserve the example structure without importing the packaged shell runtime.
+Use this adapter when the target project stays on the legacy host main tree and the plan selects translated host semantics instead of a direct page-component fast path. `legacy-host-compatible` still allows typical-page components through a project-certified carrier or a runtimeAdapterProof-backed standard component; this adapter is the fallback/translation path, not proof that the mode disables typical-page components.
 
 Required behavior:
 

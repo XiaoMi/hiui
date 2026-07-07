@@ -1,5 +1,8 @@
 /* generated from hiui-design strict archetype template */
 /* template asset: __HIUI_TEMPLATE_PATH__ */
+/* legacy-host-compatible note: data-visualization stays on the managed-analytics */
+/* path. This strict template is a start point for that path, not evidence that */
+/* ordinary legacy typical pages cannot use page-component + runtimeAdapterProof. */
 
 import { Button, Radio, Space } from '@hi-ui/hiui'
 import { FixedDashboardPageFrame } from '__FIXED_DASHBOARD_FRAME_IMPORT__'

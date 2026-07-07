@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "hiui-asset-add-preview.v1",
+  "status": "preview",
+  "target": ".",
+  "asset": {
+    "type": "adapter",
+    "id": "layout-search-table-adapter"
+  },
+  "sideEffects": {
+    "writesBusinessSource": false,
+    "overwritesExistingFiles": false,
+    "changesRoutes": false,
+    "changesGlobalTemplates": false
+  },
+  "plannedFiles": [
+    {
+      "path": "rules/adapter-registry.json",
+      "action": "already-registered",
+      "risk": "none"
+    }
+  ],
+  "blockingReasons": [],
+  "requiredConfirmations": [],
+  "suggestedRequiredAction": {
+    "id": "add-asset.adapter.layout-search-table-adapter",
+    "dryRunOnly": true
+  }
+}

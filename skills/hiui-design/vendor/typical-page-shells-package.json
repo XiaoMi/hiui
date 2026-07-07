@@ -1,6 +1,13 @@
 {
   "name": "@hiui-design/typical-page-shells",
   "version": "0.1.1",
+  "runtimeDelivery": {
+    "policyRef": "rules/runtime-delivery-policy.json",
+    "vendoredTarball": "vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+    "publicPackageRoot": "packages/typical-page-shells",
+    "registryPackageName": "@hiui-design/typical-page-shells",
+    "publicRegistry": "https://registry.npmjs.org"
+  },
   "peerDependencies": {
     "@hi-ui/classname": "5.0.0-experimental.0",
     "@hi-ui/ellipsis-tooltip": "5.0.0-experimental.1",

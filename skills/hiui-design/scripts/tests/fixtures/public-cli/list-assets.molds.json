@@ -1,0 +1,365 @@
+{
+  "schemaVersion": "hiui-asset-catalog.v1",
+  "assetType": "molds",
+  "target": ".",
+  "items": [
+    {
+      "id": "table-basic",
+      "moldId": "table-basic.managed-mold.v1",
+      "name": "普通表格",
+      "available": true,
+      "pageTypes": [
+        "table-basic"
+      ],
+      "requiredAdapters": [],
+      "regions": [
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "cellEditRules",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "常规筛选 + 表格 + 分页"
+    },
+    {
+      "id": "table-stat",
+      "moldId": "table-stat.managed-mold.v1",
+      "name": "数据统计表",
+      "available": true,
+      "pageTypes": [
+        "table-stat"
+      ],
+      "requiredAdapters": [],
+      "regions": [
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "stat-section",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "statItems",
+        "tableColumns",
+        "rowActions",
+        "cellEditRules",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "指标卡 + 筛选 + 表格 + 分页"
+    },
+    {
+      "id": "data-visualization",
+      "moldId": "data-visualization.managed-mold.v1",
+      "name": "数据可视化",
+      "available": true,
+      "pageTypes": [
+        "data-visualization"
+      ],
+      "requiredAdapters": [],
+      "regions": [
+        "table"
+      ],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "stat-section",
+        "chart-section",
+        "table",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "statItems",
+        "chartSections",
+        "tableColumns",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "指标卡 + 多图表 + 明细表"
+    },
+    {
+      "id": "tree-table",
+      "moldId": "tree-table.managed-mold.v1",
+      "name": "树形表格",
+      "available": true,
+      "pageTypes": [
+        "tree-table"
+      ],
+      "requiredAdapters": [],
+      "regions": [
+        "query-filter",
+        "table",
+        "pagination"
+      ],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "树在表格首列内展开"
+    },
+    {
+      "id": "tree-split",
+      "moldId": "tree-split.managed-mold.v1",
+      "name": "左树右表",
+      "available": true,
+      "pageTypes": [
+        "tree-split"
+      ],
+      "requiredAdapters": [],
+      "regions": [
+        "table",
+        "pagination"
+      ],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "split-workspace",
+        "left-tree",
+        "right-main",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "treeFields",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "左侧树，右侧筛选和表格"
+    },
+    {
+      "id": "drawer-form",
+      "moldId": "drawer-form.managed-mold.v1",
+      "name": "抽屉表单",
+      "available": true,
+      "pageTypes": [
+        "drawer-form"
+      ],
+      "requiredAdapters": [],
+      "regions": [],
+      "lockedRegions": [
+        "drawer-shell",
+        "drawer-header",
+        "drawer-body",
+        "form-body",
+        "drawer-footer"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "formFields",
+        "validationRules",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "字段较少，抽屉内完成编辑"
+    },
+    {
+      "id": "drawer-detail",
+      "moldId": "drawer-detail.managed-mold.v1",
+      "name": "抽屉详情",
+      "available": true,
+      "pageTypes": [
+        "drawer-detail"
+      ],
+      "requiredAdapters": [],
+      "regions": [],
+      "lockedRegions": [
+        "drawer-shell",
+        "drawer-header",
+        "drawer-body",
+        "detail-body",
+        "drawer-footer"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "detailFields",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "字段较少，抽屉内只读详情"
+    },
+    {
+      "id": "feedback-status",
+      "moldId": "feedback-status.managed-mold.v1",
+      "name": "异常反馈页",
+      "available": true,
+      "pageTypes": [
+        "feedback-status"
+      ],
+      "requiredAdapters": [],
+      "regions": [],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "feedback-panel",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "statusTitle",
+        "statusDescription",
+        "primaryAction",
+        "secondaryAction"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "空状态、加载失败、无权限、建设中、网络异常等反馈场景"
+    },
+    {
+      "id": "full-page-edit",
+      "moldId": "full-page-edit.managed-mold.v1",
+      "name": "全页编辑",
+      "available": true,
+      "pageTypes": [
+        "full-page-edit"
+      ],
+      "requiredAdapters": [],
+      "regions": [],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "form-body",
+        "footer",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "formFields",
+        "validationRules",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "主流程为整页表单，需要底部操作区"
+    },
+    {
+      "id": "full-page-detail",
+      "moldId": "full-page-detail.managed-mold.v1",
+      "name": "全页详情",
+      "available": true,
+      "pageTypes": [
+        "full-page-detail"
+      ],
+      "requiredAdapters": [],
+      "regions": [],
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "detail-body",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "detailFields",
+        "supportingSections",
+        "mockData",
+        "apiBinding"
+      ],
+      "validationRules": [
+        "region-ownership",
+        "route-ownership",
+        "preflight"
+      ],
+      "designPurpose": "多分组只读详情页"
+    }
+  ]
+}

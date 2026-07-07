@@ -5,6 +5,7 @@ import intranetOfflineBaseUrl from '../assets/intranet-offline-base.svg'
 import intranetOfflineGlobeUrl from '../assets/intranet-offline-globe.svg'
 import intranetOfflineBadgeUrl from '../assets/intranet-offline-badge.svg'
 import intranetOfflineBadgeSlashUrl from '../assets/intranet-offline-badge-slash.svg'
+import { useTranslation } from '../../translation'
 
 const pageStyle = {
   flex: '1 1 0%',
@@ -142,21 +143,23 @@ function IntranetOfflineIndicator() {
 }
 
 export function IntranetOfflinePage() {
+  const { t } = useTranslation()
+
   return (
     <div style={pageStyle}>
       <TypicalPageHeaderPortal>
         <PageHeader
-          title="未连接内网"
+          title={t('未连接内网')}
           extra={
             <Space style={headerActionsStyle}>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="default" size="md" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
               <Button type="primary" size="md" icon={<PlusOutlined />}>
-                主操作
+                {t('主操作')}
               </Button>
             </Space>
           }
@@ -167,17 +170,17 @@ export function IntranetOfflinePage() {
         <div style={contentStyle}>
           <EmptyState
             indicator={<IntranetOfflineIndicator />}
-            title={<span style={titleStyle}>未连接内网</span>}
+            title={<span style={titleStyle}>{t('未连接内网')}</span>}
             size="md"
           >
             <div style={descStyle}>
-              抱歉，网络连接中断，请稍后再试！，或 <span style={linkStyle}>联系管理员</span>
+              {t('抱歉，网络连接中断，请稍后再试！，或')} <span style={linkStyle}>{t('联系管理员')}</span>
             </div>
             <Space style={actionsStyle}>
               <Button type="default" appearance="line">
-                次要操作
+                {t('次要操作')}
               </Button>
-              <Button type="primary">刷新页面</Button>
+              <Button type="primary">{t('刷新页面')}</Button>
             </Space>
           </EmptyState>
         </div>

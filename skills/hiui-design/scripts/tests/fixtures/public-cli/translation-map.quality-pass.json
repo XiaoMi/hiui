@@ -1,0 +1,35 @@
+{
+  "status": "written",
+  "outputPath": ".local-context/hiui-design/outputs/translation-maps/src__pages__orders__index.json",
+  "translationMap": {
+    "schemaVersion": "translation-map.v1",
+    "generatedBy": "typical-page:translation-map",
+    "generatedAt": "2026-06-17T00:00:00.000Z",
+    "page": "src/pages/orders/index.tsx",
+    "pageType": "table-stat",
+    "mode": "legacy-host-compatible",
+    "reason": "contract-fixture",
+    "sourceHash": "sha256:translation-map-contract-fixture-source",
+    "previousSourceHash": "",
+    "stale": false,
+    "staleReason": "",
+    "invalidatesWhen": [
+      "page source snapshot changes",
+      "managed contract regionMapping changes",
+      "managed contract ownershipMapping changes",
+      "formal acceptance is requested for a high-risk legacy page"
+    ],
+    "mappings": [
+      {
+        "kind": "region",
+        "source": "header",
+        "target": "LegacyPageHeader"
+      },
+      {
+        "kind": "ownership",
+        "source": "main-scroll",
+        "target": "LegacyContentScroller"
+      }
+    ]
+  }
+}

@@ -608,7 +608,7 @@ export function TypicalPageAppFrame({
               <div style={styles.siderHeaderLogo}>
                 <div style={styles.logo}>
                   <img
-                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' rx='18' fill='%230066FF'/><text x='40' y='51' text-anchor='middle' font-size='28' font-family='Arial' font-weight='700' fill='white'>H</text></svg>"
+                    src="https://cdn.cnbj1.fds.api.mi-img.com/mi.com-assets/shop/img/logo-mi2.png"
                     alt="logo"
                     style={styles.logoImg}
                   />

@@ -1,6 +1,6 @@
 # Legacy Full-page Edit Adapter
 
-Use this adapter when the target project cannot import `@hiui-design/typical-page-shells` directly.
+Use this adapter when the target project stays on the legacy host main tree and the plan selects translated host semantics instead of a direct page-component fast path. `legacy-host-compatible` still allows typical-page components through a project-certified carrier or a runtimeAdapterProof-backed standard component; this adapter is the fallback/translation path, not the default meaning of the mode.
 
 Required behavior:
 

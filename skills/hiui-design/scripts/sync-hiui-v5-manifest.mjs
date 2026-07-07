@@ -196,7 +196,7 @@ async function loadExistingManifest(componentManifestPath) {
         importSource: '@hi-ui/hiui',
         iconImportSource: '@hi-ui/icons',
       },
-      specialTokens: {
+      specialTerms: {
         nonComponentAlternatives: DEFAULT_NON_COMPONENT_ALTERNATIVES,
       },
       components: {},
@@ -273,7 +273,7 @@ async function main() {
       importSource: existingManifest.defaults?.importSource || '@hi-ui/hiui',
       iconImportSource: existingManifest.defaults?.iconImportSource || '@hi-ui/icons',
     },
-    specialTokens: buildSpecialTokens(existingManifest.specialTokens),
+    specialTerms: buildSpecialTokens(existingManifest.specialTerms),
     components: nextComponents,
   }
 

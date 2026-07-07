@@ -271,7 +271,7 @@ const sectionStyles = {
 } as const
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderEllipsis(this) {
+  renderEllipsis() {
     return this.renderCell((cellValue) => renderStatTableTextEllipsis(cellValue))
   },
 })

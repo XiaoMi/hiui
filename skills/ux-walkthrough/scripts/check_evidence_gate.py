@@ -5,7 +5,7 @@ UX Walkthrough - 证据门禁判断脚本
 用途：
 - 在模式已经确认后，先做一次结构化证据门禁判断
 - 优先覆盖 URL 登录页、URL 页面不可达、截图不足、代码扫描失败四类高频失败出口
-- 输出结构化 JSON，供外层决定继续走查、等待补充，还是直接说明当前无法形成完整交付
+- 输出结构化 JSON，供外层决定继续走查、等待补充，还是明确失败原因并等待补充
 
 用法：
 - python3 check_evidence_gate.py --source url --login-required true --current-url https://example.com --json
@@ -89,32 +89,13 @@ def _failed_result(
         "failure_reason": failure_reason,
         "failure_stage": failure_stage,
         "message": message,
-        "next_action": "stop_walkthrough",
+        "next_action": "explain_failure",
         "ok": True,
         "should_continue": False,
+        "should_report_completion": True,
         "source": source,
         "status": "failed",
     }
-
-
-def _needs_input_gate_result(
-    *,
-    source: str,
-    message: str,
-    next_action: str,
-    extra: dict | None = None,
-) -> dict:
-    result = {
-        "message": message,
-        "next_action": next_action,
-        "ok": False,
-        "should_continue": False,
-        "source": source,
-        "status": "needs_input",
-    }
-    if extra:
-        result.update(extra)
-    return result
 
 
 def _continue_result(*, source: str, message: str, extra: dict | None = None) -> dict:
@@ -123,6 +104,7 @@ def _continue_result(*, source: str, message: str, extra: dict | None = None) ->
         "next_action": "continue_walkthrough",
         "ok": True,
         "should_continue": True,
+        "should_report_completion": False,
         "source": source,
         "status": "continue",
     }
@@ -137,6 +119,7 @@ def _needs_input_result(*, source: str, message: str, extra: dict | None = None)
         "next_action": "request_more_evidence",
         "ok": False,
         "should_continue": False,
+        "should_report_completion": False,
         "source": source,
         "status": "needs_input",
     }
@@ -159,21 +142,20 @@ def _handle_url(args: argparse.Namespace) -> dict:
             failure_stage="evidence_ready",
             failure_reason="page_unreachable",
             failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
-            message="URL 证据门禁未通过：目标页面不可达，当前无法形成完整交付。",
+            message="URL 证据门禁未通过：目标页面不可达，请说明失败原因并等待用户补充。",
         )
 
     if args.login_required:
         fallback_detail = f"{project_text}URL 走查在证据门禁阶段仍停留在登录或授权状态，未进入真实业务页。"
         if url_context:
             fallback_detail = f"{fallback_detail}{url_context}。"
-        return _needs_input_gate_result(
+        return _failed_result(
             source="url",
-            message="URL 证据门禁未通过：当前仍停留在登录或授权页，请先完成登录或补充登录后的页面证据。",
-            next_action="request_user_login",
-            extra={
-                "detail": _explicit_or_fallback(args.detail, fallback_detail),
-                "reason": "login_required",
-            },
+            failure_preset="url_login_required",
+            failure_stage="evidence_ready",
+            failure_reason="login_required",
+            failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
+            message="URL 证据门禁未通过：当前仍停留在登录或授权页，请说明失败原因并等待用户补充。",
         )
 
     return _continue_result(
@@ -214,15 +196,13 @@ def _handle_screenshot(args: argparse.Namespace) -> dict:
             f"{project_text}截图走查现有截图数量或关键信息不足，"
             f"当前仅识别到 {len(existing_images)} 张有效截图，无法支撑完整结论。"
         )
-        return _needs_input_gate_result(
+        return _failed_result(
             source="screenshot",
-            message="截图证据门禁未通过：现有截图不足以支撑完整走查，请先补充更多截图或更完整的页面证据。",
-            next_action="request_screenshots",
-            extra={
-                "detail": _explicit_or_fallback(args.detail, fallback_detail),
-                "reason": "evidence_insufficient",
-                "existing_image_count": len(existing_images),
-            },
+            failure_preset="screenshot_evidence_insufficient",
+            failure_stage="evidence_ready",
+            failure_reason="evidence_insufficient",
+            failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
+            message="截图证据门禁未通过：现有截图不足以支撑完整走查，请说明失败原因并等待用户补充。",
         )
 
     return _continue_result(
@@ -321,15 +301,13 @@ def _handle_code(args: argparse.Namespace) -> dict:
             f"且当前也没有可替代的手动证据，无法继续正式走查。"
         )
 
-    return _needs_input_gate_result(
+    return _failed_result(
         source="code",
-        message="代码证据门禁未通过：当前扫描结果不足或扫描失败，请先补充页面入口、关键页面位置或手动证据。",
-        next_action="request_more_evidence",
-        extra={
-            "detail": _explicit_or_fallback(args.detail, fallback_detail),
-            "reason": "scan_failed",
-            "scan_stats": stats,
-        },
+        failure_preset="code_scan_failed",
+        failure_stage="evidence_collection",
+        failure_reason="scan_failed",
+        failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
+        message="代码证据门禁未通过：当前扫描结果不足或扫描失败，请说明失败原因并等待用户补充。",
     )
 
 

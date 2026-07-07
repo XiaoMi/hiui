@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "critical-region-capabilities.v1",
+  "proofTypes": {
+    "valid": [
+      "managedShell",
+      "managedComponent",
+      "certifiedAdapter",
+      "upstreamHostCarrier",
+      "governedWaiver"
+    ],
+    "invalid": [
+      "markerOnly",
+      "commentOnly",
+      "contractOnly",
+      "agentAssertionOnly",
+      "styleOnly",
+      "manualDomOnly",
+      "rawPrimitiveOnly"
+    ]
+  },
+  "pageTypes": {
+    "table-basic": {
+      "carrierCritical": {
+        "query-filter": "hiui.queryFilter",
+        "table": "hiui.table",
+        "pagination": "hiui.pagination",
+        "white-body": "hiui.whiteBodySurface"
+      },
+      "behaviorCritical": {
+        "main-scroll": "hiui.mainScrollOwner",
+        "pagination-owner": "hiui.paginationOwner"
+      },
+      "visualCritical": {
+        "right-gutter": "hiui.contentGutter",
+        "sorter-density": "hiui.tableHeaderDensity"
+      }
+    },
+    "tree-table": {
+      "carrierCritical": {
+        "query-filter": "hiui.queryFilter",
+        "table": "hiui.table",
+        "pagination": "hiui.pagination",
+        "white-body": "hiui.whiteBodySurface"
+      },
+      "behaviorCritical": {
+        "main-scroll": "hiui.mainScrollOwner",
+        "pagination-owner": "hiui.paginationOwner"
+      }
+    },
+    "table-stat": {
+      "carrierCritical": {
+        "query-filter": "hiui.queryFilter",
+        "table": "hiui.table",
+        "pagination": "hiui.pagination",
+        "white-body": "hiui.whiteBodySurface"
+      },
+      "behaviorCritical": {
+        "main-scroll": "hiui.mainScrollOwner",
+        "pagination-owner": "hiui.paginationOwner"
+      }
+    },
+    "full-page-detail": {
+      "carrierCritical": {
+        "detail-body": "hiui.detailContent",
+        "white-body": "hiui.whiteBodySurface"
+      },
+      "visualCritical": {
+        "label-alignment": "hiui.detailLabelAlignment",
+        "group-spacing": "hiui.detailGroupSpacing"
+      }
+    },
+    "full-page-edit": {
+      "carrierCritical": {
+        "form-body": "hiui.form",
+        "footer": "hiui.formFooter"
+      },
+      "behaviorCritical": {
+        "form-validation": "hiui.formValidation"
+      },
+      "visualCritical": {
+        "label-alignment": "hiui.formLabelAlignment",
+        "group-spacing": "hiui.formGroupSpacing"
+      }
+    },
+    "drawer-detail": {
+      "carrierCritical": {
+        "drawer-body": "hiui.drawerContent",
+        "detail-body": "hiui.detailContent"
+      },
+      "behaviorCritical": {
+        "drawer-scroll": "hiui.drawerScrollOwner",
+        "drawer-footer": "hiui.drawerFooter"
+      }
+    },
+    "drawer-form": {
+      "carrierCritical": {
+        "drawer-body": "hiui.drawerContent",
+        "form-body": "hiui.form"
+      },
+      "behaviorCritical": {
+        "drawer-scroll": "hiui.drawerScrollOwner",
+        "drawer-footer": "hiui.drawerFooter"
+      }
+    },
+    "tree-split": {
+      "carrierCritical": {
+        "left-tree": "hiui.treePanel",
+        "table": "hiui.table",
+        "white-body": "hiui.whiteBodySurface"
+      },
+      "behaviorCritical": {
+        "split-scroll": "hiui.splitScrollOwner",
+        "resize-handle": "hiui.resizeHandle"
+      }
+    },
+    "feedback-status": {
+      "carrierCritical": {
+        "feedback-body": "hiui.feedbackShell"
+      },
+      "visualCritical": {
+        "feedback-visual": "hiui.feedbackVisual",
+        "feedback-action": "hiui.feedbackAction"
+      }
+    }
+  }
+}

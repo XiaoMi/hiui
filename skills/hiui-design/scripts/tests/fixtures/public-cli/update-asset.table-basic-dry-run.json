@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "hiui-asset-diff.v1",
+  "target": ".",
+  "asset": {
+    "type": "mold",
+    "id": "table-basic",
+    "moldId": "table-basic.managed-mold.v1"
+  },
+  "evidence": {
+    "sourcePath": "rules/page-mold-registry.json",
+    "sourceDigest": "36651c40ba440ab7eab76d705e80cbe68d14c6f50f64157dcb1c1b81eb9db785",
+    "assetDigest": "dcdb1a0ead46783c0bc026f563a0dcded08017538ea416d7f37a44ffa81143d7",
+    "comparison": "registry-digest-only"
+  },
+  "status": "preview",
+  "riskLevel": "low",
+  "changes": [
+    {
+      "path": "rules/page-mold-registry.json",
+      "localModified": "not_checked",
+      "upstreamChanged": "not_checked",
+      "recommendation": "dry-run only; compare sourceDigest and assetDigest against reviewed upstream evidence before applying any update"
+    }
+  ],
+  "blockingReasons": [],
+  "updatePreview": {
+    "dryRunOnly": true,
+    "writesBusinessSource": false,
+    "overwritesExistingFiles": false,
+    "changesRoutes": false,
+    "changesGlobalTemplates": false,
+    "forceSupported": false
+  }
+}

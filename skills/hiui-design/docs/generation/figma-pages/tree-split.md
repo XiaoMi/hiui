@@ -9,7 +9,7 @@
 ## 默认稿
 
 - `fileKey`: `jlYnxIW1FFGG8fK1sVcL5C`
-- `nodeId`: `<figma-node-id>`
+- `nodeId`: `51257:107202`
 
 ## 适用
 
