@@ -8,6 +8,12 @@
 2. 再同步整理一份 `report.json`
 3. 最后调用 `scripts/generate_docx.py` 生成本地 `.docx`
 
+前置依赖：
+
+- 运行环境必须可导入 Python 包 `python-docx`
+- 若缺少该依赖，`generate_docx.py` 会返回 `status=failed`、`failure_stage=docx_generation`
+- 这种情况只能报告“docx 未生成成功”，不能把本次走查标记为完整完成
+
 标准命令：
 
 ```bash

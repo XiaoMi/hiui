@@ -9,7 +9,7 @@
 
 门禁状态：
 - requirementGate：<needs-confirmation | requirements-confirmed | assumption-authorized | blocked>
-- generationInputGate：<confirmed | assumption-authorized | blocked | 未执行>
+- generationInputGate：<not-ready | ready-for-review | confirmed | assumption-authorized | blocked | 未执行>
 - uxGate：<ux-smoke | ux-standard | ux-formal | 未执行>，证据状态 <ready | insufficient | blocked | 未执行>
 
 需求细化：
@@ -21,6 +21,15 @@
 页面：<页面名称或路径>
 页面类型：<pageType>
 Workflow level：<quick-preview | standard-e2e | formal-e2e>
+
+页面交付状态：
+- planStatus：<ready | blocked | invalid | missing | 未执行>
+- canStartImplementation：<true | false | 未知>
+- currentExecutionState：<ready | blocked | 未知>，当前动作 <primaryAction>，下一步 <nextCommand 或 未知>
+- preflight：<passed | failed | invalid | skipped | blocked | 未执行>
+- formal acceptance：<passed | failed | skipped | blocked | 未请求>
+- hiui usage stats：<completed | skipped | unavailable | requires_authorization | 未执行>
+- blockingIssues：<无 | issue code 列表>
 
 工程验收：
 - <command>：<passed | failed | skipped | blocked>，<简短说明>
@@ -59,6 +68,9 @@ P0 场景覆盖矩阵：
 - 工程验收结果优先列失败和阻断项。
 - 执行过需求细化时，必须说明交付模式、MVP 范围、页面清单摘要和待确认项。
 - 进入页面生成前，必须说明 `generationInputGate` 是用户确认还是用户授权假设；不能只写“已确认”。
+- 若最终停在 S0 / 待确认阶段，必须使用 `generationInputGate=not-ready|ready-for-review|blocked`，不能把需求稿写成可直接生成。
+- 若已执行 `hiui-design` 页面规划，必须补一段最小页面交付状态：至少说明 `planStatus`、`currentExecutionState`、`preflight`、formal acceptance、hiui usage stats 和剩余 `blockingIssues`。
+- 若 `currentExecutionState.status != ready` 或 `canStartImplementation != true`，不能把页面描述成“已按计划进入实现”；必须明确说明当前仍停留在阻断恢复或计划排障阶段。
 - 若需求阶段使用了推荐假设继续推进，最终报告必须把这些假设列为遗留风险或待确认项。
 - `standard-e2e` 和 `formal-e2e` 必须说明 P0 场景覆盖结果；若未覆盖，不能声称完成结构化 UX 验收。
 - UX 问题按 P0、P1、P2 排序。

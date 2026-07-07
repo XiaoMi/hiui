@@ -66,6 +66,13 @@
 5. 只替换标题、路由、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据、行操作等业务槽位
 6. 保留页壳、region 层级、白底主体、滚动 owner、分页 / footer 挂载语义、source marker 与 row action 语义
 
+对旧系统升级，普通典型页的 fast path 默认再细分为：
+
+- `slot-fill-only`：当前页已经是受管实例，只改业务槽位。
+- `rewrite-by-page-component`：当前页仍命中同一典型页型，且 certified page component / project carrier 已可用，但现有源码还不是 ready 的 managed instance；此时直接用受管主资产重建业务页实例，不在旧 JSX 上继续修补壳层。
+
+这两类都属于典型页快路径，不等于 `strict-structure`。
+
 `multi-page-workflow` 的快速路径不是把多个意图揉成一个复杂页面，而是按 `pageUnits` 逐页执行典型页快速路径，并使用每个 `pageUnits[].startFrom` 选择对应起点。并列页面意图默认表示多个路由页面 / 视图工作流；只有出现“一个页面内 / 同屏 / 左右联动 / split / 主从联动”等布局证据时，才进入组合页 / split 判断。
 
 快速路径仍要保证当前页可预览、lint / build 可解释、当前页 contract / preflight 不失真；但不需要在实现前手工展开长篇 page-type 判断、全量 i18n 策略或全局 doctor 历史问题排查。全量 `finalize-page` / source gate / doctor / runtime smoke 保留为正式验收或发布链路。

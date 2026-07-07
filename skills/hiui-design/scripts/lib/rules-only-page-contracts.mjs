@@ -70,19 +70,22 @@ function isLegacyPageComponentGenerationProfile({ mode, profile }) {
 }
 
 function expectedGenerationProfileSemantics({ mode, profile }) {
-  const legacyPageComponentFastPath = isLegacyPageComponentGenerationProfile({ mode, profile })
+  const pageComponentStart =
+    String(profile?.strategy || '').trim() === 'page-component' &&
+    String(profile?.startFrom || '').trim() === 'page-component'
+  const strictSourceProof =
+    String(profile?.sourceProofLevel || '').trim() === 'strict-source-adapter-proof'
 
   return {
-    hostArchetypeRequired: !legacyPageComponentFastPath,
-    requiredGates: legacyPageComponentFastPath
-      ? ['source-gate', 'preflight', 'page-instance-validation']
+    hostArchetypeRequired: !pageComponentStart,
+    requiredGates: pageComponentStart
+      ? strictSourceProof
+        ? ['source-gate', 'preflight', 'page-instance-validation']
+        : ['slot-gate', 'preflight', 'page-instance-validation']
       : mode === 'legacy-host-compatible'
         ? ['source-gate', 'preflight']
         : ['slot-gate', 'preflight'],
-    sourceProofLevel:
-      mode === 'legacy-host-compatible'
-        ? 'strict-source-adapter-proof'
-        : 'slot-boundary-proof',
+    sourceProofLevel: strictSourceProof ? 'strict-source-adapter-proof' : 'slot-boundary-proof',
   }
 }
 
@@ -95,6 +98,7 @@ function buildDefaultGenerationProfile({ pageTypeId, archetypeMode, archetypeTem
       strategy: usesLegacyRuntimeBridge
         ? 'page-component'
         : 'managed-template-or-archetype-slot-fill',
+      startFrom: usesLegacyRuntimeBridge ? 'page-component' : archetypeTemplatePath ? 'template' : 'reference-or-scaffold',
       legacyStrategyId: usesLegacyRuntimeBridge
         ? 'runtime-bridged-page-component'
         : 'managed-template-or-archetype-slot-fill',
@@ -560,6 +564,9 @@ export function buildManagedPageWorkflowMetadata(overrides = {}) {
   const isFinalized = status === 'finalized'
   const isPreflightPass = status === 'preflight-pass'
   const isStale = status === 'stale'
+  const normalizedDeferredChecks = Array.isArray(overrides.deferredChecks)
+    ? [...new Set(overrides.deferredChecks.map((item) => String(item || '').trim()).filter(Boolean))]
+    : []
 
   return {
     status,
@@ -582,6 +589,21 @@ export function buildManagedPageWorkflowMetadata(overrides = {}) {
     runtimeSmokeReportPath: String(overrides.runtimeSmokeReportPath || '').trim() || '',
     sourceSnapshotHash: String(overrides.sourceSnapshotHash || '').trim() || '',
     staleReason: String(overrides.staleReason || '').trim() || '',
+    preflightStage: String(overrides.preflightStage || '').trim() || '',
+    readyForImplementation:
+      typeof overrides.readyForImplementation === 'boolean'
+        ? overrides.readyForImplementation
+        : isPreflightPass || isFinalized || isStale,
+    readyForDelivery:
+      typeof overrides.readyForDelivery === 'boolean'
+        ? overrides.readyForDelivery
+        : isPreflightPass || isFinalized,
+    deferredChecks:
+      normalizedDeferredChecks.length > 0
+        ? normalizedDeferredChecks
+        : isStale
+          ? ['finalizePage']
+          : [],
     reportPath: String(overrides.reportPath || '').trim() || '',
     smokeReportPath: String(overrides.smokeReportPath || '').trim() || '',
     lastCommand: String(overrides.lastCommand || '').trim() || '',
@@ -1344,6 +1366,29 @@ export function validateRulesOnlyPageContract({
       )
     }
 
+    if (workflow.preflightStatus === 'pass') {
+      if (!workflow.preflightStage) {
+        warnings.push(
+          'workflow.preflightStage is missing. Re-run typical-page:preflight so collaborators can distinguish scaffold-baseline from delivery-ready implementation.'
+        )
+      }
+      if (typeof workflow.readyForImplementation !== 'boolean') {
+        warnings.push(
+          'workflow.readyForImplementation is missing. Re-run typical-page:preflight so workflow metadata records whether implementation may continue.'
+        )
+      }
+      if (typeof workflow.readyForDelivery !== 'boolean') {
+        warnings.push(
+          'workflow.readyForDelivery is missing. Re-run typical-page:preflight so delivery summaries know whether this page is already delivery-ready.'
+        )
+      }
+      if (!Array.isArray(workflow.deferredChecks)) {
+        warnings.push(
+          'workflow.deferredChecks is missing. Re-run typical-page:preflight so collaborators can see which checks remain deferred after a passing preflight.'
+        )
+      }
+    }
+
     if (workflow.status === 'finalized') {
       if (workflow.deliveryStatus !== 'finalized') {
         warnings.push(
@@ -1671,7 +1716,11 @@ export function validateRulesOnlyPageContract({
         )
       }
 
-      if (expectedHostAdapter?.id) {
+      const pageComponentStart =
+        String(generationProfile?.strategy || '').trim() === 'page-component' &&
+        String(generationProfile?.startFrom || '').trim() === 'page-component'
+
+      if (expectedHostAdapter?.id && !pageComponentStart) {
         const actualHostAdapterId = String(adapterContract.hostAdapterId || '').trim()
 
         if (!actualHostAdapterId) {

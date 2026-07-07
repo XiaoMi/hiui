@@ -7,9 +7,11 @@ import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifes
 import {
   computeManagedPageSourceSnapshot,
   syncManagedPageRegistry,
+  writeManagedPageContractArtifacts,
 } from './lib/managed-page-artifacts.mjs'
 import { buildTypicalPageReuseTargetError } from './lib/typical-page-route-ownership.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
+import { evaluateManagedInstanceReadinessFromSource } from './lib/managed-page-instance-readiness.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 import {
   getManagedPageSemanticContract,
@@ -20,7 +22,6 @@ import {
   loadRulesOnlyPageContracts,
   normalizeContractPath,
   reconcileManagedPageRuntimeSmokeWorkflow,
-  renderRulesOnlyPageContractMarkdown,
   toContractSlug,
   validateRulesOnlyPageContract,
 } from './lib/rules-only-page-contracts.mjs'
@@ -98,6 +99,10 @@ function buildContractFixtureReport() {
   return {
     schemaVersion: 'preflight-report.v1',
     status: 'passed',
+    preflightStage: 'implementation',
+    readyForImplementation: true,
+    readyForDelivery: true,
+    deferredChecks: [],
     page: 'src/pages/orders/index.tsx',
     pageType: 'table-basic',
     checks: [
@@ -140,28 +145,108 @@ function buildContractFixtureReport() {
   }
 }
 
+function derivePreflightExecutionState({ failures, warnings, workflowStatus }) {
+  const hasBlockingFailures = failures.length > 0
+  const hasPlaceholderWarning =
+    Array.isArray(warnings) &&
+    warnings.some((warning) => String(warning || '').toLowerCase().includes('placeholder'))
+
+  if (hasBlockingFailures) {
+    return {
+      preflightStage: 'implementation-blocked',
+      readyForImplementation: false,
+      readyForDelivery: false,
+      deferredChecks: [],
+    }
+  }
+
+  if (workflowStatus === 'started' || hasPlaceholderWarning) {
+    return {
+      preflightStage: 'scaffold-baseline',
+      readyForImplementation: true,
+      readyForDelivery: false,
+      deferredChecks: ['placeholderMappings'],
+    }
+  }
+
+  if (workflowStatus === 'stale') {
+    return {
+      preflightStage: 'implementation',
+      readyForImplementation: true,
+      readyForDelivery: false,
+      deferredChecks: ['finalizePage'],
+    }
+  }
+
+  return {
+    preflightStage: 'implementation',
+    readyForImplementation: true,
+    readyForDelivery: true,
+    deferredChecks: [],
+  }
+}
+
+function deriveSourceGuardProfile(contract) {
+  const generationProfile = contract?.generationProfile || {}
+  const deliveryKind = String(generationProfile.selectedDeliveryAssetKind || '').trim()
+  if (deliveryKind === 'project-certified-carrier') {
+    return {
+      sourceGuardScope: 'transitive',
+      sourceGuardReason: 'project-certified-carrier',
+    }
+  }
+
+  if (String(generationProfile.startFrom || '').trim() === 'page-component') {
+    return {
+      sourceGuardScope: 'transitive',
+      sourceGuardReason: deliveryKind || 'page-component',
+    }
+  }
+
+  return {
+    sourceGuardScope: 'entry-only',
+    sourceGuardReason: deliveryKind || 'managed-start-point',
+  }
+}
+
+function getScaffoldBaselineWarnings(contract) {
+  const generationProfile = contract?.generationProfile || {}
+  if (
+    String(contract?.archetypeMode || '').trim() === 'rules-only' &&
+    String(generationProfile.strategy || '').trim() === 'page-component' &&
+    String(generationProfile.startFrom || '').trim() === 'page-component' &&
+    String(generationProfile.selectedDeliveryAssetKind || '').trim() === 'direct-standard-component'
+  ) {
+    return [
+      'Contract placeholders remain for the rules-only page-component scaffold baseline. Complete business slot replacement and confirm managed contract targets before delivery.',
+    ]
+  }
+
+  return []
+}
+
 function findUnresolvedMappings(contract) {
-  const failures = []
+  const warnings = []
   const regionMappings = Array.isArray(contract?.regionMapping) ? contract.regionMapping : []
   const ownershipMappings = Array.isArray(contract?.ownershipMapping) ? contract.ownershipMapping : []
 
   for (const mapping of regionMappings) {
     if (String(mapping?.target || '').includes('TODO:')) {
-      failures.push(`regionMapping.${mapping.region} still points to a TODO target`)
+      warnings.push(`placeholder mapping regionMapping.${mapping.region} still points to a TODO target`)
     }
   }
 
   for (const mapping of ownershipMappings) {
     if (String(mapping?.target || '').includes('TODO:')) {
-      failures.push(`ownershipMapping.${mapping.role} still points to a TODO target`)
+      warnings.push(`placeholder mapping ownershipMapping.${mapping.role} still points to a TODO target`)
     }
   }
 
   if (String(contract?.hostArchetypePath || '').includes('TODO:')) {
-    failures.push('hostArchetypePath still points to a TODO target')
+    warnings.push('placeholder mapping hostArchetypePath still points to a TODO target')
   }
 
-  return failures
+  return warnings
 }
 
 function hasManagedChartSection(contract) {
@@ -213,10 +298,71 @@ function isChartGovernanceFailure(message) {
   ].some((fragment) => String(message || '').includes(fragment))
 }
 
+function isManagedFilterChainFailure(message) {
+  const text = String(message || '')
+  return [
+    'declares a query-filter region but source does not reference QueryFilter',
+    'hand-builds its filter region from primitive Input/Select/DatePicker controls',
+    'rebuilds a list page from primitive filter controls + Table + Pagination',
+    'searchConfig.fields',
+    'SearchForm',
+    'getSearchFields',
+    'raw filter bar with QueryFilter',
+  ].some((fragment) => text.includes(fragment))
+}
+
+function isQueryFilterBaselineFailure(message) {
+  const text = String(message || '')
+  return [
+    'showLabel on inline QueryFilter',
+    'appearance away from the shared contained baseline',
+    'plain reset/clear Button into inline QueryFilter',
+    'keyword search field regresses to a plain Input',
+    'adds a custom 查询/搜索 button into QueryFilter append actions',
+    'renders “全部筛选” with a plain Button',
+  ].some((fragment) => text.includes(fragment))
+}
+
+function isHostStyleContaminationFailure(message) {
+  const text = String(message || '')
+  return [
+    'Business pages must not restyle PageHeader, QueryFilter, Table',
+    'This is treated as host-style contamination',
+    'overrides PageHeader geometry in page-local styles',
+    'forces 60px height and alignItems:center on the PageHeader root',
+    'changes the PageHeader root into a local flex/grid layout carrier',
+    'overrides shared dashboard shell chrome through pageRootStyle/whiteBodyStyle',
+  ].some((fragment) => text.includes(fragment))
+}
+
+function isListWorkspaceWidthFailure(message) {
+  const text = String(message || '')
+  return [
+    'own horizontal scrolling',
+    'horizontal scroll owner',
+    'width-adaptive',
+    'content width keywords such as max-content/min-content/fit-content',
+    'adapt to the parent container width instead of expanding the surrounding workspace',
+    'table-body horizontal inset contract',
+  ].some((fragment) => text.includes(fragment))
+}
+
 export function checkIdForFailure(message) {
   const text = String(message || '')
   if (isLegacyRuntimeAdapterFailure(text)) {
     return 'legacyRuntimeAdapter'
+  }
+  if (isManagedFilterChainFailure(text)) {
+    return 'managedFilterChain'
+  }
+  if (isQueryFilterBaselineFailure(text)) {
+    return 'queryFilterBaseline'
+  }
+  if (isHostStyleContaminationFailure(text)) {
+    return 'hostStyleContamination'
+  }
+  if (isListWorkspaceWidthFailure(text)) {
+    return 'listWorkspaceWidth'
   }
   if (text.includes('generationProfile.')) {
     return 'generationProfile'
@@ -293,6 +439,10 @@ export function failureCodeForCheckId(checkId) {
   if (checkId === 'regionContract') return 'REGION_CONTRACT_MISMATCH'
   if (checkId === 'ownershipMapping') return 'OWNERSHIP_MAPPING_MISMATCH'
   if (checkId === 'legacyRuntimeAdapter') return 'LEGACY_RUNTIME_ADAPTER_MISMATCH'
+  if (checkId === 'managedFilterChain') return 'HIUI022_MANAGED_FILTER_CHAIN_MISSING'
+  if (checkId === 'queryFilterBaseline') return 'HIUI023_QUERY_FILTER_BASELINE_DRIFT'
+  if (checkId === 'hostStyleContamination') return 'HIUI024_HOST_STYLE_CONTAMINATION'
+  if (checkId === 'listWorkspaceWidth') return 'HIUI025_LIST_WORKSPACE_WIDTH_OWNER_DRIFT'
   if (checkId === 'sourceMarker') return 'SOURCE_MARKER_MISSING'
   if (checkId === 'routeOwnership') return 'ROUTE_OWNER_MISSING'
   if (checkId === 'directoryArtifacts') return 'DIRECTORY_ARTIFACTS_MISSING'
@@ -617,16 +767,11 @@ async function findTranslationMapFailures({ contract, normalizedPagePath, snapsh
 }
 
 async function writeContractArtifacts(contractEntry) {
-  await fs.writeFile(
-    contractEntry.filePath,
-    `${JSON.stringify(contractEntry.contract, null, 2)}\n`,
-    'utf8'
-  )
-  await fs.writeFile(
-    contractEntry.filePath.replace(/\.json$/, '.md'),
-    renderRulesOnlyPageContractMarkdown(contractEntry.contract),
-    'utf8'
-  )
+  return writeManagedPageContractArtifacts({
+    contract: contractEntry.contract,
+    contractJsonPath: contractEntry.filePath,
+    contractMarkdownPath: contractEntry.filePath.replace(/\.json$/, '.md'),
+  })
 }
 
 async function main() {
@@ -693,7 +838,7 @@ async function main() {
           archetypeDefinition,
           baselineSpec,
         })
-    const unresolvedMappings = hasPageTypeDrift ? [] : findUnresolvedMappings(contractEntry.contract)
+    const unresolvedMappingWarnings = hasPageTypeDrift ? [] : findUnresolvedMappings(contractEntry.contract)
     const directoryArtifactFailures = hasPageTypeDrift
       ? []
       : await findDirectoryArtifactFailures({
@@ -707,6 +852,7 @@ async function main() {
           generatedPagePath: normalizedPagePath,
           targetRoot,
         })
+    const sourceRaw = await fs.readFile(path.join(targetRoot, normalizedPagePath), 'utf8').catch(() => '')
     const snapshot = computeManagedPageSourceSnapshot({
       generatedPagePath: normalizedPagePath,
       targetRoot,
@@ -723,11 +869,13 @@ async function main() {
       ...pageTypeDriftFailures,
       ...contractValidation.errors,
       ...findLegacyRuntimeAdapterFailures(contractEntry.contract),
-      ...unresolvedMappings,
       ...directoryArtifactFailures,
       ...translationMapFailures,
       ...sourceErrors,
     ]
+    const scaffoldBaselineWarnings = failures.length === 0
+      ? [...unresolvedMappingWarnings, ...getScaffoldBaselineWarnings(contractEntry.contract)]
+      : []
 
     const previousWorkflow = contractEntry.contract.workflow || {}
     const previousSnapshotHash = String(previousWorkflow.sourceSnapshotHash || '').trim()
@@ -740,9 +888,19 @@ async function main() {
     const workflowStatus =
       wasFinalized && previousSnapshotHash && previousSnapshotHash !== snapshot.hash
         ? 'stale'
-        : failures.length === 0 && !wasFinalized
+        : failures.length === 0 && !wasFinalized && scaffoldBaselineWarnings.length === 0
           ? 'preflight-pass'
           : previousWorkflow.status || 'started'
+    const executionState = derivePreflightExecutionState({
+      failures,
+      warnings: [
+        ...contractValidation.warnings.filter(
+          (warning) => !warning.startsWith('generated:')
+        ),
+        ...scaffoldBaselineWarnings,
+      ],
+      workflowStatus,
+    })
 
     contractEntry.contract.workflow = {
       ...previousWorkflow,
@@ -757,14 +915,21 @@ async function main() {
         workflowStatus === 'stale'
           ? 'Source snapshot changed after finalize-page. Re-run typical-page:finalize-page on the latest page source.'
           : '',
+      preflightStage: executionState.preflightStage,
+      readyForImplementation: executionState.readyForImplementation,
+      readyForDelivery: executionState.readyForDelivery,
+      deferredChecks: executionState.deferredChecks,
       lastCommand: 'typical-page:preflight',
     }
     await writeContractArtifacts(contractEntry)
     await syncManagedPageRegistry(targetRoot)
 
-    const warnings = contractValidation.warnings.filter(
-      (warning) => !warning.startsWith('generated:')
-    )
+    const warnings = [
+      ...contractValidation.warnings.filter(
+        (warning) => !warning.startsWith('generated:')
+      ),
+      ...scaffoldBaselineWarnings,
+    ]
     const checks = checksForPreflight({ failures, warnings })
     const suggestedActions = suggestedActionsForPreflight({
       failures,
@@ -772,11 +937,27 @@ async function main() {
       contract: contractEntry.contract,
     })
     const blockingIssues = blockingIssuesForFailures(failures)
+    const managedInstanceReadiness = evaluateManagedInstanceReadinessFromSource({
+      contract: {
+        pageTypeId: contractEntry.contract.pageTypeId,
+        workflowStatus: contractEntry.contract.workflow?.status,
+        preflightStatus: contractEntry.contract.workflow?.preflightStatus,
+      },
+      pageExists: true,
+      sourceRaw,
+    })
+    const sourceGuardProfile = deriveSourceGuardProfile(contractEntry.contract)
     const payload = {
       schemaVersion: 'preflight-report.v1',
       status: failures.length > 0 ? 'failed' : 'passed',
+      preflightStage: executionState.preflightStage,
+      readyForImplementation: executionState.readyForImplementation,
+      readyForDelivery: executionState.readyForDelivery,
+      deferredChecks: executionState.deferredChecks,
       page: normalizedPagePath,
       pageType: contractEntry.contract.pageTypeId,
+      sourceGuardScope: sourceGuardProfile.sourceGuardScope,
+      sourceGuardReason: sourceGuardProfile.sourceGuardReason,
       checks,
       blockingReasons: failures,
       blockingIssues,
@@ -798,6 +979,7 @@ async function main() {
       ...getManagedChartGovernanceSummary(contractEntry.contract),
       i18nStrategy: contractEntry.contract.i18nBaseline?.runtimePolicy || '(not-declared)',
       formatterPolicy: contractEntry.contract.i18nBaseline?.formatterPolicy || [],
+      managedInstanceReadiness,
       warnings,
       failures,
     }

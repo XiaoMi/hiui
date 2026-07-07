@@ -40,9 +40,13 @@ HiUI Typical Standard -> PageType -> ManagedMold -> Adapter/Carrier Proof -> Cer
 
 `rules-only` 不是“无组件模式”。它与 `host-integration` 的主要区别是接入方式：`rules-only` 不把 host 示例页作为项目运行入口，不安装示例 gallery；但只要组件在 `supportedModes` 中声明支持 `rules-only`，并且认证 artifact 与组件的 canonical `mode` / `baseMoldId` 匹配，`plan-page-task` 就可以把它作为主生成资产。只有宿主约束要求额外 adapter 或 legacy 兼容时，才需要单独的 host-adapted / legacy-compatible component。
 
+对 `rules-only` / `host-integration` 而言，标准页面级组件是否 ready 属于 planner 的资产解析结果，不属于项目接入 readiness。接入阶段负责证明项目具备运行时 / 依赖 / 宿主前提；页面阶段再判断当前页型是否能命中 `page-component + slot-fill`。
+
 `legacy-host-compatible` 也不是“无组件模式”。它的人类解释统一为“旧宿主桥接接入模式”。这里的 `compatible` 只表示宿主边界与运行时契约可被桥接和证明，不表示任意旧宿主天然兼容，也不表示只要能挂载就已经进入受管生成 / 交付状态。它与 `rules-only` 的区别是旧宿主运行时、全局样式、portal、路由和权限接法不可直接等同于标准宿主；因此 legacy 的主路径应优先选择 **project-certified carrier implementation of page-component**。只有当宿主已经证明可直接等价承载 standard component 的运行时契约时，才直接使用 standard certified page component。旧宿主只保留全局导航、左侧菜单、路由入口和干净内容挂载点；组件内部的页头、筛选、白底主体、表格 / 表单 / 详情、分页 / 底栏和主滚动链不再拆给宿主逐项承接。这里的宿主边界证明应在项目接入 / capabilities 阶段完成，页面生成阶段只消费该证明结果；`legacy-host-family-registry.json` 中的 family `status` 是注册表生命周期标签，不是业务页生成期的硬门禁。
 
 `legacy-runtime-adapter` 是运行时转接证明，不是组件翻译器。它只能绑定 request / response / message / i18n / permission / modal / scroll / style 等运行时能力，不得把 `QueryFilter` 翻译成旧 `SearchForm`、把受管表格翻译成旧表格、重做分页区域，或把典型页整体包装成业务页面级组件。`portal-root` 默认视为浮层运行时的常规能力，不进入 runtime bridge 的硬缺口判断；只有宿主显式改写浮层容器或出现裁切风险时，才额外进入 `PortalBoundary` 事实。`host archetype` 与 `reference-or-scaffold` 是 fallback 起点；`translation-map` 是治理增强工件。只有 project-certified carrier 缺失、宿主约束特殊、direct standard component 不可直挂，或 drift 风险需要显式治理时，计划才应进入这些路径。
+
+legacy 项目默认不要求在“项目接入完成”时覆盖所有典型页型，但应先完成一批 `carrier-first-required` 的 project rollout：`table-basic`、`table-stat`、`tree-table`、`tree-split`、`drawer-form`、`drawer-detail`、`full-page-edit`、`full-page-detail`。`feedback-status` 与 `data-visualization` 可以延后，但它们不应反向稀释这批表格 / 编辑 / 详情页的 carrier-first onboarding 事实。
 
 ## Project-Scoped Carrier Overlay
 
@@ -56,6 +60,7 @@ HiUI Typical Standard -> PageType -> ManagedMold -> Adapter/Carrier Proof -> Cer
   3. `host-archetype`
   4. `reference-or-scaffold`
   5. explicit fallback / managed translation
+- project 级 integration facts 应显式记录 `requiredLegacyPageTypes`、`deferredLegacyPageTypes`、`certifiedLegacyPageTypes`、`missingRequiredLegacyPageTypes` 与 `legacyRolloutCoverageStatus`。只要 required batch 仍缺 carrier，`plan-page-task` 就必须回到 `bootstrap-target-project` / `ResolveBlockingFacts`，而不是继续给页面实现命令。
 - project overlay 只解决项目级承载差异，不改变 `baseMoldId`、slot 边界、required regions、mandatory components 和 page-instance validation。
 
 ## Runtime-Bridged Page Components
@@ -74,6 +79,15 @@ HiUI Typical Standard -> PageType -> ManagedMold -> Adapter/Carrier Proof -> Cer
 - bridge wrapper 与 slot adapter 必须保持 thin：前者只绑定宿主 runtime / mount boundary，
   后者只做业务槽位适配；两者都不得接管 `shell`、`white-body`、`main-scroll`、
   `pagination`、`footer` 或 `route owner`。
+- 对表格类 `page-component`，`QueryFilter`、`Table` 与 `pagination` 都属于 carrier 内部语义；
+  业务页 / bridge slot adapter 只允许填 `queryFields`、表格列、行操作和 Level 1 受控扩展，
+  不允许再额外包一层外部样式容器、自由筛选栏，或把 `QueryFilter` 翻译成宿主 `SearchForm`。
+- 对 legacy 表格类 bridge，业务页、本地 wrapper 与 slot adapter 还不得再合成第二层
+  `white-body shell`、`main-scroll shell`、`pagination shell` 或 `query shell`。这些几何责任必须
+  保持在 selected certified page component 或 project-certified carrier 内部。
+- 若页面需要 `bodyTopNavigation`、筛选区前提示条或结果工具条，这些能力只能来自 page component
+  已声明的标准 slot / Level 1 受控扩展；legacy bridge 不得通过外层 wrapper 把它们提升成新的
+  page-level carrier，也不得把主体导航回流到 header region。
 - 这类 bridge 规则的唯一真相是 `rules/runtime-bridged-component-matrix.json`；它只补充
   `page-component` 在 legacy 中的交付方式，不复制 `page-component-registry`、mold registry
   或 component certification 已经表达的事实。
@@ -90,6 +104,8 @@ HiUI Typical Standard -> PageType -> ManagedMold -> Adapter/Carrier Proof -> Cer
 6. 当前模式为 `legacy-host-compatible` 时，必须同时取得 `runtimeAdapterProof.status=available`、`runtimeAdapterProof.kind=legacy-runtime-adapter`、`runtimeAdapterProof.responsibility=runtime-bridge-only`。缺少 request / response / message / i18n / permission / modal / scroll / style 等运行时能力事实时，计划必须 `blocked`，不得自动退回 `managed-fallback` 或自由手写。
 
 不满足时应 fail closed 或回到 `managed-fallback` / `non-typical`，不得回退到空白页手写。
+
+特别说明：legacy 主树不能 ad hoc direct import `@hiui-design/typical-page-shells`，并不等于 `page-component` 主链失效。只要 `runtimeAdapterProof` 已就绪，legacy 普通典型页的默认执行语义仍是 `page-component + runtime bridge + slot fill`；缺少 direct shell import 前提，只能阻止 direct shell mount，不能成为默认改写成兼容手拼页或把 reference 当交付资产的理由。
 
 对 legacy 普通典型页，还应默认收敛为 4 个硬门禁：
 

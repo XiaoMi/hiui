@@ -2670,6 +2670,8 @@ async function collectTypicalPageSourceSignals(rootDir) {
   const files = await collectSourceFiles(rootDir)
   const signals = {
     usesShells: [],
+    auxiliaryShellUses: [],
+    directShellUses: [],
     privateImportViolations: [],
     tableHeaderExtraViolations: [],
     localHostAdapterImports: [],
@@ -2680,6 +2682,10 @@ async function collectTypicalPageSourceSignals(rootDir) {
   for (const filePath of files) {
     const raw = await readTextCached(filePath)
     const specifiers = extractImportSpecifiers(raw)
+    const normalizedFilePath = filePath.split(path.sep).join('/')
+    const isHostIntegrationExampleFile = normalizedFilePath.includes('/src/typical-page-reuse/')
+    const isAuxiliaryReferenceFile =
+      isHostIntegrationExampleFile || /(^|\/)__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(normalizedFilePath)
     const usesShells = specifiers.some(
       (specifier) =>
         specifier === '@hiui-design/typical-page-shells' ||
@@ -2697,6 +2703,11 @@ async function collectTypicalPageSourceSignals(rootDir) {
 
     if (usesShells || usesPrivateShellImport) {
       signals.usesShells.push(filePath)
+      if (isAuxiliaryReferenceFile) {
+        signals.auxiliaryShellUses.push(filePath)
+      } else {
+        signals.directShellUses.push(filePath)
+      }
     }
 
     const usesLocalHostAdapter = specifiers.some(
@@ -2704,7 +2715,6 @@ async function collectTypicalPageSourceSignals(rootDir) {
         specifier.endsWith('/typical-page-host') ||
         specifier.includes('components/typical-page-host')
     )
-    const isHostIntegrationExampleFile = filePath.includes(`${path.sep}typical-page-reuse${path.sep}`)
     if (usesLocalHostAdapter && !isHostIntegrationExampleFile) {
       signals.localHostAdapterImports.push(filePath)
     }
@@ -5190,8 +5200,11 @@ async function main() {
       : ''
     const targetSourceRoot = path.join(targetRoot, 'src')
     const targetSourceSignals = await collectTypicalPageSourceSignals(targetSourceRoot)
+    const auxiliaryShellUsageOnly =
+      targetSourceSignals.directShellUses.length === 0 &&
+      targetSourceSignals.auxiliaryShellUses.length > 0
     const compatibilityGenerationOnly =
-      legacyCompatibilityMode && targetSourceSignals.usesShells.length === 0
+      legacyCompatibilityMode && targetSourceSignals.directShellUses.length === 0
     pushCheck(checks, {
       id: 'shells-installed',
       ok: legacyCompatibilityMode || (await pathExists(installedPackagePath)),
@@ -5265,7 +5278,7 @@ async function main() {
           : compatibilityGenerationOnly
             ? `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
-              )}. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime. Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
+              )}. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime.${auxiliaryShellUsageOnly ? ` Auxiliary gallery/reference imports remain allowed here and do not count as direct-shell business usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}` : ''} Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
             : `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
                 '; '
               )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy host bridge mode (legacy-host-compatible).`,
@@ -5319,42 +5332,46 @@ async function main() {
 
     pushCheck(checks, {
       id: 'shells-declared-when-used',
-      ok: targetSourceSignals.usesShells.length === 0 || Boolean(depSpec),
+      ok: targetSourceSignals.directShellUses.length === 0 || Boolean(depSpec),
       severity: 'error',
       summary: 'once project source uses typical-page shells, package.json also declares @hiui-design/typical-page-shells',
       detail:
-        targetSourceSignals.usesShells.length === 0 || Boolean(depSpec)
-          ? targetSourceSignals.usesShells.length === 0
-            ? 'No current source file imports typical-page shell components yet'
-            : `Shell package declared and used by: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`
-          : `Source files already import typical-page shell components but package.json does not declare @hiui-design/typical-page-shells. Examples: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`,
+        targetSourceSignals.directShellUses.length === 0 || Boolean(depSpec)
+          ? targetSourceSignals.directShellUses.length === 0
+            ? auxiliaryShellUsageOnly
+              ? `Only auxiliary gallery/reference files import typical-page shell components, so package.json declaration is not forced by business-page usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}`
+              : 'No current business source file imports typical-page shell components yet'
+            : `Shell package declared and used by: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`
+          : `Business source files already import typical-page shell components but package.json does not declare @hiui-design/typical-page-shells. Examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
     })
 
     pushCheck(checks, {
       id: 'styles-import-when-shells-used',
-      ok: targetSourceSignals.usesShells.length === 0 || hasStyleImport,
+      ok: targetSourceSignals.directShellUses.length === 0 || hasStyleImport,
       severity: 'error',
       summary: 'once project source uses typical-page shells, styles.css is already imported in the app entry',
       detail:
-        targetSourceSignals.usesShells.length === 0 || hasStyleImport
-          ? targetSourceSignals.usesShells.length === 0
-            ? 'No current source file imports typical-page shell components yet'
+        targetSourceSignals.directShellUses.length === 0 || hasStyleImport
+          ? targetSourceSignals.directShellUses.length === 0
+            ? auxiliaryShellUsageOnly
+              ? `Only auxiliary gallery/reference files import typical-page shell components, so app-entry styles import is not yet required for business delivery. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}`
+              : 'No current business source file imports typical-page shell components yet'
             : entryFile
-          : `Source files already use typical-page shell components, so add \`import '@hiui-design/typical-page-shells/styles.css'\` in the app entry before continuing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`,
+          : `Business source files already use typical-page shell components, so add \`import '@hiui-design/typical-page-shells/styles.css'\` in the app entry before continuing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
     })
 
     pushCheck(checks, {
       id: 'single-host-adapter-path-family',
       ok:
         targetSourceSignals.localHostAdapterImports.length === 0 ||
-        targetSourceSignals.usesShells.length === 0,
+        targetSourceSignals.directShellUses.length === 0,
       severity: 'error',
       summary: 'host provider and page shells do not mix local host-adapter paths with package imports',
       detail:
         targetSourceSignals.localHostAdapterImports.length === 0 ||
-        targetSourceSignals.usesShells.length === 0
+        targetSourceSignals.directShellUses.length === 0
           ? 'No mixed local-host-adapter and package shell import pattern was detected'
-          : `Do not mix local host adapter paths with @hiui-design/typical-page-shells imports. Keep both provider and consumer on the package path family. Local adapter examples: ${summarizePathList(targetRoot, targetSourceSignals.localHostAdapterImports)}; package import examples: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`,
+          : `Do not mix local host adapter paths with @hiui-design/typical-page-shells imports in business delivery code. Keep both provider and consumer on the package path family. Local adapter examples: ${summarizePathList(targetRoot, targetSourceSignals.localHostAdapterImports)}; package import examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
     })
 
     pushCheck(checks, {

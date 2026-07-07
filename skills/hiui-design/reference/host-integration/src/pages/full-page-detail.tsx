@@ -69,7 +69,7 @@ function FullPageDetailInner() {
       placement: 'vertical',
       column: 3,
       labelPlacement: 'left',
-      labelWidth: null,
+      labelWidth: undefined,
     }),
     []
   )

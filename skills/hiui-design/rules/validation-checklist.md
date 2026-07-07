@@ -117,7 +117,7 @@
 - 风险/状态类标签复用 `Tag` 或 shared status renderer；不存在业务页手写 `span + 胶囊背景色`
 - 可点击的状态筛选若本质仍是状态语义切换，继续复用 `Tag` / shared status renderer，并在交互层补 click / keyboard；不要因为“可点击”就回退成 `Button`
 - `PageHeader`、`QueryFilter`、`Table`、`Descriptions`、`Timeline`、`Empty`、`Progress`、`Steps` 的骨架层没有被业务页重写成另一套结构
-- 业务页没有通过 `classNames`、`styles`、slot semantic override 或本地 `.hi-v5-*` 选择器去改 `PageHeader`、`Descriptions`、`Timeline`、`Table` 等公共组件骨架
+- 业务页没有通过 `classNames`、`styles`、slot semantic override 或本地 `.hi-v5-*` 选择器去改 `PageHeader`、`QueryFilter`、`Descriptions`、`Timeline`、`Table` 等公共组件骨架
 - detail-shell 的 vertical `Descriptions` 没有依赖隐藏默认值；关键布局不变量在源码边界显式冻结，而不是靠浏览器默认 `th` 行为或第三方 bridge 默认值碰巧成立
 - 若页面使用 `SchemaDescriptionsBridge`，已显式写出 `labelPlacement: 'left'`，并清空 bridge 继承的固定 `labelWidth`；没有把 left 对齐修补下放到页面级 CSS
 - `ProDetailPage`、`ProListPageProvider`、`ProDetailPageProvider` 等页壳运行时要求仍被满足；不存在只保留外观、漏掉 provider / context 链的实现
@@ -134,11 +134,15 @@
 
 - 行内筛选真实使用 `QueryFilter`
 - 全部筛选真实使用 `FilterDrawer`
+- 行内 `QueryFilter` 保持 no-label + contained baseline；没有打开 `showLabel`，也没有改成 `line` 等偏离共享基线的 appearance
 - 行内字段集合、抽屉字段集合、可选字段集合与 `page-acceptance-contract.v1` / `fieldVisibility` 一致；字段从行内迁移到抽屉时有 provenance 和变更原因
 - 迁移页没有静默丢失 source snapshot 中记录的筛选字段、页头动作、表格列、分页位置或空态行为
 - 真实预览中能看到关键词搜索框、至少一个筛选控件、`全部筛选` 与 `重置`
+- 关键词搜索位保持 `SearchInput` / filled + search-icon 语义；没有退化成裸 `Input`，搜索框灰底表现没有丢失
 - split 左栏若直接使用 `SearchInput`，真实预览中搜索框已贴合 pane 宽度；没有暴露组件默认固定宽度导致的“搜索框未贴满左栏”
 - 不存在手工追加的“查询”主按钮
+- `QueryFilter` append 区没有再补第二个“查询 / 搜索 / 重置”按钮；清空 / 重置仍走受管筛选链路
+- “全部筛选”保持 `FilterButton` / `FilterDrawer` 语义，而不是普通 `Button`
 - 没有回退到 schema 搜索壳、`searchConfig.fields`、`SearchForm`、`getSearchFields` 或手写筛选栏
 - `Table` 默认开启 `resizable`
 - `Table` 默认开启字段管理
@@ -147,6 +151,7 @@
 - 若页面右侧存在需要冻结的操作列，列配置固定与 wrapper 级 `fixedToColumn` 已同步声明
 - 表格普通数据列默认保持单行；复合单元格、状态胶囊自定义渲染或多按钮行操作若存在，结果中已有书面批准依据
 - 表格 row action 保持 HiUI link 语义且单行
+- `outer-padding`、`white-body`、`main-scroll`、`table` region 没有抢占横向滚动或用内容宽度关键字定宽；筛选 / 表格工作区仍随父容器自适应
 - 主白底主体从筛选 / 表格 / 分页连续延伸；若示例页本身采用吸底分页，则分页仍处于同白底主体底部
 - 若页面使用真实 `QueryFilter`，控制台不存在 `FieldsContext` / `ValueType` 缺失类 warning
 

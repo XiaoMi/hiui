@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { Button, Message, PageHeader } from '@hi-ui/hiui'
 import { F } from '@hi-ui/schema-core'
 import { SchemaForm } from '@hi-ui/schema-form'
-import type { SchemaFormProps } from '@hi-ui/schema-form'
+import type { EnhancedFormRefType } from '@hi-ui/schema-form'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import { ProDrawerFooterActions, ProFormDrawer } from '@hiui-design/typical-page-shells/pro-form-drawer'
@@ -43,7 +43,8 @@ const dateProps = {
 export function DrawerFormPage() {
   const { locale, t } = useTranslation()
   const [visible, setVisible] = useState(true)
-  const formRef = useRef(null) as NonNullable<SchemaFormProps<DrawerFormValues>['formRef']>
+  // React 19 returns RefObject<T | null> for useRef(null), while schema-form still expects RefObject<T>.
+  const formRef = useRef(null) as unknown as EnhancedFormRefType<DrawerFormValues>
 
   const fields = useMemo(
     () => [

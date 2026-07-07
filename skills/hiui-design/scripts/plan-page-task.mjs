@@ -7,6 +7,8 @@ import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
 import { loadArchetypeDefinition } from './lib/archetypes/load-archetype-manifest.mjs'
 import {
+  getRequiredOwnershipRolesForPageType,
+  getRequiredRegionsForPageType,
   loadRulesOnlyPageContracts,
   normalizeContractPath,
 } from './lib/rules-only-page-contracts.mjs'
@@ -14,6 +16,10 @@ import {
   classifyTypicalPageTargetPath,
   getTypicalPageReuseBlockingReason,
 } from './lib/typical-page-route-ownership.mjs'
+import {
+  buildManagedInstanceMigrationReason,
+  evaluateManagedInstanceReadinessFromSource,
+} from './lib/managed-page-instance-readiness.mjs'
 import {
   getEditableSlotsForPageType,
   getLockedRegionsForPageType,
@@ -30,6 +36,7 @@ import {
 import { resolveRuntimeBridgeProfileForComponent } from './lib/runtime-bridge-profile-registry.mjs'
 import { getAdapterRegistryEntry } from './lib/adapter-registry.mjs'
 import { buildProjectCapabilities } from './lib/asset-control-surface.mjs'
+import { readProjectIntegrationState } from './lib/project-integration-state.mjs'
 
 const CONTRACT_VERSION = 4
 const LIST_SHELL_PAGE_TYPES = new Set([
@@ -233,18 +240,27 @@ async function readExistingPageFact(targetRoot, pagePath) {
     existingContract = null
   }
 
+  const contractFact = existingContract
+    ? {
+        pageTypeId: String(existingContract.pageTypeId || '').trim(),
+        workflowStatus: String(existingContract.workflow?.status || '').trim(),
+        preflightStatus: String(existingContract.workflow?.preflightStatus || '').trim(),
+      }
+    : null
+  const managedInstanceReadiness = evaluateManagedInstanceReadinessFromSource({
+    contract: contractFact,
+    pageExists,
+    sourceRaw,
+  })
+
   return {
     page: normalizedPagePath,
     exists: pageExists,
     routeOwnership: classifyTypicalPageTargetPath(normalizedPagePath),
     sourcePageTypeId,
-    contract: existingContract
-      ? {
-          pageTypeId: String(existingContract.pageTypeId || '').trim(),
-          workflowStatus: String(existingContract.workflow?.status || '').trim(),
-          preflightStatus: String(existingContract.workflow?.preflightStatus || '').trim(),
-        }
-      : null,
+    sourceMarkers: managedInstanceReadiness.sourceMarkers,
+    contract: contractFact,
+    managedInstanceReadiness,
   }
 }
 
@@ -1774,12 +1790,66 @@ function assetResolutionForPlan({ pageComponent, primaryGenerationAsset, generat
   }
 }
 
-function factsForPlan({ projectCapabilities, mode, targetPage, assetResolution }) {
+function summarizeProjectIntegrationForPlan(projectIntegration) {
+  if (!projectIntegration) {
+    return {
+      available: false,
+      status: 'missing',
+      integrationReady: null,
+      factPath: '',
+      source: '',
+      mode: '',
+      legacyRolloutCoverageStatus: 'not-applicable',
+      requiredLegacyPageTypes: [],
+      deferredLegacyPageTypes: [],
+      certifiedLegacyPageTypes: [],
+      missingRequiredLegacyPageTypes: [],
+      blockingReasons: [],
+    }
+  }
+
+  return {
+    available: true,
+    status: projectIntegration.integrationReady ? 'ready' : 'blocked',
+    integrationReady: Boolean(projectIntegration.integrationReady),
+    factPath: String(projectIntegration.factPath || '').trim(),
+    source: String(projectIntegration.source || '').trim(),
+    mode: String(projectIntegration.mode || '').trim(),
+    legacyRolloutCoverageStatus:
+      String(projectIntegration.legacyRolloutCoverageStatus || '').trim() || 'not-applicable',
+    requiredLegacyPageTypes: Array.isArray(projectIntegration.requiredLegacyPageTypes)
+      ? projectIntegration.requiredLegacyPageTypes
+      : [],
+    deferredLegacyPageTypes: Array.isArray(projectIntegration.deferredLegacyPageTypes)
+      ? projectIntegration.deferredLegacyPageTypes
+      : [],
+    certifiedLegacyPageTypes: Array.isArray(projectIntegration.certifiedLegacyPageTypes)
+      ? projectIntegration.certifiedLegacyPageTypes
+      : [],
+    missingRequiredLegacyPageTypes: Array.isArray(projectIntegration.missingRequiredLegacyPageTypes)
+      ? projectIntegration.missingRequiredLegacyPageTypes
+      : [],
+    blockingReasons: Array.isArray(projectIntegration.blockingReasons)
+      ? projectIntegration.blockingReasons
+      : [],
+  }
+}
+
+function factsForPlan({ projectCapabilities, projectIntegration, mode, targetPage, assetResolution }) {
   const blockingReasons = []
   const projectRootStatus = projectCapabilities?.projectRootValid ? 'valid' : 'unavailable'
+  const projectIntegrationSummary = summarizeProjectIntegrationForPlan(projectIntegration)
 
   if (!mode?.id || mode.confirmed === false) {
     blockingReasons.push('project mode is not confirmed by plan-page-task')
+  }
+
+  if (projectIntegrationSummary.available && projectIntegrationSummary.integrationReady === false) {
+    blockingReasons.push(
+      ...projectIntegrationSummary.blockingReasons.map((reason) =>
+        `project integration is blocked: ${reason}`
+      )
+    )
   }
 
   if (targetPage?.routeOwnership?.isTypicalPageReuseAsset) {
@@ -1802,6 +1872,7 @@ function factsForPlan({ projectCapabilities, mode, targetPage, assetResolution }
     status: blockingReasons.length > 0 ? 'blocked' : 'ready',
     sources: {
       capabilities: projectCapabilities?.schemaVersion || '',
+      projectIntegration: projectIntegrationSummary.factPath || '',
       mode: mode?.factPath || (mode?.source === 'explicit' ? 'cli:--mode' : 'rules/mode-selection.md'),
       routeOwnership: 'typical-page-route-ownership',
       assetCatalog: assetResolution?.source || '',
@@ -1809,6 +1880,7 @@ function factsForPlan({ projectCapabilities, mode, targetPage, assetResolution }
     digest: {
       mode: mode?.id || '',
       projectRoot: projectCapabilities?.projectRoot || '',
+      projectIntegration: projectIntegrationSummary.status,
       routeRole: targetPage?.routeOwnership?.role || '',
       asset: assetResolution?.componentId || assetResolution?.assetType || '',
     },
@@ -1818,12 +1890,14 @@ function factsForPlan({ projectCapabilities, mode, targetPage, assetResolution }
       'project-root',
       'capabilities',
       'mode-lock',
+      ...(projectIntegrationSummary.available ? ['project-integration-state'] : []),
       'route-ownership',
       'asset-resolution',
       ...(assetResolution?.strategy === 'page-component' ? ['component-certification'] : []),
       ...(assetResolution?.runtimeBridgeResolution ? ['runtime-bridge-profile'] : []),
     ],
     requiredAgentChecks: [],
+    projectIntegration: projectIntegrationSummary,
     blockingReasons,
   }
 }
@@ -1885,6 +1959,33 @@ function startFromForLegacyPageComponent({ generationStrategy, mode, pageCompone
       ? 'legacy-host-compatible uses the certified page component as the active start point; templates and host archetypes remain fallback-only.'
       : 'legacy-host-compatible stays on the page-component route until strategy explicitly degrades to managed-fallback; do not reinterpret template or host archetype assets as the active start point.',
   }
+}
+
+function startFromForRulesOnlyPageComponent({ generationStrategy, mode, pageComponent }) {
+  if (
+    mode !== 'rules-only' ||
+    normalizedGenerationStrategyId(generationStrategy) !== 'page-component' ||
+    pageComponent?.selected !== true
+  ) {
+    return null
+  }
+
+  return {
+    id: 'page-component',
+    source: pageComponent?.source || 'page-component-registry',
+    templatePath: '',
+    examplePath: '',
+    hostArchetypePath: '',
+    reason:
+      'rules-only selected a certified page component as the active start point; scaffold directly from the certified managed source instead of downgrading to template/example copy.',
+  }
+}
+
+function startFromForPageComponentMainline({ generationStrategy, mode, pageComponent }) {
+  return (
+    startFromForLegacyPageComponent({ generationStrategy, mode, pageComponent }) ||
+    startFromForRulesOnlyPageComponent({ generationStrategy, mode, pageComponent })
+  )
 }
 
 function inferStartFrom({ archetype, mode, pageType, templatePath }) {
@@ -2060,6 +2161,25 @@ function docsForPageTypes({ manifest, pageTypeIds }) {
   return Array.from(new Set(docs))
 }
 
+function makeRequiredDoc(pathValue, readMode, reason) {
+  return {
+    path: pathValue,
+    readMode,
+    reason,
+  }
+}
+
+function uniqueDocs(docs) {
+  const seen = new Set()
+  const result = []
+  for (const doc of docs) {
+    if (!doc?.path || seen.has(doc.path)) continue
+    seen.add(doc.path)
+    result.push(doc)
+  }
+  return result
+}
+
 function requiredDocsForPlan({
   fastPath,
   i18nMode,
@@ -2073,54 +2193,58 @@ function requiredDocsForPlan({
   topology,
 }) {
   const docs = [
-    'rules/QUICK-START.md',
-    'rules/page-type-map.md',
-    'rules/contract-regions.md',
-    'rules/generation-rules.md',
-    'docs/generation/ai-kickoff-template.md',
-    'docs/generation/hiui5-visual-baseline.md',
+    makeRequiredDoc('rules/QUICK-START.md', 'required', 'default planner entry'),
+    makeRequiredDoc('rules/page-type-map.md', 'required', 'page type and topology mapping'),
+    makeRequiredDoc('rules/contract-regions.md', 'required', 'contract field and region ownership baseline'),
+    makeRequiredDoc('rules/generation-rules.md', 'required', 'generation rules and phase boundaries'),
+    makeRequiredDoc('docs/generation/ai-kickoff-template.md', 'required', 'planner kickoff structure'),
+    makeRequiredDoc('docs/generation/hiui5-visual-baseline.md', 'required', 'visual baseline and typography scale'),
   ]
 
   if (!['project-lock', 'bootstrap-summary', 'explicit', 'explicit-alias:host-compatible'].includes(modeSource)) {
-    docs.splice(1, 0, 'rules/mode-selection.md')
+    docs.splice(1, 0, makeRequiredDoc('rules/mode-selection.md', 'required', 'mode inference fallback'))
   }
 
   if (isNonTypical) {
-    docs.push('docs/generation/non-typical-pages.md')
+    docs.push(makeRequiredDoc('docs/generation/non-typical-pages.md', 'required', 'non-typical layout routing'))
   } else if (topology?.id === 'single-page-composite') {
-    docs.push('docs/generation/implementation-checklist-template.md')
+    docs.push(makeRequiredDoc('docs/generation/implementation-checklist-template.md', 'required', 'composite layout implementation checklist'))
   } else if (pageTypeIds.length > 0) {
-    docs.push('docs/generation/figma-page-rules.md')
+    docs.push(makeRequiredDoc('docs/generation/figma-page-rules.md', 'required', 'page-type visual and semantic rules'))
   }
 
-  docs.push(...docsForPageTypes({ manifest, pageTypeIds }))
+  docs.push(
+    ...docsForPageTypes({ manifest, pageTypeIds }).map((docPath) =>
+      makeRequiredDoc(docPath, 'required', 'matched page-type chapter')
+    )
+  )
 
   if (['rules-only', 'legacy-host-compatible'].includes(mode)) {
-    docs.push('docs/generation/rules-only-example-alignment.md')
+    docs.push(makeRequiredDoc('docs/generation/rules-only-example-alignment.md', 'required', 'managed example alignment baseline'))
   }
 
   if (mode === 'rules-only' && !fastPath.eligible && taskLevel.id !== 'minor-edit') {
-    docs.push('docs/generation/rules-only-component-matrix.md')
+    docs.push(makeRequiredDoc('docs/generation/rules-only-component-matrix.md', 'conditional', 'slow-path rules-only component routing'))
   }
 
   if (mode === 'legacy-host-compatible') {
-    docs.push('docs/generation/legacy-host-compatibility.md')
+    docs.push(makeRequiredDoc('docs/generation/legacy-host-compatibility.md', 'required', 'legacy host compatibility contract'))
   }
 
   if (pageComponent?.selected || pageComponent?.candidates?.length > 0) {
-    docs.push('docs/generation/page-level-components.md')
-    docs.push('docs/generation/component-certification.md')
-    docs.push('docs/designer/page-component-preview.md')
+    docs.push(makeRequiredDoc('docs/generation/page-level-components.md', 'required', 'page-component delivery semantics'))
+    docs.push(makeRequiredDoc('docs/generation/component-certification.md', 'reference', 'component certification reference'))
+    docs.push(makeRequiredDoc('docs/designer/page-component-preview.md', 'reference', 'component preview semantics'))
     if (mode === 'legacy-host-compatible') {
-      docs.push('rules/runtime-bridged-component-matrix.json')
+      docs.push(makeRequiredDoc('rules/runtime-bridged-component-matrix.json', 'required', 'runtime bridge profile lookup'))
     }
   }
 
   if (i18nMode.id === 'full') {
-    docs.push('docs/generation/i18n-baseline.md')
+    docs.push(makeRequiredDoc('docs/generation/i18n-baseline.md', 'conditional', 'explicit i18n or RTL requirement'))
   }
 
-  return Array.from(new Set(docs))
+  return uniqueDocs(docs)
 }
 
 function shouldGenerateTranslationMap({ deliveryLevel, mode, pageFact, pageTypeId }) {
@@ -2142,21 +2266,29 @@ function shouldRequireSourceGateInPrimaryActions({
   deliveryLevel,
   generationStrategy,
   mode,
+  pageComponent,
   pageFact,
   taskLevel,
 }) {
   if (taskLevel.id === 'minor-edit') return false
   if (deliveryLevel.id === 'C') return false
   if (mode !== 'legacy-host-compatible') return false
-  if (usesLegacyPageComponentFastPath({ generationStrategy, mode })) return false
+  if (
+    usesLegacyPageComponentFastPath({ generationStrategy, mode }) &&
+    pageComponent?.selected === true &&
+    primaryPageComponentCandidateForPlan(pageComponent)?.projectOverlay === true
+  ) {
+    return true
+  }
   if (pageFact?.pageTypeMigration) return true
-  return !pageFact?.exists
+  return false
 }
 
 function shouldRequireSlotGateInPrimaryActions({
   deliveryLevel,
   generationStrategy,
   mode,
+  pageComponent,
   pageFact,
   taskLevel,
 }) {
@@ -2167,6 +2299,7 @@ function shouldRequireSlotGateInPrimaryActions({
       deliveryLevel,
       generationStrategy,
       mode,
+      pageComponent,
       pageFact,
       taskLevel,
     })
@@ -2265,6 +2398,7 @@ function requiredCommandsForTask({
   deliveryLevel,
   generationStrategy,
   mode,
+  pageComponent,
   pageFact,
   pageTypeId,
   pageUnits = [],
@@ -2350,6 +2484,7 @@ function requiredCommandsForTask({
         deliveryLevel,
         generationStrategy,
         mode,
+        pageComponent,
         pageFact,
         taskLevel,
       })
@@ -2365,6 +2500,7 @@ function requiredCommandsForTask({
         deliveryLevel,
         generationStrategy,
         mode,
+        pageComponent,
         pageFact,
         taskLevel,
       })
@@ -2428,6 +2564,7 @@ function requiredCommandsForTask({
       deliveryLevel,
       generationStrategy,
       mode,
+      pageComponent,
       pageFact,
       taskLevel,
     })
@@ -2443,6 +2580,7 @@ function requiredCommandsForTask({
       deliveryLevel,
       generationStrategy,
       mode,
+      pageComponent,
       pageFact,
       taskLevel,
     })
@@ -2530,12 +2668,14 @@ function conditionalCommandsForTask({ deliveryLevel, taskLevel, topology, pageUn
 function actionToolForScript(script) {
   if (script === 'reuse-existing-contract') return 'file-edit'
   if (script === 'resolve-business-route-target') return 'manual-resolution'
+  if (script === 'resolve-managed-page-instance') return 'manual-resolution'
   if (script === 'npm run build' || script === 'npm run lint') return 'shell-command'
   if (script.startsWith('typical-page:')) return 'npm-script'
   return 'node-script'
 }
 
 function actionPhaseForScript(script) {
+  if (script === 'bootstrap-target-project') return 'ResolveBlockingFacts'
   if (script === 'typical-page:select-archetype') return 'SelectStartPoint'
   if (script === 'typical-page:start-page') return 'GenerateOrEdit'
   if (script === 'typical-page:write-contract' || script === 'reuse-existing-contract') return 'WriteContract'
@@ -2551,6 +2691,7 @@ function actionPhaseForScript(script) {
   if (script === 'typical-page:runtime-smoke') return 'FormalAcceptance'
   if (script === 'typical-page:preview-ready') return 'UsageStats'
   if (script === 'resolve-business-route-target') return 'ResolveBlockingFacts'
+  if (script === 'resolve-managed-page-instance') return 'ResolveBlockingFacts'
   return 'GenerateOrEdit'
 }
 
@@ -2652,12 +2793,16 @@ function generationProfileForPlan({
     generationStrategy,
     mode,
   })
+  const strictLegacySourceAdapterProof =
+    mode === 'legacy-host-compatible' &&
+    deliveryAsset.kind === 'project-certified-carrier'
 
   if (
     shouldRequireSourceGateInPrimaryActions({
       deliveryLevel,
       generationStrategy,
       mode,
+      pageComponent,
       pageFact,
       taskLevel,
     })
@@ -2668,6 +2813,7 @@ function generationProfileForPlan({
       deliveryLevel,
       generationStrategy,
       mode,
+      pageComponent,
       pageFact,
       taskLevel,
     })
@@ -2703,16 +2849,21 @@ function generationProfileForPlan({
     moldId: pageTypeIds.length === 1
       ? getMoldIdForPageType(pageTypeIds[0], { skillRoot })
       : 'page-units.managed-mold.v1',
-    startFrom: legacyPageComponentFastPath ? 'page-component' : startFrom?.id || '',
+    startFrom:
+      legacyPageComponentFastPath ||
+      (mode === 'rules-only' &&
+        normalizedGenerationStrategyId(generationStrategy) === 'page-component' &&
+        pageComponent?.selected === true)
+        ? 'page-component'
+        : startFrom?.id || '',
     lockedRegions,
     editableSlots,
     slotManifest,
     requiredGates: uniqueValues(requiredGates),
     fallback: 'block-and-request-managed-mold-or-certified-adapter',
-    sourceProofLevel:
-      legacyPageComponentFastPath || mode !== 'legacy-host-compatible'
-        ? 'slot-boundary-proof'
-        : 'strict-source-adapter-proof',
+    sourceProofLevel: strictLegacySourceAdapterProof
+      ? 'strict-source-adapter-proof'
+      : 'slot-boundary-proof',
     notes: [
       'Generate from the primary generation asset when available; use fallback start points only for managed-fallback cases.',
       'Do not synthesize page shell, critical regions, ownership, pagination/footer, or main-scroll from local primitives.',
@@ -2722,8 +2873,11 @@ function generationProfileForPlan({
       ...(runtimeBridgeProfile?.status === 'available'
         ? ['In legacy bridge mode, resolve runtime shell source from certification and keep wrapper/slot adapter runtime-thin.']
         : []),
-      ...(legacyPageComponentFastPath
-        ? ['Legacy page-component fast path uses slot-boundary validation; source-gate stays in fallback/formal acceptance branches instead of the primary slot-fill chain.']
+      ...(strictLegacySourceAdapterProof
+        ? ['Legacy project-certified carriers require strict source + adapter proof before preflight because the business page is materialized from a project-scoped managed carrier rather than a direct standard component source.']
+        : []),
+      ...(legacyPageComponentFastPath && !strictLegacySourceAdapterProof
+        ? ['Legacy direct standard-component fast path keeps slot-boundary validation in the primary chain; strict source-gate remains reserved for project-certified carrier proofs and formal acceptance paths.']
         : []),
       ...(topology?.id === 'non-typical-overlay'
         ? ['Non-typical overlays must declare governed base mold and incremental scope before implementation.']
@@ -3005,6 +3159,7 @@ function blockingIssueCode(reason) {
   if (text.includes('unknown pageType')) return 'PLAN_INVALID'
   if (text.includes('runtime bridge profile is missing')) return 'RUNTIME_BRIDGE_PROFILE_MISSING'
   if (text.includes('runtime bridge component shell could not be resolved')) return 'RUNTIME_BRIDGE_SOURCE_UNRESOLVED'
+  if (text.includes('managed page instance')) return 'MANAGED_INSTANCE_MIGRATION_REQUIRED'
   if (text.includes('example gallery') || text.includes('src/typical-page-reuse')) {
     return 'ROUTE_OWNER_MISSING'
   }
@@ -3085,6 +3240,406 @@ function contractFieldsNeeded({ analyticsContractRequired, generationStrategy, l
   return Array.from(new Set(fields))
 }
 
+function targetDeliverySemanticsForPlan({ generationStrategy }) {
+  const normalizedStrategyId = normalizedGenerationStrategyId(generationStrategy)
+
+  if (normalizedStrategyId === 'page-component') {
+    return {
+      schemaVersion: 'target-delivery-semantics.v1',
+      defaultAction: 'generate-by-page-component-slot-fill',
+      deliveryPath: 'page-component-plus-slot-fill',
+      shellImportPolicy: 'follow-selected-delivery-asset',
+      runtimeDeliveryPolicy: 'use-selected-page-component-delivery-asset',
+      allowedEditBoundary: 'business-slots-and-level-1-controlled-extensions-only',
+      referenceAssetRole: 'semantic-and-structure-reference-only',
+      doNotDo: ['do-not-rebuild-managed-regions-from-primitives'],
+    }
+  }
+
+  if (normalizedStrategyId === 'managed-analytics') {
+    return {
+      schemaVersion: 'target-delivery-semantics.v1',
+      defaultAction: 'generate-by-managed-analytics-contract',
+      deliveryPath: 'managed-analytics-contract-plus-page-assembly',
+      shellImportPolicy: 'follow-selected-delivery-asset',
+      runtimeDeliveryPolicy: 'use-managed-analytics-delivery-asset',
+      allowedEditBoundary: 'approved-chart-config-and-business-slots-only',
+      referenceAssetRole: 'semantic-and-structure-reference-only',
+      doNotDo: ['do-not-build-freeform-chart-wall-from-primitives'],
+    }
+  }
+
+  if (normalizedStrategyId === 'controlled-extension') {
+    return {
+      schemaVersion: 'target-delivery-semantics.v1',
+      defaultAction: 'reuse-existing-managed-contract',
+      deliveryPath: 'existing-managed-page-controlled-extension',
+      shellImportPolicy: 'preserve-existing-managed-delivery-asset',
+      runtimeDeliveryPolicy: 'stay-inside-existing-managed-page-contract',
+      allowedEditBoundary: 'existing-managed-slots-and-approved-controlled-extensions-only',
+      referenceAssetRole: 'not-applicable',
+      doNotDo: ['do-not-upgrade-controlled-extension-into-structural-change'],
+    }
+  }
+
+  if (normalizedStrategyId === 'non-typical') {
+    return {
+      schemaVersion: 'target-delivery-semantics.v1',
+      defaultAction: 'generate-by-non-typical-constrained-assembly',
+      deliveryPath: 'non-typical-constrained-assembly',
+      shellImportPolicy: 'follow-approved-layout-strategy',
+      runtimeDeliveryPolicy: 'use-approved-non-typical-layout-carrier',
+      allowedEditBoundary: 'approved-layout-archetype-and-business-sections-only',
+      referenceAssetRole: 'layout-strategy-reference-only',
+      doNotDo: ['do-not-fallback-to-freeform-business-page'],
+    }
+  }
+
+  return {
+    schemaVersion: 'target-delivery-semantics.v1',
+    defaultAction: 'generate-from-managed-fallback-start-point',
+    deliveryPath: 'managed-fallback-start-point',
+    shellImportPolicy: 'follow-selected-start-point',
+    runtimeDeliveryPolicy: 'use-managed-fallback-start-asset',
+    allowedEditBoundary: 'managed-start-point-plus-governed-business-fill',
+    referenceAssetRole: 'semantic-and-structure-reference-only',
+    doNotDo: ['do-not-start-from-blank-page-when-managed-start-point-is-blocked'],
+  }
+}
+
+function currentExecutionStateForPlan({
+  blockingIssues,
+  canStartImplementation,
+  requiredActions,
+  targetDeliverySemantics,
+}) {
+  const queuedCommands = requiredActions
+    .map((action) => action.command)
+    .filter(Boolean)
+  const nextAction = requiredActions[0] || null
+
+  return {
+    schemaVersion: 'current-execution-state.v1',
+    status: canStartImplementation ? 'ready' : 'blocked',
+    canStartImplementation,
+    primaryAction: canStartImplementation
+      ? targetDeliverySemantics.defaultAction
+      : 'ResolveBlockingFacts',
+    executablePath: canStartImplementation
+      ? targetDeliverySemantics.deliveryPath
+      : 'resolve-blocking-facts',
+    currentPhase: nextAction?.phase || (canStartImplementation ? 'SelectStartPoint' : 'ResolveBlockingFacts'),
+    allowedCommandSurface: canStartImplementation
+      ? 'selected-plan-actions'
+      : 'blocking-recovery-only',
+    nextCommand: nextAction?.command || '',
+    nextPhase: nextAction?.phase || '',
+    queuedCommands,
+    blockerCodes: blockingIssues.map((issue) => issue.code),
+    targetDefaultAction: targetDeliverySemantics.defaultAction,
+    targetDeliveryPath: targetDeliverySemantics.deliveryPath,
+  }
+}
+
+function implementationActionForPlan({
+  generationStrategy,
+  targetPage,
+  topology,
+}) {
+  const normalizedStrategyId = normalizedGenerationStrategyId(generationStrategy)
+
+  if (targetPage?.pageTypeMigration || topology?.id === 'single-page-composite') {
+    return {
+      schemaVersion: 'implementation-action.v1',
+      action: 'structural-upgrade',
+      category: 'structure-upgrade',
+      reason:
+        topology?.id === 'single-page-composite'
+          ? 'same-screen composite layout changes the page shell/ownership contract beyond a slot-only edit'
+          : 'page type or managed shell contract changed, so this task is no longer a slot-only update',
+    }
+  }
+
+  if (normalizedStrategyId === 'page-component') {
+    if (targetPage?.exists && targetPage?.managedInstanceReadiness?.status === 'migration-required') {
+      return {
+        schemaVersion: 'implementation-action.v1',
+        action: 'rewrite-by-page-component',
+        category: 'managed-instance-rewrite',
+        reason:
+          'the target page still belongs to the same typical page type, but the current source is not a ready managed instance; rebuild the business page instance from the certified page component/carrier instead of repairing the old shell by hand',
+      }
+    }
+
+    return {
+      schemaVersion: 'implementation-action.v1',
+      action: 'slot-fill-only',
+      category: 'lightweight-implementation',
+      reason:
+        'the selected delivery asset already owns the managed shell; stay inside certified business slots and approved controlled extensions only',
+    }
+  }
+
+  if (normalizedStrategyId === 'non-typical' || normalizedStrategyId === 'managed-analytics') {
+    return {
+      schemaVersion: 'implementation-action.v1',
+      action: 'preserve-layout-strategy-and-replace-semantics',
+      category: 'semantic-upgrade',
+      reason:
+        'preserve the approved base archetype/layout strategy and replace the implementation with HiUI-first semantics, tokens, and governed ownership instead of inheriting legacy visuals or unmanaged layout code',
+    }
+  }
+
+  if (normalizedStrategyId === 'controlled-extension') {
+    return {
+      schemaVersion: 'implementation-action.v1',
+      action: 'slot-fill-only',
+      category: 'lightweight-implementation',
+      reason:
+        'the current task remains inside existing managed slots or approved Level 1 controlled extensions',
+    }
+  }
+
+  return {
+    schemaVersion: 'implementation-action.v1',
+    action: 'structural-upgrade',
+    category: 'structure-upgrade',
+    reason:
+      'the selected strategy is outside slot-only page-component delivery and requires an explicit managed fallback or structure-aware upgrade path',
+  }
+}
+
+function governanceUpgradeForPlan({
+  acceptanceProfile,
+  deliveryLevel,
+  mode,
+  pageTypeId,
+  targetPage,
+}) {
+  const reasons = []
+
+  if (targetPage?.managedInstanceReadiness?.status === 'migration-required' || targetPage?.pageTypeMigration) {
+    reasons.push('migration-or-rearchitecture')
+  }
+
+  if (
+    mode === 'legacy-host-compatible' &&
+    (deliveryLevel?.id === 'C' ||
+      HIGH_RISK_TRANSLATION_MAP_PAGE_TYPES.has(pageTypeId) ||
+      targetPage?.pageTypeMigration)
+  ) {
+    reasons.push('legacy-drift-guard')
+  }
+
+  if (acceptanceProfile?.formalRequired) {
+    reasons.push('formal-acceptance')
+  }
+
+  const required = reasons.length > 0
+
+  return {
+    schemaVersion: 'governance-upgrade.v1',
+    required,
+    reasons,
+    scope: required ? 'enhanced-governance' : 'standard-governance',
+    explanation: required
+      ? 'upgrade governance checks such as snapshot/acceptance contract, translation-map, source-gate, doctor, or finalize-page without assuming the implementation path must become a structure rewrite'
+      : 'current task stays on the default governance profile for the selected generation path',
+  }
+}
+
+function executionDecisionSummaryForPlan(targetDeliverySemantics) {
+  return {
+    ...targetDeliverySemantics,
+    summaryScope: 'current-execution-state-aligned-with-target-delivery',
+    targetDefaultAction: targetDeliverySemantics.defaultAction,
+    targetDeliveryPath: targetDeliverySemantics.deliveryPath,
+  }
+}
+
+function inferNonTypicalLayoutFacts({ changeText, pageTypeId }) {
+  const text = String(changeText || '')
+  const detailLikePage = ['full-page-detail', 'drawer-detail'].includes(pageTypeId)
+  const hasSummaryStrip = /(顶部摘要|摘要带|摘要区|总览|概览|指标摘要)/i.test(text)
+  const hasSecondaryRail = /(右侧|侧栏|辅栏|时间线|风险|协同|轨迹|流程|进度)/i.test(text)
+
+  if (detailLikePage && (hasSummaryStrip || hasSecondaryRail)) {
+    return {
+      layoutStrategy: 'detail-workbench',
+      layoutArchetype: 'primary-secondary',
+      nonTypicalScope: [
+        ...(hasSummaryStrip ? ['summary-strip'] : []),
+        'primary-groups',
+        'secondary-groups',
+        'supporting-sections',
+      ],
+      mandatoryComponents: ['PageHeader', 'Descriptions', 'SchemaGroup'],
+      compositionGuardrails: [
+        'detail-body remains the primary managed detail carrier; non-typical composition can only reorganize first-level groups inside the approved detail workspace.',
+        'secondary rail may host timeline / risk / collaboration sections, but must not replace Descriptions or SchemaGroup as the main detail expression.',
+      ],
+      strategyEvidence: [
+        'layout strategy/archetype: detail-workbench + primary-secondary',
+        hasSummaryStrip
+          ? 'top summary strip proves the workbench-style detail overview layer before the main detail body'
+          : 'secondary supporting rail proves the workbench-style detail layering beyond a plain grouped detail page',
+      ],
+    }
+  }
+
+  return {
+    layoutStrategy: detailLikePage ? 'detail-workbench' : 'non-typical-constrained-assembly',
+    layoutArchetype:
+      /(左侧|右侧|侧栏|分栏|时间线|协同|风险)/i.test(text) ? 'primary-secondary' : 'parallel-sections',
+    nonTypicalScope: ['primary-groups', 'supporting-sections'],
+    mandatoryComponents: detailLikePage ? ['PageHeader', 'Descriptions', 'SchemaGroup'] : ['PageHeader'],
+    compositionGuardrails: detailLikePage
+      ? [
+          'detail-body remains the primary managed detail carrier; non-typical composition must stay inside governed detail sections.',
+        ]
+      : ['keep carrier ownership on the approved non-typical layout shell'],
+    strategyEvidence: ['layout strategy/archetype derived from non-typical page evidence and base page type'],
+  }
+}
+
+function layoutStrategyForPlan({ isNonTypical, topology }) {
+  if (topology?.id === 'single-page-composite') {
+    return 'context-main-split'
+  }
+  if (isNonTypical) {
+    return ''
+  }
+  return 'typical-page'
+}
+
+function ownershipPlanForPlan({ mode, pageTypeId }) {
+  const requiredRoles = getRequiredOwnershipRolesForPageType(pageTypeId)
+  const managedTargetsByRole = {
+    'content-slot': `${pageTypeId}.contentSlot`,
+    'white-body': `${pageTypeId}.whiteBody`,
+    'outer-padding': `${pageTypeId}.pageRoot`,
+    'main-scroll': `${pageTypeId}.pageScroll`,
+  }
+  return {
+    ownershipMode: mode === 'host-integration' ? 'host-slot-owns-workspace' : 'page-surface-owns-workspace',
+    requiredRoles,
+    targetHints: requiredRoles.map((role) => ({
+      role,
+      target:
+        mode === 'host-integration'
+          ? role === 'content-slot'
+            ? 'TypicalPageAppFrame.content'
+            : role === 'main-scroll'
+              ? `${pageTypeId}.workspaceScroll`
+              : `${pageTypeId}.shell`
+          : managedTargetsByRole[role] || `${pageTypeId}.${role.replace(/-([a-z])/g, (_, ch) => ch.toUpperCase())}`,
+    })),
+  }
+}
+
+function generationInputsForPlan({
+  fastPath,
+  generationProfile,
+  pageComponent,
+  pageTypeId,
+  primaryGenerationAsset,
+  requiredActions,
+  requiredDocs,
+  startFrom,
+}) {
+  const requiredRegions = getRequiredRegionsForPageType(pageTypeId)
+  return {
+    schemaVersion: 'generation-inputs.v1',
+    requiredFacts: [
+      'project-mode',
+      'route-ownership',
+      'asset-resolution',
+      ...(pageComponent?.selected ? ['page-component-selection'] : []),
+    ],
+    requiredDocs,
+    docBundle: {
+      schemaVersion: 'generation-doc-bundle.v1',
+      source: 'requiredDocs',
+      profile: fastPath.eligible ? 'minimal-doc-fast-path' : 'expanded-doc-bundle',
+      bundleIds: requiredDocs.map((doc) => doc.path),
+    },
+    fastPathSummary: {
+      schemaVersion: 'generation-fast-path-summary.v1',
+      eligible: fastPath.eligible,
+      executionMode: fastPath.eligible ? 'fast-path' : 'standard-path',
+      pageShellPolicy: pageComponent?.selected ? 'page-component-shell' : 'managed-start-point-shell',
+      queryFilterPolicy: LIST_SHELL_PAGE_TYPES.has(pageTypeId) ? 'managed-query-filter' : 'not-applicable',
+      upgradeSignals: fastPath.eligible ? [] : ['full-generation-doc-bundle-required'],
+    },
+    entryActions: requiredActions.map((action) => ({
+      id: action.id,
+      phase: action.phase,
+      command: action.command,
+    })),
+    startFrom,
+    primaryGenerationAsset,
+    pageComponent: pageComponent?.selected
+      ? {
+          selected: true,
+          componentId: pageComponent.componentId,
+          source: pageComponent.source,
+        }
+      : {
+          selected: false,
+          componentId: '',
+          source: pageComponent?.source || '',
+        },
+    compiledTypicalBaseline: {
+      pageTypeId,
+      requiredRegions,
+      hardConstraints: [
+        'single-white-body-owner',
+        'managed-query-filter-required',
+        'managed-pagination-owner-required',
+      ],
+      headerLayout: {
+        required: requiredRegions.includes('header'),
+        rhythmPx: 60,
+      },
+      queryFilter: {
+        required: requiredRegions.includes('query-filter'),
+        requiredComponent: requiredRegions.includes('query-filter') ? 'QueryFilter' : '',
+      },
+      whiteBodyOwnership: {
+        required: requiredRegions.includes('white-body'),
+        forbidSecondWhiteBody: requiredRegions.includes('white-body'),
+      },
+      pagination: {
+        required: requiredRegions.includes('pagination'),
+        mountPolicy: requiredRegions.includes('pagination') ? 'managed-pagination-mount' : 'not-applicable',
+      },
+    },
+    generationProfile,
+  }
+}
+
+function inlineChecksForPlan({ generationRecipe, requiredActions }) {
+  return {
+    schemaVersion: 'inline-checks.v1',
+    recipeChecks: Array.isArray(generationRecipe?.inlineChecks) ? generationRecipe.inlineChecks : [],
+    commandChecks: requiredActions
+      .filter((action) => ['GenerateOrEdit', 'Preflight', 'TranslationMap'].includes(action.phase))
+      .map((action) => `${action.command}: ${action.reason}`),
+  }
+}
+
+function deliveryChecksForPlan({ acceptanceProfile, deliveryLevel }) {
+  return {
+    schemaVersion: 'delivery-checks.v1',
+    projectQuality: ['preflight', 'page-instance-validation'],
+    previewConfirmation: ['preview-ready'],
+    runtimeGovernance: deliveryLevel.id === 'C' ? ['runtime-smoke-or-finalize-path'] : ['not-required-by-default'],
+    formalAcceptance: acceptanceProfile.formalRequired
+      ? acceptanceProfile.defaultActions
+      : [],
+  }
+}
+
 async function buildPlan(options) {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url))
   const skillRoot = path.resolve(scriptDir, '..')
@@ -3104,6 +3659,7 @@ async function buildPlan(options) {
   const hostProfile = await detectHostProfile(options.target)
   const pkg = (await readTargetPackageJson(options.target)) || hostProfile.pkg
   const projectModeFact = await readProjectModeFact(options.target)
+  const projectIntegration = await readProjectIntegrationState(options.target)
   const pageFact = await readExistingPageFact(options.target, options.page)
   const mode = inferMode(pkg, hostProfile, options.mode, projectModeFact)
   const projectCapabilities = buildProjectCapabilities({ targetRoot: options.target, skillRoot, modeOverride: mode.id })
@@ -3118,6 +3674,39 @@ async function buildPlan(options) {
   const routeOwnershipBlockingReason = pageFact?.page
     ? getTypicalPageReuseBlockingReason(pageFact.page)
     : ''
+  const managedInstanceBlockingReason =
+    pageFact?.managedInstanceReadiness?.status === 'migration-required'
+      ? buildManagedInstanceMigrationReason(pageFact.managedInstanceReadiness)
+      : ''
+  const unregisteredManagedMarkerPage =
+    pageFact?.managedInstanceReadiness?.status === 'migration-required' &&
+    Array.isArray(pageFact?.managedInstanceReadiness?.blockerCodes) &&
+    pageFact.managedInstanceReadiness.blockerCodes.includes('MANAGED_INSTANCE_CONTRACT_MISSING') &&
+    Boolean(
+      pageFact?.managedInstanceReadiness?.sourceMarkers?.pageType &&
+        pageFact?.managedInstanceReadiness?.sourceMarkers?.shell &&
+        (
+          pageFact?.managedInstanceReadiness?.sourceMarkers?.example ||
+          pageFact?.managedInstanceReadiness?.sourceMarkers?.hostArchetype ||
+          pageFact?.managedInstanceReadiness?.sourceMarkers?.archetype
+        )
+    )
+  const projectIntegrationBlocked = projectIntegration?.integrationReady === false
+  const projectIntegrationCommand = projectIntegrationBlocked
+    ? {
+        script: 'bootstrap-target-project',
+        args: ['--target <project-root>'],
+        when:
+          'before any page generation or page-instance repair; current project-integration-state is blocked and required hiui-design onboarding facts must be repaired first',
+      }
+    : null
+  const routeOwnershipBlockingCommand = routeOwnershipBlockingReason
+    ? {
+        script: 'resolve-business-route-target',
+        args: ['--page src/pages/<business-page>/index.jsx'],
+        when: 'before any start-page, preflight, or write-contract command; current --page belongs to the example gallery/smoke baseline',
+      }
+    : null
 
   if (options.pageTypeId && !pageType) {
     blockingReasons.push(`unknown pageType: ${options.pageTypeId}`)
@@ -3125,6 +3714,10 @@ async function buildPlan(options) {
 
   if (routeOwnershipBlockingReason) {
     blockingReasons.push(routeOwnershipBlockingReason)
+  }
+
+  if (managedInstanceBlockingReason) {
+    blockingReasons.push(managedInstanceBlockingReason)
   }
 
   if (
@@ -3214,7 +3807,7 @@ async function buildPlan(options) {
         reason: 'start asset is resolved per pageUnits item',
       }
     : pageType
-      ? startFromForLegacyPageComponent({
+      ? startFromForPageComponentMainline({
           generationStrategy,
           mode: mode.id,
           pageComponent,
@@ -3280,6 +3873,21 @@ async function buildPlan(options) {
     startFrom,
   })
   const pageTypeDocs = docsForPageTypes({ manifest, pageTypeIds: pageTypeIdsForDocs })
+  const nonTypicalLayoutFacts = isNonTypical
+    ? inferNonTypicalLayoutFacts({
+        changeText: options.change,
+        pageTypeId: pageTypeIdForContract,
+      })
+    : null
+  const layoutStrategy =
+    nonTypicalLayoutFacts?.layoutStrategy || layoutStrategyForPlan({ isNonTypical, topology })
+  const resolvedLayoutArchetype = nonTypicalLayoutFacts?.layoutArchetype || layoutArchetype
+  const nonTypicalScope = isNonTypical ? nonTypicalLayoutFacts?.nonTypicalScope || [] : []
+  const mandatoryComponents = isNonTypical ? nonTypicalLayoutFacts?.mandatoryComponents || [] : []
+  const compositionGuardrails = isNonTypical
+    ? nonTypicalLayoutFacts?.compositionGuardrails || []
+    : []
+  const strategyEvidence = isNonTypical ? nonTypicalLayoutFacts?.strategyEvidence || [] : []
   const suggestedPageTypes = Array.from(
     new Set(
       intentUnits
@@ -3287,18 +3895,37 @@ async function buildPlan(options) {
         .filter(Boolean)
     )
   )
-  const requiredCommands = routeOwnershipBlockingReason
+  const requiredCommands = projectIntegrationBlocked
     ? [
-        {
-          script: 'resolve-business-route-target',
-          args: ['--page src/pages/<business-page>/index.jsx'],
-          when: 'before any start-page, preflight, or write-contract command; current --page belongs to the example gallery/smoke baseline',
-        },
+        ...(projectIntegrationCommand ? [projectIntegrationCommand] : []),
+        ...(routeOwnershipBlockingCommand ? [routeOwnershipBlockingCommand] : []),
       ]
+    : routeOwnershipBlockingReason
+      ? [routeOwnershipBlockingCommand]
+    : unregisteredManagedMarkerPage
+      ? [
+          {
+            script: 'register-managed-page-contract',
+            args: [
+              `--page ${pageFact?.page || '<existing-page>'}`,
+              `--page-type ${pageFact?.sourcePageTypeId || '<page-type>'}`,
+            ],
+            when: 'before preflight/finalize; current source already carries managed-page markers, but the page-contract registration chain was never completed',
+          },
+        ]
+    : managedInstanceBlockingReason
+      ? [
+          {
+            script: 'resolve-managed-page-instance',
+            args: ['--page <existing-page>'],
+            when: 'before any reuse-existing-contract command; the current source still needs to migrate into the managed shell / query-filter / table ownership chain',
+          },
+        ]
     : requiredCommandsForTask({
         deliveryLevel,
         generationStrategy,
         mode: mode.id,
+        pageComponent,
         pageFact,
         pageTypeId: pageTypeIdForContract,
         pageUnits,
@@ -3317,6 +3944,18 @@ async function buildPlan(options) {
     generationStrategy,
     mode: mode.id,
   })
+  const requiredDocs = requiredDocsForPlan({
+    fastPath,
+    i18nMode,
+    isNonTypical,
+    manifest,
+    mode: mode.id,
+    modeSource: mode.source,
+    pageComponent,
+    pageTypeIds: pageTypeIdsForDocs,
+    taskLevel,
+    topology,
+  })
   const targetPage = pageFact
     ? {
         path: pageFact.page,
@@ -3326,6 +3965,7 @@ async function buildPlan(options) {
         sourcePageTypeId: pageFact.sourcePageTypeId,
         contractPageTypeId: pageFact.contract?.pageTypeId || '',
         contractWorkflowStatus: pageFact.contract?.workflowStatus || '',
+        managedInstanceReadiness: pageFact.managedInstanceReadiness,
         pageTypeMigration: isSingleTypicalPageTarget({ topology, pageUnits }) &&
           Boolean(pageFact.contract?.pageTypeId && pageTypeIdForContract) &&
           pageFact.contract.pageTypeId !== pageTypeIdForContract,
@@ -3342,6 +3982,7 @@ async function buildPlan(options) {
     assetResolution,
     mode,
     projectCapabilities,
+    projectIntegration,
     targetPage,
   })
   const allBlockingReasons = Array.from(new Set([
@@ -3364,6 +4005,52 @@ async function buildPlan(options) {
     }).map((command) => command.script).filter(Boolean),
   ]))
   const blockingIssues = blockingIssuesForReasons(allBlockingReasons)
+  const targetDeliverySemantics = targetDeliverySemanticsForPlan({ generationStrategy })
+  const ownershipPlan = ownershipPlanForPlan({
+    mode: mode.id,
+    pageTypeId: pageTypeIdForContract,
+  })
+  const generationInputs = generationInputsForPlan({
+    fastPath,
+    generationProfile,
+    pageComponent,
+    pageTypeId: pageTypeIdForContract,
+    primaryGenerationAsset,
+    requiredActions,
+    requiredDocs,
+    startFrom,
+  })
+  const inlineChecks = inlineChecksForPlan({
+    generationRecipe,
+    requiredActions,
+  })
+  const deliveryChecks = deliveryChecksForPlan({
+    acceptanceProfile,
+    deliveryLevel,
+  })
+  const canStartImplementation =
+    allBlockingReasons.length === 0 &&
+    (!targetPage?.managedInstanceReadiness ||
+      targetPage.managedInstanceReadiness.status === 'ready' ||
+      targetPage.managedInstanceReadiness.status === 'not-applicable')
+  const currentExecutionState = currentExecutionStateForPlan({
+    blockingIssues,
+    canStartImplementation,
+    requiredActions,
+    targetDeliverySemantics,
+  })
+  const implementationAction = implementationActionForPlan({
+    generationStrategy,
+    targetPage,
+    topology,
+  })
+  const governanceUpgrade = governanceUpgradeForPlan({
+    acceptanceProfile,
+    deliveryLevel,
+    mode: mode.id,
+    pageTypeId: pageTypeIdForContract,
+    targetPage,
+  })
 
   return {
     schemaVersion: 'page-task-plan.v1',
@@ -3389,11 +4076,23 @@ async function buildPlan(options) {
     },
     isNonTypical,
     layoutOverlayRequired: isNonTypical || topology.id === 'single-page-composite',
+    layoutStrategy,
+    layoutArchetype: resolvedLayoutArchetype,
+    nonTypicalScope,
+    mandatoryComponents,
+    compositionGuardrails,
+    strategyEvidence,
+    ownershipPlan,
     fastPath,
     generationStrategy,
     generationStrategyId: normalizedGenerationStrategyId(generationStrategy),
     generationProfile,
     generationRecipe,
+    generationInputs,
+    inlineChecks,
+    deliveryChecks,
+    implementationAction,
+    governanceUpgrade,
     primaryGenerationAsset,
     fallbackGenerationAsset,
     customizationLevel,
@@ -3403,18 +4102,7 @@ async function buildPlan(options) {
     i18nMode,
     pageTypeDocs,
     startFrom,
-    requiredDocs: requiredDocsForPlan({
-      fastPath,
-      i18nMode,
-      isNonTypical,
-      manifest,
-      mode: mode.id,
-      modeSource: mode.source,
-      pageComponent,
-      pageTypeIds: pageTypeIdsForDocs,
-      taskLevel,
-      topology,
-    }),
+    requiredDocs,
     requiredActions,
     requiredCommands,
     acceptanceLevel: acceptanceLevelForDeliveryLevel(deliveryLevel),
@@ -3433,7 +4121,7 @@ async function buildPlan(options) {
     contractFieldsNeeded: contractFieldsNeeded({
       analyticsContractRequired,
       generationStrategy,
-      layoutArchetype,
+      layoutArchetype: resolvedLayoutArchetype,
       mode: mode.id,
       pageComponent,
       pageTypeId: pageTypeIdForContract,
@@ -3461,6 +4149,8 @@ async function buildPlan(options) {
         assemblyOrder: generationRecipe.assemblyOrder,
         requiredAssets: generationRecipe.requiredAssets,
       },
+      implementationAction: implementationAction.action,
+      governanceUpgradeRequired: governanceUpgrade.required,
       primaryGenerationAsset: {
         type: primaryGenerationAsset.type,
         id: primaryGenerationAsset.id,
@@ -3512,15 +4202,19 @@ async function buildPlan(options) {
       previewReadyRequired: taskLevel.id !== 'minor-edit',
       requireNetworkAuthorization: 'when usage script exits 21',
     },
+    targetDeliverySemantics,
+    currentExecutionState,
+    executionDecisionSummary: executionDecisionSummaryForPlan(targetDeliverySemantics),
     factsSource: {
       projectCapabilities: projectCapabilities.schemaVersion,
+      projectIntegration: projectIntegration?.factPath || '',
       mode: mode.factPath || (mode.source === 'explicit' ? 'cli:--mode' : 'rules/mode-selection.md'),
       pageTypes: 'rules/common.page-types.json',
       archetypes: 'archetypes/page-types/*/archetype.json',
       usagePolicy: 'PRIVACY.md',
     },
     targetPage,
-    canStartImplementation: allBlockingReasons.length === 0,
+    canStartImplementation,
     blockingReasons: allBlockingReasons,
     blockingIssues,
     suggestedPageTypes,

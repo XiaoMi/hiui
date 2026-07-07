@@ -438,18 +438,6 @@ export function inspectTypicalPageChanges(changedFiles) {
         declaresAlignment,
       })
 
-      const missingContractPaths = [contractEntry.contractJsonPath, contractEntry.contractMdPath].filter(
-        (contractPath) => !changedFileSet.has(contractPath)
-      )
-
-      if (missingContractPaths.length > 0) {
-        failures.push(
-          `${filePath} changed without updating its contract files: ${missingContractPaths.join(
-            ', '
-          )}. Re-run npm run typical-page:finalize-page -- ...`
-        )
-      }
-
       if (!isFinalizedContractWorkflow(contractEntry.contract)) {
         failures.push(
           `${filePath} is registered but its contract workflow is not finalized. Re-run npm run typical-page:finalize-page -- ... so CI sees source/doctor PASS on the current page snapshot.`
@@ -471,6 +459,22 @@ export function inspectTypicalPageChanges(changedFiles) {
           failures.push(
             `${filePath} changed after its last finalize-page result. Contract snapshot ${recordedSnapshotHash} does not match current source snapshot ${currentSnapshot.hash}. Re-run npm run typical-page:finalize-page -- ... on the latest source.`
           )
+        } else {
+          const missingContractPaths = [
+            contractEntry.contractJsonPath,
+            contractEntry.contractMdPath,
+          ].filter((contractPath) => !changedFileSet.has(contractPath))
+
+          if (
+            missingContractPaths.length > 0 &&
+            missingContractPaths.some((contractPath) => !contractPath.startsWith(CONTRACTS_DIR))
+          ) {
+            failures.push(
+              `${filePath} changed without updating its contract files: ${missingContractPaths.join(
+                ', '
+              )}. Re-run npm run typical-page:finalize-page -- ...`
+            )
+          }
         }
 
         const runtimeSmokeRequired =

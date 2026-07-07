@@ -4,6 +4,9 @@ const COMMON_EXCLUDE_PATTERNS = [
   '.git/**',
   '.DS_Store',
   '**/.DS_Store',
+  '.backup-*',
+  '.backup-*/*',
+  '.backup-*/**',
   '*.bak',
   '*.bak-*',
   '**/*.bak',
@@ -16,6 +19,9 @@ const COMMON_EXCLUDE_PATTERNS = [
   '.release.env.local',
   '.env.release',
   '.env.release.local',
+  'tmp',
+  'tmp/*',
+  'tmp/**',
   'outputs/*',
   'outputs/**',
 ]
@@ -72,11 +78,22 @@ const RUNTIME_MIRROR_ALLOWED_USAGE_BACKEND_PATTERNS = [
   'scripts/init-stats-identity.mjs',
   'scripts/log-usage.mjs',
   'scripts/report-preview-ready-usage.mjs',
+  'scripts/sync-team-package.mjs',
   'scripts/typical-page-preview-ready.mjs',
   'scripts/lib/log-usage-event.mjs',
   'scripts/lib/stats-client.mjs',
   'scripts/lib/stats-config.mjs',
   'scripts/lib/stats-identity.mjs',
+]
+
+const RUNTIME_MIRROR_EXTRA_BLOCKED_PATTERNS = [
+  'scripts/tests/**/*.test.mjs',
+]
+
+const TEAM_PACKAGE_EXTRA_BLOCKED_PATTERNS = [
+  'config/stats.default.env',
+  'scripts/typical-page-preview-ready.mjs',
+  'scripts/tests/**/*.test.mjs',
 ]
 
 const TEAM_SYNC_ONLY_EXCLUDE_PATTERNS = [
@@ -90,6 +107,12 @@ const OPEN_SOURCE_PACKAGE_ALLOWED_PATTERNS = [
 const OPEN_SOURCE_PACKAGE_EXTRA_BLOCKED_PATTERNS = [
   ['docs/onboarding/', 'usage-', 'stats.md'].join(''),
   ['docs/onboarding/', 'usage-', 'stats-contract.md'].join(''),
+  'config/stats.default.env',
+  'docs/business-lines',
+  'docs/business-lines/*',
+  'docs/business-lines/**',
+  'docs/onboarding/one-click.md',
+  'scripts/tests/**/*.test.mjs',
 ]
 
 const PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS = [
@@ -160,7 +183,12 @@ function getArchiveExcludePatterns({ includeMaintainerFiles = false } = {}) {
 }
 
 function getTeamDistributionBlockedPatterns() {
-  return [...COMMON_EXCLUDE_PATTERNS, ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS, ...PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS]
+  return [
+    ...COMMON_EXCLUDE_PATTERNS,
+    ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS,
+    ...TEAM_PACKAGE_EXTRA_BLOCKED_PATTERNS,
+    ...PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS,
+  ]
 }
 
 function getRuntimeMirrorBlockedPatterns() {
@@ -168,6 +196,7 @@ function getRuntimeMirrorBlockedPatterns() {
   return [
     ...COMMON_EXCLUDE_PATTERNS,
     ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS.filter((pattern) => !allowed.has(pattern)),
+    ...RUNTIME_MIRROR_EXTRA_BLOCKED_PATTERNS,
     ...PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS,
   ]
 }
@@ -188,7 +217,9 @@ export {
   OPEN_SOURCE_PACKAGE_ALLOWED_PATTERNS,
   OPEN_SOURCE_PACKAGE_EXTRA_BLOCKED_PATTERNS,
   PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS,
+  RUNTIME_MIRROR_EXTRA_BLOCKED_PATTERNS,
   RUNTIME_MIRROR_ALLOWED_USAGE_BACKEND_PATTERNS,
+  TEAM_PACKAGE_EXTRA_BLOCKED_PATTERNS,
   TEAM_SYNC_ONLY_EXCLUDE_PATTERNS,
   getArchiveExcludePatterns,
   getOpenSourcePackageBlockedPatterns,

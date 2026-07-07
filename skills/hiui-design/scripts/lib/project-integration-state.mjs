@@ -418,6 +418,11 @@ function defaultLegacyDeliveryPolicy(mode = '') {
       carrierReady: null,
       carrierFirstRequiredPageTypes: [],
       directStandardAllowedPageTypes: [],
+      requiredLegacyPageTypes: [],
+      deferredLegacyPageTypes: [],
+      certifiedLegacyPageTypes: [],
+      missingRequiredLegacyPageTypes: [],
+      legacyRolloutCoverageStatus: 'not-applicable',
       pageTypes: [],
       blockingReasons: [],
     }
@@ -429,6 +434,11 @@ function defaultLegacyDeliveryPolicy(mode = '') {
     carrierReady: false,
     carrierFirstRequiredPageTypes: [],
     directStandardAllowedPageTypes: [],
+    requiredLegacyPageTypes: [],
+    deferredLegacyPageTypes: [],
+    certifiedLegacyPageTypes: [],
+    missingRequiredLegacyPageTypes: [],
+    legacyRolloutCoverageStatus: 'not-applicable',
     pageTypes: [],
     blockingReasons: [],
   }
@@ -442,37 +452,98 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
   const fallback = defaultLegacyDeliveryPolicy(mode)
   const normalizeIds = (value) =>
     Array.isArray(value) ? value.map((item) => String(item || '').trim()).filter(Boolean) : []
+  const pageTypes = Array.isArray(raw.pageTypes)
+    ? raw.pageTypes.map((entry) => ({
+        pageTypeId: String(entry?.pageTypeId || '').trim(),
+        deliveryPolicy: String(entry?.deliveryPolicy || '').trim(),
+        reason: String(entry?.reason || '').trim(),
+        policyStatus: String(entry?.policyStatus || '').trim() || 'blocked',
+        supportStatus: String(entry?.supportStatus || '').trim() || 'missing',
+        selectedDeliveryKind: String(entry?.selectedDeliveryKind || '').trim(),
+        selectedComponentId: String(entry?.selectedComponentId || '').trim(),
+        projectCarrierStatus: String(entry?.projectCarrierStatus || '').trim() || 'missing',
+        standardComponentStatus: String(entry?.standardComponentStatus || '').trim() || 'missing',
+        blockingReasons: Array.isArray(entry?.blockingReasons)
+          ? entry.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+          : [],
+      }))
+    : []
+  const carrierFirstRequiredPageTypes = normalizeIds(raw.carrierFirstRequiredPageTypes)
+  const directStandardAllowedPageTypes = normalizeIds(raw.directStandardAllowedPageTypes)
+  const requiredLegacyPageTypes = (() => {
+    const explicit = normalizeIds(raw.requiredLegacyPageTypes)
+    if (explicit.length > 0) {
+      return explicit
+    }
+    if (carrierFirstRequiredPageTypes.length > 0) {
+      return carrierFirstRequiredPageTypes
+    }
+    return pageTypes
+      .filter((entry) => entry.deliveryPolicy === 'carrier-first-required')
+      .map((entry) => entry.pageTypeId)
+  })()
+  const deferredLegacyPageTypes = normalizeIds(raw.deferredLegacyPageTypes)
+  const certifiedLegacyPageTypes = (() => {
+    const explicit = normalizeIds(raw.certifiedLegacyPageTypes)
+    if (explicit.length > 0) {
+      return explicit
+    }
+    return pageTypes
+      .filter(
+        (entry) =>
+          entry.projectCarrierStatus === 'ready' ||
+          entry.selectedDeliveryKind === 'project-certified-carrier'
+      )
+      .map((entry) => entry.pageTypeId)
+  })()
+  const missingRequiredLegacyPageTypes = requiredLegacyPageTypes.filter(
+    (pageTypeId) => !certifiedLegacyPageTypes.includes(pageTypeId)
+  )
+  const derivedCoverageStatus =
+    normalizeModeId(mode) !== 'legacy-host-compatible'
+      ? 'not-applicable'
+      : requiredLegacyPageTypes.length === 0
+        ? 'not-applicable'
+        : missingRequiredLegacyPageTypes.length === 0
+          ? 'ready'
+          : 'blocked'
+  const legacyRolloutCoverageStatus = ['ready', 'blocked', 'not-applicable'].includes(
+    String(raw.legacyRolloutCoverageStatus || '').trim()
+  )
+    ? String(raw.legacyRolloutCoverageStatus || '').trim()
+    : derivedCoverageStatus
+  const derivedBlockingReasons =
+    legacyRolloutCoverageStatus === 'blocked' && missingRequiredLegacyPageTypes.length > 0
+      ? [
+          `legacy rollout is missing required project-certified carriers for page types: ${missingRequiredLegacyPageTypes.join(', ')}`,
+        ]
+      : []
+  const normalizedBlockingReasons = uniqueBlockingReasons([
+    ...(Array.isArray(raw.blockingReasons)
+      ? raw.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+      : fallback.blockingReasons),
+    ...derivedBlockingReasons,
+  ])
+  const carrierReady =
+    typeof raw.carrierReady === 'boolean'
+      ? raw.carrierReady
+      : legacyRolloutCoverageStatus === 'ready'
 
   return {
     status: ['ready', 'blocked', 'not-applicable'].includes(String(raw.status || '').trim())
       ? String(raw.status || '').trim()
-      : fallback.status,
+      : derivedCoverageStatus,
     factPath: String(raw.factPath || '').trim(),
-    carrierReady:
-      typeof raw.carrierReady === 'boolean'
-        ? raw.carrierReady
-        : fallback.carrierReady,
-    carrierFirstRequiredPageTypes: normalizeIds(raw.carrierFirstRequiredPageTypes),
-    directStandardAllowedPageTypes: normalizeIds(raw.directStandardAllowedPageTypes),
-    pageTypes: Array.isArray(raw.pageTypes)
-      ? raw.pageTypes.map((entry) => ({
-          pageTypeId: String(entry?.pageTypeId || '').trim(),
-          deliveryPolicy: String(entry?.deliveryPolicy || '').trim(),
-          reason: String(entry?.reason || '').trim(),
-          policyStatus: String(entry?.policyStatus || '').trim() || 'blocked',
-          supportStatus: String(entry?.supportStatus || '').trim() || 'missing',
-          selectedDeliveryKind: String(entry?.selectedDeliveryKind || '').trim(),
-          selectedComponentId: String(entry?.selectedComponentId || '').trim(),
-          projectCarrierStatus: String(entry?.projectCarrierStatus || '').trim() || 'missing',
-          standardComponentStatus: String(entry?.standardComponentStatus || '').trim() || 'missing',
-          blockingReasons: Array.isArray(entry?.blockingReasons)
-            ? entry.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
-            : [],
-        }))
-      : [],
-    blockingReasons: Array.isArray(raw.blockingReasons)
-      ? raw.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
-      : fallback.blockingReasons,
+    carrierReady,
+    carrierFirstRequiredPageTypes,
+    directStandardAllowedPageTypes,
+    requiredLegacyPageTypes,
+    deferredLegacyPageTypes,
+    certifiedLegacyPageTypes,
+    missingRequiredLegacyPageTypes,
+    legacyRolloutCoverageStatus,
+    pageTypes,
+    blockingReasons: normalizedBlockingReasons,
   }
 }
 
@@ -599,11 +670,13 @@ function filterExplicitIntegrationBlockingReasons({
   blockingReasons = [],
   carrierValidation,
   legacyBridgeValidation,
+  legacyDeliveryPolicy,
   typicalPageSupport,
 }) {
   const derivedReasons = new Set([
     ...(carrierValidation?.blockingReasons || []),
     ...(legacyBridgeValidation?.blockingReasons || []),
+    ...(legacyDeliveryPolicy?.blockingReasons || []),
     ...typicalPageSupportBlockingReasons(typicalPageSupport),
   ])
 
@@ -617,11 +690,13 @@ function deriveIntegrationBlockingReasons({
   blockingReasons = [],
   carrierValidation,
   legacyBridgeValidation,
+  legacyDeliveryPolicy,
 }) {
   return uniqueBlockingReasons([
     ...blockingReasons,
     ...(integrationUsesLegacyCarrierValidation(mode) ? carrierValidation?.blockingReasons || [] : []),
     ...(integrationUsesLegacyCarrierValidation(mode) ? legacyBridgeValidation?.blockingReasons || [] : []),
+    ...(integrationUsesLegacyCarrierValidation(mode) ? legacyDeliveryPolicy?.blockingReasons || [] : []),
   ])
 }
 
@@ -630,6 +705,7 @@ function deriveIntegrationReady({
   blockingReasons = [],
   carrierValidation,
   legacyBridgeValidation,
+  legacyDeliveryPolicy,
 }) {
   if (blockingReasons.length > 0) {
     return false
@@ -640,6 +716,13 @@ function deriveIntegrationReady({
   }
 
   if (integrationUsesLegacyCarrierValidation(mode) && legacyBridgeValidation?.status === 'blocked') {
+    return false
+  }
+
+  if (
+    integrationUsesLegacyCarrierValidation(mode) &&
+    legacyDeliveryPolicy?.legacyRolloutCoverageStatus === 'blocked'
+  ) {
     return false
   }
 
@@ -689,6 +772,7 @@ function normalizeProjectIntegrationState(raw) {
     blockingReasons: Array.isArray(raw.blockingReasons) ? raw.blockingReasons : [],
     carrierValidation,
     legacyBridgeValidation,
+    legacyDeliveryPolicy,
     typicalPageSupport,
   })
   const blockingReasons = deriveIntegrationBlockingReasons({
@@ -696,12 +780,14 @@ function normalizeProjectIntegrationState(raw) {
     blockingReasons: explicitBlockingReasons,
     carrierValidation,
     legacyBridgeValidation,
+    legacyDeliveryPolicy,
   })
   const integrationReady = deriveIntegrationReady({
     mode,
     blockingReasons,
     carrierValidation,
     legacyBridgeValidation,
+    legacyDeliveryPolicy,
   })
   const legacyRuntimeReady = deriveLegacyRuntimeReady({ mode, legacyBridgeValidation })
   const legacyCarrierReady = deriveLegacyCarrierReady({
@@ -733,6 +819,11 @@ function normalizeProjectIntegrationState(raw) {
     pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
     carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
     directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
+    requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+    deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
+    certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
+    missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+    legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
     legacyDeliveryPolicy,
     typicalPageSupport,
     blockingReasons,
@@ -790,12 +881,14 @@ export async function writeProjectIntegrationState({
     blockingReasons: [],
     carrierValidation,
     legacyBridgeValidation,
+    legacyDeliveryPolicy,
   })
   const blockingReasons = deriveIntegrationBlockingReasons({
     mode: normalizedMode,
     blockingReasons: [],
     carrierValidation,
     legacyBridgeValidation,
+    legacyDeliveryPolicy,
   })
   const legacyRuntimeReady = deriveLegacyRuntimeReady({
     mode: normalizedMode,
@@ -826,6 +919,11 @@ export async function writeProjectIntegrationState({
     pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
     carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
     directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
+    requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+    deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
+    certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
+    missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+    legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
     legacyDeliveryPolicy,
     typicalPageSupport,
     blockingReasons,
@@ -861,6 +959,11 @@ export async function writeProjectIntegrationState({
       pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
       carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
       directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
+      requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+      deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
+      certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
+      missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+      legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
       blockingReasons: Array.isArray(legacyDeliveryPolicy.blockingReasons)
         ? legacyDeliveryPolicy.blockingReasons
         : [],

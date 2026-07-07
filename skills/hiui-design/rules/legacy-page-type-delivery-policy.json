@@ -14,8 +14,8 @@
     },
     {
       "pageTypeId": "tree-table",
-      "deliveryPolicy": "direct-standard-allowed",
-      "reason": "single-workspace inline-tree tables can remain on the direct standard component path when runtime bridge proof is already available"
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "tree-table pages still carry managed table/query-filter/detail ownership, so legacy projects should freeze the runtime shell through a project-certified carrier before business slot fill"
     },
     {
       "pageTypeId": "tree-split",
@@ -29,8 +29,8 @@
     },
     {
       "pageTypeId": "drawer-detail",
-      "deliveryPolicy": "direct-standard-allowed",
-      "reason": "detail drawer pages can keep using the direct standard component path while project carriers are still optional"
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "drawer-detail pages should keep drawer shell and Descriptions baseline on a shared project carrier so detail typography and body ownership do not drift page by page"
     },
     {
       "pageTypeId": "feedback-status",
@@ -44,9 +44,23 @@
     },
     {
       "pageTypeId": "full-page-detail",
-      "deliveryPolicy": "direct-standard-allowed",
-      "reason": "detail shells can stay on the direct standard component path when no project-specific host carrier is required"
+      "deliveryPolicy": "carrier-first-required",
+      "reason": "full-page-detail owns header/detail-body reading rhythm and Descriptions baseline, so legacy rollout should require a project-certified carrier instead of relying on direct standard mounting"
     }
+  ],
+  "requiredLegacyPageTypes": [
+    "table-basic",
+    "table-stat",
+    "tree-table",
+    "tree-split",
+    "drawer-form",
+    "drawer-detail",
+    "full-page-edit",
+    "full-page-detail"
+  ],
+  "deferredLegacyPageTypes": [
+    "feedback-status",
+    "data-visualization"
   ],
   "allowedPolicies": [
     "direct-standard-allowed",
@@ -57,6 +71,7 @@
   "notes": [
     "This file only applies to legacy-host-compatible delivery policy planning.",
     "It does not create a parallel generation family; page-component remains the normalized primary chain.",
-    "Projects may still override or extend these defaults through project facts, but planner decisions must remain policy-driven."
+    "Projects may still override or extend these defaults through project facts, but planner decisions must remain policy-driven.",
+    "legacy-host-compatible rollout should finish the required table/edit/detail carrier batch before feedback-status or data-visualization follow-up work."
   ]
 }

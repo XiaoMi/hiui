@@ -52,7 +52,7 @@
 - 运行 `refine-product-requirements`，产出页面清单、全局生成上下文、页面级提示词和 HiUI 交接包
 - `requirementGate` 通过后，必须展示生成输入确认块
 - `generationInputGate.status = confirmed | assumption-authorized` 后才进入页面规划
-- `hiui-design` 的 `requiredCommands`
+- 以 `hiui-design` 的 `requiredActions` 为主调度面；`requiredCommands` 只作兼容摘要
 - 页面截图
 - `ux-standard` 结构化 UX 验收
 - UX evidence gate：目标页面可访问，截图 / 代码 / URL 证据可用
@@ -84,14 +84,14 @@
 
 - 运行 `refine-product-requirements` 的 `full-prd-to-generation` 或等价完整交付，保留选项确认、假设、待确认和 HiUI 交接包
 - `requirementGate` 与 `generationInputGate` 均必须通过；若是授权假设，最终报告必须高亮风险
-- `hiui-design` 的 `formalAcceptanceCommands`
+- 以 `hiui-design` 的 `formalAcceptanceActions` 为主调度面；`formalAcceptanceCommands` 只作兼容摘要
 - `ux-formal`：执行 `ux-walkthrough` 完整 SOP
-- `precheck_walkthrough.py`、证据门禁、问题判断、report.json、docx、closeout 全部执行
+- `precheck_walkthrough.py`、证据门禁、问题判断、report.json、docx 全部执行
 - P0 场景覆盖矩阵和 P0/P1 修复后复验
 - 截图和标注图
 - 修复前 / 修复后效果对比图，报告中需可查看原图路径
 - 本地 docx 报告
-- 两套 usage stats 收口
+- `hiui-design` usage stats 收口；`ux-walkthrough` 以报告、`report.json`、标注校验与 docx 作为正式完成面
 
 ## 升级规则
 
@@ -105,7 +105,7 @@
 | 准备进入 | 必须满足 |
 |---|---|
 | 页面规划 | `generationInputGate.status = confirmed | assumption-authorized` |
-| 文件修改 | 页面规划完成，`blockingReasons` 已处理，requiredDocs 已读取 |
+| 文件修改 | 页面规划完成，且 `plan.status = ready`、`facts.status = ready`、`currentExecutionState.status = ready`、`canStartImplementation = true`，并且 required docs 已按 `readMode` 消费 |
 | `ux-smoke` | 页面可访问，有最终截图或无法截图原因 |
 | `ux-standard` | `uxGate.evidenceStatus = ready`，P0 场景已知或已说明缺口 |
 | `ux-formal` | 完整 `ux-walkthrough` SOP，docxRequired = true |

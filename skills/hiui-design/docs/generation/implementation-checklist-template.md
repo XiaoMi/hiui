@@ -162,6 +162,7 @@
 - 若需求只说“提供状态标签筛选”但未指定默认激活项，是否保持初始数据全集可见，而不是默认选中第一项造成隐式预过滤
 - 右侧详情表格区的局部 inset 是否明确落在真实内容 owner 上，而不是直接贴边
 - 页级动作是否已经进入 `PageHeader extra`
+- header slot 与 `PageHeader root` 是否共同证明了 `width: 100% + min-width: 0`，从而让 `PageHeader extra` 真正贴右，而不是仍然紧挨标题流动
 - 右侧 pane header 是否只保留上下文信息，而不是承接页面主按钮
 
 记录模板：
@@ -175,6 +176,7 @@
   - default filter state:
   - right detail/table inset owner:
   - page-level actions owner:
+  - page-header stretch owner:
   - pane header scope:
 ```
 
