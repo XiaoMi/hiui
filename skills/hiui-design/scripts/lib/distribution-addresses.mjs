@@ -52,15 +52,37 @@ async function resolveOfficialTeamPackagePath(skillRoot) {
     return ''
   }
 
-  const defaultsPath = typeof registry.defaults?.teamPackage === 'string'
-    ? registry.defaults.teamPackage.trim()
+  return resolveConcreteAddress(registry, 'teamPackage')
+}
+
+async function resolveOfficialMaintainerSourcePath(skillRoot) {
+  const registry = await readDistributionAddresses(skillRoot)
+  if (!registry || typeof registry !== 'object') {
+    return ''
+  }
+
+  return resolveConcreteAddress(registry, 'maintainerSource')
+}
+
+async function resolveOfficialOpenSourcePackagePath(skillRoot) {
+  const registry = await readDistributionAddresses(skillRoot)
+  if (!registry || typeof registry !== 'object') {
+    return ''
+  }
+
+  return resolveConcreteAddress(registry, 'openSourcePackage')
+}
+
+function resolveConcreteAddress(registry, key) {
+  const defaultsPath = typeof registry.defaults?.[key] === 'string'
+    ? registry.defaults[key].trim()
     : ''
   if (isConcretePath(defaultsPath)) {
     return defaultsPath
   }
 
-  const examplePath = typeof registry.localExamples?.teamPackage === 'string'
-    ? registry.localExamples.teamPackage.trim()
+  const examplePath = typeof registry.localExamples?.[key] === 'string'
+    ? registry.localExamples[key].trim()
     : ''
   return isConcretePath(examplePath) ? examplePath : ''
 }
@@ -72,5 +94,7 @@ function isConcretePath(value) {
 export {
   LOCAL_OVERRIDE_FILE,
   readDistributionAddresses,
+  resolveOfficialMaintainerSourcePath,
+  resolveOfficialOpenSourcePackagePath,
   resolveOfficialTeamPackagePath,
 }

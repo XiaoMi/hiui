@@ -358,7 +358,98 @@ function assertAllowedStatus(contract, field, value) {
   }
 }
 
-function collectWarnings(preflight, managedContract) {
+function normalizeDeferredChecks(value) {
+  return Array.isArray(value)
+    ? [...new Set(value.map((item) => String(item || '').trim()).filter(Boolean))]
+    : []
+}
+
+function inferManagedWorkflowPreflightExecution(managedContract) {
+  const workflow = managedContract?.workflow || {}
+  const workflowStatus = String(workflow.status || '').trim()
+  const preflightStatus = String(workflow.preflightStatus || '').trim()
+  const deferredChecks = normalizeDeferredChecks(workflow.deferredChecks)
+  const inferredStage =
+    String(workflow.preflightStage || '').trim() ||
+    (workflowStatus === 'started' && preflightStatus === 'pass'
+      ? 'scaffold-baseline'
+      : workflowStatus === 'stale' || workflowStatus === 'preflight-pass' || workflowStatus === 'finalized'
+        ? 'implementation'
+        : '')
+
+  return {
+    preflightStage: inferredStage,
+    readyForImplementation:
+      typeof workflow.readyForImplementation === 'boolean'
+        ? workflow.readyForImplementation
+        : Boolean(inferredStage),
+    readyForDelivery:
+      typeof workflow.readyForDelivery === 'boolean'
+        ? workflow.readyForDelivery
+        : workflowStatus === 'finalized' || workflowStatus === 'preflight-pass',
+    deferredChecks:
+      deferredChecks.length > 0
+        ? deferredChecks
+        : workflowStatus === 'stale'
+          ? ['finalizePage']
+          : inferredStage === 'scaffold-baseline'
+            ? ['placeholderMappings']
+            : [],
+  }
+}
+
+function resolvePreflightExecution(preflight, managedContract) {
+  const managedWorkflow = inferManagedWorkflowPreflightExecution(managedContract)
+  if (!preflight) {
+    return managedWorkflow
+  }
+
+  const preflightDeferredChecks = normalizeDeferredChecks(preflight.deferredChecks)
+  const preflightPassed = String(preflight.status || '').trim() === 'passed'
+  return {
+    preflightStage:
+      String(preflight.preflightStage || '').trim() ||
+      managedWorkflow.preflightStage ||
+      (preflightPassed ? 'implementation' : ''),
+    readyForImplementation:
+      typeof preflight.readyForImplementation === 'boolean'
+        ? preflight.readyForImplementation
+        : managedWorkflow.readyForImplementation || preflightPassed,
+    readyForDelivery:
+      typeof preflight.readyForDelivery === 'boolean'
+        ? preflight.readyForDelivery
+        : managedWorkflow.readyForDelivery || (preflightPassed && preflightDeferredChecks.length === 0),
+    deferredChecks:
+      preflightDeferredChecks.length > 0 ? preflightDeferredChecks : managedWorkflow.deferredChecks,
+  }
+}
+
+function deferredCheckMessages(deferredChecks) {
+  return normalizeDeferredChecks(deferredChecks).map((checkId) => {
+    if (checkId === 'placeholderMappings') {
+      return {
+        warning:
+          'Preflight passed only at scaffold-baseline stage; placeholder mappings still need implementation before delivery.',
+        nextAction:
+          'Replace scaffold placeholder mappings and rerun typical-page:preflight before treating the page as delivery-ready.',
+      }
+    }
+    if (checkId === 'finalizePage') {
+      return {
+        warning:
+          'Current workflow still requires finalize-page on the latest source snapshot before delivery can be declared complete.',
+        nextAction:
+          'Rerun typical-page:finalize-page on the latest page source snapshot before delivery.',
+      }
+    }
+    return {
+      warning: `Preflight deferred check "${checkId}" is still pending before delivery.`,
+      nextAction: `Resolve deferred check "${checkId}" and rerun the required validation.`,
+    }
+  })
+}
+
+function collectWarnings(preflight, managedContract, preflightExecution) {
   const warnings = []
   if (Array.isArray(preflight?.warnings)) warnings.push(...preflight.warnings)
   if (Array.isArray(preflight?.checks)) {
@@ -375,6 +466,11 @@ function collectWarnings(preflight, managedContract) {
         'Managed page contract is stale for the current source snapshot.'
     )
   }
+  if (preflightExecution.preflightStage === 'scaffold-baseline' && !preflightExecution.readyForDelivery) {
+    warnings.push(
+      ...deferredCheckMessages(preflightExecution.deferredChecks).map((item) => item.warning)
+    )
+  }
   return warnings
 }
 
@@ -385,6 +481,7 @@ function nextActionsForStatuses({
   formalAcceptanceStatus,
   pageStatus,
   preflight,
+  preflightExecution,
 }) {
   const actions = []
   if (pageStatus === 'blocked') {
@@ -416,6 +513,8 @@ function nextActionsForStatuses({
     } else {
       actions.push('Fix preflight blockingIssues and rerun typical-page:preflight.')
     }
+  } else if (!preflightExecution.readyForDelivery && preflightExecution.deferredChecks.length > 0) {
+    actions.push(...deferredCheckMessages(preflightExecution.deferredChecks).map((item) => item.nextAction))
   }
   if (formalAcceptanceStatus === 'failed') {
     actions.push('Fix formal acceptance failures and rerun formalAcceptanceActions.')
@@ -443,6 +542,7 @@ function buildProductionLineSummary(preflight, managedContract) {
     ['generationProfile', 'productionContract'].includes(issue?.checkId)
   )
   const workflowStatus = String(managedContract?.workflow?.status || '').trim()
+  const preflightExecution = resolvePreflightExecution(preflight, managedContract)
 
   if (!preflight && !managedContract) {
     return {
@@ -462,9 +562,10 @@ function buildProductionLineSummary(preflight, managedContract) {
       : !preflight && workflowStatus === 'stale'
         ? 'stale'
       : productionContract && generationProfile
-        ? preflight?.status === 'passed' ||
-          workflowStatus === 'finalized' ||
-          String(managedContract?.workflow?.preflightStatus || '').trim() === 'pass'
+        ? ((preflight?.status === 'passed' ||
+            String(managedContract?.workflow?.preflightStatus || '').trim() === 'pass') &&
+            preflightExecution.readyForDelivery) ||
+          workflowStatus === 'finalized'
           ? 'passed'
           : 'declared'
         : 'not_declared',
@@ -477,6 +578,7 @@ function buildProductionLineSummary(preflight, managedContract) {
         ? generationProfile.requiredGates
         : [],
     sourceProofLevel: productionContract?.sourceProofLevel || generationProfile?.sourceProofLevel || '',
+    preflightExecution,
     blockingIssues: productionBlockingIssues,
   }
 }
@@ -602,6 +704,7 @@ function renderFinalReport({
     managedContract
   )
   const normalizedPageStatus = resolvePageStatus(pageStatus, plan, managedContract)
+  const preflightExecution = resolvePreflightExecution(preflight, managedContract)
 
   const statuses = {
     pageStatus: normalizedPageStatus,
@@ -623,13 +726,14 @@ function renderFinalReport({
     ...(Array.isArray(plan?.blockingIssues) ? plan.blockingIssues : []),
     ...(Array.isArray(preflight?.blockingIssues) ? preflight.blockingIssues : []),
   ]
-  const warnings = collectWarnings(preflight, managedContract)
+  const warnings = collectWarnings(preflight, managedContract, preflightExecution)
   const nextActions = nextActionsForStatuses({
     formalAcceptanceStatus,
     managedContract,
     pageStatus: normalizedPageStatus,
     preflight,
     preflightStatus,
+    preflightExecution,
     usageStatsStatus,
   })
   const productionLine = buildProductionLineSummary(preflight, managedContract)
@@ -648,6 +752,7 @@ function renderFinalReport({
     contractSchemaVersion: contract.schemaVersion || 'final-report-contract.v1',
     sections: contract.sections,
     statuses,
+    preflightExecution,
     productionLine,
     designerSummary,
     evidence: {
@@ -663,6 +768,7 @@ function renderFinalReport({
     source: {
       planSchemaVersion: plan.schemaVersion || '',
       preflightSchemaVersion: preflight?.schemaVersion || '',
+      preflightStage: preflightExecution.preflightStage,
       usageStatsStatus,
     },
   }

@@ -22,6 +22,7 @@ export const HOST_ARCHETYPE_MARKER_PREFIX = 'hiui-design host-archetype:'
 export const SCROLL_STRATEGY_MARKER_PREFIX = 'hiui-design scroll-strategy:'
 export const TOPOLOGY_MARKER_PREFIX = 'hiui-design topology:'
 export const LAYOUT_STRATEGY_MARKER_PREFIX = 'hiui-design layout-strategy:'
+export const LAYOUT_ARCHETYPE_MARKER_PREFIX = 'hiui-design layout archetype:'
 const FIXED_TEMPLATE_PAGE_TYPES = new Set([
   'data-visualization',
   'table-stat',
@@ -322,6 +323,78 @@ function isSharedManagedShellHelperFile(filePath, targetRoot) {
   return /(^|\/)src\/typical-page-reuse\/components\/managed-page\/.+\.[cm]?[jt]sx?$/.test(
     relativePath
   )
+}
+
+function normalizeRelativeSourcePath(targetRoot, filePath) {
+  return path.relative(targetRoot, filePath).replace(/\\/g, '/')
+}
+
+function hasDefaultReactComponentExport(sourceRaw) {
+  return hasAnyPattern(String(sourceRaw || ''), [
+    /export\s+default\s+function\s+[A-Z]/,
+    /export\s+default\s+(?:React\.)?(?:memo|forwardRef)\s*\(/,
+    /export\s+default\s+[A-Z][A-Za-z0-9_$]*/,
+  ])
+}
+
+function hasPageLikeStatefulUiSemantics(sourceRaw) {
+  return hasAnyPattern(String(sourceRaw || ''), [
+    /\buseState\s*\(/,
+    /\buseEffect\s*\(/,
+    /\buseMemo\s*\(/,
+    /\buseImperativeHandle\s*\(/,
+    /\b(QueryFilter|Table|Pagination|DatePicker|Select|Input|TabList)\b/,
+  ])
+}
+
+function isLegacyTabImplementationHelper({ filePath, sourceRaw, targetRoot }) {
+  const relativePath = normalizeRelativeSourcePath(targetRoot, filePath)
+
+  if (!/(^|\/)tabs\/.+\.[cm]?[jt]sx?$/.test(relativePath)) {
+    return false
+  }
+
+  return hasDefaultReactComponentExport(sourceRaw) && hasPageLikeStatefulUiSemantics(sourceRaw)
+}
+
+function validateImportedLocalHelperPurity({
+  contract,
+  importedLocalContext,
+  targetRoot,
+  pathLabel,
+}) {
+  const errors = []
+
+  if (!isProjectCertifiedCarrierDelivery(contract)) {
+    return errors
+  }
+
+  const localFileSources = Array.isArray(importedLocalContext?.fileSources)
+    ? importedLocalContext.fileSources.filter(
+        (entry) =>
+          path.resolve(entry.filePath) !== path.resolve(path.join(targetRoot, contract.generatedPagePath)) &&
+          !isSharedManagedShellHelperFile(path.resolve(entry.filePath), targetRoot)
+      )
+    : []
+
+  const contaminatedHelpers = localFileSources.filter((entry) =>
+    isLegacyTabImplementationHelper({
+      filePath: path.resolve(entry.filePath),
+      sourceRaw: entry.sourceRaw,
+      targetRoot,
+    })
+  )
+
+  if (contaminatedHelpers.length > 0) {
+    errors.push(
+      `${pathLabel} imports page-local helper code from tab implementation files (${contaminatedHelpers
+        .slice(0, 4)
+        .map((entry) => normalizeRelativeSourcePath(targetRoot, entry.filePath))
+        .join(', ')}). In project-certified typical pages, helpers reused by slot code must be extracted into pure utility/renderer modules; do not import from tabs/ files that still export a stateful default React page implementation.`
+    )
+  }
+
+  return errors
 }
 
 function validateLocalBypassContracts({
@@ -1306,6 +1379,37 @@ function usesVerticalDetailDescriptions(sourceRaw) {
   )
 }
 
+function hasWrappedDescriptionsLabelTypography(sourceRaw) {
+  return hasAnyPattern(sourceRaw, [
+    /\blabel\s*=\s*\{\s*<\s*(?:span|div|p|small|strong|em|Text|Typography(?:\.\w+)?)\b[\s\S]{0,240}>/,
+    /\blabel\s*:\s*<\s*(?:span|div|p|small|strong|em|Text|Typography(?:\.\w+)?)\b[\s\S]{0,240}>/,
+  ])
+}
+
+function validateDetailDescriptionsLabelOwnership({ contract, sourceRaw, pathLabel }) {
+  const errors = []
+
+  if (!['full-page-detail', 'drawer-detail'].includes(String(contract?.pageTypeId || '').trim())) {
+    return errors
+  }
+
+  if (!hasWrappedDescriptionsLabelTypography(sourceRaw)) {
+    return errors
+  }
+
+  if (contract.pageTypeId === 'full-page-detail') {
+    errors.push(
+      `${pathLabel} wraps Descriptions labels with page-local typography or styled DOM nodes. Detail-shell pages must keep label typography on the native Descriptions 14px baseline and use plain text/i18n labels instead of Text/span wrappers or inline font styling.`
+    )
+    return errors
+  }
+
+  errors.push(
+    `${pathLabel} wraps drawer-detail Descriptions labels with page-local typography or styled DOM nodes. Drawer detail labels must stay on the native Descriptions 14px baseline instead of being rebuilt with Text/span wrappers or inline font styling.`
+  )
+  return errors
+}
+
 function hasQueryFilterCompatibleSemantics(sourceRaw) {
   return hasAnyPattern(sourceRaw, [
     /\bQueryFilter\b/,
@@ -1508,7 +1612,7 @@ export function hasHiddenManagedShellMount(sourceRaw, shellName) {
   ).test(sourceRaw)
 }
 
-function normalizeRelativeSourcePath(value) {
+function normalizeSourcePathLabel(value) {
   return String(value || '').trim().replace(/\\/g, '/').replace(/^\.\//, '')
 }
 
@@ -1566,6 +1670,13 @@ function validateDeclaredShellAuthenticity({ contract, sourceRaw, pathLabel }) {
   }
 
   if (declaresNonTypicalOverlay(sourceRaw)) {
+    return errors
+  }
+
+  if (
+    String(contract?.pageTypeId || '').trim() === 'full-page-detail' &&
+    /\bManagedFullPageDetailShell\b/.test(sourceRaw)
+  ) {
     return errors
   }
 
@@ -1711,8 +1822,28 @@ function collectQueryFilterOpenTagSnippets(sourceRaw) {
   return collectComponentOpenTagSnippets(sourceRaw, 'QueryFilter', 1600)
 }
 
+function getQueryFilterShellPropSnippet(snippet) {
+  const propBoundaryPatterns = [
+    /\bfilterFields\s*=/,
+    /\bappend\s*=/,
+    /\bformData\s*=/,
+    /\bonChange\s*=/,
+  ]
+
+  const boundaryIndex = propBoundaryPatterns.reduce((currentMin, pattern) => {
+    const matchIndex = String(snippet || '').search(pattern)
+    if (matchIndex < 0) {
+      return currentMin
+    }
+
+    return currentMin < 0 ? matchIndex : Math.min(currentMin, matchIndex)
+  }, -1)
+
+  return boundaryIndex >= 0 ? String(snippet || '').slice(0, boundaryIndex) : String(snippet || '')
+}
+
 function queryFilterSnippetForcesInlineLabels(snippet) {
-  return snippetEnablesBooleanProp(snippet, 'showLabel')
+  return snippetEnablesBooleanProp(getQueryFilterShellPropSnippet(snippet), 'showLabel')
 }
 
 function extractLiteralPropValue(snippet, propName) {
@@ -1735,7 +1866,7 @@ function extractLiteralPropValue(snippet, propName) {
 }
 
 function queryFilterSnippetDriftsContainedAppearance(snippet) {
-  const appearance = extractLiteralPropValue(snippet, 'appearance')
+  const appearance = extractLiteralPropValue(getQueryFilterShellPropSnippet(snippet), 'appearance')
   return Boolean(appearance) && appearance !== 'contained'
 }
 
@@ -1866,21 +1997,214 @@ function collectPreciseStyleBlocksForClassNames(styleRaw, classNames) {
   )
 }
 
+function extractEnclosingObjectLiteral(sourceRaw, anchorIndex, searchWindow = 240, fallbackLength = 900) {
+  const source = String(sourceRaw || '')
+  const normalizedAnchor = Number.isFinite(anchorIndex) ? Math.max(0, anchorIndex) : 0
+  const searchStart = Math.max(0, normalizedAnchor - searchWindow)
+  const objectStart = source.lastIndexOf('{', normalizedAnchor)
+
+  if (objectStart < searchStart || objectStart < 0) {
+    return source.slice(normalizedAnchor, Math.min(source.length, normalizedAnchor + fallbackLength))
+  }
+
+  let cursor = objectStart
+  let braceDepth = 0
+  let parenDepth = 0
+  let bracketDepth = 0
+  let activeQuote = ''
+
+  while (cursor < source.length) {
+    const char = source[cursor]
+    const prevChar = cursor > 0 ? source[cursor - 1] : ''
+
+    if (activeQuote) {
+      if (char === activeQuote && prevChar !== '\\') {
+        activeQuote = ''
+      }
+      cursor += 1
+      continue
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      activeQuote = char
+      cursor += 1
+      continue
+    }
+
+    if (char === '{') braceDepth += 1
+    if (char === '}') braceDepth = Math.max(0, braceDepth - 1)
+    if (char === '(') parenDepth += 1
+    if (char === ')') parenDepth = Math.max(0, parenDepth - 1)
+    if (char === '[') bracketDepth += 1
+    if (char === ']') bracketDepth = Math.max(0, bracketDepth - 1)
+
+    if (braceDepth === 0 && char === '}' && parenDepth === 0 && bracketDepth === 0) {
+      return source.slice(objectStart, cursor + 1)
+    }
+
+    cursor += 1
+  }
+
+  return source.slice(objectStart, Math.min(source.length, objectStart + fallbackLength))
+}
+
 function collectFieldConfigSnippets(sourceRaw) {
   const fieldMatches = Array.from(
     sourceRaw.matchAll(/field\s*:\s*['"]([^'"]+)['"]/g)
   )
 
-  return fieldMatches.map((match, index) => {
+  return fieldMatches.map((match) => {
     const snippetStart = match.index ?? 0
-    const snippetEnd =
-      fieldMatches[index + 1]?.index ?? Math.min(sourceRaw.length, snippetStart + 1400)
-
     return {
       field: match[1],
-      snippet: sourceRaw.slice(snippetStart, snippetEnd),
+      snippet: extractEnclosingObjectLiteral(sourceRaw, snippetStart),
     }
   })
+}
+
+function collectTableColumnConfigSnippets(sourceRaw) {
+  const columnMatches = Array.from(
+    String(sourceRaw || '').matchAll(/dataKey\s*:\s*['"]([^'"]+)['"]/g)
+  )
+
+  return columnMatches.map((match) => {
+    const snippetStart = match.index ?? 0
+    return {
+      dataKey: match[1],
+      snippet: extractEnclosingObjectLiteral(sourceRaw, snippetStart),
+    }
+  })
+}
+
+function extractModuleStyleClassNames(sourceRaw) {
+  const classNames = new Set()
+
+  for (const match of String(sourceRaw || '').matchAll(/\bstyles\.([\w-]+)/g)) {
+    if (match[1]) {
+      classNames.add(String(match[1]))
+    }
+  }
+
+  return [...classNames]
+}
+
+function extractFixedPixelWidthTokens(snippet) {
+  const matches = []
+  const patterns = [
+    /\b(?:width|inline-size|min-width|min-inline-size)\s*:\s*(-?\d+(?:\.\d+)?)px\b/gi,
+    /\b(?:width|inlineSize|minWidth|minInlineSize)\s*:\s*['"]?(-?\d+(?:\.\d+)?)px?['"]?/g,
+    /\b(?:width|inlineSize|minWidth|minInlineSize)\s*=\s*\{\s*['"]?(-?\d+(?:\.\d+)?)px?['"]?\s*\}/g,
+  ]
+
+  for (const pattern of patterns) {
+    for (const match of String(snippet || '').matchAll(pattern)) {
+      const rawValue = Number(match[1])
+      if (Number.isFinite(rawValue) && rawValue > 0) {
+        matches.push(`${rawValue}px`)
+      }
+    }
+  }
+
+  return [...new Set(matches)]
+}
+
+function collectQueryFilterFixedWidthFieldProofs(sourceRaw, styleRaw) {
+  const proofs = []
+
+  for (const entry of collectFieldConfigSnippets(sourceRaw)) {
+    if (!/\bcomponent\s*:/.test(entry.snippet)) {
+      continue
+    }
+
+    if (!/<\s*(Input|Select|DatePicker|Search|SearchInput)\b/.test(entry.snippet)) {
+      continue
+    }
+
+    const widthTokens = new Set(extractFixedPixelWidthTokens(entry.snippet))
+    const classNames = extractModuleStyleClassNames(entry.snippet)
+    const styleBlocks = collectPreciseStyleBlocksForClassNames(styleRaw, classNames)
+
+    for (const styleBlock of styleBlocks) {
+      for (const widthToken of extractFixedPixelWidthTokens(styleBlock)) {
+        widthTokens.add(widthToken)
+      }
+    }
+
+    if (widthTokens.size === 0) {
+      continue
+    }
+
+    proofs.push({
+      field: entry.field,
+      widths: [...widthTokens],
+    })
+  }
+
+  return proofs
+}
+
+function extractNumericPropValue(snippet, propName) {
+  const patterns = [
+    new RegExp(`\\b${escapeRegExp(propName)}\\s*:\\s*(\\d+(?:\\.\\d+)?)\\b`),
+    new RegExp(`\\b${escapeRegExp(propName)}\\s*=\\s*\\{\\s*(\\d+(?:\\.\\d+)?)\\s*\\}`),
+    new RegExp(`\\b${escapeRegExp(propName)}\\s*=\\s*['"](\\d+(?:\\.\\d+)?)['"]`),
+  ]
+
+  for (const pattern of patterns) {
+    const match = String(snippet || '').match(pattern)
+    if (match?.[1]) {
+      return Number(match[1])
+    }
+  }
+
+  return undefined
+}
+
+function columnSnippetLacksOverflowGuard(snippet) {
+  return !hasAnyPattern(String(snippet || ''), [
+    /\brenderEllipsisText\b/,
+    /\bellipsis_text\b/,
+    /\btextOverflow\s*:\s*['"]ellipsis['"]/,
+    /\btext-overflow\s*:\s*ellipsis\b/,
+    /\boverflow\s*:\s*['"]hidden['"]/,
+    /\boverflow\s*:\s*hidden\b/,
+    /\bwhiteSpace\s*:\s*['"]nowrap['"]/,
+    /\bwhite-space\s*:\s*nowrap\b/,
+    /\bmaxWidth\s*:\s*['"]100%['"]/,
+    /\bmax-width\s*:\s*100%\b/,
+  ])
+}
+
+function columnSnippetHasTextLikeOverflowRisk(snippet) {
+  return hasAnyPattern(String(snippet || ''), [
+    /<Button\b[\s\S]{0,240}appearance\s*=\s*['"]link['"]/,
+    /<Button\b[\s\S]{0,240}type\s*=\s*['"]primary['"]/,
+    /\$\{[^}]+\}\s*-\s*\$\{[^}]+\}/,
+    /record\.[A-Za-z_$][\w$]*\s*\+\s*['"]-/,
+    /String\s*\(/,
+  ])
+}
+
+function collectTableCellOverflowRiskColumns(sourceRaw) {
+  const issues = []
+
+  for (const entry of collectTableColumnConfigSnippets(sourceRaw)) {
+    const width = extractNumericPropValue(entry.snippet, 'width')
+    if (!Number.isFinite(width) || width > 220) {
+      continue
+    }
+
+    if (!columnSnippetHasTextLikeOverflowRisk(entry.snippet) || !columnSnippetLacksOverflowGuard(entry.snippet)) {
+      continue
+    }
+
+    issues.push({
+      dataKey: entry.dataKey,
+      width,
+    })
+  }
+
+  return issues
 }
 
 function hasUndeclaredHeaderSubtitle(sourceRaw) {
@@ -1948,6 +2272,41 @@ function hasSupportedHeaderPaddingBaseline(sourceRaw, styleRaw) {
     (/padding-top\s*:\s*0(?:px)?/i.test(styleRaw) &&
       /padding-bottom\s*:\s*0(?:px)?/i.test(styleRaw))
   )
+}
+
+function snippetKeepsPageHeaderFullWidth(snippet) {
+  const normalizedSnippet = String(snippet || '')
+
+  return (
+    /(width\s*:\s*100%|width\s*:\s*['"]100%['"])/i.test(normalizedSnippet) &&
+    /(min-width\s*:\s*0(?:px)?|minWidth\s*:\s*['"]?0(?:px)?['"]?)/i.test(normalizedSnippet)
+  )
+}
+
+function hasInlinePageHeaderFullWidth(sourceRaw) {
+  const pageHeaderSnippets = collectComponentOpenTagSnippets(sourceRaw, 'PageHeader', 640)
+
+  return pageHeaderSnippets.some((snippet) => snippetKeepsPageHeaderFullWidth(snippet))
+}
+
+function hasSupportedPageHeaderStretchBaseline(sourceRaw, styleRaw) {
+  if (
+    /\bManagedPageHeader\b/.test(sourceRaw) ||
+    inheritsManagedHeaderFromHostSlot(sourceRaw) ||
+    /\bHostPageHeaderPortal\b/.test(sourceRaw) ||
+    mountsRealShellRuntime(sourceRaw, 'StatListPageFrame')
+  ) {
+    return true
+  }
+
+  if (hasInlinePageHeaderFullWidth(sourceRaw)) {
+    return true
+  }
+
+  const pageHeaderClassNames = extractComponentClassNames(sourceRaw, 'PageHeader')
+  const pageHeaderClassSnippets = collectStyleSnippetsForClassNames(styleRaw, pageHeaderClassNames)
+
+  return pageHeaderClassSnippets.some(snippetKeepsPageHeaderFullWidth)
 }
 
 function hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw) {
@@ -2030,13 +2389,57 @@ function snippetKeepsPrimaryLinkAction(snippet) {
 }
 
 function collectComponentOpenTagSnippets(sourceRaw, componentName, radius = 960) {
-  return Array.from(
-    String(sourceRaw || '').matchAll(
-      new RegExp(`<${escapeRegExp(componentName)}\\b[\\s\\S]{0,${radius}}?(?:\\/?>)`, 'g')
-    )
-  )
-    .map((match) => String(match[0] || ''))
-    .filter(Boolean)
+  const source = String(sourceRaw || '')
+  const pattern = new RegExp(`<${escapeRegExp(componentName)}\\b`, 'g')
+  const snippets = []
+
+  for (const match of source.matchAll(pattern)) {
+    const startIndex = match.index ?? -1
+    if (startIndex < 0) {
+      continue
+    }
+
+    let cursor = startIndex + String(match[0] || '').length
+    let braceDepth = 0
+    let parenDepth = 0
+    let bracketDepth = 0
+    let activeQuote = ''
+
+    while (cursor < source.length && cursor - startIndex <= radius) {
+      const char = source[cursor]
+      const prevChar = cursor > 0 ? source[cursor - 1] : ''
+
+      if (activeQuote) {
+        if (char === activeQuote && prevChar !== '\\') {
+          activeQuote = ''
+        }
+        cursor += 1
+        continue
+      }
+
+      if (char === '"' || char === "'" || char === '`') {
+        activeQuote = char
+        cursor += 1
+        continue
+      }
+
+      if (char === '{') braceDepth += 1
+      if (char === '}') braceDepth = Math.max(0, braceDepth - 1)
+      if (char === '(') parenDepth += 1
+      if (char === ')') parenDepth = Math.max(0, parenDepth - 1)
+      if (char === '[') bracketDepth += 1
+      if (char === ']') bracketDepth = Math.max(0, bracketDepth - 1)
+
+      if (char === '>' && braceDepth === 0 && parenDepth === 0 && bracketDepth === 0) {
+        snippets.push(source.slice(startIndex, cursor + 1))
+        break
+      }
+
+      cursor += 1
+    }
+  }
+
+  return snippets.filter(Boolean)
 }
 
 function snippetEnablesBooleanProp(snippet, propName) {
@@ -2298,6 +2701,10 @@ function buildSourceContractCommentLines(contract) {
     commentLines.push(`${LAYOUT_STRATEGY_MARKER_PREFIX} ${contract.layoutStrategy}`)
   }
 
+  if (contract.layoutArchetype) {
+    commentLines.push(`${LAYOUT_ARCHETYPE_MARKER_PREFIX} ${contract.layoutArchetype}`)
+  }
+
   const requiredHostAdapterId = getRequiredHostAdapterId(contract)
   if (requiredHostAdapterId) {
     commentLines.push(`${HOST_ADAPTER_MARKER_PREFIX} ${requiredHostAdapterId}`)
@@ -2346,6 +2753,13 @@ export function getManagedPageSourceRootAttributes(contract) {
     rootAttrs.push({
       name: 'data-hiui5-layout-strategy',
       value: contract.layoutStrategy,
+    })
+  }
+
+  if (contract.layoutArchetype) {
+    rootAttrs.push({
+      name: 'data-hiui5-layout-group',
+      value: contract.layoutArchetype,
     })
   }
 
@@ -2400,6 +2814,7 @@ function isLegacyPageComponentFastPathContract(contract) {
 
 function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLabel }) {
   const errors = []
+  let downgradedManagedDeliveryPath = false
   const generationProfile = contract?.generationProfile || {}
   const runtimeComponentSource = String(generationProfile.runtimeComponentSource || '').trim()
   const runtimeBridgeProfileId = String(generationProfile.runtimeBridgeProfileId || '').trim()
@@ -2407,6 +2822,7 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
 
   for (const line of buildSourceContractCommentLines(contract)) {
     if (!sourceRaw.includes(line)) {
+      downgradedManagedDeliveryPath = true
       errors.push(`${pathLabel} is missing source contract marker "${line}".`)
     }
   }
@@ -2418,6 +2834,7 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   ]
   for (const marker of requiredRuntimeBridgeMarkers) {
     if (!sourceRaw.includes(marker)) {
+      downgradedManagedDeliveryPath = true
       errors.push(
         `${pathLabel} is missing runtime bridge marker "${marker}". Legacy page-component fast path must keep the selected component and bridge profile machine-checkable.`
       )
@@ -2425,32 +2842,129 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   }
 
   if (!/slot-adapter\.stub/.test(sourceRaw)) {
+    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not import the runtime bridge slot adapter stub. Legacy page-component fast path must bind business slots through an explicit slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.businessSlots\b/.test(sourceRaw)) {
+    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not route businessSlots through adaptedSlots.businessSlots. Legacy page-component fast path must fill certified business slots instead of rebuilding shell regions locally.`
     )
   }
 
   if (!/\badaptedSlots\.controlledExtensions\b/.test(sourceRaw)) {
+    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.controlledExtensions. Legacy page-component fast path must keep Level 1 controlled extensions on the slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.runtimeBridge\b/.test(sourceRaw)) {
+    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.runtimeBridge. Legacy page-component fast path must keep runtime inputs at the bridge boundary instead of in local shell reimplementation.`
     )
   }
 
   if (!/\bRuntimeBridgeShellAny\b/.test(sourceRaw) && !/\bRuntimeBridgeShell\b/.test(sourceRaw)) {
+    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not mount the resolved runtime bridge shell. Legacy page-component fast path must render the planner-selected runtime shell instead of page-local white-body/header/table primitives.`
+    )
+  }
+
+  if (downgradedManagedDeliveryPath) {
+    errors.unshift(
+      `${pathLabel} downgrades the planner-selected managed delivery path. Legacy page-component fast path must stay on page-component + runtime bridge + slot fill; do not replace it with a handwritten compatibility page, translated reference, or free fallback.`
+    )
+  }
+
+  return errors
+}
+
+function extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw) {
+  const runtimeShellMatch = /<RuntimeBridgeShell(?:Any)?\b/.exec(String(sourceRaw || ''))
+  if (!runtimeShellMatch) return ''
+
+  const shellIndex = runtimeShellMatch.index
+  const returnIndex = String(sourceRaw || '').lastIndexOf('return', shellIndex)
+  if (returnIndex < 0) return ''
+
+  return String(sourceRaw || '').slice(returnIndex, shellIndex)
+}
+
+function extractLeadingRuntimeWrapperComponentNames(sourceRaw) {
+  const allowedWrapperTags = new Set(['Fragment', 'React.Fragment', 'Suspense', 'React.Suspense'])
+  return [
+    ...new Set(
+      Array.from(
+        String(sourceRaw || '').matchAll(/<\s*([A-Z][\w.]*)\b/g),
+        (match) => String(match[1] || '').trim()
+      ).filter((name) => name && !allowedWrapperTags.has(name))
+    ),
+  ]
+}
+
+function validateLegacyThinRuntimeWrapperBoundary({ contract, sourceRaw, pathLabel }) {
+  const errors = []
+  const ownershipRoles = ['content-slot', 'white-body', 'outer-padding', 'main-scroll']
+  const contractRegions = getContractRegionNames(contract)
+  const wrapperLeadSnippet = extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw)
+  const leadingWrapperComponents = extractLeadingRuntimeWrapperComponentNames(wrapperLeadSnippet)
+
+  for (const role of ownershipRoles) {
+    const scopedAttrName = getRoleSpecificOwnershipAttrName(role)
+    if (
+      new RegExp(escapeRegExp(scopedAttrName)).test(sourceRaw) ||
+      new RegExp(`data-hiui5-owner\\s*=\\s*["']${escapeRegExp(role)}["']`).test(sourceRaw)
+    ) {
+      errors.push(
+        `${pathLabel} declares ${scopedAttrName} in the legacy runtime wrapper. Business pages may expose source and runtime-bridge markers only; workspace ownership must stay inside the selected project-certified carrier.`
+      )
+    }
+  }
+
+  for (const region of contractRegions) {
+    if (new RegExp(`data-hiui5-region\\s*=\\s*["']${escapeRegExp(region)}["']`).test(sourceRaw)) {
+      errors.push(
+        `${pathLabel} declares data-hiui5-region="${region}" in the legacy runtime wrapper. Required shell regions must stay inside the selected carrier; the business wrapper may only bind business slots and controlled extensions.`
+      )
+    }
+  }
+
+  if (/data-hiui5-shell\s*=/.test(sourceRaw)) {
+    errors.push(
+      `${pathLabel} declares data-hiui5-shell in the legacy runtime wrapper. Runtime shell identity belongs to the selected carrier/runtime bridge, not to the page-local business wrapper.`
+    )
+  }
+
+  if (
+    hasAnyPattern(sourceRaw, [
+      /<\s*PageHeader\b/,
+      /<\s*ManagedPageHeader\b/,
+      /<\s*HostPageHeaderPortal\b/,
+      /<\s*TypicalPageHeaderPortal\b/,
+    ])
+  ) {
+    errors.push(
+      `${pathLabel} renders header carrier primitives in the legacy runtime wrapper. Header geometry and docking must stay inside the selected carrier instead of being rebuilt by the page-local wrapper.`
+    )
+  }
+
+  if (/<\s*(div|section|main|article|aside|header|footer)\b/.test(wrapperLeadSnippet)) {
+    errors.push(
+      `${pathLabel} wraps the runtime bridge shell in a page-local JSX container before mount. legacy-host-compatible fast path requires a thin runtime wrapper: emit source markers, adapt business slots, and mount the selected carrier directly without extra layout containers.`
+    )
+  }
+
+  if (leadingWrapperComponents.length > 0) {
+    errors.push(
+      `${pathLabel} wraps the runtime bridge shell with page-local wrapper components (${leadingWrapperComponents.join(
+        ', '
+      )}) before mount. legacy-host-compatible fast path requires a thin runtime wrapper: mount the selected carrier directly instead of introducing local shell-like wrapper components.`
     )
   }
 
@@ -2548,8 +3062,8 @@ function validateNamedHostAdapterTranslation({ contract, sourceRaw, targetRoot, 
   }
 
   const expectedHostArchetypePath = String(contract.hostArchetypePath || '').trim()
-  const generatedPagePath = normalizeRelativeSourcePath(contract.generatedPagePath || pathLabel)
-  const normalizedHostArchetypePath = normalizeRelativeSourcePath(expectedHostArchetypePath)
+  const generatedPagePath = normalizeSourcePathLabel(contract.generatedPagePath || pathLabel)
+  const normalizedHostArchetypePath = normalizeSourcePathLabel(expectedHostArchetypePath)
 
   if (expectedHostArchetypePath && normalizedHostArchetypePath === generatedPagePath) {
     errors.push(
@@ -2588,8 +3102,8 @@ export function validateManagedPageSlotBoundary({ contract, sourceRaw, pathLabel
     }
   }
 
-  const expectedHostArchetypePath = normalizeRelativeSourcePath(contract?.hostArchetypePath || '')
-  const generatedPagePath = normalizeRelativeSourcePath(contract?.generatedPagePath || pathLabel)
+  const expectedHostArchetypePath = normalizeSourcePathLabel(contract?.hostArchetypePath || '')
+  const generatedPagePath = normalizeSourcePathLabel(contract?.generatedPagePath || pathLabel)
   if (expectedHostArchetypePath && expectedHostArchetypePath === generatedPagePath) {
     errors.push(
       `${pathLabel} changes provenance boundary by making hostArchetypePath point to the generated page itself. Slot edits cannot self-certify their mold or adapter source.`
@@ -2604,9 +3118,11 @@ function validateRequiredCapabilities({ contract, sourceRaw, pathLabel }) {
   const requiredCapabilities = Array.isArray(contract.adapterContract?.requiredCapabilities)
     ? contract.adapterContract.requiredCapabilities
     : []
+  const usesManagedDetailShell = /\bManagedFullPageDetailShell\b/.test(sourceRaw)
 
   if (
     requiredCapabilities.includes('leading-back') &&
+    !usesManagedDetailShell &&
     !/\bonBack\s*=/.test(sourceRaw) &&
     !hasLiteralAttr(sourceRaw, 'data-hiui5-leading-back', 'true')
   ) {
@@ -2641,6 +3157,7 @@ function validateRequiredCapabilities({ contract, sourceRaw, pathLabel }) {
 
   if (
     requiredCapabilities.includes('detail-body') &&
+    !usesManagedDetailShell &&
     !/\b(Descriptions|SchemaDescriptionsBridge)\b/.test(sourceRaw)
   ) {
     errors.push(
@@ -3251,13 +3768,15 @@ function validateFullPageDetailStructure({ contract, sourceRaw, styleRaw, pathLa
     return errors
   }
 
-  if (!hasVerticalDescriptionsPlacement(sourceRaw)) {
+  const usesManagedDetailShell = /\bManagedFullPageDetailShell\b/.test(sourceRaw)
+
+  if (!usesManagedDetailShell && !hasVerticalDescriptionsPlacement(sourceRaw)) {
     errors.push(
       `${pathLabel} does not keep Descriptions in vertical placement. Full-page-detail fields must use top/bottom label-value distribution instead of inline horizontal rows.`
     )
   }
 
-  if (!hasThreeColumnDescriptions(sourceRaw)) {
+  if (!usesManagedDetailShell && !hasThreeColumnDescriptions(sourceRaw)) {
     errors.push(
       `${pathLabel} does not keep a 3-column detail grid. Full-page-detail must preserve the example's three-column grouped layout.`
     )
@@ -3270,13 +3789,13 @@ function validateFullPageDetailStructure({ contract, sourceRaw, styleRaw, pathLa
     )
   }
 
-  if (!hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw)) {
+  if (!usesManagedDetailShell && !hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw)) {
     errors.push(
       `${pathLabel} header styles do not declare 60px height/min-height plus align-items:center. Legacy-host-compatible full-page-detail headers must stay vertically centered inside the header region.`
     )
   }
 
-  if (!hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw)) {
+  if (!usesManagedDetailShell && !hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw)) {
     errors.push(
       `${pathLabel} does not keep the full-page-detail title on the 18px / 600 baseline. Host PageHeader implementations must own the title typography instead of depending on unrelated page styles.`
     )
@@ -3805,7 +4324,18 @@ function validateNonTypicalStrategyProof({ contract, sourceRaw, pathLabel }) {
   return errors
 }
 
-function validateQueryFilterFieldMapSupport({ sourceRaw, pathLabel }) {
+function hasProjectCarrierManagedFieldMapProof({ contract, sourceRaw }) {
+  return (
+    isProjectCertifiedCarrierDelivery(contract) &&
+    hasAnyPattern(sourceRaw, [
+      /data-hiui5-shell-carrier\s*=/,
+      /hiui-design shell-carrier:/,
+      /runtime bridge profile:/,
+    ])
+  )
+}
+
+function validateQueryFilterFieldMapSupport({ contract, sourceRaw, pathLabel }) {
   const errors = []
 
   if (!/<QueryFilter\b/.test(sourceRaw)) {
@@ -3821,9 +4351,9 @@ function validateQueryFilterFieldMapSupport({ sourceRaw, pathLabel }) {
     /\bTypicalPageFieldMapProvider\b/,
   ])
 
-  if (!hasFieldMapProvider) {
+  if (!hasFieldMapProvider && !hasProjectCarrierManagedFieldMapProof({ contract, sourceRaw })) {
     errors.push(
-      `${pathLabel} renders QueryFilter without a colocated FieldMapProvider. Schema-driven QueryFilter fields must keep FieldMapProvider / TypicalPageFieldMapProvider semantics, or explicitly annotate hiui-design allow-queryfilter-with-upstream-fieldmap when the provider is mounted higher in the host tree.`
+      `${pathLabel} renders QueryFilter without a colocated FieldMapProvider. Schema-driven QueryFilter fields must keep FieldMapProvider / TypicalPageFieldMapProvider semantics, inherit machine-checkable upstream field-map proof from a project-certified carrier/runtime bridge, or explicitly annotate hiui-design allow-queryfilter-with-upstream-fieldmap when the provider is mounted higher in the host tree.`
     )
   }
 
@@ -3923,6 +4453,12 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
     )
   }
 
+  if (!hasSupportedPageHeaderStretchBaseline(sourceRaw, styleRaw)) {
+    errors.push(
+      `${pathLabel} does not keep the PageHeader root stretched to full width on the project-certified ${pageTypeId} carrier. Carrier-mounted PageHeader must keep width: 100% and minWidth: 0, without turning the PageHeader root into a flex/grid shell; otherwise header extra actions drift next to the title instead of docking right.`
+    )
+  }
+
   const pageHeaderIndex = sourceRaw.search(/<PageHeader\b/)
   const whiteBodyIndex = sourceRaw.search(/data-hiui5-region\s*=\s*['"]white-body['"]/)
   const statSectionIndex = sourceRaw.search(/data-hiui5-region\s*=\s*['"]stat-section['"]/)
@@ -4008,6 +4544,16 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
     ...tableRegionSnippets,
   ].some(hasHorizontalOverflowOwnerSignal)
 
+  const projectCarrierAddsHeaderBodyGap = outerPaddingSnippets.some((snippet) =>
+    collectPxPropertyValues(snippet, 'gap').some((value) => value > 0)
+  )
+
+  if (projectCarrierAddsHeaderBodyGap) {
+    errors.push(
+      `${pathLabel} inserts a page-root gap between the header region and white-body workspace on the project-certified ${pageTypeId} carrier. strict rollout list carriers must keep header and white-body flush on the shared baseline; move spacing into outer-padding or inner section content instead of using flex gap on the page root.`
+    )
+  }
+
   if (projectCarrierOwnsHorizontalOverflow) {
     errors.push(
       `${pathLabel} lets the project-certified table-basic carrier own horizontal scrolling at outer-padding/white-body/main-scroll/table region level. Keep horizontal overflow inside an inner table wrapper; the carrier itself must stay width-adaptive.`
@@ -4031,6 +4577,50 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
   if (queryFilterSnippets.some(queryFilterSnippetAddsAlwaysVisibleResetAction)) {
     errors.push(
       `${pathLabel} appends a plain reset/clear Button into inline QueryFilter during the strict project-certified table-basic rollout. Typical list pages should keep the default QueryFilter rhythm: no always-visible reset button in append, and clear only appears through the managed all-filter flow when values exist.`
+    )
+  }
+
+  return errors
+}
+
+function validateProjectCertifiedCarrierListSlotElasticity({
+  contract,
+  sourceRaw,
+  styleRaw,
+  pathLabel,
+}) {
+  const errors = []
+
+  if (
+    !isProjectCertifiedCarrierDelivery(contract) ||
+    String(contract?.pageTypeId || '').trim() !== 'table-basic'
+  ) {
+    return errors
+  }
+
+  const fixedWidthFieldProofs = collectQueryFilterFixedWidthFieldProofs(sourceRaw, styleRaw)
+
+  if (fixedWidthFieldProofs.length > 0) {
+    const summary = fixedWidthFieldProofs
+      .slice(0, 4)
+      .map((item) => `${item.field}=${item.widths.join('/')}`)
+      .join(', ')
+
+    errors.push(
+      `${pathLabel} pins QueryFilter field controls to page-local fixed widths (${summary}) inside the project-certified table-basic carrier. Typical list filters must inherit QueryFilter's adaptive track width, not per-field 180/220/320px widths, otherwise the filter bar cannot stretch and wrap cleanly with the workspace.`
+    )
+  }
+
+  const tableCellOverflowRisks = collectTableCellOverflowRiskColumns(sourceRaw)
+
+  if (tableCellOverflowRisks.length > 0) {
+    const summary = tableCellOverflowRisks
+      .slice(0, 4)
+      .map((item) => `${item.dataKey}@${item.width}px`)
+      .join(', ')
+
+    errors.push(
+      `${pathLabel} defines narrow text/link table columns without a clipping guard (${summary}). Managed table cells must either ellipsis within the declared column width or move full content into tooltip/detail affordances; otherwise long values can visually run into the next cell.`
     )
   }
 
@@ -5391,10 +5981,21 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     return [
       ...validateLegacyPageComponentFastPathSource({
         contract,
-        sourceRaw: extendedSourceRaw,
+        sourceRaw,
+        pathLabel,
+      }),
+      ...validateLegacyThinRuntimeWrapperBoundary({
+        contract,
+        sourceRaw,
         pathLabel,
       }),
       ...validateProjectCertifiedCarrierListBaseline({
+        contract,
+        sourceRaw: extendedSourceRaw,
+        styleRaw: extendedStyleRaw,
+        pathLabel,
+      }),
+      ...validateProjectCertifiedCarrierListSlotElasticity({
         contract,
         sourceRaw: extendedSourceRaw,
         styleRaw: extendedStyleRaw,
@@ -5418,9 +6019,20 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
         styleRaw: extendedStyleRaw,
         pathLabel,
       }),
+      ...validateDetailDescriptionsLabelOwnership({
+        contract,
+        sourceRaw: extendedSourceRaw,
+        pathLabel,
+      }),
       ...validateManagedPageSlotBoundary({
         contract,
         sourceRaw: extendedSourceRaw,
+        pathLabel,
+      }),
+      ...validateImportedLocalHelperPurity({
+        contract,
+        importedLocalContext,
+        targetRoot,
         pathLabel,
       }),
       ...validateDemoToolingIsolation({ sourceRaw: extendedSourceRaw, pathLabel }),
@@ -5451,6 +6063,12 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     ...validateLocalBypassContracts({
       contract,
       sourceRaw,
+      importedLocalContext,
+      targetRoot,
+      pathLabel,
+    }),
+    ...validateImportedLocalHelperPurity({
+      contract,
       importedLocalContext,
       targetRoot,
       pathLabel,
@@ -5493,8 +6111,18 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     ...validateNonTypicalStrategyProof({ contract, sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateHeaderPortalStructure({ sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateHeaderShellCarriers({ sourceRaw: extendedSourceRaw, pathLabel }),
-    ...validateQueryFilterFieldMapSupport({ sourceRaw: extendedSourceRaw, pathLabel }),
+    ...validateQueryFilterFieldMapSupport({
+      contract,
+      sourceRaw: extendedSourceRaw,
+      pathLabel,
+    }),
     ...validateProjectCertifiedCarrierListBaseline({
+      contract,
+      sourceRaw: extendedSourceRaw,
+      styleRaw: extendedStyleRaw,
+      pathLabel,
+    }),
+    ...validateProjectCertifiedCarrierListSlotElasticity({
       contract,
       sourceRaw: extendedSourceRaw,
       styleRaw: extendedStyleRaw,
@@ -5542,6 +6170,11 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
       pathLabel,
     }),
     ...validateDrawerStructure({ contract, sourceRaw: extendedSourceRaw, styleRaw: extendedStyleRaw, pathLabel }),
+    ...validateDetailDescriptionsLabelOwnership({
+      contract,
+      sourceRaw: extendedSourceRaw,
+      pathLabel,
+    }),
     ...validateFeedbackStatusStructure({ contract, sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateDemoToolingIsolation({ sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateFullPageEditStructure({ contract, sourceRaw: extendedSourceRaw, styleRaw: extendedStyleRaw, pathLabel }),

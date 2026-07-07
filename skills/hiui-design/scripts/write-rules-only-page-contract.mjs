@@ -490,6 +490,23 @@ function parseOwnershipMappings(values) {
   })
 }
 
+function shouldCarryExistingContractMetadata({
+  existingContract,
+  generatedPagePath,
+  pageTypeId,
+  archetypeMode,
+}) {
+  if (!existingContract || typeof existingContract !== 'object') {
+    return false
+  }
+
+  return (
+    String(existingContract.generatedPagePath || '').trim() === String(generatedPagePath || '').trim() &&
+    String(existingContract.pageTypeId || '').trim() === String(pageTypeId || '').trim() &&
+    String(existingContract.archetypeMode || '').trim() === String(archetypeMode || '').trim()
+  )
+}
+
 async function ensureDir(targetDir) {
   await fs.mkdir(targetDir, { recursive: true })
 }
@@ -552,6 +569,12 @@ async function main() {
       .then((raw) => JSON.parse(raw))
       .catch(() => null)
     const shouldCarryExistingMappings = !options.preset && existingContract?.pageTypeId === pageType.id
+    const shouldCarryExistingMetadata = shouldCarryExistingContractMetadata({
+      existingContract,
+      generatedPagePath,
+      pageTypeId: pageType.id,
+      archetypeMode,
+    })
     const presetRegionValues = options.preset ? buildStandardRegionValues(pageType.id) : []
     const presetOwnershipValues = options.preset ? buildStandardOwnershipValues(pageType.id) : []
     const regionMapping = buildRegionMappings(
@@ -581,11 +604,26 @@ async function main() {
           ? 'page-surface-owns-workspace'
           : ''),
       ownershipMapping,
+      generationProfile: shouldCarryExistingMetadata ? existingContract?.generationProfile || null : null,
+      productionContract: shouldCarryExistingMetadata ? existingContract?.productionContract || null : null,
       adapterContract: {
-        localBypasses,
+        ...(shouldCarryExistingMetadata && existingContract?.adapterContract
+          ? existingContract.adapterContract
+          : {}),
+        localBypasses:
+          localBypasses.length > 0
+            ? localBypasses
+            : shouldCarryExistingMetadata && Array.isArray(existingContract?.adapterContract?.localBypasses)
+              ? existingContract.adapterContract.localBypasses
+              : [],
       },
       semanticContract: {
-        queryFilterRegionRole: options.queryFilterRegionRole,
+        ...(shouldCarryExistingMetadata && existingContract?.semanticContract
+          ? existingContract.semanticContract
+          : {}),
+        ...(options.queryFilterRegionRole
+          ? { queryFilterRegionRole: options.queryFilterRegionRole }
+          : {}),
       },
       notes: options.notes,
       deviations: options.deviations,

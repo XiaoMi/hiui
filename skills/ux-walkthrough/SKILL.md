@@ -24,6 +24,13 @@ python3 <SKILL_ROOT>/scripts/<脚本>.py ...
 - 辅助：Nielsen、WCAG、品牌规范；冲突时以效率、理解成本、错误恢复、专业感为准
 - 优先级：以 `references/severity-rubric.md` 为准，不用 checklist 预设 P 级代替
 
+## 交付边界
+
+- 本 skill 的正式完成面只包括：完整 Markdown 报告、结构化 `report.json`、标注校验和本地 `.docx`
+- 本 public skill 不定义 usage stats、telemetry closeout、网络补传或授权重试 after-hook
+- 若上游 workflow 需要统计或发布态补传，必须由页面生成 / 发布 skill 自己定义和承担，不得默认追加到本 skill
+- 生成 `.docx` 依赖 Python 包 `python-docx`；若环境缺失，该任务只能报告 `docx_generation` 失败，不能宣称完整完成
+
 ## 输入 → 模式
 
 | 输入 | 模式 | 文档 |

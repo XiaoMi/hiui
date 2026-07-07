@@ -556,8 +556,8 @@ async function main() {
       true,
       'Expected legacy bridge-only projects to stay valid without direct shell runtime imports.'
     )
-    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /not-required-in-current-mode/)
-    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /page-component \+ runtime bridge \+ slot fill/)
+    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /legacy bridge path/)
+    assert.match(legacyBridgeOnlyRuntimeCheck.detail, /planner-selected page components/)
 
     const legacyBridgeOnlyShellDeclCheck = getCheck(legacyBridgeOnlyPayload, 'shells-declared')
     assert(legacyBridgeOnlyShellDeclCheck, 'Expected doctor to emit shells-declared.')
@@ -566,7 +566,7 @@ async function main() {
       true,
       'Expected legacy bridge-only projects to allow missing @hiui-design/typical-page-shells declarations.'
     )
-    assert.match(legacyBridgeOnlyShellDeclCheck.detail, /not required to declare/)
+    assert.match(legacyBridgeOnlyShellDeclCheck.detail, /without declaring @hiui-design\/typical-page-shells/)
 
     const legacyBridgeOnlyStyleCheck = getCheck(legacyBridgeOnlyPayload, 'styles-import')
     assert(legacyBridgeOnlyStyleCheck, 'Expected doctor to emit styles-import.')
@@ -575,7 +575,10 @@ async function main() {
       true,
       'Expected legacy bridge-only projects to allow missing styles.css imports.'
     )
-    assert.match(legacyBridgeOnlyStyleCheck.detail, /not required-in-current-mode/)
+    assert.match(
+      legacyBridgeOnlyStyleCheck.detail,
+      /does not require @hiui-design\/typical-page-shells\/styles\.css/
+    )
 
     const legacyDirectShellPayload = runDoctorJson(
       legacyDirectShellRoot,
@@ -591,25 +594,28 @@ async function main() {
       false,
       'Expected legacy projects with direct shell imports to fail the downgraded runtime check.'
     )
-    assert.match(legacyDirectShellRuntimeCheck.detail, /required-if-direct-standard-shell-runtime-selected/)
+    assert.match(legacyDirectShellRuntimeCheck.detail, /cannot stay on the downgraded host runtime/)
 
     const legacyDirectShellDeclCheck = getCheck(legacyDirectShellPayload, 'shells-declared')
     assert(legacyDirectShellDeclCheck, 'Expected doctor to emit shells-declared.')
     assert.equal(
       legacyDirectShellDeclCheck.ok,
-      false,
-      'Expected legacy projects with direct shell imports to require a package.json declaration.'
+      true,
+      'Expected legacy projects with direct shell imports to keep dependency declaration on the legacy-bridge optional path.'
     )
-    assert.match(legacyDirectShellDeclCheck.detail, /must now declare/)
+    assert.doesNotMatch(legacyDirectShellDeclCheck.detail, /must now declare/)
 
     const legacyDirectShellInstallCheck = getCheck(legacyDirectShellPayload, 'shells-installed')
     assert(legacyDirectShellInstallCheck, 'Expected doctor to emit shells-installed.')
     assert.equal(
       legacyDirectShellInstallCheck.ok,
-      false,
-      'Expected legacy projects with direct shell imports to require an installed package copy.'
+      true,
+      'Expected legacy projects with direct shell imports to keep installed package checks on the legacy-bridge optional path.'
     )
-    assert.match(legacyDirectShellInstallCheck.detail, /required-if-direct-standard-shell-runtime-selected/)
+    assert.match(
+      legacyDirectShellInstallCheck.detail,
+      /does not require installing @hiui-design\/typical-page-shells/
+    )
 
     const legacyDirectShellStyleCheck = getCheck(legacyDirectShellPayload, 'styles-import')
     assert(legacyDirectShellStyleCheck, 'Expected doctor to emit styles-import.')
@@ -618,7 +624,10 @@ async function main() {
       false,
       'Expected legacy projects with direct shell imports to require styles.css.'
     )
-    assert.match(legacyDirectShellStyleCheck.detail, /Add `import '@hiui-design\/typical-page-shells\/styles\.css'`/)
+    assert.match(
+      legacyDirectShellStyleCheck.detail,
+      /@hiui-design\/typical-page-shells\/styles\.css/
+    )
 
     const legacyAuxiliaryShellPayload = runDoctorJson(
       legacyAuxiliaryShellRoot,
@@ -634,7 +643,7 @@ async function main() {
       true,
       'Expected gallery/reference-only shell imports to stay on the legacy bridge path.'
     )
-    assert.match(legacyAuxiliaryRuntimeCheck.detail, /not-required-in-current-mode/)
+    assert.match(legacyAuxiliaryRuntimeCheck.detail, /legacy bridge path/)
 
     const legacyAuxiliaryDeclCheck = getCheck(legacyAuxiliaryShellPayload, 'shells-declared')
     assert(legacyAuxiliaryDeclCheck, 'Expected doctor to emit shells-declared.')
@@ -652,8 +661,8 @@ async function main() {
     console.log('- host-integration doctor accepts shared top-level 示例 gallery route menus')
     console.log('- host-integration doctor rejects duplicated first-level AppStoreFilled placeholders')
     console.log('- host-integration doctor accepts distinct semantic first-level Filled icons')
-    console.log('- legacy bridge-only doctor treats shell dependency/style imports as not-required-in-current-mode')
-    console.log('- legacy direct-shell doctor upgrades dependency/style/runtime checks to required-if-direct-standard-shell-runtime-selected')
+    console.log('- legacy bridge-only doctor treats shell dependency/style imports as legacy-bridge optional checks')
+    console.log('- legacy direct-shell doctor fails runtime compatibility, keeps dependency/install optional, and still requires styles import')
     console.log('- legacy auxiliary gallery/reference shell imports do not escalate into direct-shell runtime mode')
   } finally {
     await removeTree(tempRoot)

@@ -119,6 +119,13 @@ description: >-
   `componentSupportSources` 都能解析到真实项目源码时才成立；缺任一项时，接入必须保持
   `integrationReady=false`，页面生成阶段只允许暴露阻断原因，不得把缺失 carrier 问题延后到
   业务页实现期才发现。
+- 对 `legacy-host-compatible`，`integrationReady=true` 还要求项目级 required rollout 已完成：
+  默认先覆盖 `table-basic`、`table-stat`、`tree-table`、`tree-split`、`drawer-form`、
+  `drawer-detail`、`full-page-edit`、`full-page-detail` 这些 `carrier-first-required`
+  页型；`feedback-status` 与 `data-visualization` 可作为 deferred batch 后补。缺少 required
+  batch 的 project-certified carrier 时，integration state 必须显式输出
+  `requiredLegacyPageTypes`、`deferredLegacyPageTypes`、`certifiedLegacyPageTypes`、
+  `missingRequiredLegacyPageTypes` 与 `legacyRolloutCoverageStatus=blocked`。
 - `integrationReady` 默认只回答“项目是否已完成 hiui-design 接入”和“legacy 宿主桥接是否已具备项目级承接事实”。`rules-only` / `host-integration` 下标准典型页组件是否可用，属于 planner 消费的资产事实与页型支持事实，不应被收口为通用项目接入失败。
 - project-scoped host pack / carrier facts 也属于 runtime input facts。对 legacy 项目，应优先
   在项目接入 / capabilities 阶段一次认证，再由页面生成阶段复用，不要在每个页面重复解释宿主边界。
@@ -143,6 +150,9 @@ description: >-
   直接回显接入阻断原因；不要再尝试把页面生成、起手 scaffold 或页面级 preflight 当成接入 /
   legacy bridge 完整性的补救路径。页型级 `page-component` 资产是否 ready，继续由 planner 的
   `assetResolution` / `projectTypicalPageSupport` 独立判断，而不是反写成通用 integration debt。
+- 当 `integrationReady=false` 的原因来自 legacy required rollout 未完成时，`PlanTask` 默认应把
+  `bootstrap-target-project` 放在 `ResolveBlockingFacts` 队首；若同时命中 route ownership
+  blocker，再在其后追加 route 修复动作，不得跳过项目级 carrier rollout 直接进入页面实现。
 - `BuildGenerationRecipe`：把 `generationStrategy` 转化为标准装配协议。
 - `GenerateByRecipe`：生成行为必须遵循 `assemblyOrder`、`requiredAssets`、`forbiddenMoves`；不允许自由发明页壳、region owner、slot 顺序。
 - `InlineConformanceChecks`：关键装配步骤后的轻量一致性检查，不把重验收前移。

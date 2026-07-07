@@ -185,7 +185,7 @@
         "scripts/README.md",
         "scripts/lib/**",
         "scripts/public-cli-contracts.json",
-        "scripts/tests/fixtures/public-cli/*.json",
+        "scripts/tests/fixtures/public-cli/preview-ready.quality-pass.json",
         "templates/**",
         "vendor/typical-page-shells-package.json",
         "vendor/hiui-design-typical-page-shells-*.tgz"
@@ -252,6 +252,8 @@
         "scripts/lib/stats-config.mjs",
         "scripts/lib/stats-identity.mjs",
         "scripts/tests/*.test.mjs",
+        "scripts/tests/fixtures/public-cli/plan-page-task*.json",
+        "scripts/tests/fixtures/public-cli/final-report*.json",
         "scripts/tests/fixtures/public-cli/*usage*.json",
         "src/typical-page-reuse/DOCTOR_REPORT.md",
         "src/typical-page-reuse/HOST_ADAPTER_SNIPPET.md",
@@ -264,7 +266,6 @@
         "distribution-manifest.json",
         "docs/onboarding/public-runtime-release-checklist.md",
         "rules/runtime-delivery-policy.json",
-        "scripts/tests/fixtures/public-cli",
         "vendor/typical-page-shells-package.json",
         "scripts/typical-page-preview-ready.mjs",
         "scripts/tests/fixtures/public-cli/preview-ready.quality-pass.json"

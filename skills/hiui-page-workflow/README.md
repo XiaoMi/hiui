@@ -21,6 +21,16 @@
 - `hiui-design`
 - `ux-walkthrough`
 
+## Architecture Boundary
+
+`hiui-page-workflow` 是门禁型总编排层，不是下游 skill 的实现镜像。
+
+- 对 `refine-product-requirements`：消费需求细化结果、HiUI 交接包和确认状态，不复制其需求建模正文
+- 对 `hiui-design`：消费稳定 planner contract 与交付状态，例如正式 Plan Gateway、执行许可、结构化 actions、交付摘要；不镜像其全部页面实现字段或内部生命周期细节
+- 对 `ux-walkthrough`：消费证据门禁、问题分级和报告产物，不复制其完整 SOP 正文
+
+因此，workflow core 的优化原则是“强约束对齐，弱实现耦合”：只吸收跨阶段协同真正需要的稳定面，不把下游 skill 的全部领域细节搬进 workflow 自身的数据结构。
+
 ## Distribution Status
 
 当前已提供：
@@ -93,6 +103,8 @@ bash install-workflow.sh --force-sync
 ## Project Usage
 
 如果你的目标是把 workflow 接到项目里，应通过 project adapter 把规则、模板和桥接资产落到业务仓库；如果你的目标是复用 workflow 规则，可直接使用 `SKILL.md`、`references/` 和 `bundle/` 里的约束与模板。
+
+页面规划相关的正式入口由下游 `hiui-design` 提供。workflow 在项目里应优先消费目标项目根的 Plan Gateway 与 `.local-context/hiui-design/` 接入产物，而不是直接把 skill 仓库里的脚本路径写进业务项目交付流程。
 
 ## Version Policy
 

@@ -146,7 +146,11 @@
 - HiUI 交接包
 - 会影响生成/验收的假设和风险
 
-必须包含 `requirementGate`、`generationInputGate`、确认完整度、假设和风险。未确认时只允许 `ready-for-review`、`assumption-authorized` 或 `blocked`。
+必须包含 `requirementGate`、`generationInputGate`、确认完整度、假设和风险。
+
+- `requirementGate.status` 只允许：`needs-confirmation | requirements-confirmed | assumption-authorized | blocked`
+- `generationInputGate.status` 只允许：`not-ready | ready-for-review | confirmed | assumption-authorized | blocked`
+- 未确认时，`generationInputGate.status` 只允许 `ready-for-review`、`assumption-authorized` 或 `blocked`
 
 对于 B2B / 管理后台页面，若权限、异常、导入/批量操作、日志/审计中仍有高影响缺口，应保持 `ready-for-review` 或继续确认，不要假装已收口。
 

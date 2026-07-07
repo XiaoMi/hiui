@@ -8,6 +8,8 @@
 - 证据不足时先补证据，不提前输出完整报告
 - 完成由报告正文、结构化 `report.json`、标注校验和 docx 结果共同判定
 - 对外优先调用 `precheck_walkthrough.py` 与 `generate_docx.py`；底层脚本仅用于调试
+- 本文不定义 usage stats、telemetry closeout 或授权补传状态；这些不属于本 skill 的完成门禁
+- 若环境缺少 `python-docx`，`.docx` 生成必须判定为失败，并明确说明依赖缺失；不得把报告正文当作完整完成
 
 ---
 

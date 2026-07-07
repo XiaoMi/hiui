@@ -81,6 +81,12 @@
 - free composition is allowed only inside a HiUI-first, spec-constrained frame
 - 组件优先级、视觉 token、spacing ownership、禁止大段空白、runtime shell requirements 仍然是硬门槛
 
+旧系统升级场景里，这里的“保留结构”要收窄理解：
+
+- 保留的是 `base archetype`、`layout strategy`、一级信息架构与业务语义。
+- 不保留旧视觉、旧 DOM 壳层、旧样式类名、旧 spacing owner 或未受管的布局实现。
+- 非典型升级默认是“preserve layout strategy and replace semantics”，不是“沿用旧页面实现后只换 token / 换皮肤”。
+
 ## 策略驱动生成门槛
 
 非典型页面必须先证明“为什么不能直接套典型页”，再进入 JSX / 样式实现。这里的证明不是固定某个区块组合，而是把页面的一层信息组织策略落成机器可追踪事实。
@@ -92,6 +98,8 @@
 - `non-typical scope`：只说明哪些一级组织需要非典型编排；不要把 header、white-body、main-scroll 等关键壳层纳入自由范围。
 - `composition guardrails`：说明允许自由组合的槽位、禁止替换的 carrier、禁止重写的 HiUI 骨架。
 - `strategy evidence`：说明源码和运行时需要出现哪些布局 marker / 语义组件 / 一级分组来证明策略已兑现。
+
+若旧系统升级任务已经给出稳定的 `layout strategy` 与 `layout archetype`，但没有 `pageType` / `shell` / `ownership` 级结构变化，默认升级的是语义实现与治理约束，而不是重写整页结构。
 
 阻断规则：
 

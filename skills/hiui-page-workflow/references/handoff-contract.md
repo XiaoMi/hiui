@@ -44,6 +44,39 @@
     "assumptionsAllowed": false,
     "confirmedSummary": "用户已确认首版生成供应商列表和供应商详情"
   },
+  "planSnapshot": {
+    "sourceSkill": "hiui-design",
+    "planStatus": "ready | blocked | invalid | missing",
+    "factsStatus": "ready | blocked | missing | conflict | stale | unknown",
+    "canStartImplementation": false,
+    "currentExecutionState": {
+      "status": "ready | blocked | unknown",
+      "primaryAction": "generate-by-page-component-slot-fill | ResolveBlockingFacts | unknown",
+      "currentPhase": "ResolveBlockingFacts | SelectStartPoint | GenerateOrEdit | WriteContract | Preflight | FormalAcceptance | RuntimeGovernance | UsageStats | unknown",
+      "nextCommand": "下一条结构化动作命令",
+      "blockerCodes": [
+        "PROJECT_INTEGRATION_BLOCKED"
+      ]
+    },
+    "requiredActions": [
+      {
+        "command": "typical-page:start-page",
+        "phase": "GenerateOrEdit",
+        "status": "pending | passed | failed | skipped | blocked"
+      }
+    ],
+    "formalAcceptanceActions": [
+      {
+        "command": "typical-page:finalize-page",
+        "phase": "FormalAcceptance",
+        "status": "pending | passed | failed | skipped | blocked"
+      }
+    ],
+    "deliverySummaryProfile": "planner delivery summary profile",
+    "acceptanceProfile": {
+      "formalRequired": false
+    }
+  },
   "requirementRefinement": {
     "sourceSkill": "refine-product-requirements",
     "deliveryMode": "quick-refine | hiui-handoff | full-prd-to-generation",
@@ -128,6 +161,9 @@
 - `route` 或 `devServerUrl` 不确定时，先从项目路由和 dev server 输出确认。
 - `requirementGate` 用来判断产品方向是否清楚；用户回答过问题不等于 `generationInputGate` 已确认。
 - `generationInputGate.status` 只有 `confirmed` 或 `assumption-authorized` 时，才允许进入页面规划和文件修改。
+- 若已执行 `hiui-design` 页面规划，`planSnapshot` 应保留最小 planner 快照；不要手工重造 `mode`、`pageType`、`startFrom` 或执行许可结论。
+- 进入文件修改前，若存在 `planSnapshot`，必须同时满足 `planStatus=ready`、`factsStatus=ready`、`currentExecutionState.status=ready`、`canStartImplementation=true`。
+- `planSnapshot.requiredActions` 与 `planSnapshot.formalAcceptanceActions` 只记录当前 workflow 真正消费的结构化动作及其结果；不要把未执行动作写成已通过。
 - `assumption-authorized` 只能来自用户明确授权；不能把“生成 / 继续 / 开始吧 / 端到端”自动当作授权。
 - 若执行过需求细化，`requirementRefinement` 必须记录真实的交付模式、关键假设和待确认项；没有执行需求细化时可省略。
 - `hiuiHandoffReady` 为 false 时，不要假装需求已完备；若用户仍要求继续生成，必须把假设和风险带入 `knownRisks`。
@@ -144,5 +180,6 @@
 ## 字段分层
 
 - 必填：`workflowLevel`、`requirementGate`、`generationInputGate`、`engineeringChecks`、`knownRisks`。
+- 完成页面规划后建议必填：`planSnapshot`。
 - 进入 UX 后必填：`uxGate`、`screenshots`；`ux-standard` / `ux-formal` 还必须填 `p0ScenarioCoverage`。
 - 有修复时必填：`visualComparisons`，并保留 before / after 清晰原图路径。

@@ -424,10 +424,13 @@ function ensureStartPageGenerationProfileRequiredGates(generationProfile, mode) 
   const modeId = String(mode || '').trim()
   const strategy = String(generationProfile.strategy || '').trim()
   const startFrom = String(generationProfile.startFrom || '').trim()
+  const sourceProofLevel = String(generationProfile.sourceProofLevel || '').trim()
   const requiredBaseline =
     modeId === 'legacy-host-compatible'
       ? strategy === 'page-component' && startFrom === 'page-component'
-        ? ['source-gate', 'preflight', 'page-instance-validation']
+        ? sourceProofLevel === 'strict-source-adapter-proof'
+          ? ['source-gate', 'preflight', 'page-instance-validation']
+          : ['slot-gate', 'preflight', 'page-instance-validation']
         : ['source-gate', 'preflight']
       : ['slot-gate', 'preflight']
   const existingGates = Array.isArray(generationProfile.requiredGates)
@@ -481,18 +484,75 @@ function buildLegacyPageComponentStartBlockReason(plan, pageTypeId) {
   return `typical-page:start-page cannot scaffold ${pageTypeId} in legacy-host-compatible until plan-page-task resolves the page-component fast path. Expected selected certified page component plus available runtime bridge asset; received ${details.join(', ')}. Resolve runtime adapter / certification facts first and refresh the planner contract.`
 }
 
+function plannerRequiresComponentSemanticMainline(plan) {
+  const modeId = String(plan?.mode?.id || '').trim()
+  if (!['rules-only', 'legacy-host-compatible'].includes(modeId)) {
+    return false
+  }
+
+  return (
+    String(plan?.generationStrategyId || '').trim() === 'page-component' ||
+    String(plan?.assetResolution?.semanticStrategyId || '').trim() === 'page-component' ||
+    String(plan?.generationProfile?.strategy || '').trim() === 'page-component' ||
+    String(plan?.targetDeliverySemantics?.deliveryPath || '').trim() === 'page-component-plus-slot-fill' ||
+    plan?.pageComponent?.selected === true
+  )
+}
+
+function collectPlannerBlockingReasons(plan) {
+  return Array.from(
+    new Set(
+      [
+        ...(Array.isArray(plan?.blockingReasons) ? plan.blockingReasons : []),
+        ...(Array.isArray(plan?.facts?.blockingReasons) ? plan.facts.blockingReasons : []),
+        ...(Array.isArray(plan?.pageComponent?.legacyHostFamily?.blockingReasons)
+          ? plan.pageComponent.legacyHostFamily.blockingReasons
+          : []),
+        ...(Array.isArray(plan?.pageComponent?.candidates)
+          ? plan.pageComponent.candidates
+              .filter(
+                (candidate) =>
+                  String(candidate?.effectiveMode || candidate?.mode || '').trim() ===
+                    String(plan?.mode?.id || '').trim() &&
+                  candidate?.certificationAvailable === false &&
+                  candidate?.componentId
+              )
+              .map(
+                (candidate) =>
+                  `${String(candidate.componentId).trim()} standard page component is not fully certified`
+              )
+          : []),
+        String(plan?.pageComponent?.runtimeAdapterProof?.reason || '').trim(),
+        String(plan?.assetResolution?.reason || '').trim(),
+        String(plan?.assetResolution?.adapterResolution?.reason || '').trim(),
+        String(plan?.assetResolution?.runtimeBridgeResolution?.reason || '').trim(),
+      ]
+        .map((item) => String(item || '').trim())
+        .filter(Boolean)
+    )
+  )
+}
+
 function assertComponentSemanticStartPlan(plan, pageTypeId) {
-  const support = plan?.projectTypicalPageSupport
-  if (!support?.enforcePageComponentSemantics) {
+  if (!plannerRequiresComponentSemanticMainline(plan)) {
     return
   }
 
-  if (support.status !== 'ready') {
-    const blockingReasons = Array.isArray(support.blockingReasons)
-      ? support.blockingReasons.filter(Boolean)
-      : []
+  const blockingReasons = collectPlannerBlockingReasons(plan)
+  const currentExecutionStatus = String(plan?.currentExecutionState?.status || '').trim()
+  const modeId = String(plan?.mode?.id || '').trim()
+  const needsSelectedComponent =
+    modeId === 'legacy-host-compatible' || modeId === 'rules-only'
+
+  if (
+    plan?.status !== 'ready' ||
+    plan?.canStartImplementation === false ||
+    currentExecutionStatus === 'blocked' ||
+    String(plan?.assetResolution?.status || '').trim() !== 'available' ||
+    (needsSelectedComponent && plan?.pageComponent?.selected !== true)
+  ) {
     throw new Error(
-      `typical-page:start-page cannot scaffold ${pageTypeId} because component-semantic typical page support is ${support.status}. ${
+      `typical-page:start-page cannot scaffold ${pageTypeId} because component-semantic typical page support is blocked. ${
         blockingReasons.length > 0 ? `Blocking reasons: ${blockingReasons.join(' | ')}` : 'Refresh the planner contract and repair the shared page-component support first.'
       }`
     )
@@ -2000,17 +2060,13 @@ ${hasChartSection ? `export function ${supportingSectionsComponentName}() {
   dd {
     min-width: 0;
     color: #3c4658;
-    text-align: right;
+    text-align: end;
   }
 }
 
 .serviceRecordTable {
   min-width: 0;
   margin-bottom: 20px;
-
-  :global(.hi-v5-table__cell) {
-    color: #3c4658;
-  }
 }
 
 @media (max-width: 900px) {
@@ -2565,25 +2621,73 @@ function buildHostIntegrationOwnershipMapping(pageType, explicitOwnerships) {
 }
 
 function buildLegacyPageComponentRegionMapping(pageTypeId, explicitRegions) {
-  if (explicitRegions.length > 0) {
-    return explicitRegions.map(({ key, target }) => ({ region: key, target }))
-  }
-
-  return getRequiredRegionsForPageType(pageTypeId).map((region) => ({
+  const requiredMappings = getRequiredRegionsForPageType(pageTypeId).map((region) => ({
     region,
     target: `page-component:${region}`,
   }))
+
+  if (explicitRegions.length === 0) {
+    return requiredMappings
+  }
+
+  const requiredRegionNames = new Set(
+    requiredMappings.map((item) => String(item.region || '').trim().toLowerCase())
+  )
+  const explicitMappingByRegion = new Map(
+    explicitRegions.map(({ key, target }) => [
+      String(key || '').trim().toLowerCase(),
+      { region: key, target },
+    ])
+  )
+
+  const mergedMappings = requiredMappings.map((item) => {
+    const explicit = explicitMappingByRegion.get(String(item.region || '').trim().toLowerCase())
+    return explicit || item
+  })
+
+  for (const { key, target } of explicitRegions) {
+    const normalizedKey = String(key || '').trim().toLowerCase()
+    if (!requiredRegionNames.has(normalizedKey)) {
+      mergedMappings.push({ region: key, target })
+    }
+  }
+
+  return mergedMappings
 }
 
 function buildLegacyPageComponentOwnershipMapping(pageTypeId, explicitOwnerships) {
-  if (explicitOwnerships.length > 0) {
-    return explicitOwnerships.map(({ key, target }) => ({ role: key, target }))
-  }
-
-  return getRequiredOwnershipRolesForPageType(pageTypeId).map((role) => ({
+  const requiredOwnerships = getRequiredOwnershipRolesForPageType(pageTypeId).map((role) => ({
     role,
     target: `page-component:${role}`,
   }))
+
+  if (explicitOwnerships.length === 0) {
+    return requiredOwnerships
+  }
+
+  const requiredRoleNames = new Set(
+    requiredOwnerships.map((item) => String(item.role || '').trim().toLowerCase())
+  )
+  const explicitOwnershipByRole = new Map(
+    explicitOwnerships.map(({ key, target }) => [
+      String(key || '').trim().toLowerCase(),
+      { role: key, target },
+    ])
+  )
+
+  const mergedOwnerships = requiredOwnerships.map((item) => {
+    const explicit = explicitOwnershipByRole.get(String(item.role || '').trim().toLowerCase())
+    return explicit || item
+  })
+
+  for (const { key, target } of explicitOwnerships) {
+    const normalizedKey = String(key || '').trim().toLowerCase()
+    if (!requiredRoleNames.has(normalizedKey)) {
+      mergedOwnerships.push({ role: key, target })
+    }
+  }
+
+  return mergedOwnerships
 }
 
 function getDefaultHostIntegrationArchetypePath(pageType) {
@@ -2975,19 +3079,23 @@ async function main() {
         runtimeSmoke: options.runtimeSmoke,
         topology: resolvedTopology,
       }) || startPlanSeed?.runtimeSmokePlan
-    const legacyFastPathGenerationProfile =
-      startPlan && isLegacyPageComponentFastPathReady(startPlan)
+    const pageComponentDirectScaffoldGenerationProfile =
+      startPlan &&
+      startPlan?.pageComponent?.selected === true &&
+      String(startPlan?.generationStrategyId || '').trim() === 'page-component' &&
+      String(startPlan?.startFrom?.id || '').trim() === 'page-component' &&
+      mode !== 'host-integration'
         ? startPlan.generationProfile
         : null
     const resolvedGenerationProfile = ensureStartPageGenerationProfileRequiredGates(
-      legacyFastPathGenerationProfile || startPlanSeed?.generationProfile || null,
+      pageComponentDirectScaffoldGenerationProfile || startPlanSeed?.generationProfile || null,
       mode
     )
     const hintedOwnershipMapping = buildOwnershipMappingFromPlanHints(explicitOwnerships, startPlanSeed?.ownershipPlan)
-    const resolvedRegionMapping = legacyFastPathGenerationProfile
+    const resolvedRegionMapping = pageComponentDirectScaffoldGenerationProfile
       ? buildLegacyPageComponentRegionMapping(pageType.id, explicitRegions)
       : regionMapping
-    const resolvedOwnershipMapping = legacyFastPathGenerationProfile
+    const resolvedOwnershipMapping = pageComponentDirectScaffoldGenerationProfile
       ? buildLegacyPageComponentOwnershipMapping(pageType.id, explicitOwnerships)
       : hintedOwnershipMapping.length > 0
         ? hintedOwnershipMapping
@@ -3003,7 +3111,7 @@ async function main() {
       archetypeDefinition,
       archetypeSmokeBaseline: findArchetypeSmokeBaselineEntry(baselineSpec, pageType.id),
       generatedPagePath: pagePath,
-      hostArchetypePath: legacyFastPathGenerationProfile
+      hostArchetypePath: pageComponentDirectScaffoldGenerationProfile
         ? ''
         : normalizeContractPath(
             targetRoot,
@@ -3071,7 +3179,8 @@ async function main() {
         ...(startPlanSeed?.layoutArchetype
           ? ['Planner layout facts were materialized into the started contract so scaffold and overlay guidance stay in sync from the first write.']
           : []),
-        ...(legacyFastPathGenerationProfile
+        ...(pageComponentDirectScaffoldGenerationProfile &&
+        mode === 'legacy-host-compatible'
           ? ['Planner selected the legacy page-component fast path, so this scaffold uses the runtime bridge wrapper plus business-slot adapter instead of host archetype translation.']
           : []),
       ],
@@ -3084,6 +3193,14 @@ async function main() {
         lastCommand: 'typical-page:start-page',
       },
     })
+
+    if (pageComponentDirectScaffoldGenerationProfile && mode === 'rules-only') {
+      contract.adapterContract = {
+        ...contract.adapterContract,
+        hostAdapterId: '',
+        hostAdapterLabel: '',
+      }
+    }
 
     const scaffoldArtifacts = await buildScaffoldArtifacts({
       skillRoot,

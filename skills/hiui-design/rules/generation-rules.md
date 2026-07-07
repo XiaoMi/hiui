@@ -62,6 +62,11 @@
 - `strict-structure`：非典型页面、组合页、split / 主从 / 多区块工作台、页壳 / ownership / 滚动结构变化、复杂图表联动、真实权限 / 状态流 / 批量副作用。执行结构 gate、contract、必要 smoke 和更严格验收。
 - `formal-acceptance`：发布 / 提测 / 合入 / 全量 gate / 无 warning / `source-gate` / `doctor` / `finalize-page` 是验收叠加层，不是快慢主判据；命中时在当前链路上追加正式验收命令。
 
+执行强度还要区分两件事：
+
+- `implementation` 升级：只有 `pageType`、`shell`、`ownership`、`split`、主工作区滚动链等结构事实变化时，才从轻量生成升级到 `strict-structure`。普通典型页旧系统升级若仍命中同一 `pageType` 且已存在 certified page component，不应因为“来自 legacy 页面”就自动升级成重结构改造。
+- `governance` 升级：迁移 / 重架构页、legacy 高风险 drift、正式验收 / 发布可以要求更重的 snapshot、acceptance contract、translation-map、source-gate、doctor 或 finalize-page，但这不等于一定要重写页面结构。
+
 ### 0.2 Typical Fast Path Gate
 
 当 `mode` 为 `host-integration`、`rules-only`、`legacy-host-compatible`，或项目内把兼容接入称为 `host-compatible`，且用户需求清晰命中一个或多个槽位型典型页型、没有特殊布局 / 非典型 section / 跨页型组合 / 复杂新增图表 / 正式 i18n 验收要求时，默认走典型页快速路径。`data-visualization` 不进入普通快速路径；它是 `managed-analytics` 受管分析页。
@@ -77,6 +82,13 @@
 - 只替换标题、路由、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据和行操作。
 - 保留页壳、region 层级、白底主体、滚动 owner、分页 / footer 挂载语义、row action link 语义、source marker 和 contract 字段。
 - 业务槽位里的自定义 JSX 与页面本地样式仍必须遵守 `hiui5-visual-baseline.md`：直接写出的 `font-size` 只能使用已登记字阶，尤其不得新增 `13px`；`24px` 只作为指标主值 token 使用。
+
+当普通典型页命中 fast path 时，执行动作默认进一步细分为：
+
+- `slot-fill-only`：当前页已经是受管实例，且本次需求没有修改 `pageType`、`shell`、`ownership`、`mandatory components` 或 runtime shell carrier；此时只允许替换业务槽位。
+- `rewrite-by-page-component`：当前页仍属于同一典型页型、project-certified carrier 或 certified page component 已可用，但现有源码还不是 ready 的 managed instance；此时应直接以 page component / carrier 重建业务页实例，而不是在旧 JSX 上继续修补壳层、region 或 ownership。
+
+`rewrite-by-page-component` 仍属于典型页主链，不是 `strict-structure`。它表达的是“用受管主资产重建业务页实例”，而不是“重做页面身份或自由改写页面结构”。
 
 当 `generationStrategy=run-fast-path-per-page-unit` 时，按 `pageUnits` 逐页执行同一规则，并使用每个 `pageUnits[].startFrom` 决定起点；若任一 `pageUnit` 是 `data-visualization`，该单元走 `standard-typical` 而不是普通快速路径；不要因为一次需求包含多个典型页，就补读非典型文档或手写一个组合壳。
 
@@ -96,7 +108,7 @@
 
 - `rules-only` / `host-integration`：通常从登记模板、reference 或标准 shell 起步；默认只做业务槽位替换和轻量 `slot-gate` + `preflight`。若改动越过槽位边界、修改锁定区域或出现来源异常，升级到 source gate。
 - `legacy-host-compatible`：普通典型页默认先消耗 standard certified page component + `runtimeAdapterProof`；只有 fallback / drift 风险显式触发时，才进入宿主 archetype、`reference-or-scaffold` 或 adapter scaffold 等 fallback 起点，并按需追加 `translation-map` 这类治理增强工件；此时仍必须具备更强 source / adapter 证明，防止 adapter 演变成自由手写页面。
-- 非典型 / overlay / 页型迁移：必须声明受管基础模具、增量范围与能力缺口；没有受管生成方式时 fail closed。
+- 非典型 / overlay / 页型迁移：必须声明受管基础模具、增量范围与能力缺口；没有受管生成方式时 fail closed。非典型升级保留的是 `base archetype`、`layout strategy`、一级信息架构与 ownership contract，不是保留旧系统 DOM、旧样式类名或未受管布局实现后只换 token。
 
 禁止把 `preflight` 或截图当成主生产方式。生成阶段不得先创建空白 `div` 页面，再用注释、`data-hiui5-*` marker、隐藏标准壳或 contract 字段补成“看似合规”的页面。关键结构只能来自受管模具、真实宿主 archetype、认证 shell carrier 或认证 adapter；AI 只填标题、字段、列、按钮、接口、mock 数据和明确的交互槽位。
 
@@ -199,6 +211,13 @@
 1. **快速路径必备门禁**：所有 legacy 典型页都必须具备 Plan Gateway、mode lock、pageType / fastPath、available `pageComponent` 或合法 fallback 起点、`runtimeAdapterProof`、route owner、ownership、禁止标准壳 import、禁止 reference / examples / `typical-page-reuse` 交付路径，以及当前页 preflight。新增 legacy 受管页还必须能通过 source / adapter 证明，至少拦截假骨架、隐藏壳、marker-only 证明、contract 自证和裸 primitive 承担关键 region。
 2. **漂移风险触发门禁**：缺少合格 host archetype、首次为该宿主适配页型、host archetype 与 reference region 不完全一致、需要新增 / 修改 adapter、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership / shell carrier、出现 preflight / source marker warning、需要声明 `driftExceptions` 时，必须展开 Translation Drift Guard。
 3. **正式验收增强门禁**：发布、提测、合入、无 warning、用户要求 `source-gate` / `doctor` / `runtime-smoke`，或页面涉及 adapter / ownership / shell carrier 实质修改时，必须基于最新源码补齐 `finalize-page`、source gate、doctor、runtime smoke 与完整 contract。
+
+legacy 典型页旧系统升级默认还要区分：
+
+- `rewrite-by-page-component`：当前业务页仍命中同一 `pageType`，planner 已选中 certified page component / project carrier，但源码还未成为 ready managed instance；这类任务应优先重建业务页实例，不继续修补旧壳层。
+- `structural-upgrade`：只有 `pageType`、`shell`、`ownership`、`split`、主工作区结构、独立滚动链或 mandatory components 发生变化时，才升级为重结构改造。
+
+不要把 migration / formal acceptance 自动等价成 `structural-upgrade`。这些场景首先升级的是治理强度，而不是页面结构改造强度。
 
 legacy 的最小 runtime adapter / host boundary proof 必须能命名：
 

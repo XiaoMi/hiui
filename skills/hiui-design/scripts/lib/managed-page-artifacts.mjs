@@ -145,6 +145,16 @@ function normalizeRegistryEntry(entry) {
     scrollStrategy: String(entry?.scrollStrategy || '').trim(),
     workflowStatus: String(entry?.workflowStatus || '').trim(),
     preflightStatus: String(entry?.preflightStatus || '').trim(),
+    preflightStage: String(entry?.preflightStage || '').trim(),
+    readyForImplementation: typeof entry?.readyForImplementation === 'boolean'
+      ? entry.readyForImplementation
+      : false,
+    readyForDelivery: typeof entry?.readyForDelivery === 'boolean'
+      ? entry.readyForDelivery
+      : false,
+    deferredChecks: Array.isArray(entry?.deferredChecks)
+      ? entry.deferredChecks.map((item) => String(item || '').trim()).filter(Boolean)
+      : [],
     sourceGateStatus: String(entry?.sourceGateStatus || '').trim(),
     doctorStatus: String(entry?.doctorStatus || '').trim(),
     runtimeSmokeRequired: Boolean(entry?.runtimeSmokeRequired),
@@ -504,6 +514,12 @@ export function buildManagedPageRegistryEntry(contract) {
     scrollStrategy: String(contract?.scrollStrategy || '').trim(),
     workflowStatus: String(contract?.workflow?.status || '').trim(),
     preflightStatus: String(contract?.workflow?.preflightStatus || '').trim(),
+    preflightStage: String(contract?.workflow?.preflightStage || '').trim(),
+    readyForImplementation: contract?.workflow?.readyForImplementation === true,
+    readyForDelivery: contract?.workflow?.readyForDelivery === true,
+    deferredChecks: Array.isArray(contract?.workflow?.deferredChecks)
+      ? contract.workflow.deferredChecks.map((item) => String(item || '').trim()).filter(Boolean)
+      : [],
     sourceGateStatus: String(contract?.workflow?.sourceGateStatus || '').trim(),
     doctorStatus: String(contract?.workflow?.doctorStatus || '').trim(),
     runtimeSmokeRequired: runtimeSmokeRequirement.required,
@@ -533,8 +549,19 @@ function renderManagedPagesRegistryMarkdown(entries, brokenEntries) {
     lines.push('| Page | Page Type | Workflow | Runtime Smoke | Adapter | Snapshot | Updated |')
     lines.push('| --- | --- | --- | --- | --- | --- | --- |')
     for (const entry of entries) {
+      const workflowSummary = [
+        entry.workflowStatus || '(missing)',
+        entry.preflightStage ? `stage=${entry.preflightStage}` : '',
+        entry.preflightStatus ? `preflight=${entry.preflightStatus}` : '',
+        entry.readyForDelivery ? 'delivery-ready' : entry.readyForImplementation ? 'implementation-ready' : '',
+        Array.isArray(entry.deferredChecks) && entry.deferredChecks.length > 0
+          ? `deferred=${entry.deferredChecks.join(',')}`
+          : '',
+      ]
+        .filter(Boolean)
+        .join(' | ')
       lines.push(
-        `| \`${entry.generatedPagePath}\` | \`${entry.pageTypeId}\` | \`${entry.workflowStatus || '(missing)'}\` | \`${entry.runtimeSmokeRequired ? `${entry.runtimeSmokeStatus || '(missing)'} / required` : 'not-required'}\` | \`${entry.hostAdapterId || '(missing)'}\` | \`${entry.sourceSnapshotHash || '(missing)'}\` | \`${entry.updatedAt || '(missing)'}\` |`
+        `| \`${entry.generatedPagePath}\` | \`${entry.pageTypeId}\` | \`${workflowSummary || '(missing)'}\` | \`${entry.runtimeSmokeRequired ? `${entry.runtimeSmokeStatus || '(missing)'} / required` : 'not-required'}\` | \`${entry.hostAdapterId || '(missing)'}\` | \`${entry.sourceSnapshotHash || '(missing)'}\` | \`${entry.updatedAt || '(missing)'}\` |`
       )
     }
   }

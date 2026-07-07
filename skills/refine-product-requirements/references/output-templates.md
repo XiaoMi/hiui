@@ -317,6 +317,18 @@
   "productName": "",
   "targetPlatform": "HiUI React admin",
   "workflowLevelSuggestion": "quick-preview | standard-e2e | formal-e2e",
+  "requirementGate": {
+    "status": "needs-confirmation | requirements-confirmed | assumption-authorized | blocked",
+    "resolvedQuestions": [],
+    "remainingHighImpactQuestions": [],
+    "assumptions": []
+  },
+  "generationInputGate": {
+    "status": "not-ready | ready-for-review | confirmed | assumption-authorized | blocked",
+    "confirmedPageIds": [],
+    "confirmedPromptIds": [],
+    "confirmedSummary": ""
+  },
   "globalContextRef": "全局生成上下文",
   "sharedConstraints": [],
   "pages": [
@@ -394,8 +406,10 @@
 | 下游生成门禁状态合法 | 通过/待补/失败 |  |
 
 ### 门禁结果
+- `requirementGate.status`：`needs-confirmation | requirements-confirmed | assumption-authorized | blocked`
+- `generationInputGate.status`：`not-ready | ready-for-review | confirmed | assumption-authorized | blocked`
 - `continue-confirmation`：仍需继续确认，不可收口
 - `ready-for-review`：可输出待确认版本，但不可直接进入下游生成
 - `assumption-authorized`：用户已授权在当前假设下继续
-- `confirmed`：仅在所有高影响门禁均通过时使用
+- `confirmed`：仅对应 `generationInputGate.status=confirmed`，表示页面清单与提示词已被用户确认，可进入下游生成
 ```

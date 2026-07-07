@@ -30,6 +30,7 @@ description: >-
 
 - Do not 改变本 skill 的核心用途：它负责端到端交付编排，不复制下游 skill 的正文和执行细节。
 - Before 任何页面源码修改，必须同时 validate：`generationInputGate` 已通过、HiUI 交接包已就绪、`hiui-design` 机器计划已完成。
+- Before 从页面规划进入页面实现，必须同时 validate：`plan.status=ready`、`facts.status=ready`、`currentExecutionState.status=ready`、`canStartImplementation=true`；任一条件不成立时，回到 `ResolveBlockingFacts`，must not 继续生成页面。
 - Before 任何 UX 确定性结论，必须 validate `uxGate.evidenceStatus = ready`；证据不足时必须 refuse 确定性完整结论。
 - Do not 在普通页面任务中默认调用 bundle 安装、升级、回滚脚本；除非用户明确要求处理分发控制面。
 - Before 运行 `scripts/install-workflow-bundle.mjs`，必须 confirm 目标目录；未加 `--force-sync` 时，发现本地更高版本必须 keep 并提示，must not 静默降级。
@@ -86,7 +87,7 @@ description: >-
 | S0 需求与生成输入确认 | 细化需求，确认页面清单、页面提示词和 HiUI 交接包 | `generationInputGate.status = confirmed | assumption-authorized` |
 | S1 HiUI 页面规划 | 调用 `hiui-design` 规划页型、拓扑、命令和必读文档 | 机器计划完成，`blockingReasons` 为空或已处理 |
 | S2 页面生成 / 修改 | 基于确认输入写页面 | S1 完成，且再次确认 `generationInputGate` 已通过 |
-| S3 工程验收 | 运行 requiredCommands / formalAcceptanceCommands | 命令结果已记录为 passed / failed / skipped / blocked |
+| S3 工程验收 | 记录并执行进入验证 / 交付相位的 `requiredActions` / `formalAcceptanceActions` | 动作结果已记录为 passed / failed / skipped / blocked |
 | S4 UX 验收 | 按验收等级执行 `ux-smoke` / `ux-standard` / `ux-formal` | `uxGate.evidenceStatus = ready` 或明确降级 / 阻塞 |
 | S5 修复与最终交付 | 修复 P0/P1，复验并输出报告 | 工程结果、UX 结果、截图和风险已收口 |
 
@@ -135,10 +136,12 @@ Gate 最小状态：
 调用 `hiui-design`：
 
 0. 检查 S0 交接包中的 `generationInputGate.status`；只有 `confirmed` 或 `assumption-authorized` 可以继续。
-1. 运行 `scripts/plan-page-task.mjs --json`
-2. 结合 S0 的 HiUI 交接包，确认 `mode`、`topology`、`pageType` / `pageUnits`、`taskLevel`、`startFrom`
-3. 只读取计划里的 `requiredDocs`
-4. 若 `blockingReasons` 非空，先补齐事实，不直接实现
+1. 优先在目标项目根运行 `npm run typical-page:plan-page-task -- --json`
+2. 若目标项目暂未注册 npm script，运行 `node ".local-context/hiui-design/scripts/plan-page-task.mjs" --json`
+3. 若两者都不可用，fail closed：先修目标项目的 planner 入口或接入状态；不要把 `hiui-design` skill 源码仓里的 planner 脚本当成业务项目的默认 planner 入口
+4. 结合 S0 的 HiUI 交接包，确认 `mode`、`topology`、`pageType` / `pageUnits`、`taskLevel`、`startFrom`
+5. 按 `requiredDocs[].readMode` 消费计划文档：先读 `required`，`reference` / `conditional` 只按 `reason` 命中情况补读
+6. 若 `plan.status!=ready`、`facts.status!=ready`、`currentExecutionState.status!=ready`、`canStartImplementation=false`，或 `currentExecutionState.primaryAction=ResolveBlockingFacts`，先补齐阻断事实，不直接实现
 
 首轮计划以 `plan-page-task` 的 JSON 为准，不手工重造页型结论。
 
@@ -146,11 +149,11 @@ Gate 最小状态：
 
 继续按 `hiui-design` 执行：
 
-- 快速链路：只替换业务槽位
-- 标准链路：已有典型页局部改动，或新建 `data-visualization`
-- 严格链路：非典型、组合页、split、复杂联动、ownership 或滚动结构变化
+- 执行面默认以 `requiredActions` 为主；`requiredCommands` 只作为兼容摘要或人工复核视图
+- 生成路径以 `targetDeliverySemantics`、`generationRecipe`、`generationInputs` 与 `requiredActions` 为准；不要由 workflow 手工重建下游页型策略
+- “快速 / 标准 / 严格链路”只用于沟通风险和验收深度，不替代 planner 的结构化事实与动作分期
 
-执行任何文件变更前，再次检查 `generationInputGate` 与 S1 机器计划；若没有已通过的生成输入、交接包或机器计划，必须停止并回到 S0 / S1，不得“先生成再补需求”。
+执行任何文件变更前，再次检查 `generationInputGate` 与 S1 机器计划；若 `generationInputGate` 未通过、HiUI 交接包未就绪，或 `plan.status` / `facts.status` / `currentExecutionState.status` 不是 `ready`，或 `canStartImplementation!=true`，必须停止并回到 S0 / S1，不得“先生成再补需求”。
 
 不得破坏：
 
@@ -162,11 +165,14 @@ Gate 最小状态：
 - source marker
 - contract ownership
 
-## S3：工程验收
+## S3：工程验证与交付前检查
 
-按计划执行 `requiredCommands`。
+本阶段只承接进入验证 / 交付确认相位的动作：
 
-若 workflow level 是 `formal-e2e`，追加 `formalAcceptanceCommands`。
+- 默认以 `requiredActions` 与 `formalAcceptanceActions` 为主调度面
+- `requiredCommands` 与 `formalAcceptanceCommands` 仅作为兼容摘要，不再单独定义 workflow 阶段
+- phase 属于 `ResolveBlockingFacts`、`GenerateOrEdit`、`WriteContract` 的动作，必须在前序阶段完成；不得堆到 S3 再统一执行
+- 进入 S3 后，优先记录 `Preflight`、工程脚本、`FormalAcceptance` 及其他交付前验证动作的真实结果
 
 记录每条命令的结果：
 
@@ -206,7 +212,7 @@ Gate 最小状态：
 |---|---|---|---|
 | `quick-preview` | `ux-smoke` | 轻量可用性自检 | 页面可见、主入口可见、无空白 / 错路由、最终截图留证 |
 | `standard-e2e` | `ux-standard` | 结构化 UX 验收 | evidence gate、P0 场景覆盖、P0/P1/P2 分级、P0/P1 修复闭环 |
-| `formal-e2e` | `ux-formal` | 完整 `ux-walkthrough` | 完整 SOP、report.json、docx、closeout |
+| `formal-e2e` | `ux-formal` | 完整 `ux-walkthrough` | 完整 SOP、report.json、docx |
 
 `standard-e2e` 不要声称已完成完整 `ux-walkthrough`；它是参考 `ux-walkthrough` 标准的结构化 UX 验收。`formal-e2e` 才执行完整 `ux-walkthrough`。
 
@@ -296,12 +302,12 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 
 ## 统计收口
 
-分别按下游 skill 的规则处理：
+仅对 `hiui-design` 页面交付链路处理 usage stats：
 
 - 标准 / 严格 HiUI 页面生成完成且可渲染后，按 `hiui-design` 的 usage stats 规则收口
-- 完整 `ux-formal` 报告和 docx 生成后，按 `ux-walkthrough` 的收口规则执行
+- `ux-walkthrough` 的完成定义到完整报告、`report.json`、标注校验与 docx 为止；不额外要求 usage stats 或 telemetry closeout
 
-若任一统计返回 `requires_network_authorization` 或退出码 `21`，按对应 skill 的规则申请一次授权。
+若 `hiui-design` 统计返回 `requires_network_authorization` 或退出码 `21`，按其规则申请一次授权。
 统计失败不阻断主任务交付，但不能静默吞掉入队或授权状态。
 
 ## Bundle 控制面

@@ -1732,6 +1732,7 @@
           "contractSchemaVersion",
           "sections",
           "statuses",
+          "preflightExecution",
           "evidence",
           "risks",
           "source"
@@ -1746,6 +1747,17 @@
               "preflightStatus",
               "formalAcceptanceStatus",
               "usageStatsStatus"
+            ]
+          },
+          {
+            "path": [
+              "preflightExecution"
+            ],
+            "fields": [
+              "preflightStage",
+              "readyForImplementation",
+              "readyForDelivery",
+              "deferredChecks"
             ]
           },
           {
@@ -1775,6 +1787,7 @@
             "fields": [
               "planSchemaVersion",
               "preflightSchemaVersion",
+              "preflightStage",
               "usageStatsStatus"
             ]
           }
