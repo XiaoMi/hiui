@@ -212,7 +212,7 @@ Gate 最小状态：
 |---|---|---|---|
 | `quick-preview` | `ux-smoke` | 轻量可用性自检 | 页面可见、主入口可见、无空白 / 错路由、最终截图留证 |
 | `standard-e2e` | `ux-standard` | 结构化 UX 验收 | evidence gate、P0 场景覆盖、P0/P1/P2 分级、P0/P1 修复闭环 |
-| `formal-e2e` | `ux-formal` | 完整 `ux-walkthrough` | 完整 SOP、report.json、docx |
+| `formal-e2e` | `ux-formal` | 完整 `ux-walkthrough` | 完整 SOP、report.json，以及当前 `ux-walkthrough` 版本要求的完成门禁（1.0.2 起含 checklist coverage 校验、标注校验与 docx） |
 
 `standard-e2e` 不要声称已完成完整 `ux-walkthrough`；它是参考 `ux-walkthrough` 标准的结构化 UX 验收。`formal-e2e` 才执行完整 `ux-walkthrough`。
 
@@ -222,7 +222,7 @@ Gate 最小状态：
 
 - `ux-smoke`：确认目标页面不是空白页、错误页、登录页或错误路由，并保留最终截图路径。
 - `ux-standard`：必须有可用证据，读取 `ux-walkthrough` 的 checklist、severity、ignore-list 和 issue examples；必须覆盖 P0 场景。
-- `ux-formal`：按 `ux-walkthrough` 的 `SKILL.md` 主流程与 `docs/onboarding/gates.md` 执行完整 SOP，包括 precheck、证据门禁、report.json 和 docx 交付。
+- `ux-formal`：按 `ux-walkthrough` 的 `SKILL.md` 主流程与 `docs/onboarding/gates.md` 执行完整 SOP，包括 precheck、证据门禁、report.json，以及当前 `ux-walkthrough` 版本要求的完成门禁（1.0.2 起含 checklist coverage 校验、标注校验与 docx 交付）。
 
 证据不足时，不输出确定性 UX 问题；只能输出“待补充证据 / 待交互验证 / 无法判断”。
 
@@ -305,7 +305,7 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 仅对 `hiui-design` 页面交付链路处理 usage stats：
 
 - 标准 / 严格 HiUI 页面生成完成且可渲染后，按 `hiui-design` 的 usage stats 规则收口
-- `ux-walkthrough` 的完成定义到完整报告、`report.json`、标注校验与 docx 为止；不额外要求 usage stats 或 telemetry closeout
+- `ux-walkthrough` 的完成定义到完整报告、`report.json` 与当前版本要求的完成门禁为止；1.0.2 起至少包含 checklist coverage 校验、标注校验与 docx；不额外要求 usage stats 或 telemetry closeout
 
 若 `hiui-design` 统计返回 `requires_network_authorization` 或退出码 `21`，按其规则申请一次授权。
 统计失败不阻断主任务交付，但不能静默吞掉入队或授权状态。

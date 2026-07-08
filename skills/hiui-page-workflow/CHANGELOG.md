@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2026-07-08
+
+- raise the declared `ux-walkthrough` dependency floor to `>=1.0.2` so the workflow contract matches the new formal UX completion gates
+- prepare the workflow release metadata for the `ux-walkthrough` 1.0.2 checklist-coverage upgrade
+
 ## 1.1.0 - 2026-07-07
 
 - align workflow planning and execution guidance with the current `hiui-design` Plan Gateway and execution-permission contract

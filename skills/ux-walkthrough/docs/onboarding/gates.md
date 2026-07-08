@@ -66,7 +66,7 @@ URL 无登录态但用户能补截图 → 可降级 `screenshot`。
 
 ### 问题判断顺序
 
-1. 逐项过 ux-checklist；命中条目且需参考时，读该条 `related_examples` 锚点
+1. 按 `walkthrough-worksheet.md` Batch 1→4 分批逐项过 ux-checklist；每批填完工作表再进下一批；命中条目且需参考时，读该条 `related_examples` 锚点
 2. ignore-list
 3. severity-rubric
 
@@ -75,6 +75,7 @@ URL 无登录态但用户能补截图 → 可降级 `screenshot`。
 ### 通过条件
 
 - 完整 Markdown 报告已在对话输出
+- `checklist_coverage` 17 条均已填写（pass 须含 >=8 字验证证据）
 - 问题均经 P 级判断；猜测标「待确认」或「待交互验证」
 
 ### 禁止
@@ -91,12 +92,14 @@ URL 无登录态但用户能补截图 → 可降级 `screenshot`。
 
 ### 通过条件
 
+- `validate_checklist_coverage.py` 已通过
 - `validate_report_annotations.py` 已通过（screenshot / url）
 - `generate_docx.py` 返回 `status=generated`
 - 输出路径可用
 
 ### 失败回路
 
+- checklist 覆盖门禁未过 → 补全 `checklist_coverage` 并重跑 `validate_checklist_coverage.py`
 - 标注门禁未过 → 补标注产物（`annotate_issue.py`）并重跑 `validate_report_annotations.py`
 - `.docx` 生成失败 → 说明失败阶段、直接原因和下一步
 - 不可把 docx 失败的任务说成完整完成

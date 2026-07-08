@@ -12,6 +12,25 @@
     ],
     "improvement_direction": "先强化主操作反馈，再收敛说明文案。"
   },
+  "checklist_coverage": {
+    "UX-1.1": "pass: fixture 代码含 Home 页路由与主操作区结构",
+    "UX-1.2": "pass: fixture 页面信息密度未见明显过载",
+    "UX-1.3": "pass: fixture 仅单页示例未做跨页比对",
+    "UX-1.4": "pass: fixture 主按钮与输入区在首屏可见",
+    "UX-1.5": "pass: fixture 无异步提交 loading 场景",
+    "UX-1.6": "issue",
+    "UX-1.7": "pass: fixture 页面无表格数值列展示",
+    "UX-2.1": "pass: fixture 按钮文案为中文业务描述",
+    "UX-2.2": "pass: fixture 无删除等危险操作入口",
+    "UX-2.3": "pass: fixture 无虚假成功反馈逻辑",
+    "UX-2.4": "pass: fixture 未包含弹窗 Esc 关闭验证",
+    "UX-2.5": "pass: fixture 单页无跨模块主操作比对",
+    "UX-3.1": "pass: fixture 样式结构简单未见明显审美问题",
+    "UX-3.2": "pass: fixture 无敏感字段展示",
+    "UX-3.3": "pass: fixture 流程简单无需额外引导",
+    "UX-3.4": "n/a: fixture 为静态代码走查无运行时文案",
+    "UX-3.5": "n/a: code 模式 fixture 无多 viewport 证据"
+  },
   "issues": [
     {
       "index": 1,

@@ -13,8 +13,9 @@ The current open-source `ux-walkthrough` execution contract is defined by:
 
 1. Run `precheck_walkthrough.py` to determine mode, evidence gate, and runtime probe results.
 2. After precheck allows continuation, follow the A -> B -> C stages in `SKILL.md`.
-3. Generate `report.json`, then run `validate_report_annotations.py`.
-4. Only after annotation validation passes, run `generate_docx.py`.
+3. Generate `report.json`, then run `validate_checklist_coverage.py`.
+4. Run `validate_report_annotations.py` when the source mode requires annotated evidence.
+5. Only after the required validation gates pass, run `generate_docx.py`.
 
 ## Formal UX Closure
 

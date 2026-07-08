@@ -37,4 +37,4 @@ A 前置 precheck → B 走查报告 → C 标注校验与 docx 生成
 
 ## 版本
 
-当前：**1.0.1**（见 `SKILL.md` frontmatter）
+当前：**1.0.2**（见 `SKILL.md` frontmatter）

@@ -43,6 +43,11 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="仅调试；正式走查勿使用",
     )
+    parser.add_argument(
+        "--skip-checklist-check",
+        action="store_true",
+        help="仅调试；正式走查勿使用",
+    )
     parser.add_argument("--json", action="store_true")
     return parser
 
@@ -456,6 +461,27 @@ def build_result(args: argparse.Namespace) -> dict:
         report = _normalize_report(raw_report, report_path)
     except ValueError as exc:
         return _fail("DOCX generation failed: invalid report json", detail=str(exc))
+
+    if not args.skip_checklist_check:
+        try:
+            from validate_checklist_coverage import validate_report as validate_checklist_coverage
+        except ImportError as exc:
+            return _fail(
+                "DOCX generation failed: checklist validator missing",
+                detail=str(exc),
+            )
+        coverage_gate = validate_checklist_coverage(raw_report)
+        if not coverage_gate.get("ok"):
+            errors = coverage_gate.get("errors", [])
+            detail = "；".join(errors[:5])
+            if len(errors) > 5:
+                detail += f"；等共 {len(errors)} 项"
+            return _fail(
+                "DOCX generation failed: checklist coverage gate not passed",
+                detail=detail or "checklist 覆盖门禁未通过",
+                reason="checklist_coverage_incomplete",
+                extra={"checklist_coverage_errors": errors},
+            )
 
     if not args.skip_annotation_check:
         try:

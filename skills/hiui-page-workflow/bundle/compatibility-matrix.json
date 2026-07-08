@@ -5,9 +5,21 @@
     "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries.",
     "The repo clone used to bootstrap installation may move with master, but the installed skill content remains pinned by workflow-bundle.lock.json.",
     "Workflow 1.1.0 expects the downstream hiui-design planner contract to expose requiredDocs[].readMode, requiredActions, formalAcceptanceActions, currentExecutionState, and canStartImplementation.",
-    "The hiui-design manifest is still 1.0.0 in this branch, so compatibility must be judged by planner contract availability, not by semver label alone."
+    "The hiui-design manifest is still 1.0.0 in this branch, so compatibility must be judged by planner contract availability, not by semver label alone.",
+    "The next workflow candidate is validated locally through workflow-bundle.local.lock.json before the public git-pinned lock is refreshed to an upstream commit."
   ],
   "testedBundles": [
+    {
+      "bundleVersion": "1.1.1-local",
+      "channel": "local-dev",
+      "skills": {
+        "hiui-page-workflow": "1.1.1",
+        "refine-product-requirements": "1.0.0",
+        "hiui-design": "1.0.0",
+        "ux-walkthrough": "1.0.2"
+      },
+      "status": "validated-local-smoke"
+    },
     {
       "bundleVersion": "1.1.0",
       "channel": "stable",

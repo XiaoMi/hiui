@@ -149,6 +149,24 @@ node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs --dry-run --t
 node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json
 ```
 
+若当前还处于仓库内开发联调、相关 skill 变更尚未形成可公开拉取的固定 git commit，应先使用 maintainer 专用本地 lock：
+
+```bash
+node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --json
+node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --dry-run \
+  --target /tmp/workflow-bundle-check \
+  --json
+node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --json
+```
+
+等变更已经提交并可通过 `https://github.com/XiaoMi/hiui.git` 的固定 commit 访问后，再回写公开 `workflow-bundle.lock.json` 的 `ref`，并重新执行一遍公开 lock 的三段验证。
+
 安装会自动生成备份和 `install-journal.json`。若要回滚，执行：
 
 ```bash

@@ -45,10 +45,28 @@ bash skills/hiui-page-workflow/install.sh
 node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs --json
 ```
 
+在发布前的本地联调阶段，应先使用 maintainer 专用本地 lock，验证当前工作区源码是否已经形成一组自洽组合：
+
+```bash
+node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --json
+```
+
 若要验证安装计划但不真正写入目标目录：
 
 ```bash
 node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
+```
+
+本地联调阶段对应命令：
+
+```bash
+node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --dry-run \
+  --target /tmp/workflow-bundle-check \
+  --json
 ```
 
 ## 最小发布 smoke
@@ -57,6 +75,14 @@ node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs --dry-run --t
 
 ```bash
 node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json
+```
+
+若只是验证当前工作区组合是否能完整安装，也应显式指定本地 lock：
+
+```bash
+node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs \
+  --lockfile skills/hiui-page-workflow/bundle/workflow-bundle.local.lock.json \
+  --json
 ```
 
 默认行为：
@@ -96,3 +122,9 @@ node skills/hiui-page-workflow/scripts/rollback-workflow-bundle.mjs --journal <j
 
 - `node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs --json`
 - `node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json`
+
+推荐维护流程：
+
+1. 先更新工作区源码与 `workflow-bundle.local.lock.json`，跑通本地 verify / dry-run / release smoke。
+2. 待变更提交并进入上游可访问 commit 后，再更新公开 `workflow-bundle.lock.json` 的固定 `ref`。
+3. 最后对公开 lock 再跑一次 verify / dry-run / release smoke，确认外部安装入口恢复正常。

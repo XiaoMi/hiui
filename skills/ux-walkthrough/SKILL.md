@@ -1,6 +1,6 @@
 ---
 name: ux-walkthrough
-version: 1.0.1
+version: 1.0.2
 description: 体验走查 skill。适用于代码库、URL、截图三种输入，输出结构化体验问题报告，并同步生成本地 docx 报告。触发词：体验走查、UX review、交互走查、界面审查、体验问题。
 ---
 
@@ -72,11 +72,16 @@ python3 <SKILL_ROOT>/scripts/precheck_walkthrough.py <输入> --json
 **顺序（不可变）：**
 
 0. HiUI 前置（若适用）：识别页型 → 读 `references/hiui-template-baseline.md` 对应节（页型索引列全量页型）
-1. 逐项过 `references/ux-checklist.md`；每命中一条且需参考时，读该条 `related_examples` 指向的锚点（禁止通读 `issue-examples/*.md` 全文）；HiUI 页先问是否与 baseline 合规默认一致
-2. `references/ignore-list.md`（含 §5 HiUI）→ 去掉误报
-3. `references/severity-rubric.md` → 定 P0/P1/P2
+1. **分批逐项走查**：按 `references/walkthrough-worksheet.md` 的 Batch 1→4 顺序，**逐条**对照 `references/ux-checklist.md` 判断；每批填完工作表再进下一批
+2. 命中条目且需参考时，读该条 `related_examples` 指向的锚点（禁止通读 `issue-examples/*.md` 全文）；HiUI 页先问是否与 baseline 合规默认一致
+3. `references/ignore-list.md`（含 §5 HiUI）→ 去掉误报
+4. `references/severity-rubric.md` → 定 P0/P1/P2
 
 **输出：** 对话中完整 Markdown 报告（`references/report-template.md`）
+
+整理 `report.json` 前，必须为 **全部 17 条** 填写 `checklist_coverage`（见 `report-json.md`）：
+- **`pass` 必须写 `pass: <验证证据，>=8 字>`**，禁止裸 `pass`
+- `issue` / `pending:...` / `n/a:...` 规则见 `report-json.md`
 
 - 禁止在交付报告中输出「HiUI 模板对齐」模块（HiUI Delta 仅走查阶段内部使用；issue 描述可保留 `[HiUI-偏离]` / `[业务域]` 标签）
 - 标题格式：`序号. [P级]标题`
@@ -87,13 +92,19 @@ python3 <SKILL_ROOT>/scripts/precheck_walkthrough.py <输入> --json
 
 1. 标注（screenshot / url 必做）：禁止手估 `--box`；须用 `annotate_issue.py`（或 `locate_in_screenshot.py` + `preview_bbox.py` + `annotate.py`），输出到 `output/annotations/*-annotated.png`（流程见 `annotation-style.md` § 标注流程）
 2. 按 `references/report-json.md` 整理 `report.json`；URL/截图模式的 `issues[].images[]` 须指向标注版、设 `"annotated": true`，并记录 `"bbox": [x,y,w,h]`
-3. 校验标注门禁：
+3. 校验 checklist 覆盖门禁：
+
+```bash
+python3 <SKILL_ROOT>/scripts/validate_checklist_coverage.py --report-json <report.json> --json
+```
+
+4. 校验标注门禁：
 
 ```bash
 python3 <SKILL_ROOT>/scripts/validate_report_annotations.py --report-json <report.json> --json
 ```
 
-4. 执行：
+5. 执行：
 
 ```bash
 python3 <SKILL_ROOT>/scripts/generate_docx.py \
@@ -103,7 +114,7 @@ python3 <SKILL_ROOT>/scripts/generate_docx.py \
 ```
 
 - 命名、嵌图与交付边界：`references/report-json.md` § DOCX
-- screenshot / url：`generate_docx.py` 默认校验标注；未通过则不得 success 完成判断
+- screenshot / url：`generate_docx.py` **默认校验 checklist 覆盖与标注**；未通过则不得 success 完成判断
 - 标注图：`references/annotation-style.md`（先 § 标注流程，再 § 样式）；推荐工具：`annotate_issue.py`
 - 失败 → 说明卡住位置和直接原因，不能说已完整完成
 
@@ -123,9 +134,9 @@ python3 <SKILL_ROOT>/scripts/generate_docx.py \
 
 | 阶段 | 必读 | 按需 |
 |------|------|------|
-| A | `mode.md` 对应锚点 | — |
-| B | hiui-template-baseline（HiUI 时）, checklist, ignore-list, severity-rubric | — |
-| C | report-template, report-json, annotation-style | `annotate_issue.py`, `validate_report_annotations.py` |
+| A | `mode.md` 对应锚点 | `gates.md` § 阶段 A |
+| B | walkthrough-worksheet, hiui-template-baseline（HiUI 时）, checklist, ignore-list, severity-rubric | — |
+| C | report-template, report-json, annotation-style | `annotate_issue.py`, `validate_checklist_coverage.py`, `validate_report_annotations.py` |
 
 **默认不读：** 底层脚本源码及与单次走查无关的维护说明
 
@@ -146,6 +157,9 @@ python3 <SKILL_ROOT>/scripts/check_evidence_gate.py --source <mode> ... --json
 - [ ] 报告完整，非摘要
 - [ ] 每问题有：位置、描述、改进建议
 - [ ] 标题：`序号. [P级]标题`
+- [ ] 已按 walkthrough-worksheet Batch 1→4 逐项检查
+- [ ] `checklist_coverage` 17 条均已填写，且 pass 均含 >=8 字验证证据
+- [ ] `validate_checklist_coverage.py` 已通过
 - [ ] URL/截图：每问题有标注图，且 `images[].bbox` 已记录
 - [ ] `validate_report_annotations.py` 已通过
 - [ ] docx 已生成，或已说明失败原因
@@ -155,6 +169,8 @@ python3 <SKILL_ROOT>/scripts/check_evidence_gate.py --source <mode> ... --json
 
 ## 附录
 
+- 门禁与完成判断：`docs/onboarding/gates.md`
 - 检查清单：`references/ux-checklist.md`
+- 分批工作表：`references/walkthrough-worksheet.md`
 - 报告模板：`references/report-template.md`
 - 标注规范：`references/annotation-style.md`
