@@ -127,11 +127,11 @@ bash skills/hiui-page-workflow/install-workflow.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是组合分发的真相源。默认公开 lock 会为四个 skill 同时记录明确的上游仓库、固定 commit 和 skill 路径，安装器只按这份锁定快照取内容。
+`workflow-bundle.lock.json` 是组合分发的真相源。默认公开 lock 现在会为四个 skill 记录统一的上游仓库、`master` 引用和 skill 路径，并通过 `versionPolicy: "follow-source-manifest"` 让安装器读取主仓库当前 manifest 版本。
 
-默认公开 lock 现在会把四个 skill 固定到 `XiaoMi/hiui` 的同一个 commit SHA。这样即使外部成员是从较新的 `master` 拉下安装入口，真正安装的 skill 内容仍然由 lock 文件统一锁定，不会随着远端分支漂移。
+这意味着外部成员从 `XiaoMi/hiui` 的 `master` 执行安装时，默认拿到的是主仓库当前版本，而不是某个固定 commit 快照。它降低了维护成本，但不再承诺“同一条命令在不同时间一定得到完全相同的结果”。
 
-公开发布时，不应把 lock 指到灰度 fork 或移动中的 `master/main` 分支；应使用固定 commit，并在更新 commit 后重新跑一次校验和发布 smoke。
+若需要冻结公开发布版本、做精确回滚或问题复现，应额外生成一份 release lock，把相同 bundle 改写为固定 commit SHA 引用。
 
 若你只想在临时目录验证安装，不污染本机默认落点，可先指定一个临时目录：
 
@@ -149,7 +149,7 @@ node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs --dry-run --t
 node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json
 ```
 
-若当前还处于仓库内开发联调、相关 skill 变更尚未形成可公开拉取的固定 git commit，应先使用 maintainer 专用本地 lock：
+若当前还处于仓库内开发联调、相关 skill 变更尚未进入 `XiaoMi/hiui:master`，应先使用 maintainer 专用本地 lock：
 
 ```bash
 node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs \
@@ -165,7 +165,7 @@ node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs \
   --json
 ```
 
-等变更已经提交并可通过 `https://github.com/XiaoMi/hiui.git` 的固定 commit 访问后，再回写公开 `workflow-bundle.lock.json` 的 `ref`，并重新执行一遍公开 lock 的三段验证。
+当你需要冻结一次公开发布快照时，可基于当前 public lock 额外生成 release lock，把 `ref` 从 `master` 改成固定 commit SHA，并重新执行一遍公开 lock 的三段验证。
 
 安装会自动生成备份和 `install-journal.json`。若要回滚，执行：
 
@@ -186,4 +186,4 @@ node skills/hiui-page-workflow/scripts/rollback-workflow-bundle.mjs --journal <j
 - 对外表述时，应始终把 `hiui-page-workflow` 说明为“团队通用 workflow”，不要把某个工具或目录写成产品默认形态
 - `install-workflow.sh` 只是默认安装入口；不要把它当成 project adapter 或其他工具适配器的替代品
 - 若下游公开 skill 尚未提供 `skill.manifest.json` 与 public contracts，应先补齐稳定面，再把它接入 bundle
-- 更新 lock 文件后，必须重新执行 `verify-workflow-bundle` 和 `release-workflow-bundle`
+- 更新 public lock 或 release lock 后，必须重新执行 `verify-workflow-bundle` 和 `release-workflow-bundle`

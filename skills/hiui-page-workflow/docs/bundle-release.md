@@ -35,7 +35,7 @@ bash skills/hiui-page-workflow/install-workflow.sh
 bash skills/hiui-page-workflow/install.sh
 ```
 
-安装入口所在的仓库分支可以继续前进，但真正安装的 skill 内容必须由 `bundle/workflow-bundle.lock.json` 锁定，不能依赖移动分支本身来定义发布内容。
+安装入口所在的仓库分支可以继续前进；默认公开安装仍然以 `bundle/workflow-bundle.lock.json` 为准，但该 lock 现在默认跟随 `XiaoMi/hiui:master`，并通过 `follow-source-manifest` 读取当前源码 manifest 版本。
 
 ## 发布前检查
 
@@ -103,22 +103,29 @@ node skills/hiui-page-workflow/scripts/rollback-workflow-bundle.mjs --journal <j
 ## Public Source Policy
 
 当前 lock 文件允许 `source.kind=local` 作为本地开发和 fixture 校验模式。  
-公开发布或公开预览分发时，应优先使用：
+默认公开分发应优先使用：
 
 - `source.kind=git`
 - `source.repoUrl=<https-git-url>`
-- `source.ref=<commit-sha>`
+- `source.ref=master`
 - `source.path=<skill-root-path>`
+- `versionPolicy=follow-source-manifest`
 
 只有当下游公开 skill 已经提供 `skill.manifest.json`、`requiredPaths` 和 `publicContracts` 时，才允许接入 bundle。
 
-默认公开 lock 应让四个 skill 指向同一个上游 commit。这样可以保证：
+默认公开 lock 跟随 `XiaoMi/hiui:master` 的好处是：
 
-- 外部成员从 `XiaoMi/hiui` 的 `master` 执行安装时，拿到的是经过验证的固定组合，而不是某个随时间漂移的灰度分支状态
-- bundle 校验、安装 dry-run、真实安装和回滚都围绕同一份固定快照工作
-- 版本不匹配问题会在更新 lock 时暴露，而不是在外部成员安装时暴露
+- 外部成员重新执行安装时，可以直接拿到主仓库当前最新 skill 版本
+- 不需要每次合并后再单独回写 public lock 的 commit SHA
+- bundle 入口与主仓当前源码保持同一套分发语义，减少“源码已更新、lock 仍旧”的错位
 
-只有在短期灰度联调、且明确不作为默认公开入口时，才应临时使用分支 ref。完成验证后，应尽快切回稳定上游 commit，并重新执行：
+代价也需要明确接受：
+
+- 不再承诺“同一条命令、不同时间、完全同结果”的强可复现性
+- 若 `master` 上出现短暂不稳定，外部安装会直接吃到该状态
+- 若要精确回滚或对外发布冻结版本，需要额外维护 release lock
+
+当需要冻结发布、做外部问题复现或建立可回滚快照时，应新增一份 release lock，并把相同 bundle 改写为固定 commit SHA refs。生成后重新执行：
 
 - `node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs --json`
 - `node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json`
@@ -126,5 +133,5 @@ node skills/hiui-page-workflow/scripts/rollback-workflow-bundle.mjs --journal <j
 推荐维护流程：
 
 1. 先更新工作区源码与 `workflow-bundle.local.lock.json`，跑通本地 verify / dry-run / release smoke。
-2. 待变更提交并进入上游可访问 commit 后，再更新公开 `workflow-bundle.lock.json` 的固定 `ref`。
-3. 最后对公开 lock 再跑一次 verify / dry-run / release smoke，确认外部安装入口恢复正常。
+2. 将变更合入 `XiaoMi/hiui:master` 后，对默认 public lock 跑一次 verify / dry-run / release smoke，确认滚动安装链路正常。
+3. 若需要冻结一个可复现版本，再从当前 public lock 派生 release lock，并把 `ref` 改成固定 commit SHA。

@@ -2,11 +2,12 @@
   "schemaVersion": 1,
   "bundleName": "hiui-page-workflow",
   "notes": [
-    "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries.",
-    "The repo clone used to bootstrap installation may move with master, but the installed skill content remains pinned by workflow-bundle.lock.json.",
+    "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries and follows XiaoMi/hiui:master by default.",
+    "The default lock now uses versionPolicy=follow-source-manifest, so the installed skill versions come from the current upstream manifests instead of a fixed git snapshot.",
     "Workflow 1.1.0 expects the downstream hiui-design planner contract to expose requiredDocs[].readMode, requiredActions, formalAcceptanceActions, currentExecutionState, and canStartImplementation.",
     "The hiui-design manifest is still 1.0.0 in this branch, so compatibility must be judged by planner contract availability, not by semver label alone.",
-    "The next workflow candidate is validated locally through workflow-bundle.local.lock.json before the public git-pinned lock is refreshed to an upstream commit."
+    "workflow-bundle.local.lock.json remains the maintainer-only path for validating unmerged workspace changes before they appear on XiaoMi/hiui:master.",
+    "When a reproducible public release snapshot is required, maintain a separate release lock that pins the same bundle to commit SHA refs."
   ],
   "testedBundles": [
     {
@@ -21,15 +22,15 @@
       "status": "validated-local-smoke"
     },
     {
-      "bundleVersion": "1.1.0",
-      "channel": "stable",
+      "bundleVersion": "1.1.1",
+      "channel": "master-follow",
       "skills": {
         "hiui-page-workflow": "1.1.0",
         "refine-product-requirements": "1.0.0",
         "hiui-design": "1.0.0",
         "ux-walkthrough": "1.0.1"
       },
-      "status": "validated-release-smoke"
+      "status": "validated-master-follow-smoke"
     }
   ]
 }

@@ -322,8 +322,8 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 - 手动回滚：`scripts/rollback-workflow-bundle.mjs`
 - 发布 smoke：`scripts/release-workflow-bundle.mjs`
 - 发布说明：`docs/bundle-release.md`
-- lock 条目默认按固定版本安装；仅当条目标记 `follow-source-manifest` 时，才允许跟随 `main`
-  等移动引用，并以源仓当前 manifest 版本作为目标版本
+- 默认公开 lock 可使用移动引用；当条目标记 `follow-source-manifest` 时，应以源仓当前 manifest 版本作为目标版本
+- 若需要对外冻结发布或做强可复现回滚，应额外生成 release lock，并把相同条目改写为固定 commit SHA 引用
 
 这些 bundle 文件只服务于组合分发、安装和回滚；页面需求细化、页面生成与 UX 验收仍按本 skill 的主 workflow 执行，不应在普通页面任务中误调用 bundle 控制脚本。
 
