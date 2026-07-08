@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>D Icon Loop</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    body { display: inline-block; overflow: visible; }
+    .icon-motion { width: min(100vw, 238px); display: block; }
+    svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+    #d-mark { transform-box: view-box; transform-origin: center; animation: d-float 3200ms ease-in-out infinite; }
+    #d-top, #d-bottom { transform-box: fill-box; transform-origin: center; }
+    #d-top { animation: d-top-slide 1900ms cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+    #d-bottom { animation: d-bottom-slide 1900ms cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+
+    @keyframes d-float {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes d-top-slide {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+      35% { transform: translateY(-7px) scale(0.97); opacity: 0.95; }
+      65% { transform: translateY(3px) scale(1.03); opacity: 1; }
+    }
+
+    @keyframes d-bottom-slide {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+      35% { transform: translateY(7px) scale(1.03); opacity: 1; }
+      65% { transform: translateY(-3px) scale(0.97); opacity: 0.95; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #d-mark, #d-top, #d-bottom { animation: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="icon-motion" aria-label="Animated icon D">
+    <svg width="238" height="238" viewBox="0 0 238 238" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <g clip-path="url(#clip0_86_34409)">
+        <rect width="238" height="238" rx="16" fill="#F8FAFD"/>
+        <path d="M120.17 23.8848C172.214 23.8848 214.405 66.1532 214.405 118.295C214.405 170.437 172.214 212.704 120.17 212.704C68.1271 212.704 25.9361 170.437 25.936 118.295C25.936 66.1532 68.127 23.8848 120.17 23.8848Z" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M120.17 0.878906C184.896 0.878943 237.369 53.4477 237.369 118.296C237.369 183.144 184.896 235.714 120.17 235.714C55.4434 235.714 2.9707 183.144 2.9707 118.296C2.97092 53.4477 55.4436 0.878906 120.17 0.878906Z" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M0.593262 238.093L237.368 -0.311523" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M9.71556e-06 0.283193L237.963 237.498" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <g id="d-mark">
+          <path id="d-top" d="M164 101.602L142.006 118.411L119.427 101.154L96.8467 118.411L74.8525 101.602L119.427 67.5342L164 101.602Z" fill="#2861FF"/>
+          <path id="d-bottom" d="M164 135.824L142.006 119.015L119.427 136.271L96.8467 119.015L74.8525 135.824L119.427 169.892L164 135.824Z" fill="#B3C7FF"/>
+        </g>
+      </g>
+      <defs>
+        <clipPath id="clip0_86_34409">
+          <rect width="238" height="238" rx="16" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+</body>
+</html>

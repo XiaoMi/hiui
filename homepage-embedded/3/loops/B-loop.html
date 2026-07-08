@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B Icon Loop</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    body { display: inline-block; overflow: visible; }
+    .icon-motion { width: min(100vw, 238px); display: block; }
+    svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+    #b-mark { transform-box: view-box; transform-origin: center; animation: b-breathe 3200ms ease-in-out infinite; }
+    #b-center { transform-box: fill-box; transform-origin: center; animation: b-center-pulse 1800ms cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+    .b-corner { transform-box: fill-box; transform-origin: center; animation: b-corner-shift 1800ms cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+    #b-tl { --tx: -6px; --ty: -6px; animation-delay: 0ms; }
+    #b-tr { --tx: 6px; --ty: -6px; animation-delay: 120ms; }
+    #b-bl { --tx: -6px; --ty: 6px; animation-delay: 240ms; }
+    #b-br { --tx: 6px; --ty: 6px; animation-delay: 360ms; }
+
+    @keyframes b-breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+    }
+
+    @keyframes b-center-pulse {
+      0%, 100% { transform: scale(0.9) rotate(0deg); }
+      50% { transform: scale(1.08) rotate(90deg); }
+    }
+
+    @keyframes b-corner-shift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(var(--tx), var(--ty)) scale(0.94); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #b-mark, #b-center, .b-corner { animation: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="icon-motion" aria-label="Animated icon B">
+    <svg width="238" height="238" viewBox="0 0 238 238" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <g clip-path="url(#clip0_86_34377)">
+        <rect width="238" height="238" rx="16" fill="#F8FAFD"/>
+        <path d="M120.17 23.8848C172.214 23.8848 214.405 66.1532 214.405 118.295C214.405 170.437 172.214 212.704 120.17 212.704C68.1271 212.704 25.9361 170.437 25.936 118.295C25.936 66.1532 68.127 23.8848 120.17 23.8848Z" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M120.17 0.878906C184.896 0.878943 237.369 53.4477 237.369 118.296C237.369 183.144 184.896 235.714 120.17 235.714C55.4434 235.714 2.9707 183.144 2.9707 118.296C2.97092 53.4477 55.4436 0.878906 120.17 0.878906Z" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M0.593262 238.093L237.368 -0.311523" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <path d="M9.71556e-06 0.283193L237.963 237.498" stroke="black" stroke-opacity="0.08" stroke-width="0.793359"/>
+        <g id="b-mark">
+          <path id="b-tl" class="b-corner" d="M73.8333 74H113V113.167H73.8333V74Z" fill="#2861FF"/>
+          <path id="b-bl" class="b-corner" d="M73.8333 124.833H113V164H73.8333V124.833Z" fill="#2861FF"/>
+          <path id="b-tr" class="b-corner" d="M124.667 74H163.833V113.167H124.667V74Z" fill="#2861FF"/>
+          <path id="b-br" class="b-corner" d="M124.667 124.833H163.833V164H124.667V124.833Z" fill="#2861FF"/>
+          <rect id="b-center" x="95.8333" y="96" width="46" height="46" fill="#B3C7FF"/>
+        </g>
+      </g>
+      <defs>
+        <clipPath id="clip0_86_34377">
+          <rect width="238" height="238" rx="16" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+</body>
+</html>

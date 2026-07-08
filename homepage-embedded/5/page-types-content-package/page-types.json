@@ -1,0 +1,110 @@
+[
+  {
+    "order": 1,
+    "key": "basic-table",
+    "title": "基础表格",
+    "description": "筛选 + 表格 + 分页",
+    "alt": "基础表格页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/table/common/basic",
+    "image": "./images/list-query.svg"
+  },
+  {
+    "order": 2,
+    "key": "table-stat",
+    "title": "数据统计表",
+    "description": "指标卡 + 表格",
+    "alt": "数据统计表页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/table/common/table-stat",
+    "image": "./images/data-stat.svg"
+  },
+  {
+    "order": 3,
+    "key": "tree-table",
+    "title": "树形表格",
+    "description": "树节点展开",
+    "alt": "树形表格页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/table/common/tree",
+    "image": "./images/tree-table.svg"
+  },
+  {
+    "order": 4,
+    "key": "tree-split",
+    "title": "左树右表",
+    "description": "树筛选 + 表格",
+    "alt": "左树右表页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/table/common/split",
+    "image": "./images/tree-list.svg"
+  },
+  {
+    "order": 5,
+    "key": "data-visualization",
+    "title": "数据可视化",
+    "description": "图表 + 指标卡",
+    "alt": "数据可视化页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/chart/common/data-visualization",
+    "image": "./images/data-stat.svg"
+  },
+  {
+    "order": 6,
+    "key": "full-page-edit",
+    "title": "全页编辑",
+    "description": "大表单编辑",
+    "alt": "全页编辑页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/form/typical/edit",
+    "image": "./images/full-edit.svg"
+  },
+  {
+    "order": 7,
+    "key": "drawer-form",
+    "title": "抽屉表单",
+    "description": "侧滑表单",
+    "alt": "抽屉表单页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/form/typical/drawer",
+    "image": "./images/drawer-edit.svg"
+  },
+  {
+    "order": 8,
+    "key": "full-page-detail",
+    "title": "全页详情",
+    "description": "分组信息展示",
+    "alt": "全页详情页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/detail/typical/page",
+    "image": "./images/detail.svg"
+  },
+  {
+    "order": 9,
+    "key": "drawer-detail",
+    "title": "抽屉详情",
+    "description": "侧滑详情",
+    "alt": "抽屉详情页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/detail/typical/drawer",
+    "image": "./images/drawer-detail.svg"
+  },
+  {
+    "order": 10,
+    "key": "empty-state",
+    "title": "空状态",
+    "description": "无数据反馈",
+    "alt": "空状态页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/feedback/empty-state",
+    "image": "./images/empty-state.svg"
+  },
+  {
+    "order": 11,
+    "key": "load-fail",
+    "title": "加载失败",
+    "description": "加载失败反馈",
+    "alt": "加载失败页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/feedback/load-fail",
+    "image": "./images/empty-state.svg"
+  },
+  {
+    "order": 12,
+    "key": "page-not-found",
+    "title": "页面不存在",
+    "description": "访问异常反馈",
+    "alt": "页面不存在页预览",
+    "href": "https://hiui-group.github.io/hiui-template/#/examples/feedback/page-not-found",
+    "image": "./images/empty-state.svg"
+  }
+]

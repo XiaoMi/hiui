@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HiUI 5.0 官网</title>
+    <meta
+      name="description"
+      content="HiUI 5.0 官网首屏，突出 AI 设计到前端交付流程。"
+    />
+    <link rel="icon" href="./1/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body class="embedded-homepage">
+    <main class="page-shell">
+      <section class="landing" aria-label="HiUI 5.0 官网页面">
+        <header class="hero-header">
+          <a class="brand" href="#!" aria-label="HiUI Design 首页">
+            <img src="./1/logo.svg" alt="" />
+            <span>HiUI Design</span>
+          </a>
+
+          <div class="header-actions">
+            <nav class="site-nav" aria-label="主导航">
+              <a class="is-active" href="#!" aria-current="page">首页</a>
+              <a href="#!">开发</a>
+              <a href="#!">组件</a>
+              <a href="#!">生态</a>
+            </nav>
+
+            <a class="github-link" href="#!" aria-label="GitHub">
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.68C4 14.05 3.48 13.19 3.32 12.74C3.23 12.51 2.84 11.8 2.5 11.61C2.22 11.46 1.82 11.08 2.49 11.07C3.12 11.06 3.57 11.65 3.72 11.89C4.44 13.1 5.59 12.76 6.05 12.55C6.12 12.03 6.33 11.68 6.56 11.48C4.78 11.28 2.92 10.59 2.92 7.52C2.92 6.65 3.23 5.93 3.74 5.36C3.66 5.16 3.38 4.33 3.82 3.22C3.82 3.22 4.49 3.01 6.02 4.05C6.66 3.87 7.34 3.78 8.02 3.78C8.7 3.78 9.38 3.87 10.02 4.05C11.55 3.01 12.22 3.22 12.22 3.22C12.66 4.33 12.38 5.16 12.3 5.36C12.81 5.93 13.12 6.64 13.12 7.52C13.12 10.6 11.25 11.28 9.47 11.48C9.76 11.73 10.01 12.21 10.01 12.95C10.01 14.01 10 14.87 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.728 14.529 16.016 11.54 16.016 8C16.016 3.58 12.436 0 8 0Z"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </header>
+
+        <div class="stage-background" aria-hidden="true">
+          <div class="stage-background-fallback">
+            <div class="stage-bg-row stage-bg-row-primary">
+              <img class="stage-bg-image" src="./1/背景-01新.png" alt="" />
+              <div class="hero-code-layer" aria-hidden="true">
+                <div
+                  class="hero-code-block hero-code-block-left-top"
+                  data-hero-code
+                  data-line-count="18"
+                  data-stream-length="18"
+                  data-rain-speed="24"
+                ></div>
+                <div
+                  class="hero-code-block hero-code-block-right-top"
+                  data-hero-code
+                  data-line-count="18"
+                  data-stream-length="18"
+                  data-rain-speed="28"
+                ></div>
+                <div
+                  class="hero-code-block hero-code-block-left-bottom"
+                  data-hero-code
+                  data-line-count="24"
+                  data-stream-length="24"
+                  data-rain-speed="34"
+                ></div>
+                <div
+                  class="hero-code-block hero-code-block-right-bottom"
+                  data-hero-code
+                  data-line-count="24"
+                  data-stream-length="24"
+                  data-rain-speed="38"
+                ></div>
+              </div>
+              <div class="hero-rain-layer" aria-hidden="true">
+                <canvas class="hero-rain-canvas" data-hero-rain></canvas>
+              </div>
+            </div>
+            <div class="stage-bg-row stage-bg-row-secondary">
+              <img class="stage-bg-image" src="./2/背景-02新.png" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <section class="panel panel-hero" aria-label="第一页">
+          <div class="panel-shell hero-content">
+            <div class="hero-mark" aria-label="5.0 标题标识" role="img">
+              <img class="hero-mark-image" src="./1/5.0 标题.png" alt="" />
+            </div>
+            <h1>HiUI 5.0 为AI而生</h1>
+            <div class="hero-cta">
+              <p>重塑设计前端交付流程，一句话产出生产级代码</p>
+
+              <div class="hero-buttons">
+                <a class="hero-button hero-button-primary" href="#usage-method" data-glow-button>
+                  <img src="./1/开发.svg" alt="" />
+                  <span>开始使用</span>
+                </a>
+                <a class="hero-button hero-button-secondary" href="#demo-showcase">看看效果</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel-features" aria-label="第二页">
+          <div class="panel-shell features-shell" data-scroll-reveal>
+            <div class="features-copy">
+              <div class="features-heading">
+                <h2>生成 = 交付</h2>
+                <p>HiUI 5.0 不只是一套组件库，而是一套 AI Native 的设计、开发、交付流程</p>
+              </div>
+
+              <div class="features-list" aria-label="能力亮点">
+                <article class="feature-item">
+                  <div class="feature-icon">
+                    <img src="./2/Check.svg" alt="" />
+                  </div>
+                  <div class="feature-body">
+                    <h3>遵循设计规范</h3>
+                    <p>默认对齐 HiUI 设计基线，减少样式偏差和反复验收</p>
+                  </div>
+                </article>
+
+                <article class="feature-item">
+                  <div class="feature-icon">
+                    <img src="./2/Check.svg" alt="" />
+                  </div>
+                  <div class="feature-body">
+                    <h3>产出生产级代码</h3>
+                    <p>输出可修改、可扩展、可直接进入项目交付的 React 页面代码</p>
+                  </div>
+                </article>
+
+                <article class="feature-item">
+                  <div class="feature-icon">
+                    <img src="./2/Check.svg" alt="" />
+                  </div>
+                  <div class="feature-body">
+                    <h3>自动发现体验问题并修复</h3>
+                    <p>自动发现体验问题并输出分级报告，形成生成、走查、修复闭环</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="features-art" aria-hidden="true">
+              <div
+                class="features-art-tilt tilted-media"
+                data-tilted-media
+                data-rotate-amplitude="10"
+                data-scale-on-hover="1.03"
+              >
+                <div class="tilted-media-inner" data-tilted-media-inner>
+                  <img src="./2/人-.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel-process" aria-label="第三页">
+          <div class="panel-shell section-inner process-shell" data-scroll-reveal>
+            <div class="section-heading section-heading-center process-heading">
+              <h2>从需求到交付的每一步，都有规范约束</h2>
+            </div>
+
+            <ol class="process-steps" aria-label="规范流程">
+              <li class="process-step">
+                <span class="process-step-index">1</span>
+                <div class="process-step-copy">
+                  <h3>需求描述</h3>
+                  <p>明确项目目标</p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="process-step-index">2</span>
+                <div class="process-step-copy">
+                  <h3>页型判定</h3>
+                  <p>匹配典型场景</p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="process-step-index">3</span>
+                <div class="process-step-copy">
+                  <h3>代码生成</h3>
+                  <p>复用组件规则</p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="process-step-index">4</span>
+                <div class="process-step-copy">
+                  <h3>自动走查</h3>
+                  <p>发现体验问题</p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="process-step-index">5</span>
+                <div class="process-step-copy">
+                  <h3>代码交付</h3>
+                  <p>走查通过后放行</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="process-metrics" aria-label="数据指标">
+              <article class="metric-card">
+                <div
+                  class="metric-card-visual tilted-media"
+                  data-tilted-media
+                  data-rotate-amplitude="14"
+                  data-scale-on-hover="1.06"
+                >
+                  <div class="tilted-media-inner" data-tilted-media-inner>
+                    <iframe
+                      class="metric-card-loop"
+                      src="./3/loops/A-loop.html"
+                      title="企业级组件图标动效"
+                      loading="lazy"
+                      scrolling="no"
+                    ></iframe>
+                  </div>
+                </div>
+                <strong>50+</strong>
+                <p>企业级组件</p>
+              </article>
+              <article class="metric-card">
+                <div
+                  class="metric-card-visual tilted-media"
+                  data-tilted-media
+                  data-rotate-amplitude="14"
+                  data-scale-on-hover="1.06"
+                >
+                  <div class="tilted-media-inner" data-tilted-media-inner>
+                    <iframe
+                      class="metric-card-loop"
+                      src="./3/loops/B-loop.html"
+                      title="内置页面模板图标动效"
+                      loading="lazy"
+                      scrolling="no"
+                    ></iframe>
+                  </div>
+                </div>
+                <strong>10+</strong>
+                <p>内置页面模板</p>
+              </article>
+              <article class="metric-card">
+                <div
+                  class="metric-card-visual tilted-media"
+                  data-tilted-media
+                  data-rotate-amplitude="14"
+                  data-scale-on-hover="1.06"
+                >
+                  <div class="tilted-media-inner" data-tilted-media-inner>
+                    <iframe
+                      class="metric-card-loop"
+                      src="./3/loops/C-loop.html"
+                      title="需求到交付图标动效"
+                      loading="lazy"
+                      scrolling="no"
+                    ></iframe>
+                  </div>
+                </div>
+                <strong>&lt;10min</strong>
+                <p>需求到交付</p>
+              </article>
+              <article class="metric-card">
+                <div
+                  class="metric-card-visual tilted-media"
+                  data-tilted-media
+                  data-rotate-amplitude="14"
+                  data-scale-on-hover="1.06"
+                >
+                  <div class="tilted-media-inner" data-tilted-media-inner>
+                    <iframe
+                      class="metric-card-loop"
+                      src="./3/loops/D-loop.html"
+                      title="内置体验走查规则图标动效"
+                      loading="lazy"
+                      scrolling="no"
+                    ></iframe>
+                  </div>
+                </div>
+                <strong>20+</strong>
+                <p>内置体验走查规则</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="demo-showcase" class="panel panel-demo" aria-label="第四页">
+          <div class="panel-shell section-inner demo-shell" data-scroll-reveal>
+            <div class="section-heading section-heading-center demo-heading">
+              <h2>不同输入场景，同样高质量交付</h2>
+              <p>3种方式，分钟级生成可部署的生产代码</p>
+            </div>
+
+            <div class="demo-tabs" role="tablist" aria-label="案例方式">
+              <button
+                class="demo-tab is-active"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                data-demo-tab="language"
+              >
+                自然语言生成
+              </button>
+              <button
+                class="demo-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-demo-tab="screenshot"
+              >
+                截图生成
+              </button>
+              <button
+                class="demo-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                data-demo-tab="upgrade"
+              >
+                旧系统升级
+              </button>
+            </div>
+
+            <div class="demo-stage" aria-live="polite">
+              <div class="demo-stage-viewport">
+                <div class="demo-stage-track" data-demo-track>
+                  <section class="demo-stage-panel" aria-label="自然语言演示">
+                    <div class="demo-stage-surface">
+                      <div class="demo-stage-frame">
+                        <img class="demo-stage-image" src="./4/自然语言.png" alt="" />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="demo-stage-panel" aria-label="截图演示">
+                    <div class="demo-stage-surface">
+                      <div class="demo-stage-frame demo-stage-frame-screenshot">
+                        <img class="demo-stage-image" src="./4/截图.png" alt="" />
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="demo-stage-panel" aria-label="旧系统升级演示">
+                    <div class="demo-stage-surface">
+                      <div class="demo-stage-frame demo-stage-frame-upgrade">
+                        <div
+                          class="demo-upgrade-compare"
+                          data-upgrade-compare
+                          data-upgrade-position="52"
+                          aria-label="旧系统升级前后对比拖拽区域"
+                        >
+                          <img class="demo-stage-image demo-upgrade-base" src="./4/旧系统升级.png" alt="" />
+                          <div class="demo-upgrade-overlay" data-upgrade-overlay aria-hidden="true">
+                            <img class="demo-upgrade-overlay-image" src="./4/内容.png" alt="" />
+                          </div>
+                          <div class="demo-upgrade-divider" data-upgrade-divider aria-hidden="true">
+                            <button
+                              class="demo-upgrade-handle"
+                              type="button"
+                              data-upgrade-handle
+                              aria-label="拖拽切换旧系统升级前后对比"
+                            >
+                              <img src="./4/切换.svg" alt="" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+
+              <div class="demo-stage-overlay-layer" aria-hidden="true">
+                <article class="demo-prompt-card demo-prompt-card-language is-active" data-demo-overlay>
+                  <div class="demo-prompt-card-shell">
+                    <div class="demo-prompt-card-pane">
+                      <div class="demo-prompt-card-copy demo-prompt-card-copy-multiline">
+                        <div class="demo-prompt-card-brandline demo-prompt-card-brandline-top">
+                          <img class="demo-prompt-card-brand" src="./4/HiUI Design.png" alt="" />
+                        </div>
+                        <p>创建一个任务管理页面，页面名称：任务管理</p>
+                        <p>核心指标：待处理、我的创建的、我关注的、已完成</p>
+                        <p>支持 任务名称搜索</p>
+                        <p>支持 任务状态、处理人、创建人、截止日期 筛选</p>
+                        <p>
+                          任务列表字段：任务名称、任务ID、处理人、任<br />
+                          务开始时间、任务截止时间
+                        </p>
+                        <p>表格行操作：处理、详情</p>
+                      </div>
+
+                      <div class="demo-prompt-card-footer">
+                        <button
+                          class="demo-prompt-card-copy-button"
+                          type="button"
+                          aria-label="复制自然语言内容"
+                          data-copy-button
+                          data-copy-target="demo-copy-1"
+                        >
+                          <img src="./4/复制.svg" alt="" />
+                        </button>
+                      </div>
+                      <textarea id="demo-copy-1" class="usage-copy-source" readonly>创建一个任务管理页面，页面名称：任务管理
+核心指标：待处理、我的创建的、我关注的、已完成
+支持 任务名称搜索
+支持 任务状态、处理人、创建人、截止日期 筛选
+任务列表字段：任务名称、任务ID、处理人、任务开始时间、任务截止时间
+表格行操作：处理、详情</textarea>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="demo-prompt-card demo-prompt-card-screenshot" data-demo-overlay>
+                  <div class="demo-prompt-card-shell">
+                    <div class="demo-prompt-card-pane">
+                      <div class="demo-prompt-card-preview" aria-hidden="true">
+                        <img src="./4/占位图.png" alt="" />
+                      </div>
+
+                      <div class="demo-prompt-card-copy demo-prompt-card-copy-language">
+                        <img class="demo-prompt-card-brand" src="./4/HiUI Design.png" alt="" />
+                        <p>用 hiui-design的规范 生成这个产品原型</p>
+                      </div>
+
+                      <div class="demo-prompt-card-footer">
+                        <button
+                          class="demo-prompt-card-copy-button"
+                          type="button"
+                          aria-label="复制截图内容"
+                          data-copy-button
+                          data-copy-target="demo-copy-2"
+                        >
+                          <img src="./4/复制.svg" alt="" />
+                        </button>
+                      </div>
+                      <textarea id="demo-copy-2" class="usage-copy-source" readonly>用 hiui-design的规范 生成这个产品原型</textarea>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="demo-prompt-card demo-prompt-card-upgrade" data-demo-overlay>
+                  <div class="demo-prompt-card-shell">
+                    <div class="demo-prompt-card-pane">
+                      <div class="demo-prompt-card-copy demo-prompt-card-copy-upgrade">
+                        <img class="demo-prompt-card-brand" src="./4/HiUI Design.png" alt="" />
+                        <div class="demo-prompt-card-upgrade-lines">
+                          <p>重构这个页面，使之符合hiui的系统规范</p>
+                        </div>
+                      </div>
+
+                      <div class="demo-prompt-card-footer">
+                        <button
+                          class="demo-prompt-card-copy-button"
+                          type="button"
+                          aria-label="复制旧系统升级内容"
+                          data-copy-button
+                          data-copy-target="demo-copy-3"
+                        >
+                          <img src="./4/复制.svg" alt="" />
+                        </button>
+                      </div>
+                      <textarea id="demo-copy-3" class="usage-copy-source" readonly>重构这个页面，使之符合hiui的系统规范</textarea>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel-page-types" aria-label="第五页">
+          <div class="panel-shell section-inner page-types-shell" data-scroll-reveal>
+            <div class="section-heading section-heading-center page-types-heading">
+              <h2>
+                <span>10+典型页面</span>
+                <span>覆盖90%企业级中后台场景</span>
+              </h2>
+              <p>输入页面对应prompt可直接生成</p>
+            </div>
+
+            <div class="page-types-track" aria-label="典型页面列表">
+              <div class="page-types-viewport">
+                <div class="page-types-panels" data-page-types-track>
+                  <section class="page-types-panel" aria-label="典型页面第1组">
+                    <div class="page-types-grid">
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/table/common/basic"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开基础表格示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/list-query.svg"
+                            alt="基础表格页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>基础表格</h3>
+                          <p>筛选 + 表格 + 分页</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/table/common/table-stat"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开数据统计表示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/data-stat.svg"
+                            alt="数据统计表页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>数据统计表</h3>
+                          <p>指标卡 + 表格</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/table/common/tree"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开树形表格示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/tree-table.svg"
+                            alt="树形表格页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>树形表格</h3>
+                          <p>树节点展开</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/table/common/split"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开左树右表示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/tree-list.svg"
+                            alt="左树右表页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>左树右表</h3>
+                          <p>树筛选 + 表格</p>
+                        </div>
+                      </a>
+                    </div>
+                  </section>
+
+                  <section class="page-types-panel" aria-label="典型页面第2组">
+                    <div class="page-types-grid">
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/chart/common/data-visualization"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开数据可视化示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/data-stat.svg"
+                            alt="数据可视化页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>数据可视化</h3>
+                          <p>图表 + 指标卡</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/form/typical/edit"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开全页编辑示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/full-edit.svg"
+                            alt="全页编辑页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>全页编辑</h3>
+                          <p>大表单编辑</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/form/typical/drawer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开抽屉表单示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/drawer-edit.svg"
+                            alt="抽屉表单页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>抽屉表单</h3>
+                          <p>侧滑表单</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/detail/typical/page"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开全页详情示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/detail.svg"
+                            alt="全页详情页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>全页详情</h3>
+                          <p>分组信息展示</p>
+                        </div>
+                      </a>
+                    </div>
+                  </section>
+
+                  <section class="page-types-panel" aria-label="典型页面第3组">
+                    <div class="page-types-grid">
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/detail/typical/drawer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开抽屉详情示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/drawer-detail.svg"
+                            alt="抽屉详情页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>抽屉详情</h3>
+                          <p>侧滑详情</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/feedback/empty-state"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开空状态示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/empty-state.svg"
+                            alt="空状态页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>空状态</h3>
+                          <p>无数据反馈</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/feedback/load-fail"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开加载失败示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/empty-state.svg"
+                            alt="加载失败页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>加载失败</h3>
+                          <p>加载失败反馈</p>
+                        </div>
+                      </a>
+                      <a
+                        class="page-card"
+                        href="https://hiui-group.github.io/hiui-template/#/examples/feedback/page-not-found"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="打开页面不存在示例"
+                      >
+                        <div class="page-card-media">
+                          <img
+                            src="./5/page-types-content-package/images/empty-state.svg"
+                            alt="页面不存在页预览"
+                          />
+                        </div>
+                        <div class="page-card-body">
+                          <h3>页面不存在</h3>
+                          <p>访问异常反馈</p>
+                        </div>
+                      </a>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-types-dots" role="tablist" aria-label="页面分页">
+              <button class="is-active" type="button" aria-label="第1页" aria-selected="true" data-page-types-dot="0"></button>
+              <button type="button" aria-label="第2页" aria-selected="false" data-page-types-dot="1"></button>
+              <button type="button" aria-label="第3页" aria-selected="false" data-page-types-dot="2"></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel-toolchain" aria-label="第六页">
+          <div class="panel-shell section-inner toolchain-shell" data-scroll-reveal>
+            <div class="section-heading section-heading-center toolchain-heading">
+              <h2>让 AI 更懂 HiUI，让开发更高效</h2>
+              <p>提供了完整的AI研发工具链</p>
+            </div>
+
+            <div class="toolchain-grid" aria-label="HiUI 研发工具链">
+              <a
+                class="toolchain-card"
+                data-toolchain-card="skill"
+                href="https://xiaomi.github.io/hiui/docs/hiui-cli/#skill"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="打开 HiUI Skill 文档"
+              >
+                <div class="toolchain-card-body">
+                  <span class="toolchain-card-label">HiUI Skill</span>
+                  <p>引导 AI 写 HiUI 代码前查准文档与 Props，并支持迁移与 React 19 接入</p>
+                </div>
+              </a>
+
+              <a
+                class="toolchain-card"
+                data-toolchain-card="cli"
+                href="https://xiaomi.github.io/hiui/docs/hiui-cli/#cli"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="打开 HiUI CLI 文档"
+              >
+                <div class="toolchain-card-body">
+                  <span class="toolchain-card-label">HiUI CLI</span>
+                  <p>面向开发者与 AI Agent 的命令行工具，快速查询组件文档与 Props</p>
+                </div>
+              </a>
+
+              <a
+                class="toolchain-card"
+                data-toolchain-card="llmstxt"
+                href="https://xiaomi.github.io/hiui/docs/hiui-cli/#llmstxt"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="打开 LLMs.txt 文档"
+              >
+                <div class="toolchain-card-body">
+                  <span class="toolchain-card-label">LLMs.txt</span>
+                  <p>按 LLMs.txt 标准提供结构化组件知识，让大模型更好理解组件库、API</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="usage-method" class="panel panel-usage" aria-label="第七页">
+          <div class="panel-shell section-inner usage-shell" data-scroll-reveal>
+            <div class="section-heading section-heading-center usage-heading">
+              <h2>使用方法</h2>
+              <p>只需3步，快速体验</p>
+            </div>
+
+            <div class="usage-flow" aria-label="使用步骤">
+              <article class="usage-card usage-card-step-1">
+                <div class="usage-card-content">
+                  <div class="usage-card-side">
+                    <span class="usage-card-badge">第一步</span>
+                    <p>在Agent中新建项目</p>
+                  </div>
+
+                  <div class="usage-card-window">
+                    <div class="usage-window-shell">
+                      <div class="usage-window-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+
+                      <div class="usage-editor-box">
+                        <div class="usage-editor-display usage-editor-display-stack">
+                          <span class="usage-editor-command">pnpm create vite my-app --template react</span>
+                          <span class="usage-editor-command">
+                            cd my-app   pnpm add @hi-ui/core @hi-ui/hiui
+                            <span class="usage-editor-caret" aria-hidden="true"></span>
+                          </span>
+                        </div>
+
+                        <div class="usage-editor-actions">
+                          <button
+                            class="usage-copy-button"
+                            type="button"
+                            aria-label="复制第一步内容"
+                            data-copy-button
+                            data-copy-target="usage-copy-1"
+                          >
+                            <img src="./6/复制.svg" alt="" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <textarea id="usage-copy-1" class="usage-copy-source" readonly>pnpm create vite my-app --template react
+cd my-app   pnpm add @hi-ui/core @hi-ui/hiui</textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="usage-card usage-card-step-2">
+                <div class="usage-card-content">
+                  <div class="usage-card-side">
+                    <span class="usage-card-badge">第二步</span>
+                    <p>全局安装skill</p>
+                  </div>
+
+                  <div class="usage-card-window">
+                    <div class="usage-window-shell">
+                      <div class="usage-window-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+
+                      <div class="usage-editor-box">
+                        <div
+                          class="usage-editor-display usage-editor-display-stack"
+                          data-usage-step="2-display"
+                        >
+                          <span class="usage-editor-command">
+                            git clone --depth 1 git@github.com:XiaoMi/hiui.git
+                          </span>
+                          <span class="usage-editor-command">
+                            cd hiui&nbsp;&nbsp;bash skills/hiui-page-workflow/install.sh
+                          </span>
+                          <span>
+                            把hiui design接入到当前项目中
+                            <span class="usage-editor-caret" aria-hidden="true"></span>
+                          </span>
+                        </div>
+
+                        <div class="usage-editor-actions">
+                          <button
+                            class="usage-copy-button usage-copy-button-step-2"
+                            type="button"
+                            aria-label="复制第二步内容"
+                            data-copy-button
+                            data-copy-target="usage-copy-2"
+                          >
+                            <img src="./6/复制.svg" alt="" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <textarea
+                        id="usage-copy-2"
+                        class="usage-copy-source"
+                        readonly
+                        data-usage-step="2-copy"
+                      >git clone --depth 1 git@github.com:XiaoMi/hiui.git
+cd hiui  bash skills/hiui-page-workflow/install.sh
+把hiui design接入到当前项目中</textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="usage-card usage-card-step-3">
+                <div class="usage-card-content">
+                  <div class="usage-card-side">
+                    <span class="usage-card-badge">第三步</span>
+                    <p>对AI说出你的需求</p>
+                  </div>
+
+                  <div class="usage-card-window">
+                    <div class="usage-window-shell">
+                      <div class="usage-window-dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+
+                      <div class="usage-editor-box">
+                        <div class="usage-editor-display">
+                          @hiui-page-workflow 帮我做一个订单管理页，细化需求生成页面并验收
+                          <span class="usage-editor-caret" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="usage-editor-actions">
+                          <button
+                            class="usage-copy-button"
+                            type="button"
+                            aria-label="复制第三步内容"
+                            data-copy-button
+                            data-copy-target="usage-copy-3"
+                          >
+                            <img src="./6/复制.svg" alt="" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <textarea id="usage-copy-3" class="usage-copy-source" readonly>@hiui-page-workflow 帮我做一个订单管理页，细化需求生成页面并验收</textarea>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="usage-toast" role="status" aria-live="polite" aria-atomic="true" data-copy-toast></div>
+          </div>
+        </section>
+
+        <section class="panel panel-footer" aria-label="第八页">
+          <div class="footer-banner">
+            <img class="footer-banner-bg" src="./7/切图.png" alt="" aria-hidden="true" />
+            <img class="footer-banner-qr" src="./7/二维码.png" alt="扫码加入 HiUI 飞书交流群" />
+            <iframe
+              class="footer-banner-hi-motion"
+              src="./1/hi-homepage-motion.html"
+              title="Hi 动画"
+              loading="lazy"
+              scrolling="no"
+              aria-hidden="true"
+              tabindex="-1"
+            ></iframe>
+          </div>
+
+          <footer class="footer-main">
+            <div class="panel-shell footer-shell">
+              <div class="footer-links">
+                <div class="footer-column">
+                  <h3>设计</h3>
+                  <a href="#!">概述</a>
+                  <a href="#!">设计理念</a>
+                  <a href="#!">设计价值观</a>
+                </div>
+                <div class="footer-column">
+                  <h3>开发</h3>
+                  <a href="#!">概述</a>
+                  <a href="#!">设计理念</a>
+                  <a href="#!">设计价值观</a>
+                </div>
+                <div class="footer-column">
+                  <h3>资源</h3>
+                  <a href="#!">概述</a>
+                  <a href="#!">设计理念</a>
+                  <a href="#!">设计价值观</a>
+                  <a href="#!">设计价值观</a>
+                  <a href="#!">设计价值观</a>
+                </div>
+                <div class="footer-column">
+                  <h3>关于</h3>
+                  <a href="#!">意见反馈</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer-copyright">© 2026小米·集团信息技术部</div>
+          </footer>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

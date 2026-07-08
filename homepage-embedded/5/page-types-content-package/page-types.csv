@@ -1,0 +1,13 @@
+order,key,title,description,alt,href,image
+1,basic-table,基础表格,筛选 + 表格 + 分页,基础表格页预览,https://hiui-group.github.io/hiui-template/#/examples/table/common/basic,./images/list-query.svg
+2,table-stat,数据统计表,指标卡 + 表格,数据统计表页预览,https://hiui-group.github.io/hiui-template/#/examples/table/common/table-stat,./images/data-stat.svg
+3,tree-table,树形表格,树节点展开,树形表格页预览,https://hiui-group.github.io/hiui-template/#/examples/table/common/tree,./images/tree-table.svg
+4,tree-split,左树右表,树筛选 + 表格,左树右表页预览,https://hiui-group.github.io/hiui-template/#/examples/table/common/split,./images/tree-list.svg
+5,data-visualization,数据可视化,图表 + 指标卡,数据可视化页预览,https://hiui-group.github.io/hiui-template/#/examples/chart/common/data-visualization,./images/data-stat.svg
+6,full-page-edit,全页编辑,大表单编辑,全页编辑页预览,https://hiui-group.github.io/hiui-template/#/examples/form/typical/edit,./images/full-edit.svg
+7,drawer-form,抽屉表单,侧滑表单,抽屉表单页预览,https://hiui-group.github.io/hiui-template/#/examples/form/typical/drawer,./images/drawer-edit.svg
+8,full-page-detail,全页详情,分组信息展示,全页详情页预览,https://hiui-group.github.io/hiui-template/#/examples/detail/typical/page,./images/detail.svg
+9,drawer-detail,抽屉详情,侧滑详情,抽屉详情页预览,https://hiui-group.github.io/hiui-template/#/examples/detail/typical/drawer,./images/drawer-detail.svg
+10,empty-state,空状态,无数据反馈,空状态页预览,https://hiui-group.github.io/hiui-template/#/examples/feedback/empty-state,./images/empty-state.svg
+11,load-fail,加载失败,加载失败反馈,加载失败页预览,https://hiui-group.github.io/hiui-template/#/examples/feedback/load-fail,./images/empty-state.svg
+12,page-not-found,页面不存在,访问异常反馈,页面不存在页预览,https://hiui-group.github.io/hiui-template/#/examples/feedback/page-not-found,./images/empty-state.svg

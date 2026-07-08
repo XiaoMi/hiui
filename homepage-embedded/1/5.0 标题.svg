@@ -1,0 +1,22 @@
+<svg width="300" height="313" viewBox="0 0 300 313" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M227.587 47C263.751 47 293.068 76.3166 293.068 112.48V177.961C293.068 214.125 263.751 243.441 227.587 243.441C191.423 243.441 162.107 214.125 162.107 177.961V112.48C162.107 76.3166 191.423 47 227.587 47ZM227.587 87.9248C211.766 87.9249 198.94 100.752 198.94 116.573V173.868C198.94 189.69 211.766 202.516 227.587 202.516C243.409 202.516 256.235 189.69 256.235 173.868V116.573C256.235 100.752 243.409 87.9248 227.587 87.9248Z" fill="white" fill-opacity="0.6"/>
+<path d="M15.1927 57.6875C15.1927 51.7849 19.9777 47 25.8802 47H120.352C129.873 47 134.642 58.512 127.909 65.2447L33.4375 159.716C26.7047 166.449 15.1927 161.681 15.1927 152.159V57.6875Z" fill="white" fill-opacity="0.5"/>
+<foreignObject x="-12.7868" y="89.6303" width="169.716" height="169.716"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(9.69px);clip-path:url(#bgblur_0_154_37857_clip_path);height:100%;width:100%"></div></foreignObject><g clip-path="url(#paint0_angular_154_37857_clip_path)" data-figma-skip-parse="true"><g transform="matrix(-0.0654805 -0.000129124 0.000129124 -0.0654805 72.0712 174.488)"><foreignObject x="-1061.27" y="-1061.27" width="2122.54" height="2122.54"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(255, 255, 255, 0.16) 0deg,rgba(255, 255, 255, 1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><circle data-figma-bg-blur-radius="19.3775" cx="72.0712" cy="174.488" r="65.4805" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.15999999642372131},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:0.15999999642372131},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:1.0,&#34;g&#34;:1.0,&#34;b&#34;:1.0,&#34;a&#34;:1.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:-130.96095275878906,&#34;m01&#34;:0.25824809074401855,&#34;m02&#34;:137.42253112792969,&#34;m10&#34;:-0.25824809074401855,&#34;m11&#34;:-130.96095275878906,&#34;m12&#34;:240.09788513183594},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+<g filter="url(#filter3_d_154_37857)">
+<path d="M146.592 234.121C147.06 231.105 151.404 231.105 151.872 234.121L152.821 240.235C152.999 241.385 153.902 242.287 155.051 242.466L161.165 243.414C164.181 243.883 164.181 248.227 161.165 248.695L155.051 249.644C153.902 249.822 152.999 250.724 152.821 251.874L151.872 257.988C151.404 261.004 147.06 261.004 146.592 257.988L145.643 251.874C145.464 250.724 144.562 249.822 143.412 249.644L137.298 248.695C134.282 248.227 134.282 243.883 137.298 243.414L143.412 242.466C144.562 242.287 145.464 241.385 145.643 240.235L146.592 234.121Z" fill="white" fill-opacity="0.6" shape-rendering="crispEdges"/>
+</g>
+<defs>
+<clipPath id="bgblur_0_154_37857_clip_path" transform="translate(12.7868 -89.6303)"><circle cx="72.0712" cy="174.488" r="65.4805"/>
+</clipPath><clipPath id="paint0_angular_154_37857_clip_path"><circle data-figma-bg-blur-radius="19.3775" cx="72.0712" cy="174.488" r="65.4805"/></clipPath><filter id="filter3_d_154_37857" x="100.262" y="214.472" width="97.9392" height="97.9388" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="17.387"/>
+<feGaussianBlur stdDeviation="17.387"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0833084 0 0 0 0 0.383003 0 0 0 0 0.870007 0 0 0 0.11 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_154_37857"/>
+<feBlend mode="normal" in="BackgroundImageFix" in2="effect1_dropShadow_154_37857" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+</filter>
+</defs>
+</svg>

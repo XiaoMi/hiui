@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HI Homepage Motion</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    body {
+      display: inline-block;
+      overflow: visible;
+    }
+
+    .hi-homepage-motion {
+      width: min(100vw, 304px);
+      display: block;
+      overflow: visible;
+      contain: layout paint style;
+    }
+
+    .hi-homepage-motion svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+
+    .hi-homepage-motion *,
+    .hi-homepage-motion *::before,
+    .hi-homepage-motion *::after {
+      box-sizing: border-box;
+    }
+
+    .hi-homepage-motion {
+      --hi-intro: 1800ms;
+      --hi-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+      --hi-ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --hi-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #hi-group {
+      transform-box: view-box;
+      transform-origin: center;
+      animation:
+        hi-intro-breathe var(--hi-intro) linear both,
+        hi-idle-float 5200ms ease-in-out calc(var(--hi-intro) + 400ms) infinite;
+    }
+
+    #face {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation:
+        hi-face-enter 280ms var(--hi-ease-soft) 120ms both,
+        hi-idle-face 5200ms ease-in-out calc(var(--hi-intro) + 400ms) infinite;
+    }
+
+    #body-loop,
+    #stem,
+    #tail {
+      stroke-dasharray: 1 1.2;
+      stroke-dashoffset: 1.05;
+    }
+
+    #body-loop {
+      animation: hi-draw-loop 760ms var(--hi-ease-enter) 220ms both;
+    }
+
+    #stem {
+      animation: hi-draw-stem 840ms var(--hi-ease-enter) 500ms both;
+    }
+
+    #tail {
+      animation: hi-draw-tail 420ms var(--hi-ease-enter) 940ms both;
+    }
+
+    #dot {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation:
+        hi-dot-pop 320ms var(--hi-ease-bounce) 1240ms both,
+        hi-dot-idle 5200ms ease-in-out calc(var(--hi-intro) + 900ms) infinite;
+    }
+
+    #eye-left,
+    #eye-right {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation:
+        hi-eye-settle 260ms var(--hi-ease-soft) 160ms both,
+        hi-blink 4600ms linear calc(var(--hi-intro) + 1300ms) infinite;
+    }
+
+    #brow {
+      transform-box: fill-box;
+      transform-origin: 60% 80%;
+      animation: hi-brow-tilt 260ms var(--hi-ease-soft) 1380ms both;
+    }
+
+    #smile {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: hi-smile-pop 280ms var(--hi-ease-soft) 200ms both;
+    }
+
+    @keyframes hi-intro-breathe {
+      0% {
+        transform: translateY(10px) scale(0.97);
+      }
+      14% {
+        transform: translateY(12px) scale(0.964);
+      }
+      66% {
+        transform: translateY(0) scale(1);
+      }
+      84% {
+        transform: translateY(-1px) scale(1.01);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes hi-idle-float {
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-3px) scale(1.008);
+      }
+    }
+
+    @keyframes hi-face-enter {
+      0% {
+        opacity: 0;
+        transform: translateY(-8px) rotate(-5deg) scale(0.9);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(1px) rotate(1.5deg) scale(1.03);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+
+    @keyframes hi-idle-face {
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      45% {
+        transform: translateY(-1px) rotate(-1deg);
+      }
+      65% {
+        transform: translateY(0) rotate(0.6deg);
+      }
+    }
+
+    @keyframes hi-draw-loop {
+      from {
+        stroke-dashoffset: 1.05;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes hi-draw-stem {
+      from {
+        stroke-dashoffset: 1.05;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes hi-draw-tail {
+      from {
+        opacity: 0;
+        stroke-dashoffset: 1.05;
+      }
+      15% {
+        opacity: 1;
+      }
+      to {
+        opacity: 1;
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes hi-dot-pop {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.18);
+      }
+      72% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.16);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes hi-dot-idle {
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-2px) scale(1.04);
+      }
+    }
+
+    @keyframes hi-eye-settle {
+      0% {
+        transform: scale(0.86) translateY(-2px);
+      }
+      100% {
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes hi-brow-tilt {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-8deg) translateY(-1px);
+      }
+    }
+
+    @keyframes hi-smile-pop {
+      0% {
+        transform: scale(0.82) translateY(-2px);
+      }
+      72% {
+        transform: scale(1.06) translateY(0);
+      }
+      100% {
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes hi-blink {
+      0%,
+      92%,
+      100% {
+        transform: scaleY(1);
+      }
+      94%,
+      98% {
+        transform: scaleY(0.08);
+      }
+      96% {
+        transform: scaleY(0.02);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #hi-group,
+      #face,
+      #body-loop,
+      #stem,
+      #tail,
+      #dot,
+      #eye-left,
+      #eye-right,
+      #brow,
+      #smile {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        stroke-dashoffset: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hi-homepage-motion" aria-label="Animated HI mark">
+    <svg width="304" height="304" viewBox="0 0 304 304" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <g id="hi-group">
+        <path id="stem" pathLength="1" d="M180.027 44.9316C184.587 51.4263 187.406 79.008 162.201 137.377C130.695 210.339 103.175 236.026 108.516 281.435" stroke="white" stroke-width="8" stroke-linecap="round"/>
+        <path id="body-loop" pathLength="1" d="M116.186 99.4437C101.4 90.5308 66.522 80.3742 45.2968 111.051C18.7652 149.398 38.6639 213.032 132.975 197.901C227.286 182.769 266.435 92.817 256.098 85.7635C239.089 74.1575 157.35 210.49 187.27 270.242" stroke="white" stroke-width="8" stroke-linecap="round"/>
+        <path id="tail" pathLength="1" d="M253.196 175.516C236.547 204.75 230.504 256.729 253.624 262.338" stroke="white" stroke-width="8" stroke-linecap="round"/>
+        <ellipse id="dot" cx="262.779" cy="157.651" rx="6.01104" ry="6.84015" transform="rotate(21.782 262.779 157.651)" fill="white"/>
+
+        <g id="face">
+          <g id="eye-left">
+            <ellipse cx="7.51346" cy="17.6669" rx="7.51346" ry="17.6669" transform="matrix(0.853449 0.521175 -0.416661 0.909062 96.6376 17.4863)" fill="white"/>
+            <mask id="mask0_hi_home" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="85" y="20" width="21" height="35">
+              <ellipse cx="7.51452" cy="17.6692" rx="7.51452" ry="17.6692" transform="matrix(0.853449 0.521175 -0.416661 0.909062 96.6376 17.4854)" fill="white"/>
+            </mask>
+            <g mask="url(#mask0_hi_home)">
+              <ellipse cx="5.31573" cy="8.88919" rx="5.31573" ry="8.88919" transform="matrix(0.744881 0.703709 -0.496022 0.854894 100.161 27.5908)" fill="#1A1A1A"/>
+            </g>
+          </g>
+
+          <g id="eye-right">
+            <ellipse cx="6.06856" cy="14.2694" rx="6.06856" ry="14.2694" transform="matrix(0.853449 0.521175 -0.416661 0.909062 122.161 27.8145)" fill="white"/>
+            <mask id="mask1_hi_home" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="113" y="30" width="17" height="28">
+              <ellipse cx="6.06942" cy="14.2713" rx="6.06942" ry="14.2713" transform="matrix(0.853449 0.521175 -0.416661 0.909062 122.161 27.8135)" fill="white"/>
+            </mask>
+            <g mask="url(#mask1_hi_home)">
+              <ellipse cx="4.34497" cy="7.09047" rx="4.34497" ry="7.09047" transform="matrix(0.804117 0.615391 -0.409904 0.913023 124.516 36.5762)" fill="#1A1A1A"/>
+            </g>
+          </g>
+
+          <path id="brow" d="M73.3188 48.5902C72.1154 48.9301 71.4154 50.1812 71.7553 51.3846C72.0952 52.588 73.3463 53.2881 74.5497 52.9482L73.9343 50.7692L73.3188 48.5902ZM92.4412 59.4931C93.1153 60.5463 94.5156 60.8537 95.5688 60.1796C96.622 59.5055 96.9294 58.1052 96.2553 57.0519L94.3482 58.2725L92.4412 59.4931ZM73.9343 50.7692L74.5497 52.9482C76.5067 52.3954 78.6268 52.2008 80.8147 52.4434L81.0643 50.193L81.3138 47.9426C78.5406 47.6351 75.8331 47.8801 73.3188 48.5902L73.9343 50.7692ZM81.0643 50.193L80.8147 52.4434C85.8602 53.0029 90.047 55.7525 92.4412 59.4931L94.3482 58.2725L96.2553 57.0519C93.1195 52.1527 87.7107 48.6519 81.3138 47.9426L81.0643 50.193Z" fill="#1A1A1A"/>
+          <path id="smile" d="M98.0793 69.7938C98.0624 68.5434 97.0352 67.5434 95.7848 67.5602C94.5344 67.577 93.5344 68.6043 93.5512 69.8547L95.8152 69.8242L98.0793 69.7938ZM114.082 72.1313C114.372 70.915 113.621 69.6936 112.405 69.4032C111.189 69.1129 109.967 69.8635 109.677 71.0799L111.879 71.6056L114.082 72.1313ZM103.024 78.1413L103.273 75.8909C100.403 75.5726 98.1225 73.0119 98.0793 69.7938L95.8152 69.8242L93.5512 69.8547C93.6222 75.1346 97.4186 79.7978 102.774 80.3917L103.024 78.1413ZM111.879 71.6056L109.677 71.0799C108.93 74.2103 106.144 76.2092 103.273 75.8909L103.024 78.1413L102.774 80.3917C108.13 80.9856 112.856 77.2674 114.082 72.1313L111.879 71.6056Z" fill="#1A1A1A"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <script>
+    const LOOP_DURATION = 6600;
+    let motionNode = document.querySelector(".hi-homepage-motion");
+
+    window.setInterval(() => {
+      if (!motionNode) {
+        return;
+      }
+
+      const nextNode = motionNode.cloneNode(true);
+      motionNode.replaceWith(nextNode);
+      motionNode = nextNode;
+    }, LOOP_DURATION);
+  </script>
+</body>
+</html>
