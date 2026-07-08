@@ -2,22 +2,22 @@
   "schemaVersion": 1,
   "bundleName": "hiui-page-workflow",
   "notes": [
-    "The public preview bundle resolves all skill sources from public GitHub clone URLs plus explicit ref/path entries.",
-    "Until upstream merge is complete, preview refs may point to upstream pull-request refs that carry the required skill manifests.",
+    "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries.",
+    "The repo clone used to bootstrap installation may move with master, but the installed skill content remains pinned by workflow-bundle.lock.json.",
     "Workflow 1.1.0 expects the downstream hiui-design planner contract to expose requiredDocs[].readMode, requiredActions, formalAcceptanceActions, currentExecutionState, and canStartImplementation.",
     "The hiui-design manifest is still 1.0.0 in this branch, so compatibility must be judged by planner contract availability, not by semver label alone."
   ],
   "testedBundles": [
     {
       "bundleVersion": "1.1.0",
-      "channel": "canary",
+      "channel": "stable",
       "skills": {
         "hiui-page-workflow": "1.1.0",
         "refine-product-requirements": "1.0.0",
         "hiui-design": "1.0.0",
         "ux-walkthrough": "1.0.1"
       },
-      "status": "validated-local"
+      "status": "validated-release-smoke"
     }
   ]
 }

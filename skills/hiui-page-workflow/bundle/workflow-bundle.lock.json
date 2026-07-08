@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "bundleName": "hiui-page-workflow",
   "bundleVersion": "1.1.0",
-  "channel": "canary",
+  "channel": "stable",
   "installPolicyRef": "install-policy.json",
   "compatibilityMatrixRef": "compatibility-matrix.json",
   "runtimeCompatibility": {
@@ -11,8 +11,8 @@
       "python3"
     ],
     "notes": [
-      "Local development and fixture validation can resolve source.kind=local entries relative to this lock file.",
-      "Published internal releases should replace local source entries with git-backed repo/ref/path values."
+      "Local development and fixture validation can still use dedicated local-source lock variants relative to this bundle.",
+      "The published default lock must pin every skill to a fixed upstream git commit instead of a moving branch."
     ]
   },
   "skills": [
@@ -24,8 +24,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "10702d0673428bcfafc01d8387ec8d2e488849bc",
         "path": "skills/hiui-page-workflow"
       }
     },
@@ -37,8 +37,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "10702d0673428bcfafc01d8387ec8d2e488849bc",
         "path": "skills/refine-product-requirements"
       }
     },
@@ -50,8 +50,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "10702d0673428bcfafc01d8387ec8d2e488849bc",
         "path": "skills/hiui-design"
       }
     },
@@ -63,8 +63,8 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "10702d0673428bcfafc01d8387ec8d2e488849bc",
         "path": "skills/ux-walkthrough"
       }
     }

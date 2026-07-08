@@ -50,21 +50,31 @@
 - `git`
 - `node`
 - `python3`
-- 对公开 GitHub 仓库和分支的访问能力
+- 对公开 GitHub 仓库的访问能力
 
 默认安装会写入当前环境的本地 skills 目录。若需指定其他位置，可使用 `--target`，或在 shell 中设置 `WORKFLOW_HOME`。
 
-### Public Preview Install
+以下示例默认都从仓库根目录执行。
 
-当前灰度版通过公开 fork 分支安装四个 skill。若你希望验证在线安装，可直接拉取灰度分支并执行默认安装入口：
+### Public Install
+
+公开安装的默认入口是 `skills/hiui-page-workflow/install-workflow.sh`。`install.sh` 与 `install-codex.sh` 仍然保留，但只作为兼容壳转调。
+
+若你希望从上游仓库安装，可直接拉取 `XiaoMi/hiui` 并执行：
 
 ```bash
-git clone --depth 1 --branch gray-skill-bundle-20260703 https://github.com/1108guorui-web/hiui.git
+git clone https://github.com/XiaoMi/hiui.git
 cd hiui
 bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
-也可以在已有仓库副本中直接运行：
+若外部成员仍使用旧入口，也应保持可用：
+
+```bash
+bash skills/hiui-page-workflow/install.sh
+```
+
+在已有仓库副本中，也可以直接运行默认入口：
 
 ```bash
 bash skills/hiui-page-workflow/install-workflow.sh
@@ -75,30 +85,30 @@ bash skills/hiui-page-workflow/install-workflow.sh
 安装或升级到 bundle 推荐版本：
 
 ```bash
-bash install-workflow.sh
+bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
 只查看安装计划，不真正写入：
 
 ```bash
-bash install-workflow.sh --dry-run --json
+bash skills/hiui-page-workflow/install-workflow.sh --dry-run --json
 ```
 
 重新覆盖安装同版本：
 
 ```bash
-bash install-workflow.sh --reinstall
+bash skills/hiui-page-workflow/install-workflow.sh --reinstall
 ```
 
 强制按 lock 文件同步本地版本：
 
 ```bash
-bash install-workflow.sh --force-sync
+bash skills/hiui-page-workflow/install-workflow.sh --force-sync
 ```
 
 ### Compatibility Notes
 
-旧入口脚本仍然保留，但只作为兼容壳转调 `install-workflow.sh`。后续文档和脚本示例统一使用 `install-workflow.sh`。
+旧入口脚本仍然保留，但只作为兼容壳转调 `install-workflow.sh`。后续文档和脚本示例统一使用仓库内的 `skills/hiui-page-workflow/install-workflow.sh`。
 
 ## Project Usage
 
@@ -117,12 +127,16 @@ bash install-workflow.sh --force-sync
 - 需要强制覆盖时：显式使用 `--force-sync`
 - 需要允许降级时：显式使用 `--allow-downgrade`
 
-`workflow-bundle.lock.json` 是组合分发的真相源。当前灰度版默认使用公开 fork 的固定灰度分支加显式 `ref` 和 `path` 来定位 skill 源码，方便做一次完整的在线安装验证；完成灰度验证后，应再切回稳定上游分支、tag 或 commit。
+`workflow-bundle.lock.json` 是组合分发的真相源。默认公开 lock 会为四个 skill 同时记录明确的上游仓库、固定 commit 和 skill 路径，安装器只按这份锁定快照取内容。
+
+默认公开 lock 现在会把四个 skill 固定到 `XiaoMi/hiui` 的同一个 commit SHA。这样即使外部成员是从较新的 `master` 拉下安装入口，真正安装的 skill 内容仍然由 lock 文件统一锁定，不会随着远端分支漂移。
+
+公开发布时，不应把 lock 指到灰度 fork 或移动中的 `master/main` 分支；应使用固定 commit，并在更新 commit 后重新跑一次校验和发布 smoke。
 
 若你只想在临时目录验证安装，不污染本机默认落点，可先指定一个临时目录：
 
 ```bash
-WORKFLOW_HOME=/tmp/workflow-gray-test bash skills/hiui-page-workflow/install-workflow.sh
+WORKFLOW_HOME=/tmp/workflow-bundle-test bash skills/hiui-page-workflow/install-workflow.sh
 ```
 
 ## Validation And Rollback
@@ -130,15 +144,15 @@ WORKFLOW_HOME=/tmp/workflow-gray-test bash skills/hiui-page-workflow/install-wor
 发布或变更 lock 文件前，建议按顺序执行：
 
 ```bash
-node scripts/verify-workflow-bundle.mjs --json
-node scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
-node scripts/release-workflow-bundle.mjs --json
+node skills/hiui-page-workflow/scripts/verify-workflow-bundle.mjs --json
+node skills/hiui-page-workflow/scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
+node skills/hiui-page-workflow/scripts/release-workflow-bundle.mjs --json
 ```
 
 安装会自动生成备份和 `install-journal.json`。若要回滚，执行：
 
 ```bash
-node scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
+node skills/hiui-page-workflow/scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 ```
 
 ## Repository Layout
