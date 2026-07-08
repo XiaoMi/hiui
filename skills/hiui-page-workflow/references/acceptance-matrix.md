@@ -86,12 +86,12 @@
 - `requirementGate` 与 `generationInputGate` 均必须通过；若是授权假设，最终报告必须高亮风险
 - 以 `hiui-design` 的 `formalAcceptanceActions` 为主调度面；`formalAcceptanceCommands` 只作兼容摘要
 - `ux-formal`：执行 `ux-walkthrough` 完整 SOP
-- `precheck_walkthrough.py`、证据门禁、问题判断、report.json、docx 全部执行
+- `precheck_walkthrough.py`、证据门禁、问题判断、report.json，以及当前 `ux-walkthrough` 版本要求的完成门禁全部执行；1.0.2 起至少包括 checklist coverage 校验、标注校验与 docx
 - P0 场景覆盖矩阵和 P0/P1 修复后复验
 - 截图和标注图
 - 修复前 / 修复后效果对比图，报告中需可查看原图路径
 - 本地 docx 报告
-- `hiui-design` usage stats 收口；`ux-walkthrough` 以报告、`report.json`、标注校验与 docx 作为正式完成面
+- `hiui-design` usage stats 收口；`ux-walkthrough` 以报告、`report.json` 与当前版本要求的完成门禁作为正式完成面；1.0.2 起至少包含 checklist coverage 校验、标注校验与 docx
 
 ## 升级规则
 

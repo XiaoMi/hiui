@@ -8,12 +8,6 @@
 2. 再同步整理一份 `report.json`
 3. 最后调用 `scripts/generate_docx.py` 生成本地 `.docx`
 
-前置依赖：
-
-- 运行环境必须可导入 Python 包 `python-docx`
-- 若缺少该依赖，`generate_docx.py` 会返回 `status=failed`、`failure_stage=docx_generation`
-- 这种情况只能报告“docx 未生成成功”，不能把本次走查标记为完整完成
-
 标准命令：
 
 ```bash
@@ -83,6 +77,11 @@ python3 <SKILL_ROOT>/scripts/generate_docx.py \
 - `summary.key_points`：核心问题列表
 - `summary.improvement_direction`：改进方向
 - `issues`：非空数组
+- `checklist_coverage`：**必填**；键为全部 checklist ID（`UX-1.1` ... `UX-3.5`），值为下列之一：
+  - `pass: <验证证据>` - 已检查且无问题；**备注须 >=8 字**，禁止裸 `pass`
+  - `issue` - 已发现问题（须在 `issues[]` 中体现；标为 issue 的条数不得大于 `issues` 总数）
+  - `pending: <原因>` - 证据不足，原因须 >=8 字；须在 `issues[]` 中以标题含“待交互验证”的条目体现
+  - `n/a: <原因>` - 本条不适用，原因须 >=8 字（**url/screenshot 模式下 UX-1.4 / UX-1.5 / UX-1.6 不可标 n/a**）
 - `issues[].index`：问题序号
 - `issues[].severity`：必须是 `P0 / P1 / P2`
 - `issues[].title`：不带序号和优先级也可以，脚本会统一组装为 `序号. [P级]标题`
@@ -107,6 +106,7 @@ python3 <SKILL_ROOT>/scripts/generate_docx.py \
 ### 标注门禁（screenshot / url 必过）
 
 ```bash
+python3 <SKILL_ROOT>/scripts/validate_checklist_coverage.py --report-json <report.json> --json
 python3 <SKILL_ROOT>/scripts/validate_report_annotations.py --report-json <report.json> --json
 python3 <SKILL_ROOT>/scripts/annotate_issue.py \
   --input <原图> \
@@ -118,7 +118,7 @@ python3 <SKILL_ROOT>/scripts/annotate_issue.py \
   --json
 ```
 
-`generate_docx.py` 默认调用上述校验；未通过则 `status=failed`、`reason=annotations_missing`。
+`generate_docx.py` 默认调用上述两项校验；未通过则 `status=failed`（`checklist_coverage_incomplete` 或 `annotations_missing`）。
 - `source=code` 时允许全篇无图
 - 图片路径支持绝对路径，也支持相对 `report.json` 所在目录的相对路径
 - 任一图片路径不存在时，`generate_docx.py` 会直接返回失败
@@ -181,7 +181,7 @@ python3 <SKILL_ROOT>/scripts/generate_docx.py --report-json <report.json> --outp
 
 - 若存在问题对应截图，文档中应直接嵌入截图，而不是只写图片路径
 - 若存在**标注版截图**，优先嵌入（样式与定位流程见 `annotation-style.md`）
-- **screenshot / url**：禁止仅嵌入未标注的整页原图；须 `validate_report_annotations.py` 已通过
+- **screenshot / url**：禁止仅嵌入未标注的整页原图；须 `validate_checklist_coverage.py` 与 `validate_report_annotations.py` 均已通过
 - 若没有标注版，`generate_docx.py` 将拒绝生成（勿依赖「可先使用原图」绕过）
 - 每个问题尽量配最相关的一张图；问题文字与对应图片应尽量相邻排布
 - 图下方可补一句简短说明

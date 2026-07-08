@@ -12,6 +12,25 @@
     ],
     "improvement_direction": "无。"
   },
+  "checklist_coverage": {
+    "UX-1.1": "pass: smoke 用例确认 report.json 结构含 scope 与 summary",
+    "UX-1.2": "pass: smoke 用例无样式密度问题需上报",
+    "UX-1.3": "pass: smoke 用例不涉及跨页一致性比对",
+    "UX-1.4": "pass: smoke 用例未覆盖真实页面可交互面",
+    "UX-1.5": "pass: smoke 用例未触发异步 loading 场景",
+    "UX-1.6": "pass: smoke 用例未触发提交反馈场景",
+    "UX-1.7": "pass: smoke 用例页面无表格数值列",
+    "UX-2.1": "pass: smoke 用例文案为中文业务描述",
+    "UX-2.2": "pass: smoke 用例无删除等危险操作入口",
+    "UX-2.3": "pass: smoke 用例无虚假成功反馈场景",
+    "UX-2.4": "pass: smoke 用例未打开弹窗验证 Esc 关闭",
+    "UX-2.5": "pass: smoke 用例未跨页比对主操作位置",
+    "UX-3.1": "issue",
+    "UX-3.2": "pass: smoke 用例无敏感字段展示",
+    "UX-3.3": "pass: smoke 用例无复杂流程需引导说明",
+    "UX-3.4": "n/a: smoke test 无运行时文案证据",
+    "UX-3.5": "n/a: code 模式无多 viewport 证据"
+  },
   "issues": [
     {
       "index": 1,

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "bundleName": "hiui-page-workflow",
-  "bundleVersion": "1.1.0",
-  "channel": "canary",
+  "bundleVersion": "1.1.1",
+  "channel": "master-follow",
   "installPolicyRef": "install-policy.json",
   "compatibilityMatrixRef": "compatibility-matrix.json",
   "runtimeCompatibility": {
@@ -11,8 +11,9 @@
       "python3"
     ],
     "notes": [
-      "Local development and fixture validation can resolve source.kind=local entries relative to this lock file.",
-      "Published internal releases should replace local source entries with git-backed repo/ref/path values."
+      "Local development and fixture validation can still use dedicated local-source lock variants relative to this bundle.",
+      "The published default lock follows the upstream XiaoMi/hiui master branch and resolves each skill version from the current source manifest.",
+      "Use a dedicated release lock with commit SHA refs when you need a frozen, reproducible bundle snapshot."
     ]
   },
   "skills": [
@@ -21,11 +22,12 @@
       "installName": "hiui-page-workflow",
       "required": true,
       "version": "1.1.0",
+      "versionPolicy": "follow-source-manifest",
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
         "path": "skills/hiui-page-workflow"
       }
     },
@@ -34,11 +36,12 @@
       "installName": "refine-product-requirements",
       "required": true,
       "version": "1.0.0",
+      "versionPolicy": "follow-source-manifest",
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
         "path": "skills/refine-product-requirements"
       }
     },
@@ -47,11 +50,12 @@
       "installName": "hiui-design",
       "required": true,
       "version": "1.0.0",
+      "versionPolicy": "follow-source-manifest",
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
         "path": "skills/hiui-design"
       }
     },
@@ -60,11 +64,12 @@
       "installName": "ux-walkthrough",
       "required": true,
       "version": "1.0.1",
+      "versionPolicy": "follow-source-manifest",
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "git",
-        "repoUrl": "https://github.com/1108guorui-web/hiui.git",
-        "ref": "gray-skill-bundle-20260703",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
         "path": "skills/ux-walkthrough"
       }
     }

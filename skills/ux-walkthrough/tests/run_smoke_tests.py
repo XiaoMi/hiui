@@ -181,11 +181,26 @@ def test_docx_generation() -> None:
         assert output_path.is_file()
 
 
+def test_checklist_gate() -> None:
+    result = run_json(
+        [
+            PYTHON,
+            str(SCRIPTS / "validate_checklist_coverage.py"),
+            "--report-json",
+            str(FIXTURES / "report" / "minimal-report.json"),
+            "--json",
+        ]
+    )
+    assert result["ok"] is True
+    assert result["required_count"] >= 17
+
+
 def main() -> int:
     test_monorepo_gate()
     test_url_login_gate()
     test_annotate_script()
     test_annotate_fallback_warning()
+    test_checklist_gate()
     test_docx_generation()
     print("Smoke tests passed")
     return 0

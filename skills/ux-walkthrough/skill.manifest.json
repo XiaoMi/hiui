@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "ux-walkthrough",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "distributionScope": "single-skill",
   "entry": "SKILL.md",
   "requiredPaths": [
@@ -10,6 +10,7 @@
     "docs/onboarding/gates.md",
     "docs/onboarding/execution-sop.md",
     "references/mode.md",
+    "references/walkthrough-worksheet.md",
     "references/ux-checklist.md",
     "references/report-json.md",
     "references/annotation-style.md",
@@ -18,6 +19,7 @@
     "scripts/precheck_walkthrough.py",
     "scripts/probe_dev_server.py",
     "scripts/check_evidence_gate.py",
+    "scripts/validate_checklist_coverage.py",
     "scripts/validate_report_annotations.py",
     "scripts/generate_docx.py"
   ],
@@ -28,6 +30,7 @@
       "docs/onboarding/gates.md",
       "docs/onboarding/execution-sop.md",
       "references/mode.md",
+      "references/walkthrough-worksheet.md",
       "references/ux-checklist.md",
       "references/report-json.md",
       "references/annotation-style.md",
@@ -36,6 +39,7 @@
       "scripts/precheck_walkthrough.py",
       "scripts/probe_dev_server.py",
       "scripts/check_evidence_gate.py",
+      "scripts/validate_checklist_coverage.py",
       "scripts/validate_report_annotations.py",
       "scripts/generate_docx.py"
     ],

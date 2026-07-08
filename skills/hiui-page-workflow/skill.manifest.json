@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "hiui-page-workflow",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "distributionScope": "bundle-entry",
   "entry": "SKILL.md",
   "requiredPaths": [
@@ -37,7 +37,7 @@
     {
       "name": "ux-walkthrough",
       "required": true,
-      "versionRange": ">=1.0.1"
+      "versionRange": ">=1.0.2"
     }
   ]
 }

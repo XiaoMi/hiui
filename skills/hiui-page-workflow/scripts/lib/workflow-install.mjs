@@ -177,8 +177,16 @@ function runGit(args, cwd = '') {
   }
 }
 
+function isCommitShaRef(ref) {
+  return /^[0-9a-f]{7,40}$/i.test(String(ref || '').trim())
+}
+
 function isDirectCloneRef(ref) {
-  return Boolean(ref) && !String(ref).startsWith('refs/')
+  if (!ref) return false
+  const normalizedRef = String(ref).trim()
+  if (normalizedRef.startsWith('refs/')) return false
+  if (isCommitShaRef(normalizedRef)) return false
+  return true
 }
 
 async function stageGitSkill(entry, stagingRoot) {
