@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "hiui-page-workflow",
   "version": "1.1.1",
-  "distributionScope": "bundle-entry",
+  "distributionScope": "single-skill",
   "entry": "SKILL.md",
   "requiredPaths": [
     "SKILL.md",

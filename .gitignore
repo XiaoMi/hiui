@@ -4,10 +4,10 @@
 lib/
 !scripts/hi-build/lib/
 !scripts/hiui-cli/lib/
-!skills/hiui-page-workflow/scripts/lib/
-!skills/hiui-page-workflow/scripts/lib/*.mjs
-!skills/hiui-design/scripts/lib/
-!skills/hiui-design/scripts/lib/**/*.mjs
+!skills/hiui-workflow/scripts/lib/
+!skills/hiui-workflow/scripts/lib/*.mjs
+!skills/hiui-workflow/hiui-design/scripts/lib/
+!skills/hiui-workflow/hiui-design/scripts/lib/**/*.mjs
 es/
 # locally packed package
 *.tgz
@@ -44,3 +44,7 @@ dist-github/**
 .next/**
 
 storybook-static
+
+# Local Codex skill registry cache
+skills-lock.json
+.agents/

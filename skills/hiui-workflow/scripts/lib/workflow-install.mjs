@@ -35,8 +35,84 @@ function replacementActions() {
   return new Set(['install', 'upgrade', 'downgrade', 'reinstall', 'backup-and-upgrade'])
 }
 
+const COPY_EXCLUDED_NAMES = new Set([
+  '.DS_Store',
+  '.git',
+  '__pycache__',
+  '.learnings',
+  'outputs',
+  'tmp',
+])
+
+const COPY_EXCLUDED_EXACT_FILES = new Set([
+  '.codex-write-check',
+  '.env.release',
+  '.env.release.local',
+  '.release.env',
+  '.release.env.example',
+  '.release.env.local',
+])
+
+const COPY_EXCLUDED_PREFIXES = [
+  '.backup-',
+]
+
+const COPY_EXCLUDED_SUFFIXES = [
+  '.bak',
+  '.pyc',
+]
+
 async function ensureDirectory(dirPath) {
   await fs.mkdir(dirPath, { recursive: true })
+}
+
+function shouldExcludeSegment(segment) {
+  if (COPY_EXCLUDED_NAMES.has(segment)) {
+    return true
+  }
+  if (COPY_EXCLUDED_EXACT_FILES.has(segment)) {
+    return true
+  }
+  if (COPY_EXCLUDED_PREFIXES.some((prefix) => segment.startsWith(prefix))) {
+    return true
+  }
+  if (COPY_EXCLUDED_SUFFIXES.some((suffix) => segment.endsWith(suffix))) {
+    return true
+  }
+  if (segment.includes('.bak-')) {
+    return true
+  }
+
+  return false
+}
+
+function shouldCopySkillPath(sourceRoot, sourcePath) {
+  const relativePath = path.relative(sourceRoot, sourcePath)
+
+  if (!relativePath || relativePath === '') {
+    return true
+  }
+
+  const segments = relativePath
+    .split(path.sep)
+    .filter(Boolean)
+
+  for (const segment of segments) {
+    if (shouldExcludeSegment(segment)) {
+      return false
+    }
+  }
+
+  return true
+}
+
+async function copySkillTree(sourceRoot, targetDir) {
+  await fs.cp(sourceRoot, targetDir, {
+    recursive: true,
+    errorOnExist: true,
+    force: false,
+    filter: (sourcePath) => shouldCopySkillPath(sourceRoot, sourcePath),
+  })
 }
 
 async function readInstalledSkill(targetDir) {
@@ -228,11 +304,7 @@ async function stageGitSkill(entry, stagingRoot) {
     throw new Error(`Git source path does not exist after checkout: ${sourcePath}`)
   }
 
-  await fs.cp(repoSkillRoot, stagedDir, {
-    recursive: true,
-    errorOnExist: true,
-    force: false,
-  })
+  await copySkillTree(repoSkillRoot, stagedDir)
 
   return {
     repoDir,
@@ -250,11 +322,7 @@ async function stageSource(entry, resolved, stagingRoot) {
     if (!resolved.sourceExists) {
       throw new Error(`Local source does not exist: ${resolved.sourceRoot}`)
     }
-    await fs.cp(resolved.sourceRoot, stagedDir, {
-      recursive: true,
-      errorOnExist: true,
-      force: false,
-    })
+    await copySkillTree(resolved.sourceRoot, stagedDir)
     return {
       stagedDir,
       stagingSource: resolved.sourceRoot,

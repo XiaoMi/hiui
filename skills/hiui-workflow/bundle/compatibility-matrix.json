@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleName": "hiui-page-workflow",
+  "bundleName": "hiui-workflow",
   "notes": [
     "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries and follows XiaoMi/hiui:master by default.",
     "The default lock now uses versionPolicy=follow-source-manifest, so the installed skill versions come from the current upstream manifests instead of a fixed git snapshot.",

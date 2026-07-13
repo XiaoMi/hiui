@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleName": "hiui-page-workflow",
+  "bundleName": "hiui-workflow",
   "defaultPolicy": {
     "onMissing": "install",
     "onSameVersion": "skip",

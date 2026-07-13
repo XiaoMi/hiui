@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleName": "hiui-page-workflow",
+  "bundleName": "hiui-workflow",
   "bundleVersion": "1.1.1-local",
   "channel": "local-dev",
   "installPolicyRef": "install-policy.json",
@@ -24,7 +24,7 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "local",
-        "path": ".."
+        "path": "../hiui-page-workflow"
       }
     },
     {
@@ -35,7 +35,7 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "local",
-        "path": "../../refine-product-requirements"
+        "path": "../refine-product-requirements"
       }
     },
     {
@@ -46,7 +46,7 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "local",
-        "path": "../../hiui-design"
+        "path": "../hiui-design"
       }
     },
     {
@@ -57,7 +57,7 @@
       "manifestPath": "skill.manifest.json",
       "source": {
         "kind": "local",
-        "path": "../../ux-walkthrough"
+        "path": "../ux-walkthrough"
       }
     }
   ]

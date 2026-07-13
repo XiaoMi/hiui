@@ -32,9 +32,9 @@ description: >-
 - Before 任何页面源码修改，必须同时 validate：`generationInputGate` 已通过、HiUI 交接包已就绪、`hiui-design` 机器计划已完成。
 - Before 从页面规划进入页面实现，必须同时 validate：`plan.status=ready`、`facts.status=ready`、`currentExecutionState.status=ready`、`canStartImplementation=true`；任一条件不成立时，回到 `ResolveBlockingFacts`，must not 继续生成页面。
 - Before 任何 UX 确定性结论，必须 validate `uxGate.evidenceStatus = ready`；证据不足时必须 refuse 确定性完整结论。
-- Do not 在普通页面任务中默认调用 bundle 安装、升级、回滚脚本；除非用户明确要求处理分发控制面。
-- Before 运行 `scripts/install-workflow-bundle.mjs`，必须 confirm 目标目录；未加 `--force-sync` 时，发现本地更高版本必须 keep 并提示，must not 静默降级。
-- Before 真实写入，必须先通过一次 `node scripts/verify-workflow-bundle.mjs --json` 或 `node scripts/install-workflow-bundle.mjs --dry-run ...`。
+- Do not 在普通页面任务中默认调用分发控制面安装、升级、回滚脚本；除非用户明确要求处理 `hiui-workflow` 的分发控制面。
+- 若用户明确要求处理组合分发、安装验证、lock 校验或发布 smoke，必须引导到 `hiui-workflow` 对应脚本与文档；未加 `--force-sync` 时，发现本地更高版本必须 keep 并提示，must not 静默降级。
+- Before 真实写入分发控制面变更，必须先通过一次 `hiui-workflow` 的 verify 或 dry-run 验证。
 - Backup `install-journal.json` 与目标 skill 目录后，才允许执行真实安装；若任一写入失败，必须 rollback，must not 留下半安装状态。
 - Do not 把 bundle 脚本当成下游 skill 的发布替代品；四个 skill 仍然各自维护自己的源码和版本。
 - Unless 下游 skill 通过 `skill.manifest.json`、required paths 和 public contracts 暴露稳定面，否则 refuse 建立 bundle 依赖。
@@ -310,47 +310,59 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 若 `hiui-design` 统计返回 `requires_network_authorization` 或退出码 `21`，按其规则申请一次授权。
 统计失败不阻断主任务交付，但不能静默吞掉入队或授权状态。
 
-## Bundle 控制面
+## Runtime Dependency Boundary
 
-`hiui-page-workflow` 同时承担 workflow bundle 的组合入口，但这不改变它“端到端交付编排者”的核心职责。
+`hiui-page-workflow` 是运行时编排层，依赖以下 skill 在环境中已可用：
 
-- bundle lock：`bundle/workflow-bundle.lock.json`
-- 安装策略：`bundle/install-policy.json`
-- 兼容矩阵：`bundle/compatibility-matrix.json`
-- 一键安装：`scripts/install-workflow-bundle.mjs`
-- 组合校验：`scripts/verify-workflow-bundle.mjs`
-- 手动回滚：`scripts/rollback-workflow-bundle.mjs`
-- 发布 smoke：`scripts/release-workflow-bundle.mjs`
-- 发布说明：`docs/bundle-release.md`
-- 默认公开 lock 可使用移动引用；当条目标记 `follow-source-manifest` 时，应以源仓当前 manifest 版本作为目标版本
-- 若需要对外冻结发布或做强可复现回滚，应额外生成 release lock，并把相同条目改写为固定 commit SHA 引用
+- `refine-product-requirements`
+- `hiui-design`
+- `ux-walkthrough`
 
-这些 bundle 文件只服务于组合分发、安装和回滚；页面需求细化、页面生成与 UX 验收仍按本 skill 的主 workflow 执行，不应在普通页面任务中误调用 bundle 控制脚本。
+本 skill 只负责编排和消费这些 skill 的稳定输出，不负责公开安装入口，也不承担 bundle 分发控制。
 
-## Validation
+边界要求：
 
-对本 skill 及其 bundle 控制面的最小验证路径如下：
+- 若用户需要安装、升级、校验、回滚或发布 4 个 skill 的组合分发，应引导其使用 `hiui-workflow`
+- 普通页面交付任务中，不要把安装、回滚、发布 smoke 脚本当成 workflow 默认步骤
+- 不要把 `hiui-page-workflow` 对外表述成安装入口、bundle 入口或组合分发入口
+- `dependencies` 只表达运行时依赖，不应被解释为当前 `skills add` 会自动安装这些 skill
+- 若运行环境缺少上述依赖 skill，应先说明缺口，再提示使用公开入口完成安装
 
-1. 结构与 lock 校验：
+## Installation Guidance
 
-   ```bash
-   node scripts/verify-workflow-bundle.mjs --json
-   ```
+当用户询问如何安装本 workflow 或其依赖 skill 时，统一引导到公开安装入口：
 
-2. 安装计划 dry-run：
+```bash
+npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
+```
 
-   ```bash
-   node scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
-   ```
+说明要求：
 
-3. 最小发布 smoke：
+- 安装入口是 `hiui-workflow`
+- 被安装的是其中包含的 4 个独立 skill
+- 不再对外表述“单独安装 `hiui-page-workflow` 会顺带安装其他 skill”
 
-   ```bash
-   node scripts/release-workflow-bundle.mjs --json
-   ```
+## Validation Boundary
 
-4. 如需验证回滚：
+本 skill 自身的完成判断，仍以页面交付 workflow 为准：
 
-   ```bash
-   node scripts/rollback-workflow-bundle.mjs --journal <install-journal.json> --json
-   ```
+- 需求确认是否完成
+- 页面生成输入是否确认
+- 页面规划和实现是否完成
+- 工程验收结果是否已记录
+- UX 证据是否就绪
+- 修复闭环和最终交付是否完成
+
+安装、校验、回滚和发布 smoke 属于 `hiui-workflow` 的分发控制面，不属于本 skill 的默认完成路径。
+
+只有当用户明确要求处理分发控制面时，才应转到入口目录对应的脚本和文档，而不是在普通页面任务中默认触发。
+
+## Maintainer Notes
+
+维护本 skill 时，始终保持以下口径：
+
+- `hiui-page-workflow` = 运行时工作流编排 skill
+- `hiui-workflow` = 公开安装入口
+- `refine-product-requirements`、`hiui-design`、`ux-walkthrough` = 独立下游 skill
+
+若文档、脚本说明或对外回复中再次把 `hiui-page-workflow` 描述成安装入口，视为职责边界回退，应修正。

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleName": "hiui-page-workflow",
+  "bundleName": "hiui-workflow",
   "bundleVersion": "1.1.1",
   "channel": "master-follow",
   "installPolicyRef": "install-policy.json",
@@ -28,7 +28,7 @@
         "kind": "git",
         "repoUrl": "https://github.com/XiaoMi/hiui.git",
         "ref": "master",
-        "path": "skills/hiui-page-workflow"
+        "path": "skills/hiui-workflow/hiui-page-workflow"
       }
     },
     {
@@ -42,7 +42,7 @@
         "kind": "git",
         "repoUrl": "https://github.com/XiaoMi/hiui.git",
         "ref": "master",
-        "path": "skills/refine-product-requirements"
+        "path": "skills/hiui-workflow/refine-product-requirements"
       }
     },
     {
@@ -56,7 +56,7 @@
         "kind": "git",
         "repoUrl": "https://github.com/XiaoMi/hiui.git",
         "ref": "master",
-        "path": "skills/hiui-design"
+        "path": "skills/hiui-workflow/hiui-design"
       }
     },
     {
@@ -70,7 +70,7 @@
         "kind": "git",
         "repoUrl": "https://github.com/XiaoMi/hiui.git",
         "ref": "master",
-        "path": "skills/ux-walkthrough"
+        "path": "skills/hiui-workflow/ux-walkthrough"
       }
     }
   ]
