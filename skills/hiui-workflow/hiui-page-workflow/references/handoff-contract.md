@@ -78,7 +78,7 @@
     }
   },
   "requirementRefinement": {
-    "sourceSkill": "refine-product-requirements",
+    "sourceSkill": "hiui-refine",
     "deliveryMode": "quick-refine | hiui-handoff | full-prd-to-generation",
     "productName": "产品名称",
     "mvpScope": "MVP 范围摘要",
@@ -164,6 +164,8 @@
 - 若已执行 `hiui-design` 页面规划，`planSnapshot` 应保留最小 planner 快照；不要手工重造 `mode`、`pageType`、`startFrom` 或执行许可结论。
 - 进入文件修改前，若存在 `planSnapshot`，必须同时满足 `planStatus=ready`、`factsStatus=ready`、`currentExecutionState.status=ready`、`canStartImplementation=true`。
 - `planSnapshot.requiredActions` 与 `planSnapshot.formalAcceptanceActions` 只记录当前 workflow 真正消费的结构化动作及其结果；不要把未执行动作写成已通过。
+- `planSnapshot.sourceSkill`、`requirementRefinement.sourceSkill` 等 `sourceSkill` 字段只记录公开调度身份，例如 `hiui-design`、`hiui-refine`；不要写内部脚本名、目录名或 references 文件名。
+- workflow 允许依赖的下游结构化面只有本契约字段、planner 的最小公开字段以及 `requiredActions` / `formalAcceptanceActions`；不要从内部文档名或脚本路径推断调度路径。
 - `assumption-authorized` 只能来自用户明确授权；不能把“生成 / 继续 / 开始吧 / 端到端”自动当作授权。
 - 若执行过需求细化，`requirementRefinement` 必须记录真实的交付模式、关键假设和待确认项；没有执行需求细化时可省略。
 - `hiuiHandoffReady` 为 false 时，不要假装需求已完备；若用户仍要求继续生成，必须把假设和风险带入 `knownRisks`。

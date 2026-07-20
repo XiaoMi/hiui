@@ -8,7 +8,7 @@ import {
   backupRootForTarget,
   decideAction,
   defaultTargetRoot,
-  readInstalledSkill,
+  resolveInstalledSkillState,
   replacementActions,
   resolveRequestedSkill,
   rollbackActions,
@@ -106,13 +106,15 @@ async function main() {
     for (const entry of config.lock.skills) {
       const resolvedEntry = await resolveRequestedSkill(entry, config.lockDir, stagingRoot)
       const targetDir = path.join(targetRoot, resolvedEntry.installName)
-      const installed = await readInstalledSkill(targetDir)
+      const installedState = await resolveInstalledSkillState(resolvedEntry, targetRoot)
+      const installed = installedState.installed
       const decision = decideAction(resolvedEntry, installed, config.installPolicy, options)
       decisions.push({
         ...resolvedEntry,
         decision,
         installed,
         targetDir,
+        cleanupLegacyInstalls: installedState.cleanupLegacyInstalls,
       })
     }
 
@@ -125,6 +127,13 @@ async function main() {
       action: entry.decision.action,
       reason: entry.decision.reason,
       installedVersion: entry.installed.version || '',
+      installedDir: entry.installed.targetDir || '',
+      installedSource: entry.installed.source || 'missing',
+      cleanupLegacyInstalls: entry.cleanupLegacyInstalls.map((legacyInstall) => ({
+        installName: legacyInstall.installName,
+        targetDir: legacyInstall.targetDir,
+        version: legacyInstall.version || '',
+      })),
       targetDir: entry.targetDir,
     }))
 
@@ -168,19 +177,40 @@ async function main() {
     }
 
     try {
+      for (const entry of decisions) {
+        for (const legacyInstall of entry.cleanupLegacyInstalls) {
+          const backupDir = path.join(backupRoot, legacyInstall.installName)
+          await ensureDirectory(path.dirname(backupDir))
+          await fs.rename(legacyInstall.targetDir, backupDir)
+          journal.actions.push({
+            kind: 'cleanup-legacy-install',
+            name: entry.name,
+            installName: entry.installName,
+            legacyInstallName: legacyInstall.installName,
+            backupDir,
+            restoreDir: legacyInstall.targetDir,
+          })
+        }
+      }
+
       for (const entry of stagedEntries) {
-        const backupDir = entry.installed.exists ? path.join(backupRoot, entry.installName) : ''
+        const backupInstallName = entry.installed.exists
+          ? entry.installed.installName || entry.installName
+          : ''
+        const backupDir = entry.installed.exists ? path.join(backupRoot, backupInstallName) : ''
         if (entry.installed.exists) {
           await ensureDirectory(path.dirname(backupDir))
-          await fs.rename(entry.targetDir, backupDir)
+          await fs.rename(entry.installed.targetDir, backupDir)
         }
         await ensureDirectory(path.dirname(entry.targetDir))
         await fs.rename(entry.stagedDir, entry.targetDir)
         journal.actions.push({
+          kind: 'replace-skill',
           name: entry.name,
           installName: entry.installName,
           action: entry.decision.action,
           targetDir: entry.targetDir,
+          restoreDir: entry.installed.targetDir || entry.targetDir,
           backupDir,
           installedVersion: entry.installed.version || '',
           targetVersion: entry.requestedVersion,

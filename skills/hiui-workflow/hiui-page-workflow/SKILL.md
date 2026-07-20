@@ -3,7 +3,7 @@ name: hiui-page-workflow
 description: >-
   用于 React / HiUI 页面从需求细化到端到端生成与验收。适用于从模糊产品需求生成并验收页面、
   HiUI 页面提测前检查、页面生成后做体验走查、页面从需求到实现再到 UX 验收闭环等任务。
-  编排 refine-product-requirements、hiui-design 与 ux-walkthrough：用 requirementGate、
+  编排 hiui-refine、hiui-design 与 ux-walkthrough：用 requirementGate、
   generationInputGate 和 uxGate 控制需求确认、页面生成输入确认、工程验收、UX 分级验收、
   before/after 截图、修复闭环和报告输出。
 ---
@@ -16,9 +16,11 @@ description: >-
 
 这是门禁型编排 workflow，不复制下游 skill 的详细规则，但必须控制阶段状态、输入契约和证据门禁：
 
-- 需求澄清、产品方案、页面清单、全局生成上下文、页面级提示词、HiUI 交接包：使用 `refine-product-requirements`
+- 需求澄清、产品方案、页面清单、全局生成上下文、页面级提示词、HiUI 交接包：使用 `hiui-refine`
 - 页面规划、生成、源码约束、contract、工程 gate：使用 `hiui-design`
 - UX 检查标准、证据门禁、P 级问题、正式 docx 报告：使用或参考 `ux-walkthrough`
+
+调度边界冻结见 `references/dispatch-boundary.md`：本 workflow 只依赖能力标识、公开调度身份和 machine-public protocol，不依赖下游内部命名。
 
 核心铁律：
 
@@ -53,7 +55,7 @@ description: >-
 - 修复页面并输出体验报告
 - 页面生成、工程验收、UX 验收一条龙
 
-若用户只要求需求细化、产品方案、页面清单或页面提示词，且没有页面生成 / 验收目标，可在本 workflow 的 S0 收口，并按 `refine-product-requirements` 的交付模式输出。
+若用户只要求需求细化、产品方案、页面清单或页面提示词，且没有页面生成 / 验收目标，可在本 workflow 的 S0 收口，并按 `hiui-refine` 的交付模式输出。
 若用户通过本 workflow 明确要求“需求细化 -> 页面生成 -> 验收”全流程，不得停在 S0，必须继续进入 HiUI 规划、生成、工程验收和 UX 验收。
 若用户只要求体验走查，优先使用 `ux-walkthrough`。
 
@@ -99,7 +101,7 @@ Gate 最小状态：
 
 ## S0：需求与生成输入确认
 
-当输入是产品想法、粗略需求、PRD 片段、页面描述不完整，或用户明确要求“从需求到页面到验收”时，先调用 `refine-product-requirements`。
+当输入是产品想法、粗略需求、PRD 片段、页面描述不完整，或用户明确要求“从需求到页面到验收”时，先调用 `hiui-refine`。
 
 执行要求：
 
@@ -127,7 +129,7 @@ Gate 最小状态：
    - 关键业务规则和异常
    - 页面清单、全局生成上下文、页面级提示词
    - HiUI 交接包，包含页面 ID、路由/位置、HiUI 页型建议、优先级、状态、提示词 ID、假设、风险、生成顺序、`requirementGate` 和 `generationInputGate`
-6. 若需求仍有缺口但用户已授权继续生成页面，按 `refine-product-requirements` 的规则保留“待确认”和假设，不能伪造成已确认；`generationInputGate.status` 必须标为 `assumption-authorized`。
+6. 若需求仍有缺口但用户已授权继续生成页面，按 `hiui-refine` 的规则保留“待确认”和假设，不能伪造成已确认；`generationInputGate.status` 必须标为 `assumption-authorized`。
 
 需求细化的输出作为后续 `hiui-design` 的输入事实。后续不得手工重造页型、页面清单或业务规则；若 `hiui-design` 计划与 HiUI 交接包冲突，必须说明冲突并以项目事实和计划工具结果重新收敛。
 
@@ -136,9 +138,9 @@ Gate 最小状态：
 调用 `hiui-design`：
 
 0. 检查 S0 交接包中的 `generationInputGate.status`；只有 `confirmed` 或 `assumption-authorized` 可以继续。
-1. 优先在目标项目根运行 `npm run typical-page:plan-page-task -- --json`
-2. 若目标项目暂未注册 npm script，运行 `node ".local-context/hiui-design/scripts/plan-page-task.mjs" --json`
-3. 若两者都不可用，fail closed：先修目标项目的 planner 入口或接入状态；不要把 `hiui-design` skill 源码仓里的 planner 脚本当成业务项目的默认 planner 入口
+1. 优先使用 `hiui-design` 的 machine-public planner CLI 身份 `plan-page-task` 获取结构化 planner JSON；项目侧可以通过 npm script、task runner 或其他等价包装暴露该入口
+2. 只要输出满足 `hiui-design` 公布的 machine-public planner contract，就视为合法 planner 入口；workflow 不依赖具体脚本文件名、相对路径或 wrapper 名称
+3. 若当前环境没有可用的 `plan-page-task` machine-public 入口，fail closed：先修目标项目的 planner 接入状态；不要把 `hiui-design` skill 源码仓中的内部脚本路径当成 workflow contract
 4. 结合 S0 的 HiUI 交接包，确认 `mode`、`topology`、`pageType` / `pageUnits`、`taskLevel`、`startFrom`
 5. 按 `requiredDocs[].readMode` 消费计划文档：先读 `required`，`reference` / `conditional` 只按 `reason` 命中情况补读
 6. 若 `plan.status!=ready`、`facts.status!=ready`、`currentExecutionState.status!=ready`、`canStartImplementation=false`，或 `currentExecutionState.primaryAction=ResolveBlockingFacts`，先补齐阻断事实，不直接实现
@@ -314,7 +316,7 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 
 `hiui-page-workflow` 是运行时编排层，依赖以下 skill 在环境中已可用：
 
-- `refine-product-requirements`
+- `hiui-refine`
 - `hiui-design`
 - `ux-walkthrough`
 
@@ -322,6 +324,10 @@ HiUI 修改 -> 工程 gate -> 页面截图 -> UX 复查
 
 边界要求：
 
+- 调度时只依赖能力标识 `requirements-refinement`、`page-planning-and-delivery`、`ux-walkthrough-review`
+- 能力到 skill 的当前 canonical 映射为 `requirements-refinement -> hiui-refine`、`page-planning-and-delivery -> hiui-design`、`ux-walkthrough-review -> ux-walkthrough`
+- `sourceSkill`、`dependencies` 和文档中的下游名称只记录公开调度身份；不要写内部脚本名、目录名或 references 文件名
+- `hiui-design` 的执行面只消费 machine-public planner 输出及其 `requiredActions` / `formalAcceptanceActions`；不要把内部脚本路径写进 workflow contract
 - 若用户需要安装、升级、校验、回滚或发布 4 个 skill 的组合分发，应引导其使用 `hiui-workflow`
 - 普通页面交付任务中，不要把安装、回滚、发布 smoke 脚本当成 workflow 默认步骤
 - 不要把 `hiui-page-workflow` 对外表述成安装入口、bundle 入口或组合分发入口
@@ -363,6 +369,6 @@ npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 
 - `hiui-page-workflow` = 运行时工作流编排 skill
 - `hiui-workflow` = 公开安装入口
-- `refine-product-requirements`、`hiui-design`、`ux-walkthrough` = 独立下游 skill
+- `hiui-refine`、`hiui-design`、`ux-walkthrough` = 独立下游 skill
 
 若文档、脚本说明或对外回复中再次把 `hiui-page-workflow` 描述成安装入口，视为职责边界回退，应修正。

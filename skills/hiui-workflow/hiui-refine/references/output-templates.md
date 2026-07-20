@@ -14,6 +14,8 @@
 - [页面清单模板](#页面清单模板)
 - [全局生成上下文模板](#全局生成上下文模板)
 - [页面级提示词模板](#页面级提示词模板)
+- [页面提示词完整度检查模板](#页面提示词完整度检查模板)
+- [生成输入就绪检查模板](#生成输入就绪检查模板)
 - [HiUI 交接包模板](#hiui-交接包模板)
 - [确认进度模板](#确认进度模板)
 - [最终检查清单模板](#最终检查清单模板)
@@ -87,6 +89,7 @@
 
 - 需要正式 PRD 正文结构时，直接读取 `references/product-prd-template.md`
 - 需要“完整交付结构”时，继续参考本文件中的“最终交付结构模板”
+- 若需求具备复杂流程、状态流转、跨角色协作或多对象关系，按 `references/product-prd-template.md` 补充 Mermaid 图示，而不是只保留表格
 - 不要在两个文件中分别维护两份 PRD 正文模板
 
 ## 用户场景表模板
@@ -209,9 +212,9 @@
 ```markdown
 ## 页面清单
 
-| 页面 ID | 页面名称 | 工作面类型 | 路由/位置 | HiUI 页型建议 | 关联场景 | 关联功能 | 关联规则 | 用户目标 | 入口/出口 | 核心模块 | 主要操作 | 需覆盖状态 | 数据依赖 | 优先级 | 提示词 ID |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| P01 |  | page/modal/drawer/step-flow/tab/detail-panel/config-panel/embedded-work-surface |  | table-basic/unresolved | S01 | F01 | R01 |  |  |  |  | 默认/空/加载/错误/无权限/成功 | D01 | P0 | PR01 |
+| 页面 ID | 页面名称 | 工作面类型 | 路由/位置 | HiUI 页型建议 | 关联场景 | 关联功能 | 关联规则 | 用户目标 | 入口/出口 | 核心模块 | 关键字段/列/筛选/操作摘要 | 主要操作 | 需覆盖状态 | 数据依赖 | 优先级 | 提示词 ID |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| P01 |  | page/modal/drawer/step-flow/tab/detail-panel/config-panel/embedded-work-surface |  | table-basic/unresolved | S01 | F01 | R01 |  |  |  | 筛选：日期/门店状态；指标：营业额/客流；表格列：商品名/销量/异常状态；操作：查看详情/导出 |  | 默认/空/加载/错误/无权限/成功 | D01 | P0 | PR01 |
 ```
 
 ## 反向覆盖检查模板
@@ -256,17 +259,35 @@
 - 底部或固定操作区：
 - 跨页面入口/出口：
 
-### 模块与字段
-- 模块 1：
-  - 字段/内容：
-  - 组件建议：
-  - 展示规则：
-  - 操作规则：
-- 模块 2：
-  - 字段/内容：
-  - 组件建议：
-  - 展示规则：
-  - 操作规则：
+### 模块清单
+| 模块 | 位置 | 用户目标 | 展示形态/组件 | 备注 |
+|---|---|---|---|---|
+| 顶部筛选区 | 顶部 | 快速限定查询范围 | 表单 + 日期选择 + 下拉选择 |  |
+| 核心表格区 | 主内容 | 查看结果并执行主操作 | 表格 |  |
+
+### 字段与控件明细
+| 模块 | 字段/元素 key | 中文名称 | 类型/组件 | 展示/编辑 | 必填/只读 | 来源/口径 | 默认/空值 | 校验/显隐/联动 | 备注 |
+|---|---|---|---|---|---|---|---|---|---|
+| 顶部筛选区 | dateRange | 日期范围 | 日期范围选择器 | 编辑 | 非必填 | 用户输入 | 默认近 7 天 | 开始时间不得晚于结束时间 |  |
+| 核心表格区 | productName | 商品名称 | 文本列 | 展示 | 只读 | D01.productName | 空值显示 `--` | 超长省略并支持悬浮查看 |  |
+
+### 列表/表单/详情专项约束
+- 若为列表页：
+  - 筛选项：
+  - 指标卡：
+  - 表格列：
+  - 行操作：
+  - 批量操作：
+  - 排序/分页：
+- 若为表单页：
+  - 字段分组：
+  - 保存策略：
+  - 提交后反馈：
+- 若为详情页：
+  - 信息分区：
+  - 状态标签/摘要卡：
+  - 时间线/日志/关联记录：
+  - 跨页跳转：
 
 ### 交互与业务规则
 - 主操作：
@@ -302,9 +323,54 @@
 ### 验收标准
 - [ ] 用户能清楚理解本页目的和下一步动作
 - [ ] P0 操作路径完整可走通
+- [ ] 每个核心模块都已细化到字段/列/筛选/操作级，而不是只有抽象模块名
 - [ ] 关键字段、校验、权限、异常状态完整
+- [ ] 列表页的筛选项/表格列/操作，或表单页的字段/校验/保存策略，或详情页的分区字段/记录块已明确
 - [ ] 页面信息层级与核心场景一致
 - [ ] 与全局导航、命名、数据对象、权限和状态定义保持一致
+```
+
+## 页面提示词完整度检查模板
+
+```markdown
+## 页面提示词完整度检查
+
+| 检查项 | 结果 | 说明 |
+|---|---|---|
+| 页面类型已明确（列表/表单/详情/复合页） | 通过/待补/失败 |  |
+| 模块清单不是抽象模块名堆砌，而是说明了位置、职责和承载信息 | 通过/待补/失败 |  |
+| 字段与控件明细已覆盖关键模块 | 通过/待补/失败 |  |
+| 列表页已补齐筛选项、指标区、表格列、行操作、批量操作、排序/分页 | 通过/待补/失败/不适用 |  |
+| 表单页已补齐字段分组、控件类型、必填/只读、默认值、校验、联动、保存策略 | 通过/待补/失败/不适用 |  |
+| 详情页已补齐信息分区、状态标签、时间线/日志/关联记录、跨页跳转 | 通过/待补/失败/不适用 |  |
+| 权限规则、校验规则、异常态和成功反馈已覆盖 | 通过/待补/失败 |  |
+| 仍会改变布局、字段、校验或操作的高影响空白少于 3 项 | 通过/待补/失败 |  |
+
+### 判定
+- `pass`：所有关键检查项通过，可进入 generation review 预备阶段
+- `partial`：仍有高影响缺口，只能作为评审草稿
+- `fail`：结构仍停留在抽象层，必须继续确认
+```
+
+## 生成输入就绪检查模板
+
+```markdown
+## 生成输入就绪检查
+
+| 检查项 | 结果 | 说明 |
+|---|---|---|
+| `requirementGate` 已覆盖目标、P0 场景、角色权限、核心规则和状态机 | 通过/待补/失败 |  |
+| 关键页面已通过“页面提示词完整度检查” | 通过/待补/失败 |  |
+| 当前 generation-pack 已明确是 `draft generation-pack` 还是 `consumable generation-pack` | 通过/待补/失败 |  |
+| B2B / 管理后台需求已补齐对象粒度、关键规则、权限、异常、审计中的高影响项 | 通过/待补/失败/不适用 |  |
+| HiUI handoff 中已具备页型对应的字段结构，而不是只有页名和动作 | 通过/待补/失败/不适用 |  |
+| 当前内容不存在会改变页面工作面或验收标准的高影响 `remainingDebt` | 通过/待补/失败 |  |
+
+### 门禁建议
+- `not-ready`：不得展示生成输入确认块
+- `ready-for-review`：可展示生成输入确认块，等待用户确认或授权假设
+- `assumption-authorized`：用户已明确授权在当前假设下继续
+- `confirmed`：仅在用户明确确认生成输入后使用
 ```
 
 ## HiUI 交接包模板
@@ -317,18 +383,6 @@
   "productName": "",
   "targetPlatform": "HiUI React admin",
   "workflowLevelSuggestion": "quick-preview | standard-e2e | formal-e2e",
-  "requirementGate": {
-    "status": "needs-confirmation | requirements-confirmed | assumption-authorized | blocked",
-    "resolvedQuestions": [],
-    "remainingHighImpactQuestions": [],
-    "assumptions": []
-  },
-  "generationInputGate": {
-    "status": "not-ready | ready-for-review | confirmed | assumption-authorized | blocked",
-    "confirmedPageIds": [],
-    "confirmedPromptIds": [],
-    "confirmedSummary": ""
-  },
   "globalContextRef": "全局生成上下文",
   "sharedConstraints": [],
   "pages": [
@@ -337,15 +391,24 @@
       "pageName": "",
       "route": "",
       "surfaceType": "page",
-      "hiuiPageType": "table-basic | table-stat | tree-table | tree-split | drawer-form | drawer-detail | full-page-edit | full-page-detail | data-visualization | feedback | non-typical | unresolved",
+      "hiuiPageType": "table-basic | table-stat | tree-table | tree-split | drawer-form | drawer-detail | full-page-edit | full-page-detail | data-visualization | feedback-status | non-typical | unresolved",
       "priority": "P0",
       "promptId": "PR01",
       "linkedScenarioIds": ["S01"],
       "linkedFeatureIds": ["F01"],
       "linkedRuleIds": ["R01"],
       "linkedDataIds": ["D01"],
+      "surfaceSummary": "一句话说明本页看什么、改什么、完成什么",
       "statesToDesign": ["default", "empty", "loading", "error", "permission-limited", "success"],
       "primaryActions": [],
+      "secondaryActions": [],
+      "queryControls": [],
+      "metricFields": [],
+      "tableColumns": [],
+      "rowActions": [],
+      "batchActions": [],
+      "formSections": [],
+      "detailSections": [],
       "acceptanceCriteria": [],
       "dataAssumptions": [],
       "permissionAssumptions": []
@@ -358,38 +421,67 @@
 ```
 ````
 
-## 最终交付结构模板
+使用说明：
+
+- 列表页至少补 `queryControls`、`tableColumns`，有指标区时补 `metricFields`。
+- 表单页至少补 `formSections`。
+- 详情页至少补 `detailSections`。
+- 只有与该页型无关的字段可留空，不能把字段级信息全都留在页面提示词里而 handoff 为空。
+
+## 最终交付结构模板（`full-prd-to-generation`）
 
 ```markdown
-# 产品需求细化、PRD 与页面提示词
+# A. product-prd
+
+## 1. 文档信息
+
+## 2. 背景与目标
+
+## 3. 非目标
+
+## 4. 用户角色、场景与核心流程
+
+## 5. 关键流程图 / 角色协作图，按需
+
+## 6. 核心功能需求
+
+## 7. 业务规则与异常流程
+
+## 8. 状态流转图 / 对象关系图，按需
+
+## 9. 页面清单（产品层）
+
+## 10. 依赖、风险、待确认项与下一步
+```
+
+```markdown
+# B. generation-pack
 
 ## 1. 需求结论
 
 ## 2. 产品类型与关键假设
 
-## 3. 产品 PRD，若适用
+## 3. MVP 范围
 
-## 4. MVP 范围
+## 4. 用户角色、场景与核心流程
 
-## 5. 用户角色、场景与核心流程
+## 5. 功能模块、数据对象与业务规则
 
-## 6. 功能模块、数据对象与业务规则
+## 6. 权限、状态与异常
 
-## 7. 权限、状态与异常
+## 7. 业务规则覆盖与反向校验
 
-## 8. 业务规则覆盖与反向校验
+## 8. 覆盖矩阵
 
-## 9. 覆盖矩阵
+## 9. 全局生成上下文
 
-## 10. 全局生成上下文
+## 10. 页面清单（字段/列/筛选/操作级）
 
-## 11. 页面清单
+## 11. 每页提示词
 
-## 12. 每页提示词
+## 12. HiUI 页面生成交接包，若适用
 
-## 13. HiUI 页面生成交接包，若适用
-
-## 14. 待确认问题与下一轮建议
+## 13. 待确认问题、假设与下一轮建议
 ```
 
 ## 最终检查清单模板
@@ -401,15 +493,17 @@
 |---|---|---|
 | 交付模式与章节匹配 | 通过/待补/失败 |  |
 | `remainingDebt` 不会改变关键字段/权限/状态/页面/验收，或已显式标为待确认 | 通过/待补/失败 |  |
+| generation-pack 中的关键页面已细化到字段/列/筛选/操作级 | 通过/待补/失败 |  |
 | `repoConflicts` 已确认或不存在 | 通过/待补/失败 |  |
 | `product-prd` 与 `generation-pack` 未串写 | 通过/待补/失败 |  |
+| 复杂 PRD 已补齐关键流程图/状态图/协作图/关系图，或已说明可不补图的原因 | 通过/待补/失败/不适用 |  |
+| PRD 中图示、规则、异常、页面清单使用的角色名/状态名/对象名一致，且异常标签未误写成正式状态 | 通过/待补/失败/不适用 |  |
+| 角色边界复杂时已补权限矩阵，状态条件复杂时已补状态流转表，或已说明当前可不补的原因 | 通过/待补/失败/不适用 |  |
 | 下游生成门禁状态合法 | 通过/待补/失败 |  |
 
 ### 门禁结果
-- `requirementGate.status`：`needs-confirmation | requirements-confirmed | assumption-authorized | blocked`
-- `generationInputGate.status`：`not-ready | ready-for-review | confirmed | assumption-authorized | blocked`
 - `continue-confirmation`：仍需继续确认，不可收口
-- `ready-for-review`：可输出待确认版本，但不可直接进入下游生成
+- `ready-for-review`：generation-pack 已满足最小可消费粒度，可进入生成输入确认，但不可跳过用户确认直接进入下游生成
 - `assumption-authorized`：用户已授权在当前假设下继续
-- `confirmed`：仅对应 `generationInputGate.status=confirmed`，表示页面清单与提示词已被用户确认，可进入下游生成
+- `confirmed`：仅在所有高影响门禁均通过时使用
 ```

@@ -159,6 +159,66 @@ async function readInstalledSkill(targetDir) {
   }
 }
 
+async function resolveInstalledSkillState(entry, targetRoot) {
+  const targetDir = path.join(targetRoot, entry.installName)
+  const canonicalInstalled = await readInstalledSkill(targetDir)
+  const legacyInstallNames = Array.isArray(entry.legacyInstallNames)
+    ? entry.legacyInstallNames
+    : []
+  const legacyMatches = []
+
+  for (const legacyInstallName of legacyInstallNames) {
+    const legacyDir = path.join(targetRoot, legacyInstallName)
+    const legacyInstalled = await readInstalledSkill(legacyDir)
+    if (!legacyInstalled.exists) {
+      continue
+    }
+    legacyMatches.push({
+      installName: legacyInstallName,
+      targetDir: legacyDir,
+      ...legacyInstalled,
+    })
+  }
+
+  if (legacyMatches.length > 1) {
+    throw new Error(
+      `Multiple legacy installs detected for ${entry.name}: ${legacyMatches.map((match) => match.installName).join(', ')}`,
+    )
+  }
+
+  if (canonicalInstalled.exists) {
+    return {
+      installed: {
+        ...canonicalInstalled,
+        installName: entry.installName,
+        targetDir,
+        source: 'canonical',
+      },
+      cleanupLegacyInstalls: legacyMatches,
+    }
+  }
+
+  if (legacyMatches.length === 1) {
+    return {
+      installed: {
+        ...legacyMatches[0],
+        source: 'legacy',
+      },
+      cleanupLegacyInstalls: [],
+    }
+  }
+
+  return {
+    installed: {
+      ...canonicalInstalled,
+      installName: entry.installName,
+      targetDir,
+      source: 'missing',
+    },
+    cleanupLegacyInstalls: [],
+  }
+}
+
 function decideAction(entry, installed, policy, options) {
   const defaults = policy.defaultPolicy
   const requestedVersion = requestedVersionForEntry(entry)
@@ -449,10 +509,19 @@ async function rollbackActions(journal) {
 
   for (const action of actions) {
     try {
+      if (action.kind === 'cleanup-legacy-install') {
+        if (action.backupDir && await pathExists(action.backupDir)) {
+          await removePathIfExists(action.restoreDir)
+          await ensureDirectory(path.dirname(action.restoreDir))
+          await fs.rename(action.backupDir, action.restoreDir)
+        }
+        continue
+      }
+
       await removePathIfExists(action.targetDir)
       if (action.backupDir && await pathExists(action.backupDir)) {
-        await ensureDirectory(path.dirname(action.targetDir))
-        await fs.rename(action.backupDir, action.targetDir)
+        await ensureDirectory(path.dirname(action.restoreDir))
+        await fs.rename(action.backupDir, action.restoreDir)
       }
     } catch (error) {
       errors.push({
@@ -470,6 +539,7 @@ export {
   decideAction,
   defaultTargetRoot,
   readInstalledSkill,
+  resolveInstalledSkillState,
   replacementActions,
   resolveRequestedSkill,
   rollbackActions,

@@ -1,6 +1,6 @@
-# refine-product-requirements
+# hiui-refine
 
-`refine-product-requirements` 是一个面向产品需求细化的 Codex skill。它把模糊需求逐步收敛成可执行的产品方案，并在需要时继续产出正式 PRD、页面清单、全局生成上下文、页面级提示词和 HiUI 交接包。
+`hiui-refine` 可作为 `hiui-page-workflow` 等更大页面工作流的标准 S0 前置 skill。它把模糊需求逐步收敛成可执行的产品方案，并在需要时继续产出正式 PRD、页面清单、全局生成上下文、页面级提示词和 HiUI 交接包。
 
 ## What It Does
 
@@ -36,7 +36,7 @@
 
 ## Install
 
-将整个目录放入本地 Codex skills 目录，并保留目录名为 `refine-product-requirements`。
+将整个目录放入本地 Codex skills 目录，并保留目录名为 `hiui-refine`。
 
 最小所需文件由 `skill.manifest.json` 的 `requiredPaths` 定义。不要只复制 `SKILL.md`，否则会缺少交付模式、PRD 模板和验证样例等依赖资源。
 
@@ -45,7 +45,7 @@
 建议在发布或修改后执行以下检查：
 
 ```bash
-python3 /path/to/skill-optimizer/scripts/skill_lint.py /path/to/refine-product-requirements
+python3 ./scripts/check_version_consistency.py
 ```
 
 然后至少手工抽查以下 4 类前向样例：
@@ -73,8 +73,10 @@ python3 /path/to/skill-optimizer/scripts/skill_lint.py /path/to/refine-product-r
 ## Release Notes
 
 - 优先使用语义化版本号
+- 同时更新 `skill.manifest.json`、`SKILL.md` 与 `CHANGELOG.md`，避免版本源漂移
+- 发布前先跑 `python3 ./scripts/check_version_consistency.py`
 - 行为规则发生变化时，同时更新 `CHANGELOG.md`
-- 发布前重新跑 lint，并确认 `requiredPaths` 没有缺文件
+- 发布前确认 `requiredPaths` 没有缺文件
 
 ## License
 

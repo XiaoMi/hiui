@@ -9,7 +9,7 @@
 当前入口目录会安装以下 4 个独立 skill：
 
 - `hiui-page-workflow`
-- `refine-product-requirements`
+- `hiui-refine`
 - `hiui-design`
 - `ux-walkthrough`
 
@@ -57,7 +57,7 @@ npx skills add ./skills/hiui-workflow --skill '*' -a codex -y
 4 个 skill 的职责分工如下：
 
 - `hiui-page-workflow`：负责端到端 workflow 编排
-- `refine-product-requirements`：负责需求细化和 HiUI 交接包生成
+- `hiui-refine`：负责需求细化和 HiUI 交接包生成
 - `hiui-design`：负责页面规划、生成和工程验收
 - `ux-walkthrough`：负责体验走查、报告和 docx 产物
 

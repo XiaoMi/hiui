@@ -36,6 +36,13 @@ function assertStringArray(value, label) {
   }
 }
 
+function assertOptionalStringArray(value, label) {
+  if (typeof value === 'undefined') {
+    return
+  }
+  assertStringArray(value, label)
+}
+
 function versionModeForEntry(entry) {
   const mode = entry?.versionPolicy || 'locked'
   if (!['locked', 'follow-source-manifest'].includes(mode)) {
@@ -210,6 +217,10 @@ function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
     assertNonEmptyString(entry.installName, `${lockPath}: skill.installName`)
     assertNonEmptyString(entry.version, `${lockPath}: skill.version`)
     assertNonEmptyString(entry.manifestPath, `${lockPath}: skill.manifestPath`)
+    assertOptionalStringArray(entry.legacyInstallNames, `${lockPath}: skill.legacyInstallNames`)
+    if (Array.isArray(entry.legacyInstallNames) && entry.legacyInstallNames.includes(entry.installName)) {
+      throw new Error(`${lockPath}: skill.legacyInstallNames must not include skill.installName`)
+    }
     if ('versionPolicy' in entry && typeof entry.versionPolicy !== 'string') {
       throw new Error(`${lockPath}: skill.versionPolicy must be a string when provided`)
     }

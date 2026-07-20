@@ -3,3 +3,4 @@
 *.bak-*
 *.tmp
 __pycache__/
+.backup-*/

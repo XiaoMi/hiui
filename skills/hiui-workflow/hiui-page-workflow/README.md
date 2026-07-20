@@ -21,13 +21,21 @@
 
 `hiui-page-workflow` 依赖以下独立 skill 在运行环境中已可用：
 
-- `refine-product-requirements`
+- `hiui-refine`
 - `hiui-design`
 - `ux-walkthrough`
 
 其职责是编排和消费这些 skill 的稳定输出，不复制它们的正文规则或内部实现细节。
 
-- 对 `refine-product-requirements`：消费需求细化结果、页面清单、页面级提示词和 HiUI 交接包
+它只依赖三类稳定面：
+
+- 能力标识：`requirements-refinement`、`page-planning-and-delivery`、`ux-walkthrough-review`
+- 公开调度身份：`hiui-refine`、`hiui-design`、`ux-walkthrough`
+- machine-public protocol：HiUI 交接包、planner JSON 最小字段、`requiredActions` / `formalAcceptanceActions`、UX evidence gate
+
+正式冻结清单与边界表见 [references/dispatch-boundary.md](references/dispatch-boundary.md)。
+
+- 对 `hiui-refine`：消费需求细化结果、页面清单、页面级提示词和 HiUI 交接包
 - 对 `hiui-design`：消费页面规划、生成动作、工程验收状态和交付摘要
 - 对 `ux-walkthrough`：消费 UX 证据门禁、问题分级和报告产物
 
@@ -50,7 +58,7 @@ npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 - 在页面提测前做结构化工程与体验验收
 - 在页面修复后补完整体验报告和交付闭环
 
-如果用户只需要需求细化，应优先使用 `refine-product-requirements`。  
+如果用户只需要需求细化，应优先使用 `hiui-refine`。  
 如果用户只需要体验走查，应优先使用 `ux-walkthrough`。  
 如果任务只是单纯实现或修改页面，应优先由 `hiui-design` 主导。
 

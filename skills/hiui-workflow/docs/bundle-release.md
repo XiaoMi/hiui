@@ -8,7 +8,7 @@
 
 - `hiui-workflow/` 负责安装与发布控制面
 - `hiui-page-workflow/` 负责端到端 workflow 编排
-- `refine-product-requirements/`、`hiui-design/`、`ux-walkthrough/` 负责各自独立能力
+- `hiui-refine/`、`hiui-design/`、`ux-walkthrough/` 负责各自独立能力
 - 本入口目录不是新的业务 skill，只是公开分发入口
 
 ## Public Install Entry
@@ -77,6 +77,13 @@ node skills/hiui-workflow/scripts/release-workflow-bundle.mjs \
 ```bash
 node skills/hiui-workflow/scripts/rollback-workflow-bundle.mjs --journal <journal-path> --json
 ```
+
+## Rename Migration
+
+- 当前 bundle 会把历史安装目录 `refine-product-requirements` 识别为 `hiui-refine` 的 legacy install name。
+- 若目标环境只有旧目录，安装时会先备份旧目录，再以新目录名 `hiui-refine` 落盘。
+- 若目标环境已存在 `hiui-refine`，但仍残留旧目录，安装时会把旧目录一并备份清理，避免形成双目录残留状态。
+- 回滚时会按 `install-journal.json` 把 legacy 目录恢复到原路径。
 
 ## Release Notes
 

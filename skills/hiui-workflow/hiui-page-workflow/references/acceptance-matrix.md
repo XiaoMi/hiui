@@ -24,7 +24,7 @@
 
 执行：
 
-- 输入是粗略需求时，运行 `refine-product-requirements` 的 `hiui-handoff` 或最小选项式确认
+- 输入是粗略需求时，运行 `hiui-refine` 的 `hiui-handoff` 或最小选项式确认
 - 展示生成输入确认块；用户确认或明确授权假设后才继续
 - `hiui-design` 的 `plan-page-task`
 - 页面生成或修改
@@ -49,7 +49,7 @@
 
 执行：
 
-- 运行 `refine-product-requirements`，产出页面清单、全局生成上下文、页面级提示词和 HiUI 交接包
+- 运行 `hiui-refine`，产出页面清单、全局生成上下文、页面级提示词和 HiUI 交接包
 - `requirementGate` 通过后，必须展示生成输入确认块
 - `generationInputGate.status = confirmed | assumption-authorized` 后才进入页面规划
 - 以 `hiui-design` 的 `requiredActions` 为主调度面；`requiredCommands` 只作兼容摘要
@@ -82,7 +82,7 @@
 
 执行：
 
-- 运行 `refine-product-requirements` 的 `full-prd-to-generation` 或等价完整交付，保留选项确认、假设、待确认和 HiUI 交接包
+- 运行 `hiui-refine` 的 `full-prd-to-generation` 或等价完整交付，保留选项确认、假设、待确认和 HiUI 交接包
 - `requirementGate` 与 `generationInputGate` 均必须通过；若是授权假设，最终报告必须高亮风险
 - 以 `hiui-design` 的 `formalAcceptanceActions` 为主调度面；`formalAcceptanceCommands` 只作兼容摘要
 - `ux-formal`：执行 `ux-walkthrough` 完整 SOP
