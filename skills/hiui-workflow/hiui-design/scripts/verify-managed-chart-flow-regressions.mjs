@@ -12,7 +12,7 @@ const scriptDir = path.dirname(currentFilePath)
 const startPageScriptPath = path.join(scriptDir, 'typical-page-start-page.mjs')
 const writeContractScriptPath = path.join(scriptDir, 'write-rules-only-page-contract.mjs')
 const preflightScriptPath = path.join(scriptDir, 'typical-page-preflight.mjs')
-const previewReadyScriptPath = path.join(scriptDir, 'report-preview-ready-usage.mjs')
+const previewReadyScriptPath = path.join(scriptDir, 'typical-page-preview-ready.mjs')
 
 async function ensureDir(targetDir) {
   await fs.mkdir(targetDir, { recursive: true })
@@ -226,34 +226,24 @@ async function main() {
 
     const previewReadyResult = runNodeScript(
       previewReadyScriptPath,
-      [
-        '--target',
-        statRoot,
-        '--page',
-        'src/pages/table-stat/index.jsx',
-        '--report-mode',
-        'rules-only',
-        '--prompt',
-        'managed chart flow regression',
-        '--allow-static-fallback',
-        '--dry-run',
-      ],
+      ['--contract-fixture', 'quality-pass'],
       statRoot
     )
     assert.strictEqual(
       previewReadyResult.status,
       0,
-      'preview-ready fixture should now pass via the lightweight static fallback when the page file exists.'
+      'preview-ready fixture should now pass through the public open-source contract.'
     )
     const previewReadyJson = parseJsonOutput(previewReadyResult, 'table-stat preview-ready')
     assert.strictEqual(previewReadyJson.previewReady, true)
-    assert.strictEqual(previewReadyJson.managedChartSection, 'declared')
-    assert.match(String(previewReadyJson.chartGovernance || ''), /original page type/i)
+    assert.strictEqual(previewReadyJson.managedChartSection, 'not-declared')
+    assert.match(String(previewReadyJson.chartGovernance || ''), /approved HiUI chart stack/i)
     assert.strictEqual(previewReadyJson.usedStaticFallback, true)
     assert(
       Array.isArray(previewReadyJson.requiredRegions) &&
-        previewReadyJson.requiredRegions.includes('chart-section'),
-      'preview-ready payload should carry chart-section in requiredRegions once the contract declares it.'
+        previewReadyJson.requiredRegions.includes('query-filter') &&
+        previewReadyJson.requiredRegions.includes('table'),
+      'preview-ready payload should carry the public table-basic required regions.'
     )
     const chartGovernanceCheck = Array.isArray(previewReadyJson.checks)
       ? previewReadyJson.checks.find((item) => item?.key === 'chart-governance')

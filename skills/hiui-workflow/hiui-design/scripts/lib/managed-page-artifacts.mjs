@@ -503,6 +503,11 @@ export function getManagedPagesRegistryMarkdownPath(targetRoot) {
 
 export function buildManagedPageRegistryEntry(contract) {
   const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(contract)
+  const runtimeSmokeStatus = String(contract?.workflow?.runtimeSmokeStatus || '').trim()
+  const runtimeSmokeSatisfied =
+    !runtimeSmokeRequirement.required || runtimeSmokeStatus === 'pass'
+  const readyForDelivery =
+    contract?.workflow?.readyForDelivery === true && runtimeSmokeSatisfied
   return {
     generatedPagePath: String(contract?.generatedPagePath || '').trim(),
     pageTypeId: String(contract?.pageTypeId || '').trim(),
@@ -516,14 +521,14 @@ export function buildManagedPageRegistryEntry(contract) {
     preflightStatus: String(contract?.workflow?.preflightStatus || '').trim(),
     preflightStage: String(contract?.workflow?.preflightStage || '').trim(),
     readyForImplementation: contract?.workflow?.readyForImplementation === true,
-    readyForDelivery: contract?.workflow?.readyForDelivery === true,
+    readyForDelivery,
     deferredChecks: Array.isArray(contract?.workflow?.deferredChecks)
       ? contract.workflow.deferredChecks.map((item) => String(item || '').trim()).filter(Boolean)
       : [],
     sourceGateStatus: String(contract?.workflow?.sourceGateStatus || '').trim(),
     doctorStatus: String(contract?.workflow?.doctorStatus || '').trim(),
     runtimeSmokeRequired: runtimeSmokeRequirement.required,
-    runtimeSmokeStatus: String(contract?.workflow?.runtimeSmokeStatus || '').trim(),
+    runtimeSmokeStatus,
     runtimeSmokeSnapshotHash: String(contract?.workflow?.runtimeSmokeSnapshotHash || '').trim(),
     sourceSnapshotHash: String(contract?.workflow?.sourceSnapshotHash || '').trim(),
     updatedAt:

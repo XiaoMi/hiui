@@ -60,7 +60,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         />
 
         <SectionBlock
-          description="TODO_OVERVIEW_DESCRIPTION"
           region="stat-section"
           title="TODO_OVERVIEW_TITLE"
         >
@@ -83,10 +82,7 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
           </ManagedCardGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_RISK_SECTION_DESCRIPTION"
-          title="TODO_RISK_SECTION_TITLE"
-        >
+        <SectionBlock title="TODO_RISK_SECTION_TITLE">
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
               <div>TODO_RISK_LINE_NAME</div>
@@ -97,7 +93,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         </SectionBlock>
 
         <SectionBlock
-          description="TODO_CHART_SECTION_DESCRIPTION"
           region="chart-section"
           title="TODO_CHART_SECTION_TITLE"
         >
@@ -106,14 +101,12 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
               <ManagedChartGridItem gridSpan={8} layoutGroup="primary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_CHART_DESCRIPTION"
                   title="TODO_CHART_TITLE"
                 />
               </ManagedChartGridItem>
               <ManagedChartGridItem gridSpan={4} layoutGroup="secondary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_CHART_DESCRIPTION"
                   title="TODO_CHART_TITLE"
                 />
               </ManagedChartGridItem>
@@ -121,17 +114,13 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
             <ManagedChartGridItem gridSpan={12} layoutGroup="follow-up">
               <ManagedChartCard
                 body={<div>{/* TODO: replace with chart content */}</div>}
-                description="TODO_CHART_DESCRIPTION"
                 title="TODO_CHART_TITLE"
               />
             </ManagedChartGridItem>
           </ManagedChartSectionGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_RECORD_SECTION_DESCRIPTION"
-          title="TODO_RECORD_SECTION_TITLE"
-        >
+        <SectionBlock title="TODO_RECORD_SECTION_TITLE">
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
               <div>TODO_RECORD_TIME</div>
@@ -142,7 +131,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         </SectionBlock>
 
         <JoinedTableSection
-          description="TODO_TABLE_SECTION_DESCRIPTION"
           pagination={<div>{/* TODO: replace with Pagination */}</div>}
           table={<div>{/* TODO: replace with managed Table region content */}</div>}
           title="TODO_TABLE_SECTION_TITLE"

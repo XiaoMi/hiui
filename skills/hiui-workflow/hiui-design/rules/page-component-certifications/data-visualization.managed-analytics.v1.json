@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "page-component-certification.v1",
+  "componentId": "data-visualization.managed-analytics.v1",
+  "baseMoldId": "data-visualization.managed-mold.v1",
+  "mode": "host-integration",
+  "componentVersion": "v1",
+  "status": "certified",
+  "certifiedAt": "2026-07-21T00:00:00.000Z",
+  "certificationInputs": {
+    "moldDigest": "sha256:8653d3caa31ba180a7d9f30f877e528492b7aeec92bbc6e31bede51386069d5f",
+    "componentDigest": "sha256:be47f9cec7396b1d26112d982d20b669516ec84df2eead05d18f588e3398afc4",
+    "componentSource": "reference/host-integration/src/components/managed-page/fixed-dashboard-page-frame.tsx",
+    "componentShell": "reference/host-integration/src/components/managed-page/fixed-dashboard-page-frame.tsx::FixedDashboardPageFrame",
+    "adapterDigests": {
+      "layout-search-stat-table-adapter": "sha256:70952a64e3876fba647e4a8aa753046c04e01dcbacc5b5278e299b55ebadc1a6"
+    },
+    "runtimeProfile": {
+      "projectMode": "host-integration",
+      "runtimeCarrierPath": "src/shared/managed-page/fixed-dashboard-page-frame.tsx::FixedDashboardPageFrame",
+      "sharedPrimitivesSource": "reference/host-integration/src/components/managed-page/data-visualization-primitives.tsx",
+      "sharedPrimitivesDigest": "sha256:71765b4710c87a36a2dec8b64a51b3263298490b5c8e57de6c09397d1a765e7e",
+      "scaffoldRef": "templates/archetypes/host-integration/data-visualization/page.template.tsx",
+      "evidence": {
+        "sourceGuard": "managed analytics pages must mount the governed runtime carrier path plus shared dashboard primitives",
+        "runtimeSmoke": "required when page-scroll delivery is active"
+      }
+    }
+  },
+  "checks": {
+    "regionValidation": "passed",
+    "slotValidation": "passed",
+    "extensionValidation": "passed",
+    "adapterValidation": "passed",
+    "visualPreview": "not_run",
+    "runtimeSmoke": "not_run"
+  },
+  "knownLimitations": [
+    "This certification proves the governed fixed-dashboard helper asset, not a project-local business page instance.",
+    "Projects must still expose the runtime carrier through src/shared/managed-page/fixed-dashboard-page-frame.tsx and pass page-instance validation, preflight, and runtime smoke when required."
+  ]
+}

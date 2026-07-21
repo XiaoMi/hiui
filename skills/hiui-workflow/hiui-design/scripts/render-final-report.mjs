@@ -11,13 +11,6 @@ const DEFAULT_STATUS_FIELDS = {
   pageStatus: ["not_started", "generated", "modified", "blocked", "failed"],
   preflightStatus: ["not_run", "passed", "failed", "invalid"],
   formalAcceptanceStatus: ["not_requested", "not_run", "passed", "failed"],
-  usageStatsStatus: [
-    "completed",
-    "skipped",
-    "requires_authorization",
-    "failed_retryable",
-    "failed_non_retryable",
-  ],
 };
 
 const DESIGN_REGION_LABELS = {
@@ -265,17 +258,11 @@ function buildContractFixtureInputs() {
     },
     finalReportContract: {
       schemaVersion: "final-report-contract.v1",
-      sections: [
-        "pageStatus",
-        "preflightStatus",
-        "formalAcceptanceStatus",
-        "usageStatsStatus",
-      ],
+      sections: ["pageStatus", "preflightStatus", "formalAcceptanceStatus"],
       requiredStatusFields: [
         "pageStatus",
         "preflightStatus",
         "formalAcceptanceStatus",
-        "usageStatsStatus",
       ],
       statusFields: {
         pageStatus: [
@@ -287,13 +274,6 @@ function buildContractFixtureInputs() {
         ],
         preflightStatus: ["not_run", "passed", "failed", "invalid"],
         formalAcceptanceStatus: ["not_run", "passed", "failed"],
-        usageStatsStatus: [
-          "completed",
-          "skipped",
-          "requires_authorization",
-          "failed_retryable",
-          "failed_non_retryable",
-        ],
       },
       requiredEvidence: [
         "executedActions",
@@ -304,8 +284,6 @@ function buildContractFixtureInputs() {
       rules: [
         "Do not report formalAcceptanceStatus as passed unless formalAcceptanceActions were executed successfully.",
         "Do not hide preflight warnings or blockingIssues.",
-        "Do not let usageStatsStatus failure override passed page/preflight status unless the page itself is not renderable.",
-        "For every non-completed usageStatsStatus, include a concrete next action.",
       ],
     },
   };
@@ -345,13 +323,6 @@ function buildContractFixtureInputs() {
     warnings: [],
   };
 
-  const usage = {
-    ok: true,
-    previewReady: true,
-    usageStatsStatus: "completed",
-    usage: { exit_code: 0, ok: true, status: "completed" },
-  };
-
   return {
     changedFiles: [
       "src/pages/orders/index.tsx",
@@ -363,13 +334,12 @@ function buildContractFixtureInputs() {
       "formal-source-gate",
       "formal-doctor",
       "formal-finalize-page",
-      "preview-ready-usage",
+      "preview-ready",
     ],
     formalStatus: "passed",
     pageStatus: "generated",
     plan,
     preflight,
-    usage,
     validationCommands: [
       {
         command:
@@ -399,13 +369,8 @@ function fallbackFinalReportContract(plan) {
   const sections = Array.isArray(plan?.acceptanceProfile?.finalReportSections)
     ? plan.acceptanceProfile.finalReportSections
     : formalRequired
-      ? [
-          "pageStatus",
-          "preflightStatus",
-          "formalAcceptanceStatus",
-          "usageStatsStatus",
-        ]
-      : ["pageStatus", "preflightStatus", "usageStatsStatus"];
+      ? ["pageStatus", "preflightStatus", "formalAcceptanceStatus"]
+      : ["pageStatus", "preflightStatus"];
 
   return {
     schemaVersion: "final-report-contract.v1",
@@ -568,7 +533,6 @@ function collectWarnings(preflight, managedContract, preflightExecution) {
 function nextActionsForStatuses({
   managedContract,
   preflightStatus,
-  usageStatsStatus,
   formalAcceptanceStatus,
   pageStatus,
   preflight,
@@ -625,26 +589,6 @@ function nextActionsForStatuses({
   if (formalAcceptanceStatus === "failed") {
     actions.push(
       "Fix formal acceptance failures and rerun formalAcceptanceActions.",
-    );
-  }
-  if (usageStatsStatus === "requires_authorization") {
-    actions.push(
-      "Request network authorization, then rerun usage flush/finalize.",
-    );
-  }
-  if (usageStatsStatus === "failed_retryable") {
-    actions.push(
-      "Retry usage stats flush/finalize after the transient failure clears.",
-    );
-  }
-  if (usageStatsStatus === "failed_non_retryable") {
-    actions.push(
-      "Record the usage stats failure reason; do not retry automatically.",
-    );
-  }
-  if (usageStatsStatus === "skipped") {
-    actions.push(
-      "Run typical-page:record-usage later if this task still requires stats closure.",
     );
   }
   return [...new Set(actions)];
@@ -766,7 +710,6 @@ function buildDesignerSummary({
       preflightStatus: statuses.preflightStatus,
       formalAcceptanceStatus:
         statuses.formalAcceptanceStatus || "not_requested",
-      usageStatsStatus: statuses.usageStatsStatus,
     },
     remainingDesignRisks: [...blockingIssues, ...warnings],
     questionsForDesigner:
@@ -853,13 +796,11 @@ function renderFinalReport({
   pageStatus,
   plan,
   preflight,
-  usage,
   validationCommands,
 }) {
   const contract =
     plan.finalReportContract || fallbackFinalReportContract(plan);
   const preflightStatus = resolvePreflightStatus(preflight, managedContract);
-  const usageStatsStatus = normalizeStatus(usage?.usageStatsStatus, "skipped");
   const formalAcceptanceStatus = resolveFormalAcceptanceStatus(
     formalStatus,
     contract,
@@ -878,7 +819,6 @@ function renderFinalReport({
   const statuses = {
     pageStatus: normalizedPageStatus,
     preflightStatus,
-    usageStatsStatus,
   };
   if (contract.sections.includes("formalAcceptanceStatus")) {
     statuses.formalAcceptanceStatus = formalAcceptanceStatus;
@@ -909,7 +849,6 @@ function renderFinalReport({
     preflight,
     preflightStatus,
     preflightExecution,
-    usageStatsStatus,
   });
   const productionLine = buildProductionLineSummary(preflight, managedContract);
   const designerSummary = buildDesignerSummary({
@@ -944,7 +883,6 @@ function renderFinalReport({
       planSchemaVersion: plan.schemaVersion || "",
       preflightSchemaVersion: preflight?.schemaVersion || "",
       preflightStage: preflightExecution.preflightStage,
-      usageStatsStatus,
     },
   };
 }
@@ -958,7 +896,6 @@ async function main() {
       : await (async () => {
           const plan = await readJsonFile(targetRoot, options.plan);
           const preflight = await readJsonFile(targetRoot, options.preflight);
-          const usage = await readJsonFile(targetRoot, options.usage);
           const managedContract = await resolveManagedContractForFinalReport(
             targetRoot,
             plan,
@@ -973,7 +910,6 @@ async function main() {
             pageStatus: options.pageStatus,
             plan,
             preflight,
-            usage,
             validationCommands: options.validationCommands,
           };
         })();

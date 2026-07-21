@@ -467,6 +467,6 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 - `contract-regions.md` 是 contract 字段唯一事实源。
 - `implementation-checklist-template.md` 只保留组合页增量要求。
 - `validation-checklist.md` 只保留页面质量验收证据与页面完成门槛。
-- `PRIVACY.md` 只保留 `record-usage` 统计收口与最终回复前动作。
+- `PRIVACY.md` 只保留开源版无 telemetry / 无 usage reporting 的边界声明。
 
 若需要新增字段、调整 contract 结构、改变页面完成门槛或改变统计收口流程，优先修改对应事实源，不要在本文件与其它文档中平行复制。

@@ -45,8 +45,7 @@
 | `StaticGovernance`                 | 生成源码、page profile、governance guard                                                                                                        | hard profile 无 blocking；report-only profile 的风险被披露                                                                                                                                                          | hard profile failed 不得输出完成态                                                                                                                                                                  | `Preflight`                                                                                        |
 | `Preflight`                        | 页面路径、contract、source marker、region / ownership / i18n / chart / adapter facts                                                            | `preflight-report.v1.status=passed`                                                                                                                                                                                 | `failed                                                                                                                                                                                             | invalid`不得完成；按`blockingIssues[]` 修复后重跑                                                  | `FormalAcceptance` 或 `RuntimeGovernance` |
 | `FormalAcceptance`                 | `acceptanceProfile.formalRequired=true`、formal actions                                                                                         | formal actions 全部通过                                                                                                                                                                                             | 未执行不得报告 passed                                                                                                                                                                               | `RuntimeGovernance`                                                                                |
-| `RuntimeGovernance`                | runtime smoke plan、governance report、preview facts                                                                                            | 必要 runtime smoke / governance 通过或明确 not-required                                                                                                                                                             | hard profile failed / required smoke failed 不得完成                                                                                                                                                | `UsageStats`                                                                                       |
-| `UsageStats`                       | `PRIVACY.md`、workspace policy、generated page artifact、report metadata                                                    | usage 状态为 completed / skipped / unavailable / not_applicable 等可解释状态                                                                                                                                        | 目标页面文件不存在时不得上报；其它统计失败不推翻页面交付，但必须披露下一步                                                                                                                          | `OutputDeliverySummary`                                                                            |
+| `RuntimeGovernance`                | runtime smoke plan、governance report、preview facts                                                                                            | 必要 runtime smoke / governance 通过或明确 not-required                                                                                                                                                             | hard profile failed / required smoke failed 不得完成                                                                                                                                                | `OutputDeliverySummary`                                                                            |
 | `OutputDeliverySummary`            | `deliverySummaryProfile`、`finalReportContract`、已执行 actions、验证结果                                                                       | 输出轻量摘要或完整报告；只列真实证据                                                                                                                                                                                | preflight/governance/source facts 失败时必须 blocked/failed                                                                                                                                         | 结束                                                                                               |
 
 ## 标准链路
@@ -72,7 +71,6 @@ LocateProjectRoot
   -> Preflight
   -> acceptanceProfile.formalRequired ? FormalAcceptance : RuntimeGovernance
   -> RuntimeGovernance
-  -> UsageStats
   -> OutputDeliverySummary
 ```
 
@@ -97,7 +95,6 @@ LocateProjectRoot
   -> Preflight
   -> acceptanceProfile.formalRequired ? FormalAcceptance : RuntimeGovernance
   -> RuntimeGovernance
-  -> UsageStats
   -> OutputDeliverySummary
 ```
 

@@ -60,7 +60,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         />
 
         <SectionBlock
-          description="TODO_OVERVIEW_DESCRIPTION"
           region="stat-section"
           title="TODO_OVERVIEW_TITLE"
         >
@@ -84,7 +83,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         </SectionBlock>
 
         <SectionBlock
-          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
           region="chart-section"
           title="TODO_PRIMARY_ANALYSIS_TITLE"
         >
@@ -92,7 +90,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
             <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
               <ManagedChartCard
                 body={<div>{/* TODO: replace with chart content */}</div>}
-                description="TODO_PRIMARY_CHART_DESCRIPTION"
                 title="TODO_PRIMARY_CHART_TITLE"
               />
             </ManagedChartGridItem>
@@ -100,7 +97,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
               <ManagedChartGridItem gridSpan={8} layoutGroup="secondary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_SUPPORTING_CHART_DESCRIPTION"
                   title="TODO_SUPPORTING_CHART_TITLE"
                 />
               </ManagedChartGridItem>
@@ -115,10 +111,7 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
           </ManagedChartSectionGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_ACTION_SECTION_DESCRIPTION"
-          title="TODO_ACTION_SECTION_TITLE"
-        >
+        <SectionBlock title="TODO_ACTION_SECTION_TITLE">
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
               <div>TODO_FOLLOWUP_OWNER</div>
@@ -134,7 +127,6 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         </SectionBlock>
 
         <JoinedTableSection
-          description="TODO_TABLE_SECTION_DESCRIPTION"
           pagination={<div>{/* TODO: replace with Pagination */}</div>}
           table={<div>{/* TODO: replace with managed Table region content */}</div>}
           title="TODO_TABLE_SECTION_TITLE"

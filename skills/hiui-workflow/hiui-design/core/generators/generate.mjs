@@ -34,7 +34,6 @@ import {
   buildManagedAnalyticsBlockedError,
   buildManagedAnalyticsKickoffFacts,
 } from './managed-analytics-contracts.mjs'
-import { reportGeneratedPageUsage, summarizeUsageReport } from './usage-report.mjs'
 import { verifyPageLite } from '../verify/verify-lite.mjs'
 
 const COMMON_PAGE_TYPES_PATH = path.resolve(
@@ -576,16 +575,6 @@ export async function runGenerate(args = {}, options = {}) {
     targetPagePath,
     verifyResult,
   })
-  const usageReport = await reportGeneratedPageUsage({
-    repoRoot: REPO_ROOT,
-    explicitPrompt: args.prompt,
-    explicitReportMode: args['report-mode'],
-    generationMode,
-    pageType,
-    schemaSource: relativeToRoot(schemaPath),
-    targetPagePath,
-    ...(args['dry-run-report'] ? { dryRun: true } : {}),
-  })
   const outputsDir = path.resolve(PAGEGEN_ROOT, 'outputs')
   ensureDir(outputsDir)
   const safeName = targetPagePath.replace(/[\\/]/g, '__')
@@ -620,14 +609,9 @@ export async function runGenerate(args = {}, options = {}) {
       : null,
     referenceAsset,
     verifyResult,
-    usageReport: summarizeUsageReport(usageReport),
   })
 
-  const usageSummary = summarizeUsageReport(usageReport)
-  const usageTail = usageSummary
-    ? `; usageStatsStatus=${usageSummary.usageStatsStatus}; reportMode=${usageSummary.reportMode}`
-    : ''
-  console.log(`hiui-pagegen generate success: ${targetPagePath}${usageTail}`)
+  console.log(`hiui-pagegen generate success: ${targetPagePath}`)
 }
 
 const isDirectExecution = (() => {

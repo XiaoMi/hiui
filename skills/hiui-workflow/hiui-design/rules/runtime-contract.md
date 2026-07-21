@@ -69,14 +69,14 @@
     "level": "preview",
     "formalRequired": false,
     "defaultActions": [],
-    "finalReportSections": ["pageStatus", "preflightStatus", "usageStatsStatus"]
+    "finalReportSections": ["pageStatus", "preflightStatus"]
   },
   "acceptanceReasons": [],
   "formalAcceptanceActions": [],
   "finalReportContract": {
     "schemaVersion": "final-report-contract.v1",
-    "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
-    "requiredStatusFields": ["pageStatus", "preflightStatus", "usageStatsStatus"]
+    "sections": ["pageStatus", "preflightStatus"],
+    "requiredStatusFields": ["pageStatus", "preflightStatus"]
   }
 }
 ```
@@ -300,32 +300,6 @@ Profile 语义：
 
 详细生命周期以 `rules/page-task-lifecycle.md` 为唯一真相；本文件只定义生命周期中交换的运行时协议字段。
 
-## Usage Stats Status
-
-`usageStatsStatus` 是页面交付最终报告与 `preview-ready` 汇总里的标准统计收口字段。它只描述统计链路状态，不改变页面交付本身的 `preflight` / `formalAcceptance` 判断。
-
-允许值：
-
-- `completed`：统计已完成。
-- `skipped`：当前执行链路允许跳过或延后统计。
-- `requires_authorization`：统计已入队或待补传，需要用户授权网络后重试。
-- `failed_retryable`：统计失败但可重试，例如 pending 队列未完全 flush。
-- `failed_non_retryable`：统计失败且不建议自动重试，例如参数非法。
-
-映射规则：
-
-- `finalize-usage` 返回 `status=completed` 或 exit code `0` 且 `ok=true` -> `completed`。
-- 明确跳过 after-hook -> `skipped`。
-- `status=requires_network_authorization` 或 exit code `21` -> `requires_authorization`。
-- `status=flush_incomplete` 或 exit code `24` -> `failed_retryable`。
-- `ok=false` 或非零 exit code 且不属于上述可授权 / 可重试状态 -> `failed_non_retryable`。
-
-报告规则：
-
-- `usageStatsStatus` 必须作为独立字段呈现，不折叠进 `warnings[]`。
-- `requires_authorization`、`failed_retryable`、`failed_non_retryable` 均不默认推翻页面交付。
-- 非 `completed` 状态必须给出下一步：申请网络授权、稍后重试、或说明不可重试原因。
-
 ## Acceptance Profile
 
 `acceptanceProfile` 是验收范围的结构化主字段；`acceptanceLevel` 是兼容字符串。
@@ -343,12 +317,7 @@ Profile 语义：
     "typical-page:doctor",
     "typical-page:finalize-page"
   ],
-  "finalReportSections": [
-    "pageStatus",
-    "preflightStatus",
-    "formalAcceptanceStatus",
-    "usageStatsStatus"
-  ]
+  "finalReportSections": ["pageStatus", "preflightStatus", "formalAcceptanceStatus"]
 }
 ```
 
@@ -369,12 +338,11 @@ Profile 语义：
 ```json
 {
   "schemaVersion": "final-report-contract.v1",
-  "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
-  "requiredStatusFields": ["pageStatus", "preflightStatus", "usageStatsStatus"],
+  "sections": ["pageStatus", "preflightStatus"],
+  "requiredStatusFields": ["pageStatus", "preflightStatus"],
   "statusFields": {
     "pageStatus": ["not_started", "generated", "modified", "blocked", "failed"],
-    "preflightStatus": ["not_run", "passed", "failed", "invalid"],
-    "usageStatsStatus": ["completed", "skipped", "requires_authorization", "failed_retryable", "failed_non_retryable"]
+    "preflightStatus": ["not_run", "passed", "failed", "invalid"]
   },
   "requiredEvidence": ["executedActions", "changedFiles", "validationCommands"],
   "riskFields": ["blockingIssues", "warnings", "nextActions"],
@@ -387,7 +355,7 @@ Profile 语义：
 - `sections` 来自 `acceptanceProfile.finalReportSections`；formal 链路必须包含 `formalAcceptanceStatus`。
 - `formalAcceptanceStatus=passed` 只能在 `formalAcceptanceActions[]` 已执行且成功后输出。
 - `requiredEvidence` 不允许夸大：未执行的 action / command 不得写入已执行。
-- `blockingIssues`、`warnings`、非 `completed` 的 `usageStatsStatus` 必须进入最终回复。
+- `blockingIssues`、`warnings` 必须进入最终回复。
 
 `final-page-report.v1` 最小结构：
 
@@ -395,11 +363,10 @@ Profile 语义：
 {
   "schemaVersion": "final-page-report.v1",
   "contractSchemaVersion": "final-report-contract.v1",
-  "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
+  "sections": ["pageStatus", "preflightStatus"],
   "statuses": {
     "pageStatus": "modified",
-    "preflightStatus": "passed",
-    "usageStatsStatus": "completed"
+    "preflightStatus": "passed"
   },
   "preflightExecution": {
     "preflightStage": "implementation",

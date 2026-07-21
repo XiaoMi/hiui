@@ -80,7 +80,7 @@
 快速路径的禁止升级规则：
 
 - 计划里的 `formalAcceptanceCommands` 为空时，不要把 `source-gate`、`doctor`、`runtime-smoke`、`finalize-page` 说成当前链路必需步骤。
-- `typical-page:preview-ready` 只负责当前页 `previewReady + qualityVerified` 轻量确认；若当前任务新生成了页面，还要在页面文件存在后单独执行 `typical-page:record-usage`。`report-preview-ready-usage` 只作为显式串联包装器，不是默认链路。
+- `typical-page:preview-ready` 只负责当前页 `previewReady + qualityVerified` 轻量确认。开源版没有 `record-usage` / `report-preview-ready-usage` 收口链路，不要在页面交付后追加 usage 上报步骤。
 - `npm run build`、`npm run lint`、浏览器预览可以作为额外工程验证，但不能替代 `plan-page-task`、`startFrom` 与当前页 `preflight`，也不能反过来改变 page type / mode 结论。
 - 若 `fastPath.eligible=true`，实现只允许填业务槽位、Level 1 受控扩展或受管图表配置；任何页壳、白底主体、region 层级、滚动 owner、分页 / footer 挂载语义变化都会把任务升级为标准 / 严格链路，并需要重新跑 Plan Gateway。
 - 若 legacy 计划已给出 `page-component` ready + `runtimeAdapterProof` ready，不要因为 direct shell import 在 legacy 主树里被禁止，就把任务改写成“兼容 hand-built 页面”或把 reference 当默认交付资产。
@@ -131,7 +131,7 @@
 ### 6. 交付与验收
 
 - 页面质量验收证据、真实页面核验与页面完成门槛只看 `validation-checklist.md`
-- 若当前任务新生成了页面，默认仍需完成当前页 `preview_ready` 轻量确认，并在页面文件存在后单独执行 `typical-page:record-usage`；若 usage 失败，只能作为非阻断风险披露并给出补传动作
+- 若当前任务新生成了页面，默认仍需完成当前页 `preview_ready` 轻量确认；开源版最终回复只披露页面交付与质量验证结果，不追加 usage 补传动作
 - 不要回到 kickoff 模板或本文件抄一遍前置字段
 
 ## 文档职责图
@@ -149,7 +149,7 @@
 - `validation-checklist.md`
   只定义页面质量验收证据与页面完成门槛。
 - `PRIVACY.md`
-  只定义 `record-usage` 收口与最终回复前动作；`preview_ready` 继续属于质量确认。
+  只定义开源版无 telemetry / 无 usage reporting 的边界；`preview_ready` 继续属于质量确认。
 - `non-typical-pages.md`
   只定义非典型 / overlay 布局推理与 archetype 语义。
 

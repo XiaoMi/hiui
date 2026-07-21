@@ -4,6 +4,6 @@ This directory is generated from the hiui-design maintainer source by `scripts/b
 
 - target: open-source-package
 - manifestVersion: 1
-- files: 674
+- files: 675
 
 Make changes in the maintainer source, then regenerate this target.

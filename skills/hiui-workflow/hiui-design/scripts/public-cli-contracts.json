@@ -1761,8 +1761,7 @@
             "fields": [
               "pageStatus",
               "preflightStatus",
-              "formalAcceptanceStatus",
-              "usageStatsStatus"
+              "formalAcceptanceStatus"
             ]
           },
           {
@@ -1803,8 +1802,7 @@
             "fields": [
               "planSchemaVersion",
               "preflightSchemaVersion",
-              "preflightStage",
-              "usageStatsStatus"
+              "preflightStage"
             ]
           }
         ]

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "rulesVersion": "1.0.5",
-  "rulesLastUpdated": "2026-07-20",
+  "rulesVersion": "1.0.7",
+  "rulesLastUpdated": "2026-07-21",
   "principlesDoc": "rules/generation-rules.md",
   "routerDoc": "rules/page-type-map.md",
   "registryDoc": "docs/generation/figma-page-rules.md",

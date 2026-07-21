@@ -839,6 +839,90 @@ export function inspectManagedAnalyticsSharedShellUsage({
   }
 }
 
+function parseContractRuntimeModuleDescriptor(descriptor) {
+  const normalizedDescriptor = String(descriptor || '').trim().replace(/\\/g, '/')
+  if (!normalizedDescriptor) {
+    return {
+      filePath: '',
+      exportName: '',
+    }
+  }
+
+  const [filePath, exportName = ''] = normalizedDescriptor.split('::')
+  return {
+    filePath: String(filePath || '').trim().replace(/\\/g, '/'),
+    exportName: String(exportName || '').trim(),
+  }
+}
+
+function importedLocalContextHasRelativeFile(importedLocalContext, targetRoot, expectedRelativePath) {
+  const normalizedExpectedRelativePath = String(expectedRelativePath || '').trim().replace(/\\/g, '/')
+  if (!normalizedExpectedRelativePath) {
+    return false
+  }
+
+  const fileSources = Array.isArray(importedLocalContext?.fileSources)
+    ? importedLocalContext.fileSources
+    : []
+
+  return fileSources.some((entry) =>
+    normalizeRelativeSourcePath(targetRoot, entry.filePath) === normalizedExpectedRelativePath
+  )
+}
+
+function validateManagedAnalyticsCarrierProvenance({
+  contract,
+  importedLocalContext,
+  targetRoot,
+  pathLabel,
+  dashboardShellUsage,
+}) {
+  const errors = []
+  if (String(contract?.pageTypeId || '').trim() !== 'data-visualization') {
+    return errors
+  }
+
+  const generationProfile = contract?.generationProfile && typeof contract.generationProfile === 'object'
+    ? contract.generationProfile
+    : {}
+  const runtimeCarrier = parseContractRuntimeModuleDescriptor(generationProfile.runtimeCarrierPath)
+  if (!runtimeCarrier.filePath || !runtimeCarrier.exportName) {
+    errors.push(
+      `${pathLabel} is missing generationProfile.runtimeCarrierPath. Managed analytics pages must lock one governed runtime carrier path instead of treating FixedDashboardPageFrame as an unqualified local helper.`
+    )
+    return errors
+  }
+
+  if (!importedLocalContextHasRelativeFile(importedLocalContext, targetRoot, runtimeCarrier.filePath)) {
+    errors.push(
+      `${pathLabel} must resolve ${runtimeCarrier.filePath} in its imported local context because generationProfile.runtimeCarrierPath points to that governed shell carrier.`
+    )
+  }
+
+  if (!dashboardShellUsage?.fixedFrameBindingsUsed?.has(runtimeCarrier.exportName)) {
+    errors.push(
+      `${pathLabel} must mount ${runtimeCarrier.exportName} from generationProfile.runtimeCarrierPath instead of an equivalent local shell wrapper.`
+    )
+  }
+
+  const requiredRuntimeEvidence = Array.isArray(generationProfile.requiredRuntimeEvidence)
+    ? generationProfile.requiredRuntimeEvidence
+    : []
+  for (const evidence of requiredRuntimeEvidence) {
+    const normalizedEvidence = String(evidence || '').trim()
+    if (normalizedEvidence.startsWith('shared-primitives:')) {
+      const expectedRelativePath = normalizedEvidence.slice('shared-primitives:'.length)
+      if (!importedLocalContextHasRelativeFile(importedLocalContext, targetRoot, expectedRelativePath)) {
+        errors.push(
+          `${pathLabel} must resolve ${expectedRelativePath} because generationProfile.requiredRuntimeEvidence requires the governed shared dashboard primitives path.`
+        )
+      }
+    }
+  }
+
+  return errors
+}
+
 function bindingLooksLikeJsxComponent(binding) {
   return /^[A-Z][\w$]*$/.test(String(binding || '').trim())
 }
@@ -2107,49 +2191,41 @@ function hasStrongCarrierProofForCapability({
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(Table|PageTable|JoinedTableSection)\b/.test(sourceRaw)
     case 'hiui.pagination':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(Pagination|JoinedTableSection|PageTable)\b/.test(sourceRaw)
     case 'hiui.detailContent':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(Descriptions|ProDetailPage|ProDetailDrawer|ManagedFullPageDetailShell)\b/.test(sourceRaw)
     case 'hiui.form':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(Form|FormItem|ProEditPage|ProFormDrawer|SchemaFormBridge|ManagedFullPageEditShell)\b/.test(sourceRaw)
     case 'hiui.formFooter':
       if (mountsRealShell) {
         return true
       }
-
       return /(<\s*(ProEditPage|FormFooter|ActionFooter)\b|\binlineEditFooter\b|\bfooter\s*=|\bfooter\s*:)/.test(sourceRaw)
     case 'hiui.drawerContent':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(ProDetailDrawer|ProFormDrawer|Drawer)\b/.test(sourceRaw)
     case 'hiui.treePanel':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(Tree|TreeSelect|TreeSplitPageFrame|ManagedContextMainSplitShell)\b/.test(sourceRaw)
     case 'hiui.feedbackShell':
       if (mountsRealShell) {
         return true
       }
-
       return /<\s*(FeedbackStatePanel|Empty|Result|Exception|Feedback)\b/.test(sourceRaw)
     case 'hiui.whiteBodySurface':
       return (
@@ -2160,7 +2236,6 @@ function hasStrongCarrierProofForCapability({
       if (mountsRealShell) {
         return true
       }
-
       return hasManagedRegionCarrier(sourceRaw, regionName, dashboardShellUsage)
   }
 }
@@ -7370,6 +7445,13 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
       contract,
       sourceRaw: extendedSourceRaw,
       pathLabel,
+    }),
+    ...validateManagedAnalyticsCarrierProvenance({
+      contract,
+      importedLocalContext,
+      targetRoot,
+      pathLabel,
+      dashboardShellUsage,
     }),
     ...validateChartStackStructure({
       contract,

@@ -7,6 +7,7 @@ import { detectHostProfile } from "./lib/detect-host-profile.mjs";
 import { loadPageTypeManifest } from "./lib/load-page-type-manifest.mjs";
 import { loadArchetypeDefinition } from "./lib/archetypes/load-archetype-manifest.mjs";
 import {
+  buildManagedAnalyticsProvenance,
   getRequiredOwnershipRolesForPageType,
   getRequiredRegionsForPageType,
   loadRulesOnlyPageContracts,
@@ -56,6 +57,17 @@ const LIST_SHELL_PAGE_TYPES = new Set([
   "data-visualization",
 ]);
 
+const MANAGED_QUERY_FILTER_BASELINE_PAGE_TYPES = new Set([
+  "table-basic",
+  "table-stat",
+  "tree-table",
+]);
+
+const MANAGED_QUERY_FILTER_BASELINE_CANDIDATES = [
+  "src/typical-page-reuse/query-filter/managed-query-filter-fields.ts",
+  "src/typical-page-reuse/query-filter/managed-query-filter-fields.js",
+];
+
 const SLOT_FAST_PATH_PAGE_TYPES = new Set([
   "table-basic",
   "table-stat",
@@ -100,17 +112,6 @@ const HIGH_RISK_TRANSLATION_MAP_PAGE_TYPES = new Set([
   "full-page-edit",
   "full-page-detail",
 ]);
-
-const MANAGED_QUERY_FILTER_BASELINE_PAGE_TYPES = new Set([
-  "table-basic",
-  "table-stat",
-  "tree-table",
-]);
-
-const MANAGED_QUERY_FILTER_BASELINE_CANDIDATES = [
-  "src/typical-page-reuse/query-filter/managed-query-filter-fields.ts",
-  "src/typical-page-reuse/query-filter/managed-query-filter-fields.js",
-];
 
 const TEMPLATE_START_MODES = new Set([
   "rules-only",
@@ -687,7 +688,7 @@ function acceptanceProfileForDeliveryLevel(
     reason: deliveryLevel.reason,
     formalRequired: level === "formal",
     defaultActions: [],
-    finalReportSections: ["pageStatus", "preflightStatus", "usageStatsStatus"],
+    finalReportSections: ["pageStatus", "preflightStatus"],
   };
 
   if (level === "formal") {
@@ -713,15 +714,6 @@ function previewReadyCommand({ deliveryLevel, generationStrategy, taskLevel }) {
   };
 }
 
-function usageStatsCommand({ taskLevel }) {
-  return {
-    script: "typical-page:record-usage",
-    args: ["--page <new-page>", "--report-mode <mode>", "--prompt <prompt>"],
-    when: "after the generated page artifact is written and the target page file exists; usage closeout must stay lightweight and must not block on preview readiness",
-    required: taskLevel.id !== "minor-edit",
-  };
-}
-
 function appendRequiredDeliveryCommands(
   commands,
   { deliveryLevel, generationStrategy, taskLevel },
@@ -739,14 +731,6 @@ function appendRequiredDeliveryCommands(
     );
   }
 
-  if (
-    !nextCommands.some(
-      (command) => command.script === "typical-page:record-usage",
-    )
-  ) {
-    nextCommands.push(usageStatsCommand({ taskLevel }));
-  }
-
   return nextCommands;
 }
 
@@ -754,17 +738,10 @@ function finalReportContractForAcceptanceProfile(acceptanceProfile) {
   const formalRequired = Boolean(acceptanceProfile.formalRequired);
   const sections = Array.isArray(acceptanceProfile.finalReportSections)
     ? acceptanceProfile.finalReportSections
-    : ["pageStatus", "preflightStatus", "usageStatsStatus"];
+    : ["pageStatus", "preflightStatus"];
   const statusFields = {
     pageStatus: ["not_started", "generated", "modified", "blocked", "failed"],
     preflightStatus: ["not_run", "passed", "failed", "invalid"],
-    usageStatsStatus: [
-      "completed",
-      "skipped",
-      "requires_authorization",
-      "failed_retryable",
-      "failed_non_retryable",
-    ],
   };
 
   if (sections.includes("formalAcceptanceStatus")) {
@@ -785,8 +762,6 @@ function finalReportContractForAcceptanceProfile(acceptanceProfile) {
     rules: [
       "Do not report formalAcceptanceStatus as passed unless formalAcceptanceActions were executed successfully.",
       "Do not hide preflight warnings or blockingIssues.",
-      "Do not let usageStatsStatus failure override passed page/preflight status unless the page itself is not renderable.",
-      "For every non-completed usageStatsStatus, include a concrete next action.",
     ],
   };
 }
@@ -3216,17 +3191,6 @@ function perPageUnitCommands({ deliveryLevel, mode, pageUnits, taskLevel }) {
     required: taskLevel.id !== "minor-edit",
   });
 
-  commands.push({
-    script: "typical-page:record-usage",
-    args: [
-      "--page <page-unit-targets>",
-      "--report-mode <mode>",
-      "--prompt <prompt>",
-    ],
-    when: "after the generated page-unit artifacts are written and each target page file exists; usage closeout must remain independent from preview verification",
-    required: taskLevel.id !== "minor-edit",
-  });
-
   return appendRequiredDeliveryCommands(commands, {
     deliveryLevel,
     generationStrategy: {
@@ -3605,7 +3569,6 @@ function actionPhaseForScript(script) {
     return "FormalAcceptance";
   }
   if (script === "typical-page:runtime-smoke") return "FormalAcceptance";
-  if (script === "typical-page:record-usage") return "UsageStats";
   if (script === "typical-page:preview-ready") return "RuntimeGovernance";
   if (script === "resolve-business-route-target") return "ResolveBlockingFacts";
   if (script === "resolve-managed-page-instance") return "ResolveBlockingFacts";
@@ -3748,6 +3711,15 @@ function generationProfileForPlan({
     requiredGates.push("page-instance-validation");
   }
 
+  const managedAnalyticsProvenance =
+    pageTypeIds.length === 1
+      ? buildManagedAnalyticsProvenance({
+          pageTypeId: pageTypeIds[0],
+          archetypeTemplatePath: startFrom?.templatePath || "",
+          selectedDeliveryAssetId: deliveryAsset.id,
+        })
+      : null;
+
   return {
     schemaVersion: "generation-profile.v1",
     strategy: normalizedGenerationStrategyId(generationStrategy),
@@ -3791,6 +3763,7 @@ function generationProfileForPlan({
     sourceProofLevel: strictLegacySourceAdapterProof
       ? "strict-source-adapter-proof"
       : "slot-boundary-proof",
+    ...(managedAnalyticsProvenance || {}),
     notes: [
       "Generate from the primary generation asset when available; use fallback start points only for managed-fallback cases.",
       "Do not synthesize page shell, critical regions, ownership, pagination/footer, or main-scroll from local primitives.",
@@ -5554,12 +5527,6 @@ async function buildPlan(options) {
               : (pageType?.id || effectivePageTypeId) === "data-visualization",
       command: "typical-page:runtime-smoke --page <new-page> --url <url>",
     },
-    usagePolicy: {
-      mode: "follow-workspace-policy",
-      source: "PRIVACY.md",
-      previewReadyRequired: taskLevel.id !== "minor-edit",
-      requireNetworkAuthorization: "when usage script exits 21",
-    },
     targetDeliverySemantics,
     currentExecutionState,
     executionDecisionSummary: executionDecisionSummaryForPlan(
@@ -5573,7 +5540,6 @@ async function buildPlan(options) {
         (mode.source === "explicit" ? "cli:--mode" : "rules/mode-selection.md"),
       pageTypes: "rules/common.page-types.json",
       archetypes: "archetypes/page-types/*/archetype.json",
-      usagePolicy: "PRIVACY.md",
     },
     targetPage,
     canStartImplementation,

@@ -158,7 +158,7 @@ description: >-
 - `BuildGenerationRecipe`：把 `generationStrategy` 转化为标准装配协议。
 - `GenerateByRecipe`：生成行为必须遵循 `assemblyOrder`、`requiredAssets`、`forbiddenMoves`；不允许自由发明页壳、region owner、slot 顺序。
 - `InlineConformanceChecks`：关键装配步骤后的轻量一致性检查，不把重验收前移。
-- `DeliveryConfirmation`：末端确认层，内部继续承接 `WriteContract`、`Preflight`、`PreviewReady`、`FormalAcceptance`、`RuntimeGovernance`，以及按 workspace policy 收口的 `UsageStats`。若工作区已启用 mandatory usage reporting，就不能把它当成可选后置项。
+- `DeliveryConfirmation`：末端确认层，内部继续承接 `WriteContract`、`Preflight`、`PreviewReady`、`FormalAcceptance`、`RuntimeGovernance`。开源版不承担 usage telemetry / stats closeout，最终回复只收口页面交付与质量验证状态。
 - 这是叙事改名，不是立即的外部接口改名；公共脚本、报告对象和字段至少保留一个迁移周期 alias。
 
 详细生命周期仍以 `rules/page-task-lifecycle.md` 为唯一真相。

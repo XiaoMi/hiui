@@ -1718,11 +1718,11 @@ function renderStrictTemplateSource({ contract, pagePath, templateAsset }) {
   const whiteBodyOwnerAttrs = ownershipAttrs.filter((attr) => attr.role === 'white-body')
   const fixedDashboardFrameImportPath = toImportSpecifier(
     pagePath,
-    'src/typical-page-reuse/components/managed-page/fixed-dashboard-page-frame'
+    'src/shared/managed-page/fixed-dashboard-page-frame'
   )
   const dataVisualizationPrimitivesImportPath = toImportSpecifier(
     pagePath,
-    'src/typical-page-reuse/components/managed-page/data-visualization-primitives'
+    'src/shared/managed-page/data-visualization-primitives'
   )
   const hostPageHeaderPortalImportPath = toImportSpecifier(
     pagePath,
@@ -2103,7 +2103,6 @@ ${hasChartSection ? `export function ${supportingSectionsComponentName}() {
 function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
   if (layoutArchetype === 'linear-stack') {
     return `        <SectionBlock
-          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
           region="chart-section"
           title="TODO_PRIMARY_ANALYSIS_TITLE"
         >
@@ -2111,32 +2110,24 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
             <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
               <ManagedChartCard
                 body={<div>{/* TODO: replace with chart content */}</div>}
-                description="TODO_PRIMARY_CHART_DESCRIPTION"
                 title="TODO_PRIMARY_CHART_TITLE"
               />
             </ManagedChartGridItem>
           </ManagedChartSectionGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_FOLLOWUP_ANALYSIS_DESCRIPTION"
-          title="TODO_FOLLOWUP_ANALYSIS_TITLE"
-        >
+        <SectionBlock title="TODO_FOLLOWUP_ANALYSIS_TITLE">
           <ManagedChartSectionGrid>
             <ManagedChartGridItem gridSpan={12} layoutGroup="follow-up">
               <ManagedChartCard
                 body={<div>{/* TODO: replace with chart content */}</div>}
-                description="TODO_FOLLOWUP_CHART_DESCRIPTION"
                 title="TODO_FOLLOWUP_CHART_TITLE"
               />
             </ManagedChartGridItem>
           </ManagedChartSectionGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_ACTION_SECTION_DESCRIPTION"
-          title="TODO_ACTION_SECTION_TITLE"
-        >
+        <SectionBlock title="TODO_ACTION_SECTION_TITLE">
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
               <div>TODO_FOLLOWUP_OWNER</div>
@@ -2154,7 +2145,6 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
 
   if (layoutArchetype === 'parallel-sections') {
     return `        <SectionBlock
-          description="TODO_PARALLEL_ANALYSIS_DESCRIPTION"
           region="chart-section"
           title="TODO_PARALLEL_ANALYSIS_TITLE"
         >
@@ -2163,14 +2153,12 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
               <ManagedChartGridItem gridSpan={6} layoutGroup="parallel-primary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_LEFT_CHART_DESCRIPTION"
                   title="TODO_LEFT_CHART_TITLE"
                 />
               </ManagedChartGridItem>
               <ManagedChartGridItem gridSpan={6} layoutGroup="parallel-secondary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_RIGHT_CHART_DESCRIPTION"
                   title="TODO_RIGHT_CHART_TITLE"
                 />
               </ManagedChartGridItem>
@@ -2187,7 +2175,6 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
   }
 
   return `        <SectionBlock
-          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
           region="chart-section"
           title="TODO_PRIMARY_ANALYSIS_TITLE"
         >
@@ -2195,7 +2182,6 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
             <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
               <ManagedChartCard
                 body={<div>{/* TODO: replace with chart content */}</div>}
-                description="TODO_PRIMARY_CHART_DESCRIPTION"
                 title="TODO_PRIMARY_CHART_TITLE"
               />
             </ManagedChartGridItem>
@@ -2203,7 +2189,6 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
               <ManagedChartGridItem gridSpan={8} layoutGroup="secondary">
                 <ManagedChartCard
                   body={<div>{/* TODO: replace with chart content */}</div>}
-                  description="TODO_SUPPORTING_CHART_DESCRIPTION"
                   title="TODO_SUPPORTING_CHART_TITLE"
                 />
               </ManagedChartGridItem>
@@ -2218,10 +2203,7 @@ function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
           </ManagedChartSectionGrid>
         </SectionBlock>
 
-        <SectionBlock
-          description="TODO_ACTION_SECTION_DESCRIPTION"
-          title="TODO_ACTION_SECTION_TITLE"
-        >
+        <SectionBlock title="TODO_ACTION_SECTION_TITLE">
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
               <div>TODO_FOLLOWUP_OWNER</div>
@@ -2257,11 +2239,11 @@ function buildFixedDashboardManagedPageScaffold(pagePath, contract) {
 
   const frameImportPath = toImportSpecifier(
     pagePath,
-    'src/typical-page-reuse/components/managed-page/fixed-dashboard-page-frame'
+    'src/shared/managed-page/fixed-dashboard-page-frame'
   )
   const primitivesImportPath = toImportSpecifier(
     pagePath,
-    'src/typical-page-reuse/components/managed-page/data-visualization-primitives'
+    'src/shared/managed-page/data-visualization-primitives'
   )
   const analyticsLayoutScaffold = buildManagedAnalyticsLayoutScaffold(contract.layoutArchetype)
 
@@ -2336,7 +2318,6 @@ ${commentLines.map((line) => `      {/* ${line} */}`).join('\n')}
         />
 
         <SectionBlock
-          description="TODO_OVERVIEW_DESCRIPTION"
           region="stat-section"
           title="TODO_OVERVIEW_TITLE"
         >
@@ -2361,7 +2342,6 @@ ${commentLines.map((line) => `      {/* ${line} */}`).join('\n')}
 ${analyticsLayoutScaffold}
 
         <JoinedTableSection
-          description="TODO_TABLE_SECTION_DESCRIPTION"
           pagination={<div>{/* TODO: replace with Pagination */}</div>}
           table={<div>{/* TODO: replace with managed Table region content */}</div>}
           title="TODO_TABLE_SECTION_TITLE"

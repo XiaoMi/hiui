@@ -67,6 +67,13 @@ export const MANAGED_PAGE_TEXT_EXPANSION_MULTIPLIERS = Object.freeze({
   'de-DE': 2.5,
   'ar-SA': 2,
 })
+export const MANAGED_ANALYTICS_RUNTIME_CARRIER_FILE =
+  'src/shared/managed-page/fixed-dashboard-page-frame.tsx'
+export const MANAGED_ANALYTICS_RUNTIME_CARRIER_EXPORT = 'FixedDashboardPageFrame'
+export const MANAGED_ANALYTICS_SHARED_PRIMITIVES_FILE =
+  'src/shared/managed-page/data-visualization-primitives.tsx'
+export const MANAGED_ANALYTICS_CARRIER_CERTIFICATION_REF =
+  'rules/page-component-certifications/data-visualization.managed-analytics.v1.json'
 const FIXED_TEMPLATE_PAGE_TYPES = new Set([
   'data-visualization',
   'table-stat',
@@ -81,6 +88,75 @@ const MANAGED_ANALYTICS_LAYOUT_ARCHETYPES = Object.freeze([
 
 function normalizeGenerationProfile(profile) {
   return profile && typeof profile === 'object' ? profile : null
+}
+
+function normalizeManagedAnalyticsTemplateRef(archetypeTemplatePath) {
+  const normalizedTemplatePath = String(archetypeTemplatePath || '').trim().replace(/\\/g, '/')
+  if (!normalizedTemplatePath) {
+    return ''
+  }
+
+  if (normalizedTemplatePath.endsWith('/page.template.tsx')) {
+    return normalizedTemplatePath
+  }
+
+  return `${normalizedTemplatePath.replace(/\/+$/, '')}/page.template.tsx`
+}
+
+function isManagedAnalyticsContractProfile({ pageTypeId, profile }) {
+  if (String(pageTypeId || '').trim() === 'data-visualization') {
+    return true
+  }
+
+  const normalizedProfile = normalizeGenerationProfile(profile) || {}
+  return (
+    String(normalizedProfile.strategy || '').trim() === 'managed-analytics' ||
+    String(normalizedProfile.selectedDeliveryAssetKind || '').trim() === 'managed-analytics-shell' ||
+    String(normalizedProfile.selectedDeliveryAssetId || '').trim() === 'data-visualization.managed-analytics.v1'
+  )
+}
+
+export function buildManagedAnalyticsProvenance({
+  pageTypeId,
+  archetypeTemplatePath,
+  selectedDeliveryAssetId,
+} = {}) {
+  if (!isManagedAnalyticsContractProfile({ pageTypeId, profile: { selectedDeliveryAssetId } })) {
+    return null
+  }
+
+  const normalizedSelectedDeliveryAssetId =
+    String(selectedDeliveryAssetId || '').trim() || 'data-visualization.managed-analytics.v1'
+
+  return {
+    scaffoldRef: normalizeManagedAnalyticsTemplateRef(archetypeTemplatePath),
+    carrierRef: `${normalizedSelectedDeliveryAssetId}::${MANAGED_ANALYTICS_RUNTIME_CARRIER_EXPORT}`,
+    runtimeCarrierPath: `${MANAGED_ANALYTICS_RUNTIME_CARRIER_FILE}::${MANAGED_ANALYTICS_RUNTIME_CARRIER_EXPORT}`,
+    carrierCertificationRef: MANAGED_ANALYTICS_CARRIER_CERTIFICATION_REF,
+    requiredRuntimeEvidence: [
+      `runtime-carrier:${MANAGED_ANALYTICS_RUNTIME_CARRIER_FILE}`,
+      `shared-primitives:${MANAGED_ANALYTICS_SHARED_PRIMITIVES_FILE}`,
+      'runtime-smoke:required-when-page-scroll',
+    ],
+  }
+}
+
+function applyManagedAnalyticsProvenance(profile, { pageTypeId, archetypeTemplatePath } = {}) {
+  const normalizedProfile = normalizeGenerationProfile(profile) || {}
+  const provenance = buildManagedAnalyticsProvenance({
+    pageTypeId,
+    archetypeTemplatePath,
+    selectedDeliveryAssetId: normalizedProfile.selectedDeliveryAssetId,
+  })
+
+  if (!provenance) {
+    return normalizedProfile
+  }
+
+  return {
+    ...normalizedProfile,
+    ...provenance,
+  }
 }
 
 function isLegacyPageComponentGenerationProfile({ mode, profile }) {
@@ -131,7 +207,7 @@ function buildDefaultGenerationProfile({ pageTypeId, archetypeMode, archetypeTem
     },
   })
 
-  return {
+  return applyManagedAnalyticsProvenance({
     schemaVersion: 'generation-profile.v1',
     strategy: usesLegacyRuntimeBridge
       ? 'page-component'
@@ -152,7 +228,7 @@ function buildDefaultGenerationProfile({ pageTypeId, archetypeMode, archetypeTem
     requiredGates: generationProfileDefaults.requiredGates,
     fallback: 'block-and-request-managed-mold-or-certified-adapter',
     sourceProofLevel: generationProfileDefaults.sourceProofLevel,
-  }
+  }, { pageTypeId, archetypeTemplatePath })
 }
 
 function normalizeProductionContract(contract) {
@@ -165,29 +241,57 @@ function buildDefaultProductionContract({
   archetypeMode,
   generationProfile,
 }) {
+  const normalizedGenerationProfile = normalizeGenerationProfile(generationProfile) || {}
+  const provenance = buildManagedAnalyticsProvenance({
+    pageTypeId,
+    archetypeTemplatePath: normalizedGenerationProfile.scaffoldRef || '',
+    selectedDeliveryAssetId: normalizedGenerationProfile.selectedDeliveryAssetId,
+  })
+
   return {
     schemaVersion: 'page-production-contract.v1',
     page: generatedPagePath,
     pageTypeId,
     mode: archetypeMode,
     generationProfileRef: 'generationProfile',
-    moldId: generationProfile?.moldId || '',
-    startFrom: generationProfile?.startFrom || '',
-    lockedRegions: Array.isArray(generationProfile?.lockedRegions)
-      ? generationProfile.lockedRegions
+    moldId: normalizedGenerationProfile.moldId || '',
+    startFrom: normalizedGenerationProfile.startFrom || '',
+    ...(provenance || {}),
+    lockedRegions: Array.isArray(normalizedGenerationProfile.lockedRegions)
+      ? normalizedGenerationProfile.lockedRegions
       : [],
-    editableSlots: Array.isArray(generationProfile?.editableSlots)
-      ? generationProfile.editableSlots
+    editableSlots: Array.isArray(normalizedGenerationProfile.editableSlots)
+      ? normalizedGenerationProfile.editableSlots
       : [],
-    slotManifest: Array.isArray(generationProfile?.slotManifest)
-      ? generationProfile.slotManifest
+    slotManifest: Array.isArray(normalizedGenerationProfile.slotManifest)
+      ? normalizedGenerationProfile.slotManifest
       : [],
-    requiredGates: Array.isArray(generationProfile?.requiredGates)
-      ? generationProfile.requiredGates
+    requiredGates: Array.isArray(normalizedGenerationProfile.requiredGates)
+      ? normalizedGenerationProfile.requiredGates
       : [],
-    fallback: generationProfile?.fallback || '',
-    sourceProofLevel: generationProfile?.sourceProofLevel || '',
+    fallback: normalizedGenerationProfile.fallback || '',
+    sourceProofLevel: normalizedGenerationProfile.sourceProofLevel || '',
     policy: 'generate-from-managed-mold-and-fill-business-slots-only',
+  }
+}
+
+function applyManagedAnalyticsProductionContractProvenance(contract, { pageTypeId, generationProfile } = {}) {
+  const normalizedContract = normalizeProductionContract(contract) || {}
+  const normalizedGenerationProfile = normalizeGenerationProfile(generationProfile) || {}
+  const provenance = buildManagedAnalyticsProvenance({
+    pageTypeId,
+    archetypeTemplatePath: normalizedGenerationProfile.scaffoldRef || '',
+    selectedDeliveryAssetId: normalizedGenerationProfile.selectedDeliveryAssetId,
+  })
+
+  if (!provenance) {
+    return normalizedContract
+  }
+
+  return {
+    ...normalizedContract,
+    ...provenance,
+    requiredRuntimeEvidence: [...provenance.requiredRuntimeEvidence],
   }
 }
 
@@ -1250,12 +1354,20 @@ export function buildRulesOnlyPageContract({
   const normalizedCompositionGuardrails = normalizeManagedPageStringList(compositionGuardrails)
   const normalizedStrategyEvidence = normalizeManagedPageStringList(strategyEvidence)
   const normalizedRuntimeSmokePlan = normalizeManagedPageRuntimeSmokePlan(runtimeSmokePlan)
-  const resolvedGenerationProfile = normalizeGenerationProfile(generationProfile) || buildDefaultGenerationProfile({
-    pageTypeId: pageType.id,
-    archetypeMode,
-    archetypeTemplatePath:
-      archetypeDefinition?.archetype?.modeAdapters?.[archetypeMode]?.templateDir || '',
-  })
+  const archetypeTemplatePath =
+    archetypeDefinition?.archetype?.modeAdapters?.[archetypeMode]?.templateDir || ''
+  const resolvedGenerationProfile = applyManagedAnalyticsProvenance(
+    normalizeGenerationProfile(generationProfile) ||
+      buildDefaultGenerationProfile({
+        pageTypeId: pageType.id,
+        archetypeMode,
+        archetypeTemplatePath,
+      }),
+    {
+      pageTypeId: pageType.id,
+      archetypeTemplatePath,
+    }
+  )
   const primaryHostAdapter = resolvePrimaryHostAdapter({
     pageTypeId: pageType.id,
     archetypeMode,
@@ -1283,6 +1395,19 @@ export function buildRulesOnlyPageContract({
       }
     )
 
+  const resolvedProductionContract = applyManagedAnalyticsProductionContractProvenance(
+    normalizeProductionContract(productionContract) || buildDefaultProductionContract({
+      generatedPagePath,
+      pageTypeId: pageType.id,
+      archetypeMode,
+      generationProfile: resolvedGenerationProfile,
+    }),
+    {
+      pageTypeId: pageType.id,
+      generationProfile: resolvedGenerationProfile,
+    }
+  )
+
   return {
     version: RULES_ONLY_PAGE_CONTRACT_VERSION,
     createdAt,
@@ -1297,8 +1422,7 @@ export function buildRulesOnlyPageContract({
     archetypeLabel: archetypeDefinition?.archetype?.label || '',
     archetypeVersion: archetypeDefinition?.archetype?.version || '',
     archetypeMode,
-    archetypeTemplatePath:
-      archetypeDefinition?.archetype?.modeAdapters?.[archetypeMode]?.templateDir || '',
+    archetypeTemplatePath,
     strictExampleGeneration: Boolean(archetypeDefinition?.archetype),
     archetypeSmokeBaseline: buildArchetypeSmokeBaselineContractEntry(archetypeSmokeBaseline),
     scrollStrategy: scrollStrategy || getDefaultScrollStrategyForPageType(pageType.id),
@@ -1307,12 +1431,7 @@ export function buildRulesOnlyPageContract({
       archetypeMode,
       generationProfile: resolvedGenerationProfile,
     }),
-    productionContract: normalizeProductionContract(productionContract) || buildDefaultProductionContract({
-      generatedPagePath,
-      pageTypeId: pageType.id,
-      archetypeMode,
-      generationProfile: resolvedGenerationProfile,
-    }),
+    productionContract: resolvedProductionContract,
     ...(topologyContract ? { topology: topologyContract } : {}),
     ...(normalizedLayoutStrategy ? { layoutStrategy: normalizedLayoutStrategy } : {}),
     ...(normalizedLayoutArchetype ? { layoutArchetype: normalizedLayoutArchetype } : {}),
@@ -1466,6 +1585,39 @@ export function validateRulesOnlyPageContract({
         `generationProfile.slotManifest must describe every editable slot; missing ${missingSlotManifestEntries.join(', ')}`
       )
     }
+
+    const managedAnalyticsProvenance = buildManagedAnalyticsProvenance({
+      pageTypeId: contract.pageTypeId,
+      archetypeTemplatePath: contract.archetypeTemplatePath || '',
+      selectedDeliveryAssetId: generationProfile.selectedDeliveryAssetId,
+    })
+    if (managedAnalyticsProvenance) {
+      const mirroredFields = [
+        'scaffoldRef',
+        'carrierRef',
+        'runtimeCarrierPath',
+        'carrierCertificationRef',
+      ]
+      for (const field of mirroredFields) {
+        if (generationProfile[field] !== managedAnalyticsProvenance[field]) {
+          errors.push(
+            `generationProfile.${field} must match ${managedAnalyticsProvenance[field] || '(missing)'}; received ${generationProfile[field] || '(missing)'}`
+          )
+        }
+      }
+
+      const requiredRuntimeEvidence = Array.isArray(generationProfile.requiredRuntimeEvidence)
+        ? generationProfile.requiredRuntimeEvidence.map((item) => String(item || '').trim()).filter(Boolean)
+        : []
+      const missingRuntimeEvidence = managedAnalyticsProvenance.requiredRuntimeEvidence.filter(
+        (item) => !requiredRuntimeEvidence.includes(item)
+      )
+      if (missingRuntimeEvidence.length > 0) {
+        errors.push(
+          `generationProfile.requiredRuntimeEvidence must include ${missingRuntimeEvidence.join(', ')}`
+        )
+      }
+    }
   }
 
   const productionContract = contract.productionContract
@@ -1526,6 +1678,40 @@ export function validateRulesOnlyPageContract({
       errors.push(
         `productionContract.policy must be generate-from-managed-mold-and-fill-business-slots-only; received ${productionContract.policy || '(missing)'}`
       )
+    }
+
+    const managedAnalyticsProvenance = buildManagedAnalyticsProvenance({
+      pageTypeId: contract.pageTypeId,
+      archetypeTemplatePath: contract.archetypeTemplatePath || '',
+      selectedDeliveryAssetId: profileForComparison.selectedDeliveryAssetId,
+    })
+    if (managedAnalyticsProvenance) {
+      const mirroredProvenanceFields = [
+        'scaffoldRef',
+        'carrierRef',
+        'runtimeCarrierPath',
+        'carrierCertificationRef',
+      ]
+      for (const field of mirroredProvenanceFields) {
+        if (productionContract[field] !== profileForComparison[field]) {
+          errors.push(
+            `productionContract.${field} must mirror generationProfile.${field}; received ${productionContract[field] || '(missing)'} vs ${profileForComparison[field] || '(missing)'}`
+          )
+        }
+      }
+
+      const generationEvidence = Array.isArray(profileForComparison.requiredRuntimeEvidence)
+        ? profileForComparison.requiredRuntimeEvidence.map((item) => String(item || '').trim()).filter(Boolean)
+        : []
+      const productionEvidence = Array.isArray(productionContract.requiredRuntimeEvidence)
+        ? productionContract.requiredRuntimeEvidence.map((item) => String(item || '').trim()).filter(Boolean)
+        : []
+      const missingEvidence = generationEvidence.filter((item) => !productionEvidence.includes(item))
+      if (missingEvidence.length > 0) {
+        errors.push(
+          `productionContract.requiredRuntimeEvidence must include every generationProfile.requiredRuntimeEvidence entry; missing ${missingEvidence.join(', ')}`
+        )
+      }
     }
   }
 

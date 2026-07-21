@@ -73,5 +73,5 @@ brief qualification
 ## Boundary
 
 - `core/` 不承载 global sync、release archive、launch-agent 或发布自动化
-- 页面生成后的 `usageStatsStatus` 可以作为运行结果的一部分被呈现，但 telemetry transport、隐私策略、上报后端与 maintainer 文档不属于默认 `core/` surface
+- 开源版 `core/` 只负责页面生成与验证输出，不承担 usage telemetry、上报后端或身份材料能力
 - 旧 `start-page` / `preflight` / `finalize-page` 写链仍是兼容/退役工具，不再是默认页面生成合同
