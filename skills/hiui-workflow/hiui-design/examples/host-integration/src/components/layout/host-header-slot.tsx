@@ -6,6 +6,23 @@ type HostHeaderSlotProps = React.HTMLAttributes<HTMLDivElement> & {
 }
 
 export function HostHeaderSlot({ children, style, ...restProps }: HostHeaderSlotProps) {
+  const resolvedChildren = React.isValidElement(children)
+    ? React.cloneElement(
+        children as React.ReactElement<{ style?: React.CSSProperties }>,
+        {
+          style: {
+            margin: 0,
+            minWidth: 0,
+            paddingBlock: 0,
+            paddingBottom: 0,
+            paddingTop: 0,
+            width: '100%',
+            ...(children.props?.style ?? {}),
+          },
+        }
+      )
+    : children
+
   return (
     <HostShell.TypicalPageHeaderPortal>
       <div
@@ -19,7 +36,7 @@ export function HostHeaderSlot({ children, style, ...restProps }: HostHeaderSlot
           ...style,
         }}
       >
-        {children}
+        {resolvedChildren}
       </div>
     </HostShell.TypicalPageHeaderPortal>
   )

@@ -134,7 +134,7 @@
 
 1. 组件级一致：示例已使用 `PageHeader`、`DashboardControlStrip`、`JoinedTableSection`、`Tag`、`ManagedChartCard` 一类 shared 语义时，业务页默认继续复用，而不是手写外观近似替代品。
 2. 样式级一致：header、outer-padding、white-body、table shell、chart body 的骨架样式 owner 不变；业务页不能用局部 style 把这些 owner 抢走。
-3. 交互级一致：header action 右停靠、dashboard control strip 无外部字段名、row action link 语义、pagination 仍在 table shell 内，这些都属于示例定义的运行时事实，不只是视觉建议。
+3. 交互级一致：header action 右停靠、dashboard control strip 无外部字段名且位于 `white-body` 顶部单独一行、row action link 语义、pagination 仍在 table shell 内，这些都属于示例定义的运行时事实，不只是视觉建议。
 
 ### 3. 宿主承接的是照搬后的示例壳层，不是视觉近似
 
@@ -325,6 +325,7 @@ npm run typical-page:finalize-page -- \
 - 因为右栏内容复杂，就把 `context-main-split` 改挂到 `ProDetailPage` / `ProEditPage`，再手写 `workspace + leftPane + rightPane + splitter`
 - `PageHeader` 虽然还在，但根节点已经被业务页改造成新的 flex/grid 布局壳，导致 `extra` 区不再由标准 header 节奏右停靠
 - `dashboard-control-strip` 继续按“表单字段”方式渲染一排字段名，再在下面放分段按钮或下拉框
+- `dashboard-control-strip` 被包成灰底查询面板，或与真实 `QueryFilter` / 关键词搜索 / 时间范围字段共挤在一条混合控制行
 - 图表卡只是普通白卡 + 裸 `<Area /> / <Line /> / <Bar />`，没有机器可检的 chart body 载体
 - 表格和分页被拆成两个并列 block，只靠外层留白营造“像在一个壳里”
 

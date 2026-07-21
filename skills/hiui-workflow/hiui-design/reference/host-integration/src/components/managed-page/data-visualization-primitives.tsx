@@ -10,6 +10,17 @@ const sharedStyles = {
     inlineSize: '100%',
     minInlineSize: 0,
   } as CSSProperties,
+  chartSectionGrid: {
+    display: 'grid',
+    gap: 12,
+    gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+    inlineSize: '100%',
+    minInlineSize: 0,
+  } as CSSProperties,
+  chartGridItem: {
+    inlineSize: '100%',
+    minInlineSize: 0,
+  } as CSSProperties,
   chartCard: {
     backgroundColor: hiuiChartTokens.surface,
     border: `1px solid ${hiuiChartTokens.border}`,
@@ -43,9 +54,6 @@ const sharedStyles = {
   } as CSSProperties,
   controlStrip: {
     alignItems: 'center',
-    backgroundColor: hiuiChartTokens.surfaceSubtle,
-    border: `1px solid ${hiuiChartTokens.border}`,
-    borderRadius: 12,
     boxSizing: 'border-box',
     display: 'flex',
     flexWrap: 'wrap',
@@ -53,8 +61,8 @@ const sharedStyles = {
     inlineSize: '100%',
     minInlineSize: 0,
     rowGap: 8,
-    paddingBlock: 8,
-    paddingInline: 16,
+    paddingBlock: 0,
+    paddingInline: 0,
   } as CSSProperties,
   controlStripLeading: {
     alignItems: 'center',
@@ -172,6 +180,8 @@ const sharedStyles = {
 }
 
 type SharedDivProps = HTMLAttributes<HTMLDivElement>
+type ChartGridMode = 'two-column' | 'three-column' | 'four-column'
+type ChartGridSpan = 3 | 4 | 6 | 8 | 9 | 12
 
 export function ManagedPageHeader({
   extra,
@@ -256,19 +266,67 @@ export function DashboardControlStrip({
 }
 
 export function ManagedCardGrid({
+  baseGridMode,
   children,
   minItemWidth,
   style,
 }: {
+  baseGridMode?: ChartGridMode
   children: ReactNode
-  minItemWidth: number
+  minItemWidth?: number
+  style?: CSSProperties
+}) {
+  const isManagedChartGrid = Boolean(baseGridMode)
+
+  return (
+    <div
+      data-hiui5-chart-grid-mode={baseGridMode}
+      style={{
+        ...sharedStyles.cardGrid,
+        ...(isManagedChartGrid
+          ? {
+              gridColumn: '1 / -1',
+              gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+            }
+          : {
+              gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, ${minItemWidth || 240}px), 1fr))`,
+            }),
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+export function ManagedChartSectionGrid({
+  children,
+  style,
+}: {
+  children: ReactNode
+  style?: CSSProperties
+}) {
+  return <div style={{ ...sharedStyles.chartSectionGrid, ...style }}>{children}</div>
+}
+
+export function ManagedChartGridItem({
+  children,
+  gridSpan,
+  layoutGroup,
+  style,
+}: {
+  children: ReactNode
+  gridSpan: ChartGridSpan
+  layoutGroup?: string
   style?: CSSProperties
 }) {
   return (
     <div
+      data-hiui5-chart-grid-span={gridSpan}
+      data-hiui5-layout-group={layoutGroup}
       style={{
-        ...sharedStyles.cardGrid,
-        gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, ${minItemWidth}px), 1fr))`,
+        ...sharedStyles.chartGridItem,
+        gridColumn: `span ${gridSpan} / span ${gridSpan}`,
         ...style,
       }}
     >

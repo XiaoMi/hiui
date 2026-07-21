@@ -42,7 +42,8 @@
 | 风险/状态标签 | `Tag` / shared status renderer | 宿主 status tag alias / shared status helper | 默认继承 HiUI 标签语义、圆角、字号、行高与状态色 | 不要在业务页手写 `span + backgroundColor + borderRadius:999` 胶囊标签 |
 | 可点击状态筛选 | `Tag` / shared status renderer + click / keyboard bridge | 宿主 status tag alias + selectable bridge / shared status helper | 若本质是状态语义切换，优先保留 `Tag` 语义，再补点击与键盘交互；未声明默认激活项时保持初始数据全集可见 | 不要因为“可点击”就直接回退成 `Button`；不要默认选中第一项造成隐式预过滤 |
 | 行内筛选区 | `QueryFilter` | 宿主列表基座中的真实 `QueryFilter` 槽 / 经过宿主适配的 `QueryFilter` 容器 | 必须使用真实 `QueryFilter`；紧凑单行；默认无外部 label；查询/重置与筛选控件共处同一块区域 | 不要回退到 schema 化搜索栏 / `searchConfig.fields`；不要手写自由排布的 `Search + Select + DatePicker` flex 行；不要额外补一排字段名标签 |
-| dashboard control strip | `DashboardControlStrip` / shared control-strip helper | 宿主 analytics toolbar / shared dashboard control bridge | 分段控件无外部字段名；下拉 label 在控件内部；1440 下保持紧凑单排 | 不要手写“字段名 + Radio.Group/Select”两层表单条；不要把按钮/筛选拆成第二层 |
+| dashboard control strip | `DashboardControlStrip` / shared control-strip helper | 宿主 analytics toolbar / shared dashboard control bridge | 只承接页面全局视角/粒度切换；分段控件无外部字段名；下拉 label 在控件内部；默认位于 `white-body` 顶部并单独一行；1440 下保持紧凑单排且无灰底 panel | 不要手写“字段名 + Radio.Group/Select”两层表单条；不要把按钮/筛选拆成第二层；不要把真实 `QueryFilter` 和 dashboard control strip 混在同一行 |
+| dashboard detail QueryFilter | `QueryFilter` + `FilterDrawer` | 宿主 detail-table filter bridge / shared QueryFilter container | 只承接明细记录筛选；若存在则贴近 detail table，而不是顶替页面全局 control strip | 不要把记录级筛选提升成 dashboard control strip；不要让 detail QueryFilter 变成白底顶部的全局视角切换条 |
 | 全部筛选抽屉 | `FilterDrawer` | 宿主高级筛选抽屉中的真实 `FilterDrawer` / `QueryFilter` 扩展抽屉 | 与行内筛选复用同一套字段语义；字段标签在抽屉里回到外部标签位 | 不要给抽屉和行内筛选维护两套字段定义；不要只改某一侧的视觉默认值 |
 | 表格主体 | `Table`，优先由 `TablePageFrame` / `StatListPageFrame` / `TreeSplitPageFrame` 承接 | 宿主 `PageTable` / `page-table-v5` / 列表基座 table slot | 默认 `size="md"`、`resizable`、字段管理；文本列省略 + Tooltip；状态列优先 `Tag` | 不要在已有列表基座上退回裸 `Table`；不要再包一层破坏滚动链的滚动容器；不要省略字段管理 |
 | 分页区 | 固定页壳内的分页槽 | 宿主列表基座分页槽 / 主白底主体底部分页区 | 必须与筛选区、表格区保持同一白底主体；不要漂到白底外 | 不要把分页拆到页面灰底外层；不要把分页下方露出宿主灰底当成单页 spacing 问题 |
@@ -67,8 +68,9 @@
 
 | 区块 | 标准实现优先落点 | 兼容宿主落点 | 硬规则 | 禁止替代写法 |
 | --- | --- | --- | --- | --- |
-| 页壳 | `FixedDashboardPageFrame` / `StatListPageFrame` 翻译后的 shared shell carrier | 宿主 analytics page base / fixed dashboard helper | header、white-body、outer-padding、main-scroll 由 shared/helper 承接；frame root 保持 flush，不再额外补 `padding-inline: 20` / `padding-block-end: 16` 这类 page-root inset | 不要在业务页重新声明 page inset、white-body、header 容器 |
-| 控制条 | `DashboardControlStrip` | 宿主 dashboard control bridge | 维度切换用 segmented/radio/tabs；select label 留在控件内部 | 不要回退成上 label 下控件的表单条 |
+| 页壳 | `FixedDashboardPageFrame` / `StatListPageFrame` 翻译后的 shared shell carrier | 宿主 analytics page base / fixed dashboard helper | header、white-body、outer-padding、main-scroll 由 shared/helper 承接；frame root 保持 flush，不再额外补 `padding-inline: 20` / `padding-block-end: 16` 这类 page-root inset；页面全局控制条先于 `stat-section` 收口在白底主体顶端 | 不要在业务页重新声明 page inset、white-body、header 容器；不要把全局控制条插到指标卡和图表区之后 |
+| 页面全局控制条 | `DashboardControlStrip` | 宿主 dashboard control bridge | 维度切换用 segmented/radio/tabs；select label 留在控件内部；单独一行；默认 `plain-row-no-panel` | 不要回退成上 label 下控件的表单条；不要包成灰底查询面板 |
+| 明细筛选区 | `QueryFilter` + `FilterDrawer` | 宿主 detail-table filter bridge | 只在存在真实记录筛选时出现；默认位于 `JoinedTableSection`/detail table 前方 | 不要和页面全局控制条共用一行；不要把“日/周/月”做进 `QueryFilter` |
 | 风险标签 | `Tag` / shared status renderer | 宿主 status helper | 风险等级默认继承 HiUI 标签语义 | 不要手写红黄绿胶囊 span |
 | 表格工作区 | `JoinedTableSection` | 宿主 joined table shell | 表格内容与分页同壳；默认 `striped=false`、`bordered=false` | 不要加斑马线；不要把分页拆出去 |
 

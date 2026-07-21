@@ -14,6 +14,11 @@ import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
 import { evaluateManagedInstanceReadinessFromSource } from './lib/managed-page-instance-readiness.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
 import {
+  QUERY_FILTER_FAILURE_CODES,
+  isQueryFilterFieldRoleDriftFailureMessage,
+  isQueryFilterSurfaceMismatchFailureMessage,
+} from './lib/query-filter-governance.mjs'
+import {
   getManagedPageSemanticContract,
   getManagedPageRuntimeSmokeRequirement,
   getRulesOnlyOutputRoot,
@@ -145,11 +150,47 @@ function buildContractFixtureReport() {
   }
 }
 
-function derivePreflightExecutionState({ failures, warnings, workflowStatus }) {
+function collectPendingDeliveryChecks({
+  generationProfile,
+  workflow = {},
+  runtimeSmokeRequired = false,
+}) {
+  const pendingChecks = []
+  const requiredGates = new Set(
+    Array.isArray(generationProfile?.requiredGates) ? generationProfile.requiredGates : []
+  )
+  const sourceGateStatus = String(workflow.sourceGateStatus || '').trim()
+  const doctorStatus = String(workflow.doctorStatus || '').trim()
+  const runtimeSmokeStatus = String(workflow.runtimeSmokeStatus || '').trim()
+
+  if (requiredGates.has('source-gate') && sourceGateStatus !== 'pass') {
+    pendingChecks.push('sourceGate')
+  }
+
+  if (requiredGates.has('doctor') && doctorStatus !== 'pass') {
+    pendingChecks.push('doctor')
+  }
+
+  if (runtimeSmokeRequired && !['pass', 'not-required'].includes(runtimeSmokeStatus)) {
+    pendingChecks.push('runtimeSmoke')
+  }
+
+  return pendingChecks
+}
+
+export function derivePreflightExecutionState({
+  failures,
+  warnings,
+  workflowStatus,
+  pendingDeliveryChecks = [],
+}) {
   const hasBlockingFailures = failures.length > 0
   const hasPlaceholderWarning =
     Array.isArray(warnings) &&
     warnings.some((warning) => String(warning || '').toLowerCase().includes('placeholder'))
+  const normalizedPendingDeliveryChecks = Array.isArray(pendingDeliveryChecks)
+    ? [...new Set(pendingDeliveryChecks.filter(Boolean))]
+    : []
 
   if (hasBlockingFailures) {
     return {
@@ -165,7 +206,7 @@ function derivePreflightExecutionState({ failures, warnings, workflowStatus }) {
       preflightStage: 'scaffold-baseline',
       readyForImplementation: true,
       readyForDelivery: false,
-      deferredChecks: ['placeholderMappings'],
+      deferredChecks: [...new Set(['placeholderMappings', ...normalizedPendingDeliveryChecks])],
     }
   }
 
@@ -174,7 +215,16 @@ function derivePreflightExecutionState({ failures, warnings, workflowStatus }) {
       preflightStage: 'implementation',
       readyForImplementation: true,
       readyForDelivery: false,
-      deferredChecks: ['finalizePage'],
+      deferredChecks: [...new Set(['finalizePage', ...normalizedPendingDeliveryChecks])],
+    }
+  }
+
+  if (normalizedPendingDeliveryChecks.length > 0) {
+    return {
+      preflightStage: 'implementation',
+      readyForImplementation: true,
+      readyForDelivery: false,
+      deferredChecks: normalizedPendingDeliveryChecks,
     }
   }
 
@@ -189,6 +239,13 @@ function derivePreflightExecutionState({ failures, warnings, workflowStatus }) {
 function deriveSourceGuardProfile(contract) {
   const generationProfile = contract?.generationProfile || {}
   const deliveryKind = String(generationProfile.selectedDeliveryAssetKind || '').trim()
+  if (String(generationProfile.strategy || '').trim() === 'managed-analytics') {
+    return {
+      sourceGuardScope: 'transitive',
+      sourceGuardReason: deliveryKind || 'managed-analytics-shell',
+    }
+  }
+
   if (deliveryKind === 'project-certified-carrier') {
     return {
       sourceGuardScope: 'transitive',
@@ -304,6 +361,8 @@ function isManagedFilterChainFailure(message) {
     'declares a query-filter region but source does not reference QueryFilter',
     'hand-builds its filter region from primitive Input/Select/DatePicker controls',
     'rebuilds a list page from primitive filter controls + Table + Pagination',
+    'declares queryFilterBaseline=managed-query-filter-fields',
+    'source never enters the managed QueryFilter/queryFields field chain',
     'searchConfig.fields',
     'SearchForm',
     'getSearchFields',
@@ -321,6 +380,14 @@ function isQueryFilterBaselineFailure(message) {
     'adds a custom 查询/搜索 button into QueryFilter append actions',
     'renders “全部筛选” with a plain Button',
   ].some((fragment) => text.includes(fragment))
+}
+
+function isQueryFilterFieldRoleDriftFailure(message) {
+  return isQueryFilterFieldRoleDriftFailureMessage(message)
+}
+
+function isQueryFilterSurfaceMismatchFailure(message) {
+  return isQueryFilterSurfaceMismatchFailureMessage(message)
 }
 
 function isHostStyleContaminationFailure(message) {
@@ -347,6 +414,69 @@ function isListWorkspaceWidthFailure(message) {
   ].some((fragment) => text.includes(fragment))
 }
 
+function isControlStripOrderDriftFailure(message) {
+  return String(message || '').includes('places dashboard-control-strip after the stat-section')
+}
+
+function isControlStripPanelizedFailure(message) {
+  return String(message || '').includes('wraps dashboard-control-strip in panel chrome')
+}
+
+function isMixedScopeControlRowFailure(message) {
+  return String(message || '').includes(
+    'merges dashboard control-strip semantics and QueryFilter detail filters into the same control row'
+  )
+}
+
+function isDetailQueryFilterPlacementDriftFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('places a detail QueryFilter before the chart-section on a dashboard-control-strip page') ||
+    text.includes('places a detail QueryFilter after the detail table on a dashboard-control-strip page')
+  )
+}
+
+function isBodySectionLayoutBypassFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('flattening body semantics into free-form wrappers') ||
+    text.includes('flattening detail content into shell-adjacent wrappers')
+  )
+}
+
+function isBodySectionSpacingOwnerDriftFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('overrides .hi-v5-form-item / .hi-v5-form / .hi-v5-form-label spacing at page level') ||
+    text.includes('lets the full-page-edit field grid own vertical rhythm through row-gap or bottom spacing')
+  )
+}
+
+function isEmbeddedWidgetUndeclaredFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('does not declare a supportingSections allowed extension') ||
+    text.includes('does not whitelist bodySectionContract.embeddedWidgetPolicy=')
+  )
+}
+
+function isBodySectionPanelizationDriftFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('surfaces summary/section blocks as independent cards') ||
+    text.includes('wraps full-page-edit sections in surfaced cards') ||
+    text.includes('duplicates the ProDetailPage workspace shell with local white-body / outer-padding / main-scroll wrappers')
+  )
+}
+
+function isBodySectionScopeDriftFailure(message) {
+  const text = String(message || '')
+  return (
+    text.includes('requires semanticContract.bodySectionContract.sectionComposition=groups-with-supporting-sections') ||
+    text.includes('sectionComposition=groups-with-supporting-sections requires a concrete embeddedWidgetPolicy')
+  )
+}
+
 export function checkIdForFailure(message) {
   const text = String(message || '')
   if (isLegacyRuntimeAdapterFailure(text)) {
@@ -354,6 +484,12 @@ export function checkIdForFailure(message) {
   }
   if (isManagedFilterChainFailure(text)) {
     return 'managedFilterChain'
+  }
+  if (isQueryFilterFieldRoleDriftFailure(text)) {
+    return 'queryFilterFieldRoleDrift'
+  }
+  if (isQueryFilterSurfaceMismatchFailure(text)) {
+    return 'queryFilterSurfaceMismatch'
   }
   if (isQueryFilterBaselineFailure(text)) {
     return 'queryFilterBaseline'
@@ -363,6 +499,33 @@ export function checkIdForFailure(message) {
   }
   if (isListWorkspaceWidthFailure(text)) {
     return 'listWorkspaceWidth'
+  }
+  if (isControlStripOrderDriftFailure(text)) {
+    return 'controlStripOrderDrift'
+  }
+  if (isControlStripPanelizedFailure(text)) {
+    return 'controlStripPanelized'
+  }
+  if (isMixedScopeControlRowFailure(text)) {
+    return 'mixedScopeControlRow'
+  }
+  if (isDetailQueryFilterPlacementDriftFailure(text)) {
+    return 'detailQueryFilterPlacementDrift'
+  }
+  if (isBodySectionLayoutBypassFailure(text)) {
+    return 'bodySectionLayoutBypass'
+  }
+  if (isBodySectionSpacingOwnerDriftFailure(text)) {
+    return 'bodySectionSpacingOwnerDrift'
+  }
+  if (isEmbeddedWidgetUndeclaredFailure(text)) {
+    return 'embeddedWidgetUndeclared'
+  }
+  if (isBodySectionPanelizationDriftFailure(text)) {
+    return 'bodySectionPanelizationDrift'
+  }
+  if (isBodySectionScopeDriftFailure(text)) {
+    return 'bodySectionScopeDrift'
   }
   if (text.includes('generationProfile.')) {
     return 'generationProfile'
@@ -440,9 +603,21 @@ export function failureCodeForCheckId(checkId) {
   if (checkId === 'ownershipMapping') return 'OWNERSHIP_MAPPING_MISMATCH'
   if (checkId === 'legacyRuntimeAdapter') return 'LEGACY_RUNTIME_ADAPTER_MISMATCH'
   if (checkId === 'managedFilterChain') return 'HIUI022_MANAGED_FILTER_CHAIN_MISSING'
+  if (checkId === 'queryFilterFieldRoleDrift') return QUERY_FILTER_FAILURE_CODES.fieldRoleDrift
+  if (checkId === 'queryFilterSurfaceMismatch') return QUERY_FILTER_FAILURE_CODES.surfaceMismatch
   if (checkId === 'queryFilterBaseline') return 'HIUI023_QUERY_FILTER_BASELINE_DRIFT'
   if (checkId === 'hostStyleContamination') return 'HIUI024_HOST_STYLE_CONTAMINATION'
   if (checkId === 'listWorkspaceWidth') return 'HIUI025_LIST_WORKSPACE_WIDTH_OWNER_DRIFT'
+  if (checkId === 'controlStripOrderDrift') return 'HIUI042_CONTROL_STRIP_ORDER_DRIFT'
+  if (checkId === 'controlStripPanelized') return 'HIUI043_CONTROL_STRIP_PANELIZED'
+  if (checkId === 'mixedScopeControlRow') return 'HIUI044_MIXED_SCOPE_CONTROL_ROW'
+  if (checkId === 'detailQueryFilterPlacementDrift')
+    return 'HIUI045_DETAIL_QUERY_FILTER_PLACEMENT_DRIFT'
+  if (checkId === 'bodySectionLayoutBypass') return 'HIUI046_BODY_SECTION_LAYOUT_BYPASS'
+  if (checkId === 'bodySectionSpacingOwnerDrift') return 'HIUI047_BODY_SECTION_SPACING_OWNER_DRIFT'
+  if (checkId === 'embeddedWidgetUndeclared') return 'HIUI048_EMBEDDED_WIDGET_UNDECLARED'
+  if (checkId === 'bodySectionPanelizationDrift') return 'HIUI049_BODY_SECTION_PANELIZATION_DRIFT'
+  if (checkId === 'bodySectionScopeDrift') return 'HIUI050_BODY_SECTION_SCOPE_DRIFT'
   if (checkId === 'sourceMarker') return 'SOURCE_MARKER_MISSING'
   if (checkId === 'routeOwnership') return 'ROUTE_OWNER_MISSING'
   if (checkId === 'directoryArtifacts') return 'DIRECTORY_ARTIFACTS_MISSING'
@@ -517,6 +692,104 @@ export function findLegacyRuntimeAdapterFailures(contract) {
   )
   if (forbiddenDeclared.length > 0) {
     failures.push(`Invalid legacy runtime adapter responsibilities: ${forbiddenDeclared.join(', ')}. Adapter proof cannot authorize component translation or region reimplementation.`)
+  }
+
+  return failures
+}
+
+function managedAnalyticsPageRequiresChartUsageContract(contract) {
+  return (
+    String(contract?.pageTypeId || '').trim() === 'data-visualization' ||
+    String(contract?.generationProfile?.strategy || '').trim() === 'managed-analytics'
+  )
+}
+
+export function findManagedAnalyticsContractFailures(contract) {
+  if (!managedAnalyticsPageRequiresChartUsageContract(contract)) return []
+
+  const layoutStrategy = String(contract?.layoutStrategy || '').trim()
+  const layoutArchetype = String(contract?.layoutArchetype || '').trim()
+  const chartUsageContract = contract?.chartUsageContract
+  const failures = []
+
+  if (!layoutStrategy) {
+    failures.push('layoutStrategy is missing. managed-analytics pages must declare the analytics reading strategy before preflight can pass.')
+  } else if (layoutStrategy === 'typical-page') {
+    failures.push('layoutStrategy=typical-page is invalid for managed-analytics pages. Choose an analytics layout strategy instead of the generic typical-page fallback.')
+  }
+
+  if (!layoutArchetype) {
+    failures.push('layoutArchetype is missing. managed-analytics pages must declare the selected analytics layout archetype before preflight can pass.')
+  }
+
+  if (!chartUsageContract || typeof chartUsageContract !== 'object') {
+    return failures
+  }
+
+  const chartIntentItems = Array.isArray(chartUsageContract.chartIntentItems)
+    ? chartUsageContract.chartIntentItems
+    : []
+  if (chartIntentItems.length === 0) {
+    return [
+      ...failures,
+      'chartUsageContract.chartIntentItems is empty. managed-analytics pages must declare at least one chart intent before preflight can pass.',
+    ]
+  }
+
+  const requiredChartIntentFields = [
+    'chartId',
+    'title',
+    'businessQuestion',
+    'informationTask',
+    'chartType',
+    'readingLane',
+  ]
+
+  chartIntentItems.forEach((item, index) => {
+    const missingFields = requiredChartIntentFields.filter((field) => !String(item?.[field] || '').trim())
+    const placeholderFields = requiredChartIntentFields.filter((field) =>
+      /^TODO(?:_|$)/.test(String(item?.[field] || '').trim())
+    )
+
+    if (missingFields.length > 0) {
+      failures.push(
+        `chartUsageContract.chartIntentItems[${index}] is missing required field(s): ${missingFields.join(', ')}`
+      )
+    }
+
+    if (placeholderFields.length > 0) {
+      failures.push(
+        `chartUsageContract.chartIntentItems[${index}] still contains scaffold placeholders in: ${placeholderFields.join(', ')}`
+      )
+    }
+  })
+
+  const contractStatus = String(chartUsageContract.contractStatus || '').trim()
+  if (contractStatus && contractStatus !== 'ready') {
+    failures.push(
+      `chartUsageContract.contractStatus must be ready before preflight can pass; received ${contractStatus}`
+    )
+  }
+
+  const readingLanes = chartIntentItems
+    .map((item) => String(item?.readingLane || '').trim())
+    .filter(Boolean)
+  const primaryLaneCount = readingLanes.filter((lane) => lane === 'primary').length
+
+  if (primaryLaneCount === 0) {
+    failures.push('managed-analytics pages must declare at least one primary readingLane so the page has a unique main analysis entry point.')
+  }
+
+  if (readingLanes.length > 1 && new Set(readingLanes).size === 1) {
+    failures.push(
+      `managed-analytics pages cannot place every chart intent on the same readingLane (${readingLanes[0]}). Declare supporting lanes so the layout does not degrade into an equal-weight chart wall.`
+    )
+  }
+
+  if (layoutArchetype === 'primary-secondary' && primaryLaneCount !== 1) {
+    failures.push(
+      `layoutArchetype=primary-secondary expects exactly one primary chart intent; received ${primaryLaneCount}.`
+    )
   }
 
   return failures
@@ -869,6 +1142,7 @@ async function main() {
       ...pageTypeDriftFailures,
       ...contractValidation.errors,
       ...findLegacyRuntimeAdapterFailures(contractEntry.contract),
+      ...findManagedAnalyticsContractFailures(contractEntry.contract),
       ...directoryArtifactFailures,
       ...translationMapFailures,
       ...sourceErrors,
@@ -885,12 +1159,24 @@ async function main() {
       previousWorkflow,
       snapshot.hash
     )
+    const pendingDeliveryChecks = collectPendingDeliveryChecks({
+      generationProfile: contractEntry.contract.generationProfile,
+      workflow: {
+        ...previousWorkflow,
+        runtimeSmokeStatus: runtimeSmokeWorkflow.runtimeSmokeStatus,
+      },
+      runtimeSmokeRequired: getManagedPageRuntimeSmokeRequirement(contractEntry.contract).required,
+    })
     const workflowStatus =
-      wasFinalized && previousSnapshotHash && previousSnapshotHash !== snapshot.hash
-        ? 'stale'
-        : failures.length === 0 && !wasFinalized && scaffoldBaselineWarnings.length === 0
-          ? 'preflight-pass'
-          : previousWorkflow.status || 'started'
+      failures.length > 0
+        ? wasFinalized && previousSnapshotHash && previousSnapshotHash !== snapshot.hash
+          ? 'stale'
+          : 'started'
+        : wasFinalized && previousSnapshotHash && previousSnapshotHash !== snapshot.hash
+          ? 'stale'
+          : !wasFinalized && scaffoldBaselineWarnings.length === 0
+            ? 'preflight-pass'
+            : previousWorkflow.status || 'started'
     const executionState = derivePreflightExecutionState({
       failures,
       warnings: [
@@ -900,6 +1186,7 @@ async function main() {
         ...scaffoldBaselineWarnings,
       ],
       workflowStatus,
+      pendingDeliveryChecks,
     })
 
     contractEntry.contract.workflow = {

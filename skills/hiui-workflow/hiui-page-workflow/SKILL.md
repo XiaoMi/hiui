@@ -346,6 +346,7 @@ npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 
 - 安装入口是 `hiui-workflow`
 - 被安装的是其中包含的 4 个独立 skill
+- 上述命令当前是 Codex 默认安装方式；非 Codex 宿主需要显式指定目标 skill 根目录
 - 不再对外表述“单独安装 `hiui-page-workflow` 会顺带安装其他 skill”
 
 ## Validation Boundary

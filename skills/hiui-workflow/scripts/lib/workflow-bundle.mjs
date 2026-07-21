@@ -43,6 +43,13 @@ function assertOptionalStringArray(value, label) {
   assertStringArray(value, label)
 }
 
+function assertOptionalString(value, label) {
+  if (typeof value === 'undefined') {
+    return
+  }
+  assertNonEmptyString(value, label)
+}
+
 function versionModeForEntry(entry) {
   const mode = entry?.versionPolicy || 'locked'
   if (!['locked', 'follow-source-manifest'].includes(mode)) {
@@ -182,6 +189,60 @@ function validateCompatibilityMatrix(matrix, matrixPath = 'compatibility-matrix.
   return true
 }
 
+function validateHostProfiles(profiles, profilesPath = 'host-profiles.json') {
+  if (!profiles || typeof profiles !== 'object') {
+    throw new Error(`${profilesPath}: host profiles must be an object`)
+  }
+  if (profiles.schemaVersion !== 1) {
+    throw new Error(`${profilesPath}: schemaVersion must be 1`)
+  }
+  assertNonEmptyString(profiles.bundleName, `${profilesPath}: bundleName`)
+  assertNonEmptyString(profiles.defaultHost, `${profilesPath}: defaultHost`)
+  if (!profiles.hosts || typeof profiles.hosts !== 'object' || Array.isArray(profiles.hosts)) {
+    throw new Error(`${profilesPath}: hosts must be an object`)
+  }
+
+  const hostEntries = Object.entries(profiles.hosts)
+  if (hostEntries.length === 0) {
+    throw new Error(`${profilesPath}: hosts must define at least one host`)
+  }
+
+  for (const [hostName, hostProfile] of hostEntries) {
+    assertNonEmptyString(hostName, `${profilesPath}: host name`)
+    if (!hostProfile || typeof hostProfile !== 'object' || Array.isArray(hostProfile)) {
+      throw new Error(`${profilesPath}: host ${hostName} must be an object`)
+    }
+    assertNonEmptyString(hostProfile.description, `${profilesPath}: host ${hostName}.description`)
+    if (typeof hostProfile.requiresExplicitTarget !== 'boolean') {
+      throw new Error(`${profilesPath}: host ${hostName}.requiresExplicitTarget must be boolean`)
+    }
+    assertOptionalStringArray(hostProfile.skillsHomeEnv, `${profilesPath}: host ${hostName}.skillsHomeEnv`)
+    assertOptionalStringArray(hostProfile.homeEnv, `${profilesPath}: host ${hostName}.homeEnv`)
+    assertOptionalString(hostProfile.defaultHome, `${profilesPath}: host ${hostName}.defaultHome`)
+    assertOptionalString(hostProfile.skillsDirName, `${profilesPath}: host ${hostName}.skillsDirName`)
+
+    if (!hostProfile.requiresExplicitTarget) {
+      const hasSkillsHomeEnv = Array.isArray(hostProfile.skillsHomeEnv) && hostProfile.skillsHomeEnv.length > 0
+      const hasHomeResolution = (
+        (Array.isArray(hostProfile.homeEnv) && hostProfile.homeEnv.length > 0) ||
+        typeof hostProfile.defaultHome === 'string'
+      ) && typeof hostProfile.skillsDirName === 'string'
+
+      if (!hasSkillsHomeEnv && !hasHomeResolution) {
+        throw new Error(
+          `${profilesPath}: host ${hostName} must define skillsHomeEnv or homeEnv/defaultHome + skillsDirName`,
+        )
+      }
+    }
+  }
+
+  if (!profiles.hosts[profiles.defaultHost]) {
+    throw new Error(`${profilesPath}: defaultHost ${profiles.defaultHost} is not defined in hosts`)
+  }
+
+  return true
+}
+
 function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
   if (!lock || typeof lock !== 'object') {
     throw new Error(`${lockPath}: lock file must be an object`)
@@ -194,6 +255,7 @@ function validateBundleLock(lock, lockPath = 'workflow-bundle.lock.json') {
   assertNonEmptyString(lock.channel, `${lockPath}: channel`)
   assertNonEmptyString(lock.installPolicyRef, `${lockPath}: installPolicyRef`)
   assertNonEmptyString(lock.compatibilityMatrixRef, `${lockPath}: compatibilityMatrixRef`)
+  assertNonEmptyString(lock.hostProfilesRef, `${lockPath}: hostProfilesRef`)
 
   const runtimeCompatibility = lock.runtimeCompatibility || lock.codexCompatibility
   if (!runtimeCompatibility || typeof runtimeCompatibility !== 'object') {
@@ -266,10 +328,13 @@ async function resolveBundleConfig(lockPath = defaultLockPath) {
 
   const installPolicyPath = path.resolve(lockDir, lock.installPolicyRef)
   const compatibilityMatrixPath = path.resolve(lockDir, lock.compatibilityMatrixRef)
+  const hostProfilesPath = path.resolve(lockDir, lock.hostProfilesRef)
   const installPolicy = await readJson(installPolicyPath)
   const compatibilityMatrix = await readJson(compatibilityMatrixPath)
+  const hostProfiles = await readJson(hostProfilesPath)
   validateInstallPolicy(installPolicy, installPolicyPath)
   validateCompatibilityMatrix(compatibilityMatrix, compatibilityMatrixPath)
+  validateHostProfiles(hostProfiles, hostProfilesPath)
 
   return {
     bundleRoot,
@@ -280,6 +345,8 @@ async function resolveBundleConfig(lockPath = defaultLockPath) {
     installPolicy,
     compatibilityMatrixPath,
     compatibilityMatrix,
+    hostProfilesPath,
+    hostProfiles,
   }
 }
 
@@ -322,6 +389,7 @@ export {
   resolveSkillEntry,
   validateBundleLock,
   validateCompatibilityMatrix,
+  validateHostProfiles,
   validateInstallPolicy,
   validateSkillManifest,
   versionModeForEntry,

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "chart-semantic-policy.v1",
+  "source": "hiui-design managed analytics semantic policy",
+  "chartTypes": {
+    "area": {
+      "defaultVisualRole": "primary",
+      "defaultRegionPriority": "primary",
+      "preferredRegionSize": "large",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Single-metric continuous trend should prefer a large primary region.",
+        "Use managed HiUI color slots instead of chart-library defaults."
+      ]
+    },
+    "line": {
+      "defaultVisualRole": "primary",
+      "defaultRegionPriority": "primary",
+      "preferredRegionSize": "large",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Multi-series trend comparison belongs in the main insight region when it carries the core reading task."
+      ]
+    },
+    "column": {
+      "defaultVisualRole": "primary",
+      "defaultRegionPriority": "primary",
+      "preferredRegionSize": "large",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Axis-based categorical comparison can own the main region."
+      ]
+    },
+    "bar": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "medium",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Ranking charts often work as supporting analysis; they may become primary only when ranking itself is the core question."
+      ]
+    },
+    "dual-axes": {
+      "defaultVisualRole": "primary",
+      "defaultRegionPriority": "primary",
+      "preferredRegionSize": "large",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Dual-axis charts require the dominant chart region because they carry higher reading density."
+      ]
+    },
+    "stacked-area": {
+      "defaultVisualRole": "primary",
+      "defaultRegionPriority": "primary",
+      "preferredRegionSize": "large",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Composition-over-time belongs in the main region when the page is about structural change."
+      ]
+    },
+    "stacked-column": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "medium",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Use when total plus composition is needed; keep it secondary unless composition is the core page question."
+      ]
+    },
+    "funnel": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "medium",
+      "canOwnPrimaryRegion": false,
+      "forbiddenPlacements": [
+        "primary-region-without-process-centric-brief",
+        "summary-strip"
+      ],
+      "notes": [
+        "Funnel is usually a supporting process summary rather than the dominant canvas.",
+        "Primary placement requires an explicit process-centric page brief and a matching linear-stack layout."
+      ]
+    },
+    "pie": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "small",
+      "canOwnPrimaryRegion": false,
+      "forbiddenPlacements": [
+        "primary-region",
+        "summary-strip"
+      ],
+      "notes": [
+        "Single-moment composition is supporting information and should not dominate the layout."
+      ]
+    },
+    "donut": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "small",
+      "canOwnPrimaryRegion": false,
+      "forbiddenPlacements": [
+        "primary-region",
+        "summary-strip"
+      ],
+      "notes": [
+        "Donut follows the same placement rule as pie."
+      ]
+    },
+    "radar": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "small",
+      "canOwnPrimaryRegion": false,
+      "forbiddenPlacements": [
+        "primary-region",
+        "summary-strip"
+      ],
+      "notes": [
+        "Radar is suitable for compact multi-dimension comparison, not the main insight canvas."
+      ]
+    },
+    "scatter": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "medium",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Scatter can become primary only when relationship or clustering is the page's main question."
+      ]
+    },
+    "heatmap": {
+      "defaultVisualRole": "supporting",
+      "defaultRegionPriority": "secondary",
+      "preferredRegionSize": "medium",
+      "canOwnPrimaryRegion": true,
+      "forbiddenPlacements": [
+        "summary-strip"
+      ],
+      "notes": [
+        "Heatmap needs enough area to read density but is usually supporting information."
+      ]
+    },
+    "gauge": {
+      "defaultVisualRole": "summary",
+      "defaultRegionPriority": "summary",
+      "preferredRegionSize": "small",
+      "canOwnPrimaryRegion": false,
+      "forbiddenPlacements": [
+        "primary-region"
+      ],
+      "notes": [
+        "Status/progress charts belong to summary or supporting regions."
+      ]
+    }
+  }
+}

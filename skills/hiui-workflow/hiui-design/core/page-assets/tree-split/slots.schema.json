@@ -1,0 +1,14 @@
+{
+  "pageType": "tree-split",
+  "requiredKeys": ["title", "treeNodes", "queryFields", "columns", "rows"],
+  "optionalKeys": [
+    "searchPlaceholder",
+    "treeSearchPlaceholder",
+    "rowKey",
+    "treeFieldKey",
+    "defaultExpandedIds",
+    "secondaryAction",
+    "primaryAction",
+    "rowActions"
+  ]
+}

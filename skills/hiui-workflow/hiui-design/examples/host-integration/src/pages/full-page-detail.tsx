@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 import { Button, PageHeader } from '@hi-ui/hiui'
 import type { DescriptionsProps } from '@hi-ui/hiui'
-import { D, G, T } from '@hi-ui/schema-core'
-import type { GroupConfigType } from '@hi-ui/schema-core'
+import { D, G } from '@hi-ui/schema-core'
 import { GroupMapProvider, SchemaGroup } from '@hi-ui/schema-group'
 import { SchemaDescriptionsBridge } from '@hi-ui/schema-group/descriptions'
 import { SchemaTableBridge } from '@hi-ui/schema-group/table'
@@ -70,77 +69,76 @@ function FullPageDetailInner() {
       placement: 'vertical',
       column: 3,
       labelPlacement: 'left',
-      labelWidth: undefined,
+      labelWidth: null,
     }),
     []
   )
 
-  const groups = useMemo<GroupConfigType[]>(
-    () =>
-      [
-        G(t('基础信息'), 'basicInfo')
-          .Descriptions({
-            fields: [
-              D(t('工单号'), 'ticketNo').val,
-              D(t('工单状态'), 'status').val,
-              D(t('工单类型'), 'ticketType').val,
-              D(t('服务方式'), 'serviceMethod').val,
-              D(t('关联商品'), 'relatedProduct').val,
-              D(t('购买渠道'), 'purchaseChannel').val,
-              D(t('来访原因'), 'visitReason').val,
-            ],
-            props: { descriptionsProps },
-          })
-          .CardProps({ size: 'lg' })
-          .val,
-        G(t('三包信息'), 'warrantyInfo')
-          .Custom({
-            render: () => <WarrantyInfoCards />,
-          })
-          .CardProps({ size: 'lg' })
-          .val,
-        G(t('客户信息'), 'customerInfo')
-          .Descriptions({
-            fields: [
-              D(t('用户姓名'), 'userName').val,
-              D(t('用户标签'), 'userTags').val,
-              D(t('用户电话'), 'userPhone').val,
-            ],
-            props: { descriptionsProps },
-          })
-          .CardProps({ size: 'lg' })
-          .val,
-        G(t('服务信息'), 'serviceInfo')
-          .Descriptions({
-            fields: [
-              D(t('服务机构'), 'serviceOrg').val,
-              D(t('服务工程师'), 'serviceEngineer').val,
-              D(t('受理时间'), 'acceptedAt').val,
-              D(t('问题描述'), 'description').MWP({ colSpan: 3 }).val,
-            ],
-            props: { descriptionsProps },
-          })
-          .CardProps({ size: 'lg' })
-          .val,
-        G(t('服务记录'), 'serviceRecords')
-          .Table({
-            fields: [
-              T(t('服务时间'), 'serviceTime').W(180).val,
-              T(t('服务动作'), 'serviceAction').W(160).val,
-              T(t('状态'), 'status').W(120).val,
-              T(t('详情描述'), 'detailDescription').W(360).val,
-            ],
-            props: {
-              className: styles.serviceRecordTable,
-              tableProps: {
-                bordered: false,
-                striped: false,
-              },
+  const groups = useMemo(
+    () => [
+      G(t('基础信息'), 'basicInfo')
+        .Descriptions({
+          fields: [
+            D(t('工单号'), 'ticketNo').val,
+            D(t('工单状态'), 'status').val,
+            D(t('工单类型'), 'ticketType').val,
+            D(t('服务方式'), 'serviceMethod').val,
+            D(t('关联商品'), 'relatedProduct').val,
+            D(t('购买渠道'), 'purchaseChannel').val,
+            D(t('来访原因'), 'visitReason').val,
+          ],
+          props: { descriptionsProps },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('三包信息'), 'warrantyInfo')
+        .Custom({
+          render: () => <WarrantyInfoCards />,
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('客户信息'), 'customerInfo')
+        .Descriptions({
+          fields: [
+            D(t('用户姓名'), 'userName').val,
+            D(t('用户标签'), 'userTags').val,
+            D(t('用户电话'), 'userPhone').val,
+          ],
+          props: { descriptionsProps },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('服务信息'), 'serviceInfo')
+        .Descriptions({
+          fields: [
+            D(t('服务机构'), 'serviceOrg').val,
+            D(t('服务工程师'), 'serviceEngineer').val,
+            D(t('受理时间'), 'acceptedAt').val,
+            D(t('问题描述'), 'description').MWP({ colSpan: 3 }).val,
+          ],
+          props: { descriptionsProps },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+      G(t('服务记录'), 'serviceRecords')
+        .Table({
+          fields: [
+            D(t('服务时间'), 'serviceTime').W(180).val,
+            D(t('服务动作'), 'serviceAction').W(160).val,
+            D(t('状态'), 'status').W(120).val,
+            D(t('详情描述'), 'detailDescription').W(360).val,
+          ],
+          props: {
+            className: styles.serviceRecordTable,
+            tableProps: {
+              bordered: false,
+              striped: false,
             },
-          })
-          .CardProps({ size: 'lg' })
-          .val,
-      ],
+          },
+        })
+        .CardProps({ size: 'lg' })
+        .val,
+    ],
     [descriptionsProps, t]
   )
 

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { Button, Message, Space, Tree } from '@hi-ui/hiui'
 import type { TreeDataItem } from '@hi-ui/tree'
 import { SearchInput } from '@hi-ui/query-filter'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import {
   ProListPageProvider,
@@ -23,6 +23,7 @@ import {
   getParamsWithoutKeyword,
   paginateList,
 } from './request-utils'
+import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import styles from './inventory-split.module.scss'
 import { useTranslation } from '../../translation'
 
@@ -71,20 +72,18 @@ function InventorySplitInner({
 
   const queryFields = useMemo(
     () => [
-      F(t('物品属性'), 'itemAttr')
-        .Select({
-          data: itemAttrOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('品相'), 'conditionGrade')
-        .Select({
-          data: conditionOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
+      createManagedQuerySelectField({
+        field: 'itemAttr',
+        label: t('物品属性'),
+        data: itemAttrOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'conditionGrade',
+        label: t('品相'),
+        data: conditionOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
     ],
     [t]
   )

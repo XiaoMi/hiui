@@ -88,7 +88,8 @@
 - 不自动补标准 `@hiui-design/typical-page-shells` 依赖线，不把标准壳运行时当作 legacy 主树的默认接入前提
 - 不同步 route gallery / 宿主桥接文件到目标项目 `src/`
 - 生成时继续使用页型、结构节奏、contract 与 doctor 约束；普通典型页主链路仍优先 `pageComponent + runtimeAdapterProof`，而 legacy 主树里的具体运行时承载默认回到宿主自己的布局/容器/`hiui5` alias / 本地组件。若已隔离出独立现代运行时入口，则改走 `isolated-standard-shell`
-- 该模式下 `project integration ready` 还必须覆盖 project-certified carrier / runtime bridge 这类项目级桥接事实；这是 legacy 独有的接入门禁，不向 `rules-only` / `host-integration` 扩散
+- 该模式下 `project integration ready` 的定义本身就必须覆盖 project-certified carrier / runtime bridge 与 required legacy carrier batch ready；这是 legacy 独有的接入完成态，不向 `rules-only` / `host-integration` 扩散
+- 因此，一旦 `legacy-host-compatible` 接入完成，普通典型页默认就应支持沿 `page-component + runtime bridge + slot fill` 主链，以替换业务槽位的方式生成页面；若 required carriers 仍缺失，应解释为接入 / bootstrap 未完成，而不是“已接入后再补 rollout”
 
 使用方式：
 

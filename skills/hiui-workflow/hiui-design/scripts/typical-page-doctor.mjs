@@ -8,7 +8,10 @@ import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
 import { inspectManagedPageRegistry } from './lib/managed-page-artifacts.mjs'
-import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
+import {
+  inspectManagedAnalyticsSharedShellUsage,
+  validateManagedPageSource,
+} from './lib/managed-page-source-guard.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import {
@@ -378,11 +381,12 @@ async function inspectManagedDataVisualizationSharedShells(entries, targetRoot) 
 
     inspectedCount += 1
     const pathLabel = path.relative(targetRoot, absPath) || generatedPagePath
-    const usesFixedFrame =
-      /\bfixed-dashboard-page-frame\b/.test(raw) || /\bFixedDashboardPageFrame\b/.test(raw)
-    const usesSharedDashboardPrimitives =
-      /\bdata-visualization-primitives\b/.test(raw) ||
-      /\b(DashboardControlStrip|ManagedChartCard|ManagedMetricCard|JoinedTableSection)\b/.test(raw)
+    const shellUsage = inspectManagedAnalyticsSharedShellUsage({
+      entryFilePath: absPath,
+      targetRoot,
+    })
+    const usesFixedFrame = shellUsage.usesFixedFrame
+    const usesSharedDashboardPrimitives = shellUsage.usesSharedDashboardPrimitives
     const rebuildsHeaderLocally =
       /\bHostPageHeaderPortal\b/.test(raw) ||
       /\bTypicalPageHeaderPortal\b/.test(raw) ||

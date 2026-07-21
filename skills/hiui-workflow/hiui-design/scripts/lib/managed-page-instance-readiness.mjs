@@ -22,7 +22,33 @@ function hasManagedSourceFingerprint(sourceMarkers) {
   )
 }
 
-export function managedInstanceReadinessForPageFact({ pageExists, contract, sourceMarkers }) {
+const MANAGED_QUERY_FILTER_CHAIN_PAGE_TYPES = new Set([
+  'table-basic',
+  'table-stat',
+  'tree-table',
+  'tree-split',
+])
+
+function contractRequiresManagedQueryFieldChain(contract = {}) {
+  const pageTypeId = String(contract?.pageTypeId || '').trim()
+  const queryFilterRegionRole = String(contract?.semanticContract?.queryFilterRegionRole || '').trim()
+
+  return (
+    queryFilterRegionRole === 'table-query-filter' ||
+    MANAGED_QUERY_FILTER_CHAIN_PAGE_TYPES.has(pageTypeId)
+  )
+}
+
+function sourceDirectlyBindsManagedQueryFilterSlot(sourceRaw) {
+  return /\bbusinessSlots\s*:\s*\{[\s\S]{0,2500}?\bqueryFilter\s*:/.test(String(sourceRaw || ''))
+}
+
+export function managedInstanceReadinessForPageFact({
+  pageExists,
+  contract,
+  sourceMarkers,
+  sourceRaw = '',
+}) {
   if (!pageExists) {
     return {
       schemaVersion: 'managed-instance-readiness.v1',
@@ -58,6 +84,12 @@ export function managedInstanceReadinessForPageFact({ pageExists, contract, sour
   if (String(contract?.workflowStatus || '').trim() === 'stale') {
     blockerCodes.push('MANAGED_INSTANCE_STALE')
   }
+  if (
+    contractRequiresManagedQueryFieldChain(contract) &&
+    sourceDirectlyBindsManagedQueryFilterSlot(sourceRaw)
+  ) {
+    blockerCodes.push('MANAGED_INSTANCE_QUERY_FILTER_SLOT_REIMPLEMENTED')
+  }
 
   const reuseEligible = blockerCodes.length === 0
 
@@ -81,6 +113,7 @@ export function evaluateManagedInstanceReadinessFromSource({ contract, pageExist
     pageExists,
     contract,
     sourceMarkers,
+    sourceRaw,
   })
 }
 
@@ -93,6 +126,9 @@ export function buildManagedInstanceMigrationReason(readiness) {
     hasManagedSourceFingerprint(readiness?.sourceMarkers)
   ) {
     return `existing page already exposes hiui-design managed-page markers but is not registered under page-contracts yet (${blockerCodes.join(', ')})`
+  }
+  if (blockerCodes.includes('MANAGED_INSTANCE_QUERY_FILTER_SLOT_REIMPLEMENTED')) {
+    return `existing page still binds the queryFilter slot directly instead of migrating to the managed queryFields chain (${blockerCodes.join(', ')})`
   }
 
   return `existing page has the target pageType contract but is not a ready managed page instance (${blockerCodes.join(', ') || 'missing source proof'})`

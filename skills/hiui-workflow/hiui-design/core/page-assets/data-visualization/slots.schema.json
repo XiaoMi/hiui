@@ -1,0 +1,5 @@
+{
+  "pageType": "data-visualization",
+  "requiredKeys": ["title", "stats", "queryFields", "charts", "columns", "rows"],
+  "optionalKeys": ["pageSize", "searchPlaceholder", "searchKeys", "secondaryAction", "primaryAction", "rowActions"]
+}

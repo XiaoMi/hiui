@@ -17,13 +17,34 @@
 
 ## Install
 
-推荐使用以下命令从上游仓库安装：
+若当前运行环境是 Codex，推荐使用以下默认安装命令：
 
 ```bash
 npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 ```
 
-该命令会从 `hiui-workflow` 目录发现并安装其中包含的全部 skill。
+该命令会从 `hiui-workflow` 目录发现并安装其中包含的全部 skill。当前底层 `skills add` 默认按 Codex skill 目录语义落盘；在未额外指定目标目录时，不应把它当成其他宿主的通用安装协议。
+
+若当前不是 Codex，或你需要把 skill 安装到显式指定的宿主 skill 目录，请使用 bundle 安装脚本并显式传入目标目录：
+
+```bash
+git clone https://github.com/XiaoMi/hiui.git
+cd hiui
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --target /path/to/host/skills --json
+```
+
+若你希望通过 bundle 脚本直接安装到 Codex 默认 skill 目录，可显式传入：
+
+```bash
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --host codex --json
+```
+
+说明要求：
+
+- `hiui-workflow` 是公开安装入口，不是额外的第 5 个业务 skill
+- `npx skills add ...` 当前只应被表述为 Codex 默认安装方式
+- bundle 安装脚本必须显式给出 `--host` 或 `--target`
+- 非 Codex 宿主必须显式提供目标 skill 根目录，不要默认写入 `~/.codex/skills`
 
 ## Local Validation
 
@@ -39,6 +60,18 @@ npx skills add ./skills/hiui-workflow --list
 
 ```bash
 npx skills add ./skills/hiui-workflow --skill '*' -a codex -y
+```
+
+若要验证非 Codex 宿主目录，请改用：
+
+```bash
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
+```
+
+若要验证 Codex 默认目录解析，请改用：
+
+```bash
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --host codex --json
 ```
 
 ## Bundle Controls

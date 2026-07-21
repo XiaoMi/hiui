@@ -197,16 +197,85 @@
 - 这条规则不只适用于 `data-visualization`；`table-stat`、`full-page-detail`、经营看板型详情页或其它带图表补充区的受管页同样适用
 - `chart-section` 一旦出现在 contract 中，源码必须同步暴露 `data-hiui5-region="chart-section"`，以便 source gate 对图表技术栈做统一校验
 
+## chart-section grid consistency
+
+- `chart-section` 的图表布局只允许一种基础栏数模式：`two-column`、`three-column`、`four-column`
+- `12` 只表示 neutral `full-span`，不构成基础栏数模式切换
+- 同一 `chart-section` 内不得混用 `6/6 + 4/4/4`、`4/4/4 + 3/3/3/3` 一类多模式排布
+- 这条规则只作用于 `chart-section` 中承担独立分析任务的数据图表
+- `stat-section` 中的指标卡、指标卡里的 `sparkline / mini trend / mini chart` 不纳入 `chart-section` 的 mode / span / mixed-mode 校验
+- contract 若声明 `chart-section`，建议同时落盘：
+  - `chart-section base grid mode`
+  - `chart-section consistency scope`
+  - `chart-section full-span policy`
+  - `chart-section scope = chart-section-only`
+  - `chart-section excludes stat-section metrics`
+
 ## semantic contract
 
-- `semantic contract` 至少声明：`query-filter region role`、`dimension switch control`、`list shell composition`、`spacing ownership`
+- `semantic contract` 至少声明：`query-filter region role`、`dimension switch control`、`control scope`、`control strip placement`、`control strip visual treatment`、`detail query-filter policy`、`mixed-scope controls`、`list shell composition`、`spacing ownership`
+- 当页面存在真实 `QueryFilter` 时，`semantic contract` 还应显式回答：
+  - `query field render profile`
+  - `keyword field role`
+  - `text field role`
+  - `select/date field surface policy`
+  - `filter surface baseline`
+- 对 `full-page-edit`、`drawer-form`、`drawer-detail`、`full-page-detail`，`semantic contract` 还必须包含 `bodySectionContract`
+- `bodySectionContract` 只回答 body 一级信息组织事实，不回答页壳事实；页壳、滚动链、白底主体、footer / drawer-footer 挂载关系仍由 `region mapping`、`ownership mapping`、`page component` / `base mold id` 负责
+- `bodySectionContract` 至少回答：
+  - `primaryExpression`
+  - `sectionComposition`
+  - `sectionSpacingOwnership`
+  - `sectionContainerPolicy`
+  - `embeddedWidgetPolicy`
+- `primaryExpression` 只允许：`form-schema`、`descriptions`、`not-applicable`
+- `sectionComposition` 只允许：`groups-only`、`groups-with-inline-help`、`groups-with-supporting-sections`、`mixed-unapproved`、`not-applicable`
+- `sectionSpacingOwnership` 只允许：`section-structure`、`form-item`、`descriptions-group`、`field-local-wrapper`、`not-applicable`
+- `sectionContainerPolicy` 只允许：`flat-section-only`、`approved-card-section`、`no-extra-panel-shell`、`not-applicable`
+- `embeddedWidgetPolicy` 只允许：`none`、`section-toolbar`、`simple-table`、`readonly-chart-summary`、`media-row`、`declared-local-widget`、`not-applicable`
+- `full-page-edit` / `drawer-form` 默认写成：
+  - `primaryExpression = form-schema`
+  - `sectionComposition = groups-only`
+  - `sectionSpacingOwnership = section-structure`
+  - `sectionContainerPolicy = flat-section-only`
+  - `embeddedWidgetPolicy = none`
+- `drawer-detail` / `full-page-detail` 默认写成：
+  - `primaryExpression = descriptions`
+  - `sectionComposition = groups-only`
+  - `sectionSpacingOwnership = descriptions-group`
+  - `sectionContainerPolicy = flat-section-only`
+  - `embeddedWidgetPolicy = none`
+- 当 body 内出现独立支持区、只读摘要表、媒体行或其它一级 section 时，必须显式提升 `sectionComposition` / `embeddedWidgetPolicy`；不要继续让 source gate 和 preflight 只靠页型默认值猜
 - `data-visualization` 默认必须写成：
   - `query-filter region role = dashboard-control-strip`
   - `dimension switch control = segmented-radio-tabs`
+  - `control scope = page-global`
+  - `control strip placement = top-of-white-body-before-stat-section`
+  - `control strip visual treatment = plain-row-no-panel`
+  - `detail query-filter policy = separate-detail-query-filter-near-detail-table`
+  - `mixed-scope controls = forbid-shared-control-row`
   - `list shell composition = forbid-table-list-scaffold`
   - `spacing ownership = single-owner`
+  - `chart-section grid consistency = single-mode-per-chart-section`
+  - `chart-section full-span policy = 12-is-neutral-span`
+  - `chart-section metric exclusion = stat-section metrics excluded`
 - `table-basic` / `table-stat` / `tree-table` / `tree-split` 默认 `query-filter region role = table-query-filter`
+- `table-basic` / `table-stat` / `tree-table` / `tree-split` 若存在真实 `QueryFilter`，默认还应写成：
+  - `query field render profile = shared-query-filter-skin`
+  - `keyword field role = search-input`
+  - `text field role = filter-text-input`
+  - `select/date field surface policy = shared-query-filter-surface`
+  - `filter surface baseline = query-filter-contained-shared-surface`
 - 当 `query-filter region role = dashboard-control-strip` 时，当前 region 的真实语义是页面维度/视图切换，不得为了过 contract 把它回写成真实 `QueryFilter`
+- 当 `control scope = page-global` 时，当前控制区必须影响 `stat-section + chart-section + detail-table` 的阅读状态，默认放在主体白底最上方且先于 `stat-section`；不要再把它降成表格检索栏或 chart card 局部工具条
+- 当页面确实存在明细检索条件时，真实 `QueryFilter` 必须与 detail/table 绑定；默认遵循 `detail query-filter policy = separate-detail-query-filter-near-detail-table`，不要和 `dashboard-control-strip` 混排在同一行
+- `mixed-scope controls = forbid-shared-control-row` 表示页面全局视角切换与明细数据筛选不得共用一条控制行、共用一组字段语义或共用一个灰底查询面板
+- `control strip visual treatment = plain-row-no-panel` 表示 `dashboard-control-strip` 只能呈现为主体白底中的独立平铺控制行，不得包成整块灰底 panel / query shell
+- `query field render profile = shared-query-filter-skin` 表示 `QueryFilter` 内的关键词搜索、普通文本筛选、选择器和日期类字段共享同一筛选皮肤基线；它约束的是一致皮肤，不等于“所有文本字段都直接复用搜索框组件”。
+- `keyword field role = search-input` 表示关键词位继续保留搜索图标、filled 搜索语义与 clearable 行为。
+- `text field role = filter-text-input` 表示普通文本筛选字段必须使用与关键词搜索同皮肤、但语义独立的受管筛选输入角色；不得静默回退为裸 `Input`，也不得冒充第二个搜索入口。
+- `select/date field surface policy = shared-query-filter-surface` 表示 `Select` / `DatePicker` 等字段仍需与文本筛选位共享筛选容器皮肤，不得出现“关键词搜索灰底、其它字段白底”的混搭。
+- `filter surface baseline = query-filter-contained-shared-surface` 表示 contract 不再只证明“页面用了真实 QueryFilter”，还要证明 `QueryFilter` 内字段最终落成共享筛选表面；若当前共享组件存在能力缺口，必须在 contract / waiver / fallback 中显式记录，不得默默放过。
 - 若统计页确实把一条真实 `QueryFilter` 提升为受管 region，必须显式改 contract；不要让 source gate 继续靠页型默认值猜
 
 ## split pane contract

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Button, Message, Space, Tag } from '@hi-ui/hiui'
 import { DownloadOutlined, PlusOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import {
   ProListPageProvider,
@@ -18,6 +18,7 @@ import {
   basicUserStatusOptions,
   queryBasicTableRows,
 } from './typical-pages.mock'
+import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import {
   filterListByKeyword,
   getKeywordValue,
@@ -43,27 +44,24 @@ function BasicTableInner() {
 
   const queryFields = useMemo(
     () => [
-      F(t('角色'), 'roleId')
-        .Select({
-          data: basicUserRoleOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('所属机构'), 'organizationId')
-        .Select({
-          data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('用户状态'), 'userStatus')
-        .Select({
-          data: basicUserStatusOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
+      createManagedQuerySelectField({
+        field: 'roleId',
+        label: t('角色'),
+        data: basicUserRoleOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'organizationId',
+        label: t('所属机构'),
+        data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'userStatus',
+        label: t('用户状态'),
+        data: basicUserStatusOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
     ],
     [t]
   )

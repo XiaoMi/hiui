@@ -18,6 +18,11 @@ import {
   reconcileManagedPageRuntimeSmokeWorkflow,
   toContractSlug,
 } from './lib/rules-only-page-contracts.mjs'
+import {
+  QUERY_FILTER_SURFACE_KINDS,
+  classifyQueryFilterSurfaceKind,
+  isWhiteLikeQueryFilterSurfaceColor,
+} from './lib/query-filter-governance.mjs'
 
 function printUsage() {
   console.log(`Usage:
@@ -659,6 +664,37 @@ async function main() {
             ? queryFilter.querySelector('input:not([type="hidden"])') ||
               queryFilter.querySelector('textarea')
             : null
+        const hasControlSurfaceSignal = (element) => {
+          if (!(element instanceof HTMLElement)) return false
+          const surface = getSurfaceBox(element)
+          return (
+            surface.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+            surface.backgroundColor !== 'transparent'
+          ) ||
+            surface.borderRadius > 0 ||
+            surface.borderTopWidth > 0 ||
+            surface.paddingTop > 4 ||
+            surface.paddingRight > 4 ||
+            surface.paddingBottom > 4 ||
+            surface.paddingLeft > 4
+        }
+        const resolveControlSurfaceHost = (element) => {
+          let current = element instanceof HTMLElement ? element : null
+          let depth = 0
+          let fallback = current
+
+          while (current instanceof HTMLElement && current !== queryFilter && depth < 6) {
+            fallback = current
+            if (hasControlSurfaceSignal(current)) {
+              return current
+            }
+
+            current = current.parentElement
+            depth += 1
+          }
+
+          return fallback
+        }
         const resolveControlSurfaceBackground = (element) => {
           let current = element instanceof HTMLElement ? element : null
           let depth = 0
@@ -684,6 +720,47 @@ async function main() {
           queryFilterTextControl instanceof HTMLElement
             ? resolveControlSurfaceBackground(queryFilterTextControl)
             : ''
+        const queryFilterControlSurfaceSamples =
+          queryFilter instanceof HTMLElement
+            ? (() => {
+                const candidates = Array.from(
+                  queryFilter.querySelectorAll(
+                    'input:not([type="hidden"]), textarea, [role="combobox"], button[aria-haspopup="listbox"], button[aria-haspopup="dialog"]'
+                  )
+                ).filter((element) => element instanceof HTMLElement)
+                const samples = []
+                const seenSurfaceHosts = new Set()
+
+                for (const candidate of candidates) {
+                  if (!(candidate instanceof HTMLElement)) {
+                    continue
+                  }
+
+                  const surfaceHost = resolveControlSurfaceHost(candidate)
+                  const hostRect = getRect(surfaceHost)
+                  const surfaceHostKey = `${describeElement(surfaceHost)}@${Math.round(hostRect.left)}:${Math.round(hostRect.top)}:${Math.round(hostRect.width)}:${Math.round(hostRect.height)}`
+
+                  if (seenSurfaceHosts.has(surfaceHostKey)) {
+                    continue
+                  }
+
+                  seenSurfaceHosts.add(surfaceHostKey)
+                  const backgroundColor = resolveControlSurfaceBackground(candidate)
+
+                  samples.push({
+                    control: describeElement(candidate),
+                    surfaceHost: describeElement(surfaceHost),
+                    backgroundColor,
+                  })
+
+                  if (samples.length >= 6) {
+                    break
+                  }
+                }
+
+                return samples
+              })()
+            : []
 
         const whiteSurfaceHost = whiteBody instanceof HTMLElement ? whiteBody : root
         const headerRect = getRect(headerRegion)
@@ -899,6 +976,7 @@ async function main() {
           queryFilterLabelCount,
           queryFilterHasTextControl: queryFilterTextControl instanceof HTMLElement,
           queryFilterControlSurfaceBackground,
+          queryFilterControlSurfaceSamples,
           whiteOverflow: getOverflow(whiteSurfaceHost),
           tableOverflow:
             tableRegion instanceof HTMLElement
@@ -1178,23 +1256,34 @@ async function main() {
           isFullPageDetailPage ||
           !result.tableHorizontalOwnerExists ||
           (result.tableHorizontalOwnerWithinTable && !result.tableHorizontalOwnerIsRegion)
-        const normalizedQueryFilterSurface = String(
+        const queryFilterControlSurfaceSamples = Array.isArray(
+          result.queryFilterControlSurfaceSamples
+        )
+          ? result.queryFilterControlSurfaceSamples
+          : []
+        const primaryQueryFilterSurfaceKind = classifyQueryFilterSurfaceKind(
           result.queryFilterControlSurfaceBackground || ''
         )
-          .replace(/\s+/g, '')
-          .toLowerCase()
+        const queryFilterSurfaceKinds = [
+          ...new Set(
+            queryFilterControlSurfaceSamples
+              .map((item) => classifyQueryFilterSurfaceKind(item?.backgroundColor || ''))
+              .filter(Boolean)
+          ),
+        ]
         const queryFilterHasNoExternalLabels =
           !strictListCarrierRollout || result.queryFilterLabelCount === 0
         const queryFilterKeepsFilledSurface =
           !strictListCarrierRollout ||
           !result.queryFilterHasTextControl ||
-          ![
-            '',
-            'transparent',
-            'rgba(0,0,0,0)',
-            'rgb(255,255,255)',
-            'rgba(255,255,255,1)',
-          ].includes(normalizedQueryFilterSurface)
+          !isWhiteLikeQueryFilterSurfaceColor(result.queryFilterControlSurfaceBackground || '')
+        const queryFilterSharesOneSurfaceBaseline =
+          !strictListCarrierRollout ||
+          queryFilterControlSurfaceSamples.length < 2 ||
+          !(
+            queryFilterSurfaceKinds.includes(QUERY_FILTER_SURFACE_KINDS.filled) &&
+            queryFilterSurfaceKinds.includes(QUERY_FILTER_SURFACE_KINDS.white)
+          )
         const statSectionExistsWhenRequired =
           !strictTableStatCarrierRollout || result.statSectionExists
         const statSectionLooksPopulated =
@@ -1557,7 +1646,14 @@ async function main() {
           formatCheck(
             queryFilterKeepsFilledSurface,
             'strict rollout carriers keep query inputs on a non-white filled surface',
-            `strictCarrier=${String(strictListCarrierRollout)}, hasTextControl=${String(result.queryFilterHasTextControl)}, surface=${result.queryFilterControlSurfaceBackground || '(missing)'}`
+            `strictCarrier=${String(strictListCarrierRollout)}, hasTextControl=${String(result.queryFilterHasTextControl)}, surface=${result.queryFilterControlSurfaceBackground || '(missing)'}, kind=${primaryQueryFilterSurfaceKind}`
+          )
+        )
+        checks.push(
+          formatCheck(
+            queryFilterSharesOneSurfaceBaseline,
+            'strict rollout carriers keep QueryFilter controls on one shared surface baseline',
+            `strictCarrier=${String(strictListCarrierRollout)}, sampledControls=${queryFilterControlSurfaceSamples.length}, samples=${queryFilterControlSurfaceSamples.map((item) => `${item.control}->${classifyQueryFilterSurfaceKind(item?.backgroundColor || '')}:${item.backgroundColor || '(missing)'}`).join(' | ') || '(insufficient-samples)'}`
           )
         )
         checks.push(

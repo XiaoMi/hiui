@@ -283,6 +283,14 @@ function normalizeStartPlanContractSeed(plan) {
     topology: plan.topology || '',
     layoutStrategy: String(plan.layoutStrategy || '').trim(),
     layoutArchetype: String(plan.layoutArchetype || '').trim(),
+    visualBaselinePlan:
+      plan.visualBaselinePlan && typeof plan.visualBaselinePlan === 'object'
+        ? plan.visualBaselinePlan
+        : null,
+    visualizationRolePlan:
+      plan.visualizationRolePlan && typeof plan.visualizationRolePlan === 'object'
+        ? plan.visualizationRolePlan
+        : null,
     nonTypicalScope: Array.isArray(plan.nonTypicalScope)
       ? plan.nonTypicalScope.map((item) => String(item || '').trim()).filter(Boolean)
       : [],
@@ -2092,6 +2100,143 @@ ${hasChartSection ? `export function ${supportingSectionsComponentName}() {
   ]
 }
 
+function buildManagedAnalyticsLayoutScaffold(layoutArchetype) {
+  if (layoutArchetype === 'linear-stack') {
+    return `        <SectionBlock
+          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
+          region="chart-section"
+          title="TODO_PRIMARY_ANALYSIS_TITLE"
+        >
+          <ManagedChartSectionGrid>
+            <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
+              <ManagedChartCard
+                body={<div>{/* TODO: replace with chart content */}</div>}
+                description="TODO_PRIMARY_CHART_DESCRIPTION"
+                title="TODO_PRIMARY_CHART_TITLE"
+              />
+            </ManagedChartGridItem>
+          </ManagedChartSectionGrid>
+        </SectionBlock>
+
+        <SectionBlock
+          description="TODO_FOLLOWUP_ANALYSIS_DESCRIPTION"
+          title="TODO_FOLLOWUP_ANALYSIS_TITLE"
+        >
+          <ManagedChartSectionGrid>
+            <ManagedChartGridItem gridSpan={12} layoutGroup="follow-up">
+              <ManagedChartCard
+                body={<div>{/* TODO: replace with chart content */}</div>}
+                description="TODO_FOLLOWUP_CHART_DESCRIPTION"
+                title="TODO_FOLLOWUP_CHART_TITLE"
+              />
+            </ManagedChartGridItem>
+          </ManagedChartSectionGrid>
+        </SectionBlock>
+
+        <SectionBlock
+          description="TODO_ACTION_SECTION_DESCRIPTION"
+          title="TODO_ACTION_SECTION_TITLE"
+        >
+          <ManagedCardGrid minItemWidth={260}>
+            <ManagedSurfaceCard>
+              <div>TODO_FOLLOWUP_OWNER</div>
+              <div>TODO_FOLLOWUP_ACTION</div>
+              <div>TODO_FOLLOWUP_RISK</div>
+            </ManagedSurfaceCard>
+            <ManagedSurfaceCard>
+              <div>TODO_NEXT_STEP</div>
+              <div>TODO_NEXT_WINDOW</div>
+              <div>TODO_NEXT_METRIC</div>
+            </ManagedSurfaceCard>
+          </ManagedCardGrid>
+        </SectionBlock>`
+  }
+
+  if (layoutArchetype === 'parallel-sections') {
+    return `        <SectionBlock
+          description="TODO_PARALLEL_ANALYSIS_DESCRIPTION"
+          region="chart-section"
+          title="TODO_PARALLEL_ANALYSIS_TITLE"
+        >
+          <ManagedChartSectionGrid>
+            <ManagedCardGrid baseGridMode="two-column">
+              <ManagedChartGridItem gridSpan={6} layoutGroup="parallel-primary">
+                <ManagedChartCard
+                  body={<div>{/* TODO: replace with chart content */}</div>}
+                  description="TODO_LEFT_CHART_DESCRIPTION"
+                  title="TODO_LEFT_CHART_TITLE"
+                />
+              </ManagedChartGridItem>
+              <ManagedChartGridItem gridSpan={6} layoutGroup="parallel-secondary">
+                <ManagedChartCard
+                  body={<div>{/* TODO: replace with chart content */}</div>}
+                  description="TODO_RIGHT_CHART_DESCRIPTION"
+                  title="TODO_RIGHT_CHART_TITLE"
+                />
+              </ManagedChartGridItem>
+            </ManagedCardGrid>
+            <ManagedChartGridItem gridSpan={12} layoutGroup="cross-section-insight">
+              <ManagedSurfaceCard>
+                <div>TODO_CROSS_SECTION_HEADLINE</div>
+                <div>TODO_CROSS_SECTION_RISK</div>
+                <div>TODO_CROSS_SECTION_ACTION</div>
+              </ManagedSurfaceCard>
+            </ManagedChartGridItem>
+          </ManagedChartSectionGrid>
+        </SectionBlock>`
+  }
+
+  return `        <SectionBlock
+          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
+          region="chart-section"
+          title="TODO_PRIMARY_ANALYSIS_TITLE"
+        >
+          <ManagedChartSectionGrid>
+            <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
+              <ManagedChartCard
+                body={<div>{/* TODO: replace with chart content */}</div>}
+                description="TODO_PRIMARY_CHART_DESCRIPTION"
+                title="TODO_PRIMARY_CHART_TITLE"
+              />
+            </ManagedChartGridItem>
+            <ManagedCardGrid baseGridMode="three-column">
+              <ManagedChartGridItem gridSpan={8} layoutGroup="secondary">
+                <ManagedChartCard
+                  body={<div>{/* TODO: replace with chart content */}</div>}
+                  description="TODO_SUPPORTING_CHART_DESCRIPTION"
+                  title="TODO_SUPPORTING_CHART_TITLE"
+                />
+              </ManagedChartGridItem>
+              <ManagedChartGridItem gridSpan={4} layoutGroup="insight-summary">
+                <ManagedSurfaceCard>
+                  <div>TODO_INSIGHT_HEADLINE</div>
+                  <div>TODO_INSIGHT_REASON</div>
+                  <div>TODO_INSIGHT_ACTION</div>
+                </ManagedSurfaceCard>
+              </ManagedChartGridItem>
+            </ManagedCardGrid>
+          </ManagedChartSectionGrid>
+        </SectionBlock>
+
+        <SectionBlock
+          description="TODO_ACTION_SECTION_DESCRIPTION"
+          title="TODO_ACTION_SECTION_TITLE"
+        >
+          <ManagedCardGrid minItemWidth={260}>
+            <ManagedSurfaceCard>
+              <div>TODO_FOLLOWUP_OWNER</div>
+              <div>TODO_FOLLOWUP_ACTION</div>
+              <div>TODO_FOLLOWUP_RISK</div>
+            </ManagedSurfaceCard>
+            <ManagedSurfaceCard>
+              <div>TODO_NEXT_STEP</div>
+              <div>TODO_NEXT_WINDOW</div>
+              <div>TODO_NEXT_METRIC</div>
+            </ManagedSurfaceCard>
+          </ManagedCardGrid>
+        </SectionBlock>`
+}
+
 function buildFixedDashboardManagedPageScaffold(pagePath, contract) {
   if (contract.pageTypeId !== 'data-visualization') {
     return ''
@@ -2118,6 +2263,7 @@ function buildFixedDashboardManagedPageScaffold(pagePath, contract) {
     pagePath,
     'src/typical-page-reuse/components/managed-page/data-visualization-primitives'
   )
+  const analyticsLayoutScaffold = buildManagedAnalyticsLayoutScaffold(contract.layoutArchetype)
 
   return `/* generated by typical-page:start-page */
 /* replace placeholder targets and wrappers before preflight/formal acceptance */
@@ -2129,6 +2275,8 @@ import {
   JoinedTableSection,
   ManagedCardGrid,
   ManagedChartCard,
+  ManagedChartGridItem,
+  ManagedChartSectionGrid,
   ManagedMetricCard,
   ManagedSurfaceCard,
   SectionBlock,
@@ -2172,6 +2320,21 @@ ${commentLines.map((line) => `      {/* ${line} */}`).join('\n')}
         title="TODO_PAGE_TITLE"
         whiteBodyProps={${indentBlock(renderJsObjectLiteral(whiteBodyOwnerAttrs), '          ').trimStart()}}
       >
+        <DashboardControlStrip
+          leading={
+            <Radio.Group
+              data={viewModeOptions}
+              type="button"
+              value="day"
+            />
+          }
+          trailing={
+            <>
+              {/* TODO: keep page-global controls here only; if real detail filters are needed, render a dedicated QueryFilter above JoinedTableSection instead of mixing scopes in one row */}
+            </>
+          }
+        />
+
         <SectionBlock
           description="TODO_OVERVIEW_DESCRIPTION"
           region="stat-section"
@@ -2195,71 +2358,7 @@ ${commentLines.map((line) => `      {/* ${line} */}`).join('\n')}
             />
           </ManagedCardGrid>
         </SectionBlock>
-
-        <DashboardControlStrip
-          leading={
-            <Radio.Group
-              data={viewModeOptions}
-              type="button"
-              value="day"
-            />
-          }
-          trailing={
-            <>
-              {/* TODO: when filters exceed 4 fields, keep them in inline dropdown controls instead of button groups */}
-            </>
-          }
-        />
-
-        <SectionBlock
-          description="TODO_RISK_SECTION_DESCRIPTION"
-          title="TODO_RISK_SECTION_TITLE"
-        >
-          <ManagedCardGrid minItemWidth={260}>
-            <ManagedSurfaceCard>
-              <div>TODO_RISK_LINE_NAME</div>
-              <div>TODO_RISK_METRICS</div>
-              <div>TODO_RISK_ACTIONS</div>
-            </ManagedSurfaceCard>
-          </ManagedCardGrid>
-        </SectionBlock>
-
-        <SectionBlock
-          description="TODO_CHART_SECTION_DESCRIPTION"
-          region="chart-section"
-          title="TODO_CHART_SECTION_TITLE"
-        >
-          <ManagedCardGrid minItemWidth={320}>
-            <ManagedChartCard
-              body={<div>{/* TODO: replace with chart content */}</div>}
-              description="TODO_CHART_DESCRIPTION"
-              title="TODO_CHART_TITLE"
-            />
-            <ManagedChartCard
-              body={<div>{/* TODO: replace with chart content */}</div>}
-              description="TODO_CHART_DESCRIPTION"
-              title="TODO_CHART_TITLE"
-            />
-          </ManagedCardGrid>
-          <ManagedChartCard
-            body={<div>{/* TODO: replace with chart content */}</div>}
-            description="TODO_CHART_DESCRIPTION"
-            title="TODO_CHART_TITLE"
-          />
-        </SectionBlock>
-
-        <SectionBlock
-          description="TODO_RECORD_SECTION_DESCRIPTION"
-          title="TODO_RECORD_SECTION_TITLE"
-        >
-          <ManagedCardGrid minItemWidth={260}>
-            <ManagedSurfaceCard>
-              <div>TODO_RECORD_TIME</div>
-              <div>TODO_RECORD_ROUTE</div>
-              <div>TODO_RECORD_STATUS</div>
-            </ManagedSurfaceCard>
-          </ManagedCardGrid>
-        </SectionBlock>
+${analyticsLayoutScaffold}
 
         <JoinedTableSection
           description="TODO_TABLE_SECTION_DESCRIPTION"
@@ -2760,6 +2859,11 @@ async function buildScaffoldArtifacts({ skillRoot, pagePath, pageType, targetRoo
     return fullPageDetailArtifacts
   }
 
+  const fixedDashboardScaffold = buildFixedDashboardManagedPageScaffold(pagePath, contract)
+  if (fixedDashboardScaffold) {
+    return toArtifactList(pagePath, fixedDashboardScaffold)
+  }
+
   const strictTemplateAsset = await resolveStrictTemplateAsset({ contract, skillRoot })
   if (strictTemplateAsset) {
     return toArtifactList(
@@ -2770,11 +2874,6 @@ async function buildScaffoldArtifacts({ skillRoot, pagePath, pageType, targetRoo
         templateAsset: strictTemplateAsset,
       })
     )
-  }
-
-  const fixedDashboardScaffold = buildFixedDashboardManagedPageScaffold(pagePath, contract)
-  if (fixedDashboardScaffold) {
-    return toArtifactList(pagePath, fixedDashboardScaffold)
   }
 
   const structuredArtifacts = buildStructuredManagedPageArtifacts(pagePath, contract)
@@ -3126,6 +3225,8 @@ async function main() {
       topology: resolvedTopology,
       layoutStrategy: resolvedLayoutStrategy,
       layoutArchetype: resolvedLayoutArchetype,
+      visualBaselinePlan: startPlanSeed?.visualBaselinePlan || null,
+      visualizationRolePlan: startPlanSeed?.visualizationRolePlan || null,
       nonTypicalScope: resolvedNonTypicalScope,
       mandatoryComponents: startPlanSeed?.mandatoryComponents || [],
       compositionGuardrails: startPlanSeed?.compositionGuardrails || [],
@@ -3169,6 +3270,11 @@ async function main() {
         ...(startPlanSeed?.compiledTypicalBaseline?.whiteBodyOwnership?.required
           ? [
               'Planner typical baseline requires one white-body / outer-padding / main-scroll ownership chain; do not introduce a second page-level white surface or scroll owner.',
+            ]
+          : []),
+        ...(String(resolvedGenerationProfile?.strategy || '').trim() === 'managed-analytics'
+          ? [
+              'Managed analytics scaffold writes a placeholder chartUsageContract. Fill chartId/title/businessQuestion/informationTask/chartType/readingLane for every chart before preflight.',
             ]
           : []),
         ...(startPlanSeed?.compiledTypicalBaseline?.pagination?.required

@@ -1,0 +1,52 @@
+{
+  "pageType": "feedback-status",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/empty-state.tsx",
+    "requiredTokens": [
+      "EmptyState",
+      "PageHeader",
+      "TypicalPageHeaderPortal",
+      "PlusOutlined",
+      "data-hiui5-shell-carrier=\"FeedbackStatePanel\""
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "EmptyStatePage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"feedback-status\""
+    ],
+    "forbiddenTokens": [
+      "PageHeader",
+      ".local-context/hiui-design",
+      "ProjectFeedback"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/feedback-status/CanonicalFeedbackStatusPage.tsx",
+    "requiredTokens": [
+      "EmptyState",
+      "PageHeader",
+      "TypicalPageHeaderPortal",
+      "PlusOutlined",
+      "loadFailIndicatorUrl",
+      "pageNotFoundIndicatorUrl",
+      "noPermissionMainUrl",
+      "networkErrorIndicatorUrl",
+      "underConstructionMainUrl",
+      "intranetOfflineBaseUrl",
+      "data-hiui-pagegen-template=\"feedback-status\"",
+      "data-hiui5-shell-carrier=\"FeedbackStatePanel\"",
+      "data-hiui5-region=\"header\"",
+      "data-hiui5-region=\"white-body\"",
+      "data-hiui5-region=\"feedback-panel\"",
+      "data-hiui5-region=\"panel-content\""
+    ],
+    "forbiddenTokens": [
+      ".local-context/hiui-design",
+      "ProjectFeedback",
+      "headerRegion"
+    ],
+    "requiredRegionOrder": ["header", "white-body", "feedback-panel", "panel-content"]
+  }
+}

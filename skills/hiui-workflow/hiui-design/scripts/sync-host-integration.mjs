@@ -302,7 +302,7 @@ async function main() {
       )
       console.log(`2. Mount routes from ${path.join(options.dest, 'routes', 'config.tsx')}`)
       console.log(
-        `3. For Vite projects, verify the @hi-ui/schema-types alias or apply ${path.join(options.dest, 'VITE_ALIAS_SNIPPET.md')}`
+        `3. For Vite projects, verify the @ and @hi-ui/schema-types aliases or apply ${path.join(options.dest, 'VITE_ALIAS_SNIPPET.md')}`
       )
       console.log(`4. Review ${path.join(options.dest, 'CHECKLIST.md')} before merging into the target project`)
     }

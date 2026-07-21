@@ -5,6 +5,7 @@
   "channel": "master-follow",
   "installPolicyRef": "install-policy.json",
   "compatibilityMatrixRef": "compatibility-matrix.json",
+  "hostProfilesRef": "host-profiles.json",
   "runtimeCompatibility": {
     "requiredRuntimes": [
       "node",

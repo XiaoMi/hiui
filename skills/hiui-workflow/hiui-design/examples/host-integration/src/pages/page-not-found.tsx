@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { Button, EmptyState, PageHeader, Space } from '@hi-ui/hiui'
 import { PlusOutlined } from '@hi-ui/icons'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -11,7 +10,7 @@ const pageStyle = {
   display: 'flex',
   flexDirection: 'column',
   background: '#F5F8FC',
-} satisfies CSSProperties
+}
 
 const panelStyle = {
   flex: '1 1 0%',
@@ -24,44 +23,44 @@ const panelStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-} satisfies CSSProperties
+}
 
 const contentStyle = {
   width: 400,
   textAlign: 'center',
-} satisfies CSSProperties
+}
 
 const titleStyle = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 500,
   color: '#1A1D26',
-} satisfies CSSProperties
+}
 
 const descStyle = {
   fontSize: 14,
   lineHeight: '22px',
   color: '#60636B',
-} satisfies CSSProperties
+}
 
 const linkStyle = {
   color: '#2660FF',
-} satisfies CSSProperties
+}
 
 const headerActionsStyle = {
   gap: 12,
-} satisfies CSSProperties
+}
 
 const actionsStyle = {
   marginTop: 12,
   justifyContent: 'center',
-} satisfies CSSProperties
+}
 
 const indicatorWrapStyle = {
   position: 'relative',
   width: 100,
   height: 100,
-} satisfies CSSProperties
+}
 
 const indicatorImageStyle = {
   position: 'absolute',
@@ -71,7 +70,7 @@ const indicatorImageStyle = {
   height: 77.373,
   transform: 'translateX(-50%)',
   display: 'block',
-} satisfies CSSProperties
+}
 
 function PageNotFoundIndicator() {
   return (

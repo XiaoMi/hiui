@@ -1,0 +1,321 @@
+{
+  "pageType": "data-visualization",
+  "title": "数据可视化",
+  "searchPlaceholder": "区域 / 风险点 / 趋势洞察",
+  "searchKeys": ["regionTitle", "topRiskPoint", "trendLabel"],
+  "stats": [
+    {
+      "key": "task-count",
+      "label": "本月巡检任务",
+      "value": "12,846",
+      "note": "较上月 +8.4%",
+      "trendType": "line",
+      "trendColor": "main",
+      "trendData": [7800, 9050, 9860, 9540, 11020, 11780, 12846]
+    },
+    {
+      "key": "closed-rate",
+      "label": "异常闭环率",
+      "value": "96.8%",
+      "note": "连续 3 周提升",
+      "trendType": "line",
+      "trendColor": "positive",
+      "trendData": [90.6, 92.4, 91.9, 94.3, 93.7, 95.8, 96.8]
+    },
+    {
+      "key": "response-time",
+      "label": "平均响应时长",
+      "value": "18 min",
+      "note": "较基线 -2 min",
+      "trendType": "column",
+      "trendColor": "main",
+      "trendData": [27, 24, 25, 22, 20, 21, 18]
+    },
+    {
+      "key": "supplier-score",
+      "label": "高风险设备",
+      "value": "42",
+      "note": "需优先跟进",
+      "trendType": "line",
+      "trendColor": "negative",
+      "trendData": [58, 55, 57, 51, 49, 46, 42]
+    }
+  ],
+  "queryFields": [
+    {
+      "key": "regionId",
+      "label": "区域",
+      "control": "select",
+      "options": [
+        { "id": "nationwide", "title": "全国" },
+        { "id": "east", "title": "华东" },
+        { "id": "south", "title": "华南" },
+        { "id": "north", "title": "华北" }
+      ]
+    },
+    {
+      "key": "sourceType",
+      "label": "任务来源",
+      "control": "select",
+      "options": [
+        { "id": "巡检", "title": "移动巡检" },
+        { "id": "驻场", "title": "驻场工单" },
+        { "id": "告警", "title": "设备告警" },
+        { "id": "派单", "title": "人工派单" }
+      ]
+    },
+    {
+      "key": "timeRange",
+      "label": "时间范围",
+      "control": "dateRange",
+      "matchKey": "updatedAt"
+    }
+  ],
+  "charts": [
+    {
+      "key": "trend",
+      "title": "折线图",
+      "type": "line",
+      "series": [
+        { "label": "任务量", "values": [9200, 10120, 11040, 10880, 11860, 12846, 13280] },
+        { "label": "闭环量", "values": [8100, 9040, 9850, 9970, 10620, 11790, 12140] }
+      ],
+      "data": [
+        { "label": "01", "value": 9200 },
+        { "label": "02", "value": 10120 },
+        { "label": "03", "value": 11040 },
+        { "label": "04", "value": 10880 },
+        { "label": "05", "value": 11860 },
+        { "label": "06", "value": 12846 },
+        { "label": "07", "value": 13280 }
+      ]
+    },
+    {
+      "key": "source",
+      "title": "饼图",
+      "type": "pie",
+      "data": [
+        { "label": "移动巡检", "value": 42 },
+        { "label": "驻场工单", "value": 25 },
+        { "label": "设备告警", "value": 18 },
+        { "label": "人工派单", "value": 15 }
+      ]
+    },
+    {
+      "key": "service-load",
+      "title": "柱状图",
+      "type": "column",
+      "data": [
+        { "label": "08:00", "value": 118 },
+        { "label": "10:00", "value": 162 },
+        { "label": "12:00", "value": 104 },
+        { "label": "14:00", "value": 176 },
+        { "label": "16:00", "value": 148 },
+        { "label": "18:00", "value": 126 },
+        { "label": "20:00", "value": 96 }
+      ]
+    },
+    {
+      "key": "recovery",
+      "title": "面积图",
+      "type": "area",
+      "data": [
+        { "label": "周一", "value": 28 },
+        { "label": "周二", "value": 24 },
+        { "label": "周三", "value": 21 },
+        { "label": "周四", "value": 19 },
+        { "label": "周五", "value": 17 },
+        { "label": "周六", "value": 16 },
+        { "label": "周日", "value": 15 }
+      ]
+    },
+    {
+      "key": "ranking",
+      "title": "条形图",
+      "type": "bar",
+      "data": [
+        { "label": "华东一区", "value": 98 },
+        { "label": "华南联动组", "value": 95 },
+        { "label": "西南保障组", "value": 91 },
+        { "label": "华北二组", "value": 87 },
+        { "label": "总部支撑组", "value": 82 }
+      ]
+    },
+    {
+      "key": "completion-rate",
+      "title": "双轴柱线图",
+      "type": "combo",
+      "secondaryData": [89.6, 91.4, 92.8, 94.1, 95.2, 96.8],
+      "series": [
+        { "label": "任务量", "values": [9200, 10120, 11040, 10880, 11860, 12846] },
+        { "label": "闭环率", "values": [89.6, 91.4, 92.8, 94.1, 95.2, 96.8] }
+      ],
+      "data": [
+        { "label": "01", "value": 9200 },
+        { "label": "02", "value": 10120 },
+        { "label": "03", "value": 11040 },
+        { "label": "04", "value": 10880 },
+        { "label": "05", "value": 11860 },
+        { "label": "06", "value": 12846 }
+      ]
+    },
+    {
+      "key": "gauge",
+      "title": "仪表盘",
+      "type": "gauge",
+      "data": [
+        { "label": "闭环达成率", "value": 96.8 }
+      ]
+    },
+    {
+      "key": "radar",
+      "title": "雷达图",
+      "type": "radar",
+      "series": [
+        { "label": "华东一区", "values": [92, 88, 84, 90, 86] },
+        { "label": "华南联动组", "values": [76, 71, 66, 79, 69] }
+      ],
+      "data": [
+        { "label": "响应效率", "value": 90 },
+        { "label": "一次修复", "value": 82 },
+        { "label": "备件协同", "value": 78 },
+        { "label": "用户满意", "value": 84 },
+        { "label": "风险控制", "value": 86 }
+      ]
+    },
+    {
+      "key": "liquid",
+      "title": "水波图",
+      "type": "liquid",
+      "data": [
+        { "label": "异常闭环率", "value": 56 }
+      ]
+    },
+    {
+      "key": "funnel",
+      "title": "漏斗图",
+      "type": "funnel",
+      "data": [
+        { "label": "告警触发", "value": 12846 },
+        { "label": "自动派单", "value": 9860 },
+        { "label": "工程师响应", "value": 7420 },
+        { "label": "现场处理", "value": 4680 },
+        { "label": "闭环完成", "value": 2510 }
+      ]
+    },
+    {
+      "key": "stacked-column",
+      "title": "堆叠柱状图",
+      "type": "stackedColumn",
+      "data": [
+        { "label": "01", "series": "自动处理", "value": 3200 },
+        { "label": "01", "series": "人工介入", "value": 2100 },
+        { "label": "01", "series": "闭环完成", "value": 3900 },
+        { "label": "02", "series": "自动处理", "value": 3480 },
+        { "label": "02", "series": "人工介入", "value": 2280 },
+        { "label": "02", "series": "闭环完成", "value": 4360 },
+        { "label": "03", "series": "自动处理", "value": 3720 },
+        { "label": "03", "series": "人工介入", "value": 2410 },
+        { "label": "03", "series": "闭环完成", "value": 4910 },
+        { "label": "04", "series": "自动处理", "value": 3650 },
+        { "label": "04", "series": "人工介入", "value": 2330 },
+        { "label": "04", "series": "闭环完成", "value": 4900 },
+        { "label": "05", "series": "自动处理", "value": 3880 },
+        { "label": "05", "series": "人工介入", "value": 2470 },
+        { "label": "05", "series": "闭环完成", "value": 5510 },
+        { "label": "06", "series": "自动处理", "value": 4160 },
+        { "label": "06", "series": "人工介入", "value": 2590 },
+        { "label": "06", "series": "闭环完成", "value": 6096 }
+      ]
+    },
+    {
+      "key": "grouped-column",
+      "title": "分组柱状图",
+      "type": "groupedColumn",
+      "data": [
+        { "label": "01", "series": "华东一区", "value": 1280 },
+        { "label": "01", "series": "华南联动组", "value": 1140 },
+        { "label": "01", "series": "西南保障组", "value": 980 },
+        { "label": "02", "series": "华东一区", "value": 1410 },
+        { "label": "02", "series": "华南联动组", "value": 1230 },
+        { "label": "02", "series": "西南保障组", "value": 1090 },
+        { "label": "03", "series": "华东一区", "value": 1560 },
+        { "label": "03", "series": "华南联动组", "value": 1360 },
+        { "label": "03", "series": "西南保障组", "value": 1180 },
+        { "label": "04", "series": "华东一区", "value": 1520 },
+        { "label": "04", "series": "华南联动组", "value": 1450 },
+        { "label": "04", "series": "西南保障组", "value": 1260 },
+        { "label": "05", "series": "华东一区", "value": 1680 },
+        { "label": "05", "series": "华南联动组", "value": 1580 },
+        { "label": "05", "series": "西南保障组", "value": 1370 },
+        { "label": "06", "series": "华东一区", "value": 1820 },
+        { "label": "06", "series": "华南联动组", "value": 1670 },
+        { "label": "06", "series": "西南保障组", "value": 1490 }
+      ]
+    }
+  ],
+  "columns": [
+    { "key": "regionTitle", "label": "区域", "width": 100 },
+    { "key": "sourceTypeTitle", "label": "任务来源", "width": 120 },
+    { "key": "trendLabel", "label": "趋势洞察", "width": 180 },
+    { "key": "trendValue", "label": "趋势变化", "width": 100 },
+    { "key": "completionRate", "label": "闭环率", "width": 100 },
+    { "key": "anomalyCount", "label": "异常数", "width": 90 },
+    { "key": "topRiskPoint", "label": "重点风险点", "width": 240 },
+    { "key": "updatedAt", "label": "最近更新", "width": 160 }
+  ],
+  "rows": [
+    {
+      "id": "insight-001",
+      "regionId": "east",
+      "regionTitle": "华东",
+      "sourceType": "巡检",
+      "sourceTypeTitle": "移动巡检",
+      "trendLabel": "任务量持续走高",
+      "trendValue": "+12.3%",
+      "completionRate": "97.6%",
+      "anomalyCount": 8,
+      "topRiskPoint": "苏州园区空调批次告警",
+      "updatedAt": "2026-04-28 10:20"
+    },
+    {
+      "id": "insight-002",
+      "regionId": "south",
+      "regionTitle": "华南",
+      "sourceType": "驻场",
+      "sourceTypeTitle": "驻场工单",
+      "trendLabel": "响应时长改善明显",
+      "trendValue": "-9.1%",
+      "completionRate": "95.2%",
+      "anomalyCount": 5,
+      "topRiskPoint": "深圳福田 UPS 电池波动",
+      "updatedAt": "2026-04-28 11:00"
+    },
+    {
+      "id": "insight-003",
+      "regionId": "north",
+      "regionTitle": "华北",
+      "sourceType": "告警",
+      "sourceTypeTitle": "设备告警",
+      "trendLabel": "高风险设备集中暴露",
+      "trendValue": "+6 台",
+      "completionRate": "93.8%",
+      "anomalyCount": 11,
+      "topRiskPoint": "北京核心机房温控告警",
+      "updatedAt": "2026-04-28 09:42"
+    },
+    {
+      "id": "insight-004",
+      "regionId": "nationwide",
+      "regionTitle": "全国",
+      "sourceType": "派单",
+      "sourceTypeTitle": "人工派单",
+      "trendLabel": "长尾工单持续收敛",
+      "trendValue": "-14.6%",
+      "completionRate": "96.1%",
+      "anomalyCount": 4,
+      "topRiskPoint": "临期备件补货延迟",
+      "updatedAt": "2026-04-27 18:35"
+    }
+  ]
+}

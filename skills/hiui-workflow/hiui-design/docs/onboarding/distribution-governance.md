@@ -191,21 +191,27 @@ flowchart LR
 
 `sync-global-skill.mjs` 的默认一轮同步顺序是：
 
-0. 若 source 是独立 Git 维护仓，先执行 `check-rules-version-alignment.mjs`
-1. 检查 i18n template boundary
-2. 本地 sync hiui-v5 manifest / quick reference / component map / docs / validation
-3. 在 source 项目侧执行 `release-skill-archive --no-feishu-remote`
-4. 把 source 镜像到 `~/.codex/skills/hiui-design`
-5. 在 global mirror 侧执行完整 `release-skill-archive`
-6. 从 global mirror 生成 `team package`
-7. 把 `team package` 发布到 internal team repo（若内部 Git 分发已启用）
-8. 可选执行 open-source package sync
+0. 若启用了 `maintainer source` 中转，先检查 maintainer Git workspace 是否干净；有未提交改动时直接阻断
+1. 执行 `check-rules-version-alignment.mjs`
+2. 检查 i18n template boundary
+3. 本地 sync hiui-v5 manifest / quick reference / component map / validation
+4. 执行 `auto-bump-rules-version.mjs`，若 guarded drift 存在但 `rules/VERSION` 尚未前进，则自动做 patch bump
+5. 执行 `sync-manifest-docs.mjs`
+6. 在 source 项目侧执行 `release-skill-archive --no-feishu-remote`
+7. 把 source 镜像到 `~/.codex/skills/hiui-design`
+8. 在 global mirror 侧执行完整 `release-skill-archive`
+9. 从 global mirror 生成 `team package`
+10. 把 `team package` 发布到 internal team repo（若内部 Git 分发已启用）
+11. 可选执行 open-source package sync
 
 说明：
 
 - 当前脚本实现仍保留把 `global mirror` 直接 `git push` 的兼容能力，但这不再是官方治理口径
 - 在“维护源不进 Git、团队不可见维护侧文件”的前提下，internal Git 应承接 `team package`，而不是承接 `global mirror`
-- `check-rules-version-alignment.mjs` 当前只对“独立 Git maintainer source 根目录”强制执行；项目内 `.local-context/hiui-design` 和非 Git 运行镜像会返回 `skipped`，避免把运行副本误判成真相源
+- `auto-bump-rules-version.mjs` 会把 source 与同步基线做 guarded drift 对比；有真实规则/脚本漂移但版本还没前进时，自动推进 patch 版本，保证每次有效规则调试同步都生成新的版本号。当前要求它放在本地 fail-closed 前置校验之后、`sync-manifest-docs.mjs` / `release-skill-archive.mjs` 之前执行，避免版本号在明显前置失败前就先前进
+- `check-rules-version-alignment.mjs` 仍只对“独立 Git maintainer source 根目录”强制执行；项目内 `.local-context/hiui-design` 和非 Git 运行镜像会返回 `skipped`，避免把运行副本误判成真相源
+- `sync-global-skill.mjs` 若命中 `maintainer source` 中转，会在真正写入 maintainer 目录前检查目标 Git workspace 是否干净；维护仓已有未提交改动时必须先提交或清理，避免同步覆盖掉维护者尚未入库的本地工作
+- 若维护者仍启用兼容 Git push，并且 maintainer 物理目录本身就是 Git workspace，默认应把同步提交落到固定分支 `maintainer`；只有显式传入其它 `--git-branch` 时才允许改写到别的分支
 
 ### 3.3 发布与外部分发
 

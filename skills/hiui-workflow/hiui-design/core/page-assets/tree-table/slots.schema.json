@@ -1,0 +1,12 @@
+{
+  "pageType": "tree-table",
+  "requiredKeys": ["title", "queryFields", "columns", "rows"],
+  "optionalKeys": [
+    "searchPlaceholder",
+    "rowKey",
+    "defaultExpandedRowKeys",
+    "secondaryAction",
+    "primaryAction",
+    "rowActions"
+  ]
+}

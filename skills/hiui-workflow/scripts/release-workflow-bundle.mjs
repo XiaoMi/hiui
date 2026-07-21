@@ -4,9 +4,12 @@ import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
+import { defaultLockPath, resolveBundleConfig } from './lib/workflow-bundle.mjs'
+import { resolveTargetDescriptor } from './lib/workflow-hosts.mjs'
 
 function parseArgs(argv) {
   const options = {
+    host: '',
     json: false,
     lockfile: '',
     target: '',
@@ -17,6 +20,13 @@ function parseArgs(argv) {
 
     if (arg === '--json') {
       options.json = true
+      continue
+    }
+    if (arg === '--host') {
+      const value = argv[index + 1]
+      if (!value || value.startsWith('--')) throw new Error('Missing value for --host')
+      options.host = value
+      index += 1
       continue
     }
     if (arg === '--lockfile') {
@@ -34,7 +44,7 @@ function parseArgs(argv) {
       continue
     }
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/release-workflow-bundle.mjs [--lockfile <path>] [--target <skills-dir>] [--json]')
+      console.log('Usage: node scripts/release-workflow-bundle.mjs [--lockfile <path>] [--host <host-name>] [--target <skills-dir>] [--json]')
       process.exit(0)
     }
     throw new Error(`Unknown argument: ${arg}`)
@@ -63,14 +73,20 @@ function runNodeScript(scriptPath, args) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2))
+  const config = await resolveBundleConfig(options.lockfile || defaultLockPath)
+  const targetResolution = resolveTargetDescriptor({
+    host: options.host,
+    target: options.target,
+    purpose: 'release',
+  }, config.hostProfiles)
   const scriptDir = path.dirname(new URL(import.meta.url).pathname)
   const verifyScript = path.join(scriptDir, 'verify-workflow-bundle.mjs')
   const installScript = path.join(scriptDir, 'install-workflow-bundle.mjs')
 
-  const temporaryRoot = options.target
+  const temporaryRoot = targetResolution.targetRoot
     ? ''
     : await fs.mkdtemp(path.join(os.tmpdir(), 'workflow-bundle-release-'))
-  const targetRoot = path.resolve(options.target || path.join(temporaryRoot, 'skills'))
+  const targetRoot = targetResolution.targetRoot || path.resolve(path.join(temporaryRoot, 'skills'))
 
   try {
     const verifySource = runNodeScript(verifyScript, [
@@ -97,6 +113,8 @@ async function main() {
         verifySource.status === 'passed' && verifyInstalled.status === 'passed'
           ? 'passed'
           : 'failed',
+      host: targetResolution.host,
+      targetResolution: targetResolution.targetRoot ? targetResolution.resolution : 'temporary-target',
       targetRoot,
       verifySource,
       install,

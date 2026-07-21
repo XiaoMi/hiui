@@ -1,0 +1,54 @@
+{
+  "pageType": "drawer-detail",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/drawer-detail.tsx",
+    "requiredTokens": [
+      "ProDetailPageProvider",
+      "ProDetailDrawer",
+      "ProDetailDrawerBody",
+      "Descriptions",
+      "TypicalPageHeaderPortal",
+      "useProDetailPageContext",
+      "labelPlacement=\"left\"",
+      "placement=\"vertical\""
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "DrawerDetailPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"drawer-detail\""
+    ],
+    "forbiddenTokens": [
+      "detailList",
+      "detailRow",
+      "fieldValue"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/drawer-detail/CanonicalDrawerDetailPage.tsx",
+    "requiredTokens": [
+      "ProDetailPageProvider",
+      "ProDetailDrawer",
+      "ProDetailDrawerBody",
+      "Descriptions",
+      "TypicalPageHeaderPortal",
+      "useProDetailPageContext",
+      "labelPlacement=\"left\"",
+      "placement=\"vertical\"",
+      "<Loading"
+    ],
+    "forbiddenTokens": [
+      "detailList",
+      "detailRow",
+      "fieldValue",
+      "subtitle",
+      "placeholderText",
+      "drawerIntro",
+      "function ProDetailPageProvider",
+      "function ProDetailDrawer",
+      "function ProDetailDrawerBody",
+      "DescriptionsItem"
+    ]
+  }
+}

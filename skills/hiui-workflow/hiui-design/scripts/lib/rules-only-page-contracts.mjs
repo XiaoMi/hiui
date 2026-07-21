@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import {
   getManagedPageSourceCommentLines,
   getManagedPageSourceOwnershipAttributes,
@@ -7,14 +8,34 @@ import {
   getManagedPageSourceRootAttributes,
   renderManagedPageSourceContractSnippet,
 } from './managed-page-source-guard.mjs'
+import { findPageComponent } from './page-component-registry.mjs'
 import {
   getEditableSlotsForPageType,
   getLockedRegionsForPageType,
   getMoldIdForPageType,
   getSlotManifestForPageType,
 } from './page-mold-registry.mjs'
+import {
+  buildVisualBaselinePlan,
+  buildVisualizationRolePlan,
+  normalizeManagedAnalyticsChartIntentItem,
+} from './managed-analytics-policy.mjs'
+import {
+  QUERY_FILTER_FIELD_RENDER_PROFILES,
+  QUERY_FILTER_KEYWORD_FIELD_ROLES,
+  QUERY_FILTER_SEMANTIC_KEYS,
+  QUERY_FILTER_SELECT_DATE_FIELD_SURFACE_POLICIES,
+  QUERY_FILTER_SURFACE_BASELINES,
+  QUERY_FILTER_TEXT_FIELD_ROLES,
+  buildQueryFilterSemanticDefaults,
+  buildQueryFilterSemanticProfileErrors,
+  buildQueryFilterSemanticValueSetErrors,
+  getQueryFilterSemanticValidationProfile,
+  queryFilterSemanticFactsRequired,
+} from './query-filter-governance.mjs'
 
-export const RULES_ONLY_PAGE_CONTRACT_VERSION = 13
+export const RULES_ONLY_PAGE_CONTRACT_VERSION = 15
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const MANAGED_PAGE_WORKFLOW_STATUSES = Object.freeze([
   'contract-written',
   'started',
@@ -51,6 +72,11 @@ const FIXED_TEMPLATE_PAGE_TYPES = new Set([
   'table-stat',
   'full-page-edit',
   'full-page-detail',
+])
+const MANAGED_ANALYTICS_LAYOUT_ARCHETYPES = Object.freeze([
+  'primary-secondary',
+  'linear-stack',
+  'parallel-sections',
 ])
 
 function normalizeGenerationProfile(profile) {
@@ -317,8 +343,48 @@ export const RULES_ONLY_QUERY_FILTER_REGION_ROLES = Object.freeze([
   'not-applicable',
 ])
 
+export const RULES_ONLY_QUERY_FIELD_RENDER_PROFILES = QUERY_FILTER_FIELD_RENDER_PROFILES
+
+export const RULES_ONLY_KEYWORD_FIELD_ROLES = QUERY_FILTER_KEYWORD_FIELD_ROLES
+
+export const RULES_ONLY_TEXT_FIELD_ROLES = QUERY_FILTER_TEXT_FIELD_ROLES
+
+export const RULES_ONLY_SELECT_DATE_FIELD_SURFACE_POLICIES =
+  QUERY_FILTER_SELECT_DATE_FIELD_SURFACE_POLICIES
+
+export const RULES_ONLY_FILTER_SURFACE_BASELINES = QUERY_FILTER_SURFACE_BASELINES
+
 export const RULES_ONLY_DIMENSION_SWITCH_CONTROLS = Object.freeze([
   'segmented-radio-tabs',
+  'not-applicable',
+])
+
+export const RULES_ONLY_CONTROL_SCOPES = Object.freeze([
+  'page-global',
+  'detail-table-only',
+  'not-applicable',
+])
+
+export const RULES_ONLY_CONTROL_STRIP_PLACEMENTS = Object.freeze([
+  'top-of-white-body-before-stat-section',
+  'detail-section-before-table',
+  'not-applicable',
+])
+
+export const RULES_ONLY_CONTROL_STRIP_VISUAL_TREATMENTS = Object.freeze([
+  'plain-row-no-panel',
+  'query-filter-form',
+  'not-applicable',
+])
+
+export const RULES_ONLY_DETAIL_QUERY_FILTER_POLICIES = Object.freeze([
+  'separate-detail-query-filter-near-detail-table',
+  'managed-region-is-detail-query-filter',
+  'not-applicable',
+])
+
+export const RULES_ONLY_MIXED_SCOPE_CONTROL_POLICIES = Object.freeze([
+  'forbid-shared-control-row',
   'not-applicable',
 ])
 
@@ -334,6 +400,52 @@ export const RULES_ONLY_SPACING_OWNERSHIP_POLICIES = Object.freeze([
 export const RULES_ONLY_AREA_CHART_FILL_POLICIES = Object.freeze([
   'same-series-color-fill-0.2',
   'not-applicable',
+])
+
+export const RULES_ONLY_BODY_SECTION_PRIMARY_EXPRESSIONS = Object.freeze([
+  'form-schema',
+  'descriptions',
+  'not-applicable',
+])
+
+export const RULES_ONLY_BODY_SECTION_COMPOSITIONS = Object.freeze([
+  'groups-only',
+  'groups-with-inline-help',
+  'groups-with-supporting-sections',
+  'mixed-unapproved',
+  'not-applicable',
+])
+
+export const RULES_ONLY_BODY_SECTION_SPACING_OWNERS = Object.freeze([
+  'section-structure',
+  'form-item',
+  'descriptions-group',
+  'field-local-wrapper',
+  'not-applicable',
+])
+
+export const RULES_ONLY_BODY_SECTION_CONTAINER_POLICIES = Object.freeze([
+  'flat-section-only',
+  'approved-card-section',
+  'no-extra-panel-shell',
+  'not-applicable',
+])
+
+export const RULES_ONLY_BODY_SECTION_EMBEDDED_WIDGET_POLICIES = Object.freeze([
+  'none',
+  'section-toolbar',
+  'simple-table',
+  'readonly-chart-summary',
+  'media-row',
+  'declared-local-widget',
+  'not-applicable',
+])
+const BODY_SECTION_SUPPORTING_WIDGET_POLICIES = new Set([
+  'section-toolbar',
+  'simple-table',
+  'readonly-chart-summary',
+  'media-row',
+  'declared-local-widget',
 ])
 
 export const MANAGED_PAGE_SPLIT_PANE_SCROLL_MODES = Object.freeze([
@@ -610,48 +722,302 @@ export function buildManagedPageWorkflowMetadata(overrides = {}) {
   }
 }
 
-function getDefaultManagedPageSemanticContract(pageTypeId) {
-  if (pageTypeId === 'data-visualization') {
+function getDataVisualizationSemanticContractDefaults(queryFilterRegionRole = 'dashboard-control-strip') {
+  const normalizedRole = String(queryFilterRegionRole || '').trim() || 'dashboard-control-strip'
+
+  if (normalizedRole === 'table-query-filter') {
     return {
-      queryFilterRegionRole: 'dashboard-control-strip',
+      queryFilterRegionRole: 'table-query-filter',
       dimensionSwitchControl: 'segmented-radio-tabs',
+      controlScope: 'detail-table-only',
+      controlStripPlacement: 'detail-section-before-table',
+      controlStripVisualTreatment: 'query-filter-form',
+      detailQueryFilterPolicy: 'managed-region-is-detail-query-filter',
+      mixedScopeControls: 'forbid-shared-control-row',
       listShellComposition: 'forbid-table-list-scaffold',
       spacingOwnership: 'single-owner',
       areaChartFill: 'same-series-color-fill-0.2',
+      ...buildQueryFilterSemanticDefaults({ managed: true }),
     }
   }
+
+  return {
+    queryFilterRegionRole: 'dashboard-control-strip',
+    dimensionSwitchControl: 'segmented-radio-tabs',
+    controlScope: 'page-global',
+    controlStripPlacement: 'top-of-white-body-before-stat-section',
+    controlStripVisualTreatment: 'plain-row-no-panel',
+    detailQueryFilterPolicy: 'separate-detail-query-filter-near-detail-table',
+    mixedScopeControls: 'forbid-shared-control-row',
+    listShellComposition: 'forbid-table-list-scaffold',
+    spacingOwnership: 'single-owner',
+    areaChartFill: 'same-series-color-fill-0.2',
+    ...buildQueryFilterSemanticDefaults({ managed: false }),
+  }
+}
+
+function isBodySectionGovernedPageType(pageTypeId) {
+  return new Set([
+    'full-page-edit',
+    'drawer-form',
+    'drawer-detail',
+    'full-page-detail',
+  ]).has(String(pageTypeId || '').trim())
+}
+
+function getDefaultManagedPageBodySectionContract(pageTypeId) {
+  switch (String(pageTypeId || '').trim()) {
+    case 'full-page-edit':
+    case 'drawer-form':
+      return {
+        primaryExpression: 'form-schema',
+        sectionComposition: 'groups-only',
+        sectionSpacingOwnership: 'section-structure',
+        sectionContainerPolicy: 'flat-section-only',
+        embeddedWidgetPolicy: 'none',
+      }
+    case 'drawer-detail':
+    case 'full-page-detail':
+      return {
+        primaryExpression: 'descriptions',
+        sectionComposition: 'groups-only',
+        sectionSpacingOwnership: 'descriptions-group',
+        sectionContainerPolicy: 'flat-section-only',
+        embeddedWidgetPolicy: 'none',
+      }
+    default:
+      return {
+        primaryExpression: 'not-applicable',
+        sectionComposition: 'not-applicable',
+        sectionSpacingOwnership: 'not-applicable',
+        sectionContainerPolicy: 'not-applicable',
+        embeddedWidgetPolicy: 'not-applicable',
+      }
+  }
+}
+
+function buildManagedPageBodySectionContract(pageTypeId, overrides = {}) {
+  const defaults = getDefaultManagedPageBodySectionContract(pageTypeId)
+  const source = overrides && typeof overrides === 'object' ? overrides : {}
+
+  return {
+    primaryExpression:
+      String(source.primaryExpression || '').trim() || defaults.primaryExpression,
+    sectionComposition:
+      String(source.sectionComposition || '').trim() || defaults.sectionComposition,
+    sectionSpacingOwnership:
+      String(source.sectionSpacingOwnership || '').trim() || defaults.sectionSpacingOwnership,
+    sectionContainerPolicy:
+      String(source.sectionContainerPolicy || '').trim() || defaults.sectionContainerPolicy,
+    embeddedWidgetPolicy:
+      String(source.embeddedWidgetPolicy || '').trim() || defaults.embeddedWidgetPolicy,
+  }
+}
+
+function getContractPageComponentId(contract) {
+  return String(
+    contract?.generationProfile?.pageComponentId || contract?.productionContract?.pageComponentId || ''
+  ).trim()
+}
+
+function resolveContractPageComponent(contract, { targetRoot = '' } = {}) {
+  const componentId = getContractPageComponentId(contract)
+  if (!componentId) return null
+  return findPageComponent(componentId, { skillRoot, targetRoot }) || null
+}
+
+function getSupportingSectionsAllowedContentTypes(component) {
+  const supportingSections = Array.isArray(component?.allowedExtensions)
+    ? component.allowedExtensions.find((extension) => extension?.slotId === 'supportingSections')
+    : null
+
+  return new Set(
+    (Array.isArray(supportingSections?.contentType) ? supportingSections.contentType : [])
+      .map((contentType) => String(contentType || '').trim())
+      .filter(Boolean)
+  )
+}
+
+function validateManagedBodySectionContractConsistency({
+  contract,
+  semanticContract,
+  targetRoot = '',
+}) {
+  if (!isBodySectionGovernedPageType(contract?.pageTypeId)) return []
+
+  const errors = []
+  const bodySectionContract = semanticContract?.bodySectionContract || {}
+  const sectionComposition = String(bodySectionContract.sectionComposition || '').trim()
+  const embeddedWidgetPolicy = String(bodySectionContract.embeddedWidgetPolicy || '').trim()
+  const requiresSupportingSections = BODY_SECTION_SUPPORTING_WIDGET_POLICIES.has(embeddedWidgetPolicy)
+  const declaresSupportingSections = sectionComposition === 'groups-with-supporting-sections'
+
+  if (requiresSupportingSections && !declaresSupportingSections) {
+    errors.push(
+      `semanticContract.bodySectionContract.embeddedWidgetPolicy=${embeddedWidgetPolicy} requires semanticContract.bodySectionContract.sectionComposition=groups-with-supporting-sections so governed supporting sections stay distinguishable from free-form body layout.`
+    )
+  }
+
+  if (
+    declaresSupportingSections &&
+    !BODY_SECTION_SUPPORTING_WIDGET_POLICIES.has(embeddedWidgetPolicy)
+  ) {
+    errors.push(
+      'semanticContract.bodySectionContract.sectionComposition=groups-with-supporting-sections requires a concrete embeddedWidgetPolicy (for example section-toolbar/simple-table/readonly-chart-summary/media-row) so preflight can explain which governed supporting widget expands the body scope.'
+    )
+  }
+
+  if (!requiresSupportingSections) return errors
+
+  const pageComponent = resolveContractPageComponent(contract, { targetRoot })
+  if (!pageComponent) return errors
+
+  const allowedContentTypes = getSupportingSectionsAllowedContentTypes(pageComponent)
+  if (allowedContentTypes.size === 0) {
+    errors.push(
+      `${pageComponent.componentId} does not declare a supportingSections allowed extension. Body supporting widgets must stay inside page-component extension declarations instead of drifting into undeclared local scope.`
+    )
+    return errors
+  }
+
+  if (
+    embeddedWidgetPolicy !== 'declared-local-widget' &&
+    !allowedContentTypes.has(embeddedWidgetPolicy)
+  ) {
+    errors.push(
+      `${pageComponent.componentId} does not whitelist bodySectionContract.embeddedWidgetPolicy=${embeddedWidgetPolicy} in supportingSections allowedExtensions. Supporting body widgets must stay inside page-component extension declarations instead of drifting into undeclared local scope.`
+    )
+  }
+
+  return errors
+}
+
+function getDefaultManagedPageSemanticContract(pageTypeId, overrides = {}) {
+  if (pageTypeId === 'data-visualization') {
+    return getDataVisualizationSemanticContractDefaults(overrides.queryFilterRegionRole)
+  }
+
+  const hasRealQueryFilter =
+    getRequiredRegionsForPageType(pageTypeId).includes('query-filter') &&
+    String(overrides.queryFilterRegionRole || '').trim() !== 'dashboard-control-strip'
 
   return {
     queryFilterRegionRole: getRequiredRegionsForPageType(pageTypeId).includes('query-filter')
       ? 'table-query-filter'
       : 'not-applicable',
     dimensionSwitchControl: 'not-applicable',
+    controlScope: 'not-applicable',
+    controlStripPlacement: 'not-applicable',
+    controlStripVisualTreatment: 'not-applicable',
+    detailQueryFilterPolicy: 'not-applicable',
+    mixedScopeControls: 'not-applicable',
     listShellComposition: 'page-type-shell',
     spacingOwnership: 'single-owner',
     areaChartFill: pageTypeId === 'table-stat' ? 'not-applicable' : 'not-applicable',
+    ...buildQueryFilterSemanticDefaults({ managed: hasRealQueryFilter }),
   }
 }
 
 export function buildManagedPageSemanticContract(pageTypeId, overrides = {}) {
-  const defaults = getDefaultManagedPageSemanticContract(pageTypeId)
+  const defaults = getDefaultManagedPageSemanticContract(pageTypeId, overrides)
+  const queryFilterRegionRole =
+    String(overrides.queryFilterRegionRole || '').trim() || defaults.queryFilterRegionRole
+  const roleDefaults = getDefaultManagedPageSemanticContract(pageTypeId, {
+    ...overrides,
+    queryFilterRegionRole,
+  })
 
   return {
-    queryFilterRegionRole:
-      String(overrides.queryFilterRegionRole || '').trim() || defaults.queryFilterRegionRole,
+    queryFilterRegionRole,
     dimensionSwitchControl:
-      String(overrides.dimensionSwitchControl || '').trim() || defaults.dimensionSwitchControl,
+      String(overrides.dimensionSwitchControl || '').trim() || roleDefaults.dimensionSwitchControl,
+    controlScope: String(overrides.controlScope || '').trim() || roleDefaults.controlScope,
+    controlStripPlacement:
+      String(overrides.controlStripPlacement || '').trim() || roleDefaults.controlStripPlacement,
+    controlStripVisualTreatment:
+      String(overrides.controlStripVisualTreatment || '').trim() ||
+      roleDefaults.controlStripVisualTreatment,
+    detailQueryFilterPolicy:
+      String(overrides.detailQueryFilterPolicy || '').trim() ||
+      roleDefaults.detailQueryFilterPolicy,
+    mixedScopeControls:
+      String(overrides.mixedScopeControls || '').trim() || roleDefaults.mixedScopeControls,
     listShellComposition:
-      String(overrides.listShellComposition || '').trim() || defaults.listShellComposition,
+      String(overrides.listShellComposition || '').trim() || roleDefaults.listShellComposition,
     spacingOwnership:
-      String(overrides.spacingOwnership || '').trim() || defaults.spacingOwnership,
+      String(overrides.spacingOwnership || '').trim() || roleDefaults.spacingOwnership,
     areaChartFill:
-      String(overrides.areaChartFill || '').trim() || defaults.areaChartFill,
+      String(overrides.areaChartFill || '').trim() || roleDefaults.areaChartFill,
+    queryFieldRenderProfile:
+      String(overrides.queryFieldRenderProfile || '').trim() || roleDefaults.queryFieldRenderProfile,
+    keywordFieldRole:
+      String(overrides.keywordFieldRole || '').trim() || roleDefaults.keywordFieldRole,
+    textFieldRole: String(overrides.textFieldRole || '').trim() || roleDefaults.textFieldRole,
+    selectDateFieldSurfacePolicy:
+      String(overrides.selectDateFieldSurfacePolicy || '').trim() ||
+      roleDefaults.selectDateFieldSurfacePolicy,
+    filterSurfaceBaseline:
+      String(overrides.filterSurfaceBaseline || '').trim() || roleDefaults.filterSurfaceBaseline,
+    bodySectionContract: buildManagedPageBodySectionContract(
+      pageTypeId,
+      overrides.bodySectionContract
+    ),
   }
 }
 
 export function getManagedPageSemanticContract(contract) {
   const pageTypeId = String(contract?.pageTypeId || '').trim()
   return buildManagedPageSemanticContract(pageTypeId, contract?.semanticContract || {})
+}
+
+function buildDefaultManagedChartUsageContract(pageTypeId, overrides = {}, context = {}) {
+  const normalizedPageTypeId = String(pageTypeId || '').trim()
+  if (normalizedPageTypeId !== 'data-visualization') {
+    return null
+  }
+
+  const normalizedChartIntentItems = Array.isArray(overrides.chartIntentItems)
+    ? overrides.chartIntentItems.map((item) =>
+        normalizeManagedAnalyticsChartIntentItem(item, {
+          changeText: context.changeText,
+          layoutArchetype: context.layoutArchetype,
+        })
+      )
+    : [
+        normalizeManagedAnalyticsChartIntentItem(
+          {
+            chartId: 'TODO_CHART_ID',
+            title: 'TODO_CHART_TITLE',
+            businessQuestion: 'TODO_BUSINESS_QUESTION',
+            informationTask: 'TODO_INFORMATION_TASK',
+            chartType: 'TODO_CHART_TYPE',
+            readingLane: 'TODO_READING_LANE',
+            visualRole: 'TODO_VISUAL_ROLE',
+            regionPriority: 'TODO_REGION_PRIORITY',
+            preferredRegionSize: 'TODO_REGION_SIZE',
+            canOwnPrimaryRegion: null,
+            forbiddenPlacements: ['TODO_FORBIDDEN_PLACEMENT'],
+          },
+          {
+            changeText: context.changeText,
+            layoutArchetype: context.layoutArchetype,
+          }
+        ),
+      ]
+
+  return {
+    schemaVersion: 'chart-usage-contract.v1',
+    contractStatus: String(overrides.contractStatus || '').trim() || 'pending-definition',
+    readingPath:
+      Array.isArray(overrides.readingPath) && overrides.readingPath.length > 0
+        ? [...new Set(overrides.readingPath.map((item) => String(item || '').trim()).filter(Boolean))]
+        : ['summary', 'primary', 'secondary', 'detail-table'],
+    chartIntentItems: normalizedChartIntentItems,
+  }
+}
+
+function hasPlaceholderChartIntentValue(value) {
+  return typeof value === 'string' && value.trim().startsWith('TODO_')
 }
 
 export function buildManagedPageSplitPaneContract(pageTypeId, overrides = {}) {
@@ -865,6 +1231,9 @@ export function buildRulesOnlyPageContract({
   runtimeSmokePlan = null,
   generationProfile = null,
   productionContract = null,
+  chartUsageContract = null,
+  visualBaselinePlan = null,
+  visualizationRolePlan = null,
   notes = [],
   deviations = [],
   adapterContract = {},
@@ -892,6 +1261,27 @@ export function buildRulesOnlyPageContract({
     archetypeMode,
     capabilityRegistry: archetypeDefinition?.capabilityRegistry,
   })
+  const resolvedVisualBaselinePlan =
+    pageType.id === 'data-visualization'
+      ? visualBaselinePlan || buildVisualBaselinePlan({ layoutArchetype: normalizedLayoutArchetype })
+      : null
+  const resolvedVisualizationRolePlan =
+    pageType.id === 'data-visualization'
+      ? visualizationRolePlan ||
+        buildVisualizationRolePlan({
+          layoutArchetype: normalizedLayoutArchetype,
+          layoutStrategy: normalizedLayoutStrategy,
+          pageTypeId: pageType.id,
+        })
+      : null
+  const resolvedChartUsageContract =
+    buildDefaultManagedChartUsageContract(
+      pageType.id,
+      chartUsageContract || {},
+      {
+        layoutArchetype: normalizedLayoutArchetype,
+      }
+    )
 
   return {
     version: RULES_ONLY_PAGE_CONTRACT_VERSION,
@@ -926,6 +1316,8 @@ export function buildRulesOnlyPageContract({
     ...(topologyContract ? { topology: topologyContract } : {}),
     ...(normalizedLayoutStrategy ? { layoutStrategy: normalizedLayoutStrategy } : {}),
     ...(normalizedLayoutArchetype ? { layoutArchetype: normalizedLayoutArchetype } : {}),
+    ...(resolvedVisualBaselinePlan ? { visualBaselinePlan: resolvedVisualBaselinePlan } : {}),
+    ...(resolvedVisualizationRolePlan ? { visualizationRolePlan: resolvedVisualizationRolePlan } : {}),
     ...(normalizedNonTypicalScope.length > 0 ? { nonTypicalScope: normalizedNonTypicalScope } : {}),
     ...(normalizedMandatoryComponents.length > 0 ? { mandatoryComponents: normalizedMandatoryComponents } : {}),
     ...(normalizedCompositionGuardrails.length > 0 ? { compositionGuardrails: normalizedCompositionGuardrails } : {}),
@@ -949,6 +1341,7 @@ export function buildRulesOnlyPageContract({
         : [],
     },
     semanticContract: buildManagedPageSemanticContract(pageType.id, semanticContract),
+    ...(resolvedChartUsageContract ? { chartUsageContract: resolvedChartUsageContract } : {}),
     workflow: buildManagedPageWorkflowMetadata({
       startedAt: createdAt,
       ...workflow,
@@ -1190,6 +1583,23 @@ export function validateRulesOnlyPageContract({
     )
   }
 
+  const semanticContractSource =
+    contract.semanticContract && typeof contract.semanticContract === 'object'
+      ? contract.semanticContract
+      : {}
+  const queryFieldFactsRequired = queryFilterSemanticFactsRequired({
+    semanticContract,
+    requiredRegions: getRequiredRegionsForPageType(contract.pageTypeId),
+  })
+  if (
+    queryFieldFactsRequired &&
+    QUERY_FILTER_SEMANTIC_KEYS.some((key) => typeof semanticContractSource[key] !== 'string')
+  ) {
+    warnings.push(
+      'Missing semanticContract query-field render metadata. Re-write the contract with the current writer so queryFieldRenderProfile, keyword/text roles, and filterSurfaceBaseline stay machine-checkable.'
+    )
+  }
+
   if (!RULES_ONLY_QUERY_FILTER_REGION_ROLES.includes(semanticContract.queryFilterRegionRole)) {
     errors.push(
       `semanticContract.queryFilterRegionRole must be one of: ${RULES_ONLY_QUERY_FILTER_REGION_ROLES.join(', ')}; received ${semanticContract.queryFilterRegionRole || '(missing)'}`
@@ -1228,6 +1638,132 @@ export function validateRulesOnlyPageContract({
     )
   }
 
+  errors.push(...buildQueryFilterSemanticValueSetErrors(semanticContract))
+  errors.push(
+    ...buildQueryFilterSemanticProfileErrors({
+      semanticContract,
+      profile: getQueryFilterSemanticValidationProfile({
+        pageTypeId: contract.pageTypeId,
+        queryFilterRegionRole: semanticContract.queryFilterRegionRole,
+        requiredRegions: getRequiredRegionsForPageType(contract.pageTypeId),
+      }),
+    })
+  )
+
+  if (
+    isBodySectionGovernedPageType(contract.pageTypeId) &&
+    (
+      !contract.semanticContract ||
+      typeof contract.semanticContract !== 'object' ||
+      !contract.semanticContract.bodySectionContract ||
+      typeof contract.semanticContract.bodySectionContract !== 'object'
+    )
+  ) {
+    warnings.push(
+      'Missing semanticContract.bodySectionContract metadata. Re-write the contract with the current writer so form/detail body section ownership, container policy, and embedded widget scope stay machine-checkable.'
+    )
+  }
+
+  if (
+    !RULES_ONLY_BODY_SECTION_PRIMARY_EXPRESSIONS.includes(
+      semanticContract.bodySectionContract.primaryExpression
+    )
+  ) {
+    errors.push(
+      `semanticContract.bodySectionContract.primaryExpression must be one of: ${RULES_ONLY_BODY_SECTION_PRIMARY_EXPRESSIONS.join(', ')}; received ${semanticContract.bodySectionContract.primaryExpression || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_BODY_SECTION_COMPOSITIONS.includes(
+      semanticContract.bodySectionContract.sectionComposition
+    )
+  ) {
+    errors.push(
+      `semanticContract.bodySectionContract.sectionComposition must be one of: ${RULES_ONLY_BODY_SECTION_COMPOSITIONS.join(', ')}; received ${semanticContract.bodySectionContract.sectionComposition || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_BODY_SECTION_SPACING_OWNERS.includes(
+      semanticContract.bodySectionContract.sectionSpacingOwnership
+    )
+  ) {
+    errors.push(
+      `semanticContract.bodySectionContract.sectionSpacingOwnership must be one of: ${RULES_ONLY_BODY_SECTION_SPACING_OWNERS.join(', ')}; received ${semanticContract.bodySectionContract.sectionSpacingOwnership || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_BODY_SECTION_CONTAINER_POLICIES.includes(
+      semanticContract.bodySectionContract.sectionContainerPolicy
+    )
+  ) {
+    errors.push(
+      `semanticContract.bodySectionContract.sectionContainerPolicy must be one of: ${RULES_ONLY_BODY_SECTION_CONTAINER_POLICIES.join(', ')}; received ${semanticContract.bodySectionContract.sectionContainerPolicy || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_BODY_SECTION_EMBEDDED_WIDGET_POLICIES.includes(
+      semanticContract.bodySectionContract.embeddedWidgetPolicy
+    )
+  ) {
+    errors.push(
+      `semanticContract.bodySectionContract.embeddedWidgetPolicy must be one of: ${RULES_ONLY_BODY_SECTION_EMBEDDED_WIDGET_POLICIES.join(', ')}; received ${semanticContract.bodySectionContract.embeddedWidgetPolicy || '(missing)'}`
+    )
+  }
+
+  errors.push(
+    ...validateManagedBodySectionContractConsistency({
+      contract,
+      semanticContract,
+      targetRoot,
+    })
+  )
+
+  if (!RULES_ONLY_CONTROL_SCOPES.includes(semanticContract.controlScope)) {
+    errors.push(
+      `semanticContract.controlScope must be one of: ${RULES_ONLY_CONTROL_SCOPES.join(', ')}; received ${semanticContract.controlScope || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_CONTROL_STRIP_PLACEMENTS.includes(semanticContract.controlStripPlacement)
+  ) {
+    errors.push(
+      `semanticContract.controlStripPlacement must be one of: ${RULES_ONLY_CONTROL_STRIP_PLACEMENTS.join(', ')}; received ${semanticContract.controlStripPlacement || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_CONTROL_STRIP_VISUAL_TREATMENTS.includes(
+      semanticContract.controlStripVisualTreatment
+    )
+  ) {
+    errors.push(
+      `semanticContract.controlStripVisualTreatment must be one of: ${RULES_ONLY_CONTROL_STRIP_VISUAL_TREATMENTS.join(', ')}; received ${semanticContract.controlStripVisualTreatment || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_DETAIL_QUERY_FILTER_POLICIES.includes(
+      semanticContract.detailQueryFilterPolicy
+    )
+  ) {
+    errors.push(
+      `semanticContract.detailQueryFilterPolicy must be one of: ${RULES_ONLY_DETAIL_QUERY_FILTER_POLICIES.join(', ')}; received ${semanticContract.detailQueryFilterPolicy || '(missing)'}`
+    )
+  }
+
+  if (
+    !RULES_ONLY_MIXED_SCOPE_CONTROL_POLICIES.includes(semanticContract.mixedScopeControls)
+  ) {
+    errors.push(
+      `semanticContract.mixedScopeControls must be one of: ${RULES_ONLY_MIXED_SCOPE_CONTROL_POLICIES.join(', ')}; received ${semanticContract.mixedScopeControls || '(missing)'}`
+    )
+  }
+
   if (contract.pageTypeId === 'data-visualization') {
     if (semanticContract.queryFilterRegionRole !== 'dashboard-control-strip') {
       warnings.push(
@@ -1250,6 +1786,73 @@ export function validateRulesOnlyPageContract({
     if (semanticContract.areaChartFill !== 'same-series-color-fill-0.2') {
       warnings.push(
         `data-visualization should keep semanticContract.areaChartFill=same-series-color-fill-0.2 so single-series area charts do not drift into per-metric fillOpacity variants.`
+      )
+    }
+
+    if (semanticContract.queryFilterRegionRole === 'dashboard-control-strip') {
+      if (semanticContract.controlScope !== 'page-global') {
+        errors.push(
+          'data-visualization dashboard-control-strip contracts must keep semanticContract.controlScope=page-global so the control row governs metrics, charts, and detail-table together.'
+        )
+      }
+
+      if (
+        semanticContract.controlStripPlacement !==
+        'top-of-white-body-before-stat-section'
+      ) {
+        errors.push(
+          'data-visualization dashboard-control-strip contracts must keep semanticContract.controlStripPlacement=top-of-white-body-before-stat-section so page-global controls sit above the managed analysis body.'
+        )
+      }
+
+      if (semanticContract.controlStripVisualTreatment !== 'plain-row-no-panel') {
+        errors.push(
+          'data-visualization dashboard-control-strip contracts must keep semanticContract.controlStripVisualTreatment=plain-row-no-panel so the top control row does not regress into a grey query panel.'
+        )
+      }
+
+      if (
+        semanticContract.detailQueryFilterPolicy !==
+        'separate-detail-query-filter-near-detail-table'
+      ) {
+        errors.push(
+          'data-visualization dashboard-control-strip contracts must keep semanticContract.detailQueryFilterPolicy=separate-detail-query-filter-near-detail-table so real detail filters stay adjacent to the table.'
+        )
+      }
+    }
+
+    if (semanticContract.queryFilterRegionRole === 'table-query-filter') {
+      if (semanticContract.controlScope !== 'detail-table-only') {
+        errors.push(
+          'data-visualization table-query-filter contracts must keep semanticContract.controlScope=detail-table-only so the managed query-filter region is not mistaken for a page-global dashboard strip.'
+        )
+      }
+
+      if (semanticContract.controlStripPlacement !== 'detail-section-before-table') {
+        errors.push(
+          'data-visualization table-query-filter contracts must keep semanticContract.controlStripPlacement=detail-section-before-table so the managed filter region stays adjacent to the detail table.'
+        )
+      }
+
+      if (semanticContract.controlStripVisualTreatment !== 'query-filter-form') {
+        errors.push(
+          'data-visualization table-query-filter contracts must keep semanticContract.controlStripVisualTreatment=query-filter-form so the managed region remains a real QueryFilter-compatible filter bar.'
+        )
+      }
+
+      if (
+        semanticContract.detailQueryFilterPolicy !==
+        'managed-region-is-detail-query-filter'
+      ) {
+        errors.push(
+          'data-visualization table-query-filter contracts must keep semanticContract.detailQueryFilterPolicy=managed-region-is-detail-query-filter when the managed region itself is the detail QueryFilter.'
+        )
+      }
+    }
+
+    if (semanticContract.mixedScopeControls !== 'forbid-shared-control-row') {
+      errors.push(
+        'data-visualization contracts must keep semanticContract.mixedScopeControls=forbid-shared-control-row so page-global controls and detail filters do not merge into one ambiguous bar.'
       )
     }
   }
@@ -1479,9 +2082,241 @@ export function validateRulesOnlyPageContract({
       if (GENERIC_REGION_NAMES.has(normalizedRegion)) {
         genericRegions.push(item.region)
       }
+  }
+
+  const isManagedAnalyticsPage =
+    String(contract.pageTypeId || '').trim() === 'data-visualization' ||
+    String(generationProfile?.strategy || '').trim() === 'managed-analytics'
+  if (isManagedAnalyticsPage) {
+    const chartUsageContract = contract.chartUsageContract
+    const visualBaselinePlan = contract.visualBaselinePlan
+    const visualizationRolePlan = contract.visualizationRolePlan
+    const layoutStrategy = String(contract.layoutStrategy || '').trim()
+    const layoutArchetype = String(contract.layoutArchetype || '').trim()
+
+    if (!layoutStrategy) {
+      errors.push('Missing layoutStrategy. managed-analytics pages must declare the analytics reading strategy before scaffolding.')
+    } else if (layoutStrategy === 'typical-page') {
+      errors.push('Invalid layoutStrategy: typical-page. managed-analytics pages must use an analytics layout strategy instead of falling back to the generic typical-page shell.')
     }
 
-    const requiredRegions = getRequiredRegions(contract, archetypeDefinition)
+    if (!layoutArchetype) {
+      errors.push('Missing layoutArchetype. managed-analytics pages must declare the selected analytics layout archetype before scaffolding.')
+    } else if (!MANAGED_ANALYTICS_LAYOUT_ARCHETYPES.includes(layoutArchetype)) {
+      errors.push(
+        `Invalid layoutArchetype for managed-analytics: ${layoutArchetype}. Expected one of: ${MANAGED_ANALYTICS_LAYOUT_ARCHETYPES.join(', ')}`
+      )
+    }
+
+    if (!chartUsageContract || typeof chartUsageContract !== 'object') {
+      errors.push(
+        'Missing chartUsageContract metadata. managed-analytics pages must persist a chart usage contract before preflight so chart intent, reading path, and chart-type choices stay machine-checkable.'
+      )
+    } else {
+      if (chartUsageContract.schemaVersion !== 'chart-usage-contract.v1') {
+        errors.push(
+          `chartUsageContract.schemaVersion must be chart-usage-contract.v1; received ${chartUsageContract.schemaVersion || '(missing)'}`
+        )
+      }
+
+      if (!Array.isArray(chartUsageContract.chartIntentItems)) {
+        errors.push('chartUsageContract.chartIntentItems must be an array for managed-analytics pages.')
+      } else if (String(chartUsageContract.contractStatus || '').trim() === 'ready') {
+        chartUsageContract.chartIntentItems.forEach((item, index) => {
+          const prefix = `chartUsageContract.chartIntentItems[${index}]`
+          for (const field of ['chartId', 'title', 'businessQuestion', 'informationTask', 'chartType', 'readingLane', 'visualRole', 'regionPriority', 'preferredRegionSize']) {
+            const value = item?.[field]
+            if (!String(value || '').trim() || hasPlaceholderChartIntentValue(value)) {
+              errors.push(`${prefix}.${field} must be a concrete non-placeholder value when contractStatus=ready.`)
+            }
+          }
+
+          if (typeof item?.canOwnPrimaryRegion !== 'boolean') {
+            errors.push(`${prefix}.canOwnPrimaryRegion must be boolean when contractStatus=ready.`)
+          }
+
+          if (!Array.isArray(item?.forbiddenPlacements)) {
+            errors.push(`${prefix}.forbiddenPlacements must be an array when contractStatus=ready.`)
+          }
+        })
+      }
+    }
+
+    if (!visualBaselinePlan || typeof visualBaselinePlan !== 'object') {
+      errors.push('Missing visualBaselinePlan. managed-analytics pages must persist generation-time visual baseline facts.')
+    }
+
+    if (!visualizationRolePlan || typeof visualizationRolePlan !== 'object') {
+      errors.push('Missing visualizationRolePlan. managed-analytics pages must persist chart primary/secondary role facts.')
+    } else {
+      const chartSectionLayoutPlan = visualizationRolePlan.chartSectionLayoutPlan
+      const controlStripPlan = visualizationRolePlan.controlStripPlan
+
+      if (!chartSectionLayoutPlan || typeof chartSectionLayoutPlan !== 'object') {
+        errors.push(
+          'Missing visualizationRolePlan.chartSectionLayoutPlan. managed-analytics pages must persist the chart-section base grid mode before scaffolding.'
+        )
+      } else {
+        const baseGridMode = String(chartSectionLayoutPlan.baseGridMode || '').trim()
+        const allowedBaseGridModes = Array.isArray(chartSectionLayoutPlan.allowedBaseGridModes)
+          ? chartSectionLayoutPlan.allowedBaseGridModes
+              .map((item) => String(item || '').trim())
+              .filter(Boolean)
+          : []
+        const excludedContentTypes = Array.isArray(chartSectionLayoutPlan.excludedContentTypes)
+          ? chartSectionLayoutPlan.excludedContentTypes
+              .map((item) => String(item || '').trim())
+              .filter(Boolean)
+          : []
+        const requiredExcludedContentTypes = [
+          'metric-card',
+          'metric-sparkline',
+          'metric-mini-chart',
+        ]
+
+        if (!baseGridMode) {
+          errors.push(
+            'visualizationRolePlan.chartSectionLayoutPlan.baseGridMode is required for managed-analytics pages.'
+          )
+        } else if (
+          allowedBaseGridModes.length > 0 &&
+          !allowedBaseGridModes.includes(baseGridMode)
+        ) {
+          errors.push(
+            `visualizationRolePlan.chartSectionLayoutPlan.baseGridMode must be one of ${allowedBaseGridModes.join(', ')}; received ${baseGridMode}.`
+          )
+        }
+
+        if (
+          String(chartSectionLayoutPlan.consistencyScope || '').trim() !==
+          'single-mode-per-chart-section'
+        ) {
+          errors.push(
+            'visualizationRolePlan.chartSectionLayoutPlan.consistencyScope must be single-mode-per-chart-section.'
+          )
+        }
+
+        if (chartSectionLayoutPlan.fullSpanNeutral !== true) {
+          errors.push(
+            'visualizationRolePlan.chartSectionLayoutPlan.fullSpanNeutral must stay true so span 12 is treated as a neutral full-span row instead of a mode switch.'
+          )
+        }
+
+        if (
+          String(chartSectionLayoutPlan.fullSpanPolicy || '').trim() !==
+          '12-is-neutral-span'
+        ) {
+          errors.push(
+            'visualizationRolePlan.chartSectionLayoutPlan.fullSpanPolicy must be 12-is-neutral-span.'
+          )
+        }
+
+        for (const excludedType of requiredExcludedContentTypes) {
+          if (!excludedContentTypes.includes(excludedType)) {
+            errors.push(
+              `visualizationRolePlan.chartSectionLayoutPlan.excludedContentTypes must explicitly exclude ${excludedType} so stat-section KPI cards and their mini visuals do not participate in chart-section grid checks.`
+            )
+          }
+        }
+      }
+
+      if (!controlStripPlan || typeof controlStripPlan !== 'object') {
+        errors.push(
+          'Missing visualizationRolePlan.controlStripPlan. managed-analytics pages must persist page-global control-strip semantics before scaffolding.'
+        )
+      } else {
+        const defaultRole = String(controlStripPlan.defaultRole || '').trim()
+        const defaultControlScope = String(controlStripPlan.defaultControlScope || '').trim()
+        const defaultPlacement = String(controlStripPlan.defaultPlacement || '').trim()
+        const defaultVisualTreatment = String(
+          controlStripPlan.defaultVisualTreatment || ''
+        ).trim()
+        const detailQueryFilterPolicy = String(
+          controlStripPlan.detailQueryFilterPolicy || ''
+        ).trim()
+        const mixedScopeControls = String(controlStripPlan.mixedScopeControls || '').trim()
+        const allowedPlacementsByRole =
+          controlStripPlan.allowedPlacementsByRole &&
+          typeof controlStripPlan.allowedPlacementsByRole === 'object'
+            ? controlStripPlan.allowedPlacementsByRole
+            : {}
+        const allowedVisualTreatmentsByRole =
+          controlStripPlan.allowedVisualTreatmentsByRole &&
+          typeof controlStripPlan.allowedVisualTreatmentsByRole === 'object'
+            ? controlStripPlan.allowedVisualTreatmentsByRole
+            : {}
+
+        if (String(controlStripPlan.schemaVersion || '').trim() !== 'dashboard-control-strip-plan.v1') {
+          errors.push(
+            `visualizationRolePlan.controlStripPlan.schemaVersion must be dashboard-control-strip-plan.v1; received ${controlStripPlan.schemaVersion || '(missing)'}`
+          )
+        }
+
+        if (defaultRole !== 'dashboard-control-strip') {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.defaultRole must stay dashboard-control-strip for managed-analytics pages.'
+          )
+        }
+
+        if (defaultControlScope !== 'page-global') {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.defaultControlScope must stay page-global so dashboard view switches remain page-wide.'
+          )
+        }
+
+        if (defaultPlacement !== 'top-of-white-body-before-stat-section') {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.defaultPlacement must stay top-of-white-body-before-stat-section.'
+          )
+        }
+
+        if (defaultVisualTreatment !== 'plain-row-no-panel') {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.defaultVisualTreatment must stay plain-row-no-panel.'
+          )
+        }
+
+        if (
+          detailQueryFilterPolicy !==
+          'separate-detail-query-filter-near-detail-table'
+        ) {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.detailQueryFilterPolicy must stay separate-detail-query-filter-near-detail-table.'
+          )
+        }
+
+        if (mixedScopeControls !== 'forbid-shared-control-row') {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.mixedScopeControls must stay forbid-shared-control-row.'
+          )
+        }
+
+        if (
+          !Array.isArray(allowedPlacementsByRole['dashboard-control-strip']) ||
+          !allowedPlacementsByRole['dashboard-control-strip'].includes(
+            'top-of-white-body-before-stat-section'
+          )
+        ) {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.allowedPlacementsByRole.dashboard-control-strip must include top-of-white-body-before-stat-section.'
+          )
+        }
+
+        if (
+          !Array.isArray(allowedVisualTreatmentsByRole['dashboard-control-strip']) ||
+          !allowedVisualTreatmentsByRole['dashboard-control-strip'].includes(
+            'plain-row-no-panel'
+          )
+        ) {
+          errors.push(
+            'visualizationRolePlan.controlStripPlan.allowedVisualTreatmentsByRole.dashboard-control-strip must include plain-row-no-panel.'
+          )
+        }
+      }
+    }
+  }
+
+  const requiredRegions = getRequiredRegions(contract, archetypeDefinition)
     const missingRequiredRegions = requiredRegions.filter(
       (region) => !normalizedRegions.has(normalizeRegionName(region))
     )
@@ -2070,9 +2905,36 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
   lines.push('', '## Semantic Contract')
   lines.push(`- query-filter region role: ${semanticContract.queryFilterRegionRole}`)
   lines.push(`- dimension switch control: ${semanticContract.dimensionSwitchControl}`)
+  lines.push(`- control scope: ${semanticContract.controlScope}`)
+  lines.push(`- control strip placement: ${semanticContract.controlStripPlacement}`)
+  lines.push(`- control strip visual treatment: ${semanticContract.controlStripVisualTreatment}`)
+  lines.push(`- detail query-filter policy: ${semanticContract.detailQueryFilterPolicy}`)
+  lines.push(`- mixed-scope controls: ${semanticContract.mixedScopeControls}`)
   lines.push(`- list shell composition: ${semanticContract.listShellComposition}`)
   lines.push(`- spacing ownership: ${semanticContract.spacingOwnership}`)
   lines.push(`- area chart fill: ${semanticContract.areaChartFill}`)
+  lines.push(`- query field render profile: ${semanticContract.queryFieldRenderProfile}`)
+  lines.push(`- keyword field role: ${semanticContract.keywordFieldRole}`)
+  lines.push(`- text field role: ${semanticContract.textFieldRole}`)
+  lines.push(
+    `- select/date field surface policy: ${semanticContract.selectDateFieldSurfacePolicy}`
+  )
+  lines.push(`- filter surface baseline: ${semanticContract.filterSurfaceBaseline}`)
+  lines.push(
+    `- body section primary expression: ${semanticContract.bodySectionContract.primaryExpression}`
+  )
+  lines.push(
+    `- body section composition: ${semanticContract.bodySectionContract.sectionComposition}`
+  )
+  lines.push(
+    `- body section spacing ownership: ${semanticContract.bodySectionContract.sectionSpacingOwnership}`
+  )
+  lines.push(
+    `- body section container policy: ${semanticContract.bodySectionContract.sectionContainerPolicy}`
+  )
+  lines.push(
+    `- body section embedded widget policy: ${semanticContract.bodySectionContract.embeddedWidgetPolicy}`
+  )
 
   lines.push('', '## Split Pane Contract')
   lines.push(`- enabled: ${String(splitPaneContract.enabled)}`)

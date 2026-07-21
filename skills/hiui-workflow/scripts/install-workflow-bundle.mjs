@@ -7,19 +7,20 @@ import { defaultLockPath, resolveBundleConfig } from './lib/workflow-bundle.mjs'
 import {
   backupRootForTarget,
   decideAction,
-  defaultTargetRoot,
   resolveInstalledSkillState,
   replacementActions,
   resolveRequestedSkill,
   rollbackActions,
   writeJournal,
 } from './lib/workflow-install.mjs'
+import { resolveTargetDescriptor } from './lib/workflow-hosts.mjs'
 
 function parseArgs(argv) {
   const options = {
     allowDowngrade: false,
     dryRun: false,
     forceSync: false,
+    host: '',
     json: false,
     lockfile: '',
     reinstall: false,
@@ -39,6 +40,13 @@ function parseArgs(argv) {
     }
     if (arg === '--force-sync') {
       options.forceSync = true
+      continue
+    }
+    if (arg === '--host') {
+      const value = argv[index + 1]
+      if (!value || value.startsWith('--')) throw new Error('Missing value for --host')
+      options.host = value
+      index += 1
       continue
     }
     if (arg === '--json') {
@@ -64,7 +72,7 @@ function parseArgs(argv) {
       continue
     }
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/install-workflow-bundle.mjs [--lockfile <path>] [--target <skills-dir>] [--dry-run] [--reinstall] [--force-sync] [--allow-downgrade] [--json]')
+      console.log('Usage: node scripts/install-workflow-bundle.mjs [--lockfile <path>] [--host <host-name>] [--target <skills-dir>] [--dry-run] [--reinstall] [--force-sync] [--allow-downgrade] [--json]')
       process.exit(0)
     }
     throw new Error(`Unknown argument: ${arg}`)
@@ -84,13 +92,20 @@ async function removePathIfExists(targetPath) {
 async function main() {
   const options = parseArgs(process.argv.slice(2))
   const config = await resolveBundleConfig(options.lockfile || defaultLockPath)
-  const targetRoot = path.resolve(options.target || defaultTargetRoot())
+  const targetResolution = resolveTargetDescriptor({
+    host: options.host,
+    target: options.target,
+    purpose: 'install',
+  }, config.hostProfiles)
+  const targetRoot = targetResolution.targetRoot
   const replacementSet = replacementActions()
   const decisions = []
   const report = {
     status: 'planned',
     bundleName: config.lock.bundleName,
     bundleVersion: config.lock.bundleVersion,
+    host: targetResolution.host,
+    targetResolution: targetResolution.resolution,
     targetRoot,
     dryRun: options.dryRun,
     forceSync: options.forceSync,

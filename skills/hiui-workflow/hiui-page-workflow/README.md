@@ -47,6 +47,8 @@
 npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 ```
 
+上面这条命令当前只应被视为 Codex 默认安装方式。若当前不是 Codex 宿主，请改用 `hiui-workflow` 的 bundle 安装脚本并显式传入目标 skill 根目录。
+
 如果你已经通过该入口安装了全部 skill，就不需要再单独安装 `hiui-page-workflow`。
 
 ## When To Use

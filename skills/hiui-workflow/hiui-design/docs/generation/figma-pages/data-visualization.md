@@ -39,6 +39,8 @@
 - 第 5 步前置的是“图表职责判断”，不是“图表容器实现”
 - 不要把“先想图表”执行成“先搭图表壳层”
 - 不要为了安放图表，在 `white-body` 外额外新增页面级白底、描边、圆角或统一 inset 容器
+- 默认的 analytics layout overlay 只允许收口到 `primary-secondary`、`linear-stack`、`parallel-sections` 这三类受管 archetype；不要把 `data-visualization` 回退成 generic `typical-page`
+- `preview-ready` 只能发生在 `chartUsageContract.contractStatus=ready` 且主次 layout marker 已在源码落地之后；占位 contract 只允许停留在 scaffold / started 阶段
 
 ## 图表使用契约
 
@@ -52,6 +54,55 @@
 
 未完成上述映射时，不得直接复用示例图表网格开始业务实现。
 
+## 生成期硬约束输入
+
+`managed-analytics` 不是“先写页面，再看像不像”。进入业务 JSX 前，planner 必须先给出 3 份机器输入：
+
+- `visualBaselinePlan`：锁定颜色、图表主题、紧凑卡片边框/圆角/内边距，以及“页面任务不得改共享壳和公共图表 primitives”。
+- `visualizationRolePlan`：锁定主图、辅助图、摘要信息分别应该占什么位置，哪些图默认不能独占主区域，同时冻结 `chartSectionLayoutPlan` 与 `controlStripPlan`，避免控制条语义再漂回真实 `QueryFilter`。
+- `writeScope`：锁定这次页面任务只允许改页面本地文件和 contract，不允许顺手改公共壳、共享 carrier、公共图表 helper。
+
+这 3 份输入缺任何一份，都不应进入具体图表实现。
+
+## 图表主次与占位
+
+- 主区域优先给带 `X/Y` 轴、需要承接主要阅读任务的图：`面积图 / 折线图 / 柱状图 / 条形图 / 双轴图 / 堆叠面积图`
+- 这些图默认需要更大的展示面积，因为它们承载趋势、对比、波动或结构变化，读图成本高，信息密度也更高
+- 次区域优先给摘要型或补充型图：`饼图 / 环图 / 雷达图 / 漏斗图 / 仪表盘`
+- 这类图默认用于解释“构成、画像、阶段摘要、状态”，更适合作为辅助判断，而不是整页的视觉中心
+- `漏斗图` 只有在页面 brief 明确是“流程型 / 阶段型 / 转化型看板”，且 layout 为 `linear-stack` 时，才允许升级为主区域图；否则默认只能做辅助图
+- `饼图 / 环图 / 雷达图 / 仪表盘` 默认不能占主区域；如果业务问题真的要求它们主导页面，必须在 `chartUsageContract` 里显式说明原因
+
+## 布局与面积分配
+
+- `primary-secondary`：适合“一个主问题 + 若干辅助判断”。主图应明显更大，辅助图只承接解释和补充
+- `linear-stack`：适合“按顺序阅读的流程型分析”。主图在上，后续图按判断链条往下展开
+- `parallel-sections`：适合“多个并列主题横向对照”。并列 section 仍然有主次，不是平均分配后做成一面图表墙
+
+不要把“所有图都画出来”当成完成信号。看板页更重要的是：谁是主问题、哪张图应该先被读、哪张图只是补充说明。
+
+## Chart Section Grid Consistency
+
+- `data-visualization` 的主图表工作区默认视为一个受管 `chart-section`
+- `chart-section` 必须采用单一基础栏数模式
+- 允许的基础栏数模式为：`two-column`、`three-column`、`four-column`
+- 模式一旦选定，同一 `chart-section` 内不得混用其它基础栏数模式
+- 单图独占整行 `12` 视为 `full-span`，不视为切换基础栏数模式
+- 不允许 `6/6 + 4/4/4`
+- 不允许 `4/4/4 + 3/3/3/3`
+- `two-column` 允许 `6/6` 与 `12`
+- `three-column` 允许 `4/4/4`、`8/4`、`4/8` 与 `12`
+- `four-column` 允许 `6/6`、`6/3/3`、`3/3/6`、`9/3`、`3/9` 与 `12`
+- `four-column` 禁止 `3/3/3/3` 的四等分图表墙；若整行都是正式数据图表，最小跨栏仍应保持 `2`
+
+## Scope Boundary
+
+- 上述栏数与一致性规则仅适用于 `chart-section` 中的数据图表布局
+- `stat-section` 中的指标卡不受该规则约束
+- 指标卡中的 `sparkline`、`mini trend`、迷你柱图、微型面积图等，默认视为指标卡内部辅助可视元素，而不是独立数据图表
+- 只要该可视元素没有形成独立分析块、独立标题、独立图表容器或独立阅读任务，就不得计入 `chart-section` 的基础栏数模式、span 计算或混用校验
+- 因此允许“上方指标卡多宫格 / 自适应网格 + 下方三栏图表区”或“上方指标卡多宫格 / 自适应网格 + 下方四栏图表区”的组合；这不视为栏数模式混用
+
 ## 结构 P0
 
 - 保留页头、筛选区、指标卡区、多图表区、明细表区
@@ -59,9 +110,13 @@
 - 图表卡片可以分多行，但不要拆成第二层主白卡工作区
 - 明细表仍是页面的一部分，不要挪成独立二级页
 - `query-filter` 在 `data-visualization` 中默认表示“图表控制条 / dashboard control strip”，不等于“必须用真实 QueryFilter”
+- 当这条控制区会联动指标卡、图表区和明细表时，它的 `control scope` 默认是 `page-global`；位置固定在 `white-body` 顶部并先于 `stat-section`
+- `dashboard-control-strip` 默认必须写成独立单行，视觉处理是 `plain-row-no-panel`；不要包成整块灰底查询面板
 - 若这一行承担的是 `日 / 周 / 月 / 年`、指标视角、统计粒度或图表视图切换，默认使用 `Radio.Group / Tabs / Segmented` 这类切换控件；只有真实筛选字段才使用 `QueryFilter`
-- 明细表上方若还存在记录级筛选、关键词搜索、全部筛选抽屉，则该区域仍按 `table-shared.md` 使用真实 `QueryFilter + FilterDrawer`
+- 明细表上方若还存在记录级筛选、关键词搜索、全部筛选抽屉，则该区域仍按 `table-shared.md` 使用真实 `QueryFilter + FilterDrawer`，并贴近 detail table，而不是与 `dashboard-control-strip` 共用同一行
 - 对受管页 contract，默认把这条约束写成：`semanticContract.queryFilterRegionRole = dashboard-control-strip`；不要因为 contract 有 `query-filter` region 就自动生成 `QueryFilter`
+- 对受管页 contract，默认同时写成：`semanticContract.controlScope = page-global`、`semanticContract.controlStripPlacement = top-of-white-body-before-stat-section`、`semanticContract.controlStripVisualTreatment = plain-row-no-panel`
+- 对受管页 contract，默认还要写成：`semanticContract.detailQueryFilterPolicy = separate-detail-query-filter-near-detail-table`、`semanticContract.mixedScopeControls = forbid-shared-control-row`
 - 对受管页 contract，默认把统计页防退化约束写成：`semanticContract.listShellComposition = forbid-table-list-scaffold`；不要把 `data-visualization` 借道 `ProListPageProvider / TablePageFrame / searchConfig` 生成成“带图表的列表页”
 
 ## 主体骨架保护
@@ -98,6 +153,7 @@
 - 看 `多个指标的构成随时间变化`，默认使用 `堆叠面积图`
 - 单指标若属于比率型、评分型、指数型，且重点是走势、波动、阈值穿越而不是体量感，可优先 `折线图`
 - 多系列若没有明确“构成演变”任务，不得为了视觉丰富而使用面积图叠加
+- 若图表会进入主区域，优先从带轴图开始选；不要先拿 `饼图 / 雷达图 / 漏斗图` 去争主位
 
 ### 对比与构成补充
 
@@ -110,6 +166,7 @@
 ### 过程与关系补充
 
 - 阶段型流程转化，默认优先 `漏斗图`
+- 但漏斗图默认是辅助信息图，不是大面积主图；只有流程转化本身是页面主问题时，才允许它占主位
 - 行为记录、审批轨迹、物流轨迹、关键事件流，优先 `Timeline`；不要手写等价 DOM 伪复用
 - 目标达成、进度完成、阈值状态，优先 `Progress` / `Gauge`；不要用仪表盘替代趋势图
 - 看相关性、聚类、离群点，可使用 `散点图 / 气泡图`
@@ -192,6 +249,10 @@
 
 ## 自检
 
+- planner 是否已经给出 `visualBaselinePlan`、`visualizationRolePlan`、`writeScope`
+- planner 是否已经冻结 `chart-section` 的基础栏数模式、`full-span` 中性策略和单区一致性约束
+- 主区域是否优先给了带轴主分析图，而不是把摘要型图形放大成视觉中心
+- `饼图 / 环图 / 雷达图 / 漏斗图 / 仪表盘` 是否只停留在辅助区；若没有，是否存在明确的 process-centric / composition-centric 业务说明
 - 图表实现真实接入 `@ant-design/charts` 或明确批准的同源 wrapper，而不是手写 primitives 模拟
 - 图表主题、颜色、坐标轴和文本样式没有回退成库默认值
 - 单指标趋势是否优先使用面积图，多指标趋势对比是否优先使用折线图，多指标构成演变是否使用堆叠面积图
@@ -203,5 +264,7 @@
 - 页面可见区域是否没有混入示例生成提示词、图表实现说明或其他 `demo-only tooling` 文案 / 动作
 - 每张图标题是否都能直接回指到明确业务问题，而不是模板化或泛化标题
 - 若页面声明 `primary-secondary`，主线核心图是否仍位于 `primary`，`secondary` 是否只承接辅助判断图与洞察图
+- 同一 `chart-section` 是否只使用了一种基础栏数模式，且 `12` 没有被误判为模式切换
+- `stat-section` 的指标卡及其中的迷你图是否没有被误计入 `chart-section` 的 mode / span 校验
 - 指标卡、图表区和明细表仍在同一白底主体里
 - 页面没有双滚动和双层主工作区

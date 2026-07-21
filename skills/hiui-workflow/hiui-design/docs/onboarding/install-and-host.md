@@ -105,6 +105,7 @@
 - `legacy-host-compatible` 只安装规则能力和脚本，并同步同一份 reference-only 典型页；不会自动把标准壳依赖、样式入口、宿主桥接或 route gallery 接进当前宿主主树
 - `rules-only` / `legacy-host-compatible` 都不会把 `examples/host-integration` 下的模版页面、路由 gallery、宿主桥接文件同步进目标项目 `src/`
 - 新业务页应直接落在目标项目原有目录结构中；`hiui-design` 只作为 `.local-context` 里的规则与参考资产存在
+- 对 `legacy-host-compatible`，接入完成态本身还要求 required legacy carrier batch 已由 `bootstrap-target-project.mjs` 补齐并认证；若 project integration state 仍显示 `legacyRolloutCoverageStatus=blocked`，应视为 legacy 接入 / bootstrap 尚未完成，而不是“已接入项目后续再补一轮 rollout”
 - 若当前项目后续要接管机器级全局同步，不要把“只完成了 rules-only / legacy-host-compatible 接入的项目本地 `.local-context/hiui-design`”自动视为可发布源；在执行 `manage-global-sync-launch-agent.mjs activate` 之前，必须先确认该目录已经通过 `apply-in-current-project.mjs` 拉平到当前全局版本，并且至少存在 `examples/host-integration/src/`、`examples/host-integration/src/`、`templates/i18n/`、`templates/project-images` 最小图片接线骨架、`agents/openai.yaml`、`SKILL.md`
 - `rules-only` / `legacy-host-compatible` 下，不允许只靠 prose 规则自由发挥；生成前必须先用 `docs/generation/rules-only-component-matrix.md` 明确每个关键区域对应的组件语义或宿主基座；若命中 legacy，再继续读 `legacy-host-compatibility.md`
 - 只有明确需要一套可打开的基线联调页、宿主桥接 demo 或 smoke gallery 时，才显式使用 `--mode host-integration` 或 `typical-page:apply:host-assets`
@@ -206,6 +207,7 @@ import '@hiui-design/typical-page-shells/styles.css'
 ```ts
 resolve: {
   alias: {
+    '@': '/absolute/path/to/src',
     '@hi-ui/schema-types': '/absolute/path/to/.local-context/hiui-design/examples/host-integration/src/shims/schema-types-empty.js',
   },
 }
@@ -248,7 +250,7 @@ resolve: {
 - 默认自动补齐 `src/translation/*`、`messages.ts` 与 `i18n:sync`，使外部项目接入后立即具备多语言国际化基线
 - 默认自动补齐 `src/typical-page-reuse/assets/project-product-images.ts`、`product-catalog/README.md` 与图片模块声明，使外部项目接入后立即具备项目图片集接线入口
 - `rules-only` / `host-integration` 下，会补标准 `@hiui-design/typical-page-shells` 依赖线
-- `legacy-host-compatible` 下，不会自动补标准壳依赖，只保留显式 legacy 模式脚本和 reference-only 参考页；但这不等于禁止典型页组件，普通典型页仍应优先服从 planner 选中的 certified carrier / runtimeAdapterProof 路径
+- `legacy-host-compatible` 下，不会自动补标准壳依赖，只保留显式 legacy 模式脚本和 reference-only 参考页；但这不等于禁止典型页组件。接入成功后，普通典型页默认就应服从 planner 选中的 certified carrier / runtimeAdapterProof 路径，以替换业务槽位的方式生成页面；若 required carriers 尚未补齐，则当前项目仍应被视为 legacy 接入未完成
 - 默认不改目标项目现有目录结构，不把模版页面挂到 `src/`，不挂路由 gallery，不落宿主桥接文件
 - `rules-only` / `legacy-host-compatible` 下默认只同步 reference-only 典型页到 `.local-context/hiui-design/reference/host-integration/src/`
 - `host-integration` 模式下才会同步 `examples/host-integration/` 到 `src/typical-page-reuse/`
@@ -268,7 +270,7 @@ resolve: {
 - `rules-only` / `legacy-host-compatible` 默认都不向目标项目 `src/` 写入宿主层示例文件，但会在 `.local-context` 下保留 reference-only 示例页
 - 无论当前项目是否已启用 `host-integration`，后续新生成页面默认都按业务页处理；除非用户显式要求“作为示例页面接入”，否则不要把它们并入 `src/typical-page-reuse/**`、示例 route gallery 或官方示例资产
 - 现代 `rules-only` 页面壳层可以来自 `@hiui-design/typical-page-shells`
-- `legacy-host-compatible` 主树页面壳层默认不把标准壳运行时当作可随手直挂的前提；普通典型页优先走 planner 选中的 project-certified carrier / runtimeAdapterProof-backed page-component，未证明时再回到宿主自己的布局、页面基座和 `hiui5` / 本地组件封装；若已隔离出独立现代运行时入口，则按 `isolated-standard-shell` 处理
+- `legacy-host-compatible` 主树页面壳层默认不把标准壳运行时当作可随手直挂的前提；但一旦 legacy 接入完成，普通典型页就默认走 planner 选中的 project-certified carrier / runtimeAdapterProof-backed page-component，并以替换业务槽位的方式生成页面。只有宿主承接事实尚未证明，或当前项目仍处于接入未完成态时，才回到 `bootstrap-target-project` / 宿主自己的布局、页面基座和 `hiui5` / 本地组件封装；若已隔离出独立现代运行时入口，则按 `isolated-standard-shell` 处理
 - 旧宿主保持原有导航区与路由结构不变；多语言开发能力继续通过 `src/translation/*`、formatter bridge 与 reference-only 示例页保留
 - 页面起点优先来自 `.local-context/hiui-design/reference/host-integration/src/pages/*`
 - reference 目录缺失时，再回退到 `examples/host-integration/src/pages/*`

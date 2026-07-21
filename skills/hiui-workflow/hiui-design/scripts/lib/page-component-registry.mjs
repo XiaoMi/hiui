@@ -54,6 +54,20 @@ function comparePageComponentsForSelection(left, right, { mode = '', pageTypeId 
   const rightProjectOverlay = right?.__registryKind === 'project-overlay'
   if (leftProjectOverlay !== rightProjectOverlay) return leftProjectOverlay ? -1 : 1
 
+  const leftManagedBootstrapCarrier = Boolean(
+    left?.managedBootstrapCarrier ||
+    left?.provisioningSource === 'bootstrap-target-project' ||
+    left?.carrierFamilyId === 'legacy-bootstrap-managed-carrier.v1'
+  )
+  const rightManagedBootstrapCarrier = Boolean(
+    right?.managedBootstrapCarrier ||
+    right?.provisioningSource === 'bootstrap-target-project' ||
+    right?.carrierFamilyId === 'legacy-bootstrap-managed-carrier.v1'
+  )
+  if (leftManagedBootstrapCarrier !== rightManagedBootstrapCarrier) {
+    return leftManagedBootstrapCarrier ? -1 : 1
+  }
+
   const leftCertified = left?.status === 'certified' &&
     left?.certificationStatus === 'certified' &&
     Boolean(left?.certificationRef)

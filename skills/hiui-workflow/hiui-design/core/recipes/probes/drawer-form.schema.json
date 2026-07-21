@@ -1,0 +1,102 @@
+{
+  "pageType": "drawer-form",
+  "title": "抽屉表单",
+  "drawerTitle": "新增用户",
+  "submitMessage": "抽屉表单已提交（示例）",
+  "sections": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "key": "userName",
+          "label": "用户姓名",
+          "type": "text",
+          "placeholder": "请输入用户姓名",
+          "required": true
+        },
+        {
+          "key": "miTalkId",
+          "label": "米聊号",
+          "type": "text",
+          "placeholder": "请输入米聊号"
+        },
+        {
+          "key": "phone",
+          "label": "用户电话",
+          "type": "text",
+          "placeholder": "请输入用户电话",
+          "required": true
+        },
+        {
+          "key": "email",
+          "label": "邮箱",
+          "type": "text",
+          "placeholder": "请输入邮箱"
+        },
+        {
+          "key": "roleId",
+          "label": "用户角色",
+          "type": "select",
+          "placeholder": "请选择用户角色",
+          "required": true,
+          "options": [
+            { "id": "field", "title": "一线工程师" },
+            { "id": "lead", "title": "组长" },
+            { "id": "qc", "title": "质检" }
+          ]
+        },
+        {
+          "key": "positionId",
+          "label": "岗位名称",
+          "type": "select",
+          "placeholder": "请选择岗位名称",
+          "required": true,
+          "options": [
+            { "id": "door", "title": "上门工程师" },
+            { "id": "station", "title": "驻场工程师" },
+            { "id": "dispatcher", "title": "调度专员" }
+          ]
+        },
+        {
+          "key": "organizationId",
+          "label": "所属机构",
+          "type": "select",
+          "placeholder": "请选择所属机构",
+          "required": true,
+          "options": [
+            { "id": "bj", "title": "北京服务中心" },
+            { "id": "sh", "title": "上海服务中心" },
+            { "id": "gz", "title": "广州服务中心" }
+          ]
+        },
+        {
+          "key": "entryDate",
+          "label": "入职日期",
+          "type": "date",
+          "placeholder": "请选择日期",
+          "required": true
+        },
+        {
+          "key": "userStatus",
+          "label": "用户状态",
+          "type": "select",
+          "placeholder": "请选择用户状态",
+          "required": true,
+          "options": [
+            { "id": "enabled", "title": "在岗" },
+            { "id": "paused", "title": "停岗" },
+            { "id": "training", "title": "培训中" }
+          ]
+        },
+        {
+          "key": "remark",
+          "label": "备注信息",
+          "type": "textarea",
+          "placeholder": "请输入备注信息",
+          "rows": 4,
+          "span": 24
+        }
+      ]
+    }
+  ]
+}

@@ -3,9 +3,10 @@
 
 import { Button, Message, Space } from '@hi-ui/hiui'
 import { DownloadOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import { ProListPageProvider } from '@hiui-design/typical-page-shells/pro-list-page'
+import { createManagedQueryTextField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import {
   StatListPageFrame,
   StatOverviewGrid,
@@ -20,7 +21,13 @@ const T = extendDsl(ReadonlyFieldCreator, {
 })
 
 function __COMPONENT_NAME__Content() {
-  const queryFields = [F('TODO_FILTER_LABEL', 'keyword').Text().val]
+  const queryFields = [
+    createManagedQueryTextField({
+      field: 'todoFilterText',
+      label: 'TODO_FILTER_LABEL',
+      placeholder: 'TODO_FILTER_PLACEHOLDER',
+    }),
+  ]
   const tableFields = [T('TODO_COLUMN_LABEL', 'name').W(180).renderEllipsis().val]
   const statRequest = async () => ({
     list: [

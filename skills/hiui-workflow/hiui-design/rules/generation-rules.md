@@ -74,7 +74,9 @@
 快速路径的动作是先按机器计划使用主生成资产；只有 `generationStrategy=managed-fallback` 或计划明确要求 fallback 时，才按 `startFrom` 兼容字段绑定 template / reference / scaffold / host archetype 等起点。`translation-map` 不属于这些生成起点，而是 legacy / high-risk 分支在 bridge、source 与 translation drift 上的治理增强工件：
 
 - `page-component`：优先使用 certified page component，只替换业务槽位或 Level 1 受控扩展；不得重新认证组件或绕过组件锁定区。
-- `managed-analytics`：先建立 `chartUsageContract`，再生成图表配置和分析布局；不得复制示例图表网格凑数。
+- `managed-analytics`：先建立 `chartUsageContract`，再锁定 analytics `layoutStrategy/layoutArchetype`，最后生成图表配置和分析布局；不得复制示例图表网格凑数，也不得回退成 generic `typical-page`。
+  同一阶段还必须拿到 `visualBaselinePlan`、`visualizationRolePlan` 与 `writeScope`。前两者决定颜色、间距和主次图表摆放，后者决定页面任务不得顺手改共享壳、公共 carrier 或公共图表 primitives。
+  `visualizationRolePlan` 对 `chart-section` 还必须继续冻结 `chartSectionLayoutPlan`：`baseGridMode` 只能从 `two-column`、`three-column`、`four-column` 中三选一，`consistencyScope` 默认是 `single-mode-per-chart-section`，`12` 只作为 neutral `full-span` 使用，不得被实现层误判为模式切换；`stat-section` 的指标卡及其迷你图不参与这条图表区栅格约束。
 - `managed-fallback`：按 `fallbackGenerationAsset` / `startFrom` 绑定 template / reference / scaffold / host archetype，再替换业务槽位。
 - `host-integration`：若进入 fallback，优先复制已同步的 `src/typical-page-reuse/pages/*` 或 host-integration reference 作为起点，再把目标页生成到真实业务目录、替换业务槽位并注册到真实业务路由；不要把业务页塞回示例 gallery。
 - `rules-only`：若进入 fallback，reference-only 示例是隐藏结构基线，不是展示页面或灵感参考；先绑定 template / reference / scaffold / host archetype，再确认宿主运行链、route owner、shell carrier、region / ownership mapping。
@@ -109,12 +111,25 @@
 - `rules-only` / `host-integration`：通常从登记模板、reference 或标准 shell 起步；默认只做业务槽位替换和轻量 `slot-gate` + `preflight`。若改动越过槽位边界、修改锁定区域或出现来源异常，升级到 source gate。
 - `legacy-host-compatible`：普通典型页默认先消耗 standard certified page component + `runtimeAdapterProof`；只有 fallback / drift 风险显式触发时，才进入宿主 archetype、`reference-or-scaffold` 或 adapter scaffold 等 fallback 起点，并按需追加 `translation-map` 这类治理增强工件；此时仍必须具备更强 source / adapter 证明，防止 adapter 演变成自由手写页面。
 - 非典型 / overlay / 页型迁移：必须声明受管基础模具、增量范围与能力缺口；没有受管生成方式时 fail closed。非典型升级保留的是 `base archetype`、`layout strategy`、一级信息架构与 ownership contract，不是保留旧系统 DOM、旧样式类名或未受管布局实现后只换 token。
+- 当计划命中 `table-basic`、`table-stat`、`tree-table`、`tree-split` 时，列表页几何默认来自受管 carrier：`white-body` 铺底、圆角、表格区域 inset、标准 `table viewport` 和横向滚动 owner 都是壳层事实，不是业务槽位的自由实现空间。
+- 对上述列表页，宽列的正确退化是“仅表格内部横向滚动”。外层 `white-body`、`table region`、split 右侧工作区和业务页槽位根都必须保持 width-adaptive；不得用 `max-content` / `min-content` / `fit-content`、局部死宽度或额外 scroll shell 把外层工作区撑宽。
+- 当执行 `slot-fill-only` 或 `rewrite-by-page-component` 时，业务页不得再包本地 `tablePanel`、`tableWorkspace`、`tableViewport`、`tableScroller` 或等价几何 wrapper。表格槽位只填列定义、行操作、空态、接口和业务渲染；若需要额外 wrapper，也必须保持 `width: 100%`、`min-width: 0`、`min-height: 0`，且不能接管 `main-scroll` / horizontal overflow ownership。
 
 禁止把 `preflight` 或截图当成主生产方式。生成阶段不得先创建空白 `div` 页面，再用注释、`data-hiui5-*` marker、隐藏标准壳或 contract 字段补成“看似合规”的页面。关键结构只能来自受管模具、真实宿主 archetype、认证 shell carrier 或认证 adapter；AI 只填标题、字段、列、按钮、接口、mock 数据和明确的交互槽位。
 
 `slot-gate` 是快速链路的轻量门禁，只验证页面已绑定 contract 且没有触碰锁定 shell / provenance 边界；它不替代 `source-gate`。`legacy-host-compatible` 新建页、页型迁移、非典型页、结构修复、ownership / shell carrier / adapter 变更仍必须执行 source / adapter 证明。
 
 `data-visualization` 新建页不是普通“复制示例模块布局”的任务：默认只继承数据可视化页壳、图表主题和规范；必须先判断业务分析目标、指标区 / 图表区 / 明细区、图表类型与数量、是否需要 `chart-section`、以及 `content-slot` / `white-body` / `main-scroll` ownership。只有修改已有数据可视化页的标题、文案、mock 数据或已有图表配置时，才允许轻量标准处理。
+
+`data-visualization` 的主次摆放不是实现层自由发挥：
+
+- 主区域默认优先给带 `X/Y` 轴、需要承接主要阅读任务的图表：`面积图 / 折线图 / 柱状图 / 条形图 / 双轴图 / 堆叠面积图`
+- `饼图 / 环图 / 雷达图 / 漏斗图 / 仪表盘` 默认只用于摘要或辅助信息，不能在没有明确业务理由时占据主区域
+- `漏斗图` 只有在页面 brief 明确是流程型 / 阶段型分析，且 planner 选中了对应受管 layout 时，才允许升级为主区域图
+- `chart-section` 的基础栏数模式必须在实现前锁定；同一 `chart-section` 内禁止混用 `two-column`、`three-column`、`four-column`
+- `12` 仅表示受管 `full-span`，不表示新增第四种基础栏数模式，也不表示当前区域可以切换到另一套 grid
+- `stat-section` 中的指标卡、KPI 卡和其中的 `sparkline / mini trend / mini chart` 仍属于指标卡，不得计入 `chart-section` 的 grid mode / span / mixed-mode 校验
+- 页面任务默认禁止修改共享壳、公共 carrier、公共图表 helper/theme；需要改这些资产时，应升级为维护任务，而不是继续作为页面任务执行
 
 ### 1. Kickoff Gate
 
@@ -123,6 +138,8 @@
 - 起手块没有写、顺序被打乱、或关键字段仍是猜测时，都按“尚未进入实现阶段”处理。
 - 页面生成阶段默认读取并确认项目既有 `mode` 事实；只有当项目事实缺失、过期或互相冲突时，才重新判定。
 - `doctor`、source gate、静态截图、相似示例页或“页面能跑起来”都不能替代 kickoff。
+- 对 `managed-analytics`，kickoff 还必须显式暴露 `visualBaselinePlan`、`visualizationRolePlan` 与 `writeScope`；缺任一项时，视为尚未进入图表实现阶段。
+- 对 `managed-analytics`，kickoff 还必须显式回答当前 `chart-section` 的 `baseGridMode`、`fullSpan` 中性策略与单区一致性边界；若未冻结这些事实，不得进入图表 JSX 与布局实现。
 
 ### 2. Routing Gate
 
@@ -262,7 +279,13 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 - 当计划已经锁定 `page-component` 为主生成资产时，后续生成、contract、preflight 与最终回复都必须沿同一主链保持 `business-managed-page` 交付语义；不得把“legacy 主树不能 direct import standard shell runtime”重新解释成“可以默认交付兼容手拼页”。若确实需要 fallback，只能先重新执行 Plan Gateway，让计划显式把 `generationStrategy` 切到 `managed-fallback` 或其它合法 fallback。
 - 对声明 `requiredStartFromExample=true` 的典型页，只有 `generationStrategy=managed-fallback` 或计划明确要求 fallback 时，`typical-page:start-page` 才按机器计划里的 `startFrom` 起步：`template` 直接复制 `page.template.tsx|jsx`，`host-archetype` 复制宿主 archetype，`reference-or-scaffold` 使用受管 reference / scaffold 承接同一页壳契约。只有这些受管起点都缺失时才失败；不得回退到自由壳层 scaffold。
 - 当计划选择 `generationStrategy=page-component` 时，进入实现前只执行 `ComponentAvailabilityGate`：确认 component 已 certified / available、`baseMoldId` 与当前 `pageType` 匹配、当前任务只写入标准槽位或 Level 1 受控扩展；组件缺失、未认证、认证过期或扩展越界时，不得把组件当起点，也不得在业务生成阶段临时重认证组件。
-- 当计划选择 `generationStrategy=managed-analytics` 或 `analyticsContractRequired=true` 时，必须先建立 `chartUsageContract`，再进入图表 JSX 与配置实现；不得把数据可视化退化为普通统计表、自由图表墙、手写 primitives 或图表库默认主题。
+- 当计划选择 `generationStrategy=managed-analytics` 或 `analyticsContractRequired=true` 时，必须先建立 `chartUsageContract`、锁定 analytics `layoutStrategy/layoutArchetype`，并补齐 `visualBaselinePlan`、`visualizationRolePlan` 与 `writeScope`，再进入图表 JSX 与配置实现；其中 `visualizationRolePlan.chartSectionLayoutPlan` 必须先锁定 `chart-section` 的单一基础栏数模式、`12` 的 neutral `full-span` 语义，以及 `stat-section` 指标卡排除边界。不得把数据可视化退化为普通统计表、自由图表墙、手写 primitives 或图表库默认主题。`preview-ready` 只能发生在 analytics contract ready 且主次 layout marker 已落地之后。
+- 当计划命中 `table-basic`、`table-stat`、`tree-table`、`tree-split` 或任何 `query-filter region role = table-query-filter` 的列表页时，进入 `queryFields` / schema field 实现前必须先锁定 `queryFieldRenderProfile` 与 `filterSurfaceBaseline`：`@/typical-page-reuse/query-filter/managed-query-filter-fields` 是 QueryFilter 字段的唯一默认入口；页框自带的关键词检索位继续走 `searchPlaceholder` 链路；直接挂在 `queryFields` 里的普通文本筛选字段统一使用 `createManagedQueryTextField`，`Select / DatePicker` 字段分别统一使用 `createManagedQuerySelectField`、`createManagedQueryDateRangeField`，并与关键词搜索共享同一筛选皮肤；不得把所有文本字段都直接复用为 `SearchInput`，也不得让 `schema-fields Text()` 在 `QueryFilter` 上下文里静默回退成裸 `Input`。
+- `queryFieldRenderProfile` 至少要回答：`keyword field role`、`text field role`、`select/date field surface policy`。默认推荐值为：
+  - `keyword field role = search-input`
+  - `text field role = filter-text-input`
+  - `select/date field surface policy = shared-query-filter-surface`
+- `filterSurfaceBaseline` 至少要回答：`query-filter-contained shell`、`shared filter surface`、`no label row drift`。若共享层当前无法兑现该基线，必须在计划或 contract 中显式记录风险 / fallback；不得假定“用了真实 QueryFilter 就自然等于筛选字段视觉一致”。
 - 当前页在进入视觉细节与业务字段实现前，至少执行一次 `typical-page:preflight`。
 - 当 `fastPath.eligible=true` 时，当前链路默认截止于当前页 `preflight`、预览和 lint / build 解释；`source-gate`、`doctor`、`runtime-smoke`、`finalize-page` 只有在 Plan Gateway 显式列入命令、用户要求正式验收 / 发布 / 提测、或实现改动越过业务槽位边界时才追加。
 - 对组合页、split 页面、非典型页面，若增量事实尚未写清，不得靠边写代码边补 contract。
@@ -444,6 +467,6 @@ legacy 快速路径命中下面任一情况必须 fail closed：
 - `contract-regions.md` 是 contract 字段唯一事实源。
 - `implementation-checklist-template.md` 只保留组合页增量要求。
 - `validation-checklist.md` 只保留页面质量验收证据与页面完成门槛。
-- `PRIVACY.md` 只保留 `preview_ready` 统计收口与最终回复前动作。
+- `PRIVACY.md` 只保留 `record-usage` 统计收口与最终回复前动作。
 
 若需要新增字段、调整 contract 结构、改变页面完成门槛或改变统计收口流程，优先修改对应事实源，不要在本文件与其它文档中平行复制。

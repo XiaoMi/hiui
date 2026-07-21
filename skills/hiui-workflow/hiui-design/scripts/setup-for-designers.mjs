@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { autoLaunchHostIntegrationPreview } from './lib/host-integration-browser-launch.mjs'
 import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
+import { runProjectEngineeringGate } from './lib/setup-engineering-gate.mjs'
 
 const DEFAULT_REGISTRY = process.env.HIUI_DESIGN_LCM_REGISTRY || ''
 const GIT_REGISTRY = process.env.HIUI_DESIGN_LCM_GIT_REGISTRY || ''
@@ -22,6 +23,7 @@ Default behavior:
   - do not provision src/translation i18n baseline unless --init-i18n is passed
   - auto-provision src/typical-page-reuse/assets project image catalog scaffold unless --skip-project-images-init is passed
   - run typical-page:doctor immediately after setup and stop on doctor failures
+  - validate the target project's build result after doctor; lint is also checked when a script exists and reported as an explainable follow-up item
   - after a successful host-integration setup, auto-start a local dev server when needed and open the first typical-page sample unless --skip-open-browser is passed
 `)
 }
@@ -271,6 +273,48 @@ function runDoctorGate({ doctorScript, projectRoot, skipDoctorGate }) {
   )
 }
 
+async function runEngineeringGate({ projectRoot }) {
+  info('执行工程闭环校验（build 必跑；lint 若存在则给出可解释结果）')
+  const report = await runProjectEngineeringGate({ projectRoot })
+
+  for (const check of report.checks) {
+    if (check.status === 'passed') {
+      info(`${check.label} 校验通过 (${check.command})`)
+      continue
+    }
+
+    if (check.status === 'missing') {
+      warn(`未检测到 ${check.label} script，当前跳过该项工程校验`)
+      continue
+    }
+
+    if (check.stdout) {
+      process.stdout.write(check.stdout)
+    }
+
+    if (check.stderr) {
+      process.stderr.write(check.stderr)
+    }
+
+    if (check.blocking) {
+      throw new Error(
+        `工程闭环校验失败：${check.label} 未通过（${check.command}）。请先修复该问题，再继续把当前项目视为 hiui-design 接入完成。`
+      )
+    }
+
+    warn(
+      `${check.label} 未通过（${check.command}）。当前不会阻断安装，但它不再被静默忽略；请把失败结果当作后续必须解释/处理的工程项。`
+    )
+  }
+
+  if (report.status === 'passed') {
+    info('工程闭环校验通过')
+    return
+  }
+
+  warn('工程闭环校验已完成，但仍有缺失或非阻断项需要解释；不要把 doctor 通过误当成完整工程完成态')
+}
+
 async function main() {
   try {
     const rawArgs = process.argv.slice(2)
@@ -305,6 +349,7 @@ async function main() {
 
     runApplyScript({ applyScript, passthrough: [...passthrough, '--skip-open-browser'] })
     runDoctorGate({ doctorScript, projectRoot, skipDoctorGate })
+    await runEngineeringGate({ projectRoot })
 
     if (!skipOpenBrowser) {
       const launchResult = await autoLaunchHostIntegrationPreview({
@@ -325,7 +370,7 @@ async function main() {
     console.log('')
     info('设计师模式安装完成')
     console.log('- 后续同步：pnpm typical-page:designer-setup 或 npm run typical-page:designer-setup')
-    console.log('- `typical-page:designer-setup` 默认已自动执行 doctor 并写入 project mode lock；后续页面生成默认沿用该 mode')
+    console.log('- `typical-page:designer-setup` 默认已自动执行 doctor、build 校验，并在 lint script 存在时给出可解释结果；后续页面生成默认沿用已写入的 project mode lock')
     console.log('- 页面生成前先执行 `pnpm typical-page:plan-page-task -- --json ...` 或 `npm run typical-page:plan-page-task -- --json ...` 获取机器计划')
     console.log('- 后续若手工改宿主、依赖、路由或样式入口，再手动执行 pnpm typical-page:doctor 或 npm run typical-page:doctor')
     console.log('- 接入阶段默认已自动补齐 `src/translation/*`、`messages.ts` 与 `i18n:sync`；后续若需要重同步 locale 基线，再执行 pnpm typical-page:i18n:init 或 npm run typical-page:i18n:init')

@@ -8,7 +8,7 @@
       "sourceHash": "a44ed094154b7a9bebbce2ea4d364becd0be14f661b86e3d662b7331fe09f823"
     },
     "app-frame.tsx": {
-      "sourceHash": "9081fbb6f175c65ab6052952afb0e7f273b180f1423593f49f6ef298d4bb4462"
+      "sourceHash": "4cce5b561bbf525775bcb3d796ce156bd5605fcbb0ad2620622c20b5ecadb228"
     },
     "app-shell.tsx": {
       "sourceHash": "88053f82e562a0156e30905ab3b5f9e3950577d960f193ebcca7c331aa7270b9"
@@ -145,11 +145,14 @@
     "pages/under-construction.tsx": {
       "sourceHash": "233f01a073bec54266b9fb9138d3ff716febc37ce0e30664152e06c89bb5fa95"
     },
+    "query-filter/managed-query-filter-fields.js": {
+      "sourceHash": "a520abcc200045b3c24596b8ab242e3f68f6268821564db0961d6a29bf2d4031"
+    },
     "routes/config.tsx": {
       "sourceHash": "6609908ece777491328da148c61b7c8562404ed7994a086c0b5a34fec6bdfa2d"
     },
     "routes/example-prompts.ts": {
-      "sourceHash": "95a895d7de24b41abdc2bcc4e0d3796ceb3a75236582964dbacd268ba9ee09b9"
+      "sourceHash": "0519de810350c1d85203d2ca30d2e47eec93a8303bd30b54b55fc909a3ede179"
     },
     "routes/types.ts": {
       "sourceHash": "414a5fe67367ee71f095bc45c06a5d81caa0e610e7a950c8b5127f44dab94de0"

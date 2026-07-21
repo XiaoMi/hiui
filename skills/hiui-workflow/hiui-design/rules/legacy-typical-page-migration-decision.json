@@ -1,0 +1,271 @@
+{
+  "schemaVersion": "legacy-typical-page-migration-decision.v1",
+  "goal": "decide whether a legacy business page change must migrate onto the canonical hiui-pagegen flow or may remain on the legacy compatibility path",
+  "projectExecutionTruth": {
+    "canonicalPagegenSurface": [
+      "typical-page:init",
+      "typical-page:generate",
+      "typical-page:verify",
+      "typical-page:verify:strict",
+      "typical-page:verify:visual"
+    ],
+    "defaultExecutionPath": "hiui-pagegen -> official-runtime/canonical asset",
+    "legacyWritePathPolicy": "default-blocked-break-glass-only"
+  },
+  "decisionOrder": [
+    "break-glass override check",
+    "typical page classification",
+    "change scope classification",
+    "new asset availability",
+    "stable route/expose cutover eligibility",
+    "legacy drift signal detection",
+    "decision synthesis"
+  ],
+  "inputs": {
+    "pagePath": {
+      "required": true,
+      "description": "legacy or generated page entry path under src/views"
+    },
+    "pageType": {
+      "required": true,
+      "enum": [
+        "table-basic",
+        "table-stat",
+        "tree-table",
+        "tree-split",
+        "drawer-form",
+        "drawer-detail",
+        "full-page-edit",
+        "full-page-detail",
+        "feedback-status",
+        "data-visualization",
+        "unknown"
+      ]
+    },
+    "changeScope": {
+      "required": true,
+      "enum": [
+        "bugfix",
+        "content-adjustment",
+        "slot-refactor",
+        "page-shell-refactor",
+        "entry-migration"
+      ]
+    },
+    "isTypicalPage": {
+      "required": true,
+      "type": "boolean"
+    },
+    "hasHiuiPagegenMeta": {
+      "required": true,
+      "type": "boolean"
+    },
+    "usesLegacyCarrier": {
+      "required": true,
+      "type": "boolean"
+    },
+    "usesOfficialRuntimeEntry": {
+      "required": true,
+      "type": "boolean"
+    },
+    "usesCanonicalPage": {
+      "required": true,
+      "type": "boolean"
+    },
+    "officialRuntimeSupport": {
+      "required": true,
+      "enum": [
+        "available",
+        "not-available"
+      ]
+    },
+    "canonicalSupport": {
+      "required": true,
+      "enum": [
+        "available",
+        "not-available"
+      ]
+    },
+    "routeCanStayStable": {
+      "required": true,
+      "type": "boolean",
+      "description": "whether expose key / host route can stay stable while only replacing the backing page implementation"
+    },
+    "legacyDriftSignals": {
+      "required": true,
+      "type": "array",
+      "allowedValues": [
+        "manual-summary-strip",
+        "manual-filter-bar",
+        "manual-pagination-shell",
+        "white-body-not-stretched",
+        "header-geometry-drift",
+        "double-spacing-owner",
+        "table-shell-rebuilt",
+        "query-filter-not-governed"
+      ]
+    },
+    "breakGlassRequested": {
+      "required": false,
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "decisions": {
+    "force_new_flow": {
+      "label": "must migrate to hiui-pagegen",
+      "description": "the page change touches delivery assets deeply enough that continued legacy-shell maintenance is no longer allowed",
+      "requiredNextAction": "migrate_page_entry_to_hiui_pagegen"
+    },
+    "prefer_new_flow": {
+      "label": "prefer migrate to hiui-pagegen",
+      "description": "migration is strongly recommended and may be staged, but a short compatibility bridge is still allowed",
+      "requiredNextAction": "prepare_entry_cutover_plan"
+    },
+    "legacy_hold": {
+      "label": "temporarily remain on legacy path",
+      "description": "allowed only for bounded bugfix/content work that does not extend shell/region ownership debt",
+      "requiredNextAction": "record_legacy_hold_reason"
+    },
+    "break_glass_only": {
+      "label": "legacy write path only under explicit break-glass",
+      "description": "not a normal delivery route; only emergency or compatibility forensics may proceed",
+      "requiredNextAction": "require_HIUI_DESIGN_ALLOW_LEGACY_PAGEGEN"
+    }
+  },
+  "reasonCodes": {
+    "ALREADY_ON_NEW_FLOW": "page already uses hiui-pagegen metadata or canonical/runtime assets, so legacy migration rules no longer apply",
+    "TYPICAL_PAGE": "page resolves to a standard typical page archetype",
+    "NON_TYPICAL_OR_UNKNOWN": "page does not resolve to a supported typical archetype",
+    "NEW_ASSET_AVAILABLE": "official-runtime or canonical asset already exists for this page type",
+    "NO_NEW_ASSET_SUPPORT": "neither official-runtime nor canonical asset is currently available",
+    "ROUTE_STABLE_CUTOVER_POSSIBLE": "route/expose can remain stable while backing implementation changes",
+    "ROUTE_STABLE_CUTOVER_BLOCKED": "route/expose or parameter protocol cannot be preserved safely yet",
+    "LEGACY_CARRIER_DRIFT": "legacy page already shows shell/query/pagination/white-body drift signals",
+    "SHELL_REFACTOR_REQUESTED": "requested change scope touches page shell or entry boundary",
+    "SLOT_REFACTOR_REQUESTED": "requested change scope is confined to governed business slots",
+    "BUGFIX_ONLY": "requested change scope is a bounded bugfix/content repair",
+    "BREAK_GLASS_REQUESTED": "explicit break-glass override was requested"
+  },
+  "rules": [
+    {
+      "id": "break-glass-wins",
+      "decision": "break_glass_only",
+      "when": {
+        "breakGlassRequested": true
+      },
+      "reasonCodes": [
+        "BREAK_GLASS_REQUESTED"
+      ]
+    },
+    {
+      "id": "typical-shell-refactor-must-migrate",
+      "decision": "force_new_flow",
+      "when": {
+        "isTypicalPage": true,
+        "changeScope": [
+          "page-shell-refactor",
+          "entry-migration"
+        ],
+        "routeCanStayStable": true,
+        "anyAssetAvailable": true
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "SHELL_REFACTOR_REQUESTED",
+        "NEW_ASSET_AVAILABLE",
+        "ROUTE_STABLE_CUTOVER_POSSIBLE"
+      ]
+    },
+    {
+      "id": "typical-page-drift-must-migrate",
+      "decision": "force_new_flow",
+      "when": {
+        "isTypicalPage": true,
+        "routeCanStayStable": true,
+        "anyAssetAvailable": true,
+        "legacyDriftSignalsMinCount": 2
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "LEGACY_CARRIER_DRIFT",
+        "NEW_ASSET_AVAILABLE",
+        "ROUTE_STABLE_CUTOVER_POSSIBLE"
+      ]
+    },
+    {
+      "id": "typical-slot-refactor-prefers-migrate",
+      "decision": "prefer_new_flow",
+      "when": {
+        "isTypicalPage": true,
+        "changeScope": [
+          "slot-refactor"
+        ],
+        "anyAssetAvailable": true
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "SLOT_REFACTOR_REQUESTED",
+        "NEW_ASSET_AVAILABLE"
+      ]
+    },
+    {
+      "id": "typical-page-low-confidence-drift-prefers-migrate",
+      "decision": "prefer_new_flow",
+      "when": {
+        "isTypicalPage": true,
+        "anyAssetAvailable": true,
+        "legacyDriftSignalsMinCount": 1
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "LEGACY_CARRIER_DRIFT",
+        "NEW_ASSET_AVAILABLE"
+      ]
+    },
+    {
+      "id": "bounded-legacy-bugfix-may-hold",
+      "decision": "legacy_hold",
+      "when": {
+        "isTypicalPage": true,
+        "changeScope": [
+          "bugfix",
+          "content-adjustment"
+        ],
+        "legacyDriftSignalsMaxCount": 0
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "BUGFIX_ONLY"
+      ]
+    },
+    {
+      "id": "no-new-asset-support-holds-legacy",
+      "decision": "legacy_hold",
+      "when": {
+        "isTypicalPage": true,
+        "anyAssetAvailable": false
+      },
+      "reasonCodes": [
+        "TYPICAL_PAGE",
+        "NO_NEW_ASSET_SUPPORT"
+      ]
+    },
+    {
+      "id": "fallback-unknown-page",
+      "decision": "legacy_hold",
+      "when": {
+        "isTypicalPage": false
+      },
+      "reasonCodes": [
+        "NON_TYPICAL_OR_UNKNOWN"
+      ]
+    }
+  ],
+  "sourceRefs": {
+    "skill": "SKILL.md",
+    "pagegenReadme": "../hiui-pagegen/README.md",
+    "doctor": "scripts/typical-page-doctor.mjs",
+    "packageJsonScripts": "../../package.json"
+  }
+}

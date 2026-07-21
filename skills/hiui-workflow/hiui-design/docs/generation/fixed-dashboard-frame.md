@@ -74,6 +74,8 @@
 - 再让本地 wrapper 成为第二个 viewport / main scroll owner
 - 再把 `white-body` 壳层拆成“宿主白底 + 页面白底”双层结构
 - 把 `PageHeader` 根节点 class 改成新的 flex / grid 骨架，再由业务页自己把按钮挤到右边
+- 把页面全局 `dashboard-control-strip` 放到 `stat-section`、`chart-section` 或明细表之后；会影响整页的控制条必须固定在 `white-body` 顶部
+- 把 `dashboard-control-strip` 包成灰底查询面板，或让它与真实 `QueryFilter` 共用同一条控制行
 - 在 `dashboard-control-strip` 里继续渲染“统计维度 / 风险等级 / 业务线 / 排序方式”这类上方字段名；控制条不是字段表单
 - 让 `dashboard-control-strip` 在 1440 桌面基线下因为错误容器承载长成异常高条；分段控件与下拉控件应保持同一紧凑控制带
 - 在风险等级、状态、生效态上手写 `span + 胶囊背景色`；默认必须复用 `Tag` 或 shared status renderer
@@ -127,12 +129,12 @@ export function BusinessPage() {
         title="业务规模"
         whiteBodyProps={{ 'data-hiui5-owner-white-body': 'true' }}
       >
+        <DashboardControlStrip leading={<>filters</>} trailing={<>actions</>} />
         <SectionBlock region="stat-section" title="顶部总览">
           <ManagedCardGrid minItemWidth={180}>
             <ManagedMetricCard label="当前排队" value="128" />
           </ManagedCardGrid>
         </SectionBlock>
-        <DashboardControlStrip leading={<>filters</>} trailing={<>actions</>} />
         <SectionBlock region="chart-section" title="趋势分析">
           <ManagedCardGrid minItemWidth={320}>
             <ManagedChartCard body={<div />} title="排队趋势" />
@@ -154,13 +156,14 @@ export function BusinessPage() {
 }
 ```
 
-`typical-page:start-page` 在命中 `data-visualization` 且已具备标准宿主骨架时，默认就应该生成这一套 shared-shell scaffold，而不是再回退成页面里手写 `PageHeader + white-body + control strip + chart card + table shell` 的自由拼装版本。
+`typical-page:start-page` 在命中 `data-visualization` 且已具备标准宿主骨架时，默认就应该生成这一套 shared-shell scaffold，而不是再回退成页面里手写 `PageHeader + white-body + control strip + chart card + table shell` 的自由拼装版本。analytics 页面默认再按 planner 选中的 `layoutArchetype` 产出 `primary-secondary`、`linear-stack` 或 `parallel-sections` 三类受管骨架；不要继续生成没有主次的 chart wall。
 
 对这类页面，起手说明里还必须显式写出三条继承边界：
 
 - `shared component inheritance`：至少列出 `FixedDashboardPageFrame`、`DashboardControlStrip`、`JoinedTableSection`、`ManagedChartCard`、`Tag`
 - `style inheritance contract`：至少回答 header/outer-padding/white-body/table shell/chart body 的 owner，以及页面禁止覆写哪些骨架层 style
 - `interaction inheritance contract`：至少回答 `PageHeader.extra` 右停靠、dashboard control strip 无外部字段名、row action 默认 link + 单行、pagination 仍在 joined table shell 内
+- 若页面同时存在真实记录筛选，必须再显式回答：detail QueryFilter 贴近 `JoinedTableSection`，不与 page-global dashboard control strip 混成同一行
 
 ## 与 source contract 的关系
 

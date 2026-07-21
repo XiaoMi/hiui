@@ -12,10 +12,12 @@ import {
   resolveBundleConfig,
   validateSkillManifest,
 } from './lib/workflow-bundle.mjs'
+import { resolveTargetDescriptor } from './lib/workflow-hosts.mjs'
 import { resolveRequestedSkill } from './lib/workflow-install.mjs'
 
 function parseArgs(argv) {
   const options = {
+    host: '',
     json: false,
     lockfile: '',
     target: '',
@@ -26,6 +28,13 @@ function parseArgs(argv) {
 
     if (arg === '--json') {
       options.json = true
+      continue
+    }
+    if (arg === '--host') {
+      const value = argv[index + 1]
+      if (!value || value.startsWith('--')) throw new Error('Missing value for --host')
+      options.host = value
+      index += 1
       continue
     }
 
@@ -46,7 +55,7 @@ function parseArgs(argv) {
     }
 
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/verify-workflow-bundle.mjs [--lockfile <path>] [--target <skills-dir>] [--json]')
+      console.log('Usage: node scripts/verify-workflow-bundle.mjs [--lockfile <path>] [--host <host-name>] [--target <skills-dir>] [--json]')
       process.exit(0)
     }
 
@@ -60,7 +69,12 @@ async function main() {
   const options = parseArgs(process.argv.slice(2))
   const config = await resolveBundleConfig(options.lockfile || defaultLockPath)
   const skills = []
-  const targetRoot = options.target ? path.resolve(options.target) : ''
+  const targetResolution = resolveTargetDescriptor({
+    host: options.host,
+    target: options.target,
+    purpose: 'verify',
+  }, config.hostProfiles)
+  const targetRoot = targetResolution.targetRoot
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'workflow-bundle-verify-'))
   const stagingRoot = path.join(tempRoot, 'staged')
   await fs.mkdir(stagingRoot, { recursive: true })
@@ -146,6 +160,9 @@ async function main() {
       lockfile: config.lockPath,
       bundleName: config.lock.bundleName,
       bundleVersion: config.lock.bundleVersion,
+      host: targetResolution.host,
+      targetResolution: targetResolution.resolution,
+      targetRoot,
       installPolicy: path.basename(config.installPolicyPath),
       compatibilityMatrix: path.basename(config.compatibilityMatrixPath),
       skills,

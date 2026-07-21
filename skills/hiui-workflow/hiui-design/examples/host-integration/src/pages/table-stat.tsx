@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Button, Message, Space } from '@hi-ui/hiui'
 import { DownloadOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import {
   ProListPageProvider,
@@ -21,6 +21,10 @@ import {
   getParamsWithoutKeyword,
   paginateList,
 } from './request-utils'
+import {
+  createManagedQueryDateRangeField,
+  createManagedQuerySelectField,
+} from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import { useTranslation } from '../../translation'
 
 const T = extendDsl(ReadonlyFieldCreator, {
@@ -34,19 +38,18 @@ function TableStatInner() {
 
   const queryFields = useMemo(
     () => [
-      F(t('工程师'), 'engineerId')
-        .Select({
-          data: engineerOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('时间范围'), 'timeRange').Date({
-        type: 'daterange',
+      createManagedQuerySelectField({
+        field: 'engineerId',
+        label: t('工程师'),
+        data: engineerOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQueryDateRangeField({
+        field: 'timeRange',
+        label: t('时间范围'),
         format: 'YYYY-MM-DD',
-        clearable: true,
         overlay: queryFilterDatePickerOverlay,
-      }).val,
+      }),
     ],
     [t]
   )

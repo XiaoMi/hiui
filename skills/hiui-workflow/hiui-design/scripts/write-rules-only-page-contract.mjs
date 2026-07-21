@@ -596,6 +596,41 @@ async function main() {
       hostArchetypePath,
       archetypeMode,
       scrollStrategy: options.scrollStrategy || getDefaultScrollStrategyForPageType(pageType?.id),
+      topology: shouldCarryExistingMetadata ? existingContract?.topology || '' : '',
+      layoutStrategy: shouldCarryExistingMetadata ? String(existingContract?.layoutStrategy || '').trim() : '',
+      layoutArchetype: shouldCarryExistingMetadata ? String(existingContract?.layoutArchetype || '').trim() : '',
+      nonTypicalScope:
+        shouldCarryExistingMetadata && Array.isArray(existingContract?.nonTypicalScope)
+          ? existingContract.nonTypicalScope
+          : [],
+      mandatoryComponents:
+        shouldCarryExistingMetadata && Array.isArray(existingContract?.mandatoryComponents)
+          ? existingContract.mandatoryComponents
+          : [],
+      compositionGuardrails:
+        shouldCarryExistingMetadata && Array.isArray(existingContract?.compositionGuardrails)
+          ? existingContract.compositionGuardrails
+          : [],
+      strategyEvidence:
+        shouldCarryExistingMetadata && Array.isArray(existingContract?.strategyEvidence)
+          ? existingContract.strategyEvidence
+          : [],
+      runtimeSmokePlan:
+        shouldCarryExistingMetadata && existingContract?.runtimeSmokePlan
+          ? existingContract.runtimeSmokePlan
+          : null,
+      chartUsageContract:
+        shouldCarryExistingMetadata && existingContract?.chartUsageContract
+          ? existingContract.chartUsageContract
+          : null,
+      visualBaselinePlan:
+        shouldCarryExistingMetadata && existingContract?.visualBaselinePlan
+          ? existingContract.visualBaselinePlan
+          : null,
+      visualizationRolePlan:
+        shouldCarryExistingMetadata && existingContract?.visualizationRolePlan
+          ? existingContract.visualizationRolePlan
+          : null,
       regionMapping,
       ownershipMode:
         options.ownershipMode ||

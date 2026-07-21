@@ -1,0 +1,96 @@
+{
+  "table-basic": {
+    "pageId": "basic-table",
+    "title": "官方基础表格",
+    "status": "proofed"
+  },
+  "table-stat": {
+    "pageId": "table-stat",
+    "title": "官方数据统计表",
+    "status": "proofed"
+  },
+  "data-visualization": {
+    "pageId": "data-visualization",
+    "title": "官方数据可视化",
+    "status": "proofed"
+  },
+  "feedback-status": {
+    "pageId": "empty-state",
+    "title": "官方反馈状态",
+    "status": "proofed",
+    "variantMap": {
+      "empty-state": "empty-state",
+      "load-fail": "load-fail",
+      "network-error": "network-error",
+      "no-permission": "no-permission",
+      "page-not-found": "page-not-found",
+      "intranet-offline": "intranet-offline",
+      "under-construction": "under-construction"
+    }
+  },
+  "tree-table": {
+    "pageId": "tree-table",
+    "title": "官方树形表格",
+    "status": "proofed"
+  },
+  "tree-split": {
+    "pageId": "tree-split",
+    "title": "官方左树右表",
+    "status": "proofed"
+  },
+  "drawer-form": {
+    "pageId": "drawer-form",
+    "title": "官方抽屉表单",
+    "status": "proofed"
+  },
+  "drawer-detail": {
+    "pageId": "drawer-detail",
+    "title": "官方抽屉详情",
+    "status": "proofed"
+  },
+  "full-page-edit": {
+    "pageId": "full-page-edit",
+    "title": "官方全页编辑",
+    "status": "proofed"
+  },
+  "full-page-detail": {
+    "pageId": "full-page-detail",
+    "title": "官方全页详情",
+    "status": "proofed"
+  },
+  "empty-state": {
+    "pageId": "empty-state",
+    "title": "官方空状态",
+    "status": "proofed"
+  },
+  "load-fail": {
+    "pageId": "load-fail",
+    "title": "官方加载失败",
+    "status": "proofed"
+  },
+  "network-error": {
+    "pageId": "network-error",
+    "title": "官方网络异常",
+    "status": "proofed"
+  },
+  "no-permission": {
+    "pageId": "no-permission",
+    "title": "官方无权限",
+    "status": "proofed"
+  },
+  "page-not-found": {
+    "pageId": "page-not-found",
+    "title": "官方页面不存在",
+    "status": "proofed"
+  },
+  "intranet-offline": {
+    "pageId": "intranet-offline",
+    "title": "官方未连接内网",
+    "status": "proofed"
+  },
+  "under-construction": {
+    "pageId": "under-construction",
+    "title": "官方页面建设中",
+    "status": "proofed"
+  }
+}

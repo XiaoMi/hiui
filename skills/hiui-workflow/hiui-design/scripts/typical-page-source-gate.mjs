@@ -6,6 +6,7 @@ import {
   parseDiffArgs,
 } from './lib/detection/typical-page-candidates.mjs'
 import { validateManagedPageSource } from './lib/managed-page-source-guard.mjs'
+import { collectWriteScopeViolations } from './lib/task-write-scope.mjs'
 
 async function main() {
   const options = parseDiffArgs(process.argv.slice(2))
@@ -26,6 +27,15 @@ async function main() {
 
     if (errors.length > 0) {
       failures.push(...errors)
+    }
+
+    const writeScopeViolations = collectWriteScopeViolations({
+      changedFiles,
+      contract: contractEntry.contract,
+      generatedPagePath: filePath,
+    })
+    if (writeScopeViolations.length > 0) {
+      failures.push(...writeScopeViolations)
     }
   }
 

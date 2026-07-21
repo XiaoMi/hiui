@@ -1,0 +1,128 @@
+{
+  "pageType": "table-stat",
+  "title": "履约效率看板",
+  "searchPlaceholder": "请输入业务线 / 区域",
+  "primaryAction": {
+    "label": "导出",
+    "message": "履约效率看板导出任务已创建"
+  },
+  "secondaryAction": {
+    "label": "刷新",
+    "message": "履约效率看板已刷新"
+  },
+  "stats": [
+    {
+      "key": "orders",
+      "label": "本周处理工单",
+      "value": "18,406"
+    },
+    {
+      "key": "sla",
+      "label": "24h 达标率",
+      "value": "98.2%"
+    },
+    {
+      "key": "overtime",
+      "label": "超时工单量",
+      "value": "124"
+    }
+  ],
+  "queryFields": [
+    {
+      "key": "region",
+      "label": "区域",
+      "control": "select",
+      "placeholder": "请选择区域",
+      "options": [
+        {
+          "id": "华北",
+          "title": "华北"
+        },
+        {
+          "id": "华东",
+          "title": "华东"
+        },
+        {
+          "id": "华南",
+          "title": "华南"
+        },
+        {
+          "id": "西南",
+          "title": "西南"
+        }
+      ]
+    },
+    {
+      "key": "statDate",
+      "label": "时间范围",
+      "control": "dateRange",
+      "placeholder": [
+        "开始时间",
+        "结束时间"
+      ]
+    }
+  ],
+  "columns": [
+    {
+      "key": "serviceLine",
+      "label": "业务线"
+    },
+    {
+      "key": "region",
+      "label": "区域"
+    },
+    {
+      "key": "dailyOrders",
+      "label": "日均工单"
+    },
+    {
+      "key": "slaRate",
+      "label": "24h 达标率"
+    },
+    {
+      "key": "overtimeOrders",
+      "label": "超时工单"
+    }
+  ],
+  "rowActions": [
+    {
+      "key": "detail",
+      "label": "查看明细",
+      "message": "已打开履约效率明细"
+    }
+  ],
+  "rows": [
+    {
+      "serviceLine": "寄修服务",
+      "region": "华北",
+      "statDate": "2026-07-08",
+      "dailyOrders": "4,120",
+      "slaRate": "98.7%",
+      "overtimeOrders": "22"
+    },
+    {
+      "serviceLine": "安装服务",
+      "region": "华东",
+      "statDate": "2026-07-09",
+      "dailyOrders": "3,460",
+      "slaRate": "98.1%",
+      "overtimeOrders": "31"
+    },
+    {
+      "serviceLine": "上门检修",
+      "region": "华南",
+      "statDate": "2026-07-10",
+      "dailyOrders": "2,980",
+      "slaRate": "97.6%",
+      "overtimeOrders": "43"
+    },
+    {
+      "serviceLine": "配件直送",
+      "region": "西南",
+      "statDate": "2026-07-11",
+      "dailyOrders": "1,860",
+      "slaRate": "98.4%",
+      "overtimeOrders": "28"
+    }
+  ]
+}

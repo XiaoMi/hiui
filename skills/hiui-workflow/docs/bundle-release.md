@@ -21,19 +21,32 @@
 
 `install.sh` 与 `install-codex.sh` 如保留，仅作为兼容壳转调 `install-workflow.sh`，不作为对外默认示例。
 
-公开安装推荐直接使用：
+公开安装分两类：
+
+- Codex 默认安装：可以直接使用 `skills add`
+- 其他宿主：必须显式传入目标 skill 根目录，不能默认落到 `~/.codex/skills`
+
+Codex 默认安装示例：
 
 ```bash
 npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 ```
 
-若需要直接执行仓库内脚本，可使用：
+其他宿主或需要精确指定目标目录时，使用仓库内 bundle 脚本：
 
 ```bash
 git clone https://github.com/XiaoMi/hiui.git
 cd hiui
-bash skills/hiui-workflow/install-workflow.sh
+bash skills/hiui-workflow/install-workflow.sh --target /path/to/host/skills
 ```
+
+若要通过 bundle 脚本安装到 Codex 默认 skill 目录，应显式写出：
+
+```bash
+bash skills/hiui-workflow/install-workflow.sh --host codex
+```
+
+当前 bundle 安装脚本已改为 fail closed：必须显式给出 `--host` 或 `--target`。因此在非 Codex 场景下，发布与安装文档都必须显式写出 `--target`，不要假设宿主会被自动识别。
 
 ## Public Lock Policy
 
@@ -50,8 +63,11 @@ bash skills/hiui-workflow/install-workflow.sh
 
 ```bash
 node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --json
+node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --host codex --json
+node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --target /tmp/workflow-bundle-check --json
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --host codex --json
 node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
-node skills/hiui-workflow/scripts/release-workflow-bundle.mjs --json
+node skills/hiui-workflow/scripts/release-workflow-bundle.mjs --target /tmp/workflow-bundle-check --json
 ```
 
 若当前还在工作区联调、相关变更尚未合入 `XiaoMi/hiui:master`，请改用 local lock 执行相同验证：
@@ -59,6 +75,16 @@ node skills/hiui-workflow/scripts/release-workflow-bundle.mjs --json
 ```bash
 node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs \
   --lockfile skills/hiui-workflow/bundle/workflow-bundle.local.lock.json \
+  --host codex \
+  --json
+node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs \
+  --lockfile skills/hiui-workflow/bundle/workflow-bundle.local.lock.json \
+  --target /tmp/workflow-bundle-check \
+  --json
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs \
+  --lockfile skills/hiui-workflow/bundle/workflow-bundle.local.lock.json \
+  --dry-run \
+  --host codex \
   --json
 node skills/hiui-workflow/scripts/install-workflow-bundle.mjs \
   --lockfile skills/hiui-workflow/bundle/workflow-bundle.local.lock.json \
@@ -67,6 +93,7 @@ node skills/hiui-workflow/scripts/install-workflow-bundle.mjs \
   --json
 node skills/hiui-workflow/scripts/release-workflow-bundle.mjs \
   --lockfile skills/hiui-workflow/bundle/workflow-bundle.local.lock.json \
+  --target /tmp/workflow-bundle-check \
   --json
 ```
 

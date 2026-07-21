@@ -12,7 +12,7 @@ import {
   Pie,
   Radar,
 } from '@ant-design/charts'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import {
   ProListPageProvider,
@@ -65,6 +65,10 @@ import {
   getParamsWithoutKeyword,
   paginateList,
 } from './request-utils'
+import {
+  createManagedQueryDateRangeField,
+  createManagedQuerySelectField,
+} from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import styles from './data-visualization.module.scss'
 import { useTranslation } from '../../translation'
 
@@ -935,7 +939,7 @@ function VisualizationStatSection() {
         legend: {
           color: {
             ...chartLegendConfig.color,
-            itemMarker: (team: string) =>
+            itemMarker: (team) =>
               team === radarTeams[0] ? 'hyphen' : 'diamond',
           },
         },
@@ -1043,26 +1047,24 @@ function DataVisualizationInner() {
 
   const queryFields = useMemo(
     () => [
-      F(t('区域'), 'regionId')
-        .Select({
-          data: visualizationRegionOptions.map((item) => ({ ...item, title: t(item.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('任务来源'), 'sourceType')
-        .Select({
-          data: visualizationSourceTypeOptions.map((item) => ({ ...item, title: t(item.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('时间范围'), 'timeRange').Date({
-        type: 'daterange',
+      createManagedQuerySelectField({
+        field: 'regionId',
+        label: t('区域'),
+        data: visualizationRegionOptions.map((item) => ({ ...item, title: t(item.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'sourceType',
+        label: t('任务来源'),
+        data: visualizationSourceTypeOptions.map((item) => ({ ...item, title: t(item.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQueryDateRangeField({
+        field: 'timeRange',
+        label: t('时间范围'),
         format: 'YYYY-MM-DD',
-        clearable: true,
         overlay: queryFilterDatePickerOverlay,
-      }).val,
+      }),
     ],
     [t]
   )

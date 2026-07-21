@@ -7,7 +7,13 @@ import { fileURLToPath } from 'node:url'
 import { syncArchetypeAssets } from './lib/archetypes/sync-archetype-assets.mjs'
 import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
+import { detectLegacyHostFamily } from './lib/legacy-host-family-registry.mjs'
+import {
+  provisionLegacyProjectCarriers,
+  summarizeLegacyDeliveryPolicy,
+} from './lib/legacy-carrier-provisioning.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
+import { writeProjectIntegrationState } from './lib/project-integration-state.mjs'
 import { RULES_ONLY_REFERENCE_DEST, RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import {
@@ -161,7 +167,14 @@ function sortObjectKeys(input) {
   return Object.fromEntries(Object.entries(input).sort(([a], [b]) => a.localeCompare(b)))
 }
 
-function upsertManagedDependency({ dependencies, devDependencies, peerDeps, depName, depVersion }) {
+function upsertManagedDependency({
+  dependencies,
+  devDependencies,
+  peerDeps,
+  depName,
+  depVersion,
+  preferredBucket = 'dependencies',
+}) {
   if (Object.prototype.hasOwnProperty.call(dependencies, depName)) {
     const previous = dependencies[depName]
     if (previous === depVersion) return { action: 'unchanged', previous }
@@ -181,6 +194,16 @@ function upsertManagedDependency({ dependencies, devDependencies, peerDeps, depN
     if (previous === depVersion) return { action: 'unchanged', previous }
     peerDeps[depName] = depVersion
     return { action: 'updated', previous }
+  }
+
+  if (preferredBucket === 'devDependencies') {
+    devDependencies[depName] = depVersion
+    return { action: 'added', previous: '' }
+  }
+
+  if (preferredBucket === 'peerDependencies') {
+    peerDeps[depName] = depVersion
+    return { action: 'added', previous: '' }
   }
 
   dependencies[depName] = depVersion
@@ -287,10 +310,46 @@ function normalizePackageName(specifier) {
   return specifier.split('/')[0]
 }
 
+function resolveLegacyCarrierRuntimeDependencies({
+  dependencies,
+  devDependencies,
+  peerDeps,
+  shellPeerDependencies,
+}) {
+  const hiui5AliasSpec =
+    String(dependencies.hiui5 || devDependencies.hiui5 || peerDeps.hiui5 || '').trim()
+  if (hiui5AliasSpec) {
+    return {}
+  }
+
+  const existingHiuiRuntimeSpec = [
+    dependencies['@hi-ui/hiui'],
+    devDependencies['@hi-ui/hiui'],
+    peerDeps['@hi-ui/hiui'],
+  ]
+    .map((value) => String(value || '').trim())
+    .find(Boolean)
+  const existingHiuiRuntimeMajor = parseLeadingMajorVersion(existingHiuiRuntimeSpec)
+  const fallbackHiuiRuntimeSpec = String(shellPeerDependencies?.['@hi-ui/hiui'] || '').trim()
+  const resolvedHiuiRuntimeSpec =
+    existingHiuiRuntimeMajor != null && existingHiuiRuntimeMajor >= 5
+      ? existingHiuiRuntimeSpec
+      : fallbackHiuiRuntimeSpec
+
+  if (!resolvedHiuiRuntimeSpec) {
+    return {}
+  }
+
+  return {
+    hiui5: `npm:@hi-ui/hiui@${resolvedHiuiRuntimeSpec}`,
+  }
+}
+
 async function loadHostIntegrationDependencies(skillRoot, peerDependencies, line = '') {
   const referencePath = path.join(skillRoot, 'docs', 'onboarding', 'host-integration-dependencies.json')
   const reference = await readJsonFile(referencePath)
-  const versionMap = reference?.dependencies ?? {}
+  const runtimeVersionMap = reference?.dependencies ?? {}
+  const buildVersionMap = reference?.devDependencies ?? {}
   const ignoredPackages = new Set([
     '@hiui-design/typical-page-shells',
     'react',
@@ -321,21 +380,35 @@ async function loadHostIntegrationDependencies(skillRoot, peerDependencies, line
     }
   }
 
-  const missingVersionSpecs = [...requiredPackages].filter((depName) => !versionMap[depName])
+  const missingVersionSpecs = [...requiredPackages].filter(
+    (depName) => !runtimeVersionMap[depName] && !buildVersionMap[depName]
+  )
   if (missingVersionSpecs.length > 0) {
     throw new Error(
       `host-integration-dependencies.json is missing version specs for: ${missingVersionSpecs.join(', ')}`
     )
   }
 
-  const managedPackages = new Set([...requiredPackages, ...Object.keys(versionMap)])
+  const managedRuntimePackages = new Set([
+    ...[...requiredPackages].filter((depName) => runtimeVersionMap[depName]),
+    ...Object.keys(runtimeVersionMap),
+  ])
+  const managedBuildPackages = new Set(Object.keys(buildVersionMap))
 
-  return Object.fromEntries(
-    [...managedPackages]
-      .sort((a, b) => a.localeCompare(b))
-      .map((depName) => [depName, versionMap[depName]])
-      .filter(([, depVersion]) => Boolean(depVersion))
-  )
+  return {
+    dependencies: Object.fromEntries(
+      [...managedRuntimePackages]
+        .sort((a, b) => a.localeCompare(b))
+        .map((depName) => [depName, runtimeVersionMap[depName]])
+        .filter(([, depVersion]) => Boolean(depVersion))
+    ),
+    devDependencies: Object.fromEntries(
+      [...managedBuildPackages]
+        .sort((a, b) => a.localeCompare(b))
+        .map((depName) => [depName, buildVersionMap[depName]])
+        .filter(([, depVersion]) => Boolean(depVersion))
+    ),
+  }
 }
 
 async function readTargetPackageJson(targetRoot) {
@@ -449,6 +522,7 @@ async function patchPackageJson({
   shellsSpec,
   peerDependencies,
   directDependencies,
+  directDevDependencies,
   line,
   legacyCompatibilityOnly = false,
 }) {
@@ -474,6 +548,14 @@ async function patchPackageJson({
   const updatedDeps = []
   const addedScripts = []
   const skippedScripts = []
+  const legacyRuntimeDependencies = legacyCompatibilityOnly
+    ? resolveLegacyCarrierRuntimeDependencies({
+        dependencies,
+        devDependencies,
+        peerDeps,
+        shellPeerDependencies: peerDependencies,
+      })
+    : {}
 
   if (!legacyCompatibilityOnly) {
     {
@@ -515,6 +597,40 @@ async function patchPackageJson({
         peerDeps,
         depName,
         depVersion,
+        preferredBucket: 'dependencies',
+      })
+
+      if (result.action === 'added') {
+        addedDeps.push(depName)
+      } else if (result.action === 'updated') {
+        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
+      }
+    }
+
+    for (const [depName, depVersion] of Object.entries(directDevDependencies ?? {})) {
+      const result = upsertManagedDependency({
+        dependencies,
+        devDependencies,
+        peerDeps,
+        depName,
+        depVersion,
+        preferredBucket: 'devDependencies',
+      })
+
+      if (result.action === 'added') {
+        addedDeps.push(depName)
+      } else if (result.action === 'updated') {
+        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
+      }
+    }
+  } else {
+    for (const [depName, depVersion] of Object.entries(legacyRuntimeDependencies)) {
+      const result = upsertManagedDependency({
+        dependencies,
+        devDependencies,
+        peerDeps,
+        depName,
+        depVersion,
       })
 
       if (result.action === 'added') {
@@ -543,11 +659,11 @@ async function patchPackageJson({
     scripts: sortObjectKeys(scripts),
   }
 
-  if (pkg.devDependencies) {
+  if (pkg.devDependencies || Object.keys(devDependencies).length > 0) {
     nextPkg.devDependencies = sortObjectKeys(devDependencies)
   }
 
-  if (pkg.peerDependencies) {
+  if (pkg.peerDependencies || Object.keys(peerDeps).length > 0) {
     nextPkg.peerDependencies = sortObjectKeys(peerDeps)
   }
 
@@ -831,13 +947,22 @@ function insertIntoObjectLiteral(source, objectRange, entryText) {
   return `${beforeClose}${separator}\n${body}\n${closingIndent}${afterClose}`
 }
 
-async function writeViteAliasSnippet({ outputRoot, viteFile, shimPath }) {
+function escapeRegExp(source) {
+  return String(source).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function hasViteAliasEntry(source, aliasName) {
+  return new RegExp(`['"]${escapeRegExp(aliasName)}['"]\\s*:`, 'm').test(source)
+}
+
+async function writeViteAliasSnippet({ outputRoot, viteFile, shimPath, srcAliasPath }) {
   const snippetPath = path.join(outputRoot, 'VITE_ALIAS_SNIPPET.md')
   const viteLabel = viteFile ? path.relative(path.dirname(outputRoot), viteFile) : 'your vite config file'
-  const content = `# Vite Schema Types Alias Snippet
+  const content = `# Vite Alias Snippet
 
-Vite prebundling fails on \`@hi-ui/schema-types\` because the package only ships declarations.
-Add the alias below to your Vite config before running \`vite\`, \`pnpm dev\`, or \`pnpm build\`.
+Host-integration example assets expect both the project-level \`@\` source alias and the
+\`@hi-ui/schema-types\` shim alias. Add the block below to your Vite config before running
+\`vite\`, \`pnpm dev\`, or \`pnpm build\`.
 
 ## Suggested target
 
@@ -848,6 +973,7 @@ Add the alias below to your Vite config before running \`vite\`, \`pnpm dev\`, o
 \`\`\`ts
 resolve: {
   alias: {
+    '@': ${JSON.stringify(srcAliasPath)},
     '@hi-ui/schema-types': ${JSON.stringify(shimPath)},
   },
 }
@@ -866,28 +992,42 @@ resolve: {
 async function patchViteSchemaTypesAlias({ targetRoot, outputRoot }) {
   const viteFile = await detectViteConfigFile(targetRoot)
   const shimPath = path.join(outputRoot, 'shims', 'schema-types-empty.js')
+  const srcAliasPath = path.join(targetRoot, 'src')
 
   if (!viteFile) {
     return { status: 'not-detected', viteFile: '', snippetPath: '' }
   }
 
   const raw = await fs.readFile(viteFile, 'utf8')
-  if (raw.includes('@hi-ui/schema-types')) {
+  const missingAliasEntries = []
+
+  if (!hasViteAliasEntry(raw, '@')) {
+    missingAliasEntries.push(`'@': ${JSON.stringify(srcAliasPath)}`)
+  }
+
+  if (!hasViteAliasEntry(raw, '@hi-ui/schema-types')) {
+    missingAliasEntries.push(`'@hi-ui/schema-types': ${JSON.stringify(shimPath)}`)
+  }
+
+  if (missingAliasEntries.length === 0) {
     return { status: 'already-patched', viteFile, snippetPath: '' }
   }
 
-  const aliasEntry = `'@hi-ui/schema-types': ${JSON.stringify(shimPath)}`
   const aliasRange = findObjectPropertyRange(raw, 'alias')
 
   if (aliasRange) {
-    const nextRaw = insertIntoObjectLiteral(raw, aliasRange, aliasEntry)
+    const nextRaw = insertIntoObjectLiteral(raw, aliasRange, missingAliasEntries.join(',\n'))
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
 
   const resolveRange = findObjectPropertyRange(raw, 'resolve')
   if (resolveRange) {
-    const nextRaw = insertIntoObjectLiteral(raw, resolveRange, `alias: {\n  ${aliasEntry}\n}`)
+    const nextRaw = insertIntoObjectLiteral(
+      raw,
+      resolveRange,
+      `alias: {\n  ${missingAliasEntries.join(',\n  ')}\n}`
+    )
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
@@ -897,13 +1037,18 @@ async function patchViteSchemaTypesAlias({ targetRoot, outputRoot }) {
     const nextRaw = insertIntoObjectLiteral(
       raw,
       rootRange,
-      `resolve: {\n  alias: {\n    ${aliasEntry}\n  }\n}`
+      `resolve: {\n  alias: {\n    ${missingAliasEntries.join(',\n    ')}\n  }\n}`
     )
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
 
-  const snippetPath = await writeViteAliasSnippet({ outputRoot, viteFile, shimPath })
+  const snippetPath = await writeViteAliasSnippet({
+    outputRoot,
+    viteFile,
+    shimPath,
+    srcAliasPath,
+  })
   return { status: 'snippet-only', viteFile, snippetPath }
 }
 
@@ -2013,6 +2158,8 @@ async function writeBootstrapSummary({
   installedRootRuntime,
   legacyHiUiEsImports,
   legacyRuntimeGuardIssues,
+  legacyCarrierProvisioningResult = null,
+  legacyDeliveryPolicySummary = null,
   syncStatus,
   referencePagesPathLabel,
 }) {
@@ -2051,7 +2198,7 @@ async function writeBootstrapSummary({
     `- starter root styles: ${rootStyleResult.status}`,
     `- route integration: ${routeResult.status}`,
     `- app frame integration: ${appFrameResult.status}`,
-    `- vite schema-types alias: ${viteResult.status}`,
+    `- vite aliases: ${viteResult.status}`,
     `- dependency install: ${installRequested ? installResult.status : 'not-requested'}`,
   ]
 
@@ -2097,6 +2244,22 @@ async function writeBootstrapSummary({
 
   if (mode === 'legacy-host-compatible') {
     lines.push(`- legacy host runtime reasons: ${legacyHostRuntime.reasons.join('; ')}`)
+    if (legacyCarrierProvisioningResult) {
+      lines.push(
+        `- legacy carrier bootstrap: ${legacyCarrierProvisioningResult.status} (provisioned ${legacyCarrierProvisioningResult.provisioned.length}, reused ${legacyCarrierProvisioningResult.reused.length}, conflicts ${legacyCarrierProvisioningResult.conflicts.length})`
+      )
+    }
+    if (legacyDeliveryPolicySummary) {
+      lines.push(
+        `- legacy required carrier readiness: ${legacyDeliveryPolicySummary.legacyRolloutCoverageStatus}`
+      )
+      if (Array.isArray(legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes) &&
+        legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
+        lines.push(
+          `- missing required legacy carriers before integration can be ready: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}`
+        )
+      }
+    }
   }
 
   if (legacyHiUiEsImports.length > 0) {
@@ -2200,6 +2363,11 @@ async function writeBootstrapSummary({
     }
   } else if (mode === 'legacy-host-compatible') {
     lines.push('- This host was detected as a legacy compatibility runtime. The legacy host main tree was not auto-patched into a generic `@hiui-design/typical-page-shells` host-integration runtime; ordinary typical pages should instead follow the planner-selected carrier / runtimeAdapterProof path.')
+    if (legacyDeliveryPolicySummary?.legacyRolloutCoverageStatus === 'ready') {
+      lines.push('- Legacy integration is ready for the required ordinary typical page families. The required project-certified carriers are in place, so planner may continue on the `page-component + runtime bridge + slot fill` main path.')
+    } else if (Array.isArray(legacyDeliveryPolicySummary?.missingRequiredLegacyPageTypes) && legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
+      lines.push(`- Legacy integration is still incomplete because required project-certified carriers are missing for: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}.`)
+    }
   } else if (!installRequested) {
     lines.push('- Run your target project package manager install command after reviewing package.json changes.')
   }
@@ -2236,7 +2404,7 @@ async function writeBootstrapSummary({
     lines.push('- Re-run the default reference-only installation later with `pnpm typical-page:apply`, `npm run typical-page:apply`, or the equivalent package-manager script command. It will auto-resolve to `rules-only` or `legacy-host-compatible` based on the host runtime.')
   }
   if (packageResult.addedScripts.includes('typical-page:designer-setup') || packageResult.status !== 'missing') {
-    lines.push('- For non-technical designers, prefer `pnpm typical-page:designer-setup` or `npm run typical-page:designer-setup`; that entry now auto-runs doctor and stops on hard failures.')
+    lines.push('- For non-technical designers, prefer `pnpm typical-page:designer-setup` or `npm run typical-page:designer-setup`; that entry now auto-runs doctor, checks build, and reports lint as an explainable follow-up when the script exists.')
   }
   if (packageResult.addedScripts.includes('typical-page:i18n:init') || packageResult.status !== 'missing') {
     lines.push('- The target project already received the default locale resources, formatter bridge, and RTL baseline during bootstrap. Re-run `pnpm typical-page:i18n:init` or `npm run typical-page:i18n:init` only when you want to resync locale files or refresh the wrapper template.')
@@ -2272,7 +2440,7 @@ async function writeBootstrapSummary({
     lines.push(
       mode === 'legacy-host-compatible'
         ? '- In legacy-host-compatible (legacy host bridge) mode, do not treat the legacy host main tree as a generic direct mount for `@hiui-design/typical-page-shells`. Ordinary typical pages may still use planner-selected page components through a project-certified carrier or runtimeAdapterProof-backed standard component; only ad hoc host-integration-style shell imports remain out of bounds for the legacy main tree. If you later isolate a dedicated modern runtime entry, re-evaluate standard shell imports there instead of in the host main tree.'
-        : '- If the generated page imports `@hiui-design/typical-page-shells`, then add `@hiui-design/typical-page-shells/styles.css` and the Vite `@hi-ui/schema-types` alias in the target project.'
+        : '- If the generated page imports `@hiui-design/typical-page-shells`, then add `@hiui-design/typical-page-shells/styles.css` plus the Vite `@` and `@hi-ui/schema-types` aliases in the target project.'
     )
     lines.push('- Only when you explicitly want a baseline gallery and host bridge demo, run `pnpm typical-page:apply:host-assets` or `npm run typical-page:apply:host-assets`.')
     lines.push('- 接入阶段 doctor 已作为安装门槛；只有手工改宿主、依赖、路由或样式入口后，才需要重新执行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`。')
@@ -2370,7 +2538,7 @@ async function main() {
     const hostIntegrationDependencies =
       mode === 'host-integration'
         ? await loadHostIntegrationDependencies(skillRoot, shellPackage.peerDependencies ?? {}, lineId)
-        : {}
+        : { dependencies: {}, devDependencies: {} }
 
     const syncConfig =
       mode === 'host-integration'
@@ -2406,7 +2574,8 @@ async function main() {
       targetRoot,
       shellsSpec,
       peerDependencies: shellPackage.peerDependencies ?? {},
-      directDependencies: hostIntegrationDependencies,
+      directDependencies: hostIntegrationDependencies.dependencies,
+      directDevDependencies: hostIntegrationDependencies.devDependencies,
       line: lineId,
       legacyCompatibilityOnly: mode === 'legacy-host-compatible',
     })
@@ -2523,6 +2692,20 @@ async function main() {
       hostProfile,
       recommendedModeOverride: recommendedMode,
     })
+    const legacyCarrierProvisioningResult =
+      mode === 'legacy-host-compatible'
+        ? await provisionLegacyProjectCarriers({
+            targetRoot,
+            skillRoot,
+          })
+        : null
+    const legacyDeliveryPolicySummary =
+      mode === 'legacy-host-compatible'
+        ? await summarizeLegacyDeliveryPolicy({
+            targetRoot,
+            skillRoot,
+          })
+        : null
 
     const summaryPath = await writeBootstrapSummary({
       archetypeAssetCount: archetypeSyncResult.copiedFiles.length,
@@ -2550,8 +2733,28 @@ async function main() {
       installedRootRuntime,
       legacyHiUiEsImports,
       legacyRuntimeGuardIssues,
+      legacyCarrierProvisioningResult,
+      legacyDeliveryPolicySummary,
       syncStatus: syncConfig.status,
       referencePagesPathLabel: syncConfig.referencePagesPathLabel,
+    })
+    const legacyHostFamilySummary =
+      mode === 'legacy-host-compatible'
+        ? detectLegacyHostFamily({
+            targetRoot,
+            skillRoot,
+            modeOverride: mode,
+          })
+        : null
+    const projectIntegrationResult = await writeProjectIntegrationState({
+      targetRoot,
+      mode,
+      recommendedMode,
+      source: 'bootstrap-target-project',
+      bootstrapSummary: path.relative(targetRoot, summaryPath),
+      hostProfile,
+      legacyHostFamilySummary,
+      legacyDeliveryPolicySummary,
     })
 
     console.log(syncOutput)
@@ -2563,6 +2766,24 @@ async function main() {
     console.log(`- chosen mode: ${mode}`)
     if (mode === 'legacy-host-compatible') {
       console.log(`  reason: ${legacyHostRuntime.reasons.join('; ')}`)
+      if (legacyCarrierProvisioningResult) {
+        console.log(
+          `- legacy carrier bootstrap: ${legacyCarrierProvisioningResult.status} (provisioned ${legacyCarrierProvisioningResult.provisioned.length}, reused ${legacyCarrierProvisioningResult.reused.length}, conflicts ${legacyCarrierProvisioningResult.conflicts.length})`
+        )
+      }
+      if (legacyCarrierProvisioningResult?.conflicts?.length > 0) {
+        for (const conflict of legacyCarrierProvisioningResult.conflicts) {
+          console.log(`  conflict: ${conflict.pageTypeId} -> ${conflict.reason}`)
+        }
+      }
+      if (legacyDeliveryPolicySummary) {
+        console.log(`- legacy required carrier readiness: ${legacyDeliveryPolicySummary.legacyRolloutCoverageStatus}`)
+        if (legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
+          console.log(
+            `  missing required carriers before integration can be ready: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}`
+          )
+        }
+      }
     }
     if (legacyHiUiEsImports.length > 0) {
       console.log(`- legacy @hi-ui/hiui/es consumers: ${legacyHiUiEsImports.length}`)
@@ -2645,7 +2866,7 @@ async function main() {
     if (appFrameResult.snippetPath) {
       console.log(`  snippet: ${appFrameResult.snippetPath}`)
     }
-    console.log(`- vite schema-types alias: ${viteResult.status}`)
+    console.log(`- vite aliases: ${viteResult.status}`)
     if (viteResult.viteFile) {
       console.log(`  vite file: ${viteResult.viteFile}`)
     }
@@ -2658,6 +2879,13 @@ async function main() {
     }
     if (options.install && installResult.message) {
       console.log(`  detail: ${installResult.message}`)
+    }
+    console.log(`- project integration state: ${projectIntegrationResult.status}`)
+    console.log(`  integration ready: ${projectIntegrationResult.state.integrationReady ? 'yes' : 'no'}`)
+    if (projectIntegrationResult.state.blockingReasons.length > 0) {
+      for (const reason of projectIntegrationResult.state.blockingReasons) {
+        console.log(`  blocker: ${reason}`)
+      }
     }
     console.log(`- summary file: ${summaryPath}`)
   } catch (error) {

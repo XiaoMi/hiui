@@ -1,0 +1,152 @@
+{
+  "pageType": "tree-split",
+  "title": "左树右表",
+  "searchPlaceholder": "物料名称 / 物料编码",
+  "treeSearchPlaceholder": "搜索品类",
+  "rowKey": "id",
+  "treeFieldKey": "categoryId",
+  "defaultExpandedIds": ["root-device", "root-part"],
+  "secondaryAction": {
+    "label": "导入",
+    "message": "导入物料（示例）"
+  },
+  "primaryAction": {
+    "label": "新增物料",
+    "message": "新增物料（示例）"
+  },
+  "treeNodes": [
+    {
+      "id": "root-device",
+      "title": "整机",
+      "children": [
+        {
+          "id": "phone",
+          "title": "手机"
+        },
+        {
+          "id": "pad",
+          "title": "平板"
+        }
+      ]
+    },
+    {
+      "id": "root-part",
+      "title": "配件",
+      "children": [
+        {
+          "id": "screen",
+          "title": "屏幕"
+        },
+        {
+          "id": "battery",
+          "title": "电池"
+        },
+        {
+          "id": "charger",
+          "title": "充电器"
+        }
+      ]
+    }
+  ],
+  "queryFields": [
+    {
+      "key": "itemAttr",
+      "label": "物品属性",
+      "control": "select",
+      "options": [
+        { "id": "成品", "title": "成品" },
+        { "id": "备件", "title": "备件" },
+        { "id": "耗材", "title": "耗材" }
+      ]
+    },
+    {
+      "key": "conditionGrade",
+      "label": "品相",
+      "control": "select",
+      "options": [
+        { "id": "全新", "title": "全新" },
+        { "id": "良品", "title": "良品" },
+        { "id": "残次", "title": "残次" }
+      ]
+    }
+  ],
+  "columns": [
+    { "key": "index", "label": "序号", "width": 64 },
+    { "key": "name", "label": "物料名称", "width": 220 },
+    { "key": "code", "label": "物料编码", "width": 160 },
+    { "key": "unit", "label": "单位", "width": 80 },
+    { "key": "serialManaged", "label": "串号管理", "width": 100 },
+    { "key": "itemAttr", "label": "物品属性", "width": 100 },
+    { "key": "conditionGrade", "label": "品相", "width": 96 },
+    { "key": "amount", "label": "金额", "width": 100 }
+  ],
+  "rowActions": [
+    {
+      "key": "view",
+      "label": "查看",
+      "message": "查看 {name}"
+    }
+  ],
+  "rows": [
+    {
+      "id": "item-001",
+      "categoryId": "phone",
+      "index": 1,
+      "name": "Xiaomi 16 Pro 展示机",
+      "code": "PHONE-001",
+      "unit": "台",
+      "serialManaged": "是",
+      "itemAttr": "成品",
+      "conditionGrade": "全新",
+      "amount": "4,999"
+    },
+    {
+      "id": "item-002",
+      "categoryId": "pad",
+      "index": 2,
+      "name": "Xiaomi Pad 8",
+      "code": "PAD-008",
+      "unit": "台",
+      "serialManaged": "是",
+      "itemAttr": "成品",
+      "conditionGrade": "良品",
+      "amount": "2,699"
+    },
+    {
+      "id": "item-003",
+      "categoryId": "screen",
+      "index": 3,
+      "name": "旗舰机型显示屏",
+      "code": "PART-SCR-16",
+      "unit": "片",
+      "serialManaged": "否",
+      "itemAttr": "备件",
+      "conditionGrade": "全新",
+      "amount": "899"
+    },
+    {
+      "id": "item-004",
+      "categoryId": "battery",
+      "index": 4,
+      "name": "高压电池模组",
+      "code": "PART-BAT-03",
+      "unit": "块",
+      "serialManaged": "否",
+      "itemAttr": "备件",
+      "conditionGrade": "良品",
+      "amount": "299"
+    },
+    {
+      "id": "item-005",
+      "categoryId": "charger",
+      "index": 5,
+      "name": "67W 快充头",
+      "code": "ACC-CHG-67",
+      "unit": "个",
+      "serialManaged": "否",
+      "itemAttr": "耗材",
+      "conditionGrade": "残次",
+      "amount": "129"
+    }
+  ]
+}

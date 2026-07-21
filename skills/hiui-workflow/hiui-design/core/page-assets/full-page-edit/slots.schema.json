@@ -1,0 +1,5 @@
+{
+  "pageType": "full-page-edit",
+  "requiredKeys": ["title", "sections"],
+  "optionalKeys": ["draftMessage", "submitMessage"]
+}

@@ -7,6 +7,10 @@ import {
   toContractSlug,
 } from './rules-only-page-contracts.mjs'
 import { inspectManagedPageVisualTokens } from './visual-token-baseline.mjs'
+import {
+  analyzeManagedAnalyticsChartSectionLayout,
+  analyzeManagedAnalyticsRolePlan,
+} from './managed-analytics-policy.mjs'
 
 export const DEFAULT_TIMEOUT_MS = 15000
 
@@ -126,6 +130,169 @@ function getManagedChartGovernanceSummary(contract, pageTypeId) {
     chartGovernance:
       'Any inserted chart still has to stay on the approved HiUI chart stack. Only independent analysis blocks should be promoted into chart-section.',
   }
+}
+
+function isManagedAnalyticsPreviewContract(contract, pageTypeId) {
+  return (
+    pageTypeId === 'data-visualization' ||
+    String(contract?.generationProfile?.strategy || '').trim() === 'managed-analytics'
+  )
+}
+
+function extractManagedAnalyticsLayoutGroups(pageRaw) {
+  const groups = new Set()
+  const patterns = [
+    /data-hiui5-layout-group["']?\s*[:=]\s*["']([^"']+)["']/g,
+    /\blayoutGroup\s*=\s*["']([^"']+)["']/g,
+  ]
+
+  for (const pattern of patterns) {
+    let match = pattern.exec(pageRaw)
+    while (match) {
+      const value = String(match[1] || '').trim()
+      if (value) {
+        groups.add(value)
+      }
+      match = pattern.exec(pageRaw)
+    }
+  }
+  return groups
+}
+
+function findManagedAnalyticsPreviewFailures({ contract, pageRaw, pageTypeId }) {
+  if (!isManagedAnalyticsPreviewContract(contract, pageTypeId)) {
+    return []
+  }
+
+  const failures = []
+  const layoutStrategy = String(contract?.layoutStrategy || '').trim()
+  const layoutArchetype = String(contract?.layoutArchetype || '').trim()
+  const chartUsageContract = contract?.chartUsageContract
+  const visualBaselinePlan = contract?.visualBaselinePlan
+  const visualizationRolePlan = contract?.visualizationRolePlan
+
+  if (!layoutStrategy || layoutStrategy === 'typical-page') {
+    failures.push('managed-analytics preview requires an analytics layoutStrategy; generic typical-page fallback is not preview-ready.')
+  }
+
+  if (!layoutArchetype) {
+    failures.push('managed-analytics preview requires a declared layoutArchetype before preview_ready can pass.')
+  }
+
+  if (!chartUsageContract || typeof chartUsageContract !== 'object') {
+    failures.push('managed-analytics preview requires chartUsageContract metadata.')
+    return failures
+  }
+
+  if (!visualBaselinePlan || typeof visualBaselinePlan !== 'object') {
+    failures.push('managed-analytics preview requires visualBaselinePlan so color/spacing/shared-shell rules are frozen before preview_ready can pass.')
+  }
+
+  if (!visualizationRolePlan || typeof visualizationRolePlan !== 'object') {
+    failures.push('managed-analytics preview requires visualizationRolePlan so primary/secondary chart roles are frozen before preview_ready can pass.')
+  }
+
+  if (
+    visualizationRolePlan &&
+    typeof visualizationRolePlan === 'object' &&
+    (!visualizationRolePlan.chartSectionLayoutPlan ||
+      typeof visualizationRolePlan.chartSectionLayoutPlan !== 'object')
+  ) {
+    failures.push(
+      'managed-analytics preview requires visualizationRolePlan.chartSectionLayoutPlan so chart-section grid mode and neutral full-span semantics are frozen before preview_ready can pass.'
+    )
+  }
+
+  const contractStatus = String(chartUsageContract.contractStatus || '').trim()
+  if (contractStatus && contractStatus !== 'ready') {
+    failures.push(`managed-analytics preview requires chartUsageContract.contractStatus=ready; received ${contractStatus}.`)
+  }
+
+  const chartIntentItems = Array.isArray(chartUsageContract.chartIntentItems)
+    ? chartUsageContract.chartIntentItems
+    : []
+  if (chartIntentItems.length === 0) {
+    failures.push('managed-analytics preview requires at least one chart intent before preview_ready can pass.')
+  }
+
+  if (visualizationRolePlan && chartIntentItems.length > 0) {
+    const rolePlanAnalysis = analyzeManagedAnalyticsRolePlan({
+      chartUsageContract,
+      visualizationRolePlan,
+    })
+    const chartSectionLayoutAnalysis = analyzeManagedAnalyticsChartSectionLayout({
+      sourceRaw: pageRaw,
+      visualizationRolePlan,
+    })
+
+    for (const issue of rolePlanAnalysis.issues) {
+      if (issue.code === 'PRIMARY_ROLE_MISSING') {
+        failures.push('managed-analytics preview requires at least one primary chart intent item in visualizationRolePlan.')
+        continue
+      }
+
+      if (issue.code === 'PRIMARY_ROLE_MISMATCH') {
+        failures.push(
+          `managed-analytics preview primary-role mismatch: ${issue.detail}`
+        )
+      }
+
+      if (issue.code === 'SUMMARY_CHART_IN_PRIMARY_REGION') {
+        failures.push(
+          `managed-analytics preview does not allow summary/supporting chart types to occupy the primary region by default: ${issue.detail}`
+        )
+      }
+    }
+
+    for (const issue of chartSectionLayoutAnalysis.issues) {
+      if (issue.code === 'GRID_MODE_BYPASS') {
+        failures.push(
+          'managed-analytics preview requires chart-section grids to declare the governed baseGridMode instead of relying on raw auto-fit ManagedCardGrid behavior.'
+        )
+        continue
+      }
+
+      if (issue.code === 'GRID_MODE_MIXED') {
+        failures.push(
+          'managed-analytics preview does not allow mixed chart-section base grid modes in one main chart workspace.'
+        )
+        continue
+      }
+
+      if (issue.code === 'GRID_MODE_CONTRACT_MISMATCH') {
+        failures.push(
+          `managed-analytics preview grid-mode mismatch: ${issue.detail}`
+        )
+        continue
+      }
+
+      if (issue.code === 'GRID_PATTERN_INVALID') {
+        failures.push(
+          `managed-analytics preview row pattern mismatch: ${issue.detail}`
+        )
+        continue
+      }
+
+      if (issue.code === 'CHART_SPAN_BELOW_MINIMUM') {
+        failures.push(
+          `managed-analytics preview chart span is below the allowed minimum: ${issue.detail}`
+        )
+      }
+    }
+  }
+
+  const layoutGroups = extractManagedAnalyticsLayoutGroups(pageRaw)
+  if (layoutArchetype === 'primary-secondary' && (!layoutGroups.has('primary') || !layoutGroups.has('secondary'))) {
+    failures.push('managed-analytics preview expects primary-secondary layout groups in source markers before preview_ready can pass.')
+  }
+  if (layoutArchetype === 'linear-stack' && (!layoutGroups.has('primary') || !layoutGroups.has('follow-up'))) {
+    failures.push('managed-analytics preview expects primary + follow-up layout groups for linear-stack before preview_ready can pass.')
+  }
+  if (layoutArchetype === 'parallel-sections' && (!layoutGroups.has('parallel-primary') || !layoutGroups.has('parallel-secondary'))) {
+    failures.push('managed-analytics preview expects parallel-primary + parallel-secondary layout groups before preview_ready can pass.')
+  }
+
+  return failures
 }
 
 function collectRequiredRegions(pageTypeId, contract) {
@@ -358,6 +525,11 @@ export async function evaluatePreviewReady(options) {
   const runtimeSmokeRequirementReason = runtimeSmokeRequired
     ? String(contractContext?.contract?.runtimeSmokePlan?.reason || '').trim()
     : ''
+  const managedAnalyticsPreviewFailures = findManagedAnalyticsPreviewFailures({
+    contract: contractContext?.contract || null,
+    pageRaw,
+    pageTypeId,
+  })
   const qualityChecks = [
     {
       detail: contractContext?.contractJsonPath
@@ -373,6 +545,11 @@ export async function evaluatePreviewReady(options) {
       key: 'runtime-smoke-requirement',
       ok: true,
     },
+    ...managedAnalyticsPreviewFailures.map((failure, index) => ({
+      detail: failure,
+      key: `managed-analytics-preview-${index + 1}`,
+      ok: false,
+    })),
   ]
   const qualityVerified = checks.every((item) => item.ok) && qualityChecks.every((item) => item.ok)
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Funnel } from '@ant-design/charts'
 import { DownloadOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { useSubscribe } from '@hi-ui/use-subscription'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -46,6 +46,7 @@ import {
   type OverviewFilters,
   sequenceOptions,
 } from './recruitment-data'
+import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import styles from './recruitment.module.scss'
 
 const T = extendDsl(ReadonlyFieldCreator, {
@@ -93,18 +94,18 @@ function OverviewInner() {
 
   const queryFields = useMemo(
     () => [
-      F('部门选择器', 'departmentId')
-        .Select({
-          data: departmentOptions.map((item) => ({ id: item.id, title: item.title })),
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F('职级选择器', 'jobLevel')
-        .Select({
-          data: jobLevelOptions,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
+      createManagedQuerySelectField({
+        field: 'departmentId',
+        label: '部门选择器',
+        data: departmentOptions.map((item) => ({ id: item.id, title: item.title })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'jobLevel',
+        label: '职级选择器',
+        data: jobLevelOptions,
+        overlay: queryFilterPickerOverlay,
+      }),
     ],
     []
   )

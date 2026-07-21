@@ -44,12 +44,16 @@ function createListPagePrompt({
   lines.push(createHeaderRegionLine({ pageName, pageActions, primaryAction }))
 
   if (searchPlaceholder) {
-    lines.push(`- 检索筛选区：包含一个关键词 SearchInput；SearchInput 的 placeholder 文案为"${searchPlaceholder}"。`)
+    lines.push(`- 检索筛选区：包含一个关键词搜索位；该搜索位沿用页面壳的 searchPlaceholder 链路，placeholder 文案为"${searchPlaceholder}"。`)
   }
 
   if (filters?.length) {
     lines.push(`- 筛选区字段包含${filters.map((item) => `"${item}"`).join('、')}。`)
   }
+
+  lines.push(
+    '- QueryFilter 字段基线：`@/typical-page-reuse/query-filter/managed-query-filter-fields` 是唯一默认入口；普通文本筛选字段使用 createManagedQueryTextField（filter-text-input），Select / 日期字段分别使用 createManagedQuerySelectField、createManagedQueryDateRangeField，所有字段共享同一 filled 筛选表面；不得复用第二个 SearchInput，也不得回退成裸 Input。'
+  )
 
   lines.push(...extraLines)
 
@@ -277,12 +281,13 @@ export const typicalExamplePrompts = {
   ].join('\n'),
   dataVisualization: [
     '基于hiui-design 生成一个数据可视化页。',
-    '- 页面结构：页面由"页头区域"、"指标概览区"、"图表分析区"、"检索筛选区"、"明细表格区"组成；指标概览区展示关键指标，图表分析区展示趋势/分布/占比，检索筛选区负责筛选明细数据，明细表格区承载可追踪的数据明细。',
+    '- 页面结构：页面由"页头区域"、"页面全局控制条"、"指标概览区"、"图表分析区"、"明细筛选区"、"明细表格区"组成；页面全局控制条位于主体白底最上方并联动整页视角，指标概览区展示关键指标，图表分析区展示趋势/分布/占比，明细筛选区只在存在真实记录筛选时出现并贴近明细表格区。',
     '- 页头区域：页面名称为"数据可视化"。',
     '- 指标概览区指标包含"本月巡检任务"、"异常闭环率"、"平均响应时长"、"高风险设备"。',
     '- 图表分析区模块包含"任务趋势"、"风险分布"、"来源占比"、"闭环率"。',
-    '- 检索筛选区：包含一个关键词 SearchInput 和一组筛选项；SearchInput 的 placeholder 文案为"区域 / 风险点 / 趋势洞察"。',
-    '- 筛选区字段包含"区域"、"任务来源"、"时间范围"。',
+    '- 页面全局控制条：使用 segmented / radio / tabs 切换"日"、"周"、"月"或分析视角；不要使用真实 QueryFilter，也不要出现整块灰底背景。',
+    '- 明细筛选区：若需要记录级筛选，则使用真实 QueryFilter；关键词 SearchInput 的 placeholder 文案为"区域 / 风险点 / 趋势洞察"。',
+    '- 明细筛选字段包含"区域"、"任务来源"、"时间范围"；不要与页面全局控制条混排在同一行。',
     '- 明细表格区字段包含"区域"、"任务来源"、"趋势洞察"、"趋势变化"、"闭环率"、"异常数"、"重点风险点"、"最近更新"。',
   ].join('\n'),
   fullPageEdit: createFormPagePrompt({

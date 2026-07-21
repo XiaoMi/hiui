@@ -11,6 +11,11 @@ import {
   getAdapterRegistryEntry,
   isLocalBypassContainmentAllowed,
 } from './adapter-registry.mjs'
+import {
+  analyzeManagedAnalyticsChartSectionLayout,
+  analyzeManagedAnalyticsRolePlan,
+} from './managed-analytics-policy.mjs'
+import { validateManagedQueryFilterFieldSemantics } from './query-filter-governance.mjs'
 
 export const PAGE_TYPE_MARKER_PREFIX = 'hiui-design page-type:'
 export const ARCHETYPE_MARKER_PREFIX = 'hiui-design archetype:'
@@ -83,6 +88,16 @@ function extractImportSpecifiers(source) {
     .filter(Boolean)
 }
 
+function extractReexportSpecifiers(source) {
+  return Array.from(
+    String(source || '').matchAll(
+      /export\s+(?:\*\s+from|\{[\s\S]*?\}\s*from)\s*['"]([^'"]+)['"]/g
+    )
+  )
+    .map((match) => match[1] || '')
+    .filter(Boolean)
+}
+
 function readImportedStyleSources(sourceFilePath, sourceRaw) {
   return extractImportSpecifiers(sourceRaw)
     .filter((specifier) => specifier.startsWith('.') && /\.(?:css|scss)$/.test(specifier))
@@ -102,6 +117,25 @@ const SAFE_EXTERNAL_UI_PACKAGE_PREFIXES = [
   'react-dom',
   'react-router',
   'react-router-dom',
+]
+const HIUI_QUERY_FILTER_SPECIFIER_PATTERNS = [/^hiui5$/, /^@hi-ui\/hiui(?:\/.*)?$/]
+
+const SHARED_DASHBOARD_PRIMITIVE_BINDINGS = [
+  'DashboardControlStrip',
+  'JoinedTableSection',
+  'ManagedCardGrid',
+  'ManagedChartCard',
+  'ManagedMetricCard',
+  'ManagedSurfaceCard',
+  'SectionBlock',
+]
+
+const SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS = [
+  /(?:^|\/)data-visualization-primitives(?:\.[cm]?[jt]sx?)?$/,
+]
+
+const FIXED_DASHBOARD_FRAME_SPECIFIER_PATTERNS = [
+  /(?:^|\/)fixed-dashboard-page-frame(?:\.[cm]?[jt]sx?)?$/,
 ]
 
 function resolveLocalScriptImportPath({ sourceFilePath, specifier, targetRoot }) {
@@ -154,7 +188,7 @@ function collectImportedLocalContext({
     })
     styleChunks.push(readImportedStyleSources(filePath, raw))
 
-    for (const specifier of extractImportSpecifiers(raw)) {
+    for (const specifier of [...extractImportSpecifiers(raw), ...extractReexportSpecifiers(raw)]) {
       const resolvedFilePath = resolveLocalScriptImportPath({
         sourceFilePath: filePath,
         specifier,
@@ -187,6 +221,33 @@ function extractImportDeclarations(sourceRaw) {
   }))
 }
 
+function extractNamedBindingEntries(bindingClause) {
+  const entries = []
+  const normalizedClause = String(bindingClause || '').trim()
+  if (!normalizedClause) {
+    return entries
+  }
+
+  for (const item of normalizedClause.split(',')) {
+    const cleaned = item.trim().replace(/\btype\s+/g, '')
+    if (!cleaned) continue
+
+    const [leftPart, aliasPart] = cleaned.split(/\s+as\s+/i)
+    const importedName = String(leftPart || '').trim()
+    const localName = String(aliasPart || leftPart || '').trim()
+    if (!importedName || !localName) {
+      continue
+    }
+
+    entries.push({
+      importedName,
+      localName,
+    })
+  }
+
+  return entries
+}
+
 function isSafeExternalUiPackage(packageSpec) {
   return SAFE_EXTERNAL_UI_PACKAGE_PREFIXES.some((prefix) => {
     if (packageSpec === prefix) {
@@ -210,12 +271,8 @@ function extractImportedBindings(importClause) {
 
   const namedMatch = normalizedClause.match(/\{([\s\S]*?)\}/)
   if (namedMatch) {
-    for (const item of String(namedMatch[1] || '').split(',')) {
-      const cleaned = item.trim()
-      if (!cleaned) continue
-      const [leftPart] = cleaned.split(/\s+as\s+/i)
-      const aliasPart = cleaned.split(/\s+as\s+/i)[1]
-      const binding = String(aliasPart || leftPart || '').trim()
+    for (const entry of extractNamedBindingEntries(namedMatch[1])) {
+      const binding = String(entry.localName || '').trim()
       if (binding) bindings.add(binding)
     }
   }
@@ -237,6 +294,549 @@ function extractImportedBindings(importClause) {
   }
 
   return [...bindings]
+}
+
+function extractImportBindingEntries(importClause) {
+  const normalizedClause = String(importClause || '').replace(/\btype\s+/g, '').trim()
+  if (!normalizedClause) {
+    return []
+  }
+
+  const namedMatch = normalizedClause.match(/\{([\s\S]*?)\}/)
+  return namedMatch ? extractNamedBindingEntries(namedMatch[1]) : []
+}
+
+function extractExportFromDeclarations(sourceRaw) {
+  return Array.from(
+    String(sourceRaw || '').matchAll(
+      /export\s*\{([\s\S]*?)\}\s*from\s*['"]([^'"]+)['"]/g
+    )
+  ).map((match) => ({
+    exportClause: String(match[1] || '').trim(),
+    packageSpec: String(match[2] || '').trim(),
+  }))
+}
+
+function extractLocalExportDeclarations(sourceRaw) {
+  return Array.from(
+    String(sourceRaw || '').matchAll(
+      /export\s*\{([\s\S]*?)\}(?!\s*from\b)/g
+    )
+  ).map((match) => ({
+    exportClause: String(match[1] || '').trim(),
+  }))
+}
+
+function extractDeclaredNamedExports(sourceRaw) {
+  const exports = new Set()
+  const source = String(sourceRaw || '')
+  const patterns = [
+    /export\s+(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/g,
+    /export\s+class\s+([A-Za-z_$][\w$]*)/g,
+    /export\s+(?:const|let|var)\s+([A-Za-z_$][\w$]*)/g,
+  ]
+
+  for (const pattern of patterns) {
+    for (const match of source.matchAll(pattern)) {
+      if (match[1]) {
+        exports.add(String(match[1]).trim())
+      }
+    }
+  }
+
+  return exports
+}
+
+function specifierMatchesAnyPattern(specifier, patterns) {
+  return patterns.some((pattern) => pattern.test(String(specifier || '').trim()))
+}
+
+function importsNamedBindingFromSpecifierPatterns(sourceRaw, bindingName, specifierPatterns) {
+  if (!bindingName) {
+    return false
+  }
+
+  return extractImportDeclarations(sourceRaw).some(({ importClause, packageSpec }) => {
+    if (!specifierMatchesAnyPattern(packageSpec, specifierPatterns)) {
+      return false
+    }
+
+    return extractImportedBindings(importClause).includes(bindingName)
+  })
+}
+
+function declaresLocalBinding(sourceRaw, bindingName) {
+  if (!bindingName) {
+    return false
+  }
+
+  return hasAnyPattern(sourceRaw, [
+    new RegExp(`\\bfunction\\s+${escapeRegExp(bindingName)}\\b`),
+    new RegExp(`\\b(?:const|let|var)\\s+${escapeRegExp(bindingName)}\\s*=`),
+    new RegExp(`\\bclass\\s+${escapeRegExp(bindingName)}\\b`),
+  ])
+}
+
+function mountsImportedJsxBinding(sourceRaw, bindingName, specifierPatterns) {
+  if (!importsNamedBindingFromSpecifierPatterns(sourceRaw, bindingName, specifierPatterns)) {
+    return false
+  }
+
+  if (declaresLocalBinding(sourceRaw, bindingName)) {
+    return false
+  }
+
+  return new RegExp(`<${escapeRegExp(bindingName)}\\b`).test(sourceRaw)
+}
+
+function usesSharedDashboardPrimitive(sourceRaw, bindingName, dashboardShellUsage = null) {
+  if (dashboardShellUsage?.sharedPrimitiveBindingsUsed?.has(bindingName)) {
+    return true
+  }
+
+  return mountsImportedJsxBinding(
+    sourceRaw,
+    bindingName,
+    SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS
+  )
+}
+
+function importsAnySharedDashboardPrimitive(sourceRaw, dashboardShellUsage = null) {
+  if (dashboardShellUsage?.usesSharedDashboardPrimitives) {
+    return true
+  }
+
+  return SHARED_DASHBOARD_PRIMITIVE_BINDINGS.some((bindingName) =>
+    importsNamedBindingFromSpecifierPatterns(
+      sourceRaw,
+      bindingName,
+      SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS
+    )
+  )
+}
+
+function declaresLocalDashboardPrimitiveLookalike(sourceRaw, dashboardShellUsage = null) {
+  if (dashboardShellUsage?.localDashboardPrimitiveLookalikes?.size > 0) {
+    return true
+  }
+
+  return SHARED_DASHBOARD_PRIMITIVE_BINDINGS.some((bindingName) =>
+    declaresLocalBinding(sourceRaw, bindingName)
+  )
+}
+
+function extractManagedAnalyticsLayoutGroups(sourceRaw) {
+  const groups = new Set()
+  const patterns = [
+    /data-hiui5-layout-group["']?\s*[:=]\s*["']([^"']+)["']/g,
+    /\blayoutGroup\s*=\s*["']([^"']+)["']/g,
+  ]
+
+  for (const pattern of patterns) {
+    let match = pattern.exec(sourceRaw)
+    while (match) {
+      const value = String(match[1] || '').trim()
+      if (value) {
+        groups.add(value)
+      }
+      match = pattern.exec(sourceRaw)
+    }
+  }
+  return groups
+}
+
+function countManagedAnalyticsChartCards(sourceRaw) {
+  return (sourceRaw.match(/<ManagedChartCard\b/g) || []).length
+}
+
+function filePathMatchesSpecifierPatterns(targetRoot, filePath, patterns) {
+  const normalizedFilePath = normalizeRelativeSourcePath(targetRoot, filePath)
+  return (
+    specifierMatchesAnyPattern(normalizedFilePath, patterns) ||
+    specifierMatchesAnyPattern(path.basename(normalizedFilePath), patterns)
+  )
+}
+
+function buildLocalModuleRecords({
+  entryFilePath,
+  importedLocalContext,
+  targetRoot,
+}) {
+  const fileSources = Array.isArray(importedLocalContext?.fileSources)
+    ? importedLocalContext.fileSources
+    : [
+        {
+          filePath: entryFilePath,
+          sourceRaw: readTextIfExists(entryFilePath),
+        },
+      ]
+  const records = new Map()
+
+  for (const fileSource of fileSources) {
+    const filePath = path.resolve(fileSource.filePath)
+    const sourceRaw = String(fileSource.sourceRaw || '')
+    const importsByLocalName = new Map()
+    const reexportsByExportedName = new Map()
+    const localExportsByExportedName = new Map()
+    const declaredExports = extractDeclaredNamedExports(sourceRaw)
+
+    for (const declaration of extractImportDeclarations(sourceRaw)) {
+      const localFilePath = resolveLocalScriptImportPath({
+        sourceFilePath: filePath,
+        specifier: declaration.packageSpec,
+        targetRoot,
+      })
+      for (const entry of extractImportBindingEntries(declaration.importClause)) {
+        if (!importsByLocalName.has(entry.localName)) {
+          importsByLocalName.set(entry.localName, [])
+        }
+        importsByLocalName.get(entry.localName).push({
+          importedName: entry.importedName,
+          localName: entry.localName,
+          localFilePath,
+          packageSpec: declaration.packageSpec,
+        })
+      }
+    }
+
+    for (const declaration of extractExportFromDeclarations(sourceRaw)) {
+      const localFilePath = resolveLocalScriptImportPath({
+        sourceFilePath: filePath,
+        specifier: declaration.packageSpec,
+        targetRoot,
+      })
+      for (const entry of extractNamedBindingEntries(declaration.exportClause)) {
+        const exportedName = entry.localName
+        if (!reexportsByExportedName.has(exportedName)) {
+          reexportsByExportedName.set(exportedName, [])
+        }
+        reexportsByExportedName.get(exportedName).push({
+          exportedName,
+          importedName: entry.importedName,
+          localFilePath,
+          packageSpec: declaration.packageSpec,
+        })
+      }
+    }
+
+    for (const declaration of extractLocalExportDeclarations(sourceRaw)) {
+      for (const entry of extractNamedBindingEntries(declaration.exportClause)) {
+        const exportedName = entry.localName
+        if (!localExportsByExportedName.has(exportedName)) {
+          localExportsByExportedName.set(exportedName, [])
+        }
+        localExportsByExportedName.get(exportedName).push({
+          exportedName,
+          localName: entry.importedName,
+        })
+      }
+    }
+
+    records.set(filePath, {
+      declaredExports,
+      filePath,
+      importsByLocalName,
+      localExportsByExportedName,
+      reexportsByExportedName,
+      sourceRaw,
+    })
+  }
+
+  return records
+}
+
+function resolveGovernedNamedExport({
+  exportName,
+  filePath,
+  moduleRecords,
+  specifierPatterns,
+  governedBindingNames,
+  targetRoot,
+  visited = new Set(),
+}) {
+  if (!exportName || !filePath) {
+    return false
+  }
+
+  const normalizedFilePath = path.resolve(filePath)
+  const visitKey = `${normalizedFilePath}::${exportName}`
+  if (visited.has(visitKey)) {
+    return false
+  }
+  visited.add(visitKey)
+
+  const record = moduleRecords.get(normalizedFilePath)
+  if (!record) {
+    return false
+  }
+
+  if (
+    governedBindingNames.has(exportName) &&
+    record.declaredExports.has(exportName) &&
+    filePathMatchesSpecifierPatterns(targetRoot, normalizedFilePath, specifierPatterns)
+  ) {
+    return true
+  }
+
+  const reexports = record.reexportsByExportedName.get(exportName) || []
+  for (const reexport of reexports) {
+    if (
+      governedBindingNames.has(reexport.importedName) &&
+      reexport.localFilePath &&
+      resolveGovernedNamedExport({
+        exportName: reexport.importedName,
+        filePath: reexport.localFilePath,
+        moduleRecords,
+        specifierPatterns,
+        governedBindingNames,
+        targetRoot,
+        visited,
+      })
+    ) {
+      return true
+    }
+
+    if (
+      governedBindingNames.has(reexport.importedName) &&
+      !reexport.localFilePath &&
+      specifierMatchesAnyPattern(reexport.packageSpec, specifierPatterns)
+    ) {
+      return true
+    }
+  }
+
+  const localExports = record.localExportsByExportedName.get(exportName) || []
+  for (const localExport of localExports) {
+    if (
+      governedBindingNames.has(localExport.localName) &&
+      record.declaredExports.has(localExport.localName) &&
+      filePathMatchesSpecifierPatterns(targetRoot, normalizedFilePath, specifierPatterns)
+    ) {
+      return true
+    }
+
+    const importedBindings = record.importsByLocalName.get(localExport.localName) || []
+    for (const importedBinding of importedBindings) {
+      if (!governedBindingNames.has(importedBinding.importedName)) {
+        continue
+      }
+
+      if (
+        importedBinding.localFilePath &&
+        resolveGovernedNamedExport({
+          exportName: importedBinding.importedName,
+          filePath: importedBinding.localFilePath,
+          moduleRecords,
+          specifierPatterns,
+          governedBindingNames,
+          targetRoot,
+          visited,
+        })
+      ) {
+        return true
+      }
+
+      if (
+        !importedBinding.localFilePath &&
+        specifierMatchesAnyPattern(importedBinding.packageSpec, specifierPatterns)
+      ) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+function findGovernedBindingUsages({
+  entryFilePath,
+  governedBindingNames,
+  importedLocalContext,
+  specifierPatterns,
+  targetRoot,
+}) {
+  const normalizedEntryFilePath = path.resolve(entryFilePath)
+  const moduleRecords = buildLocalModuleRecords({
+    entryFilePath: normalizedEntryFilePath,
+    importedLocalContext,
+    targetRoot,
+  })
+  const entryRecord = moduleRecords.get(normalizedEntryFilePath)
+  const usedBindings = new Set()
+
+  if (!entryRecord) {
+    return usedBindings
+  }
+
+  for (const [localName, importedBindings] of entryRecord.importsByLocalName.entries()) {
+    if (!bindingAppearsInJsx(entryRecord.sourceRaw, localName)) {
+      continue
+    }
+
+    for (const importedBinding of importedBindings) {
+      if (!governedBindingNames.has(importedBinding.importedName)) {
+        continue
+      }
+
+      if (
+        importedBinding.localFilePath &&
+        resolveGovernedNamedExport({
+          exportName: importedBinding.importedName,
+          filePath: importedBinding.localFilePath,
+          moduleRecords,
+          specifierPatterns,
+          governedBindingNames,
+          targetRoot,
+        })
+      ) {
+        usedBindings.add(importedBinding.importedName)
+      }
+
+      if (
+        !importedBinding.localFilePath &&
+        specifierMatchesAnyPattern(importedBinding.packageSpec, specifierPatterns)
+      ) {
+        usedBindings.add(importedBinding.importedName)
+      }
+    }
+  }
+
+  return usedBindings
+}
+
+function findGovernedBindingLocalNames({
+  entryFilePath,
+  governedBindingNames,
+  importedLocalContext,
+  specifierPatterns,
+  targetRoot,
+}) {
+  const normalizedEntryFilePath = path.resolve(entryFilePath)
+  const moduleRecords = buildLocalModuleRecords({
+    entryFilePath: normalizedEntryFilePath,
+    importedLocalContext,
+    targetRoot,
+  })
+  const entryRecord = moduleRecords.get(normalizedEntryFilePath)
+  const localNamesByBinding = new Map()
+
+  if (!entryRecord) {
+    return localNamesByBinding
+  }
+
+  for (const [localName, importedBindings] of entryRecord.importsByLocalName.entries()) {
+    if (!bindingAppearsInJsx(entryRecord.sourceRaw, localName)) {
+      continue
+    }
+
+    for (const importedBinding of importedBindings) {
+      if (!governedBindingNames.has(importedBinding.importedName)) {
+        continue
+      }
+
+      const resolvesToGovernedBinding =
+        (importedBinding.localFilePath &&
+          resolveGovernedNamedExport({
+            exportName: importedBinding.importedName,
+            filePath: importedBinding.localFilePath,
+            moduleRecords,
+            specifierPatterns,
+            governedBindingNames,
+            targetRoot,
+          })) ||
+        (!importedBinding.localFilePath &&
+          specifierMatchesAnyPattern(importedBinding.packageSpec, specifierPatterns))
+
+      if (!resolvesToGovernedBinding) {
+        continue
+      }
+
+      if (!localNamesByBinding.has(importedBinding.importedName)) {
+        localNamesByBinding.set(importedBinding.importedName, new Set())
+      }
+      localNamesByBinding.get(importedBinding.importedName).add(localName)
+    }
+  }
+
+  return localNamesByBinding
+}
+
+function findLocalDashboardPrimitiveLookalikes({
+  importedLocalContext,
+  targetRoot,
+}) {
+  const lookalikes = new Set()
+  const fileSources = Array.isArray(importedLocalContext?.fileSources)
+    ? importedLocalContext.fileSources
+    : []
+
+  for (const fileSource of fileSources) {
+    const filePath = path.resolve(fileSource.filePath)
+    if (
+      filePathMatchesSpecifierPatterns(
+        targetRoot,
+        filePath,
+        SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS
+      )
+    ) {
+      continue
+    }
+
+    for (const bindingName of SHARED_DASHBOARD_PRIMITIVE_BINDINGS) {
+      if (declaresLocalBinding(fileSource.sourceRaw, bindingName)) {
+        lookalikes.add(bindingName)
+      }
+    }
+  }
+
+  return lookalikes
+}
+
+export function inspectManagedAnalyticsSharedShellUsage({
+  entryFilePath,
+  importedLocalContext,
+  targetRoot,
+}) {
+  const resolvedImportedLocalContext =
+    importedLocalContext ||
+    collectImportedLocalContext({
+      entryFilePath,
+      targetRoot,
+    })
+  const fixedFrameBindingsUsed = findGovernedBindingUsages({
+    entryFilePath,
+    governedBindingNames: new Set(['FixedDashboardPageFrame', 'ManagedWorkbenchPageFrame']),
+    importedLocalContext: resolvedImportedLocalContext,
+    specifierPatterns: FIXED_DASHBOARD_FRAME_SPECIFIER_PATTERNS,
+    targetRoot,
+  })
+  const sharedPrimitiveBindingsUsed = findGovernedBindingUsages({
+    entryFilePath,
+    governedBindingNames: new Set(SHARED_DASHBOARD_PRIMITIVE_BINDINGS),
+    importedLocalContext: resolvedImportedLocalContext,
+    specifierPatterns: SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS,
+    targetRoot,
+  })
+  const sharedPrimitiveLocalBindings = findGovernedBindingLocalNames({
+    entryFilePath,
+    governedBindingNames: new Set(SHARED_DASHBOARD_PRIMITIVE_BINDINGS),
+    importedLocalContext: resolvedImportedLocalContext,
+    specifierPatterns: SHARED_DASHBOARD_PRIMITIVE_SPECIFIER_PATTERNS,
+    targetRoot,
+  })
+  const localDashboardPrimitiveLookalikes = findLocalDashboardPrimitiveLookalikes({
+    importedLocalContext: resolvedImportedLocalContext,
+    targetRoot,
+  })
+
+  return {
+    fixedFrameBindingsUsed,
+    localDashboardPrimitiveLookalikes,
+    sharedPrimitiveLocalBindings,
+    sharedPrimitiveBindingsUsed,
+    usesFixedFrame: fixedFrameBindingsUsed.size > 0,
+    usesSharedDashboardPrimitives: sharedPrimitiveBindingsUsed.size > 0,
+  }
 }
 
 function bindingLooksLikeJsxComponent(binding) {
@@ -569,23 +1169,39 @@ function countManagedRootAttrSignals(sourceRaw, attrName, attrValue) {
   return countLiteralAttr(sourceRaw, attrName, attrValue) + countObjectLiteralKeyValue(sourceRaw, attrName, attrValue)
 }
 
-function usesFixedDashboardPageFrame(sourceRaw) {
-  return /\b(FixedDashboardPageFrame|ManagedWorkbenchPageFrame)\b/.test(sourceRaw)
+function usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage = null) {
+  if (dashboardShellUsage?.usesFixedFrame) {
+    return true
+  }
+
+  return (
+    mountsImportedJsxBinding(
+      sourceRaw,
+      'FixedDashboardPageFrame',
+      FIXED_DASHBOARD_FRAME_SPECIFIER_PATTERNS
+    ) ||
+    mountsImportedJsxBinding(
+      sourceRaw,
+      'ManagedWorkbenchPageFrame',
+      FIXED_DASHBOARD_FRAME_SPECIFIER_PATTERNS
+    )
+  )
 }
 
-function inheritsManagedHeaderFromHostSlot(sourceRaw) {
+function inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage = null) {
   return (
-    (usesFixedDashboardPageFrame(sourceRaw) && /\bHostPageHeaderPortal\b/.test(sourceRaw)) ||
+    (usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage) &&
+      /\bHostPageHeaderPortal\b/.test(sourceRaw)) ||
     /\bHostHeaderSlot\b/.test(sourceRaw)
   )
 }
 
-function hasManagedRegionCarrier(sourceRaw, regionName) {
+function hasManagedRegionCarrier(sourceRaw, regionName, dashboardShellUsage = null) {
   if (hasNonSelfClosingAttrContainer(sourceRaw, 'data-hiui5-region', regionName)) {
     return true
   }
 
-  if (regionName === 'header' && inheritsManagedHeaderFromHostSlot(sourceRaw)) {
+  if (regionName === 'header' && inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage)) {
     return true
   }
 
@@ -621,28 +1237,34 @@ function hasManagedRegionCarrier(sourceRaw, regionName) {
   }
 
   if (regionName === 'stat-section' || regionName === 'chart-section') {
-    return new RegExp(`\\bSectionBlock\\b[\\s\\S]{0,240}\\bregion\\s*=\\s*["']${escapeRegExp(regionName)}["']`).test(
-      sourceRaw
+    return (
+      usesSharedDashboardPrimitive(sourceRaw, 'SectionBlock', dashboardShellUsage) &&
+      new RegExp(`\\bSectionBlock\\b[\\s\\S]{0,240}\\bregion\\s*=\\s*["']${escapeRegExp(regionName)}["']`).test(
+        sourceRaw
+      )
     )
   }
 
   if (regionName === 'query-filter') {
-    return /\bDashboardControlStrip\b/.test(sourceRaw)
+    return usesSharedDashboardPrimitive(sourceRaw, 'DashboardControlStrip', dashboardShellUsage)
   }
 
   if (regionName === 'table' || regionName === 'pagination') {
-    return /\bJoinedTableSection\b/.test(sourceRaw)
+    return usesSharedDashboardPrimitive(sourceRaw, 'JoinedTableSection', dashboardShellUsage)
   }
 
   return false
 }
 
-function hasManagedShellCarrier(sourceRaw, attrName, attrValue) {
+function hasManagedShellCarrier(sourceRaw, attrName, attrValue, dashboardShellUsage = null) {
   if (hasNonSelfClosingAttrContainer(sourceRaw, attrName, attrValue)) {
     return true
   }
 
-  return usesFixedDashboardPageFrame(sourceRaw) && countObjectLiteralKeyValue(sourceRaw, attrName, attrValue) > 0
+  return (
+    usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage) &&
+    countObjectLiteralKeyValue(sourceRaw, attrName, attrValue) > 0
+  )
 }
 
 function extractLiteralClassNamesForAttr(sourceRaw, attrName, attrValue) {
@@ -720,9 +1342,9 @@ function getRoleSpecificOwnershipAttrName(role) {
   return `data-hiui5-owner-${role}`
 }
 
-function hasOwnershipContainer(sourceRaw, role) {
+function hasOwnershipContainer(sourceRaw, role, dashboardShellUsage = null) {
   if (
-    usesFixedDashboardPageFrame(sourceRaw) &&
+    usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage) &&
     countObjectLiteralKeyValue(sourceRaw, getRoleSpecificOwnershipAttrName(role), 'true') > 0
   ) {
     return true
@@ -734,10 +1356,10 @@ function hasOwnershipContainer(sourceRaw, role) {
   )
 }
 
-function countOwnershipMarkers(sourceRaw, role) {
+function countOwnershipMarkers(sourceRaw, role, dashboardShellUsage = null) {
   const legacyCount = countLiteralAttr(sourceRaw, 'data-hiui5-owner', role)
   const scopedCount = countAttrPresence(sourceRaw, getRoleSpecificOwnershipAttrName(role))
-  const fixedDashboardObjectCount = usesFixedDashboardPageFrame(sourceRaw)
+  const fixedDashboardObjectCount = usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage)
     ? countObjectLiteralKeyValue(sourceRaw, getRoleSpecificOwnershipAttrName(role), 'true')
     : 0
   return Math.max(legacyCount, scopedCount, fixedDashboardObjectCount)
@@ -935,12 +1557,10 @@ function usesHiuiChartBaseline(sourceRaw) {
 
 function usesHiuiChartColorContract(sourceRaw) {
   return hasAnyPattern(sourceRaw, [
-    /\bcreateHiuiColorScale\b/,
-    /\bcreateHiuiCategoricalDomainScale\b/,
-    /\bcreateHiuiSingleSeriesScale\b/,
-    /\bcreateHiuiDualSeriesScale\b/,
-    /\bcreateHiuiSemanticColorScale\b/,
-    /\bcreateHiuiColorRelationsScale\b/,
+    /\bscale\s*:\s*createHiui(?:ColorScale|CategoricalDomainScale|SingleSeriesScale|DualSeriesScale|SemanticColorScale|ColorRelationsScale)\s*\(/,
+    /\bscale\s*:\s*\{[\s\S]{0,240}?createHiui(?:ColorScale|CategoricalDomainScale|SingleSeriesScale|DualSeriesScale|SemanticColorScale|ColorRelationsScale)\s*\(/,
+    /\b(?:color|fill|stroke)\s*:\s*createHiui(?:ColorScale|CategoricalDomainScale|SingleSeriesScale|DualSeriesScale|SemanticColorScale|ColorRelationsScale)\s*\(/,
+    /\.\.\.\s*createHiui(?:ColorScale|CategoricalDomainScale|SingleSeriesScale|DualSeriesScale|SemanticColorScale|ColorRelationsScale)\s*\(/,
     /\bhiuiCategoricalPalette\b/,
     /\bhiuiDualSeriesPalette\b/,
     /\bhiuiSemanticChartColors\b/,
@@ -1212,6 +1832,20 @@ function snippetHasOverflowAuto(snippet) {
   )
 }
 
+function snippetHasOverflowHidden(snippet) {
+  return (
+    snippetHasTokenValue(snippet, 'overflow', /^hidden(?:\s|$)/i) ||
+    snippetHasTokenValue(snippet, 'overflow-x', /^hidden(?:\s|$)/i)
+  )
+}
+
+function snippetHasWidthHundred(snippet) {
+  return (
+    snippetHasTokenValue(snippet, 'width', /^100%$/i) ||
+    snippetHasTokenValue(snippet, 'inline-size', /^100%$/i)
+  )
+}
+
 function snippetHasFlexShrinkZero(snippet) {
   return snippetHasTokenValue(snippet, 'flex-shrink', /^0(?:px)?$/i)
 }
@@ -1411,6 +2045,10 @@ function validateDetailDescriptionsLabelOwnership({ contract, sourceRaw, pathLab
 }
 
 function hasQueryFilterCompatibleSemantics(sourceRaw) {
+  if (sourceHasDriftedDirectQueryFilterSlot(sourceRaw)) {
+    return false
+  }
+
   return hasAnyPattern(sourceRaw, [
     /\bQueryFilter\b/,
     /\bSearchForm\b/,
@@ -1427,6 +2065,10 @@ function hasQueryFilterCompatibleSemantics(sourceRaw) {
 }
 
 function hasStrongQueryFilterProof(sourceRaw) {
+  if (sourceHasDriftedDirectQueryFilterSlot(sourceRaw)) {
+    return false
+  }
+
   return hasAnyPattern(sourceRaw, [
     /<\s*(QueryFilter|SearchForm|TablePageFrame|StatListPageFrame|ProListPageProvider)\b/,
     /\bqueryFields\s*=/,
@@ -1439,30 +2081,75 @@ function hasStrongQueryFilterProof(sourceRaw) {
   ])
 }
 
-function hasStrongCarrierProofForCapability({ contract, sourceRaw, styleRaw, regionName, capability }) {
+function hasStrongCarrierProofForCapability({
+  contract,
+  sourceRaw,
+  styleRaw,
+  regionName,
+  capability,
+  dashboardShellUsage,
+}) {
   const shellName = CANONICAL_SHELL_BY_PAGE_TYPE.get(contract?.pageTypeId)
-  if (shellName && mountsRealShellRuntime(sourceRaw, shellName)) {
-    return true
-  }
+  const mountsRealShell = shellName && mountsRealShellRuntime(sourceRaw, shellName)
 
   switch (capability) {
     case 'hiui.queryFilter':
+      if (sourceHasDriftedDirectQueryFilterSlot(sourceRaw)) {
+        return false
+      }
+
+      if (mountsRealShell) {
+        return true
+      }
+
       return hasStrongQueryFilterProof(sourceRaw)
     case 'hiui.table':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(Table|PageTable|JoinedTableSection)\b/.test(sourceRaw)
     case 'hiui.pagination':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(Pagination|JoinedTableSection|PageTable)\b/.test(sourceRaw)
     case 'hiui.detailContent':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(Descriptions|ProDetailPage|ProDetailDrawer|ManagedFullPageDetailShell)\b/.test(sourceRaw)
     case 'hiui.form':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(Form|FormItem|ProEditPage|ProFormDrawer|SchemaFormBridge|ManagedFullPageEditShell)\b/.test(sourceRaw)
     case 'hiui.formFooter':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /(<\s*(ProEditPage|FormFooter|ActionFooter)\b|\binlineEditFooter\b|\bfooter\s*=|\bfooter\s*:)/.test(sourceRaw)
     case 'hiui.drawerContent':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(ProDetailDrawer|ProFormDrawer|Drawer)\b/.test(sourceRaw)
     case 'hiui.treePanel':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(Tree|TreeSelect|TreeSplitPageFrame|ManagedContextMainSplitShell)\b/.test(sourceRaw)
     case 'hiui.feedbackShell':
+      if (mountsRealShell) {
+        return true
+      }
+
       return /<\s*(FeedbackStatePanel|Empty|Result|Exception|Feedback)\b/.test(sourceRaw)
     case 'hiui.whiteBodySurface':
       return (
@@ -1470,7 +2157,11 @@ function hasStrongCarrierProofForCapability({ contract, sourceRaw, styleRaw, reg
         collectOwnershipStyleSnippets(sourceRaw, styleRaw, 'white-body').some(hasBackgroundOrRadiusSignal)
       )
     default:
-      return hasManagedRegionCarrier(sourceRaw, regionName)
+      if (mountsRealShell) {
+        return true
+      }
+
+      return hasManagedRegionCarrier(sourceRaw, regionName, dashboardShellUsage)
   }
 }
 
@@ -1485,7 +2176,13 @@ function collectCarrierCriticalRequirements(contract) {
   }))
 }
 
-function validateCriticalRegionProof({ contract, sourceRaw, styleRaw, pathLabel }) {
+function validateCriticalRegionProof({
+  contract,
+  sourceRaw,
+  styleRaw,
+  pathLabel,
+  dashboardShellUsage,
+}) {
   const errors = []
   const requirements = collectCarrierCriticalRequirements(contract)
 
@@ -1505,6 +2202,7 @@ function validateCriticalRegionProof({ contract, sourceRaw, styleRaw, pathLabel 
         styleRaw,
         regionName: requirement.regionName,
         capability: requirement.capability,
+        dashboardShellUsage,
       })
     ) {
       continue
@@ -1557,6 +2255,215 @@ function hasDashboardControlFieldLabels(sourceRaw) {
     /dashboardControlLabelStyle[\s\S]{0,220}<Select\b/,
     /<div[^>]*>\s*\{t\(['"`](统计维度|风险等级|业务线|排序方式)['"`]\)\}\s*<\/div>[\s\S]{0,220}<(Radio\.Group|Select)\b/,
   ])
+}
+
+function collectImportedLocalNamesByImportedName(sourceRaw, importedName, specifierPatterns) {
+  const localNames = new Set()
+
+  for (const declaration of extractImportDeclarations(sourceRaw)) {
+    if (
+      Array.isArray(specifierPatterns) &&
+      specifierPatterns.length > 0 &&
+      !specifierMatchesAnyPattern(declaration.packageSpec, specifierPatterns)
+    ) {
+      continue
+    }
+
+    for (const entry of extractImportBindingEntries(declaration.importClause)) {
+      if (String(entry.importedName || '').trim() !== importedName) {
+        continue
+      }
+      localNames.add(String(entry.localName || '').trim())
+    }
+  }
+
+  return [...localNames].filter(Boolean)
+}
+
+function collectComponentOpenTagSnippetsForBindings(sourceRaw, bindings, radius = 960) {
+  const normalizedBindings = [...new Set((bindings || []).map((binding) => String(binding || '').trim()))].filter(
+    Boolean
+  )
+
+  return normalizedBindings.flatMap((binding) =>
+    collectComponentOpenTagSnippets(sourceRaw, binding, radius)
+  )
+}
+
+function collectComponentBlockSnippetsForBindings(sourceRaw, bindings, radius = 3200) {
+  const normalizedBindings = [...new Set((bindings || []).map((binding) => String(binding || '').trim()))].filter(
+    Boolean
+  )
+  const snippets = []
+
+  for (const binding of normalizedBindings) {
+    const pattern = new RegExp(
+      `<${escapeRegExp(binding)}\\b[\\s\\S]{0,${Math.max(400, radius)}}?<\\/${escapeRegExp(binding)}>`,
+      'g'
+    )
+    for (const match of String(sourceRaw || '').matchAll(pattern)) {
+      snippets.push(String(match[0] || ''))
+    }
+  }
+
+  return snippets.filter(Boolean)
+}
+
+function findFirstComponentMountIndex(sourceRaw, bindings) {
+  const normalizedBindings = [...new Set((bindings || []).map((binding) => String(binding || '').trim()))].filter(
+    Boolean
+  )
+
+  let firstIndex = -1
+  for (const binding of normalizedBindings) {
+    const index = String(sourceRaw || '').search(new RegExp(`<${escapeRegExp(binding)}\\b`))
+    if (index < 0) {
+      continue
+    }
+    firstIndex = firstIndex < 0 ? index : Math.min(firstIndex, index)
+  }
+
+  return firstIndex
+}
+
+function findFirstRegionAnchorIndex(sourceRaw, regionName) {
+  const patterns = [
+    new RegExp(`data-hiui5-region\\s*=\\s*['"]${escapeRegExp(regionName)}['"]`),
+    new RegExp(`\\bregion\\s*=\\s*['"]${escapeRegExp(regionName)}['"]`),
+  ]
+
+  let firstIndex = -1
+  for (const pattern of patterns) {
+    const index = String(sourceRaw || '').search(pattern)
+    if (index < 0) {
+      continue
+    }
+    firstIndex = firstIndex < 0 ? index : Math.min(firstIndex, index)
+  }
+
+  return firstIndex
+}
+
+function snippetHasPanelChrome(snippet) {
+  return hasAnyPattern(String(snippet || ''), [
+    /(background(?:-color)?\s*:|backgroundColor\s*:)/i,
+    /\bborder(?:-(?:top|right|bottom|left|color|width|style|inline|block|inline-start|inline-end|block-start|block-end))?\s*:/i,
+    /\bbox-shadow\s*:|\bboxShadow\s*:/i,
+    /\bborder-radius\s*:|\bborderRadius\s*:/i,
+  ])
+}
+
+function collectDashboardControlStripVisualSnippets({
+  sourceRaw,
+  styleRaw,
+  controlStripBindings,
+}) {
+  return [
+    ...collectLocalObjectSnippets(sourceRaw, ['controlStrip', 'dashboardControlStrip']),
+    ...collectStyleSnippets(styleRaw, [
+      /\.controlStrip\b[\s\S]{0,260}\{/gi,
+      /\.dashboardControlStrip\b[\s\S]{0,260}\{/gi,
+    ]),
+    ...collectComponentOpenTagSnippetsForBindings(sourceRaw, controlStripBindings, 1800),
+  ].filter(Boolean)
+}
+
+function dashboardControlStripSharesRowWithQueryFilter({
+  sourceRaw,
+  controlStripBindings,
+  queryFilterBindings,
+}) {
+  const normalizedSource = String(sourceRaw || '')
+  const normalizedQueryFilterBindings = [
+    ...new Set([...(queryFilterBindings || []), 'QueryFilter'].map((binding) => String(binding || '').trim())),
+  ].filter(Boolean)
+
+  const controlStripOpenTagSnippets = collectComponentOpenTagSnippetsForBindings(
+    sourceRaw,
+    controlStripBindings,
+    2200
+  )
+  const controlStripBlockSnippets = collectComponentBlockSnippetsForBindings(
+    sourceRaw,
+    controlStripBindings,
+    2600
+  )
+
+  if (
+    [...controlStripOpenTagSnippets, ...controlStripBlockSnippets].some((snippet) =>
+      normalizedQueryFilterBindings.some((binding) =>
+        new RegExp(`<${escapeRegExp(binding)}\\b`).test(snippet)
+      )
+    )
+  ) {
+    return true
+  }
+
+  const rowBoundaryFragments = [
+    'data-hiui5-region="stat-section"',
+    "data-hiui5-region='stat-section'",
+    'region="stat-section"',
+    "region='stat-section'",
+    'data-hiui5-region="chart-section"',
+    "data-hiui5-region='chart-section'",
+    'region="chart-section"',
+    "region='chart-section'",
+    'data-hiui5-region="table"',
+    "data-hiui5-region='table'",
+    'region="table"',
+    "region='table'",
+    'data-hiui5-region="pagination"',
+    "data-hiui5-region='pagination'",
+    'region="pagination"',
+    "region='pagination'",
+  ]
+
+  const componentWindowShowsMixedScope = (fromBinding, toBinding) => {
+    const fromPattern = new RegExp(`<${escapeRegExp(fromBinding)}\\b`, 'g')
+    const toPattern = new RegExp(`<${escapeRegExp(toBinding)}\\b`)
+
+    return Array.from(normalizedSource.matchAll(fromPattern)).some((match) => {
+      const startIndex = Number(match.index ?? -1)
+      if (startIndex < 0) {
+        return false
+      }
+
+      const snippet = normalizedSource.slice(startIndex, startIndex + 640)
+      const nextComponentIndex = snippet.search(toPattern)
+      if (nextComponentIndex < 0) {
+        return false
+      }
+
+      const componentPairSnippet = snippet.slice(0, nextComponentIndex + 64)
+      return !rowBoundaryFragments.some((fragment) => componentPairSnippet.includes(fragment))
+    })
+  }
+
+  const controlStripAndQueryFilterAppearAsAdjacentSiblings = [...new Set(controlStripBindings || [])].some(
+    (controlBinding) =>
+      normalizedQueryFilterBindings.some(
+        (queryBinding) =>
+          componentWindowShowsMixedScope(controlBinding, queryBinding) ||
+          componentWindowShowsMixedScope(queryBinding, controlBinding)
+      )
+  )
+
+  if (controlStripAndQueryFilterAppearAsAdjacentSiblings) {
+    return true
+  }
+
+  return false
+}
+
+function collectDashboardControlStripBindingNames(entrySourceRaw, dashboardShellUsage) {
+  const resolvedBindings = dashboardShellUsage?.sharedPrimitiveLocalBindings?.get?.('DashboardControlStrip')
+  const bindingNames = resolvedBindings ? [...resolvedBindings] : []
+
+  if (bindingNames.length === 0 && /\bDashboardControlStrip\b/.test(String(entrySourceRaw || ''))) {
+    bindingNames.push('DashboardControlStrip')
+  }
+
+  return [...new Set(bindingNames.filter(Boolean))]
 }
 
 function hasLooseTablePaginationSiblingPattern(sourceRaw) {
@@ -1750,6 +2657,26 @@ function hasCanonicalTableFrameBodyInset({ sourceRaw, styleRaw }) {
   return snippets.some(hasTableFrameHorizontalInsetSignal)
 }
 
+function collectLikelyTableWrapperSnippets(sourceRaw, styleRaw) {
+  return [
+    ...collectPreciseStyleBlocks(styleRaw, [
+      /\.(?:tablePanel|tableShell|tableWorkspace|tableContainer|tableWrapper|tableViewport|tableScroller|tableScroll|tableSurface|tableSlot)\b[\s\S]{0,320}\{/gi,
+    ]),
+    ...collectLocalObjectSnippets(sourceRaw, [
+      'tablePanel',
+      'tableShell',
+      'tableWorkspace',
+      'tableContainer',
+      'tableWrapper',
+      'tableViewport',
+      'tableScroller',
+      'tableScroll',
+      'tableSurface',
+      'tableSlot',
+    ]),
+  ]
+}
+
 function hasDashboardDimensionSwitchSemantics(sourceRaw) {
   const hasSwitchControls = hasAnyPattern(sourceRaw, [
     /\bRadio(?:\.Group)?\b/,
@@ -1786,40 +2713,54 @@ function usesQueryFilterForDimensionSwitch(sourceRaw) {
   ])
 }
 
-function collectDirectQueryFilterKeywordInputSnippets(sourceRaw) {
-  const patterns = [
-    /{[\s\S]{0,280}field\s*:\s*['"](keyword|keywords|search|searchKey|searchValue|query|queryKey)['"][\s\S]{0,480}component\s*:\s*<Input\b[\s\S]{0,360}(?:\/>|<\/Input>)/gi,
-    /{[\s\S]{0,280}label\s*:\s*['"](关键词|关键字|搜索|搜索词)['"][\s\S]{0,480}component\s*:\s*<Input\b[\s\S]{0,360}(?:\/>|<\/Input>)/g,
-  ]
-
-  return patterns
-    .flatMap((pattern) => Array.from(sourceRaw.matchAll(pattern)))
-    .map((match) => String(match[0] || ''))
-    .filter(Boolean)
-}
-
-function snippetKeepsSearchInputSemantics(snippet) {
-  if (!snippet) return false
-
-  if (/\bSearchInput\b/.test(snippet) || /<Search\b/.test(snippet)) {
-    return true
-  }
-
-  const keepsFilledAppearance =
-    /appearance\s*=\s*['"]filled['"]/.test(snippet) ||
-    /appearance\s*=\s*\{\s*['"]filled['"]\s*\}/.test(snippet) ||
-    /appearance\s*:\s*['"]filled['"]/.test(snippet)
-  const keepsSearchAffordance =
-    /\bSearchOutlined\b/.test(snippet) ||
-    /icon\s*=\s*['"]search['"]/.test(snippet) ||
-    /prefix\s*=\s*\{[\s\S]{0,80}search/i.test(snippet) ||
-    /suffix\s*=\s*\{[\s\S]{0,80}search/i.test(snippet)
-
-  return keepsFilledAppearance && keepsSearchAffordance
-}
-
 function collectQueryFilterOpenTagSnippets(sourceRaw) {
   return collectComponentOpenTagSnippets(sourceRaw, 'QueryFilter', 1600)
+}
+
+function collectDirectQueryFilterSlotSnippets(sourceRaw, radius = 2200) {
+  const snippets = []
+  const normalizedSource = String(sourceRaw || '')
+
+  for (const match of normalizedSource.matchAll(/\bqueryFilter\s*:/g)) {
+    const start = match.index ?? -1
+    if (start < 0) {
+      continue
+    }
+
+    snippets.push(normalizedSource.slice(start, Math.min(normalizedSource.length, start + radius)))
+  }
+
+  return snippets.filter(Boolean)
+}
+
+function snippetUsesPrimitiveFilterSemantics(snippet) {
+  return hasAnyPattern(String(snippet || ''), [
+    /\bInput\b/,
+    /\bSelect\b/,
+    /\bDatePicker\b/,
+    /\bCascader\b/,
+    /\bAutoComplete\b/,
+    /\bCheckbox\b/,
+    /\bRadio\b/,
+  ])
+}
+
+function snippetKeepsManagedQueryFilterBridge(snippet) {
+  return hasAnyPattern(String(snippet || ''), [
+    /\bQueryFilter\b/,
+    /\bqueryFields\b/,
+    /\bsearchConfig\b/,
+    /\bgetSearchFields\b/,
+    /\bsearchPanelConfig\b/,
+    /\bcreateManagedQuery(?:TextField|SelectField|DateRangeField)\b/,
+  ])
+}
+
+function sourceHasDriftedDirectQueryFilterSlot(sourceRaw) {
+  return collectDirectQueryFilterSlotSnippets(sourceRaw).some(
+    (snippet) =>
+      snippetUsesPrimitiveFilterSemantics(snippet) && !snippetKeepsManagedQueryFilterBridge(snippet)
+  )
 }
 
 function getQueryFilterShellPropSnippet(snippet) {
@@ -1980,13 +2921,8 @@ function collectPreciseStyleBlocks(styleRaw, patterns) {
 }
 
 function collectStyleSnippetsForClassNames(styleRaw, classNames, radius = 320) {
-  return classNames.flatMap((className) =>
-    collectStyleSnippets(
-      styleRaw,
-      [new RegExp(`\\.${escapeRegExp(className)}\\b[\\s\\S]{0,240}\\{`, 'gi')],
-      radius
-    )
-  )
+  void radius
+  return collectPreciseStyleBlocksForClassNames(styleRaw, classNames)
 }
 
 function collectPreciseStyleBlocksForClassNames(styleRaw, classNames) {
@@ -2253,10 +3189,10 @@ function hasInlineHeaderTitleBaseline(sourceRaw) {
   )
 }
 
-function hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw) {
+function hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw, dashboardShellUsage = null) {
   return (
     /\bManagedPageHeader\b/.test(sourceRaw) ||
-    inheritsManagedHeaderFromHostSlot(sourceRaw) ||
+    inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage) ||
     /\bHostPageHeaderPortal\b/.test(sourceRaw) ||
     mountsRealShellRuntime(sourceRaw, 'StatListPageFrame') ||
     hasHeaderVerticalCentering(styleRaw) ||
@@ -2264,8 +3200,9 @@ function hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw) {
   )
 }
 
-function hasSupportedHeaderPaddingBaseline(sourceRaw, styleRaw) {
+function hasSupportedHeaderPaddingBaseline(sourceRaw, styleRaw, dashboardShellUsage = null) {
   return (
+    inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage) ||
     mountsRealShellRuntime(sourceRaw, 'StatListPageFrame') ||
     hasInlineHeaderPaddingReset(sourceRaw) ||
     /padding-block\s*:\s*0(?:px)?/i.test(styleRaw) ||
@@ -2289,10 +3226,10 @@ function hasInlinePageHeaderFullWidth(sourceRaw) {
   return pageHeaderSnippets.some((snippet) => snippetKeepsPageHeaderFullWidth(snippet))
 }
 
-function hasSupportedPageHeaderStretchBaseline(sourceRaw, styleRaw) {
+function hasSupportedPageHeaderStretchBaseline(sourceRaw, styleRaw, dashboardShellUsage = null) {
   if (
     /\bManagedPageHeader\b/.test(sourceRaw) ||
-    inheritsManagedHeaderFromHostSlot(sourceRaw) ||
+    inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage) ||
     /\bHostPageHeaderPortal\b/.test(sourceRaw) ||
     mountsRealShellRuntime(sourceRaw, 'StatListPageFrame')
   ) {
@@ -2309,10 +3246,10 @@ function hasSupportedPageHeaderStretchBaseline(sourceRaw, styleRaw) {
   return pageHeaderClassSnippets.some(snippetKeepsPageHeaderFullWidth)
 }
 
-function hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw) {
+function hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw, dashboardShellUsage = null) {
   return (
     /\bManagedPageHeader\b/.test(sourceRaw) ||
-    inheritsManagedHeaderFromHostSlot(sourceRaw) ||
+    inheritsManagedHeaderFromHostSlot(sourceRaw, dashboardShellUsage) ||
     mountsRealShellRuntime(sourceRaw, 'StatListPageFrame') ||
     hasHeaderTitleBaseline(styleRaw) ||
     hasInlineHeaderTitleBaseline(sourceRaw)
@@ -2538,8 +3475,8 @@ function hasMultipleActionButtonsInSingleCell(sourceRaw) {
   ])
 }
 
-function fixedDashboardFrameOverridesShellChrome(sourceRaw) {
-  if (!usesFixedDashboardPageFrame(sourceRaw)) {
+function fixedDashboardFrameOverridesShellChrome(sourceRaw, dashboardShellUsage = null) {
+  if (!usesFixedDashboardPageFrame(sourceRaw, dashboardShellUsage)) {
     return false
   }
 
@@ -2814,7 +3751,6 @@ function isLegacyPageComponentFastPathContract(contract) {
 
 function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLabel }) {
   const errors = []
-  let downgradedManagedDeliveryPath = false
   const generationProfile = contract?.generationProfile || {}
   const runtimeComponentSource = String(generationProfile.runtimeComponentSource || '').trim()
   const runtimeBridgeProfileId = String(generationProfile.runtimeBridgeProfileId || '').trim()
@@ -2822,7 +3758,6 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
 
   for (const line of buildSourceContractCommentLines(contract)) {
     if (!sourceRaw.includes(line)) {
-      downgradedManagedDeliveryPath = true
       errors.push(`${pathLabel} is missing source contract marker "${line}".`)
     }
   }
@@ -2834,7 +3769,6 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   ]
   for (const marker of requiredRuntimeBridgeMarkers) {
     if (!sourceRaw.includes(marker)) {
-      downgradedManagedDeliveryPath = true
       errors.push(
         `${pathLabel} is missing runtime bridge marker "${marker}". Legacy page-component fast path must keep the selected component and bridge profile machine-checkable.`
       )
@@ -2842,136 +3776,44 @@ function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLa
   }
 
   if (!/slot-adapter\.stub/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not import the runtime bridge slot adapter stub. Legacy page-component fast path must bind business slots through an explicit slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.businessSlots\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not route businessSlots through adaptedSlots.businessSlots. Legacy page-component fast path must fill certified business slots instead of rebuilding shell regions locally.`
     )
   }
 
   if (!/\badaptedSlots\.controlledExtensions\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.controlledExtensions. Legacy page-component fast path must keep Level 1 controlled extensions on the slot adapter boundary.`
     )
   }
 
   if (!/\badaptedSlots\.runtimeBridge\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not expose adaptedSlots.runtimeBridge. Legacy page-component fast path must keep runtime inputs at the bridge boundary instead of in local shell reimplementation.`
     )
   }
 
   if (!/\bRuntimeBridgeShellAny\b/.test(sourceRaw) && !/\bRuntimeBridgeShell\b/.test(sourceRaw)) {
-    downgradedManagedDeliveryPath = true
     errors.push(
       `${pathLabel} does not mount the resolved runtime bridge shell. Legacy page-component fast path must render the planner-selected runtime shell instead of page-local white-body/header/table primitives.`
     )
   }
 
-  if (downgradedManagedDeliveryPath) {
-    errors.unshift(
-      `${pathLabel} downgrades the planner-selected managed delivery path. Legacy page-component fast path must stay on page-component + runtime bridge + slot fill; do not replace it with a handwritten compatibility page, translated reference, or free fallback.`
-    )
-  }
-
   return errors
 }
 
-function extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw) {
-  const runtimeShellMatch = /<RuntimeBridgeShell(?:Any)?\b/.exec(String(sourceRaw || ''))
-  if (!runtimeShellMatch) return ''
-
-  const shellIndex = runtimeShellMatch.index
-  const returnIndex = String(sourceRaw || '').lastIndexOf('return', shellIndex)
-  if (returnIndex < 0) return ''
-
-  return String(sourceRaw || '').slice(returnIndex, shellIndex)
-}
-
-function extractLeadingRuntimeWrapperComponentNames(sourceRaw) {
-  const allowedWrapperTags = new Set(['Fragment', 'React.Fragment', 'Suspense', 'React.Suspense'])
-  return [
-    ...new Set(
-      Array.from(
-        String(sourceRaw || '').matchAll(/<\s*([A-Z][\w.]*)\b/g),
-        (match) => String(match[1] || '').trim()
-      ).filter((name) => name && !allowedWrapperTags.has(name))
-    ),
-  ]
-}
-
-function validateLegacyThinRuntimeWrapperBoundary({ contract, sourceRaw, pathLabel }) {
-  const errors = []
-  const ownershipRoles = ['content-slot', 'white-body', 'outer-padding', 'main-scroll']
-  const contractRegions = getContractRegionNames(contract)
-  const wrapperLeadSnippet = extractRuntimeBridgeShellLeadingReturnSnippet(sourceRaw)
-  const leadingWrapperComponents = extractLeadingRuntimeWrapperComponentNames(wrapperLeadSnippet)
-
-  for (const role of ownershipRoles) {
-    const scopedAttrName = getRoleSpecificOwnershipAttrName(role)
-    if (
-      new RegExp(escapeRegExp(scopedAttrName)).test(sourceRaw) ||
-      new RegExp(`data-hiui5-owner\\s*=\\s*["']${escapeRegExp(role)}["']`).test(sourceRaw)
-    ) {
-      errors.push(
-        `${pathLabel} declares ${scopedAttrName} in the legacy runtime wrapper. Business pages may expose source and runtime-bridge markers only; workspace ownership must stay inside the selected project-certified carrier.`
-      )
-    }
-  }
-
-  for (const region of contractRegions) {
-    if (new RegExp(`data-hiui5-region\\s*=\\s*["']${escapeRegExp(region)}["']`).test(sourceRaw)) {
-      errors.push(
-        `${pathLabel} declares data-hiui5-region="${region}" in the legacy runtime wrapper. Required shell regions must stay inside the selected carrier; the business wrapper may only bind business slots and controlled extensions.`
-      )
-    }
-  }
-
-  if (/data-hiui5-shell\s*=/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} declares data-hiui5-shell in the legacy runtime wrapper. Runtime shell identity belongs to the selected carrier/runtime bridge, not to the page-local business wrapper.`
-    )
-  }
-
-  if (
-    hasAnyPattern(sourceRaw, [
-      /<\s*PageHeader\b/,
-      /<\s*ManagedPageHeader\b/,
-      /<\s*HostPageHeaderPortal\b/,
-      /<\s*TypicalPageHeaderPortal\b/,
-    ])
-  ) {
-    errors.push(
-      `${pathLabel} renders header carrier primitives in the legacy runtime wrapper. Header geometry and docking must stay inside the selected carrier instead of being rebuilt by the page-local wrapper.`
-    )
-  }
-
-  if (/<\s*(div|section|main|article|aside|header|footer)\b/.test(wrapperLeadSnippet)) {
-    errors.push(
-      `${pathLabel} wraps the runtime bridge shell in a page-local JSX container before mount. legacy-host-compatible fast path requires a thin runtime wrapper: emit source markers, adapt business slots, and mount the selected carrier directly without extra layout containers.`
-    )
-  }
-
-  if (leadingWrapperComponents.length > 0) {
-    errors.push(
-      `${pathLabel} wraps the runtime bridge shell with page-local wrapper components (${leadingWrapperComponents.join(
-        ', '
-      )}) before mount. legacy-host-compatible fast path requires a thin runtime wrapper: mount the selected carrier directly instead of introducing local shell-like wrapper components.`
-    )
-  }
-
-  return errors
-}
-
-function validateCommonSourceContract({ contract, sourceRaw, pathLabel }) {
+function validateCommonSourceContract({
+  contract,
+  sourceRaw,
+  pathLabel,
+  dashboardShellUsage,
+}) {
   const errors = []
   const usesManagedShellEntry = mountsManagedShellInEntry(sourceRaw)
 
@@ -3006,7 +3848,7 @@ function validateCommonSourceContract({ contract, sourceRaw, pathLabel }) {
       continue
     }
 
-    if (!hasManagedRegionCarrier(sourceRaw, attr.value)) {
+    if (!hasManagedRegionCarrier(sourceRaw, attr.value, dashboardShellUsage)) {
       errors.push(
         `${pathLabel} is missing a real layout container for ${attr.name}="${attr.value}". Required contract regions must be attached to actual rendered wrappers, not hidden anchors or self-closing placeholders.`
       )
@@ -3014,7 +3856,7 @@ function validateCommonSourceContract({ contract, sourceRaw, pathLabel }) {
   }
 
   for (const attr of getManagedPageSourceOwnershipAttributes(contract)) {
-    if (!hasOwnershipContainer(sourceRaw, attr.role)) {
+    if (!hasOwnershipContainer(sourceRaw, attr.role, dashboardShellUsage)) {
       errors.push(
         `${pathLabel} is missing a real ownership container for ${attr.name} or ${attr.legacyName}="${attr.legacyValue}". Ownership roles must be attached to the actual workspace wrappers, not hidden anchors.`
       )
@@ -3028,7 +3870,7 @@ function validateCommonSourceContract({ contract, sourceRaw, pathLabel }) {
   }
 
   for (const role of getManagedPageSourceOwnershipRoles(contract)) {
-    if (countOwnershipMarkers(sourceRaw, role) > 1) {
+    if (countOwnershipMarkers(sourceRaw, role, dashboardShellUsage) > 1) {
       errors.push(
         `${pathLabel} declares multiple ${role} ownership anchors. Each workspace role must stay singular so the page does not fall back to double workspace / double white-body / double scroll ownership.`
       )
@@ -3038,7 +3880,13 @@ function validateCommonSourceContract({ contract, sourceRaw, pathLabel }) {
   return errors
 }
 
-function validateNamedHostAdapterTranslation({ contract, sourceRaw, targetRoot, pathLabel }) {
+function validateNamedHostAdapterTranslation({
+  contract,
+  sourceRaw,
+  targetRoot,
+  pathLabel,
+  dashboardShellUsage,
+}) {
   const errors = []
   const requiredHostAdapterId = getRequiredHostAdapterId(contract)
 
@@ -3055,7 +3903,7 @@ function validateNamedHostAdapterTranslation({ contract, sourceRaw, targetRoot, 
     )
   }
 
-  if (!hasManagedShellCarrier(sourceRaw, 'data-hiui5-host-adapter', requiredHostAdapterId)) {
+  if (!hasManagedShellCarrier(sourceRaw, 'data-hiui5-host-adapter', requiredHostAdapterId, dashboardShellUsage)) {
     errors.push(
       `${pathLabel} must expose one real shell carrier with data-hiui5-host-adapter="${requiredHostAdapterId}". In ${contract.archetypeMode}, generated pages must be built by copying the packaged example shell and anchoring it to one registered host adapter family, not by approximating the example with local primitives.`
     )
@@ -4415,6 +5263,7 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
   const errors = []
   const rolloutPageTypes = new Set(['table-basic', 'table-stat', 'tree-table'])
   const pageTypeId = String(contract?.pageTypeId || '').trim()
+  const semanticContract = getManagedPageSemanticContract(contract)
   const expectsStatSection = getNormalizedContractRegions(contract).has('stat-section')
 
   if (!isProjectCertifiedCarrierDelivery(contract) || !rolloutPageTypes.has(pageTypeId)) {
@@ -4540,7 +5389,6 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
   const projectCarrierOwnsHorizontalOverflow = [
     ...outerPaddingSnippets,
     ...whiteBodySnippets,
-    ...mainScrollSnippets,
     ...tableRegionSnippets,
   ].some(hasHorizontalOverflowOwnerSignal)
 
@@ -4579,6 +5427,8 @@ function validateProjectCertifiedCarrierListBaseline({ contract, sourceRaw, styl
       `${pathLabel} appends a plain reset/clear Button into inline QueryFilter during the strict project-certified table-basic rollout. Typical list pages should keep the default QueryFilter rhythm: no always-visible reset button in append, and clear only appears through the managed all-filter flow when values exist.`
     )
   }
+
+  errors.push(...validateManagedQueryFilterFieldSemantics({ semanticContract, sourceRaw, pathLabel }))
 
   return errors
 }
@@ -4874,11 +5724,22 @@ function validateProjectCertifiedCarrierFullPageDetailBaseline({
   return errors
 }
 
-function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel }) {
+function validateListLikeStructure({
+  contract,
+  entrySourceRaw,
+  sourceRaw,
+  styleRaw,
+  pathLabel,
+  dashboardShellUsage,
+}) {
   const errors = []
+  const pageEntrySourceRaw = String(entrySourceRaw || sourceRaw || '')
   const listLikeTypes = new Set(['table-basic', 'table-stat', 'data-visualization', 'tree-table'])
   const fixedWorkspaceListTypes = new Set(['table-basic', 'table-stat', 'tree-table'])
   const stickyPaginationPageTypes = new Set(['table-basic', 'table-stat', 'tree-table', 'tree-split'])
+  const projectCertifiedListBaselineOwnsQueryFilterFieldSemantics =
+    isProjectCertifiedCarrierDelivery(contract) &&
+    new Set(['table-basic', 'table-stat', 'tree-table']).has(String(contract?.pageTypeId || '').trim())
   const semanticContract = getManagedPageSemanticContract(contract)
   const outerPaddingSnippets = collectOwnershipStyleSnippets(sourceRaw, styleRaw, 'outer-padding')
   const whiteBodySnippets = collectOwnershipStyleSnippets(sourceRaw, styleRaw, 'white-body')
@@ -4909,6 +5770,7 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
   const riskMetricGridUsesFixedThreeColumns = riskMetricGridSnippets.some((snippet) =>
     /(repeat\(\s*3\s*,|gridTemplateColumns\s*:\s*['"]repeat\(\s*3\s*,)/i.test(snippet)
   )
+  const localTableWrapperSnippets = collectLikelyTableWrapperSnippets(pageEntrySourceRaw, styleRaw)
 
   if (!listLikeTypes.has(contract.pageTypeId)) {
     return errors
@@ -5003,6 +5865,50 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     /\bgetSearchFields\b/,
     /\bsearchConfig\b/,
   ])
+  const mainScrollOwnerKeepsScrollableViewport = mainScrollSnippets.some(
+    (snippet) => snippetHasOverflowAuto(snippet) || hasHorizontalOverflowOwnerSignal(snippet)
+  )
+  const elasticTableWrapperMissingZeroMin = localTableWrapperSnippets.find((snippet) => {
+    const behavesLikeElasticWrapper =
+      snippetHasDisplayFlex(snippet) ||
+      snippetHasFlexOne(snippet) ||
+      hasHorizontalOverflowOwnerSignal(snippet) ||
+      snippetHasOverflowHidden(snippet)
+
+    return behavesLikeElasticWrapper && !hasZeroMinInlineSizeSignal(snippet)
+  })
+  const viewportWrapperLacksWidthAdaptiveProof = localTableWrapperSnippets.find((snippet) => {
+    const behavesLikeViewportWrapper =
+      hasHorizontalOverflowOwnerSignal(snippet) || snippetHasOverflowHidden(snippet)
+
+    return (
+      behavesLikeViewportWrapper &&
+      (!hasZeroMinInlineSizeSignal(snippet) || !(snippetHasFlexOne(snippet) || snippetHasWidthHundred(snippet)))
+    )
+  })
+
+  if (
+    fixedWorkspaceListTypes.has(contract.pageTypeId) &&
+    projectCertifiedListBaselineOwnsQueryFilterFieldSemantics &&
+    mainScrollSnippets.length > 0 &&
+    !mainScrollOwnerKeepsScrollableViewport
+  ) {
+    errors.push(
+      `${pathLabel} marks data-hiui5-owner-main-scroll on a project-certified list carrier, but the marked node does not itself keep overflow:auto/scroll. Put the main-scroll marker on the real managed table viewport scroll node instead of a parent wrapper that delegates scrolling to a deeper local table shell.`
+    )
+  }
+
+  if (fixedWorkspaceListTypes.has(contract.pageTypeId) && elasticTableWrapperMissingZeroMin) {
+    errors.push(
+      `${pathLabel} adds a local table wrapper chain without min-inline-size: 0 / min-width: 0. Elastic wrappers around managed tables must explicitly allow the table viewport to shrink with the parent container; otherwise table content can stretch the white-body workspace instead of staying inside the internal scroll area.`
+    )
+  }
+
+  if (fixedWorkspaceListTypes.has(contract.pageTypeId) && viewportWrapperLacksWidthAdaptiveProof) {
+    errors.push(
+      `${pathLabel} adds a local table viewport/scroller wrapper that is not provably width-adaptive. Managed table viewport wrappers must keep min-width: 0 and either flex: 1 or width: 100% before they own overflow, so horizontal scroll stays inside the table area instead of resizing the outer workspace.`
+    )
+  }
 
   if (usesTableSemantics) {
     if (directTableUsesStriped) {
@@ -5020,7 +5926,6 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     const outerContainersOwnHorizontalOverflow = [
       ...outerPaddingSnippets,
       ...whiteBodySnippets,
-      ...mainScrollSnippets,
     ].some(hasHorizontalOverflowOwnerSignal)
 
     if (outerContainersOwnHorizontalOverflow) {
@@ -5068,14 +5973,6 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     }
   }
 
-  const directQueryFilterKeywordInputSnippets = collectDirectQueryFilterKeywordInputSnippets(sourceRaw)
-  const losesSearchInputSemantics =
-    /\bQueryFilter\b/.test(sourceRaw) &&
-    directQueryFilterKeywordInputSnippets.length > 0 &&
-    directQueryFilterKeywordInputSnippets.some(
-      (snippet) => !snippetKeepsSearchInputSemantics(snippet)
-    )
-
   if (
     usesTableSemantics &&
     usesPaginationSemantics &&
@@ -5121,6 +6018,87 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
 
   if (
     contract.pageTypeId === 'data-visualization' &&
+    declaresLocalDashboardPrimitiveLookalike(sourceRaw, dashboardShellUsage) &&
+    !importsAnySharedDashboardPrimitive(sourceRaw, dashboardShellUsage)
+  ) {
+    errors.push(
+      `${pathLabel} declares local dashboard-shell lookalikes such as DashboardControlStrip/JoinedTableSection/SectionBlock instead of importing the shared data-visualization primitives. managed-analytics pages must inherit the governed dashboard shell from fixed-dashboard-page-frame + data-visualization-primitives, not redefine shell carriers inside the business page.`
+    )
+  }
+
+  if (contract.pageTypeId === 'data-visualization') {
+    const layoutArchetype = String(contract.layoutArchetype || '').trim()
+    const layoutGroups = extractManagedAnalyticsLayoutGroups(sourceRaw)
+    const managedChartCardCount = countManagedAnalyticsChartCards(sourceRaw)
+
+    if (layoutArchetype === 'primary-secondary') {
+      if (!layoutGroups.has('primary') || !layoutGroups.has('secondary')) {
+        errors.push(
+          `${pathLabel} declares layoutArchetype=primary-secondary but source does not expose both primary and secondary layout groups. managed-analytics pages must render a clear main-analysis entry point instead of a flat chart grid.`
+        )
+      }
+    } else if (layoutArchetype === 'linear-stack') {
+      if (!layoutGroups.has('primary') || !layoutGroups.has('follow-up')) {
+        errors.push(
+          `${pathLabel} declares layoutArchetype=linear-stack but source does not expose both primary and follow-up layout groups. managed-analytics pages must preserve the sequential reading flow in source markers.`
+        )
+      }
+    } else if (layoutArchetype === 'parallel-sections') {
+      if (!layoutGroups.has('parallel-primary') || !layoutGroups.has('parallel-secondary')) {
+        errors.push(
+          `${pathLabel} declares layoutArchetype=parallel-sections but source does not expose both parallel-primary and parallel-secondary layout groups. managed-analytics pages must keep the approved peer-section layout explicit in source markers.`
+        )
+      }
+    }
+
+    if (
+      managedChartCardCount >= 3 &&
+      !layoutGroups.has('primary') &&
+      !layoutGroups.has('parallel-primary') &&
+      !layoutGroups.has('parallel-secondary')
+    ) {
+      errors.push(
+        `${pathLabel} renders ${managedChartCardCount} ManagedChartCard blocks without analytics layout-group markers such as primary/secondary or parallel-primary/parallel-secondary. This degrades the dashboard into an equal-weight chart wall instead of an approved managed-analytics reading structure.`
+      )
+    }
+  }
+
+  const dashboardControlStripBindings = collectDashboardControlStripBindingNames(
+    pageEntrySourceRaw,
+    dashboardShellUsage
+  )
+  const queryFilterBindings = collectImportedLocalNamesByImportedName(
+    pageEntrySourceRaw,
+    'QueryFilter',
+    HIUI_QUERY_FILTER_SPECIFIER_PATTERNS
+  )
+  if (queryFilterBindings.length === 0 && /\bQueryFilter\b/.test(pageEntrySourceRaw)) {
+    queryFilterBindings.push('QueryFilter')
+  }
+  const dashboardControlStripIndex = findFirstComponentMountIndex(
+    pageEntrySourceRaw,
+    dashboardControlStripBindings
+  )
+  const detailQueryFilterIndex = findFirstComponentMountIndex(pageEntrySourceRaw, queryFilterBindings)
+  const statSectionIndex = findFirstRegionAnchorIndex(pageEntrySourceRaw, 'stat-section')
+  const chartSectionIndex = findFirstRegionAnchorIndex(pageEntrySourceRaw, 'chart-section')
+  const tableIndex = findFirstRegionAnchorIndex(pageEntrySourceRaw, 'table')
+  const dashboardControlStripVisualSnippets = collectDashboardControlStripVisualSnippets({
+    sourceRaw,
+    styleRaw,
+    controlStripBindings: dashboardControlStripBindings,
+  })
+  const dashboardControlStripLooksPanelized = dashboardControlStripVisualSnippets.some(
+    snippetHasPanelChrome
+  )
+  const mixedScopeControlRowDetected = dashboardControlStripSharesRowWithQueryFilter({
+    sourceRaw: pageEntrySourceRaw,
+    controlStripBindings: dashboardControlStripBindings,
+    queryFilterBindings,
+  })
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
     semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
     usesQueryFilterForDimensionSwitch(sourceRaw)
   ) {
@@ -5132,10 +6110,13 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
   if (
     contract.pageTypeId === 'data-visualization' &&
     semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
-    /\bQueryFilter\b/.test(sourceRaw)
+    semanticContract.controlStripPlacement === 'top-of-white-body-before-stat-section' &&
+    dashboardControlStripIndex >= 0 &&
+    statSectionIndex >= 0 &&
+    dashboardControlStripIndex > statSectionIndex
   ) {
     errors.push(
-      `${pathLabel} still imports or renders QueryFilter even though semanticContract.queryFilterRegionRole=dashboard-control-strip. For data-visualization, the managed query-filter region defaults to a dashboard control strip; switch to Radio.Group/Tabs/Segmented, or explicitly rewrite the contract if this page truly promotes a detail-table QueryFilter into the managed region contract.`
+      `${pathLabel} places dashboard-control-strip after the stat-section. data-visualization pages must keep the page-global control strip at the top of the white-body, before stat cards and chart sections.`
     )
   }
 
@@ -5161,11 +6142,83 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
 
   if (
     contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
+    semanticContract.controlStripVisualTreatment === 'plain-row-no-panel' &&
+    dashboardControlStripLooksPanelized
+  ) {
+    errors.push(
+      `${pathLabel} wraps dashboard-control-strip in panel chrome such as background, border, radius, or shadow. The page-global control strip must stay a plain row at the top of the white-body instead of regressing into a grey query panel.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
+    semanticContract.mixedScopeControls === 'forbid-shared-control-row' &&
+    mixedScopeControlRowDetected
+  ) {
+    errors.push(
+      `${pathLabel} merges dashboard control-strip semantics and QueryFilter detail filters into the same control row. Page-global time/view switching must stay in the top control strip, while QueryFilter remains a separate detail filter near the detail table.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
+    semanticContract.detailQueryFilterPolicy === 'separate-detail-query-filter-near-detail-table' &&
+    detailQueryFilterIndex >= 0 &&
+    chartSectionIndex >= 0 &&
+    detailQueryFilterIndex < chartSectionIndex
+  ) {
+    errors.push(
+      `${pathLabel} places a detail QueryFilter before the chart-section on a dashboard-control-strip page. Keep the page-global control strip at the top, and if the page needs real detail filters, place QueryFilter next to the detail table instead of ahead of the analysis body.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'dashboard-control-strip' &&
+    semanticContract.detailQueryFilterPolicy === 'separate-detail-query-filter-near-detail-table' &&
+    detailQueryFilterIndex >= 0 &&
+    tableIndex >= 0 &&
+    detailQueryFilterIndex > tableIndex
+  ) {
+    errors.push(
+      `${pathLabel} places a detail QueryFilter after the detail table on a dashboard-control-strip page. Real detail filters must stay adjacent to the table and appear before the detail rows, not below them.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
     semanticContract.queryFilterRegionRole === 'table-query-filter' &&
     !usesQueryFilterCompatibleSemantics
   ) {
     errors.push(
       `${pathLabel} declares semanticContract.queryFilterRegionRole=table-query-filter but source does not keep QueryFilter-compatible semantics. Either restore a real QueryFilter bridge or switch the contract back to dashboard-control-strip.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'table-query-filter' &&
+    detailQueryFilterIndex >= 0 &&
+    chartSectionIndex >= 0 &&
+    detailQueryFilterIndex < chartSectionIndex
+  ) {
+    errors.push(
+      `${pathLabel} places the managed table-query-filter before the chart-section. When semanticContract.queryFilterRegionRole=table-query-filter, QueryFilter must stay adjacent to the detail table instead of moving into the page-global analysis header.`
+    )
+  }
+
+  if (
+    contract.pageTypeId === 'data-visualization' &&
+    semanticContract.queryFilterRegionRole === 'table-query-filter' &&
+    detailQueryFilterIndex >= 0 &&
+    tableIndex >= 0 &&
+    detailQueryFilterIndex > tableIndex
+  ) {
+    errors.push(
+      `${pathLabel} places the managed table-query-filter after the detail table. QueryFilter must remain directly above the detail table when semanticContract.queryFilterRegionRole=table-query-filter.`
     )
   }
 
@@ -5216,7 +6269,7 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     )
   }
 
-  if (fixedDashboardFrameOverridesShellChrome(sourceRaw)) {
+  if (fixedDashboardFrameOverridesShellChrome(sourceRaw, dashboardShellUsage)) {
     errors.push(
       `${pathLabel} overrides shared dashboard shell chrome through pageRootStyle/whiteBodyStyle or inline style-bearing props. Pages mounted on FixedDashboardPageFrame/ManagedWorkbenchPageFrame must inherit header/outer-padding/white-body geometry from the shared frame instead of redefining shell chrome at page level.`
     )
@@ -5226,19 +6279,28 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     mountsRealShellRuntime(sourceRaw, 'TablePageFrame') ||
     mountsRealShellRuntime(sourceRaw, 'StatListPageFrame')
 
-  if (!usesCanonicalListShell && !hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw)) {
+  if (
+    !usesCanonicalListShell &&
+    !hasSupportedHeaderHeightBaseline(sourceRaw, styleRaw, dashboardShellUsage)
+  ) {
     errors.push(
       `${pathLabel} does not keep the list-page header on the 60px height baseline. Reuse the canonical PageHeader/header carrier rhythm instead of a custom taller title block.`
     )
   }
 
-  if (!usesCanonicalListShell && !hasSupportedHeaderPaddingBaseline(sourceRaw, styleRaw)) {
+  if (
+    !usesCanonicalListShell &&
+    !hasSupportedHeaderPaddingBaseline(sourceRaw, styleRaw, dashboardShellUsage)
+  ) {
     errors.push(
       `${pathLabel} does not normalize the PageHeader root padding back to the 60px shared header contract. Keep PageHeader root margin/padding reset in the shared header portal or in the explicit header carrier instead of letting the default 14px vertical inset stretch the shell.`
     )
   }
 
-  if (!usesCanonicalListShell && !hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw)) {
+  if (
+    !usesCanonicalListShell &&
+    !hasSupportedHeaderTitleBaseline(sourceRaw, styleRaw, dashboardShellUsage)
+  ) {
     errors.push(
       `${pathLabel} does not keep the list-page title on the 18px / 600 baseline. Header typography must stay aligned with the table-stat/table-basic example header.`
     )
@@ -5271,9 +6333,9 @@ function validateListLikeStructure({ contract, sourceRaw, styleRaw, pathLabel })
     )
   }
 
-  if (losesSearchInputSemantics) {
+  if (!projectCertifiedListBaselineOwnsQueryFilterFieldSemantics) {
     errors.push(
-      `${pathLabel} uses direct QueryFilter filterFields but the keyword search field regresses to a plain Input. Keep the table-stat/list baseline search semantics with SearchInput/Search, or keep Input on QueryFilter's filled + search-icon affordance instead of a bare text box.`
+      ...validateManagedQueryFilterFieldSemantics({ semanticContract, sourceRaw, pathLabel })
     )
   }
 
@@ -5449,9 +6511,10 @@ function validateChartStackStructure({ contract, sourceRaw, styleRaw, pathLabel 
   return errors
 }
 
-function validateChartDesignBaseline({ contract, sourceRaw, styleRaw, pathLabel }) {
+function validateChartDesignBaseline({ contract, sourceRaw, extendedSourceRaw = sourceRaw, styleRaw, pathLabel }) {
   const errors = []
   const chartSignals = detectChartStackSignals({ contract, sourceRaw, styleRaw })
+  const designBaselineSourceRaw = extendedSourceRaw || sourceRaw
 
   if (!chartSignals.requiresChartStackCheck) {
     return errors
@@ -5533,7 +6596,10 @@ function validateChartDesignBaseline({ contract, sourceRaw, styleRaw, pathLabel 
   }
 
   if (contract.pageTypeId === 'data-visualization') {
-    const compactCardRadiusValues = collectCompactCardRadiusValues(sourceRaw, styleRaw)
+    const compactCardRadiusValues = collectCompactCardRadiusValues(
+      designBaselineSourceRaw,
+      styleRaw
+    )
     const hasNonCanonicalCompactCardRadius = compactCardRadiusValues.some(
       (value) => Math.abs(value - 8) > 0.0001
     )
@@ -5541,6 +6607,112 @@ function validateChartDesignBaseline({ contract, sourceRaw, styleRaw, pathLabel 
     if (hasNonCanonicalCompactCardRadius) {
       errors.push(
         `${pathLabel} drifts compact analytics cards away from the 8px radius baseline. In data-visualization pages, metric cards, chart cards, and other compact analysis cards must stay on the compact-card radius instead of expanding to 12/16px surfaces.`
+      )
+    }
+  }
+
+  return errors
+}
+
+function validateManagedAnalyticsRolePlan({ contract, sourceRaw, pathLabel }) {
+  const isManagedAnalyticsPage =
+    String(contract?.pageTypeId || '').trim() === 'data-visualization' ||
+    String(contract?.generationProfile?.strategy || '').trim() === 'managed-analytics'
+
+  if (!isManagedAnalyticsPage) {
+    return []
+  }
+
+  const errors = []
+  const chartUsageContract = contract?.chartUsageContract
+  const visualizationRolePlan = contract?.visualizationRolePlan
+
+  if (!chartUsageContract || typeof chartUsageContract !== 'object') {
+    errors.push(
+      `${pathLabel} is missing chartUsageContract while declaring a managed-analytics page. The primary/secondary chart reading contract must be explicit before source-gate can pass.`
+    )
+    return errors
+  }
+
+  if (!visualizationRolePlan || typeof visualizationRolePlan !== 'object') {
+    errors.push(
+      `${pathLabel} is missing visualizationRolePlan while declaring a managed-analytics page. Primary/secondary chart placement must be frozen before source-gate can pass.`
+    )
+    return errors
+  }
+
+  if (
+    !visualizationRolePlan.chartSectionLayoutPlan ||
+    typeof visualizationRolePlan.chartSectionLayoutPlan !== 'object'
+  ) {
+    errors.push(
+      `${pathLabel} is missing visualizationRolePlan.chartSectionLayoutPlan while declaring a managed-analytics page. chart-section base grid mode and full-span semantics must be frozen before source-gate can pass.`
+    )
+    return errors
+  }
+
+  const analysis = analyzeManagedAnalyticsRolePlan({
+    chartUsageContract,
+    visualizationRolePlan,
+  })
+  const chartSectionLayoutAnalysis = analyzeManagedAnalyticsChartSectionLayout({
+    sourceRaw,
+    visualizationRolePlan,
+  })
+
+  for (const issue of analysis.issues) {
+    if (issue.code === 'PRIMARY_ROLE_MISSING') {
+      errors.push(
+        `${pathLabel} does not declare any primary chart intent item. managed-analytics pages must expose one dominant reading entry point instead of an equal-weight dashboard wall.`
+      )
+      continue
+    }
+
+    if (issue.code === 'PRIMARY_ROLE_MISMATCH') {
+      errors.push(
+        `${pathLabel} assigns a chart to the primary region even though the contract does not allow it to own the main region. ${issue.detail}`
+      )
+    }
+
+    if (issue.code === 'SUMMARY_CHART_IN_PRIMARY_REGION') {
+      errors.push(
+        `${pathLabel} places a summary/supporting chart type in the primary region without an approved exception. ${issue.detail}`
+      )
+    }
+  }
+
+  for (const issue of chartSectionLayoutAnalysis.issues) {
+    if (issue.code === 'GRID_MODE_BYPASS') {
+      errors.push(
+        `${pathLabel} builds chart-section grids without declaring the governed baseGridMode. managed-analytics chart rows must be frozen through shared grid props instead of raw auto-fit ManagedCardGrid usage.`
+      )
+      continue
+    }
+
+    if (issue.code === 'GRID_MODE_MIXED') {
+      errors.push(
+        `${pathLabel} mixes multiple chart-section base grid modes in one main chart workspace. Keep one base grid mode per chart-section and treat span 12 only as a neutral full-span row.`
+      )
+      continue
+    }
+
+    if (issue.code === 'GRID_MODE_CONTRACT_MISMATCH') {
+      errors.push(
+        `${pathLabel} declares chart-section grid props that drift from visualizationRolePlan.chartSectionLayoutPlan. ${issue.detail}`
+      )
+      continue
+    }
+
+    if (issue.code === 'GRID_PATTERN_INVALID') {
+      errors.push(
+        `${pathLabel} renders a chart-section row pattern that is not allowed by visualizationRolePlan.chartSectionLayoutPlan. ${issue.detail}`
+      )
+      continue
+    }
+
+    if (issue.code === 'CHART_SPAN_BELOW_MINIMUM') {
+      errors.push(
+        `${pathLabel} renders a chart card below the minimum span allowed by visualizationRolePlan.chartSectionLayoutPlan. ${issue.detail}`
       )
     }
   }
@@ -5716,6 +6888,19 @@ function validateTreeSplitStructure({ contract, sourceRaw, styleRaw, pathLabel }
     ...whiteBodySnippets,
     ...mainScrollSnippets,
   ].some(hasHorizontalOverflowOwnerSignal)
+  const localTableWrapperSnippets = collectLikelyTableWrapperSnippets(sourceRaw, styleRaw)
+  const mainScrollOwnerKeepsScrollableViewport = mainScrollSnippets.some(
+    (snippet) => snippetHasOverflowAuto(snippet) || hasHorizontalOverflowOwnerSignal(snippet)
+  )
+  const elasticTableWrapperMissingZeroMin = localTableWrapperSnippets.find((snippet) => {
+    const behavesLikeElasticWrapper =
+      snippetHasDisplayFlex(snippet) ||
+      snippetHasFlexOne(snippet) ||
+      hasHorizontalOverflowOwnerSignal(snippet) ||
+      snippetHasOverflowHidden(snippet)
+
+    return behavesLikeElasticWrapper && !hasZeroMinInlineSizeSignal(snippet)
+  })
 
   if (splitTrackUsesHardMin) {
     errors.push(
@@ -5735,10 +6920,22 @@ function validateTreeSplitStructure({ contract, sourceRaw, styleRaw, pathLabel }
     )
   }
 
+  if (mainScrollSnippets.length > 0 && !mainScrollOwnerKeepsScrollableViewport) {
+    errors.push(
+      `${pathLabel} marks data-hiui5-owner-main-scroll on tree-split, but the marked node does not itself keep overflow:auto/scroll. Put the main-scroll marker on the real right-pane table viewport scroll node instead of a parent wrapper that delegates scrolling to a deeper local shell.`
+    )
+  }
+
   const tableRegionOwnsHorizontalOverflow = tableRegionSnippets.some(hasHorizontalOverflowOwnerSignal)
   if (tableRegionOwnsHorizontalOverflow) {
     errors.push(
       `${pathLabel} makes the managed table region the horizontal scroll owner inside tree-split. Keep horizontal overflow inside an inner table wrapper so the right pane itself stays width-adaptive and only the table content scrolls horizontally when needed.`
+    )
+  }
+
+  if (elasticTableWrapperMissingZeroMin) {
+    errors.push(
+      `${pathLabel} adds a tree-split table wrapper chain without min-inline-size: 0 / min-width: 0. Right-pane table wrappers must explicitly allow shrink-to-fit so wide columns stay inside the internal table scroll area instead of stretching the split workspace.`
     )
   }
 
@@ -5976,17 +7173,17 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
   })
   const extendedSourceRaw = importedLocalContext.sourceRaw || sourceRaw
   const extendedStyleRaw = importedLocalContext.styleRaw || readImportedStyleSources(sourceAbsPath, sourceRaw)
+  const dashboardShellUsage = inspectManagedAnalyticsSharedShellUsage({
+    entryFilePath: sourceAbsPath,
+    importedLocalContext,
+    targetRoot,
+  })
 
   if (isLegacyPageComponentFastPathContract(contract)) {
     return [
       ...validateLegacyPageComponentFastPathSource({
         contract,
-        sourceRaw,
-        pathLabel,
-      }),
-      ...validateLegacyThinRuntimeWrapperBoundary({
-        contract,
-        sourceRaw,
+        sourceRaw: extendedSourceRaw,
         pathLabel,
       }),
       ...validateProjectCertifiedCarrierListBaseline({
@@ -6019,6 +7216,14 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
         styleRaw: extendedStyleRaw,
         pathLabel,
       }),
+      ...validateListLikeStructure({
+        contract,
+        entrySourceRaw: sourceRaw,
+        sourceRaw: extendedSourceRaw,
+        styleRaw: extendedStyleRaw,
+        pathLabel,
+        dashboardShellUsage,
+      }),
       ...validateDetailDescriptionsLabelOwnership({
         contract,
         sourceRaw: extendedSourceRaw,
@@ -6040,7 +7245,12 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
   }
 
   return [
-    ...validateCommonSourceContract({ contract, sourceRaw, pathLabel }),
+    ...validateCommonSourceContract({
+      contract,
+      sourceRaw,
+      pathLabel,
+      dashboardShellUsage,
+    }),
     ...validateDeclaredShellAuthenticity({ contract, sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateManagedShellComposition({
       sourceRaw,
@@ -6052,6 +7262,7 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
       sourceRaw: extendedSourceRaw,
       targetRoot,
       pathLabel,
+      dashboardShellUsage,
     }),
     ...validateRequiredCapabilities({ contract, sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateCriticalRegionProof({
@@ -6059,6 +7270,7 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
       sourceRaw: extendedSourceRaw,
       styleRaw: extendedStyleRaw,
       pathLabel,
+      dashboardShellUsage,
     }),
     ...validateLocalBypassContracts({
       contract,
@@ -6146,7 +7358,19 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
       styleRaw: extendedStyleRaw,
       pathLabel,
     }),
-    ...validateListLikeStructure({ contract, sourceRaw: extendedSourceRaw, styleRaw: extendedStyleRaw, pathLabel }),
+    ...validateListLikeStructure({
+      contract,
+      entrySourceRaw: sourceRaw,
+      sourceRaw: extendedSourceRaw,
+      styleRaw: extendedStyleRaw,
+      pathLabel,
+      dashboardShellUsage,
+    }),
+    ...validateManagedAnalyticsRolePlan({
+      contract,
+      sourceRaw: extendedSourceRaw,
+      pathLabel,
+    }),
     ...validateChartStackStructure({
       contract,
       sourceRaw: extendedSourceRaw,
@@ -6155,7 +7379,8 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     }),
     ...validateChartDesignBaseline({
       contract,
-      sourceRaw: extendedSourceRaw,
+      sourceRaw,
+      extendedSourceRaw,
       styleRaw: extendedStyleRaw,
       pathLabel,
     }),

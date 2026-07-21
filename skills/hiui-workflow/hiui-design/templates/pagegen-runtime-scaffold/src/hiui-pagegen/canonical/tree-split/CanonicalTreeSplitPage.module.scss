@@ -1,0 +1,209 @@
+.pageRoot {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100%;
+  padding: 0 16px 16px;
+  background: #f5f8fc;
+}
+
+.headerRegion {
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+}
+
+.pageHeader {
+  width: 100%;
+  min-width: 0;
+}
+
+.headerActions {
+  display: flex;
+
+  & > :not(:last-child) {
+    margin-right: 12px;
+  }
+}
+
+.whiteBody {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.splitWorkspace {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.leftTree {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  min-width: 240px;
+  min-height: 0;
+  border-right: 1px solid #eef2f6;
+}
+
+.treeSearch {
+  padding: 20px 12px 12px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.treeSearchInput {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  :global(.hi-v5-input) {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.treeScroll {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: 16px;
+}
+
+.treePanel {
+  padding: 0 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rightList {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.queryRegion {
+  min-width: 0;
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.queryFilter {
+  width: 100%;
+}
+
+.fullSelect {
+  width: 100%;
+
+  :global(.hi-select__selection-suffix),
+  :global(.hi-select__suffix),
+  :global(.hi-select__arrow),
+  :global(.hi-v5-mock-input__suffix) {
+    margin-inline-start: auto;
+  }
+}
+
+.tableRegion {
+  min-width: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.tableContainer {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.linkActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.paginationRegion {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px 20px;
+}
+
+.emptyContainer {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.emptyIcon {
+  width: 140px;
+  margin-bottom: 16px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.emptyTitle {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #161a2d;
+}
+
+.emptyDescription {
+  font-size: 14px;
+  line-height: 20px;
+  color: #91959e;
+}
+
+@media (max-width: 960px) {
+  .headerActions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .splitWorkspace {
+    flex-direction: column;
+  }
+
+  .leftTree {
+    width: 100%;
+    min-width: 0;
+    max-height: 320px;
+    border-right: 0;
+    border-bottom: 1px solid #eef2f6;
+  }
+}

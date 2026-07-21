@@ -32,13 +32,13 @@
 ## QueryFilter
 
 - 本节中的搜索框表现、字段顺序、按钮节奏、标签展示与桥接默认值都属于硬门槛；除本文件明确允许的豁免口外，不允许按项目习惯自行改写
-- 多个可搜字段默认合并为 1 个 `SearchInput`
+- 多个“关键词入口”可以按产品语义合并为 1 个 `SearchInput`；但多个独立业务文本筛选字段不要为了统一灰底而全部伪装成 `SearchInput`
 - 所有表格类页面的筛选必须使用真实 `hiui5` / `@hi-ui/query-filter` `QueryFilter`；不允许回退到宿主 schema 搜索壳、`searchConfig.fields` 兼容壳或任何手写筛选栏
 - `typical-page:start-page` 给表格类页型生成的 `query-filter` scaffold placeholder，默认就代表“接入真实 `QueryFilter` carrier”；若看到普通表格页被解释成 dashboard control strip，应先修生成器或承载路径，不要顺势把页面做成控制条
-- `SearchInput` 维持 HiUI5 默认灰底；`Select` / `DatePicker` / `CheckSelect` 等筛选控件沿用 HiUI5 `QueryFilter` 默认外观，不要手动把它们统一改成 `filled`
+- `SearchInput` 维持 HiUI5 默认灰底；普通文本筛选字段应与其共享同一筛选皮肤，但保持独立 `filter-text-input` 角色；`Select` / `DatePicker` / `CheckSelect` 等筛选控件沿用同一 `QueryFilter` 表面，不要出现“搜索框灰底、其它字段白底”的混搭
 - 在 split 左栏、树面板或其它受限 pane 中直接使用 `SearchInput` 时，必须显式覆盖其默认固定宽度并回接 pane contract；至少回答“由谁承接 `width: 100% + min-width: 0`”。不要把组件默认宽度泄漏到 pane 里，导致搜索框无法贴合左栏
 - 若 `QueryFilter` 字段来自 schema / field config，页面必须接入 `FieldMapProvider` 或 `TypicalPageFieldMapProvider`；若 provider 明确位于更上游宿主，结果中需要写清承载位置，并在源码附近显式加注释 `hiui-design allow-queryfilter-with-upstream-fieldmap`，不要放任字段渲染退化成默认文本控件
-- 若项目直接手写 `QueryFilter.filterFields`，关键词类字段不要退化成裸 `Input`；必须使用 `SearchInput` / `Search`，或至少保持 `Input` 的 `appearance="filled"` + 搜索前缀语义，否则会丢掉典型页基线里的灰底搜索框表现
+- 若项目直接手写 `QueryFilter.filterFields`，关键词类字段不要退化成裸 `Input`；必须使用 `SearchInput` / `Search`，或至少保持 `Input` 的 `appearance="filled"` + 搜索前缀语义。普通文本筛选字段则不要直接复用搜索语义组件；应保持共享皮肤下的独立字段角色，否则会把查询区误做成多个主搜索入口
 - 行内 `QueryFilter` 默认不手工追加“查询”主按钮；若业务需要额外触发动作，必须有书面设计依据，且不能破坏 `QueryFilter` 的默认字段顺序与按钮节奏
 - 行内 `QueryFilter` 与右侧 `FilterDrawer` 必须复用 HiUI5 默认表现：
   行内筛选由 `QueryFilter` 负责，默认 `showLabel={false}` + `appearance="contained"`，隐藏的是控件外部额外 label；控件内部已有的字段名/占位提示按当前项目正确样式保留；

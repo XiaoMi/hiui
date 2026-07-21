@@ -26,6 +26,7 @@
 - 即使业务页暂时放在 `host-integration` 的 `src/typical-page-reuse/pages/**` 目录里，也不能把 `ProDetailPage` 再翻译成 `scrollArea + whiteBody + hero/panel` 一类第二套工作区壳；这种写法按结构失败处理，不是“示例目录里的临时实现”
 - 全页详情必须从 `examples/host-integration/src/pages/full-page-detail.tsx` 的语义骨架起步；不允许从抽屉详情、编辑页或空白详情容器临时扩写
 - 若页面实现不满足这些规则，应直接判定为不合规，而不是视作“业务自定义详情布局”
+- `full-page-detail` 必须把 body 一级 section 语义写入 `semanticContract.bodySectionContract`；不要只让 contract 表达页壳，而把 `detail-body` 内结构留给页面自由发挥
 
 ## P0
 
@@ -49,6 +50,9 @@
 - 图片、附件等媒体内容作为分组内的只读媒体行附着在 `detail-body` 内，不额外生成第二套摘要卡 / 媒体卡体系
 - `rules-only + existing-system` 下，先锁定唯一宿主 detail archetype，再把 `header / white-body / detail-body` 与 ownership 映射写进 page contract
 - 页头区域高度链保持 `60px`，标题与返回 affordance 在 header 容器中垂直居中
+- 默认 `bodySectionContract` 应为：`primaryExpression=descriptions`、`sectionComposition=groups-only`、`sectionSpacingOwnership=descriptions-group`、`sectionContainerPolicy=flat-section-only`、`embeddedWidgetPolicy=none`
+- 当详情页在 `detail-body` 中新增独立摘要、媒体行、只读图表摘要或表格区时，必须显式升级为 `groups-with-supporting-sections`，并让新增块继续落在 `supportingSections` 可解释范围内
+- supporting section 默认允许 `description-group`、`simple-table`、`readonly-chart-summary`、`media-row`，但它们仍附着在同一个 `detail-body` 内，不得接管 `white-body`、`main-scroll` 或页面级白底主体
 
 ## 详情页中插入图表
 
@@ -87,6 +91,7 @@
 - 不要让媒体区脱离 `detail-body` 独立长成另一套主卡片层级
 - 不要把详情页中的独立图表分析块包成 `summaryCard` / `panel` / `hero` 体系来绕开受管 `chart-section`
 - 不要因为图表位于详情页，就允许它脱离共享 HiUI chart baseline 与 color contract
+- 不要把 body 一级 supporting section 误当成页壳升级；只要没有接管第二条滚动链、第二层白底主体、独立查询/分页或 page-level layout owner，它仍应先按 `controlled-extension` 解释
 
 ## 自检
 

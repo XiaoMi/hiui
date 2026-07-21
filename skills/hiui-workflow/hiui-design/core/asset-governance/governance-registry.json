@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "asset-governance.v2",
+  "defaultPageTypePolicy": {
+    "truthSourcePriority": [
+      "reference-asset",
+      "official-runtime-entry",
+      "official-mirror",
+      "managed-fallback",
+      "legacy"
+    ],
+    "preferredGenerationModes": {
+      "host-integration:greenfield": "reference-asset",
+      "rules-only:greenfield": "reference-asset"
+    }
+  },
+  "runtimeEntryProfile": {
+    "profileId": "official-runtime-entry",
+    "assetMode": "official-runtime-entry",
+    "assetClass": "runtime-entry",
+    "deliveryRole": "official-runtime-wrapper",
+    "standardsSource": "hiui-design-official",
+    "syncStatus": "managed-by-official-runtime-registry",
+    "lifecycle": "preferred",
+    "readiness": "production-ready",
+    "parityStatus": "registry-locked",
+    "preferredContexts": [
+      "legacy-host-compatible:any"
+    ],
+    "allowedModes": [
+      "legacy-host-compatible"
+    ]
+  },
+  "referenceAssetProfile": {
+    "profileId": "reference-asset",
+    "assetMode": "reference-asset",
+    "assetClass": "reference-example",
+    "deliveryRole": "managed-business-page-template",
+    "standardsSource": "hiui-design-reference-example",
+    "syncStatus": "managed-by-page-type-manifest",
+    "lifecycle": "preferred-for-greenfield",
+    "readiness": "production-ready",
+    "parityStatus": "example-anchored",
+    "preferredContexts": [
+      "host-integration:greenfield",
+      "rules-only:greenfield"
+    ],
+    "allowedModes": [
+      "host-integration",
+      "rules-only",
+      "legacy-host-compatible"
+    ]
+  },
+  "compatibilityProfiles": {
+    "official-mirror": {
+      "profileId": "official-mirror",
+      "assetMode": "official-mirror",
+      "assetClass": "canonical-asset",
+      "deliveryRole": "compatibility-canonical-shell",
+      "standardsSource": "hiui-design-official",
+      "syncStatus": "managed-by-parity-manifest",
+      "lifecycle": "managed-mirror",
+      "readiness": "compatibility-ready",
+      "parityStatus": "parity-manifest-required",
+      "preferredContexts": [
+        "legacy-host-compatible:any",
+        "host-integration:brownfield"
+      ],
+      "allowedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "parityContract": "required",
+      "officialBaselineRequired": true,
+      "driftWhitelistPolicy": "zero-or-explicit-whitelist"
+    },
+    "managed-fallback": {
+      "profileId": "managed-fallback",
+      "assetMode": "managed-fallback",
+      "assetClass": "canonical-asset",
+      "deliveryRole": "gap-fallback-shell",
+      "standardsSource": "canonical-proposal",
+      "syncStatus": "gap-review-required",
+      "lifecycle": "fallback",
+      "readiness": "review-required",
+      "parityStatus": "no-official-baseline",
+      "preferredContexts": [
+        "host-integration:gap-repair",
+        "rules-only:gap-repair"
+      ],
+      "allowedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "entryCriteria": [
+        "standard-primary-asset-unavailable",
+        "structure-upgrade-required",
+        "host-constraint-explicitly-blocks-primary-chain"
+      ],
+      "owner": "hiui-design-asset-governance",
+      "replacementTarget": "reference-asset-or-page-component",
+      "exitCriteria": [
+        "official-mirror-available",
+        "reference-asset-available",
+        "page-component-ready"
+      ],
+      "expiryPolicy": "must-not-become-default"
+    },
+    "managed-analytics-shell": {
+      "profileId": "managed-analytics-shell",
+      "assetMode": "managed-analytics-shell",
+      "assetClass": "managed-analytics-shell",
+      "deliveryRole": "managed-analytics-business-shell",
+      "standardsSource": "hiui-design-managed-analytics",
+      "syncStatus": "managed-by-analytics-contract",
+      "lifecycle": "analytics-primary",
+      "readiness": "production-ready",
+      "parityStatus": "managed-analytics-wrapper-contract",
+      "preferredContexts": [
+        "host-integration:greenfield",
+        "rules-only:greenfield",
+        "legacy-host-compatible:any"
+      ],
+      "allowedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "parityContract": "managed-analytics-wrapper-required"
+    },
+    "legacy": {
+      "profileId": "legacy",
+      "assetMode": "legacy",
+      "assetClass": "canonical-asset",
+      "deliveryRole": "legacy-maintenance-shell",
+      "standardsSource": "legacy-project-asset",
+      "syncStatus": "legacy-maintenance-only",
+      "lifecycle": "legacy",
+      "readiness": "maintenance-only",
+      "parityStatus": "legacy-unmanaged",
+      "preferredContexts": [
+        "legacy-host-compatible:any"
+      ],
+      "allowedModes": [
+        "legacy-host-compatible"
+      ],
+      "maintenancePolicy": "maintenance-only-no-new-adoption"
+    }
+  },
+  "pageTypeProfiles": {
+    "table-basic": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "table-stat": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "data-visualization": {
+      "compatibilityProfile": "managed-analytics-shell",
+      "preferredGenerationModes": {
+        "host-integration:greenfield": "canonical",
+        "rules-only:greenfield": "canonical"
+      }
+    },
+    "feedback-status": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "tree-table": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "tree-split": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "drawer-form": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "drawer-detail": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "full-page-edit": {
+      "compatibilityProfile": "official-mirror"
+    },
+    "full-page-detail": {
+      "compatibilityProfile": "official-mirror"
+    }
+  }
+}

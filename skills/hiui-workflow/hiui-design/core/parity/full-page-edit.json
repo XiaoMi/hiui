@@ -1,0 +1,65 @@
+{
+  "pageType": "full-page-edit",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/full-page-edit.tsx",
+    "requiredTokens": [
+      "ProEditPage",
+      "ProEditPageProvider",
+      "Form",
+      "CancelButton",
+      "StashButton",
+      "SubmitButton",
+      "TypicalPageHeaderPortal",
+      "proEditPageShellStyles.formScrollBody",
+      "proEditPageShellStyles.inlineEditFooter"
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "FullPageEditPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"full-page-edit\""
+    ],
+    "forbiddenTokens": [
+      "hostAdapter.modal.confirm",
+      "<input",
+      "<select",
+      "<textarea"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/full-page-edit/CanonicalFullPageEditPage.tsx",
+    "requiredTokens": [
+      "ProEditPage",
+      "ProEditPageProvider",
+      "Form",
+      "CancelButton",
+      "StashButton",
+      "SubmitButton",
+      "TypicalPageHeaderPortal",
+      "proEditPageShellStyles.formScrollBody",
+      "proEditPageShellStyles.inlineEditFooter",
+      "F(",
+      "GS(",
+      "borderedGroups={false}",
+      "labelPlacement: 'top'"
+    ],
+    "forbiddenTokens": [
+      "<input",
+      "<select",
+      "<textarea",
+      "hostAdapter.modal.confirm",
+      "sidebarCards",
+      "pageIntro",
+      "secondaryRail",
+      "railCard",
+      "function ProEditPage",
+      "function ProEditPageProvider",
+      "function Form",
+      "function CancelButton",
+      "function StashButton",
+      "function SubmitButton",
+      "function TypicalPageHeaderPortal"
+    ]
+  }
+}

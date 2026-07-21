@@ -100,6 +100,19 @@
 - 页面主体外圈留白仍由既定 owner 承接；业务 JSX 没有通过额外 wrapper 重新分发 page-level padding
 - 图表区、指标区、明细区的描边与圆角停留在 section / card 内部，没有提升成主体白色骨架的统一描边框
 
+## Form/Detail Body Section 证据
+
+- `full-page-edit`、`drawer-form`、`drawer-detail`、`full-page-detail` 的 contract 已声明 `semanticContract.bodySectionContract`
+- `bodySectionContract.primaryExpression` 与页型主表达一致：编辑类为 `form-schema`，详情类为 `descriptions`
+- 默认页没有独立 section 扩展时，`sectionComposition` 仍保持 `groups-only`
+- 当 body 内新增只读摘要、媒体行、独立表格或局部工具区时，`sectionComposition` 与 `embeddedWidgetPolicy` 已同步升级，且与页面组件 `allowedExtensions` 一致
+- `form-body` / `detail-body` 内没有长出第二层 `white-body`、panel shell、主容器卡或局部 page-surface
+- body 一级 section 的间距仍由 section 结构、`FormItem` 或 `Descriptions` group 承担；没有退回 page root、field grid 或统一尾留白
+- `full-page-edit` / `drawer-form` 的 supporting section 仍位于 `form-body.after-primary-fields`，未接管 `footer`、`main-scroll` 或独立查询/分页
+- `drawer-detail` / `full-page-detail` 的 supporting section 仍位于 `detail-body.after-primary-fields`，且 `Descriptions` / `SchemaDescriptionsBridge` 继续是主表达
+- 详情页新增图表或摘要时，仍能解释为 `readonly-chart-summary`、`simple-table` 或 `media-row` 等受管扩展，而不是自由 panel
+- 若 body 内出现独立 widget，源码、contract 与 page-component 白名单能共同解释它的 scope、owner 与 allowed content type
+
 ## 国际化证据
 
 - `i18nMode` 已明确为 `none`、`key-only` 或 `full`
@@ -139,6 +152,9 @@
 - 迁移页没有静默丢失 source snapshot 中记录的筛选字段、页头动作、表格列、分页位置或空态行为
 - 真实预览中能看到关键词搜索框、至少一个筛选控件、`全部筛选` 与 `重置`
 - 关键词搜索位保持 `SearchInput` / filled + search-icon 语义；没有退化成裸 `Input`，搜索框灰底表现没有丢失
+- 普通文本筛选字段没有静默回退成裸 `Input`；`schema-fields Text()` 若用于 `QueryFilter`，最终仍命中受管 `filter-text-input` 角色或等价共享皮肤 wrapper；默认实现入口保持为 `@/typical-page-reuse/query-filter/managed-query-filter-fields`
+- 当筛选区存在多个文本类字段时，关键词搜索位与普通文本筛选位共享同一筛选皮肤基线，但普通文本字段没有被一律伪装成第二个 `SearchInput`
+- `Select` / `DatePicker` 与文本筛选位共享同一 `query-filter` 表面；默认实现入口保持为 `createManagedQuerySelectField`、`createManagedQueryDateRangeField`；不存在“关键词搜索灰底、其它字段白底 / line” 的混搭
 - split 左栏若直接使用 `SearchInput`，真实预览中搜索框已贴合 pane 宽度；没有暴露组件默认固定宽度导致的“搜索框未贴满左栏”
 - 不存在手工追加的“查询”主按钮
 - `QueryFilter` append 区没有再补第二个“查询 / 搜索 / 重置”按钮；清空 / 重置仍走受管筛选链路
@@ -170,8 +186,15 @@
 - 每张图标题都能直接回指到明确业务问题，而不是模板化标题或泛化标题
 - 每张图的类型与其信息任务一致；不存在趋势任务误落构成图、流程任务误落对比图的情况
 - 若页面声明 `primary-secondary`，主线核心图仍位于 `primary`；`secondary` 只承接辅助判断图与洞察图
+- 同一 `chart-section` 只使用了一种基础栏数模式；不存在 `6/6 + 4/4/4` 或 `4/4/4 + 3/3/3/3` 这类 mixed-mode 排布
+- `12` 仅作为 neutral `full-span` 使用，没有被误判为模式切换或第四种基础栏数
+- `stat-section` 的指标卡及其中的迷你图没有被误计入 `chart-section` 的 mode / span / mixed-mode 校验
 - 页面不存在为了贴近示例数量而额外堆出的低价值图表；图表数量与一级信息任务数量基本匹配
 - 数据可视化页仍保持指标卡、图表区、明细表在同一白底工作区内；没有误套普通列表的表体独占纵滚
+- 对 `data-visualization` 默认 `dashboard-control-strip`，页面级时间粒度 / 分析视角切换位于主体白底最上方，并先于 `stat-section`
+- 顶部 `dashboard-control-strip` 保持 `plain-row-no-panel`：不出现整块灰底 / 描边 / 圆角 / 阴影 panel
+- 若页面需要真实明细筛选，`QueryFilter` 与顶部控制条分开；它位于 `chart-section` 之后、明细表之前，紧邻 detail table
+- 页面级控制条与明细 `QueryFilter` 没有混在同一 row / carrier 中；不会把 `QueryFilter` 塞进 `DashboardControlStrip`
 
 若图表形成独立分析区，则还必须具备：
 
@@ -224,6 +247,6 @@
 
 ## 最终回复前收口边界
 
-若当前任务生成或实质性修改了页面，代理在最终回复前还必须按 `PRIVACY.md` 完成 `preview_ready` 统计收口。
+若当前任务新生成了页面，代理在最终回复前还必须按 `PRIVACY.md` 完成 `record-usage` 收口；`preview_ready` 仍只用于页面质量确认。
 
 这一步属于外层任务完成协议，不属于本文件的页面质量 gate；不要把“页面已通过本文件门槛”和“整个任务已完整结束”混为一谈。

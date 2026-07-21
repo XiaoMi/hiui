@@ -25,6 +25,7 @@
 - 本页的 `分档`、`P0`、`列表嵌套详情` 与 `禁止` 都属于生成与验收的强制约束；命中对应场景时不得省略
 - 抽屉详情必须从 `examples/host-integration/src/pages/drawer-detail.tsx` 的语义骨架起步；不允许从全页详情、表单页或空白抽屉临时拼装
 - 若页面实现不满足这些规则，应直接判定为不合规，而不是视作“轻量详情变体”
+- 若在 `drawer-body` 中新增一级 supporting section，必须同步声明 `bodySectionContract` 与 `supportingSections`；不要在详情抽屉里自由增生 panel / 卡片结构
 
 ## 分档
 
@@ -47,6 +48,8 @@
 - 非中文默认继续保持上下结构；重要字段值最多 2 行，超出 `ellipsis + tooltip`
 - 仅 1 个逻辑分组时不展示组内标题；`>=2` 组再展示 `16px / 600` 组标题
 - 内容区不要再包一层 `Card`
+- supporting section 默认只允许出现在 `detail-body.after-primary-fields`，内容仅限 `description-group`、`readonly-chart-summary`、`media-row`
+- 即使存在 supporting section，`Descriptions` / `SchemaDescriptionsBridge` 仍必须保持主表达，不能退化成字段卡或只读表单
 
 ## 列表嵌套详情
 
@@ -62,6 +65,7 @@
 - 不要依赖 `Descriptions` 的隐式 label 对齐默认值；detail-shell 的 left 起点必须在 props 边界显式声明
 - 不要把 `Descriptions` 改写成 label-value 卡片、字段网格或只读表单
 - 不要在 `>16` 条描述项时继续留在抽屉
+- 不要把 supporting section 长成第二层白卡、独立 panel 或局部滚动工作区
 
 ## 自检
 

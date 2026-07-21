@@ -22,6 +22,7 @@
 - 全页编辑必须同时满足：`ProEditPage` 页壳语义、`Form` 主表达、`宿主适配页头 portal + PageHeader`、`formScrollBody`、`inlineEditFooter`、三栏 `40` 与连续高度链
 - 全页编辑必须从 `examples/host-integration/src/pages/full-page-edit.tsx` 的语义骨架起步；不允许从抽屉表单、详情页或空白表单容器临时扩写
 - 若页面实现不满足这些规则，应判定为不合规，而不是视作“业务自定义编辑布局”
+- 若在 `formScrollBody` 中新增一级业务区块，必须继续按 `bodySectionContract + supportingSections` 受管扩展处理，而不是在 `ProEditPage` 壳内自由加 panel / workspace
 
 ## P0
 
@@ -63,6 +64,9 @@
 - 多个一级分组块之间竖向 `16px`
 - `Upload`、长 `Textarea` 等宽控件默认整行
 - 宿主 `Upload` 触发器如果默认已带上传图标，不要在页面局部自定义 `content` 时再补第二个上传 icon；优先只保留文案或沿用宿主默认触发器
+- 若存在 supporting section，默认只允许出现在 `form-body.after-primary-fields`；允许内容为 `section-toolbar`、`simple-table`、`readonly-chart-summary`、`media-row`
+- supporting section 仍属于当前 `form-body` 的一级 section，不得接管 `white-body`、`main-scroll`、`query-filter`、`pagination` 或 `footer`
+- supporting section 出现后，`sectionComposition` 必须从 `groups-only` 升级到 `groups-with-supporting-sections`；不要继续按“字段级 slot-fill”描述实现
 
 ## 分组补充
 
@@ -92,6 +96,7 @@
 - 不要在页面样式里覆写 `.hi-v5-form-item { margin-bottom / margin-top }` 来控制字段节奏
 - 不要在页面样式里通过 `.hi-v5-form` / `.hi-v5-form-label` / `.hi-v5-form-item__label` 的上下间距去制造分组尾部留白
 - 不要让 `groupGrid` / `fieldGrid` / 字段 grid 通过 `row-gap`、`padding-bottom`、`margin-bottom` 或最后一行留白去制造 footer 上方统一空白带
+- 不要把 supporting section 翻译成第二层白卡、独立 panel、局部 page-surface 或新的滚动区；命中这些形态时已经不再是普通 section 扩展
 - 不要让宿主 `PageHeader` 的默认 `margin-bottom: 5px` 再叠加页面局部 `margin-bottom: 8px`
 - 不要把 `input` / `select` / `checkSelect` / `switch` 这类紧凑控件默认写成 `colSpan: 3`；即使是多选，也不能因为值可能换行就直接整行铺满
 - 不要把 `outer-padding` 只保留成普通 `padding` 容器；若它不是 `flex column`，白底主体的 `flex: 1` 不会真正接管高度，底部操作区会重新掉回文档流

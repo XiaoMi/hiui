@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Button, Message, Space } from '@hi-ui/hiui'
 import { DownloadOutlined, PlusOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import {
   ProListPageProvider,
@@ -24,6 +24,7 @@ import {
   getKeywordValue,
   getParamsWithoutKeyword,
 } from './request-utils'
+import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import { useTranslation } from '../../translation'
 
 const T = extendDsl(ReadonlyFieldCreator, {
@@ -40,20 +41,18 @@ function TreeTableInner() {
 
   const queryFields = useMemo(
     () => [
-      F(t('负责人'), 'managerId')
-        .Select({
-          data: managerOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F(t('所属机构'), 'organizationId')
-        .Select({
-          data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
-          clearable: true,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
+      createManagedQuerySelectField({
+        field: 'managerId',
+        label: t('负责人'),
+        data: managerOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'organizationId',
+        label: t('所属机构'),
+        data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
+        overlay: queryFilterPickerOverlay,
+      }),
     ],
     [t]
   )

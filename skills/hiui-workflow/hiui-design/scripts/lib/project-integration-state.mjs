@@ -124,7 +124,73 @@ function createCarrierIssue({ componentId, code, message, path: filePath = '' })
   }
 }
 
-async function validateCertifiedProjectCarrier({ targetRoot, component }) {
+function extractImportSpecifiers(source) {
+  const patterns = [
+    /(?:import|export)\s+[\s\S]*?\s+from\s+['"]([^'"]+)['"]/g,
+    /import\s+['"]([^'"]+)['"]/g,
+    /import\(\s*['"]([^'"]+)['"]\s*\)/g,
+  ]
+  const specifiers = new Set()
+
+  for (const pattern of patterns) {
+    for (const match of source.matchAll(pattern)) {
+      if (match[1]) {
+        specifiers.add(match[1])
+      }
+    }
+  }
+
+  return [...specifiers]
+}
+
+function isBarePackageImport(specifier) {
+  return (
+    specifier &&
+    !specifier.startsWith('.') &&
+    !specifier.startsWith('/') &&
+    !specifier.startsWith('@/') &&
+    !specifier.startsWith('~/') &&
+    !specifier.startsWith('node:')
+  )
+}
+
+function normalizePackageName(specifier) {
+  if (!isBarePackageImport(specifier)) return ''
+  if (specifier.startsWith('@')) {
+    const parts = specifier.split('/')
+    return parts.length >= 2 ? `${parts[0]}/${parts[1]}` : specifier
+  }
+  return specifier.split('/')[0]
+}
+
+function collectDeclaredPackages(packageJson) {
+  return new Set([
+    ...Object.keys(packageJson?.dependencies ?? {}),
+    ...Object.keys(packageJson?.devDependencies ?? {}),
+    ...Object.keys(packageJson?.peerDependencies ?? {}),
+  ])
+}
+
+function findMissingDeclaredPackages(sourceRaw, declaredPackages) {
+  return Array.from(
+    new Set(
+      extractImportSpecifiers(sourceRaw)
+        .map((specifier) => normalizePackageName(specifier))
+        .filter((pkgName) => pkgName && !declaredPackages.has(pkgName))
+    )
+  )
+}
+
+function createMissingDependencyIssue({ componentId, relativePath, missingPackages }) {
+  return createCarrierIssue({
+    componentId,
+    code: 'component-runtime-dependency-missing',
+    message: `${componentId} imports undeclared runtime packages in ${relativePath}: ${missingPackages.join(', ')}`,
+    path: relativePath,
+  })
+}
+
+async function validateCertifiedProjectCarrier({ targetRoot, component, declaredPackages }) {
   const componentId = String(component?.componentId || '').trim()
   const certificationRef = String(component?.certificationRef || '').trim()
   const issues = []
@@ -207,6 +273,18 @@ async function validateCertifiedProjectCarrier({ targetRoot, component }) {
           path: String(certificationInputs.componentSource || '').trim(),
         })
       )
+    } else {
+      const componentSourceRaw = await fs.readFile(componentSource.absolutePath, 'utf8').catch(() => '')
+      const missingPackages = findMissingDeclaredPackages(componentSourceRaw, declaredPackages)
+      if (missingPackages.length > 0) {
+        issues.push(
+          createMissingDependencyIssue({
+            componentId,
+            relativePath: componentSource.relativePath,
+            missingPackages,
+          })
+        )
+      }
     }
 
     const shellInfo = parseComponentShell(certificationInputs.componentShell)
@@ -243,6 +321,18 @@ async function validateCertifiedProjectCarrier({ targetRoot, component }) {
           })
         )
       }
+      if (shellSource.relativePath !== componentSource?.relativePath) {
+        const missingPackages = findMissingDeclaredPackages(shellSourceRaw, declaredPackages)
+        if (missingPackages.length > 0) {
+          issues.push(
+            createMissingDependencyIssue({
+              componentId,
+              relativePath: shellSource.relativePath,
+              missingPackages,
+            })
+          )
+        }
+      }
     }
 
     const supportSources = Array.isArray(certificationInputs.componentSupportSources)
@@ -261,6 +351,18 @@ async function validateCertifiedProjectCarrier({ targetRoot, component }) {
             path: String(supportSource || '').trim(),
           })
         )
+      } else {
+        const supportSourceRaw = await fs.readFile(supportFile.absolutePath, 'utf8').catch(() => '')
+        const missingPackages = findMissingDeclaredPackages(supportSourceRaw, declaredPackages)
+        if (missingPackages.length > 0) {
+          issues.push(
+            createMissingDependencyIssue({
+              componentId,
+              relativePath: supportFile.relativePath,
+              missingPackages,
+            })
+          )
+        }
       }
     }
   }
@@ -277,6 +379,8 @@ async function validateCertifiedProjectCarrier({ targetRoot, component }) {
 export async function validateProjectCertifiedCarriers({ targetRoot }) {
   const registryFile = path.join(targetRoot, PROJECT_PAGE_COMPONENT_REGISTRY_RELATIVE_PATH)
   const registry = await readJsonIfExists(registryFile)
+  const packageJson = (await readJsonIfExists(path.join(targetRoot, 'package.json'))) || {}
+  const declaredPackages = collectDeclaredPackages(packageJson)
   const components = Array.isArray(registry?.components) ? registry.components : []
   const certifiedProjectCarriers = components.filter((component) => {
     const status = String(component?.status || '').trim()
@@ -300,7 +404,7 @@ export async function validateProjectCertifiedCarriers({ targetRoot }) {
   const blockingReasons = []
 
   for (const component of certifiedProjectCarriers) {
-    const result = await validateCertifiedProjectCarrier({ targetRoot, component })
+    const result = await validateCertifiedProjectCarrier({ targetRoot, component, declaredPackages })
     componentResults.push(result)
     for (const issue of result.issues) {
       blockingReasons.push(issue.message)
@@ -515,7 +619,7 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
   const derivedBlockingReasons =
     legacyRolloutCoverageStatus === 'blocked' && missingRequiredLegacyPageTypes.length > 0
       ? [
-          `legacy rollout is missing required project-certified carriers for page types: ${missingRequiredLegacyPageTypes.join(', ')}`,
+          `legacy integration is incomplete because required project-certified carriers are still missing for page types: ${missingRequiredLegacyPageTypes.join(', ')}`,
         ]
       : []
   const normalizedBlockingReasons = uniqueBlockingReasons([
@@ -568,7 +672,7 @@ function defaultLegacyBridgeValidation(mode = '') {
     confidence: '',
     missingFacts: ['legacy-host-family'],
     blockingReasons: [
-      'legacy bridge validation is missing from project integration state; rerun bootstrap-target-project to certify legacy host family readiness',
+      'legacy integration is incomplete because bridge validation is missing from project integration state; rerun bootstrap-target-project to certify legacy host family readiness',
     ],
   }
 }

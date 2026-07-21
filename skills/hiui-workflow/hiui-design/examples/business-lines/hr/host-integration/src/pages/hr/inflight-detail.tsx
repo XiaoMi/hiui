@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowLeftOutlined, DownloadOutlined } from '@hi-ui/icons'
-import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
 import { useSubscribe } from '@hi-ui/use-subscription'
 import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
 import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
@@ -39,6 +39,7 @@ import {
   type DetailFilters,
   type InFlightStatusKey,
 } from './recruitment-data'
+import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import styles from './recruitment.module.scss'
 
 const T = extendDsl(ReadonlyFieldCreator, {
@@ -100,24 +101,24 @@ function InflightDetailInner() {
 
   const queryFields = useMemo(
     () => [
-      F('部门', 'departmentId')
-        .Select({
-          data: getAvailableDepartmentOptions(baseDepartmentId),
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F('序列', 'sequenceId')
-        .Select({
-          data: sequenceOptions,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
-      F('职级', 'jobLevel')
-        .Select({
-          data: jobLevelOptions,
-          overlay: queryFilterPickerOverlay,
-        })
-        .val,
+      createManagedQuerySelectField({
+        field: 'departmentId',
+        label: '部门',
+        data: getAvailableDepartmentOptions(baseDepartmentId),
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'sequenceId',
+        label: '序列',
+        data: sequenceOptions,
+        overlay: queryFilterPickerOverlay,
+      }),
+      createManagedQuerySelectField({
+        field: 'jobLevel',
+        label: '职级',
+        data: jobLevelOptions,
+        overlay: queryFilterPickerOverlay,
+      }),
     ],
     [baseDepartmentId]
   )

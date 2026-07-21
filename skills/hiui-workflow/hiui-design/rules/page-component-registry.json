@@ -388,6 +388,21 @@
             "drawer-footer-owner-change",
             "freeform-layout"
           ]
+        },
+        {
+          "slotId": "supportingSections",
+          "region": "drawer-body.after-primary-fields",
+          "contentType": [
+            "readonly-chart-summary",
+            "media-row"
+          ],
+          "maxComplexity": "section",
+          "forbidden": [
+            "new-white-body",
+            "new-scroll-owner",
+            "main-scroll-owner",
+            "freeform-layout"
+          ]
         }
       ],
       "supportedModes": [
@@ -467,6 +482,22 @@
           "forbidden": [
             "new-scroll-owner",
             "drawer-footer-owner-change",
+            "freeform-layout"
+          ]
+        },
+        {
+          "slotId": "supportingSections",
+          "region": "drawer-body.after-primary-fields",
+          "contentType": [
+            "description-group",
+            "readonly-chart-summary",
+            "media-row"
+          ],
+          "maxComplexity": "section",
+          "forbidden": [
+            "new-white-body",
+            "new-scroll-owner",
+            "main-scroll-owner",
             "freeform-layout"
           ]
         }
@@ -646,6 +677,25 @@
             "footer-owner-change",
             "sticky-footer-change"
           ]
+        },
+        {
+          "slotId": "supportingSections",
+          "region": "form-body.after-primary-fields",
+          "contentType": [
+            "section-toolbar",
+            "simple-table",
+            "readonly-chart-summary",
+            "media-row"
+          ],
+          "maxComplexity": "section",
+          "forbidden": [
+            "new-white-body",
+            "new-scroll-owner",
+            "main-scroll-owner",
+            "query-filter-carrier",
+            "pagination-carrier",
+            "freeform-layout"
+          ]
         }
       ],
       "supportedModes": [
@@ -719,7 +769,8 @@
           "contentType": [
             "description-group",
             "simple-table",
-            "read-only-chart-summary"
+            "readonly-chart-summary",
+            "media-row"
           ],
           "maxComplexity": "section",
           "forbidden": [

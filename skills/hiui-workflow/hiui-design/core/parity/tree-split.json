@@ -1,0 +1,48 @@
+{
+  "pageType": "tree-split",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/inventory-split.tsx",
+    "requiredTokens": [
+      "TreeSplitPageFrame",
+      "SearchInput",
+      "Tree",
+      "storageKey=\"example-host-integration-tree-width\""
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "InventorySplitPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"tree-split\""
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      ".local-context/hiui-design",
+      "ProjectTreeSplitCarrier"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/tree-split/CanonicalTreeSplitPage.tsx",
+    "requiredTokens": [
+      "TreeSplitPageFrame",
+      "SearchInput",
+      "Tree",
+      "storageKey=\"hiui-pagegen-canonical-tree-width\"",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "data-hiui-pagegen-template=\"tree-split\"",
+      "data-hiui5-shell=\"TreeSplitPageFrame\""
+    ],
+    "forbiddenTokens": [
+      ".local-context/hiui-design",
+      "ProjectTreeSplitCarrier",
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton"
+    ]
+  }
+}

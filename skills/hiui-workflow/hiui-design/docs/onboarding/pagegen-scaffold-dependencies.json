@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@ant-design/charts": "^2.6.0",
+    "@hi-ui/descriptions": "^4.0.6",
+    "@hi-ui/icons": "5.0.0-experimental.1",
+    "@hi-ui/tree": "^4.0.10",
+    "echarts": "~5.4.1",
+    "sass-embedded": "^1.97.2"
+  }
+}

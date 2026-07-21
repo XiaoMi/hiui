@@ -131,7 +131,8 @@ shell carrier path: <runtime chain summary>
 ```md
 shared component inheritance:
   - header: <PageHeader / shared frame / host slot>
-  - filter/control strip: <QueryFilter / DashboardControlStrip / host bridge>
+  - page-global control strip: <DashboardControlStrip / host bridge / none>
+  - detail query-filter: <QueryFilter / host bridge / none>
   - status tag: <Tag / shared status renderer>
   - table shell: <JoinedTableSection / list frame / host table shell>
   - chart body: <ManagedChartCard / approved chart carrier>
@@ -146,6 +147,9 @@ style inheritance contract:
 interaction inheritance contract:
   - header actions docking: <PageHeader.extra right-docked>
   - dashboard control strip: <unlabeled segmented + internal select labels>
+  - control strip placement: <top-of-white-body-before-stat-section | detail-section-before-table>
+  - control strip visual treatment: <plain-row-no-panel | query-filter-form>
+  - control scope split: <page-global controls separated from detail QueryFilter>
   - row actions: <primary link / single-line>
   - status semantics: <Tag / shared renderer>
   - table-pagination relationship: <same shell/footer chain>
@@ -244,9 +248,9 @@ page type: data-visualization
 example path: examples/host-integration/src/pages/data-visualization.tsx
 host archetype path: templates/archetypes/rules-only/data-visualization/page.template.tsx
 mandatory components: PageHeader, Tag, Alert, ManagedChartCard, JoinedTableSection, Table, QueryFilter
-shared component inheritance: header 继续走 host header carrier；图表继续走 shared chart card；风险状态继续走 Tag / Alert；明细区继续走 JoinedTableSection
+shared component inheritance: header 继续走 host header carrier；页面全局视角切换继续走 DashboardControlStrip；图表继续走 shared chart card；风险状态继续走 Tag / Alert；明细区继续走 JoinedTableSection，真实记录筛选才使用 QueryFilter
 style inheritance contract: white-body owner 保持 shared shell；page-level spacing 不下放到业务 section；局部信息块才允许 Card
-interaction inheritance contract: header actions 仍右停靠；筛选仍由 QueryFilter 承接；表格与分页仍处于同一 shell/footer 链
+interaction inheritance contract: header actions 仍右停靠；DashboardControlStrip 位于 white-body 顶部且无灰底 panel；真实 QueryFilter 只贴近 detail workspace；表格与分页仍处于同一 shell/footer 链
 i18nMode: full；标题、标签、图表标题、tooltip、表头与按钮文案全部走 locale 资源
 layout strategy: primary-secondary
 non-typical scope: 图表区之外新增“风险提醒”和“运营建议”两个一级分组；表格工作区与页头链路不改

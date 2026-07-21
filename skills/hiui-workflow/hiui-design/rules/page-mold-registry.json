@@ -90,7 +90,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "pagination-owner"
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -103,7 +108,11 @@
             "handlers"
           ],
           "forbiddenChanges": [
-            "table-carrier"
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry"
           ]
         },
         {
@@ -118,7 +127,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "row-height-owner"
+            "row-height-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -253,7 +267,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "pagination-owner"
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -266,7 +285,11 @@
             "handlers"
           ],
           "forbiddenChanges": [
-            "table-carrier"
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry"
           ]
         },
         {
@@ -281,7 +304,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "row-height-owner"
+            "row-height-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -414,7 +442,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "pagination-owner"
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -532,7 +565,12 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "pagination-owner"
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
           ]
         },
         {
@@ -545,7 +583,12 @@
             "handlers"
           ],
           "forbiddenChanges": [
-            "table-carrier"
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry",
+            "pane-scroll-owner"
           ]
         },
         {
@@ -679,7 +722,13 @@
           ],
           "forbiddenChanges": [
             "table-carrier",
-            "pagination-owner"
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry",
+            "pane-scroll-owner"
           ]
         },
         {
@@ -692,7 +741,12 @@
             "handlers"
           ],
           "forbiddenChanges": [
-            "table-carrier"
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry",
+            "pane-scroll-owner"
           ]
         },
         {

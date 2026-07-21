@@ -64,6 +64,69 @@
     "ownershipMapping": {
       "type": "array"
     },
+    "visualBaselinePlan": {
+      "type": "object"
+    },
+    "visualizationRolePlan": {
+      "type": "object"
+    },
+    "chartUsageContract": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string"
+        },
+        "contractStatus": {
+          "type": "string"
+        },
+        "readingPath": {
+          "type": "array"
+        },
+        "chartIntentItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "chartId": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "businessQuestion": {
+                "type": "string"
+              },
+              "informationTask": {
+                "type": "string"
+              },
+              "chartType": {
+                "type": "string"
+              },
+              "readingLane": {
+                "type": "string"
+              },
+              "visualRole": {
+                "type": "string"
+              },
+              "regionPriority": {
+                "type": "string"
+              },
+              "preferredRegionSize": {
+                "type": "string"
+              },
+              "canOwnPrimaryRegion": {
+                "type": ["boolean", "null"]
+              },
+              "forbiddenPlacements": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
     "splitPaneContract": {
       "type": "object",
       "properties": {

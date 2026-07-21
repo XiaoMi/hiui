@@ -35,6 +35,9 @@
           "layoutOverlayRequired",
           "layoutStrategy",
           "layoutArchetype",
+          "visualBaselinePlan",
+          "visualizationRolePlan",
+          "writeScope",
           "nonTypicalScope",
           "mandatoryComponents",
           "compositionGuardrails",
@@ -223,6 +226,19 @@
               "allowedEditBoundary",
               "referenceAssetRole",
               "doNotDo"
+            ]
+          },
+          {
+            "path": [
+              "writeScope"
+            ],
+            "fields": [
+              "schemaVersion",
+              "policy",
+              "allowedPaths",
+              "forbiddenPaths",
+              "hardBlockSharedAssetMutation",
+              "sharedAssetMutationPolicy"
             ]
           },
           {

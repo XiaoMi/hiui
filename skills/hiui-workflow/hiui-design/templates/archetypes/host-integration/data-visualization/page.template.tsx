@@ -8,6 +8,8 @@ import {
   JoinedTableSection,
   ManagedCardGrid,
   ManagedChartCard,
+  ManagedChartGridItem,
+  ManagedChartSectionGrid,
   ManagedMetricCard,
   ManagedSurfaceCard,
   SectionBlock,
@@ -42,6 +44,21 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
         title="TODO_PAGE_TITLE"
         whiteBodyProps={__HIUI_WHITE_BODY_PROPS__}
       >
+        <DashboardControlStrip
+          leading={
+            <Radio.Group
+              data={viewModeOptions}
+              type="button"
+              value="day"
+            />
+          }
+          trailing={
+            <>
+              {/* TODO: keep page-global controls here only; if real detail filters are needed, render a dedicated QueryFilter above JoinedTableSection instead of mixing scopes in one row */}
+            </>
+          }
+        />
+
         <SectionBlock
           description="TODO_OVERVIEW_DESCRIPTION"
           region="stat-section"
@@ -66,67 +83,52 @@ __HIUI_SOURCE_CONTRACT_MARKERS__
           </ManagedCardGrid>
         </SectionBlock>
 
-        <DashboardControlStrip
-          leading={
-            <Radio.Group
-              data={viewModeOptions}
-              type="button"
-              value="day"
-            />
-          }
-          trailing={
-            <>
-              {/* TODO: when filters exceed 4 fields, keep them in inline dropdown controls instead of button groups */}
-            </>
-          }
-        />
-
         <SectionBlock
-          description="TODO_RISK_SECTION_DESCRIPTION"
-          title="TODO_RISK_SECTION_TITLE"
-        >
-          <ManagedCardGrid minItemWidth={260}>
-            <ManagedSurfaceCard>
-              <div>TODO_RISK_LINE_NAME</div>
-              <div>TODO_RISK_METRICS</div>
-              <div>TODO_RISK_ACTIONS</div>
-            </ManagedSurfaceCard>
-          </ManagedCardGrid>
-        </SectionBlock>
-
-        <SectionBlock
-          description="TODO_CHART_SECTION_DESCRIPTION"
+          description="TODO_PRIMARY_ANALYSIS_DESCRIPTION"
           region="chart-section"
-          title="TODO_CHART_SECTION_TITLE"
+          title="TODO_PRIMARY_ANALYSIS_TITLE"
         >
-          <ManagedCardGrid minItemWidth={320}>
-            <ManagedChartCard
-              body={<div>{/* TODO: replace with chart content */}</div>}
-              description="TODO_CHART_DESCRIPTION"
-              title="TODO_CHART_TITLE"
-            />
-            <ManagedChartCard
-              body={<div>{/* TODO: replace with chart content */}</div>}
-              description="TODO_CHART_DESCRIPTION"
-              title="TODO_CHART_TITLE"
-            />
-          </ManagedCardGrid>
-          <ManagedChartCard
-            body={<div>{/* TODO: replace with chart content */}</div>}
-            description="TODO_CHART_DESCRIPTION"
-            title="TODO_CHART_TITLE"
-          />
+          <ManagedChartSectionGrid>
+            <ManagedChartGridItem gridSpan={12} layoutGroup="primary">
+              <ManagedChartCard
+                body={<div>{/* TODO: replace with chart content */}</div>}
+                description="TODO_PRIMARY_CHART_DESCRIPTION"
+                title="TODO_PRIMARY_CHART_TITLE"
+              />
+            </ManagedChartGridItem>
+            <ManagedCardGrid baseGridMode="three-column">
+              <ManagedChartGridItem gridSpan={8} layoutGroup="secondary">
+                <ManagedChartCard
+                  body={<div>{/* TODO: replace with chart content */}</div>}
+                  description="TODO_SUPPORTING_CHART_DESCRIPTION"
+                  title="TODO_SUPPORTING_CHART_TITLE"
+                />
+              </ManagedChartGridItem>
+              <ManagedChartGridItem gridSpan={4} layoutGroup="insight-summary">
+                <ManagedSurfaceCard>
+                  <div>TODO_INSIGHT_HEADLINE</div>
+                  <div>TODO_INSIGHT_REASON</div>
+                  <div>TODO_INSIGHT_ACTION</div>
+                </ManagedSurfaceCard>
+              </ManagedChartGridItem>
+            </ManagedCardGrid>
+          </ManagedChartSectionGrid>
         </SectionBlock>
 
         <SectionBlock
-          description="TODO_RECORD_SECTION_DESCRIPTION"
-          title="TODO_RECORD_SECTION_TITLE"
+          description="TODO_ACTION_SECTION_DESCRIPTION"
+          title="TODO_ACTION_SECTION_TITLE"
         >
           <ManagedCardGrid minItemWidth={260}>
             <ManagedSurfaceCard>
-              <div>TODO_RECORD_TIME</div>
-              <div>TODO_RECORD_ROUTE</div>
-              <div>TODO_RECORD_STATUS</div>
+              <div>TODO_FOLLOWUP_OWNER</div>
+              <div>TODO_FOLLOWUP_ACTION</div>
+              <div>TODO_FOLLOWUP_RISK</div>
+            </ManagedSurfaceCard>
+            <ManagedSurfaceCard>
+              <div>TODO_NEXT_STEP</div>
+              <div>TODO_NEXT_WINDOW</div>
+              <div>TODO_NEXT_METRIC</div>
             </ManagedSurfaceCard>
           </ManagedCardGrid>
         </SectionBlock>
