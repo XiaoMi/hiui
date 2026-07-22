@@ -2,6 +2,7 @@ document.documentElement.classList.add("js-scroll-reveal");
 
 const pageSearchParams = new URLSearchParams(window.location.search);
 const embeddedView = pageSearchParams.get("view") || "github";
+document.documentElement.dataset.embeddedView = embeddedView;
 const footerBannerQr = document.querySelector(".footer-banner-qr");
 const toolchainCards = document.querySelectorAll("[data-toolchain-card]");
 const usageStep2Display = document.querySelector('[data-usage-step="2-display"]');
@@ -23,9 +24,9 @@ if (embeddedView === "internal") {
     llmstxt: "https://infra.mioffice.cn/hiui/docs/hiui-cli/#llmstxt",
   };
   const internalUsageStep2Copy = [
-    "git clone git@git.n.xiaomi.com:guorui20/hiui-page-workflow.git",
-    "cd hiui-page-workflow  bash install.sh",
-    "把hiui design接入到当前项目中",
+    "git clone --depth 1 git@git.n.xiaomi.com:guorui20/hiui-page-workflow.git",
+    "bash hiui-page-workflow/install.sh",
+    "完成后把hiui design接入到当前项目中",
   ].join("\n");
 
   toolchainCards.forEach((card) => {
@@ -39,9 +40,9 @@ if (embeddedView === "internal") {
 
   if (usageStep2Display) {
     usageStep2Display.innerHTML = `
-      <span class="usage-editor-command">git clone git@git.n.xiaomi.com:guorui20/hiui-page-workflow.git</span>
-      <span class="usage-editor-command">cd hiui-page-workflow&nbsp;&nbsp;bash install.sh</span>
-      <span>把hiui design接入到当前项目中<span class="usage-editor-caret" aria-hidden="true"></span></span>
+      <span class="usage-editor-command">git clone --depth 1 git@git.n.xiaomi.com:guorui20/hiui-page-workflow.git</span>
+      <span class="usage-editor-command">bash hiui-page-workflow/install.sh</span>
+      <span>完成后把hiui design接入到当前项目中<span class="usage-editor-caret" aria-hidden="true"></span></span>
     `;
   }
 

@@ -2017,12 +2017,28 @@ img {
   transform: translateY(-30px);
 }
 
+html[data-embedded-view='github'] .usage-card-step-2 .usage-editor-actions {
+  position: absolute;
+  right: clamp(20px, 1.75vw, 24px);
+  bottom: 24px;
+  margin-top: 0;
+  padding: 0;
+}
+
+html[data-embedded-view='github'] .usage-card-step-2 .usage-copy-button-step-2 {
+  transform: none;
+}
+
 .usage-copy-button:hover {
   opacity: 1;
 }
 
 .usage-copy-button-step-2:hover {
   transform: translateY(-31px);
+}
+
+html[data-embedded-view='github'] .usage-card-step-2 .usage-copy-button-step-2:hover {
+  transform: none;
 }
 
 .usage-copy-button img {
