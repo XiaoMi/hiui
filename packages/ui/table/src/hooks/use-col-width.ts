@@ -3,6 +3,27 @@ import { FlattedTableColumnItemData, TableColumnItem, TableRowRecord } from '../
 import { getGroupItemWidth } from '../utils'
 import { useUpdateEffect } from '@hi-ui/use-update-effect'
 
+export const getVirtualColWidths = (
+  columns: TableColumnItem[],
+  containerWidth: number,
+  currentWidths: number[] = []
+) => {
+  const columnDefaultWidth = 200
+  const hasCurrentWidths =
+    currentWidths.length === columns.length && currentWidths.every((width) => width > 0)
+  const baseWidths = hasCurrentWidths
+    ? currentWidths
+    : columns.map((columnItem) => columnItem.width || columnDefaultWidth)
+  const totalWidth = baseWidths.reduce((total, width) => total + width, 0)
+
+  if (totalWidth > 0 && totalWidth < containerWidth) {
+    // 容器宽度大于设置的宽度总和时，col宽度等比分配占满容器。
+    return baseWidths.map((width) => (width * containerWidth) / totalWidth)
+  }
+
+  return baseWidths
+}
+
 export const useColWidth = ({
   resizable,
   tableWidthAdjustOnResize,
@@ -24,6 +45,11 @@ export const useColWidth = ({
   const [colWidths, setColWidths] = React.useState(() => {
     return getGroupItemWidth(columns).colWidths
   })
+  const colWidthsRef = React.useRef(colWidths)
+
+  React.useEffect(() => {
+    colWidthsRef.current = colWidths
+  }, [colWidths])
 
   /**
    * 根据实际内容区（table 的第一行）渲染，再次精确收集并设置每列宽度
@@ -79,25 +105,7 @@ export const useColWidth = ({
     }
 
     /** 虚拟滚动时，内容宽度不能用以前table自动渲染的方式获取，需要手动计算 */
-    const columnDefaultWidth = 200
-    const containerWidth = measureRowElement.clientWidth
-    let totalWidth: number = 0
-    /** 虚拟滚动，需要根据collist的虚拟宽度来计算宽度 */
-    columns.forEach((columnItem: TableColumnItem) => {
-      totalWidth += columnItem.width || columnDefaultWidth
-    })
-
-    if (totalWidth < containerWidth) {
-      // 容器宽度大于设置的宽度总和时，col宽度等比分分配占满容器。
-      return columns.map((columnItem: TableColumnItem) => {
-        return ((columnItem.width || columnDefaultWidth) * containerWidth) / totalWidth
-      })
-    } else {
-      // 容器宽度小于设置的宽度总和时，col宽度等于设置/默认宽度。
-      return columns.map((columnItem: TableColumnItem) => {
-        return columnItem.width || columnDefaultWidth
-      })
-    }
+    return getVirtualColWidths(columns, measureRowElement.clientWidth, colWidthsRef.current)
   }, [columns])
 
   // 记录上一轮的列，用于判断列是否发生变化，只有发生变化时才重新计算列宽
