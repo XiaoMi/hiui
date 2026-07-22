@@ -1,0 +1,63 @@
+{
+  "pageType": "full-page-detail",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/full-page-detail.tsx",
+    "requiredTokens": [
+      "ProDetailPage",
+      "ProDetailPageProvider",
+      "TypicalPageHeaderPortal",
+      "GroupMapProvider",
+      "SchemaGroup",
+      "SchemaDescriptionsBridge",
+      "SchemaTableBridge",
+      "useProDetailPageContext"
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "FullPageDetailPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"full-page-detail\""
+    ],
+    "forbiddenTokens": [
+      "detailGrid",
+      "fieldCard",
+      "bannerTitle",
+      "bannerActions"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/full-page-detail/CanonicalFullPageDetailPage.tsx",
+    "requiredTokens": [
+      "ProDetailPage",
+      "ProDetailPageProvider",
+      "TypicalPageHeaderPortal",
+      "GroupMapProvider",
+      "SchemaGroup",
+      "SchemaDescriptionsBridge",
+      "SchemaTableBridge",
+      "useProDetailPageContext",
+      "labelPlacement: 'left'",
+      "placement: 'vertical'",
+      "G(",
+      "D(",
+      "WarrantyInfoCards"
+    ],
+    "forbiddenTokens": [
+      "bannerTitle",
+      "bannerActions",
+      "sidebarCards",
+      "pageIntro",
+      "secondaryRail",
+      "railCard",
+      "function ProDetailPageProvider",
+      "function ProDetailPage",
+      "function GroupMapProvider",
+      "function SchemaGroup",
+      "function TypicalPageHeaderPortal",
+      "<Descriptions",
+      "<Table",
+      "DescriptionsItem"
+    ]
+  }
+}

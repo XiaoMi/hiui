@@ -1,0 +1,12 @@
+{
+  "pageType": "table-stat",
+  "requiredKeys": ["title", "stats", "queryFields", "columns", "rows"],
+  "optionalKeys": [
+    "description",
+    "pageSize",
+    "searchPlaceholder",
+    "primaryAction",
+    "secondaryAction",
+    "rowActions"
+  ]
+}

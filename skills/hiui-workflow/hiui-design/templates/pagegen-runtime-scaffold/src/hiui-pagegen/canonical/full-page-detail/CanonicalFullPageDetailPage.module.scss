@@ -1,0 +1,72 @@
+.pageRoot {
+  min-height: 100%;
+  background: #f5f8fc;
+}
+
+.headerPortal {
+  margin-bottom: 0;
+}
+
+.proDetailPage {
+  min-height: 100%;
+  padding: 0 16px 16px;
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.detailBody {
+  min-width: 0;
+}
+
+.detailSurface {
+  padding: 24px 28px 28px;
+  border: 1px solid #e6ebf1;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.groupStack {
+  display: grid;
+  gap: 28px;
+}
+
+.detailCard {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sectionTitle {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2733;
+}
+
+.loadingCard {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #52606d;
+}
+
+@media (max-width: 900px) {
+  .proDetailPage {
+    padding: 16px;
+  }
+
+  .detailSurface {
+    padding: 20px;
+  }
+
+  .groupStack {
+    gap: 24px;
+  }
+}

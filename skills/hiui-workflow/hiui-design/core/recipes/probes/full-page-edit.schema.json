@@ -1,0 +1,159 @@
+{
+  "pageType": "full-page-edit",
+  "title": "全页编辑",
+  "sections": [
+    {
+      "title": "基础信息",
+      "fields": [
+        {
+          "key": "ticketNo",
+          "label": "工单号",
+          "placeholder": "留空后由系统生成",
+          "defaultValue": "WO20260418001"
+        },
+        {
+          "key": "status",
+          "label": "工单状态",
+          "type": "select",
+          "options": [
+            { "id": "pending", "title": "待受理" },
+            { "id": "processing", "title": "处理中" },
+            { "id": "completed", "title": "已完成" }
+          ],
+          "defaultValue": "processing",
+          "required": true
+        },
+        {
+          "key": "ticketType",
+          "label": "工单类型",
+          "type": "select",
+          "options": [
+            { "id": "repair", "title": "维修工单" },
+            { "id": "install", "title": "安装工单" },
+            { "id": "consult", "title": "咨询工单" }
+          ],
+          "defaultValue": "repair",
+          "required": true
+        },
+        {
+          "key": "serviceMethod",
+          "label": "服务方式",
+          "type": "select",
+          "options": [
+            { "id": "door", "title": "上门服务" },
+            { "id": "station", "title": "到店服务" },
+            { "id": "remote", "title": "远程协助" }
+          ],
+          "defaultValue": "door",
+          "required": true
+        },
+        {
+          "key": "relatedProduct",
+          "label": "关联商品",
+          "placeholder": "商品名称或 SKU",
+          "defaultValue": "Xiaomi 16 Pro"
+        },
+        {
+          "key": "purchaseChannel",
+          "label": "购买渠道",
+          "type": "select",
+          "options": [
+            { "id": "mi-mall", "title": "小米商城" },
+            { "id": "jd", "title": "京东" },
+            { "id": "offline", "title": "线下门店" }
+          ],
+          "defaultValue": "mi-mall"
+        },
+        {
+          "key": "warrantyStart",
+          "label": "三包开始时间",
+          "type": "date",
+          "defaultValue": "2025-08-01"
+        },
+        {
+          "key": "warrantyEnd",
+          "label": "三包截止时间",
+          "type": "date",
+          "defaultValue": "2027-08-01"
+        },
+        {
+          "key": "visitReason",
+          "label": "来访原因",
+          "defaultValue": "整机无法正常开机",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "客户信息",
+      "fields": [
+        {
+          "key": "userName",
+          "label": "用户姓名",
+          "defaultValue": "赵冉",
+          "required": true
+        },
+        {
+          "key": "userTags",
+          "label": "用户标签",
+          "type": "checkSelect",
+          "options": [
+            { "id": "vip", "title": "多次来访" },
+            { "id": "member", "title": "会员用户" }
+            ,
+            { "id": "new", "title": "新用户" }
+          ],
+          "defaultValue": ["vip", "member"]
+        },
+        {
+          "key": "userPhone",
+          "label": "用户电话",
+          "defaultValue": "139****0088",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "服务信息",
+      "fields": [
+        {
+          "key": "serviceOrg",
+          "label": "服务机构",
+          "type": "select",
+          "options": [
+            { "id": "bj-door", "title": "北京上门中心" },
+            { "id": "sh-store", "title": "上海门店中心" },
+            { "id": "gz-remote", "title": "广州远程中心" }
+          ],
+          "defaultValue": "bj-door"
+        },
+        {
+          "key": "serviceEngineer",
+          "label": "服务工程师",
+          "type": "select",
+          "options": [
+            { "id": "eng-001", "title": "张晨" },
+            { "id": "eng-002", "title": "李岩" },
+            { "id": "eng-003", "title": "王硕" }
+          ],
+          "defaultValue": "eng-001"
+        },
+        {
+          "key": "acceptedAt",
+          "label": "受理时间",
+          "type": "dateTime",
+          "defaultValue": "2026-04-17 15:20:00"
+        },
+        {
+          "key": "description",
+          "label": "问题描述",
+          "type": "textarea",
+          "defaultValue": "此处展示示例描述信息，可能会比较长，超出是内容换行展示",
+          "required": true,
+          "rows": 4,
+          "span": 24
+        }
+      ]
+    }
+  ]
+}

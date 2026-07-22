@@ -1,0 +1,26 @@
+{
+  "pageType": "drawer-detail",
+  "title": "抽屉详情",
+  "drawerTitle": "用户详情",
+  "sections": [
+    {
+      "title": "",
+      "fields": [
+        { "label": "用户姓名", "value": "张晨" },
+        { "label": "米聊号", "value": "zc_service" },
+        { "label": "用户电话", "value": "13800000001" },
+        { "label": "邮箱", "value": "zhangchen@example.com" },
+        { "label": "用户角色", "value": "一线工程师" },
+        { "label": "岗位名称", "value": "上门工程师" },
+        { "label": "所属机构", "value": "北京服务中心" },
+        { "label": "入职日期", "value": "2024-06-18" },
+        { "label": "用户状态", "value": "在岗" },
+        {
+          "label": "备注信息",
+          "value": "负责重点城区履约，近三个月服务完成率保持在 95% 以上。",
+          "colSpan": 2
+        }
+      ]
+    }
+  ]
+}

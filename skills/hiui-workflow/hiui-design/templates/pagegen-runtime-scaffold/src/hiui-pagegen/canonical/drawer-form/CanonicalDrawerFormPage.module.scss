@@ -1,0 +1,108 @@
+.pageRoot {
+  min-height: 100%;
+  padding: 0 16px 16px;
+  background: #f5f8fc;
+}
+
+.headerPortal {
+  margin-bottom: 0;
+}
+
+.placeholderStage {
+  min-height: calc(100vh - 140px);
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+}
+
+.proFormDrawer {
+  :global(.hi-v5-drawer__body) {
+    padding: 0;
+    background: #fff;
+  }
+}
+
+.drawerBody {
+  padding: 24px;
+}
+
+.fieldMapProvider {
+  min-width: 0;
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.schemaForm {
+  min-width: 0;
+}
+
+.formSection + .formSection {
+  margin-top: 24px;
+}
+
+.formSectionPlain {
+  padding: 0;
+}
+
+.formSectionCard {
+  padding: 20px;
+  border: 1px solid #e6ebf2;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #1f2733;
+}
+
+.sectionGrid {
+  min-width: 0;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.fieldLabelTop {
+  align-items: stretch;
+}
+
+.fieldLabel {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #5f6675;
+}
+
+@media (max-width: 900px) {
+  .pageRoot {
+    padding: 16px;
+  }
+
+  .drawerBody {
+    padding: 20px;
+  }
+
+  .placeholderStage {
+    padding: 16px;
+  }
+}

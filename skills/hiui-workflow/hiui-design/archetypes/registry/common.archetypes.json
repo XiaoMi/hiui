@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "rulesVersion": "1.0.1",
+  "updatedAt": "2026-07-09",
+  "archetypes": [
+    {
+      "id": "table-basic-core",
+      "pageTypeId": "table-basic",
+      "label": "Basic table archetype",
+      "shell": "TablePageFrame",
+      "definitionDir": "archetypes/page-types/table-basic",
+      "examplePath": "examples/host-integration/src/pages/basic-table.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "full-page-edit-core",
+      "pageTypeId": "full-page-edit",
+      "label": "Full-page edit archetype",
+      "shell": "ProEditPage",
+      "definitionDir": "archetypes/page-types/full-page-edit",
+      "examplePath": "examples/host-integration/src/pages/full-page-edit.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "full-page-detail-core",
+      "pageTypeId": "full-page-detail",
+      "label": "Full-page detail archetype",
+      "shell": "ProDetailPage",
+      "definitionDir": "archetypes/page-types/full-page-detail",
+      "examplePath": "examples/host-integration/src/pages/full-page-detail.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "table-stat-core",
+      "pageTypeId": "table-stat",
+      "label": "Stat table archetype",
+      "shell": "StatListPageFrame",
+      "definitionDir": "archetypes/page-types/table-stat",
+      "examplePath": "examples/host-integration/src/pages/table-stat.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "data-visualization-core",
+      "pageTypeId": "data-visualization",
+      "label": "Data visualization archetype",
+      "shell": "StatListPageFrame",
+      "definitionDir": "archetypes/page-types/data-visualization",
+      "examplePath": "examples/host-integration/src/pages/data-visualization.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "tree-table-core",
+      "pageTypeId": "tree-table",
+      "label": "Tree table archetype",
+      "shell": "TablePageFrame",
+      "definitionDir": "archetypes/page-types/tree-table",
+      "examplePath": "examples/host-integration/src/pages/tree-table.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "tree-split-core",
+      "pageTypeId": "tree-split",
+      "label": "Tree split archetype",
+      "shell": "TreeSplitPageFrame",
+      "definitionDir": "archetypes/page-types/tree-split",
+      "examplePath": "examples/host-integration/src/pages/inventory-split.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "drawer-form-core",
+      "pageTypeId": "drawer-form",
+      "label": "Drawer form archetype",
+      "shell": "ProFormDrawer",
+      "definitionDir": "archetypes/page-types/drawer-form",
+      "examplePath": "examples/host-integration/src/pages/drawer-form.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "drawer-detail-core",
+      "pageTypeId": "drawer-detail",
+      "label": "Drawer detail archetype",
+      "shell": "ProDetailDrawer",
+      "definitionDir": "archetypes/page-types/drawer-detail",
+      "examplePath": "examples/host-integration/src/pages/drawer-detail.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    },
+    {
+      "id": "feedback-status-core",
+      "pageTypeId": "feedback-status",
+      "label": "Feedback status archetype",
+      "shell": "FeedbackStatePanel",
+      "definitionDir": "archetypes/page-types/feedback-status",
+      "examplePath": "examples/host-integration/src/pages/empty-state.tsx",
+      "supportedModes": [
+        "host-integration",
+        "rules-only",
+        "legacy-host-compatible"
+      ],
+      "requiredAdapterContract": true
+    }
+  ]
+}

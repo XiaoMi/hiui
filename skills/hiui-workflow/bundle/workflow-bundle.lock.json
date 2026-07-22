@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-workflow",
+  "bundleVersion": "1.2.0",
+  "channel": "master-follow",
+  "installPolicyRef": "install-policy.json",
+  "compatibilityMatrixRef": "compatibility-matrix.json",
+  "hostProfilesRef": "host-profiles.json",
+  "runtimeCompatibility": {
+    "requiredRuntimes": [
+      "node",
+      "python3"
+    ],
+    "notes": [
+      "Local development and fixture validation can still use dedicated local-source lock variants relative to this bundle.",
+      "The published default lock follows the upstream XiaoMi/hiui master branch and resolves each skill version from the current source manifest.",
+      "Use a dedicated release lock with commit SHA refs when you need a frozen, reproducible bundle snapshot."
+    ]
+  },
+  "skills": [
+    {
+      "name": "hiui-page-workflow",
+      "installName": "hiui-page-workflow",
+      "required": true,
+      "version": "1.2.0",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
+        "path": "skills/hiui-workflow/hiui-page-workflow"
+      }
+    },
+    {
+      "name": "hiui-refine",
+      "installName": "hiui-refine",
+      "legacyInstallNames": [
+        "refine-product-requirements"
+      ],
+      "required": true,
+      "version": "2.0.0",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
+        "path": "skills/hiui-workflow/hiui-refine"
+      }
+    },
+    {
+      "name": "hiui-design",
+      "installName": "hiui-design",
+      "required": true,
+      "version": "1.0.0",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
+        "path": "skills/hiui-workflow/hiui-design"
+      }
+    },
+    {
+      "name": "ux-walkthrough",
+      "installName": "ux-walkthrough",
+      "required": true,
+      "version": "1.0.1",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "git",
+        "repoUrl": "https://github.com/XiaoMi/hiui.git",
+        "ref": "master",
+        "path": "skills/hiui-workflow/ux-walkthrough"
+      }
+    }
+  ]
+}

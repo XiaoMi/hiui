@@ -1,0 +1,115 @@
+.pageRoot {
+  min-height: 100%;
+  background: #f5f8fc;
+}
+
+.headerPortal {
+  margin-bottom: 0;
+}
+
+.proEditPage {
+  min-height: 100%;
+  padding: 0 16px 96px;
+}
+
+.formScrollBody {
+  min-width: 0;
+}
+
+.editLayout {
+  display: grid;
+  gap: 16px;
+}
+
+.formSection {
+  padding: 20px 24px;
+  border: 1px solid #e6ebf1;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.formSectionPlain {
+  box-shadow: none;
+}
+
+.formSectionCard {
+  box-shadow: none;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2733;
+}
+
+.sectionGrid {
+  display: grid;
+  row-gap: 16px;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.fieldLabelTop {
+  align-items: stretch;
+}
+
+.fieldLabel {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5f6675;
+}
+
+.inlineEditFooter {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 10;
+  padding: 14px 16px;
+  border: 1px solid #e6ebf1;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: none;
+}
+
+.footerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.loadingCard {
+  padding: 24px;
+  border: 1px solid #e6ebf1;
+  border-radius: 12px;
+  background: #fff;
+  color: #52606d;
+}
+
+@media (max-width: 900px) {
+  .proEditPage {
+    padding: 16px 16px 96px;
+  }
+
+  .sectionGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .inlineEditFooter {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .footerActions {
+    justify-content: flex-end;
+  }
+}

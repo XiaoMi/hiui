@@ -1,0 +1,149 @@
+[
+  {
+    "variant": "empty-state",
+    "title": "暂无供应商数据",
+    "panelTitle": "暂无供应商数据",
+    "panelDescription": "请先创建供应商档案，或导入现有供应商名录",
+    "docLinkText": "查看接入说明",
+    "secondaryActions": [
+      {
+        "label": "批量导入",
+        "message": "批量导入供应商（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "新建供应商",
+      "message": "新建供应商（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看供应商接入说明（示例）"
+    }
+  },
+  {
+    "variant": "load-fail",
+    "title": "供应商数据加载失败",
+    "panelTitle": "供应商数据加载失败",
+    "panelDescription": "供应商数据暂时无法加载，请稍后重试，或",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "刷新列表",
+        "message": "刷新供应商列表（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "重新加载",
+      "message": "重新加载供应商数据（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看加载失败说明（示例）"
+    }
+  },
+  {
+    "variant": "network-error",
+    "title": "供应商页面网络异常",
+    "panelTitle": "供应商页面网络异常",
+    "panelDescription": "当前网络连接异常，请检查网络环境后重试，或",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "网络诊断",
+        "message": "网络诊断已启动（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "重新连接",
+      "message": "重新连接网络（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看网络异常说明（示例）"
+    }
+  },
+  {
+    "variant": "no-permission",
+    "title": "暂无供应商页面权限",
+    "panelTitle": "暂无供应商页面权限",
+    "panelDescription": "当前账号没有供应商管理页面访问权限，请",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "申请权限",
+        "message": "已发起权限申请（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "返回首页",
+      "message": "已返回首页（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看权限说明（示例）"
+    }
+  },
+  {
+    "variant": "page-not-found",
+    "title": "供应商页面不存在",
+    "panelTitle": "供应商页面不存在",
+    "panelDescription": "当前页面入口不存在或已下线，请确认访问路径，或",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "返回列表",
+        "message": "已返回供应商列表（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "返回首页",
+      "message": "已返回首页（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看页面说明（示例）"
+    }
+  },
+  {
+    "variant": "intranet-offline",
+    "title": "当前未连接内网",
+    "panelTitle": "当前未连接内网",
+    "panelDescription": "当前环境未连接企业内网，供应商页面无法正常访问，请",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "网络诊断",
+        "message": "内网诊断已启动（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "重新检测",
+      "message": "重新检测内网连接（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看内网连接说明（示例）"
+    }
+  },
+  {
+    "variant": "under-construction",
+    "title": "供应商页面建设中",
+    "panelTitle": "供应商页面建设中",
+    "panelDescription": "当前供应商页面仍在建设中，详情请",
+    "docLinkText": "联系管理员",
+    "secondaryActions": [
+      {
+        "label": "查看规划",
+        "message": "查看建设规划（示例）"
+      }
+    ],
+    "primaryAction": {
+      "label": "返回首页",
+      "message": "已返回首页（示例）"
+    },
+    "panelSecondaryAction": {
+      "label": "查看说明",
+      "message": "查看建设说明（示例）"
+    }
+  }
+]

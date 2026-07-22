@@ -1,0 +1,56 @@
+{
+  "pageType": "drawer-form",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/drawer-form.tsx",
+    "requiredTokens": [
+      "ProFormDrawer",
+      "ProDrawerFooterActions",
+      "SchemaForm",
+      "TypicalPageFieldMapProvider",
+      "TypicalPageHeaderPortal",
+      "PageHeader",
+      "borderedGroups={false}",
+      "labelPlacement: 'top'"
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "DrawerFormPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"drawer-form\""
+    ],
+    "forbiddenTokens": [
+      "hostAdapter.modal.confirm",
+      "<input",
+      "<select",
+      "<textarea"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/drawer-form/CanonicalDrawerFormPage.tsx",
+    "requiredTokens": [
+      "TypicalPageHeaderPortal",
+      "PageHeader",
+      "ProFormDrawer",
+      "ProDrawerFooterActions",
+      "TypicalPageFieldMapProvider",
+      "SchemaForm",
+      "useHostAdapter",
+      "F(",
+      "borderedGroups={false}",
+      "labelPlacement: 'top'"
+    ],
+    "forbiddenTokens": [
+      "<input",
+      "<select",
+      "<textarea",
+      "hostAdapter.modal.confirm",
+      "subtitle",
+      "placeholderText",
+      "drawerIntro",
+      "function ProFormDrawer",
+      "function SchemaForm",
+      "function TypicalPageHeaderPortal"
+    ]
+  }
+}

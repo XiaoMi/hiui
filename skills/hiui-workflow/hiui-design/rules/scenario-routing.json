@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "rulesVersion": "1.1.6",
+  "source": "hiui-design lightweight scenario routing",
+  "defaultExecutionSurface": [
+    "typical-page:init",
+    "typical-page:generate",
+    "typical-page:analytics",
+    "typical-page:verify",
+    "typical-page:verify:visual"
+  ],
+  "scenarios": [
+    {
+      "id": "typical-page",
+      "label": "典型页面",
+      "execution": {
+        "kind": "command",
+        "command": "typical-page:generate"
+      },
+      "pageStructure": "match-typical-template-and-replace-business-content",
+      "frameMapping": [
+        "TablePageFrame",
+        "StatListPageFrame",
+        "TreeSplitPageFrame",
+        "matched-detail-or-edit-shell"
+      ],
+      "guardrails": [
+        "requires-stable-page-path",
+        "single-page-only",
+        "replace-business-content-first"
+      ]
+    },
+    {
+      "id": "prototype-image",
+      "label": "原型图",
+      "execution": {
+        "kind": "command",
+        "command": "typical-page:generate"
+      },
+      "pageStructure": "recognize-page-type-from-prototype-then-reuse-typical-template",
+      "frameMapping": [
+        "match-typical-frame-from-page-type"
+      ],
+      "guardrails": [
+        "requires-page-type-evidence",
+        "replace-business-content-first",
+        "do-not-handwrite-new-shell"
+      ]
+    },
+    {
+      "id": "legacy-upgrade",
+      "label": "旧系统升级",
+      "execution": {
+        "kind": "command",
+        "command": "typical-page:generate"
+      },
+      "pageStructure": "preserve-layout-intent-and-upgrade-into-typical-template",
+      "frameMapping": [
+        "match-legacy-screen-to-typical-frame"
+      ],
+      "guardrails": [
+        "preserve-layout-strategy-not-legacy-implementation",
+        "replace-business-content-first",
+        "legacy-main-tree-keeps-compatibility-boundary"
+      ]
+    },
+    {
+      "id": "typical-extension",
+      "label": "典型页局部变化",
+      "execution": {
+        "kind": "command",
+        "command": "typical-page:generate"
+      },
+      "pageStructure": "keep-matched-typical-template-and-adjust-local-sections-with-hiui-components-or-tokens",
+      "frameMapping": [
+        "keep-existing-typical-page-frame"
+      ],
+      "guardrails": [
+        "no-shell-rewrite",
+        "token-or-component-level-adjustment-only",
+        "upgrade-to-non-typical-when-primary-structure-changes"
+      ]
+    },
+    {
+      "id": "non-typical-page",
+      "label": "完全非典型页面",
+      "execution": {
+        "kind": "strategy",
+        "strategy": "frame-first-composition"
+      },
+      "pageStructure": "keep-hiui-page-frame-and-build-business-primary-grid-layout-with-hiui-components-and-tokens",
+      "frameMapping": [
+        "TypicalPageAppFrame",
+        "content-slot",
+        "main-scroll",
+        "white-body-owner"
+      ],
+      "guardrails": [
+        "keep-page-frame",
+        "grid-layout-first",
+        "do-not-rebuild-header-or-main-scroll-shell",
+        "read-non-typical-pages-rules-before-implementation"
+      ]
+    },
+    {
+      "id": "data-visualization",
+      "label": "数据可视化",
+      "execution": {
+        "kind": "command",
+        "command": "typical-page:analytics"
+      },
+      "pageStructure": "keep-hiui-page-frame-and-generate-from-managed-analytics-rules",
+      "frameMapping": [
+        "StatListPageFrame",
+        "FixedDashboardPageFrame",
+        "managed-analytics-sections"
+      ],
+      "guardrails": [
+        "data-visualization-only",
+        "chart-rules-and-tokens-drive-content",
+        "verify-visual-when-page-is-high-value"
+      ]
+    }
+  ]
+}

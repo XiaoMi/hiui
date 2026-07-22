@@ -1,0 +1,243 @@
+{
+  "schemaVersion": "data-visualization-layout-policy.v1",
+  "source": "hiui-design managed analytics layout policy",
+  "visualBaseline": {
+    "colorPolicyId": "hiui-chart-slot-palette",
+    "chartThemePolicy": "managed-hiui-chart-theme-only",
+    "compactCardPolicyId": "compact-analytics-card-16px",
+    "compactCardBorderColor": "#E6E8EB",
+    "compactCardRadiusPx": 8,
+    "compactCardPaddingPx": 16,
+    "forbidSharedShellMutation": true,
+    "forbidPublicComponentMutation": true,
+    "primaryRegionBias": "prefer-axis-based-chart"
+  },
+  "controlStripPolicy": {
+    "schemaVersion": "dashboard-control-strip-policy.v1",
+    "defaultRole": "dashboard-control-strip",
+    "scope": "page-global",
+    "defaultPlacement": "top-of-white-body-before-stat-section",
+    "defaultVisualTreatment": "plain-row-no-panel",
+    "detailQueryFilterPolicy": "separate-detail-query-filter-near-detail-table",
+    "mixedScopeControls": "forbid-shared-control-row",
+    "placementDecisionRule": "page-global controls that affect stat-section, chart-section, and detail-table stay above all managed analysis regions",
+    "detailFilterPlacementRule": "real QueryFilter conditions stay adjacent to the detail table instead of co-locating with the page-global control strip",
+    "visualRule": "dashboard control strip stays as a plain row in the white-body and must not be wrapped by a grey query panel",
+    "allowedPlacementsByRole": {
+      "dashboard-control-strip": [
+        "top-of-white-body-before-stat-section"
+      ],
+      "table-query-filter": [
+        "detail-section-before-table"
+      ]
+    },
+    "allowedVisualTreatmentsByRole": {
+      "dashboard-control-strip": [
+        "plain-row-no-panel"
+      ],
+      "table-query-filter": [
+        "query-filter-form"
+      ]
+    },
+    "managedRegionPolicyByRole": {
+      "dashboard-control-strip": {
+        "controlScope": "page-global",
+        "controlStripPlacement": "top-of-white-body-before-stat-section",
+        "controlStripVisualTreatment": "plain-row-no-panel",
+        "detailQueryFilterPolicy": "separate-detail-query-filter-near-detail-table",
+        "mixedScopeControls": "forbid-shared-control-row"
+      },
+      "table-query-filter": {
+        "controlScope": "detail-table-only",
+        "controlStripPlacement": "detail-section-before-table",
+        "controlStripVisualTreatment": "query-filter-form",
+        "detailQueryFilterPolicy": "managed-region-is-detail-query-filter",
+        "mixedScopeControls": "forbid-shared-control-row"
+      }
+    },
+    "forbiddenPatterns": [
+      "grey-panel-query-filter-shell-for-dashboard-control-strip",
+      "shared-control-row-for-page-global-and-detail-filters",
+      "query-filter-semantics-for-day-week-month-view-switch"
+    ]
+  },
+  "chartSectionGridPolicy": {
+    "scope": "chart-section-only",
+    "excludeContentTypes": [
+      "metric-card",
+      "metric-sparkline",
+      "metric-mini-chart"
+    ],
+    "allowedBaseGridModes": [
+      "two-column",
+      "three-column",
+      "four-column"
+    ],
+    "consistencyScope": "single-mode-per-chart-section",
+    "fullSpanPolicy": "12-is-neutral-span",
+    "defaultAssumption": "whole-main-chart-workspace-is-one-chart-section",
+    "forbiddenMixedModeExamples": [
+      "6-6 + 4-4-4",
+      "4-4-4 + 3-3-3-3"
+    ],
+    "modes": {
+      "two-column": {
+        "allowedPatterns": [
+          "6-6",
+          "12"
+        ]
+      },
+      "three-column": {
+        "allowedPatterns": [
+          "4-4-4",
+          "8-4",
+          "4-8",
+          "12"
+        ]
+      },
+      "four-column": {
+        "allowedPatterns": [
+          "6-6",
+          "6-3-3",
+          "3-3-6",
+          "9-3",
+          "3-9",
+          "12"
+        ],
+        "forbiddenPatterns": [
+          "3-3-3-3"
+        ],
+        "minChartSpan": 2
+      }
+    }
+  },
+  "layoutTemplates": {
+    "primary-secondary": {
+      "layoutStrategy": "focus-plus-supporting-analysis",
+      "readingPath": [
+        "summary",
+        "primary",
+        "secondary",
+        "detail-table"
+      ],
+      "primaryRegion": {
+        "id": "primary",
+        "size": "large",
+        "preferredChartFamilies": [
+          "area",
+          "line",
+          "column",
+          "bar",
+          "dual-axes",
+          "stacked-area"
+        ],
+        "discouragedChartFamilies": [
+          "pie",
+          "donut",
+          "radar",
+          "funnel",
+          "gauge"
+        ]
+      },
+      "secondaryRegions": [
+        {
+          "id": "secondary",
+          "size": "medium",
+          "preferredChartFamilies": [
+            "bar",
+            "column",
+            "line",
+            "funnel",
+            "pie",
+            "donut",
+            "radar",
+            "scatter",
+            "heatmap"
+          ]
+        }
+      ]
+    },
+    "linear-stack": {
+      "layoutStrategy": "sequential-analysis",
+      "readingPath": [
+        "summary",
+        "primary",
+        "follow-up",
+        "detail-table"
+      ],
+      "primaryRegion": {
+        "id": "primary",
+        "size": "large",
+        "preferredChartFamilies": [
+          "area",
+          "line",
+          "column",
+          "bar",
+          "dual-axes"
+        ],
+        "discouragedChartFamilies": [
+          "pie",
+          "donut",
+          "radar",
+          "gauge"
+        ],
+        "conditionalPrimaryChartFamilies": [
+          "funnel"
+        ]
+      },
+      "secondaryRegions": [
+        {
+          "id": "follow-up",
+          "size": "medium",
+          "preferredChartFamilies": [
+            "bar",
+            "funnel",
+            "pie",
+            "donut",
+            "radar"
+          ]
+        }
+      ]
+    },
+    "parallel-sections": {
+      "layoutStrategy": "parallel-comparison-analysis",
+      "readingPath": [
+        "summary",
+        "parallel-primary",
+        "parallel-secondary",
+        "detail-table"
+      ],
+      "primaryRegion": {
+        "id": "parallel-primary",
+        "size": "medium",
+        "preferredChartFamilies": [
+          "line",
+          "area",
+          "column",
+          "bar",
+          "dual-axes"
+        ],
+        "discouragedChartFamilies": [
+          "pie",
+          "donut",
+          "radar",
+          "gauge"
+        ]
+      },
+      "secondaryRegions": [
+        {
+          "id": "parallel-secondary",
+          "size": "medium",
+          "preferredChartFamilies": [
+            "line",
+            "column",
+            "bar",
+            "scatter",
+            "heatmap",
+            "funnel"
+          ]
+        }
+      ]
+    }
+  }
+}

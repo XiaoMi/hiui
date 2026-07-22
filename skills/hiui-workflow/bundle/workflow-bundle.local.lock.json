@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-workflow",
+  "bundleVersion": "1.2.0-local",
+  "channel": "local-dev",
+  "installPolicyRef": "install-policy.json",
+  "compatibilityMatrixRef": "compatibility-matrix.json",
+  "hostProfilesRef": "host-profiles.json",
+  "runtimeCompatibility": {
+    "requiredRuntimes": [
+      "node",
+      "python3"
+    ],
+    "notes": [
+      "This lock is for maintainer-only validation against the current working tree before publishing a new upstream git snapshot.",
+      "Do not use this local-source lock as the public installation default."
+    ]
+  },
+  "skills": [
+    {
+      "name": "hiui-page-workflow",
+      "installName": "hiui-page-workflow",
+      "required": true,
+      "version": "1.2.0",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "local",
+        "path": "../hiui-page-workflow"
+      }
+    },
+    {
+      "name": "hiui-refine",
+      "installName": "hiui-refine",
+      "legacyInstallNames": [
+        "refine-product-requirements"
+      ],
+      "required": true,
+      "version": "2.0.0",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "local",
+        "path": "../hiui-refine"
+      }
+    },
+    {
+      "name": "hiui-design",
+      "installName": "hiui-design",
+      "required": true,
+      "version": "1.0.5",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "local",
+        "path": "../hiui-design"
+      }
+    },
+    {
+      "name": "ux-walkthrough",
+      "installName": "ux-walkthrough",
+      "required": true,
+      "version": "1.0.2",
+      "versionPolicy": "follow-source-manifest",
+      "manifestPath": "skill.manifest.json",
+      "source": {
+        "kind": "local",
+        "path": "../ux-walkthrough"
+      }
+    }
+  ]
+}

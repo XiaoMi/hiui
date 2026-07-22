@@ -1,0 +1,164 @@
+{
+  "pageType": "table-basic",
+  "title": "供应商管理",
+  "description": "管理售后服务供应商的合作状态、结算周期与联系人信息。当前版本先以本地示例数据承接新页面生成链路，后续再替换为真实接口。",
+  "resetMessage": "筛选条件已重置",
+  "queryMessage": "供应商列表已刷新",
+  "primaryAction": {
+    "label": "新增供应商",
+    "message": "新增供应商入口待接入真实表单"
+  },
+  "secondaryAction": {
+    "label": "导出列表",
+    "message": "供应商导出任务已创建"
+  },
+  "queryFields": [
+    {
+      "key": "keyword",
+      "label": "供应商名称/编码",
+      "control": "input",
+      "placeholder": "请输入名称或编码"
+    },
+    {
+      "key": "supplierType",
+      "label": "供应商类型",
+      "control": "select",
+      "placeholder": "请选择供应商类型",
+      "options": [
+        {
+          "id": "区域服务商",
+          "title": "区域服务商"
+        },
+        {
+          "id": "安装服务商",
+          "title": "安装服务商"
+        },
+        {
+          "id": "物流协同商",
+          "title": "物流协同商"
+        }
+      ]
+    },
+    {
+      "key": "settlementCycle",
+      "label": "结算周期",
+      "control": "select",
+      "placeholder": "请选择结算周期",
+      "options": [
+        {
+          "id": "月结",
+          "title": "月结"
+        },
+        {
+          "id": "半月结",
+          "title": "半月结"
+        },
+        {
+          "id": "双周结",
+          "title": "双周结"
+        }
+      ]
+    },
+    {
+      "key": "cooperationStatus",
+      "label": "合作状态",
+      "control": "select",
+      "placeholder": "请选择合作状态",
+      "options": [
+        {
+          "id": "合作中",
+          "title": "合作中"
+        },
+        {
+          "id": "待续约",
+          "title": "待续约"
+        }
+      ]
+    }
+  ],
+  "columns": [
+    {
+      "key": "supplierCode",
+      "label": "供应商编码"
+    },
+    {
+      "key": "keyword",
+      "label": "供应商名称"
+    },
+    {
+      "key": "supplierType",
+      "label": "供应商类型"
+    },
+    {
+      "key": "cooperationMode",
+      "label": "合作模式"
+    },
+    {
+      "key": "contactName",
+      "label": "联系人"
+    },
+    {
+      "key": "contactPhone",
+      "label": "联系电话"
+    },
+    {
+      "key": "settlementCycle",
+      "label": "结算周期"
+    },
+    {
+      "key": "cooperationStatus",
+      "label": "合作状态"
+    },
+    {
+      "key": "updatedAt",
+      "label": "更新时间"
+    }
+  ],
+  "rowActions": [
+    {
+      "key": "view",
+      "label": "查看",
+      "message": "供应商详情能力待接入"
+    },
+    {
+      "key": "edit",
+      "label": "编辑",
+      "message": "供应商编辑能力待接入"
+    }
+  ],
+  "rows": [
+    {
+      "supplierCode": "SUP-10001",
+      "keyword": "华东上门服务中心",
+      "supplierType": "区域服务商",
+      "cooperationMode": "直营网点协同",
+      "contactName": "李成",
+      "contactPhone": "13800001234",
+      "settlementCycle": "月结",
+      "cooperationStatus": "合作中",
+      "updatedAt": "2026-07-12 10:20"
+    },
+    {
+      "supplierCode": "SUP-10018",
+      "keyword": "京北仓配安装团队",
+      "supplierType": "安装服务商",
+      "cooperationMode": "驻场合作",
+      "contactName": "王敏",
+      "contactPhone": "13800005678",
+      "settlementCycle": "半月结",
+      "cooperationStatus": "待续约",
+      "updatedAt": "2026-07-11 18:45"
+    },
+    {
+      "supplierCode": "SUP-10036",
+      "keyword": "西南寄修承运中心",
+      "supplierType": "物流协同商",
+      "cooperationMode": "委托履约",
+      "contactName": "周航",
+      "contactPhone": "13800007890",
+      "settlementCycle": "双周结",
+      "cooperationStatus": "合作中",
+      "updatedAt": "2026-07-10 16:00"
+    }
+  ]
+}

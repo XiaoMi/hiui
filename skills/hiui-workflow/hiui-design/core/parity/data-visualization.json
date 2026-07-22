@@ -1,0 +1,75 @@
+{
+  "pageType": "data-visualization",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/data-visualization.tsx",
+    "requiredTokens": [
+      "StatListPageFrame",
+      "Area",
+      "Bar",
+      "Pie",
+      "Gauge",
+      "queryVisualizationInsightRows"
+    ]
+  },
+  "managedAnalyticsWrapper": {
+    "requiredTokens": [
+      "CanonicalDataVisualizationPage",
+      "schema={schema}",
+      "className={styles.pageRoot}",
+      "hiui-pagegen generation-strategy: managed-analytics",
+      "hiui-pagegen asset profile: managed-analytics-shell",
+      "hiui-pagegen delivery role: managed-analytics-business-shell",
+      "hiui-pagegen template marker: data-visualization"
+    ],
+    "forbiddenTokens": [
+      "useHostAdapter",
+      "OfficialRuntimeEntryPage",
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      ".local-context/hiui-design"
+    ]
+  },
+  "referenceAssetPage": {
+    "requiredTokens": [
+      "DataVisualizationPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"data-visualization\""
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      ".local-context/hiui-design"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/data-visualization/CanonicalDataVisualizationPage.tsx",
+    "requiredTokens": [
+      "StatListPageFrame",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "Area",
+      "Bar",
+      "Column",
+      "DualAxes",
+      "Gauge",
+      "Liquid",
+      "Pie",
+      "Radar",
+      "useHostAdapter",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "data-hiui-pagegen-template=\"data-visualization\"",
+      "data-hiui5-shell=\"StatListPageFrame\""
+    ],
+    "forbiddenTokens": [
+      ".local-context/hiui-design",
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "echarts.init",
+      "PageHeader"
+    ]
+  }
+}

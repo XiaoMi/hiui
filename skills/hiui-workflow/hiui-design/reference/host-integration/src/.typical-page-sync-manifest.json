@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "files": {
+    "CHECKLIST.md": {
+      "sourceHash": "de3d8395ecf7905394c6ed9111d7072681b97a5ae0b76a7c9062fd88d0cec51f"
+    },
+    "README.md": {
+      "sourceHash": "a44ed094154b7a9bebbce2ea4d364becd0be14f661b86e3d662b7331fe09f823"
+    },
+    "app-frame.tsx": {
+      "sourceHash": "4cce5b561bbf525775bcb3d796ce156bd5605fcbb0ad2620622c20b5ecadb228"
+    },
+    "app-shell.tsx": {
+      "sourceHash": "88053f82e562a0156e30905ab3b5f9e3950577d960f193ebcca7c331aa7270b9"
+    },
+    "assets/intranet-offline-badge-slash.svg": {
+      "sourceHash": "a6990d0547925edbb21669f189e2f445c327edbd7d106942cbea7e248442b2ff"
+    },
+    "assets/intranet-offline-badge.svg": {
+      "sourceHash": "ce6aca4591d562fa2440b774b96a7921a6badd0af0c694ed89a5da0e8d762c26"
+    },
+    "assets/intranet-offline-base.svg": {
+      "sourceHash": "3433ff68186f9db98d4b79d1def123a908d2a8de727cfdb0e6aaad30a43d90ae"
+    },
+    "assets/intranet-offline-globe.svg": {
+      "sourceHash": "f5ba010f14de0196b28142b7caa152da56a3118a7dc0ac576a198a70d644ca3d"
+    },
+    "assets/load-fail-indicator.svg": {
+      "sourceHash": "5e701d4983fade9d9d9f829bd23971643b29ea5838c74dc6239eeacd6cd05f2a"
+    },
+    "assets/network-error-indicator.svg": {
+      "sourceHash": "93ab8e13791f42b28f7df9e53d09a1233d45118a10a6aa7d4a095110123fa27f"
+    },
+    "assets/no-permission-badge.svg": {
+      "sourceHash": "4cf511a943d0fefa7cc7028e2108d76083251b8e677e0d64b9c22bb1262c2a67"
+    },
+    "assets/no-permission-main.svg": {
+      "sourceHash": "d786e37d4ab607c828ff304e833732367daeca21ea5dc8e4e84cd0600e9cdfe8"
+    },
+    "assets/page-not-found-indicator.svg": {
+      "sourceHash": "0a0fd720c6e66ba17f33ad7abdc6f97b88d8cd1c279bda697109606322360676"
+    },
+    "assets/under-construction-line-1.svg": {
+      "sourceHash": "e8ec12f4f8e2b7f42507e314b2e2af58582f8985183f5db3a8076c36c458e6bc"
+    },
+    "assets/under-construction-line-2.svg": {
+      "sourceHash": "533bce8942cb262dc31d25e07608b6e73268e770f1d18ae66dfd9a963c137c42"
+    },
+    "assets/under-construction-line-3.svg": {
+      "sourceHash": "4a775adcf6699bb84af3cf4a46a2c3875871e79e051657eeaacce23c892eafc6"
+    },
+    "assets/under-construction-main.svg": {
+      "sourceHash": "f8243b3986a5e4109937c67462549d041f7b00f229970ac49d23d755fe36eb15"
+    },
+    "charts/hiui-chart-theme.ts": {
+      "sourceHash": "b6b6fb6cb9c0c6d3ac092035d29d4bc8196e97560c3b5868d8ba391d926773c7"
+    },
+    "components/layout/host-header-slot.tsx": {
+      "sourceHash": "56e97a8beb5abe26e86333705c50d7f823003f82201ba580c6c1f7356578035e"
+    },
+    "components/layout/layout-content-context.tsx": {
+      "sourceHash": "c4233973b0d8d358a452d0373824f4bab5ca2c5c7ac480e21fd7bd5f20c7f52e"
+    },
+    "components/layout/page-header-portal.tsx": {
+      "sourceHash": "d8f1ca8e259ecc1857a7e3e287abd6eed8925cc608d5105af68e7b22e5bcf255"
+    },
+    "components/layout/typical-page-host.tsx": {
+      "sourceHash": "d929b364106fca800961958a4e2506138cc658f7a72831ab10b1e6ada6bec5f3"
+    },
+    "components/managed-page/data-visualization-primitives.tsx": {
+      "sourceHash": "bfdf595265622caa5b3f3e490f65c188cd4f51dd651636d37184d4d417dc41ca"
+    },
+    "components/managed-page/fixed-dashboard-page-frame.tsx": {
+      "sourceHash": "be47f9cec7396b1d26112d982d20b669516ec84df2eead05d18f588e3398afc4"
+    },
+    "components/prompt-copy-floating-button.tsx": {
+      "sourceHash": "594a32496cbdcccb5e81ff9c2d9980a8c0a8b1487a21b0f4f1e52208845fd337"
+    },
+    "pages/basic-table.tsx": {
+      "sourceHash": "72cc3630fc2cb7ef3d50fa6c80f9feb80927e25d5c4c20e76ecd9a49cfe8e94e"
+    },
+    "pages/data-visualization.mock.ts": {
+      "sourceHash": "30d1f6dd5868614b45e16fd2f07262092dc2ec37bfa66bacc20fb8c8c0a22c9e"
+    },
+    "pages/data-visualization.module.scss": {
+      "sourceHash": "654eb4150a2e3e282c4df34af1343a2906be2fea7e52363065770e598a3e7f0c"
+    },
+    "pages/data-visualization.tsx": {
+      "sourceHash": "6e93669652d3d8219142ca83ca86baf9bfbee5422daabcc2d09f290be7cd2c17"
+    },
+    "pages/drawer-detail.tsx": {
+      "sourceHash": "413f6facc9e055b1eff19c65e700acf5139a68327694c281c7ff58ee4d8805b4"
+    },
+    "pages/drawer-form.tsx": {
+      "sourceHash": "0fc355b1144695a37fc2f9de41b43e6032ff9924a104d7a63be0a9659196552c"
+    },
+    "pages/empty-state.tsx": {
+      "sourceHash": "46a205f3c7e6cc13a82cfba2acd5a1e89700aa6174ba8af3a1272b0d195b4832"
+    },
+    "pages/full-page-detail.module.scss": {
+      "sourceHash": "78d1087781e51a198df36b6fe282e607a9eb75d4717e7130c8dbf27f7acd314e"
+    },
+    "pages/full-page-detail.tsx": {
+      "sourceHash": "07b62bc2735c296049bb3fb67c3d7f3e0b41418fd97ecfda4a8f81461f6f7df5"
+    },
+    "pages/full-page-edit.tsx": {
+      "sourceHash": "b64ac4b89332fd45124e6679e03fa5c3a9974ef906645faa7a745464b221913a"
+    },
+    "pages/intranet-offline.tsx": {
+      "sourceHash": "77a5255e57aebf8e1c5f3c303bdabd3f05f486118a16d8af633beb8a234b194b"
+    },
+    "pages/inventory-split.module.scss": {
+      "sourceHash": "71b63b40207b43a644ae4f55757888234b934a1723dc470252e0bb6adb0c518b"
+    },
+    "pages/inventory-split.tsx": {
+      "sourceHash": "1fc2d3b36405770eb69cd04c279e2ff0c3e2ff6b7866f2bb41d6e14a5e4da02c"
+    },
+    "pages/load-fail.tsx": {
+      "sourceHash": "a0a37eb21a954d7c0ac336d0b7344bc56f0ea982771299249b21a03397e9bc44"
+    },
+    "pages/network-error.tsx": {
+      "sourceHash": "cae65a63194dd7cc9551bbce0c942f87678ff9018a262d6e7ad274533f6da29a"
+    },
+    "pages/no-permission.tsx": {
+      "sourceHash": "b3d946c0897077edddda919f6ad6c0b3c8c0b7e9409c9851e91843afbcabecc6"
+    },
+    "pages/page-not-found.tsx": {
+      "sourceHash": "c6703e6f47597048bab05a45fc05a7bb1df219a37454bf09076f25a8d7019b6e"
+    },
+    "pages/request-utils.ts": {
+      "sourceHash": "5a517fa243eacf3712c36b755b598d97ce3878e38f35fe5d3acce62f94d0d41c"
+    },
+    "pages/table-stat.mock.ts": {
+      "sourceHash": "d892ac74c4e9a452d12189537aacea8b62b21554a688f0b2b233aa78777000f7"
+    },
+    "pages/table-stat.tsx": {
+      "sourceHash": "3ff34a4b241ab263cd24bf5e4b6b223f81137fa6f5527127782a75f2faad0893"
+    },
+    "pages/tree-table.tsx": {
+      "sourceHash": "5ad2881f0d681fcade80a6b55f5ee37445ebf1942556790a8d46fe4b07a956e1"
+    },
+    "pages/typical-pages.mock.ts": {
+      "sourceHash": "0b9dc3dc656c56d627acb98e77fede733994d50f2b55086acaad7397746da5ca"
+    },
+    "pages/under-construction.tsx": {
+      "sourceHash": "233f01a073bec54266b9fb9138d3ff716febc37ce0e30664152e06c89bb5fa95"
+    },
+    "query-filter/managed-query-filter-fields.js": {
+      "sourceHash": "a520abcc200045b3c24596b8ab242e3f68f6268821564db0961d6a29bf2d4031"
+    },
+    "routes/config.tsx": {
+      "sourceHash": "6609908ece777491328da148c61b7c8562404ed7994a086c0b5a34fec6bdfa2d"
+    },
+    "routes/example-prompts.ts": {
+      "sourceHash": "0519de810350c1d85203d2ca30d2e47eec93a8303bd30b54b55fc909a3ede179"
+    },
+    "routes/types.ts": {
+      "sourceHash": "414a5fe67367ee71f095bc45c06a5d81caa0e610e7a950c8b5127f44dab94de0"
+    },
+    "shims/schema-types-empty.js": {
+      "sourceHash": "1ad08945f6562c723e4edb39b334355dbc818be7a9f3ec87c949d582f1b1c43b"
+    }
+  }
+}

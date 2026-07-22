@@ -1,0 +1,87 @@
+{
+  "pageType": "full-page-detail",
+  "title": "全页详情",
+  "actions": [
+    {
+      "key": "view-flow",
+      "label": "查看流程",
+      "kind": "secondary",
+      "message": "查看流程（示例）"
+    }
+  ],
+  "sections": [
+    {
+      "id": "basicInfo",
+      "title": "基础信息",
+      "fields": [
+        { "key": "ticketNo", "label": "工单号", "value": "WO20260418001" },
+        { "key": "status", "label": "工单状态", "value": "处理中" },
+        { "key": "ticketType", "label": "工单类型", "value": "维修工单" },
+        { "key": "serviceMethod", "label": "服务方式", "value": "上门服务" },
+        { "key": "relatedProduct", "label": "关联商品", "value": "Xiaomi 16 Pro" },
+        { "key": "purchaseChannel", "label": "购买渠道", "value": "小米商城" },
+        { "key": "visitReason", "label": "来访原因", "value": "整机无法正常开机" }
+      ]
+    },
+    {
+      "id": "warrantyInfo",
+      "title": "三包信息",
+      "kind": "warranty-cards",
+      "items": [
+        { "type": "退货", "remainingDays": 2, "startAt": "2026/04/16", "endAt": "2026/04/22" },
+        { "type": "换货", "remainingDays": 9, "startAt": "2026/04/16", "endAt": "2026/04/30" },
+        { "type": "维修", "remainingDays": 469, "startAt": "2025/08/01", "endAt": "2027/08/01" }
+      ]
+    },
+    {
+      "id": "customerInfo",
+      "title": "客户信息",
+      "fields": [
+        { "key": "userName", "label": "用户姓名", "value": "赵冉" },
+        { "key": "userTags", "label": "用户标签", "value": "多次来访 / 会员用户" },
+        { "key": "userPhone", "label": "用户电话", "value": "13900000088" }
+      ]
+    },
+    {
+      "id": "serviceInfo",
+      "title": "服务信息",
+      "fields": [
+        { "key": "serviceOrg", "label": "服务机构", "value": "北京上门中心" },
+        { "key": "serviceEngineer", "label": "服务工程师", "value": "张晨" },
+        { "key": "acceptedAt", "label": "受理时间", "value": "2026/04/17 15:20:00" },
+        {
+          "key": "description",
+          "label": "问题描述",
+          "value": "此处展示示例描述信息，可能会比较长，超出是内容换行展示"
+        }
+      ]
+    },
+    {
+      "id": "serviceRecords",
+      "title": "服务记录",
+      "kind": "table",
+      "columns": [
+        { "key": "serviceTime", "label": "服务时间", "width": 180 },
+        { "key": "serviceAction", "label": "服务动作", "width": 160 },
+        { "key": "status", "label": "状态", "width": 120 },
+        { "key": "detailDescription", "label": "详情描述", "width": 360 }
+      ],
+      "rows": [
+        {
+          "id": "record-001",
+          "serviceTime": "2026/04/17 15:20:00",
+          "serviceAction": "受理工单",
+          "status": "已完成",
+          "detailDescription": "客服已完成工单受理，并同步用户诉求与设备信息。"
+        },
+        {
+          "id": "record-002",
+          "serviceTime": "2026/04/18 09:30:00",
+          "serviceAction": "上门检测",
+          "status": "处理中",
+          "detailDescription": "工程师已预约上门检测，待同步备件库存后继续处理。"
+        }
+      ]
+    }
+  ]
+}

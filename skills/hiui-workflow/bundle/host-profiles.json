@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-workflow",
+  "defaultHost": "codex",
+  "hosts": {
+    "codex": {
+      "description": "Codex default host profile.",
+      "requiresExplicitTarget": false,
+      "skillsHomeEnv": [
+        "WORKFLOW_SKILLS_HOME"
+      ],
+      "homeEnv": [
+        "WORKFLOW_HOME",
+        "CODEX_HOME"
+      ],
+      "defaultHome": "~/.codex",
+      "skillsDirName": "skills"
+    },
+    "generic": {
+      "description": "Generic non-Codex host profile. The caller must provide --target.",
+      "requiresExplicitTarget": true
+    }
+  }
+}

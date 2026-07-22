@@ -1,0 +1,109 @@
+{
+  "pageType": "tree-table",
+  "title": "树形表格",
+  "searchPlaceholder": "部门名称 / 职责关键词",
+  "rowKey": "id",
+  "defaultExpandedRowKeys": ["dept-001"],
+  "secondaryAction": {
+    "label": "导出",
+    "message": "组织架构已导出（示例）"
+  },
+  "primaryAction": {
+    "label": "新增部门",
+    "message": "新增一级部门（示例）"
+  },
+  "queryFields": [
+    {
+      "key": "managerId",
+      "label": "负责人",
+      "control": "select",
+      "options": [
+        { "id": "m-001", "title": "王宁" },
+        { "id": "m-002", "title": "赵青" },
+        { "id": "m-003", "title": "陈瑶" }
+      ]
+    },
+    {
+      "key": "organizationId",
+      "label": "所属机构",
+      "control": "select",
+      "options": [
+        { "id": "org-cn", "title": "中国区服务中心" },
+        { "id": "org-hq", "title": "总部客服运营" }
+      ]
+    }
+  ],
+  "columns": [
+    { "key": "departmentName", "label": "部门", "width": 280 },
+    { "key": "deptStatus", "label": "部门状态", "width": 100 },
+    { "key": "departmentDuty", "label": "部门职责", "width": 220 },
+    { "key": "managerName", "label": "负责人", "width": 110 },
+    { "key": "memberCount", "label": "成员数量", "width": 100 },
+    { "key": "organizationTitle", "label": "所属机构", "width": 180 },
+    { "key": "departmentDesc", "label": "部门描述", "width": 220 }
+  ],
+  "rowActions": [
+    {
+      "key": "edit",
+      "label": "编辑",
+      "message": "已进入部门编辑态（示例）"
+    },
+    {
+      "key": "create-child",
+      "label": "子部门",
+      "message": "新增子部门（示例）"
+    }
+  ],
+  "rows": [
+    {
+      "id": "dept-001",
+      "managerId": "m-001",
+      "organizationId": "org-cn",
+      "departmentName": "售后运营中心",
+      "deptStatus": "启用",
+      "departmentDuty": "统筹售后履约策略与服务运营规则",
+      "managerName": "王宁",
+      "memberCount": 36,
+      "organizationTitle": "中国区服务中心",
+      "departmentDesc": "负责售后服务运营、规则和策略落地",
+      "children": [
+        {
+          "id": "dept-001-1",
+          "managerId": "m-002",
+          "organizationId": "org-cn",
+          "departmentName": "结算管理组",
+          "deptStatus": "启用",
+          "departmentDuty": "负责分账与提现结算运营",
+          "managerName": "赵青",
+          "memberCount": 12,
+          "organizationTitle": "中国区服务中心",
+          "departmentDesc": "支撑供应商和工程师结算策略"
+        },
+        {
+          "id": "dept-001-2",
+          "managerId": "m-003",
+          "organizationId": "org-cn",
+          "departmentName": "供应商运营组",
+          "deptStatus": "启用",
+          "departmentDuty": "负责供应商准入、评级与对账",
+          "managerName": "陈瑶",
+          "memberCount": 10,
+          "organizationTitle": "中国区服务中心",
+          "departmentDesc": "支撑供应商全生命周期运营"
+        }
+      ]
+    },
+    {
+      "id": "dept-002",
+      "managerId": "m-001",
+      "organizationId": "org-hq",
+      "departmentName": "总部客服运营",
+      "deptStatus": "启用",
+      "departmentDuty": "负责总部服务流程治理",
+      "managerName": "王宁",
+      "memberCount": 18,
+      "organizationTitle": "总部客服运营",
+      "departmentDesc": "统一制定总部服务流程标准"
+    }
+  ]
+}

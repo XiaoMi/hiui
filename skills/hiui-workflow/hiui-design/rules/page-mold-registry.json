@@ -1,0 +1,1324 @@
+{
+  "schemaVersion": "page-mold-registry.v1",
+  "molds": [
+    {
+      "moldId": "table-basic.managed-mold.v1",
+      "pageTypeId": "table-basic",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "cellEditRules",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "page-header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "queryFields",
+          "label": "筛选字段",
+          "contentType": "filter-controls",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "options",
+            "defaultValues"
+          ],
+          "forbiddenChanges": [
+            "query-filter-carrier",
+            "filter-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "tableColumns",
+          "label": "表格列",
+          "contentType": "table-column-schema",
+          "allowedChanges": [
+            "columnTitle",
+            "dataIndex",
+            "width",
+            "render",
+            "sorter"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "rowActions",
+          "label": "行操作",
+          "contentType": "table-row-actions",
+          "allowedChanges": [
+            "actionText",
+            "visibility",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "cellEditRules",
+          "label": "单元格编辑规则",
+          "contentType": "inline-cell-editing",
+          "allowedChanges": [
+            "editorType",
+            "options",
+            "validation",
+            "saveTrigger"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "row-height-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "table-stat.managed-mold.v1",
+      "pageTypeId": "table-stat",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "stat-section",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "statItems",
+        "tableColumns",
+        "rowActions",
+        "cellEditRules",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "page-header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "queryFields",
+          "label": "筛选字段",
+          "contentType": "filter-controls",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "options",
+            "defaultValues"
+          ],
+          "forbiddenChanges": [
+            "query-filter-carrier",
+            "filter-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "statItems",
+          "label": "统计卡片",
+          "contentType": "metric-schema",
+          "allowedChanges": [
+            "metricName",
+            "valueFormatter",
+            "trend"
+          ],
+          "forbiddenChanges": [
+            "card-radius",
+            "card-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "tableColumns",
+          "label": "表格列",
+          "contentType": "table-column-schema",
+          "allowedChanges": [
+            "columnTitle",
+            "dataIndex",
+            "width",
+            "render",
+            "sorter"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "rowActions",
+          "label": "行操作",
+          "contentType": "table-row-actions",
+          "allowedChanges": [
+            "actionText",
+            "visibility",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "cellEditRules",
+          "label": "单元格编辑规则",
+          "contentType": "inline-cell-editing",
+          "allowedChanges": [
+            "editorType",
+            "options",
+            "validation",
+            "saveTrigger"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "row-height-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "data-visualization.managed-mold.v1",
+      "pageTypeId": "data-visualization",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "stat-section",
+        "chart-section",
+        "table",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "statItems",
+        "chartSections",
+        "tableColumns",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "page-header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "statItems",
+          "label": "统计卡片",
+          "contentType": "metric-schema",
+          "allowedChanges": [
+            "metricName",
+            "valueFormatter",
+            "trend"
+          ],
+          "forbiddenChanges": [
+            "card-radius",
+            "card-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "chartSections",
+          "label": "图表区",
+          "contentType": "managed-chart-schema",
+          "allowedChanges": [
+            "chartType",
+            "series",
+            "xField",
+            "yField",
+            "legend"
+          ],
+          "forbiddenChanges": [
+            "chart-baseline",
+            "white-body-owner"
+          ]
+        },
+        {
+          "slotId": "tableColumns",
+          "label": "表格列",
+          "contentType": "table-column-schema",
+          "allowedChanges": [
+            "columnTitle",
+            "dataIndex",
+            "width",
+            "render",
+            "sorter"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "tree-table.managed-mold.v1",
+      "pageTypeId": "tree-table",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "query-filter",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "page-header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "queryFields",
+          "label": "筛选字段",
+          "contentType": "filter-controls",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "options",
+            "defaultValues"
+          ],
+          "forbiddenChanges": [
+            "query-filter-carrier",
+            "filter-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "tableColumns",
+          "label": "表格列",
+          "contentType": "table-column-schema",
+          "allowedChanges": [
+            "columnTitle",
+            "dataIndex",
+            "width",
+            "render",
+            "sorter"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry"
+          ]
+        },
+        {
+          "slotId": "rowActions",
+          "label": "行操作",
+          "contentType": "table-row-actions",
+          "allowedChanges": [
+            "actionText",
+            "visibility",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry",
+            "pane-scroll-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "tree-split.managed-mold.v1",
+      "pageTypeId": "tree-split",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "split-workspace",
+        "left-tree",
+        "right-main",
+        "table",
+        "pagination",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "treeFields",
+        "queryFields",
+        "tableColumns",
+        "rowActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "page-header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "treeFields",
+          "label": "树筛选/树节点字段",
+          "contentType": "tree-schema",
+          "allowedChanges": [
+            "nodeTitle",
+            "nodeKey",
+            "selectionMode"
+          ],
+          "forbiddenChanges": [
+            "split-pane-owner",
+            "pane-scroll-owner"
+          ]
+        },
+        {
+          "slotId": "queryFields",
+          "label": "筛选字段",
+          "contentType": "filter-controls",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "options",
+            "defaultValues"
+          ],
+          "forbiddenChanges": [
+            "query-filter-carrier",
+            "filter-grid-geometry"
+          ]
+        },
+        {
+          "slotId": "tableColumns",
+          "label": "表格列",
+          "contentType": "table-column-schema",
+          "allowedChanges": [
+            "columnTitle",
+            "dataIndex",
+            "width",
+            "render",
+            "sorter"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "pagination-owner",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "content-width-sizing",
+            "slot-root-geometry",
+            "pane-scroll-owner"
+          ]
+        },
+        {
+          "slotId": "rowActions",
+          "label": "行操作",
+          "contentType": "table-row-actions",
+          "allowedChanges": [
+            "actionText",
+            "visibility",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "table-carrier",
+            "table-viewport-wrapper",
+            "local-horizontal-scroll-owner",
+            "table-shell-padding",
+            "slot-root-geometry",
+            "pane-scroll-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "drawer-form.managed-mold.v1",
+      "pageTypeId": "drawer-form",
+      "lockedRegions": [
+        "drawer-shell",
+        "drawer-header",
+        "drawer-body",
+        "form-body",
+        "drawer-footer"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "formFields",
+        "validationRules",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "formFields",
+          "label": "表单字段",
+          "contentType": "form-schema",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "validation",
+            "initialValues"
+          ],
+          "forbiddenChanges": [
+            "form-carrier",
+            "footer-owner"
+          ]
+        },
+        {
+          "slotId": "validationRules",
+          "label": "校验规则",
+          "contentType": "validation-schema",
+          "allowedChanges": [
+            "required",
+            "pattern",
+            "asyncValidation"
+          ],
+          "forbiddenChanges": [
+            "form-carrier"
+          ]
+        },
+        {
+          "slotId": "footerActions",
+          "label": "底部操作",
+          "contentType": "footer-actions",
+          "allowedChanges": [
+            "buttonText",
+            "buttonState",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "footer-geometry",
+            "sticky-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "drawer-detail.managed-mold.v1",
+      "pageTypeId": "drawer-detail",
+      "lockedRegions": [
+        "drawer-shell",
+        "drawer-header",
+        "drawer-body",
+        "detail-body",
+        "drawer-footer"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "detailFields",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "detailFields",
+          "label": "详情字段",
+          "contentType": "description-schema",
+          "allowedChanges": [
+            "fieldLabels",
+            "valueFormatter",
+            "grouping"
+          ],
+          "forbiddenChanges": [
+            "detail-carrier",
+            "label-width-defaults"
+          ]
+        },
+        {
+          "slotId": "footerActions",
+          "label": "底部操作",
+          "contentType": "footer-actions",
+          "allowedChanges": [
+            "buttonText",
+            "buttonState",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "footer-geometry",
+            "sticky-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "feedback-status.managed-mold.v1",
+      "pageTypeId": "feedback-status",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "feedback-panel",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "statusTitle",
+        "statusDescription",
+        "primaryAction",
+        "secondaryAction"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "header-carrier",
+            "page-header-geometry",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "statusTitle",
+          "label": "状态标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy"
+          ],
+          "forbiddenChanges": [
+            "feedback-carrier"
+          ]
+        },
+        {
+          "slotId": "statusDescription",
+          "label": "状态说明",
+          "contentType": "rich-copy",
+          "allowedChanges": [
+            "copy",
+            "links"
+          ],
+          "forbiddenChanges": [
+            "feedback-carrier"
+          ]
+        },
+        {
+          "slotId": "primaryAction",
+          "label": "主操作",
+          "contentType": "button-action",
+          "allowedChanges": [
+            "buttonText",
+            "handler"
+          ],
+          "forbiddenChanges": [
+            "feedback-carrier"
+          ]
+        },
+        {
+          "slotId": "secondaryAction",
+          "label": "次操作",
+          "contentType": "button-action",
+          "allowedChanges": [
+            "buttonText",
+            "handler"
+          ],
+          "forbiddenChanges": [
+            "feedback-carrier"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "full-page-edit.managed-mold.v1",
+      "pageTypeId": "full-page-edit",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "form-body",
+        "footer",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "formFields",
+        "validationRules",
+        "footerActions",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "header-carrier",
+            "page-header-geometry",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "formFields",
+          "label": "表单字段",
+          "contentType": "form-schema",
+          "allowedChanges": [
+            "fieldLabels",
+            "fieldTypes",
+            "validation",
+            "initialValues"
+          ],
+          "forbiddenChanges": [
+            "form-carrier",
+            "footer-owner"
+          ]
+        },
+        {
+          "slotId": "validationRules",
+          "label": "校验规则",
+          "contentType": "validation-schema",
+          "allowedChanges": [
+            "required",
+            "pattern",
+            "asyncValidation"
+          ],
+          "forbiddenChanges": [
+            "form-carrier"
+          ]
+        },
+        {
+          "slotId": "footerActions",
+          "label": "底部操作",
+          "contentType": "footer-actions",
+          "allowedChanges": [
+            "buttonText",
+            "buttonState",
+            "handlers"
+          ],
+          "forbiddenChanges": [
+            "footer-geometry",
+            "sticky-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    },
+    {
+      "moldId": "full-page-detail.managed-mold.v1",
+      "pageTypeId": "full-page-detail",
+      "lockedRegions": [
+        "shell",
+        "header",
+        "white-body",
+        "detail-body",
+        "main-scroll"
+      ],
+      "editableSlots": [
+        "pageTitle",
+        "headerExtra",
+        "detailFields",
+        "supportingSections",
+        "mockData",
+        "apiBinding"
+      ],
+      "blockedFreeformScaffold": true,
+      "slotManifest": [
+        {
+          "slotId": "pageTitle",
+          "label": "页面标题",
+          "contentType": "plain-text",
+          "allowedChanges": [
+            "copy",
+            "onBack"
+          ],
+          "forbiddenChanges": [
+            "shell",
+            "header-geometry",
+            "header-carrier",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "headerExtra",
+          "label": "页头右侧操作/信息",
+          "contentType": "actions-or-summary",
+          "allowedChanges": [
+            "buttons",
+            "statusText",
+            "timeRange",
+            "primaryAction"
+          ],
+          "forbiddenChanges": [
+            "header-carrier",
+            "page-header-geometry",
+            "page-header-portal",
+            "page-header-padding",
+            "page-header-align-items",
+            "hi-v5-page-header-skeleton"
+          ]
+        },
+        {
+          "slotId": "detailFields",
+          "label": "详情字段",
+          "contentType": "description-schema",
+          "allowedChanges": [
+            "fieldLabels",
+            "valueFormatter",
+            "grouping"
+          ],
+          "forbiddenChanges": [
+            "detail-carrier",
+            "label-width-defaults"
+          ]
+        },
+        {
+          "slotId": "supportingSections",
+          "label": "辅助内容区",
+          "contentType": "managed-section-schema",
+          "allowedChanges": [
+            "sectionTitle",
+            "fieldGroups",
+            "charts"
+          ],
+          "forbiddenChanges": [
+            "white-body-owner",
+            "main-scroll-owner"
+          ]
+        },
+        {
+          "slotId": "mockData",
+          "label": "示例数据",
+          "contentType": "mock-records",
+          "allowedChanges": [
+            "records",
+            "emptyState"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        },
+        {
+          "slotId": "apiBinding",
+          "label": "接口绑定",
+          "contentType": "request-mapping",
+          "allowedChanges": [
+            "queryParams",
+            "responseMapping",
+            "submitHandlers"
+          ],
+          "forbiddenChanges": [
+            "layout"
+          ]
+        }
+      ]
+    }
+  ]
+}

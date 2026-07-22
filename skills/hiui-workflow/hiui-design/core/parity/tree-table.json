@@ -1,0 +1,52 @@
+{
+  "pageType": "tree-table",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/tree-table.tsx",
+    "requiredTokens": [
+      "TablePageFrame",
+      "renderTreeTableTextEllipsis",
+      "renderTreeName()",
+      "defaultExpandedRowKeys: ['dept-001']",
+      "searchPlaceholder={t('部门名称 / 职责关键词')}"
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "TreeTablePage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"tree-table\""
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      ".local-context/hiui-design",
+      "ProjectTreeTableCarrier"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/tree-table/CanonicalTreeTablePage.tsx",
+    "requiredTokens": [
+      "TablePageFrame",
+      "renderTreeTableTextEllipsis",
+      "renderTreeName()",
+      "defaultExpandedRowKeys: schema.defaultExpandedRowKeys || []",
+      "proTablePageStyles.treeSwitcherCol",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "data-hiui-pagegen-template=\"tree-table\"",
+      "data-hiui5-tree-table-presentation=\"inline-tree\"",
+      "data-hiui5-shell=\"TablePageFrame\""
+    ],
+    "forbiddenTokens": [
+      ".local-context/hiui-design",
+      "ProjectTreeTableCarrier",
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput"
+    ]
+  }
+}

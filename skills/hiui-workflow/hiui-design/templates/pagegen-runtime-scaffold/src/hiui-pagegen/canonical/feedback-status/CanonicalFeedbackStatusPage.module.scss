@@ -1,0 +1,88 @@
+.pageRoot {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100%;
+  padding: 0 16px 16px;
+  background: #f5f8fc;
+}
+
+.headerRegion {
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+}
+
+.pageHeader {
+  width: 100%;
+  min-width: 0;
+}
+
+.headerActions {
+  gap: 12px;
+}
+
+.whiteBody {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.feedbackPanel {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #edeff2;
+  border-radius: 12px;
+}
+
+.panelContent {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #1a1d26;
+}
+
+.panelDescription {
+  font-size: 14px;
+  line-height: 22px;
+  color: #60636b;
+}
+
+.descriptionSeparator {
+  margin: 0 2px;
+}
+
+.docLink {
+  color: #2660ff;
+}
+
+.panelActions {
+  margin-top: 12px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .headerActions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .feedbackPanel {
+    padding: 16px;
+  }
+}

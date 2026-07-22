@@ -1,0 +1,17 @@
+{
+  "pageType": "table-basic",
+  "requiredKeys": ["title", "queryFields", "columns", "rows"],
+  "optionalKeys": [
+    "description",
+    "searchPlaceholder",
+    "primaryAction",
+    "secondaryAction",
+    "rowActions",
+    "statusToneMap",
+    "resetMessage",
+    "queryMessage",
+    "emptyTitle",
+    "emptyDescription",
+    "pageSize"
+  ]
+}

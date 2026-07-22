@@ -1,0 +1,22 @@
+{
+  "pageType": "feedback-status",
+  "variant": "empty-state",
+  "title": "暂无供应商数据",
+  "panelTitle": "暂无供应商数据",
+  "panelDescription": "请先创建供应商档案，或导入现有供应商名录",
+  "docLinkText": "查看接入说明",
+  "secondaryActions": [
+    {
+      "label": "批量导入",
+      "message": "批量导入供应商（示例）"
+    }
+  ],
+  "primaryAction": {
+    "label": "新建供应商",
+    "message": "新建供应商（示例）"
+  },
+  "panelSecondaryAction": {
+    "label": "查看说明",
+    "message": "查看供应商接入说明（示例）"
+  }
+}

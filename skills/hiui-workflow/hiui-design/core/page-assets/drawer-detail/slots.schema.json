@@ -1,0 +1,4 @@
+{
+  "pageType": "drawer-detail",
+  "requiredKeys": ["title", "drawerTitle", "sections"]
+}

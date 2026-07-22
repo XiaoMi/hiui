@@ -1,0 +1,82 @@
+[
+  {
+    "id": "table-basic",
+    "label": "Table Basic",
+    "previewPageId": "pagegen-table-basic",
+    "officialPageId": "basic-table",
+    "viewport": { "width": 1440, "height": 1200 },
+    "maxDiffRatio": 0.04
+  },
+  {
+    "id": "table-stat",
+    "label": "Table Stat",
+    "previewPageId": "pagegen-table-stat",
+    "officialPageId": "table-stat",
+    "viewport": { "width": 1440, "height": 1200 },
+    "maxDiffRatio": 0.04
+  },
+  {
+    "id": "data-visualization",
+    "label": "Data Visualization",
+    "previewPageId": "pagegen-data-visualization",
+    "officialPageId": "data-visualization",
+    "viewport": { "width": 1440, "height": 1800 },
+    "maxDiffRatio": 0.05
+  },
+  {
+    "id": "tree-table",
+    "label": "Tree Table",
+    "previewPageId": "pagegen-tree-table",
+    "officialPageId": "tree-table",
+    "viewport": { "width": 1440, "height": 1400 },
+    "maxDiffRatio": 0.05
+  },
+  {
+    "id": "tree-split",
+    "label": "Tree Split",
+    "previewPageId": "pagegen-tree-split",
+    "officialPageId": "tree-split",
+    "viewport": { "width": 1440, "height": 1400 },
+    "maxDiffRatio": 0.05
+  },
+  {
+    "id": "drawer-detail",
+    "label": "Drawer Detail",
+    "previewPageId": "pagegen-drawer-detail",
+    "officialPageId": "drawer-detail",
+    "viewport": { "width": 1440, "height": 1200 },
+    "maxDiffRatio": 0.04
+  },
+  {
+    "id": "drawer-form",
+    "label": "Drawer Form",
+    "previewPageId": "pagegen-drawer-form",
+    "officialPageId": "drawer-form",
+    "viewport": { "width": 1440, "height": 1200 },
+    "maxDiffRatio": 0.04
+  },
+  {
+    "id": "full-page-edit",
+    "label": "Full Page Edit",
+    "previewPageId": "pagegen-full-page-edit",
+    "officialPageId": "full-page-edit",
+    "viewport": { "width": 1440, "height": 1600 },
+    "maxDiffRatio": 0.05
+  },
+  {
+    "id": "full-page-detail",
+    "label": "Full Page Detail",
+    "previewPageId": "pagegen-full-page-detail",
+    "officialPageId": "full-page-detail",
+    "viewport": { "width": 1440, "height": 1600 },
+    "maxDiffRatio": 0.05
+  },
+  {
+    "id": "feedback-status",
+    "label": "Feedback Status",
+    "previewPageId": "pagegen-feedback-status",
+    "officialPageId": "empty-state",
+    "viewport": { "width": 1440, "height": 1200 },
+    "maxDiffRatio": 0.03
+  }
+]

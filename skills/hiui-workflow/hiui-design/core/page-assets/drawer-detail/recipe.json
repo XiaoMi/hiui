@@ -1,0 +1,9 @@
+{
+  "pageType": "drawer-detail",
+  "templateFiles": {
+    "index.tsx.tpl": "index.tsx",
+    "index.module.scss.tpl": "index.module.scss"
+  },
+  "schemaFile": "page.schema.json",
+  "metaFile": "hiui-pagegen.meta.json"
+}

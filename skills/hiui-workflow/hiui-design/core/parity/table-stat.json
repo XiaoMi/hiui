@@ -1,0 +1,53 @@
+{
+  "pageType": "table-stat",
+  "officialSource": {
+    "path": ".local-context/hiui-design/reference/host-integration/src/pages/table-stat.tsx",
+    "requiredTokens": [
+      "StatListPageFrame",
+      "StatOverviewGrid",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "searchPlaceholder",
+      "proStatPageStyles.headerExtra"
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "TableStatPage",
+      "useHostAdapter",
+      "data-hiui-pagegen-template=\"table-stat\""
+    ],
+    "forbiddenTokens": [
+      "<table",
+      "tableSummary",
+      "<input",
+      "重置",
+      "查询"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/table-stat/CanonicalTableStatPage.tsx",
+    "requiredTokens": [
+      "StatListPageFrame",
+      "StatOverviewGrid",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "proStatPageStyles.headerExtra",
+      "renderStatTableTextEllipsis",
+      "searchPlaceholder={t(schema.searchPlaceholder || '请输入关键词')}",
+      "data-hiui5-shell=\"StatListPageFrame\""
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput",
+      "<Pagination",
+      "<Table"
+    ]
+  }
+}

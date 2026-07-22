@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "bundleName": "hiui-workflow",
+  "notes": [
+    "The public bundle resolves all four skills from the upstream XiaoMi/hiui repository with explicit git ref/path entries and follows XiaoMi/hiui:master by default.",
+    "The default lock now uses versionPolicy=follow-source-manifest, so the installed skill versions come from the current upstream manifests instead of a fixed git snapshot.",
+    "Workflow 1.2.0 expects the downstream hiui-design planner contract to expose requiredDocs[].readMode, requiredActions, formalAcceptanceActions, currentExecutionState, and canStartImplementation.",
+    "Workflow 1.2.0 also expects the requirements-refinement capability to resolve to the public `hiui-refine` skill identity.",
+    "The hiui-design manifest is still 1.0.0 in this branch, so compatibility must be judged by planner contract availability, not by semver label alone.",
+    "workflow-bundle.local.lock.json remains the maintainer-only path for validating unmerged workspace changes before they appear on XiaoMi/hiui:master.",
+    "When a reproducible public release snapshot is required, maintain a separate release lock that pins the same bundle to commit SHA refs."
+  ],
+  "testedBundles": [
+    {
+      "bundleVersion": "1.2.0-local",
+      "channel": "local-dev",
+      "skills": {
+        "hiui-page-workflow": "1.2.0",
+        "hiui-refine": "2.0.0",
+        "hiui-design": "1.0.0",
+        "ux-walkthrough": "1.0.2"
+      },
+      "status": "validated-local-smoke"
+    },
+    {
+      "bundleVersion": "1.2.0",
+      "channel": "master-follow",
+      "skills": {
+        "hiui-page-workflow": "1.2.0",
+        "hiui-refine": "2.0.0",
+        "hiui-design": "1.0.0",
+        "ux-walkthrough": "1.0.2"
+      },
+      "status": "validated-master-follow-smoke"
+    }
+  ]
+}

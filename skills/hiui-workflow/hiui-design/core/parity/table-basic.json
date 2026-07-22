@@ -1,0 +1,72 @@
+{
+  "pageType": "table-basic",
+  "officialSnapshot": {
+    "tarball": ".local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+    "entry": "package/dist/pro-list-page/bridge/query-filter.js",
+    "requiredTokens": [
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput",
+      "appearance: t = \"contained\"",
+      "showLabel: l = !1",
+      "children: \"全部筛选\"",
+      "children: \"清空\""
+    ]
+  },
+  "generatedPage": {
+    "requiredTokens": [
+      "TableBasicPage",
+      "CanonicalTableBasicPage",
+      "data-hiui-pagegen-template=\"table-basic\"",
+      "reference shell: TablePageFrame"
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput"
+    ]
+  },
+  "referenceAssetPage": {
+    "requiredTokens": [
+      "TableBasicPage",
+      "hiui-pagegen template marker: table-basic",
+      "TablePageFrame",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "renderTableTextEllipsis"
+    ],
+    "forbiddenTokens": [
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput"
+    ]
+  },
+  "canonicalSource": {
+    "path": "src/hiui-pagegen/canonical/table-basic/CanonicalTableBasicPage.tsx",
+    "requiredTokens": [
+      "data-hiui5-shell=\"hiui-pagegen-table-basic-v1\"",
+      "QueryFilterProvider",
+      "QueryFilter",
+      "FilterDrawer",
+      "FilterButton",
+      "SearchInput",
+      "stickyFooter",
+      "emptyContent || ("
+    ],
+    "forbiddenTokens": [
+      "TablePageFrame",
+      "ProListPageProvider",
+      "TypicalPageFieldMapProvider",
+      "queryFilterPickerOverlay",
+      "queryFilterDatePickerOverlay",
+      "proTablePageStyles.headerExtra",
+      "renderTableTextEllipsis",
+      "schema.searchPlaceholder",
+      "schema.statusToneMap",
+      "feedbackType",
+      "emptyContent: emptyContent || buildDefaultEmptyContent(schema, t)"
+    ]
+  }
+}

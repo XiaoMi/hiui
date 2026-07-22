@@ -1,0 +1,5 @@
+{
+  "pageType": "full-page-detail",
+  "requiredKeys": ["title", "sections"],
+  "optionalKeys": ["actions"]
+}
