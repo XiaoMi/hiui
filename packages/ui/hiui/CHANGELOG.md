@@ -1,5 +1,12 @@
 # @hi-ui/hiui
 
+## 5.0.1-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`e0d1077c1`](https://github.com/XiaoMi/hiui/commit/e0d1077c11a2bd2419e0888b2d0f28f3e8a93e3d)]:
+  - @hi-ui/table@5.0.1-alpha.0
+
 ## 5.0.0
 
 ### Major Changes
