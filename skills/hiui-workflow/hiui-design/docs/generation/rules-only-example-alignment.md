@@ -13,7 +13,7 @@
 3. 壳层语义一致
 4. 关键节奏一致
 
-换句话说，示例页不是“灵感参考”、展示页面或截图参考，而是 `rules-only` / `legacy-host-compatible` 的隐藏结构基线。reference 可以定义结构，但不能拥有路由、菜单或正式交付路径；真实业务页必须落回项目既有业务目录，并由宿主业务路由承接。
+换句话说，示例页不是“灵感参考”、展示页面或截图参考，而是 `rules-only` / `legacy-host-compatible` 的隐藏结构基线；但 `rules-only` 仍然可以接入标准壳运行时并复用已认证页面级组件。reference 可以定义结构，但不能拥有路由、菜单或正式交付路径；真实业务页必须落回项目既有业务目录，并由宿主业务路由承接。
 
 当 `plan-page-task` 选择 `generationStrategy=page-component` 时，`rules-only` 业务页的主生成资产是已认证页面级组件；reference / 示例页只作为组件认证、结构基线和 fallback 起点的证据，不再要求每次业务生成都从示例复制。`rules-only` 与 `host-integration` 的差异是“不接入示例 gallery / 示例路由”，不是“不能使用已认证组件”。
 
@@ -31,7 +31,7 @@
 优先级：
 
 - `rules-only`：完全服从机器计划的 `startFrom`。`template` 直接复制 `templates/archetypes/rules-only/<pageType>/page.template.tsx|jsx`；`reference-or-scaffold` 使用 `start-page` 的受管 scaffold / reference 分支；`host-archetype` 先绑定宿主 archetype，再把 reference 壳层语义翻译到该 archetype；任何情况下都不要自由手写页面
-- `legacy-host-compatible` / `host-compatible`：默认先消费机器计划给出的 `pageComponent` 与 `runtimeAdapterProof`，直接走普通典型页主链路；只有组件不可用、结构升级、宿主约束特殊，或计划显式进入 `managed-fallback` 时，才优先复制当前仓库同页型宿主 archetype，再使用兼容示例 / reference，仍缺失时才退回 rules-only 标准模板或受管 scaffold 起点。legacy fallback 分支里的复制对象是典型页结构契约，不是标准壳运行时；缺少合格 host archetype、首次适配页型、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership / shell carrier、出现 warning 或进入正式验收时，必须按 `legacy-host-compatibility.md` 展开 Translation Drift Guard
+- `legacy-host-compatible` / `host-compatible`：默认先消费 host contract、typical page contract、runtime boundary 与 page slots，直接走普通典型页轻量契约主链路；只有结构升级、宿主约束特殊，或计划显式进入 `managed-fallback` 时，才优先复制当前仓库同页型 host archetype，再使用受控 reference。缺少合格 host archetype、首次适配页型、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership、出现 warning 或进入正式验收时，必须按 `legacy-host-compatibility.md` 展开 Translation Drift Guard|`legacy-host-compatible` / `host-compatible`：默认先消费 host contract、typical page contract、runtime boundary 与 page slots，直接走普通典型页轻量契约主链路；只有结构升级、宿主约束特殊，或计划显式进入 `managed-fallback` 时，才优先复制当前仓库同页型 host archetype，再使用受控 reference。缺少合格 host archetype、首次适配页型、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership、出现 warning 或进入正式验收时，必须按 `legacy-host-compatibility.md` 展开 Translation Drift Guard
 
 允许快速替换的业务槽位：
 
@@ -225,27 +225,15 @@ contract 里的 `shell inheritance strategy` 继续只使用 `../../rules/contra
 推荐直接执行：
 
 ```bash
-npm run typical-page:start-page -- \
+npm run typical-page:generate -- \
   --page-type <page-type-id> \
   --page <generated-page-path>
 
 npm run typical-page:preflight -- \
   --page <generated-page-path>
 
-npm run typical-page:finalize-page -- \
-  --page-type <page-type-id> \
-  --page <generated-page-path> \
-  --archetype <host-archetype-path> \
-  --region header=<host-slot> \
-  --region white-body=<host-slot> \
-  --region query-filter=<host-slot> \
-  --region table=<host-slot> \
-  --region pagination=<host-slot> \
-  --ownership-mode <host-slot-owns-workspace|page-surface-owns-workspace> \
-  --ownership content-slot=<host-content-slot> \
-  --ownership white-body=<page-surface> \
-  --ownership outer-padding=<single-owner> \
-  --ownership main-scroll=<single-scroll-owner>
+npm run typical-page:verify -- \
+  --page <generated-page-path>
 ```
 
 这样 `example path + archetype path + region mapping` 才会变成生成物，而不是只留在口头描述里。进入正式验收 / 发布链路时，`finalize-page` 会同步触发 source gate 与 doctor；只要当前页仍有未允许 warning 或 hard fail，正式交付就不能算完成。
@@ -256,9 +244,9 @@ npm run typical-page:finalize-page -- \
 
 对 `rules-only` / `legacy-host-compatible` 再额外补一条硬规则：
 
-- `typical-page:finalize-page` 的成功结果只对**当次源码快照**有效
-- 只要当前页在 finalize 之后继续发生结构、ownership、页壳、mandatory components、source marker 或运行时修复，就必须重新 finalize
-- 普通典型页快速生成中，仅替换中文业务文案、字段、列或 mock 数据时，可以先以当前页 preflight / preview / lint / build 作为生成完成信号；进入正式验收或发布前再重新 finalize
+- `typical-page:verify` / `typical-page:legacy:verify` 的成功结果只对**当次源码快照**有效
+- 只要当前页在 verify 之后继续发生结构、ownership、页壳、mandatory components、source marker 或运行时修复，就必须重新 verify
+- 普通典型页快速生成中，仅替换中文业务文案、字段、列或 mock 数据时，可以先以当前页 verify / preview / lint / build 作为生成完成信号；进入正式验收或发布前再重新执行当前 mode 对应验收 gate
 - 旧 contract、旧截图、旧 `doctor PASS`、旧浏览器验收结果都不得继续代表当前页
 - 若当前页修复过白屏、Provider/Portal 缺失、滚动链错误、双白底/双工作区、组件语义错误等运行时问题，默认视为 contract 已失效，必须重新闭环
 

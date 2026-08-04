@@ -113,7 +113,7 @@ export function assertOfficialRuntimeModeAllowed(commandName, projectModeLock = 
     isOfficialRuntimeModeAllowed(projectMode),
     `${commandName} 仅允许在 legacy-host-compatible 模式下使用 official-runtime。当前项目 mode lock 位于 ${relativeToRoot(
       PROJECT_MODE_LOCK_PATH
-    )}，解析结果为 ${projectMode || '(empty)'}。若目标是新项目或非 legacy 主树，请改走标准默认链路：greenfield 普通典型页优先 reference-asset，legacy 主树普通典型页优先 page-component + runtimeAdapterProof；只有 legacy-host-compatible 的隔离现代运行时子应用才允许 official-runtime。`
+    )}，解析结果为 ${projectMode || '(empty)'}。若目标是新项目或非 legacy 主树，请改走标准默认链路：greenfield 普通典型页优先 reference-asset，legacy 主树普通典型页优先 host-contract + compiled PageSpec + HiuiLegacyPage runtime + typed page slots；只有 legacy-host-compatible 的隔离现代运行时子应用才允许 official-runtime。`
   )
 }
 
@@ -124,7 +124,7 @@ export function assertStandardPagegenAllowed(commandName) {
     projectMode?.mode !== 'legacy-host-compatible',
     `${commandName} 默认不支持 legacy-host-compatible 主树。当前项目 mode lock 位于 ${relativeToRoot(
       PROJECT_MODE_LOCK_PATH
-    )}，并且已标记为 legacy-host-compatible。普通典型页请沿 planner-selected certified page-component + runtime bridge 主链继续；当前治理若已证明 direct standard component 与宿主等价，它会先于 project-scoped carrier overlay 被选中，project-certified carrier 只保留为宿主事实要求下的受管 fallback。只有当前页缺少稳定页面落点、组合/非典型布局需要补规划事实，才单独运行 plan-page-task；如果确实需要标准壳运行时，请先执行 scripts/setup-isolated-standard-shell.mjs，为独立现代子应用准备运行时。`
+    )}，并且已标记为 legacy-host-compatible。普通典型页请沿项目接入链 apply:legacy（内部 legacy:init）+ 页面计划链 light-plan + 页面生成链 legacy:new|rewrite --plan 的 PageSpec runtime 边界继续；当前生成输入必须具备 host contract、compiled PageSpec、HiuiLegacyPage runtime、typed page slots 与 adapter readiness。只有当前页缺少稳定页面落点、组合/非典型布局需要补规划事实，才单独运行 plan-page-task；如果确实需要标准壳运行时，请先执行 scripts/setup-isolated-standard-shell.mjs，为独立现代子应用准备运行时。`
   )
 }
 

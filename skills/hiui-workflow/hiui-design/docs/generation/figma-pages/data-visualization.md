@@ -1,5 +1,9 @@
 # 数据可视化
 
+## 标准轻量生成路径
+
+轻量路径先做 brief qualification，再做 business semantic match，随后写 chart usage contract。`typical-page:analytics` 产物必须记录 `analyticsArtifacts.kickoffFacts`；当图表契约、绑定与页面源码均可检查时，才能进入 `deliveryState=result-ready`。
+
 `data-visualization` 的生成策略固定为 `managed-analytics`。它可以有典型页面示例和受管承载组件，但不走普通 `page-component-only` 流程；页面组件只负责页头、单一白底主体、指标区、图表区、明细表区、滚动和间距，真正的图表表达由 `chart usage contract`、数据可视化 token 与图表组件规则决定。
 
 ## 何时使用

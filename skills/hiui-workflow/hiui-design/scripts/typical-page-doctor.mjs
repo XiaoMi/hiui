@@ -12,6 +12,7 @@ import {
   inspectManagedAnalyticsSharedShellUsage,
   validateManagedPageSource,
 } from './lib/managed-page-source-guard.mjs'
+import { isSpecBelowMajor, isVersionRangeAtLeast } from './lib/semver-range-compat.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import {
@@ -26,9 +27,23 @@ import {
   buildLegacyRuntimeGuardIssues,
   collectLegacyHiUiEsImports,
   inspectInstalledRootRuntime,
-  parseLeadingMajorVersion,
   summarizeLegacyImportHits,
 } from './lib/legacy-runtime-guard.mjs'
+import {
+  isAuditedModeOverride as isInstallModeAuditedOverride,
+  resolveRecommendedMode as resolveInstallRecommendedMode,
+} from './lib/install-mode-policy.mjs'
+import {
+  RUNTIME_SEAL_RELATIVE_PATH,
+  verifyCanonicalShellBinding,
+  verifyPrimitiveRegionFallback,
+  verifyRuntimeSeal,
+} from './lib/legacy-runtime-provenance.mjs'
+import {
+  RUNTIME_PROVIDER_CONTRACT_RELATIVE_PATH,
+  readRuntimeProviderContract,
+  verifyRuntimeProviderContract,
+} from './lib/legacy-runtime-provider-policy.mjs'
 
 function printUsage() {
   console.log(`Usage:
@@ -84,7 +99,6 @@ const pathExistsCache = new Map()
 const textFileCache = new Map()
 const sourceFileListCache = new Map()
 const textFileListCache = new Map()
-const explicitMetricSurfaceSignalCache = new Map()
 const DEFAULT_TEXT_SCAN_SKIP_DIRS = new Set([
   '.git',
   '.idea',
@@ -101,7 +115,6 @@ const DEFAULT_TEXT_SCAN_SKIP_DIRS = new Set([
 const CONTENT_TEXT_FILE_PATTERN = /\.[cm]?[jt]sx?$|\.s?css$/i
 const SCRIPT_TEXT_FILE_PATTERN = /\.[cm]?[jt]sx?$/i
 const STYLE_FILE_PATTERN = /\.s?css$/i
-const BUSINESS_GRADIENT_PATTERN = /\b(?:linear-gradient|radial-gradient|conic-gradient)\s*\(/i
 
 async function pathExists(targetPath) {
   if (!targetPath) return false
@@ -144,6 +157,57 @@ async function readJsonIfExists(targetPath) {
   return JSON.parse(await readTextCached(targetPath))
 }
 
+async function collectManagedContractPageTypes(targetRoot) {
+  const contractsDir = path.join(targetRoot, '.local-context', 'hiui-design', 'outputs', 'page-contracts')
+  const entries = await fs.readdir(contractsDir).catch(() => [])
+  const pageTypes = new Set()
+  for (const entry of entries) {
+    if (!entry.endsWith('.json')) continue
+    const contract = await readJsonIfExists(path.join(contractsDir, entry))
+    const pageType = String(contract?.pageTypeId || contract?.pageType || '').trim()
+    if (pageType) pageTypes.add(pageType)
+  }
+  return [...pageTypes].sort()
+}
+
+async function verifyLegacyDoctorRuntimeFacts(targetRoot) {
+  const runtimeSeal = await verifyRuntimeSeal({ targetRoot })
+  const runtimeProviderContract = await readRuntimeProviderContract({ targetRoot })
+  const pageTypes = await collectManagedContractPageTypes(targetRoot)
+  const shellBindingResults = []
+  const primitiveFallbackResults = []
+  for (const pageType of pageTypes) {
+    shellBindingResults.push(await verifyCanonicalShellBinding({ targetRoot, pageType }))
+    primitiveFallbackResults.push(await verifyPrimitiveRegionFallback({ targetRoot, pageType }))
+  }
+  const shellBindingIssues = shellBindingResults.flatMap((result) => result.issues || [])
+  const primitiveFallbackIssues = primitiveFallbackResults.flatMap((result) => result.issues || [])
+  const runtimeProviderResults = []
+  if (runtimeProviderContract) {
+    for (const pageType of pageTypes) {
+      runtimeProviderResults.push(await verifyRuntimeProviderContract({ targetRoot, pageType }))
+    }
+  }
+  const runtimeProviderIssues = runtimeProviderResults.flatMap((result) => result.issues || [])
+  return {
+    runtimeSeal,
+    runtimeProviderContract,
+    pageTypes,
+    shellBinding: {
+      ok: pageTypes.length === 0 || shellBindingIssues.length === 0,
+      issues: shellBindingIssues,
+    },
+    primitiveFallback: {
+      ok: pageTypes.length === 0 || primitiveFallbackIssues.length === 0,
+      issues: primitiveFallbackIssues,
+    },
+    runtimeProvider: {
+      ok: !runtimeProviderContract || runtimeProviderIssues.length === 0,
+      issues: runtimeProviderIssues,
+    },
+  }
+}
+
 async function detectLegacyHostRuntimeMode(targetRoot, pkg) {
   const reasons = []
   const dependencies = {
@@ -158,22 +222,19 @@ async function detectLegacyHostRuntimeMode(targetRoot, pkg) {
   const hiuiSpec = dependencies['@hi-ui/hiui'] ?? ''
   const hiui5AliasSpec = dependencies.hiui5 ?? ''
 
-  if (parseLeadingMajorVersion(reactSpec) > 0 && parseLeadingMajorVersion(reactSpec) < 18) {
+  if (isSpecBelowMajor(reactSpec, 18)) {
     reasons.push(`react is pinned to ${reactSpec}`)
   }
 
-  if (
-    parseLeadingMajorVersion(reactDomSpec) > 0 &&
-    parseLeadingMajorVersion(reactDomSpec) < 18
-  ) {
+  if (isSpecBelowMajor(reactDomSpec, 18)) {
     reasons.push(`react-dom is pinned to ${reactDomSpec}`)
   }
 
-  if (parseLeadingMajorVersion(ahooksSpec) > 0 && parseLeadingMajorVersion(ahooksSpec) < 3) {
+  if (isSpecBelowMajor(ahooksSpec, 3)) {
     reasons.push(`ahooks is pinned to ${ahooksSpec}`)
   }
 
-  if (hiui5AliasSpec && parseLeadingMajorVersion(hiuiSpec) > 0 && parseLeadingMajorVersion(hiuiSpec) < 5) {
+  if (hiui5AliasSpec && isSpecBelowMajor(hiuiSpec, 5)) {
     reasons.push(
       `the host keeps legacy @hi-ui/hiui ${hiuiSpec} while exposing a separate hiui5 alias ${hiui5AliasSpec}`
     )
@@ -253,7 +314,10 @@ async function resolveEmbeddedShellTarballPath(skillRoot, version) {
 async function loadHostIntegrationDependencySnapshot(skillRoot) {
   const referencePath = path.join(skillRoot, 'docs', 'onboarding', 'host-integration-dependencies.json')
   const reference = await readJsonIfExists(referencePath)
-  return reference?.dependencies ?? {}
+  return {
+    ...(reference?.dependencies ?? {}),
+    ...(reference?.devDependencies ?? {}),
+  }
 }
 
 function pushCheck(checks, { id, ok, severity, summary, detail }) {
@@ -443,7 +507,12 @@ function collectManagedDependencyVersionDrift({
 
   for (const [depName, expected] of Object.entries(shellPackage.peerDependencies ?? {})) {
     const actual = findDependency(pkg, depName)
-    if (actual !== expected) {
+    const isReactRuntimeDep = depName === 'react' || depName === 'react-dom'
+    const compatible = isReactRuntimeDep
+      ? isVersionRangeAtLeast(actual, expected)
+      : actual === expected
+
+    if (!compatible) {
       drifts.push({ depName, actual: actual || '(missing)', expected })
     }
   }
@@ -1443,87 +1512,6 @@ function extractLocalStyleImportBindings(sourceFilePath, sourceRaw) {
   return bindings
 }
 
-function collectClassRefsNearMetricSurfaceMarker(sourceRaw, binding) {
-  const overview = new Set()
-  const embedded = new Set()
-  const markerPattern = /data-hiui5-metric-surface\s*=\s*["'](overview|embedded)["']/g
-
-  for (const match of sourceRaw.matchAll(markerPattern)) {
-    const surface = match[1]
-    const index = match.index ?? -1
-    if (index < 0) continue
-    const snippet = sourceRaw.slice(Math.max(0, index - 160), Math.min(sourceRaw.length, index + 900))
-    const classRefPattern = new RegExp(`\\b${escapeRegExp(binding)}\\.([A-Za-z0-9_]+)\\b`, 'g')
-
-    for (const classMatch of snippet.matchAll(classRefPattern)) {
-      const className = classMatch[1]
-      if (!className) continue
-      if (surface === 'overview') {
-        overview.add(className)
-      } else {
-        embedded.add(className)
-      }
-    }
-  }
-
-  return { embedded, overview }
-}
-
-function mergeExplicitMetricSurfaceSignals(target, incoming) {
-  for (const className of incoming.overview) {
-    target.overview.add(className)
-  }
-  for (const className of incoming.embedded) {
-    target.embedded.add(className)
-  }
-}
-
-async function collectExplicitMetricSurfaceSignals(rootDir) {
-  if (explicitMetricSurfaceSignalCache.has(rootDir)) {
-    return explicitMetricSurfaceSignalCache.get(rootDir)
-  }
-
-  const pending = (async () => {
-    const signalMap = new Map()
-    const sourceFiles = await collectSourceFiles(rootDir)
-
-    for (const sourceFilePath of sourceFiles) {
-      const sourceRaw = await readTextCached(sourceFilePath)
-      if (!/data-hiui5-metric-surface\s*=/.test(sourceRaw)) continue
-
-      const styleBindings = extractLocalStyleImportBindings(sourceFilePath, sourceRaw)
-      for (const styleBinding of styleBindings) {
-        const explicitSignals = collectClassRefsNearMetricSurfaceMarker(
-          sourceRaw,
-          styleBinding.binding
-        )
-
-        if (explicitSignals.overview.size === 0 && explicitSignals.embedded.size === 0) {
-          continue
-        }
-
-        const existing =
-          signalMap.get(styleBinding.absPath) ??
-          {
-            embedded: new Set(),
-            overview: new Set(),
-          }
-
-        mergeExplicitMetricSurfaceSignals(existing, explicitSignals)
-        signalMap.set(styleBinding.absPath, existing)
-      }
-    }
-
-    return signalMap
-  })().catch((error) => {
-    explicitMetricSurfaceSignalCache.delete(rootDir)
-    throw error
-  })
-
-  explicitMetricSurfaceSignalCache.set(rootDir, pending)
-  return pending
-}
-
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
@@ -1537,10 +1525,31 @@ function collectNeedleSnippets(raw, needle, radius = 240) {
   for (const match of raw.matchAll(pattern)) {
     const index = match.index ?? -1
     if (index < 0) continue
-    snippets.push(raw.slice(index, Math.min(raw.length, index + radius)))
+    snippets.push(raw.slice(Math.max(0, index - radius), Math.min(raw.length, index + needle.length + radius)))
+    if (snippets.length >= 4) break
   }
 
   return snippets
+}
+
+function hasClearedDescriptionsLabelWidth(sourceRaw) {
+  return (
+    /labelWidth\s*=\s*\{\s*(?:null|undefined)\s*\}/.test(sourceRaw) ||
+    /labelWidth\s*:\s*(?:null|undefined)/.test(sourceRaw)
+  )
+}
+
+function usesSchemaDescriptionsBridge(sourceRaw) {
+  return /\bSchemaDescriptionsBridge\b/.test(sourceRaw)
+}
+
+function hasTopAndHorizontalTwentySignal(snippet) {
+  return (
+    hasTwentyPxInsetSignal(snippet) ||
+    (hasPaddingTopTwentySignal(snippet) &&
+      hasPaddingLeftTwentySignal(snippet) &&
+      hasPaddingRightTwentySignal(snippet))
+  )
 }
 
 function hasWorkspaceChromeSignal(snippet) {
@@ -1609,47 +1618,6 @@ function hasHorizontalShellInsetSignal(snippet) {
     /(padding-inline|padding-left|padding-right)\s*:\s*(?:16|20)px\b/i.test(snippet) ||
     /padding\s*:\s*(?:16|20)px(?:\s+(?:16|20)px){0,3}\s*;/i.test(snippet) ||
     /padding\s*:\s*\d+(?:px)?\s+(?:16|20)px(?:\s+\d+(?:px)?(?:\s+(?:16|20)px)?)?\s*;/i.test(snippet)
-  )
-}
-
-function hasVerticalDescriptionsPlacement(sourceRaw) {
-  return (
-    /placement\s*=\s*['"]vertical['"]/.test(sourceRaw) ||
-    /placement\s*:\s*['"]vertical['"]/.test(sourceRaw)
-  )
-}
-
-function hasFixedDescriptionsLabelWidth(sourceRaw) {
-  return (
-    /labelWidth\s*=\s*\{?\s*\d+\s*\}?/.test(sourceRaw) ||
-    /labelWidth\s*:\s*\d+/.test(sourceRaw)
-  )
-}
-
-function hasLeftDescriptionsLabelPlacement(sourceRaw) {
-  return (
-    /labelPlacement\s*=\s*['"]left['"]/.test(sourceRaw) ||
-    /labelPlacement\s*:\s*['"]left['"]/.test(sourceRaw)
-  )
-}
-
-function hasClearedDescriptionsLabelWidth(sourceRaw) {
-  return (
-    /labelWidth\s*=\s*\{\s*(?:null|undefined)\s*\}/.test(sourceRaw) ||
-    /labelWidth\s*:\s*(?:null|undefined)/.test(sourceRaw)
-  )
-}
-
-function usesSchemaDescriptionsBridge(sourceRaw) {
-  return /\bSchemaDescriptionsBridge\b/.test(sourceRaw)
-}
-
-function hasTopAndHorizontalTwentySignal(snippet) {
-  return (
-    hasTwentyPxInsetSignal(snippet) ||
-    (hasPaddingTopTwentySignal(snippet) &&
-      hasPaddingLeftTwentySignal(snippet) &&
-      hasPaddingRightTwentySignal(snippet))
   )
 }
 
@@ -2629,6 +2597,27 @@ function collectDeclaredDependencies(pkg) {
   ])
 }
 
+async function collectTsNoCheckDirectives(rootDir) {
+  const files = await collectTextFiles(rootDir, SCRIPT_TEXT_FILE_PATTERN)
+  const violations = []
+
+  for (const filePath of files) {
+    const raw = await readTextCached(filePath)
+    if (raw.includes('@ts-nocheck')) {
+      violations.push(filePath)
+    }
+  }
+
+  return violations
+}
+
+function summarizeTsNoCheckViolations(targetRoot, violations) {
+  return violations
+    .slice(0, 10)
+    .map((filePath) => path.relative(targetRoot, filePath))
+    .join(', ')
+}
+
 async function collectUndeclaredImports({ rootDir, pkg }) {
   const files = await collectSourceFiles(rootDir)
   const declaredDependencies = collectDeclaredDependencies(pkg)
@@ -2688,8 +2677,11 @@ async function collectTypicalPageSourceSignals(rootDir) {
     const specifiers = extractImportSpecifiers(raw)
     const normalizedFilePath = filePath.split(path.sep).join('/')
     const isHostIntegrationExampleFile = normalizedFilePath.includes('/src/typical-page-reuse/')
+    const isLegacyRuntimeBoundaryFile = normalizedFilePath.includes('/src/hiui-runtime/')
     const isAuxiliaryReferenceFile =
-      isHostIntegrationExampleFile || /(^|\/)__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(normalizedFilePath)
+      isHostIntegrationExampleFile ||
+      isLegacyRuntimeBoundaryFile ||
+      /(^|\/)__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(normalizedFilePath)
     const usesShells = specifiers.some(
       (specifier) =>
         specifier === '@hiui-design/typical-page-shells' ||
@@ -2830,66 +2822,6 @@ async function collectSchemaFormCheckSelectViolations(rootDir) {
   return violations
 }
 
-async function collectLegacyHiUi4Violations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$|\.s?css$/i
-  const tokenPattern = /hi-v4-|--hi-v4-|HiUI\s*4(?:\.0)?|HiUI4(?:\.0)?/g
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    const matches = [...new Set(raw.match(tokenPattern) ?? [])]
-    if (matches.length > 0) {
-      violations.push({ filePath, matches })
-    }
-  }
-
-  return violations
-}
-
-function summarizeLegacyHiUi4Violations(targetRoot, violations) {
-  return violations
-    .slice(0, 6)
-    .map((item) => `${path.relative(targetRoot, item.filePath)} <- ${item.matches.join(', ')}`)
-    .join('; ')
-}
-
-function collectPatternLineNumbers(raw, pattern, maxCount = 3) {
-  const numbers = []
-  const flags = pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`
-  const matcher = new RegExp(pattern.source, flags)
-
-  for (const match of raw.matchAll(matcher)) {
-    const index = match.index ?? -1
-    if (index < 0) continue
-    numbers.push(raw.slice(0, index).split('\n').length)
-    if (numbers.length >= maxCount) {
-      break
-    }
-  }
-
-  return numbers
-}
-
-function getLineNumberAtIndex(raw, index) {
-  if (!raw || index < 0) return 0
-  return raw.slice(0, index).split('\n').length
-}
-
-function formatViolationLocation(targetRoot, filePath, lineNumbers = []) {
-  const relativePath = path.relative(targetRoot, filePath)
-  return lineNumbers.length > 0 ? `${relativePath}:${lineNumbers.join(',')}` : relativePath
-}
-
 function getBusinessUiScanRoots({ targetRoot, hostOutputRoot }) {
   return [...new Set([
     path.join(targetRoot, 'src'),
@@ -2898,745 +2830,6 @@ function getBusinessUiScanRoots({ targetRoot, hostOutputRoot }) {
     hostOutputRoot,
     path.join(targetRoot, '.local-context', 'hiui-design', 'reference', 'host-integration', 'src'),
   ])]
-}
-
-async function collectBusinessGradientViolations(rootDirs) {
-  const seen = new Set()
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, CONTENT_TEXT_FILE_PATTERN)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-
-      const normalizedPath = filePath.split(path.sep).join('/')
-      if (normalizedPath.includes('/assets/')) {
-        continue
-      }
-
-      const raw = await readTextCached(filePath)
-      if (!BUSINESS_GRADIENT_PATTERN.test(raw)) {
-        continue
-      }
-
-      violations.push({
-        filePath,
-        lineNumbers: collectPatternLineNumbers(raw, BUSINESS_GRADIENT_PATTERN),
-      })
-    }
-  }
-
-  return violations
-}
-
-function extractStyleBlocks(raw) {
-  const blocks = []
-  const pattern = /([^{}]+)\{([^{}]+)\}/g
-
-  for (const match of raw.matchAll(pattern)) {
-    const selector = String(match[1] || '').trim()
-    const declarations = String(match[2] || '').trim()
-    if (!selector || !declarations) continue
-    blocks.push({ selector, declarations, index: match.index ?? -1 })
-  }
-
-  return blocks
-}
-
-function isBusinessMultiColumnSelector(selector) {
-  return /\b(?:mainGrid|contentGrid|workspaceGrid|detailGrid|mainSplit|contentSplit|workspaceSplit|mainLayout|detailLayout|mainColumns|contentColumns|workspaceColumns)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessCardSelector(selector) {
-  return /\.(?:column|panel)\b|\b(?:leftPanel|rightPanel|middlePanel|detailPanel|sidePanel)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessSecondaryPaneSelector(selector) {
-  return /\.(?:leftPane|leftPanel|sidePane|sidePanel|secondaryPane|secondaryPanel|secondaryColumn|secondaryRegion|asidePane|asidePanel)\b|\b(?:leftPane|leftPanel|sidePane|sidePanel|secondaryPane|secondaryPanel|secondaryColumn|secondaryRegion|asidePane|asidePanel)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessPrimaryPaneSelector(selector) {
-  return /\.(?:rightPane|rightPanel|rightColumn|rightList|primaryPane|primaryPanel|primaryColumn|mainPane|mainPanel|contentPane|contentPanel|contentColumn|detailPane|detailPanel|detailColumn)\b|\b(?:rightPane|rightPanel|rightColumn|rightList|primaryPane|primaryPanel|primaryColumn|mainPane|mainPanel|contentPane|contentPanel|contentColumn|detailPane|detailPanel|detailColumn)\b/i.test(
-    selector
-  )
-}
-
-function hasZeroMinInlineSizeDeclaration(declarations) {
-  return /(min-inline-size|min-width)\s*:\s*0(?:px)?\b/i.test(declarations)
-}
-
-function hasSplitRightTrackHardMinDeclaration(declarations) {
-  return /grid-template-columns\s*:[^;]*minmax\([^)]*\)\s+minmax\(\s*(?:[1-9]\d*(?:\.\d+)?(?:px|rem))\s*,/i.test(
-    declarations
-  )
-}
-
-function isBusinessMetricGridSelector(selector) {
-  return /\.(?:metricGrid|cardMetrics|summaryMetrics|overviewMetrics|statGrid|kpiGrid|metricCards|metricGroup)\b|\b(?:metricGrid|cardMetrics|summaryMetrics|overviewMetrics|statGrid|kpiGrid|metricCards|metricGroup)\b/i.test(
-    selector
-  )
-}
-
-function extractClassNamesFromSelector(selector) {
-  const classNames = new Set()
-
-  for (const match of selector.matchAll(/\.([A-Za-z0-9_-]+)/g)) {
-    const className = match[1]
-    if (className) {
-      classNames.add(className)
-    }
-  }
-
-  return classNames
-}
-
-function isBusinessMetricValueSelector(selector) {
-  return /\.(?:metricValue|summaryMetricValue|statValue|kpiValue|overviewValue|metricMainValue|cardMetricValue|detailHeaderMetricValue|headerMetricValue|inlineMetricValue|localMetricValue)\b|\b(?:metricValue|summaryMetricValue|statValue|kpiValue|overviewValue|metricMainValue|cardMetricValue|detailHeaderMetricValue|headerMetricValue|inlineMetricValue|localMetricValue)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessOverviewMetricSurfaceSelector(selector) {
-  return /data-hiui5-metric-surface\s*=\s*["']overview["']/i.test(selector) || /\.(?:statSection|statOverview|overviewMetrics|overviewGrid|summaryBand|summarySection|summaryStrip|summaryMetrics|statCard|statBlock|overviewCard|heroMetrics|heroStats|summaryCard)\b|\b(?:statSection|statOverview|overviewMetrics|overviewGrid|summaryBand|summarySection|summaryStrip|summaryMetrics|statCard|statBlock|overviewCard|heroMetrics|heroStats|summaryCard)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessRepeatedMetricCardListSelector(selector) {
-  return /\.(?:cardList|listCard|orderCard|entityCard|recordCard|itemCard|metricCardList|repeatedMetricList)\b|\b(?:cardList|listCard|orderCard|entityCard|recordCard|itemCard|metricCardList|repeatedMetricList)\b/i.test(
-    selector
-  )
-}
-
-function isBusinessEmbeddedMetricSurfaceSelector(selector) {
-  return /data-hiui5-metric-surface\s*=\s*["']embedded["']/i.test(selector) || isBusinessRepeatedMetricCardListSelector(selector) || /\.(?:selectionCard|detailHeader|detailHeaderMetrics|headerMetrics|localSummary|inlineMetrics|embeddedMetrics)\b|\b(?:selectionCard|detailHeader|detailHeaderMetrics|headerMetrics|localSummary|inlineMetrics|embeddedMetrics)\b/i.test(selector)
-}
-
-function parseMetricFontSize(declarations) {
-  const match = /font-size\s*:\s*(\d+)px\b/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function parseMetricLineHeight(declarations) {
-  const match = /line-height\s*:\s*(\d+)px\b/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function parseMetricFontWeight(declarations) {
-  const match = /font-weight\s*:\s*(\d+)\b/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function resolveMetricPrimaryValueToken({ fontSize, fontWeight, lineHeight }) {
-  if (fontSize === 24 && lineHeight === 32 && fontWeight === 600) {
-    return 'overview'
-  }
-
-  if (fontSize === 16 && lineHeight === 24 && fontWeight === 600) {
-    return 'embedded'
-  }
-
-  return ''
-}
-
-function parseInlineMetricFontSize(declarations) {
-  const match = /fontSize\s*:\s*['"]?(\d+)(?:px)?['"]?/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function parseInlineMetricLineHeight(declarations) {
-  const match = /lineHeight\s*:\s*['"]?(\d+)(?:px)?['"]?/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function parseInlineMetricFontWeight(declarations) {
-  const match = /fontWeight\s*:\s*(\d+)/i.exec(declarations)
-  return match ? Number(match[1]) : null
-}
-
-function resolveInlineMetricSurfaceContext(filePath, blockName) {
-  if (/data-visualization\.[cm]?[jt]sx?$/i.test(filePath)) {
-    return 'overview'
-  }
-
-  if (
-    /(?:metricValue|summaryMetricValue|statValue|kpiValue|overviewValue|liquidChartValue)/i.test(
-      blockName
-    )
-  ) {
-    return 'overview'
-  }
-
-  if (
-    /(?:detailHeaderMetricValue|headerMetricValue|inlineMetricValue|embeddedMetricValue)/i.test(
-      blockName
-    )
-  ) {
-    return 'embedded'
-  }
-
-  return ''
-}
-
-async function collectInlineMetricSurfaceTokenViolations(rootDirs) {
-  const seen = new Set()
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, CONTENT_TEXT_FILE_PATTERN)) {
-      if (!SCRIPT_TEXT_FILE_PATTERN.test(filePath)) continue
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-
-      const raw = await readTextCached(filePath)
-      const blockViolations = []
-      const inlineStyleBlockPattern = /([A-Za-z_$][\w$]*)\s*:\s*\{([\s\S]{0,320}?)\n\s*},?/g
-
-      for (const match of raw.matchAll(inlineStyleBlockPattern)) {
-        const blockName = String(match[1] || '').trim()
-        if (!blockName || !isBusinessMetricValueSelector(blockName)) continue
-
-        const declarations = String(match[2] || '')
-        const fontSize = parseInlineMetricFontSize(declarations)
-        const lineHeight = parseInlineMetricLineHeight(declarations)
-        const fontWeight = parseInlineMetricFontWeight(declarations)
-        const token = resolveMetricPrimaryValueToken({
-          fontSize,
-          lineHeight,
-          fontWeight,
-        })
-        const surfaceContext = resolveInlineMetricSurfaceContext(filePath, blockName)
-
-        if (!surfaceContext) continue
-
-        if (surfaceContext === 'overview' && token !== 'overview') {
-          blockViolations.push({
-            selector: blockName,
-            reason:
-              'overview metric surface should use 24px / 32px / 600 instead of an unsanctioned inline token',
-            lineNumbers: [getLineNumberAtIndex(raw, match.index ?? 0)],
-          })
-        }
-
-        if (surfaceContext === 'embedded' && token !== 'embedded') {
-          blockViolations.push({
-            selector: blockName,
-            reason:
-              'embedded metric surface should use 16px / 24px / 600 instead of an overview-sized inline token',
-            lineNumbers: [getLineNumberAtIndex(raw, match.index ?? 0)],
-          })
-        }
-      }
-
-      if (blockViolations.length > 0) {
-        violations.push({
-          filePath,
-          blocks: blockViolations.slice(0, 4),
-        })
-      }
-    }
-  }
-
-  return violations
-}
-
-function formatMetricPrimaryValueToken({ fontSize, fontWeight, lineHeight }) {
-  const sizeText = fontSize == null ? '?' : `${fontSize}px`
-  const lineHeightText = lineHeight == null ? '?' : `${lineHeight}px`
-  const weightText = fontWeight == null ? '?' : String(fontWeight)
-  return `${sizeText} / ${lineHeightText} / ${weightText}`
-}
-
-function resolveMetricSurfaceContext({
-  fileHasEmbeddedSurfaceSignal,
-  fileHasOverviewSurfaceSignal,
-  selector,
-  selectorHasExplicitEmbeddedSurfaceSignal,
-  selectorHasExplicitOverviewSurfaceSignal,
-}) {
-  if (selectorHasExplicitOverviewSurfaceSignal && !selectorHasExplicitEmbeddedSurfaceSignal) {
-    return 'overview'
-  }
-
-  if (selectorHasExplicitEmbeddedSurfaceSignal && !selectorHasExplicitOverviewSurfaceSignal) {
-    return 'embedded'
-  }
-
-  const selectorHasOverviewSurfaceSignal =
-    isBusinessOverviewMetricSurfaceSelector(selector) ||
-    /\.(?:summaryMetricValue|statValue|overviewValue)\b|\b(?:summaryMetricValue|statValue|overviewValue)\b/i.test(
-      selector
-    )
-  const selectorHasEmbeddedSurfaceSignal =
-    isBusinessEmbeddedMetricSurfaceSelector(selector) ||
-    /\.(?:cardMetricValue|detailHeaderMetricValue|headerMetricValue|inlineMetricValue|localMetricValue)\b|\b(?:cardMetricValue|detailHeaderMetricValue|headerMetricValue|inlineMetricValue|localMetricValue)\b/i.test(
-      selector
-    )
-
-  if (selectorHasOverviewSurfaceSignal && !selectorHasEmbeddedSurfaceSignal) {
-    return 'overview'
-  }
-
-  if (selectorHasEmbeddedSurfaceSignal && !selectorHasOverviewSurfaceSignal) {
-    return 'embedded'
-  }
-
-  if (fileHasOverviewSurfaceSignal && !fileHasEmbeddedSurfaceSignal) {
-    return 'overview'
-  }
-
-  if (fileHasEmbeddedSurfaceSignal && !fileHasOverviewSurfaceSignal) {
-    return 'embedded'
-  }
-
-  return 'ambiguous'
-}
-
-async function collectLayoutStretchRiskViolations(rootDirs) {
-  const seen = new Set()
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, STYLE_FILE_PATTERN)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-
-      const raw = await readTextCached(filePath)
-      const blockViolations = []
-
-      for (const block of extractStyleBlocks(raw)) {
-        const selector = block.selector.replace(/\s+/g, ' ').trim()
-        const declarations = block.declarations.replace(/\s+/g, ' ').trim()
-
-        const isGrid = /display\s*:\s*grid/i.test(declarations)
-        const hasGridColumns = /grid-template-columns\s*:/i.test(declarations)
-        const hasCrossAxisControl = /(?:align-items|place-items)\s*:/i.test(declarations)
-        const hasContentAxisControl = /(?:align-content|place-content)\s*:/i.test(declarations)
-        const usesFillRows = /grid-template-rows\s*:[^;]*\b1fr\b/i.test(declarations)
-        const hasFlexGrowSignal =
-          /(?:^|[;\s])flex\s*:\s*1(?:\s+1(?:\s+0(?:px|%)?)?)?\b/i.test(declarations) ||
-          /(?:^|[;\s])flex-grow\s*:\s*1\b/i.test(declarations)
-
-        if (isGrid && hasGridColumns && isBusinessMultiColumnSelector(selector) && !hasCrossAxisControl) {
-          blockViolations.push({
-            selector,
-            reason: 'multi-column grid missing explicit align-items/place-items control',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-          continue
-        }
-
-        if (isGrid && usesFillRows && isBusinessCardSelector(selector)) {
-          blockViolations.push({
-            selector,
-            reason: 'card/detail container uses grid-template-rows with 1fr and may create blank body gaps',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-          continue
-        }
-
-        if (
-          isGrid &&
-          /gap\s*:/i.test(declarations) &&
-          isBusinessCardSelector(selector) &&
-          !hasContentAxisControl &&
-          /(column|panel|section|hero|metrics)/i.test(selector)
-        ) {
-          blockViolations.push({
-            selector,
-            reason: 'stacked grid container is missing explicit align-content/place-content control',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-        }
-
-        if (
-          isGrid &&
-          hasGridColumns &&
-          isBusinessMultiColumnSelector(selector) &&
-          hasSplitRightTrackHardMinDeclaration(declarations)
-        ) {
-          blockViolations.push({
-            selector,
-            reason:
-              'split/detail grid hard-codes a fixed minimum right track; keep the right pane elastic with minmax(0, 1fr) unless a documented exception is approved',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-          continue
-        }
-
-        if (
-          isBusinessPrimaryPaneSelector(selector) &&
-          (hasFlexGrowSignal || /display\s*:\s*flex/i.test(declarations) || /display\s*:\s*grid/i.test(declarations)) &&
-          !hasZeroMinInlineSizeDeclaration(declarations)
-        ) {
-          blockViolations.push({
-            selector,
-            reason:
-              'elastic right/detail pane is missing min-inline-size: 0 (or min-width: 0), which risks table content stretching the split workspace instead of staying contained',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-        }
-      }
-
-      if (blockViolations.length > 0) {
-        violations.push({
-          filePath,
-          blocks: blockViolations.slice(0, 4),
-        })
-      }
-    }
-  }
-
-  return violations
-}
-
-function summarizeBusinessGradientViolations(targetRoot, violations) {
-  return violations
-    .slice(0, 6)
-    .map((item) => formatViolationLocation(targetRoot, item.filePath, item.lineNumbers))
-    .join('; ')
-}
-
-function summarizeLayoutStretchRiskViolations(targetRoot, violations) {
-  return violations
-    .slice(0, 6)
-    .map((item) => {
-      const firstBlock = item.blocks[0]
-      const lineNumbers = firstBlock?.lineNumbers ?? []
-      const reason = firstBlock?.reason ?? 'layout stretch risk'
-      return `${formatViolationLocation(targetRoot, item.filePath, lineNumbers)} <- ${reason}`
-    })
-    .join('; ')
-}
-
-async function collectMetricGridOverflowRiskViolations(rootDirs) {
-  const seen = new Set()
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    const explicitMetricSurfaceSignals = await collectExplicitMetricSurfaceSignals(rootDir)
-
-    for (const filePath of await collectTextFiles(rootDir, STYLE_FILE_PATTERN)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-
-      const raw = await readTextCached(filePath)
-      const blocks = extractStyleBlocks(raw)
-      const blockViolations = []
-      const explicitSignals =
-        explicitMetricSurfaceSignals.get(filePath) ?? {
-          embedded: new Set(),
-          overview: new Set(),
-        }
-      const fileHasEmbeddedSurfaceSignal = blocks.some((block) =>
-        isBusinessEmbeddedMetricSurfaceSelector(block.selector.replace(/\s+/g, ' ').trim())
-      ) || explicitSignals.embedded.size > 0
-      const fileHasOverviewSurfaceSignal = blocks.some((block) =>
-        isBusinessOverviewMetricSurfaceSelector(block.selector.replace(/\s+/g, ' ').trim())
-      ) || explicitSignals.overview.size > 0
-      let hasEmbeddedOverviewSizedMetricValueSignal = false
-
-      for (const block of blocks) {
-        const selector = block.selector.replace(/\s+/g, ' ').trim()
-        const declarations = block.declarations.replace(/\s+/g, ' ').trim()
-        const fontSize = parseMetricFontSize(declarations)
-        const selectorClassNames = extractClassNamesFromSelector(selector)
-        const selectorHasExplicitOverviewSurfaceSignal = [...selectorClassNames].some((className) =>
-          explicitSignals.overview.has(className)
-        )
-        const selectorHasExplicitEmbeddedSurfaceSignal = [...selectorClassNames].some((className) =>
-          explicitSignals.embedded.has(className)
-        )
-        const surfaceContext = resolveMetricSurfaceContext({
-          fileHasEmbeddedSurfaceSignal,
-          fileHasOverviewSurfaceSignal,
-          selector,
-          selectorHasExplicitEmbeddedSurfaceSignal,
-          selectorHasExplicitOverviewSurfaceSignal,
-        })
-
-        const usesFixedEqualThreeCols =
-          /grid-template-columns\s*:\s*repeat\(\s*3\s*,\s*minmax\(\s*0\s*,\s*1fr\s*\)\s*\)/i.test(
-            declarations
-          ) || /grid-template-columns\s*:\s*1fr\s+1fr\s+1fr\b/i.test(declarations)
-
-        if (
-          isBusinessMetricValueSelector(selector) &&
-          fontSize != null &&
-          fontSize >= 24 &&
-          surfaceContext === 'embedded'
-        ) {
-          hasEmbeddedOverviewSizedMetricValueSignal = true
-        }
-
-        if (
-          isBusinessMetricGridSelector(selector) &&
-          usesFixedEqualThreeCols &&
-          surfaceContext === 'embedded'
-        ) {
-          blockViolations.push({
-            selector,
-            reason:
-              'embedded KPI grid still uses a fixed equal three-column split while metric values stay overview-sized or amount values may be long',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-        }
-      }
-
-      if (hasEmbeddedOverviewSizedMetricValueSignal && blockViolations.length > 0) {
-        violations.push({
-          filePath,
-          blocks: blockViolations.slice(0, 4),
-        })
-      }
-    }
-  }
-
-  return violations
-}
-
-function summarizeMetricGridOverflowRiskViolations(targetRoot, violations) {
-  return violations
-    .slice(0, 6)
-    .map((item) => {
-      const firstBlock = item.blocks[0]
-      const lineNumbers = firstBlock?.lineNumbers ?? []
-      const reason = firstBlock?.reason ?? 'embedded KPI grid compression risk'
-      return `${formatViolationLocation(targetRoot, item.filePath, lineNumbers)} <- ${reason}`
-    })
-    .join('; ')
-}
-
-async function collectMetricSurfaceTokenViolations(rootDirs) {
-  const seen = new Set()
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    const explicitMetricSurfaceSignals = await collectExplicitMetricSurfaceSignals(rootDir)
-
-    for (const filePath of await collectTextFiles(rootDir, STYLE_FILE_PATTERN)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-
-      const raw = await readTextCached(filePath)
-      const blocks = extractStyleBlocks(raw)
-      const blockViolations = []
-      const explicitSignals =
-        explicitMetricSurfaceSignals.get(filePath) ?? {
-          embedded: new Set(),
-          overview: new Set(),
-        }
-      const fileHasOverviewSurfaceSignal = blocks.some((block) =>
-        isBusinessOverviewMetricSurfaceSelector(block.selector.replace(/\s+/g, ' ').trim())
-      ) || explicitSignals.overview.size > 0
-      const fileHasEmbeddedSurfaceSignal = blocks.some((block) =>
-        isBusinessEmbeddedMetricSurfaceSelector(block.selector.replace(/\s+/g, ' ').trim())
-      ) || explicitSignals.embedded.size > 0
-
-      for (const block of blocks) {
-        const selector = block.selector.replace(/\s+/g, ' ').trim()
-        if (!isBusinessMetricValueSelector(selector)) continue
-
-        const declarations = block.declarations.replace(/\s+/g, ' ').trim()
-        const selectorClassNames = extractClassNamesFromSelector(selector)
-        const fontSize = parseMetricFontSize(declarations)
-        const lineHeight = parseMetricLineHeight(declarations)
-        const fontWeight = parseMetricFontWeight(declarations)
-        const token = resolveMetricPrimaryValueToken({
-          fontSize,
-          lineHeight,
-          fontWeight,
-        })
-        const selectorHasExplicitOverviewSurfaceSignal = [...selectorClassNames].some((className) =>
-          explicitSignals.overview.has(className)
-        )
-        const selectorHasExplicitEmbeddedSurfaceSignal = [...selectorClassNames].some((className) =>
-          explicitSignals.embedded.has(className)
-        )
-        const surfaceContext = resolveMetricSurfaceContext({
-          selector,
-          fileHasOverviewSurfaceSignal,
-          fileHasEmbeddedSurfaceSignal,
-          selectorHasExplicitEmbeddedSurfaceSignal,
-          selectorHasExplicitOverviewSurfaceSignal,
-        })
-
-        if (!token) {
-          blockViolations.push({
-            selector,
-            reason: `metric primary value must use either 24px / 32px / 600 or 16px / 24px / 600; found ${formatMetricPrimaryValueToken({ fontSize, lineHeight, fontWeight })}`,
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-          continue
-        }
-
-        if (surfaceContext === 'overview' && token !== 'overview') {
-          blockViolations.push({
-            selector,
-            reason:
-              'overview metric surface should use 24px / 32px / 600 instead of the embedded 16px / 24px / 600 token',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-          continue
-        }
-
-        if (surfaceContext === 'embedded' && token !== 'embedded') {
-          blockViolations.push({
-            selector,
-            reason:
-              'embedded metric surface should use 16px / 24px / 600 instead of the overview 24px / 32px / 600 token',
-            lineNumbers: [getLineNumberAtIndex(raw, block.index)],
-          })
-        }
-      }
-
-      if (blockViolations.length > 0) {
-        violations.push({
-          filePath,
-          blocks: blockViolations.slice(0, 6),
-        })
-      }
-    }
-  }
-
-  return violations
-}
-
-function summarizeMetricSurfaceTokenViolations(targetRoot, violations) {
-  return violations
-    .slice(0, 6)
-    .map((item) => {
-      const firstBlock = item.blocks[0]
-      const lineNumbers = firstBlock?.lineNumbers ?? []
-      const reason = firstBlock?.reason ?? 'metric token mismatch'
-      return `${formatViolationLocation(targetRoot, item.filePath, lineNumbers)} <- ${reason}`
-    })
-    .join('; ')
-}
-
-async function collectChartPlotEdgeViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    const mentionsBarLikeChart =
-      /\b<Column\b/.test(raw) ||
-      /\b<Bar\b/.test(raw) ||
-      /\bchartType\s*=\s*["']column["']/.test(raw) ||
-      /\bchartType\s*=\s*["']bar["']/.test(raw)
-    if (!mentionsBarLikeChart) continue
-
-    const mentionsChartSurface =
-      /data-hiui5-region\s*=\s*["']chart-section["']/.test(raw) ||
-      /styles\.(chartSection|chartPanel|chartCard|chartContent)\b/.test(raw) ||
-      /\b(chartSection|chartPanel|chartCard|chartContent)\b/.test(raw)
-    if (!mentionsChartSurface) continue
-
-    const hasPlotEdgeGuard =
-      /\bpaddingOuter\b/.test(raw) ||
-      /\binsetRight\b/.test(raw) ||
-      /\binsetLeft\b/.test(raw) ||
-      /\bwithHiuiColumnLikeChart\b/.test(raw) ||
-      /\bcreateHiuiColumnLikeScale\b/.test(raw) ||
-      /\bcreateHiuiColumnLikeColorScale\b/.test(raw) ||
-      /\bwithHiuiBarLikePlotInset\b/.test(raw) ||
-      /\bwithHiuiBarLikeChart\b/.test(raw) ||
-      /\bcreateHiuiBarLikeScale\b/.test(raw) ||
-      /\bcreateHiuiBarLikeColorScale\b/.test(raw)
-
-    if (!hasPlotEdgeGuard) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-async function collectWhiteBodyEdgeTouchViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    if (
-      /src[\\/]+typical-page-reuse[\\/]+components[\\/]+managed-page[\\/]+managed-.*shell\.[cm]?[jt]sx?$/.test(
-        filePath
-      )
-    ) {
-      continue
-    }
-    const usesProDetailPage = /\bProDetailPage\b/.test(raw)
-    if (!usesProDetailPage) continue
-
-    const hasCustomTopSection =
-      /styles\.(summarySection|overviewSection|heroSection|identitySection|statSection)\b/.test(raw) ||
-      /\b(summarySection|overviewSection|heroSection|identitySection|statSection)\b/.test(raw)
-    const hasCustomChartOrStatRegion =
-      /data-hiui5-region\s*=\s*["'](?:stat-section|chart-section)["']/.test(raw)
-
-    if (!hasCustomTopSection && !hasCustomChartOrStatRegion) {
-      continue
-    }
-
-    const importedStyleRaw = await readImportedStyleSources(filePath, raw)
-    const rootInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-      '.pageBody',
-      '.page-body',
-      '.detailBody',
-      '.detail-body',
-    ])
-    const leadingSectionSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-      '.summarySection',
-      '.summary-section',
-      '.overviewSection',
-      '.overview-section',
-      '.heroSection',
-      '.hero-section',
-      '.identitySection',
-      '.identity-section',
-      '.statSection',
-      '.stat-section',
-      '.contentGrid',
-      '.content-grid',
-    ])
-
-    const hasInsetOwner =
-      rootInsetSnippets.some(hasTopAndHorizontalTwentySignal) ||
-      leadingSectionSnippets.some(hasTopAndHorizontalTwentySignal)
-
-    if (!hasInsetOwner) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
 }
 
 async function collectProDetailProviderViolations(rootDirs) {
@@ -3663,63 +2856,18 @@ async function collectProDetailProviderViolations(rootDirs) {
       continue
     }
     const usesProDetailPage = /\bProDetailPage\b/.test(raw) && /<ProDetailPage\b/.test(raw)
+    const usesProDetailContextDependents =
+      /\buseProDetailPageContext\b/.test(raw) ||
+      /\bProDetailPageContent\b/.test(raw) ||
+      /\bProDetailPageHeader\b/.test(raw)
 
-    if (!usesProDetailPage) continue
+    if (!usesProDetailPage || !usesProDetailContextDependents) continue
 
     const hasProviderSignal =
       /\bProDetailPageProvider\b/.test(raw) ||
       /\buseProDetailPageContext\b/.test(raw)
 
     if (!hasProviderSignal) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-async function collectVerticalDetailLabelWidthViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    if (
-      /src[\\/]+typical-page-reuse[\\/]+components[\\/]+managed-page[\\/]+managed-.*shell\.[cm]?[jt]sx?$/.test(
-        filePath
-      )
-    ) {
-      continue
-    }
-    if (/[\\/]\.local-context[\\/]+hiui-design[\\/]+reference[\\/]/.test(filePath)) {
-      continue
-    }
-
-    const usesDetailShell =
-      (/\bProDetailPage\b/.test(raw) && /<ProDetailPage\b/.test(raw)) ||
-      (/\bProDetailDrawer\b/.test(raw) && /<ProDetailDrawer\b/.test(raw)) ||
-      /data-hiui5-region\s*=\s*["']detail-body["']/.test(raw) ||
-      /data-hiui5-region\s*=\s*["']drawer-body["']/.test(raw)
-    const usesDetailDescriptions =
-      /\b(Descriptions|SchemaDescriptionsBridge)\b/.test(raw) &&
-      hasVerticalDescriptionsPlacement(raw) &&
-      (
-        hasFixedDescriptionsLabelWidth(raw) ||
-        !hasLeftDescriptionsLabelPlacement(raw) ||
-        (usesSchemaDescriptionsBridge(raw) && !hasClearedDescriptionsLabelWidth(raw))
-      )
-
-    if (usesDetailShell && usesDetailDescriptions) {
       violations.push(filePath)
     }
   }
@@ -3770,95 +2918,11 @@ async function collectProEditProviderViolations(rootDirs) {
   return violations
 }
 
-async function collectSharedBarLikeHelperBypassViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  let sharedHelperAvailable = false
-
-  for (const filePath of files) {
-    if (!/hiui-chart-theme\.[cm]?[jt]sx?$/i.test(filePath)) continue
-    const raw = await readTextCached(filePath)
-    if (
-      /\bexport function withHiuiColumnLikeChart\b/.test(raw) ||
-      /\bexport function createHiuiColumnLikeScale\b/.test(raw) ||
-      /\bexport function createHiuiColumnLikeColorScale\b/.test(raw) ||
-      /\bexport function withHiuiBarLikeChart\b/.test(raw) ||
-      /\bexport function createHiuiBarLikeScale\b/.test(raw) ||
-      /\bexport function createHiuiBarLikeColorScale\b/.test(raw)
-    ) {
-      sharedHelperAvailable = true
-      break
-    }
-  }
-
-  if (!sharedHelperAvailable) {
-    return []
-  }
-
-  const violations = []
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    const mentionsBarLikeChart =
-      /\b<Column\b/.test(raw) ||
-      /\b<Bar\b/.test(raw) ||
-      /\bchartType\s*=\s*["']column["']/.test(raw) ||
-      /\bchartType\s*=\s*["']bar["']/.test(raw)
-    if (!mentionsBarLikeChart) continue
-
-    const mentionsChartSurface =
-      /data-hiui5-region\s*=\s*["']chart-section["']/.test(raw) ||
-      /styles\.(chartSection|chartPanel|chartCard|chartContent)\b/.test(raw) ||
-      /\b(chartSection|chartPanel|chartCard|chartContent)\b/.test(raw)
-    if (!mentionsChartSurface) continue
-
-    const usesSharedBarLikeHelper =
-      /\bwithHiuiColumnLikeChart\b/.test(raw) ||
-      /\bcreateHiuiColumnLikeScale\b/.test(raw) ||
-      /\bcreateHiuiColumnLikeColorScale\b/.test(raw) ||
-      /\bwithHiuiBarLikeChart\b/.test(raw) ||
-      /\bcreateHiuiBarLikeScale\b/.test(raw) ||
-      /\bcreateHiuiBarLikeColorScale\b/.test(raw)
-
-    if (!usesSharedBarLikeHelper) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-function summarizeChartPlotEdgeViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
-}
-
-function summarizeWhiteBodyEdgeTouchViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
-}
-
-function summarizeSharedBarLikeHelperBypassViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
-}
-
 function summarizeProDetailProviderViolations(targetRoot, filePaths) {
   return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
 }
 
 function summarizeProEditProviderViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
-}
-
-function summarizeVerticalDetailLabelWidthViolations(targetRoot, filePaths) {
   return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
 }
 
@@ -4099,10 +3163,6 @@ async function detectDoctorMode({
   }
 
   return 'host-integration'
-}
-
-function getRecommendedMode({ hostProfile, legacyHostRuntime }) {
-  return legacyHostRuntime?.incompatible ? 'legacy-host-compatible' : hostProfile.recommendedMode
 }
 
 function isReferenceOnlyMode(mode) {
@@ -4525,11 +3585,34 @@ async function appendRulesOnlyManagedPageChecks({
   legacyCompatibilityMode,
   manifest,
   managedPageRegistryInspection,
+  mode,
   nonTypicalSourceOwnership,
   pageContractsResult,
   referenceOnlyMode,
   targetRoot,
 }) {
+  if (mode !== 'rules-only') {
+    const hasManagedArtifacts =
+      pageContractsResult.contracts.length > 0 ||
+      managedPageRegistryInspection.contracts.length > 0 ||
+      managedPageRegistryInspection.sourcePaths.length > 0 ||
+      managedPageRegistryInspection.brokenContracts.length > 0 ||
+      managedPageRegistryInspection.duplicateContractTargets.length > 0 ||
+      managedPageRegistryInspection.contractsWithoutSourceFiles.length > 0 ||
+      managedPageRegistryInspection.sourceWithoutContracts.length > 0 ||
+      managedPageRegistryInspection.contractsWithoutSourceMarkers.length > 0
+    pushCheck(checks, {
+      id: hasManagedArtifacts ? 'managed-page-artifact-contamination' : 'rules-only-managed-checks-skipped',
+      ok: true,
+      severity: 'warn',
+      summary: hasManagedArtifacts
+        ? 'non-rules-only integration ignores rules-only managed page artifacts as stale or out-of-scope evidence'
+        : 'rules-only managed page checks are skipped outside rules-only mode',
+      detail: `${mode} uses its own integration gates and does not run rules-only managed source guards as completion checks.`,
+    })
+    return
+  }
+
   const facts = await analyzeRulesOnlyManagedPageFacts({
     baselineSpec,
     legacyCompatibilityMode,
@@ -4562,7 +3645,7 @@ async function appendRulesOnlyManagedPageChecks({
       ok: true,
       severity: 'warn',
       summary: 'reference-only modes keep route/gallery assets out of src while still providing local reference examples',
-      detail: `No src/typical-page-reuse gallery, routes, or host bridge files are required. Generate new pages directly in the target project’s existing structure and use ${RULES_ONLY_REFERENCE_PAGES_GLOB} as the default local reference template set. If that directory is missing, fall back to .local-context/hiui-design/examples/host-integration/src/pages/*. In legacy-host-compatible, this reference set is only a local baseline/fallback; ordinary typical pages may still use planner-selected page components through the certified carrier/runtimeAdapterProof path.`,
+      detail: `No src/typical-page-reuse gallery, routes, or host bridge files are required. Generate new pages directly in the target project’s existing structure and use ${RULES_ONLY_REFERENCE_PAGES_GLOB} as the default local reference template set. If that directory is missing, fall back to .local-context/hiui-design/examples/host-integration/src/pages/*. In legacy-host-compatible, this reference set is only a local baseline/fallback; ordinary typical pages use host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots.`,
     })
   }
 
@@ -4841,7 +3924,7 @@ async function main() {
       installedRootRuntime,
       legacyHiUiEsImports,
     })
-    const recommendedMode = getRecommendedMode({
+    const recommendedMode = resolveInstallRecommendedMode({
       hostProfile,
       legacyHostRuntime,
     })
@@ -4856,7 +3939,23 @@ async function main() {
       requestedMode,
       legacyHostRuntime,
     })
+    const projectModeLockPath = path.join(
+      targetRoot,
+      '.local-context',
+      'hiui-design',
+      'outputs',
+      'project-mode.json'
+    )
+    const projectModeLock = await readJsonIfExists(projectModeLockPath)
+    const auditedModeOverride = isInstallModeAuditedOverride({
+      projectModeLock,
+      mode,
+      recommendedMode,
+    })
     const legacyCompatibilityMode = mode === 'legacy-host-compatible'
+    const legacyHostRuntimeReasons = legacyHostRuntime?.reasons?.length
+      ? legacyHostRuntime.reasons
+      : ['legacy-host-compatible mode is explicitly selected']
     const referenceOnlyMode = isReferenceOnlyMode(mode)
     const outputRoot =
       referenceOnlyMode ? path.join(skillRoot, 'outputs') : hostOutputRoot
@@ -4873,27 +3972,10 @@ async function main() {
       managedPageRegistryInspection.contractsWithoutSourceMarkers.length > 0
     const businessUiScanRoots = getBusinessUiScanRoots({ targetRoot, hostOutputRoot })
     const archetypeSmokeBaselines = getArchetypeSmokeBaselineCases(manifest)
-    const businessGradientViolations = await collectBusinessGradientViolations(businessUiScanRoots)
-    const layoutStretchRiskViolations = await collectLayoutStretchRiskViolations(businessUiScanRoots)
-    const metricSurfaceTokenViolations = [
-      ...(await collectMetricSurfaceTokenViolations(businessUiScanRoots)),
-      ...(await collectInlineMetricSurfaceTokenViolations(businessUiScanRoots)),
-    ]
-    const metricGridOverflowRiskViolations =
-      await collectMetricGridOverflowRiskViolations(businessUiScanRoots)
-    const chartPlotEdgeViolations = await collectChartPlotEdgeViolations(businessUiScanRoots)
-    const whiteBodyEdgeTouchViolations = await collectWhiteBodyEdgeTouchViolations(
-      businessUiScanRoots
-    )
-    const verticalDetailLabelWidthViolations =
-      await collectVerticalDetailLabelWidthViolations(businessUiScanRoots)
     const proDetailProviderViolations = await collectProDetailProviderViolations(
       businessUiScanRoots
     )
     const proEditProviderViolations = await collectProEditProviderViolations(businessUiScanRoots)
-    const sharedBarLikeHelperBypassViolations = await collectSharedBarLikeHelperBypassViolations(
-      businessUiScanRoots
-    )
     const nonTypicalSourceOwnership = await inspectSourceMarkedNonTypicalPages(targetRoot)
     const topLevelAppFileForMenuIcons = await detectTopLevelAppFile(targetRoot)
     const topLevelAppRawForMenuIcons = await readTextIfExists(topLevelAppFileForMenuIcons)
@@ -4912,6 +3994,26 @@ async function main() {
         targetRoot,
       })
 
+    const runtimeCompatibilityLockPath = path.join(
+      targetRoot,
+      '.local-context',
+      'hiui-design',
+      'outputs',
+      'runtime-compatibility-lock.json'
+    )
+    const runtimeCompatibilityLock = await readJsonIfExists(runtimeCompatibilityLockPath)
+    const runtimeCompatibilityShellStatus = String(runtimeCompatibilityLock?.shell?.status || '').trim()
+    const runtimeCompatibilityShellVariant = String(runtimeCompatibilityLock?.shell?.runtimeVariant || '').trim()
+    const runtimeCompatibilityBlockingReasons = Array.isArray(runtimeCompatibilityLock?.shell?.blockingReasons)
+      ? runtimeCompatibilityLock.shell.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+      : []
+    const runtimePeerResolutionStatus = String(runtimeCompatibilityLock?.peerResolution?.status || '').trim()
+    const runtimePeerResolutionBlockingReasons = Array.isArray(runtimeCompatibilityLock?.peerResolution?.blockingReasons)
+      ? runtimeCompatibilityLock.peerResolution.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+      : []
+    const legacyDoctorRuntimeFacts = legacyCompatibilityMode
+      ? await verifyLegacyDoctorRuntimeFacts(targetRoot)
+      : null
     const depSpec = pkg ? findDependency(pkg, '@hiui-design/typical-page-shells') : ''
     const managedDependencyDrifts =
       pkg && shellPackage
@@ -4934,15 +4036,21 @@ async function main() {
       id: 'recommended-install-strategy',
       ok:
         mode === recommendedMode ||
+        auditedModeOverride ||
         (isTypicalPageSourceRepo && mode === 'host-integration'),
-      severity: 'warn',
+      severity:
+        mode === recommendedMode || auditedModeOverride || (isTypicalPageSourceRepo && mode === 'host-integration')
+          ? 'warn'
+          : 'error',
       summary: 'the chosen install mode matches the detected target project type',
       detail:
         mode === recommendedMode
           ? `${mode} matches the detected target project profile. ${hostProfile.reason}`
+          : auditedModeOverride
+            ? `Detected profile recommends ${recommendedMode}, but current doctor mode is ${mode}; audited override is recorded in .local-context/hiui-design/outputs/project-mode.json. Reason: ${projectModeLock.overrideReason}. ${hostProfile.reason}`
           : isTypicalPageSourceRepo && mode === 'host-integration'
             ? `This repository is the source repo for typical-page shells and intentionally keeps the host-integration gallery for smoke verification. External target projects with the same detected profile should still prefer ${recommendedMode}. ${hostProfile.reason}`
-            : `Detected profile recommends ${recommendedMode}, but current doctor mode is ${mode}. ${hostProfile.reason}`,
+            : `Detected profile recommends ${recommendedMode}, but current doctor mode is ${mode}. This mode mismatch is a hard onboarding failure unless .local-context/hiui-design/outputs/project-mode.json records modeSelectionStatus=overridden with a non-empty overrideReason. ${hostProfile.reason}`,
     })
     pushCheck(checks, {
       id: 'framework-adapter-guide',
@@ -4952,17 +4060,6 @@ async function main() {
       detail: hostProfile.adapterDoc
         ? `${hostProfile.adapterDoc}${hostProfile.adapterEntryHints.length > 0 ? `; candidate entry files: ${hostProfile.adapterEntryHints.join(', ')}` : ''}`
         : 'No framework-specific adapter guide is required for the detected host profile',
-    })
-    pushCheck(checks, {
-      id: 'no-business-gradients',
-      ok: businessGradientViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business pages do not use gradient backgrounds, borders, or highlight fills outside explicitly allowed illustration assets',
-      detail:
-        businessGradientViolations.length === 0
-          ? 'No disallowed gradient usage found in business page source.'
-          : summarizeBusinessGradientViolations(targetRoot, businessGradientViolations),
     })
     pushCheck(checks, {
       id: 'no-business-pages-in-example-gallery',
@@ -5001,78 +4098,6 @@ async function main() {
             : `${topLevelMenuIconSemanticIssues.join('; ')}. Pick @hi-ui/icons Filled variants that match each first-level domain, for example BusinessCardFilled for 业务, FolderOpenFilled for 项目, and AppStoreFilled for 示例.`,
     })
     pushCheck(checks, {
-      id: 'no-layout-stretch-anti-patterns',
-      ok: layoutStretchRiskViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business page styles avoid high-risk grid stretch patterns that commonly create large blank card gaps',
-      detail:
-        layoutStretchRiskViolations.length === 0
-          ? 'No high-risk multi-column grid or fill-row layout patterns found in page styles.'
-          : summarizeLayoutStretchRiskViolations(targetRoot, layoutStretchRiskViolations),
-    })
-    pushCheck(checks, {
-      id: 'metric-primary-value-surface-tokens',
-      ok: metricSurfaceTokenViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business page metric primary values only use the approved overview or embedded tokens, and the chosen token matches the metric surface',
-      detail:
-        metricSurfaceTokenViolations.length === 0
-          ? 'No metric primary value token mismatch found in managed business page styles.'
-          : summarizeMetricSurfaceTokenViolations(targetRoot, metricSurfaceTokenViolations),
-    })
-    pushCheck(checks, {
-      id: 'no-fixed-equal-kpi-grid-in-secondary',
-      ok: metricGridOverflowRiskViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business pages do not keep embedded KPI groups on overview-sized tokens and fixed equal three-column grids at the same time',
-      detail:
-        metricGridOverflowRiskViolations.length === 0
-          ? 'No embedded KPI surface was found combining overview-sized metric values with a fixed equal three-column split.'
-          : summarizeMetricGridOverflowRiskViolations(
-              targetRoot,
-              metricGridOverflowRiskViolations
-            ),
-    })
-    pushCheck(checks, {
-      id: 'no-chart-plot-edge-collisions',
-      ok: chartPlotEdgeViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business pages with bar or column charts keep plot content away from the card inner edges through chart-level safe-area config',
-      detail:
-        chartPlotEdgeViolations.length === 0
-          ? 'No bar/column chart plot-edge collisions detected in managed business page source.'
-          : summarizeChartPlotEdgeViolations(targetRoot, chartPlotEdgeViolations),
-    })
-    pushCheck(checks, {
-      id: 'no-white-body-edge-touch',
-      ok: whiteBodyEdgeTouchViolations.length === 0,
-      severity: 'error',
-      summary:
-        'custom ProDetailPage workspaces keep the first visible content away from the white-body top and side edges',
-      detail:
-        whiteBodyEdgeTouchViolations.length === 0
-          ? 'No ProDetailPage custom sections were found touching the white-body edges without an explicit inset owner.'
-          : summarizeWhiteBodyEdgeTouchViolations(targetRoot, whiteBodyEdgeTouchViolations),
-    })
-    pushCheck(checks, {
-      id: 'detail-vertical-descriptions-auto-label-width',
-      ok: verticalDetailLabelWidthViolations.length === 0,
-      severity: 'error',
-      summary:
-        'detail-shell pages freeze vertical Descriptions label invariants in source instead of relying on hidden defaults',
-      detail:
-        verticalDetailLabelWidthViolations.length === 0
-          ? "All detected ProDetailPage/ProDetailDrawer detail pages explicitly freeze left label placement and avoid hidden fixed-width detail defaults."
-          : summarizeVerticalDetailLabelWidthViolations(
-              targetRoot,
-              verticalDetailLabelWidthViolations
-            ),
-    })
-    pushCheck(checks, {
       id: 'pro-detail-provider-chain',
       ok: proDetailProviderViolations.length === 0,
       severity: 'error',
@@ -5094,20 +4119,6 @@ async function main() {
           ? 'All ProEditPage business pages keep an explicit provider/context chain in source.'
           : summarizeProEditProviderViolations(targetRoot, proEditProviderViolations),
     })
-    pushCheck(checks, {
-      id: 'reuse-shared-bar-like-helper',
-      ok: sharedBarLikeHelperBypassViolations.length === 0,
-      severity: 'error',
-      summary:
-        'once the project provides shared interval-chart helpers, business pages must reuse them instead of scattering local plot-padding fixes',
-      detail:
-        sharedBarLikeHelperBypassViolations.length === 0
-          ? 'All managed business pages with bar/column charts reuse the shared interval-chart helper baseline.'
-          : summarizeSharedBarLikeHelperBypassViolations(
-              targetRoot,
-              sharedBarLikeHelperBypassViolations
-            ),
-    })
     const frameworkHostEntryRequirement = getFrameworkHostEntryRequirement(hostProfile, targetRoot)
     if (frameworkHostEntryRequirement.required) {
       pushCheck(checks, {
@@ -5119,15 +4130,92 @@ async function main() {
       })
     }
 
+    if (legacyCompatibilityMode) {
+      pushCheck(checks, {
+        id: 'legacy-runtime-compatibility-lock',
+        ok: Boolean(runtimeCompatibilityLock),
+        severity: 'error',
+        summary: 'legacy runtime compatibility lock exists for shell/runtime selection',
+        detail: runtimeCompatibilityLock
+          ? runtimeCompatibilityLockPath
+          : 'Missing .local-context/hiui-design/outputs/runtime-compatibility-lock.json. Re-run typical-page:apply:legacy so shell runtime selection is recorded before page generation.',
+      })
+      pushCheck(checks, {
+        id: 'legacy-runtime-seal',
+        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeSeal?.seal),
+        severity: 'error',
+        summary: 'legacy runtime seal exists as a reviewable generated runtime fact',
+        detail: legacyDoctorRuntimeFacts?.runtimeSeal?.seal
+          ? RUNTIME_SEAL_RELATIVE_PATH
+          : `Missing ${RUNTIME_SEAL_RELATIVE_PATH}. Re-run typical-page:apply:legacy so generated runtime provenance can be reviewed and committed.`,
+      })
+      pushCheck(checks, {
+        id: 'legacy-runtime-core-provenance',
+        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeSeal?.ok),
+        severity: 'error',
+        summary: 'sealed legacy runtime core files match the runtime seal hashes',
+        detail: legacyDoctorRuntimeFacts?.runtimeSeal?.ok
+          ? `Runtime core provenance is valid for ${RUNTIME_SEAL_RELATIVE_PATH}.`
+          : (legacyDoctorRuntimeFacts?.runtimeSeal?.issues || []).map((issue) => issue.message || issue.code).join('; ') || 'Runtime seal could not be verified.',
+      })
+      pushCheck(checks, {
+        id: 'legacy-canonical-shell-binding',
+        ok: Boolean(legacyDoctorRuntimeFacts?.shellBinding?.ok && legacyDoctorRuntimeFacts?.primitiveFallback?.ok),
+        severity: 'error',
+        summary: 'legacy runtime page types keep canonical shell binding instead of primitive fallback',
+        detail: legacyDoctorRuntimeFacts?.pageTypes?.length
+          ? legacyDoctorRuntimeFacts.shellBinding.ok && legacyDoctorRuntimeFacts.primitiveFallback.ok
+            ? `Validated canonical shell binding for page types: ${legacyDoctorRuntimeFacts.pageTypes.join(', ')}.`
+            : [
+                ...(legacyDoctorRuntimeFacts.shellBinding.issues || []),
+                ...(legacyDoctorRuntimeFacts.primitiveFallback.issues || []),
+              ].map((issue) => issue.message || issue.code).join('; ')
+          : 'No generated page contract pageType was found; doctor verified runtime seal but skipped pageType-specific shell binding.',
+      })
+      pushCheck(checks, {
+        id: 'legacy-peer-export-resolution',
+        ok: runtimePeerResolutionStatus === 'ready' || runtimePeerResolutionStatus === 'unknown',
+        severity: runtimePeerResolutionStatus === 'unknown' ? 'warn' : 'error',
+        summary: 'legacy runtime peer dependencies and critical shell exports are resolved before generation',
+        detail: runtimePeerResolutionStatus === 'ready'
+          ? 'runtime-compatibility-lock peerResolution is ready.'
+          : runtimePeerResolutionStatus === 'unknown'
+            ? 'runtime-compatibility-lock peerResolution is unknown; install dependencies and rerun typical-page:apply:legacy before delivery acceptance.'
+            : runtimePeerResolutionBlockingReasons.join('; ') || 'runtime-compatibility-lock peerResolution is blocked or missing.',
+      })
+      pushCheck(checks, {
+        id: 'legacy-runtime-provider-contract',
+        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeProvider?.ok),
+        severity: 'error',
+        summary: 'project runtime adapter contract is valid when official shell runtime is replaced',
+        detail: legacyDoctorRuntimeFacts?.runtimeProviderContract
+          ? legacyDoctorRuntimeFacts.runtimeProvider.ok
+            ? `${RUNTIME_PROVIDER_CONTRACT_RELATIVE_PATH} is valid for page types: ${legacyDoctorRuntimeFacts.pageTypes.join(', ') || 'none'}.`
+            : legacyDoctorRuntimeFacts.runtimeProvider.issues.map((issue) => issue.message || issue.code).join('; ')
+          : 'No project runtime adapter contract declared; official shell runtime path remains active.',
+      })
+      pushCheck(checks, {
+        id: 'legacy-shell-runtime-compatibility',
+        ok: runtimeCompatibilityShellStatus === 'ready',
+        severity: 'error',
+        summary: 'legacy shell runtime variant is compatible with the target React runtime',
+        detail: runtimeCompatibilityShellStatus === 'ready'
+          ? `${runtimeCompatibilityShellVariant || 'unknown'} shell runtime is ready`
+          : runtimeCompatibilityBlockingReasons.length > 0
+            ? runtimeCompatibilityBlockingReasons.join('; ')
+            : `Shell runtime compatibility status is ${runtimeCompatibilityShellStatus || 'missing'}`,
+      })
+    }
+
     pushCheck(checks, {
       id: 'shells-declared',
-      ok: Boolean(depSpec) || legacyCompatibilityMode,
-      severity: legacyCompatibilityMode ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
+      ok: legacyCompatibilityMode || Boolean(depSpec),
+      severity: legacyCompatibilityMode || mode === 'host-integration' ? 'error' : 'warn',
       summary: '@hiui-design/typical-page-shells is declared',
         detail: legacyCompatibilityMode
         ? depSpec
-          ? `Legacy host bridge mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. Ordinary typical pages may still use planner-selected page components, but new pages should avoid ad hoc standard-shell imports on the legacy host main tree unless you first isolate a dedicated modern runtime entry.`
-          : 'Legacy host bridge mode (legacy-host-compatible) is active. Reference-only generation may continue without declaring @hiui-design/typical-page-shells. Ordinary typical pages may still use planner-selected page components; the restriction is only that new pages must not add ad hoc standard-shell imports on the legacy host main tree.'
+          ? `Legacy lightweight contract mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. src/hiui-runtime is the only allowed production consumer; business pages must continue through HiuiLegacyPage typed slots.`
+          : 'Legacy lightweight contract mode (legacy-host-compatible) can proceed without declaring @hiui-design/typical-page-shells in the legacy host package.json when the project stays on host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots.'
         : depSpec
         ? `Declared version/range: ${depSpec}`
         : mode === 'host-integration'
@@ -5141,7 +4229,7 @@ async function main() {
       summary:
         'typical-page managed dependencies match the verified snapshot instead of floating on loose experimental ranges',
       detail: legacyCompatibilityMode
-        ? `Legacy host bridge mode (legacy-host-compatible) is active. The standard typical-page dependency snapshot is intentionally not required in this host main tree. Detected legacy runtime reasons: ${legacyHostRuntime.reasons.join(
+        ? `Legacy lightweight contract mode (legacy-host-compatible) is active. The standard typical-page dependency snapshot is intentionally not required in this host main tree. Detected legacy runtime reasons: ${legacyHostRuntimeReasons.join(
             '; '
           )}`
         : managedDependencyDrifts.length === 0
@@ -5212,10 +4300,12 @@ async function main() {
     pushCheck(checks, {
       id: 'shells-installed',
       ok: legacyCompatibilityMode || (await pathExists(installedPackagePath)),
-      severity: 'warn',
+      severity: legacyCompatibilityMode ? 'error' : 'warn',
       summary: '@hiui-design/typical-page-shells appears to be installed',
       detail: legacyCompatibilityMode
-        ? 'Legacy host bridge mode (legacy-host-compatible) does not require installing @hiui-design/typical-page-shells unless the project later isolates a dedicated standard shell runtime.'
+        ? (await pathExists(installedPackagePath))
+          ? installedPackagePath
+          : 'Legacy lightweight contract mode (legacy-host-compatible) does not require installing @hiui-design/typical-page-shells in the legacy host main tree unless the project later isolates and mounts the standard shell runtime.'
         : (await pathExists(installedPackagePath))
         ? installedPackagePath
         : 'node_modules copy was not found; run your package manager install if this project has not installed dependencies yet',
@@ -5233,7 +4323,7 @@ async function main() {
           'vendored typical-page-shells tarball keeps the HiUI5 QueryFilter contained/no-label defaults',
         detail:
           compatibilityGenerationOnly
-            ? 'Legacy host bridge mode (legacy-host-compatible) does not require carrying the vendored typical-page-shells tarball unless this project later isolates and mounts the standard shell runtime.'
+            ? 'Legacy lightweight contract mode (legacy-host-compatible) does not require carrying the vendored typical-page-shells tarball unless this project later isolates and mounts the standard shell runtime.'
             : !vendoredShellTarball.exists
             ? `Expected vendored tarball was not found at ${targetEmbeddedShellTarballPath}`
             : vendoredShellTarball.reasons.length === 0
@@ -5280,12 +4370,12 @@ async function main() {
         !legacyCompatibilityMode
           ? 'No legacy host-compatible runtime downgrade was detected'
           : compatibilityGenerationOnly
-            ? `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
+            ? `Detected a legacy host-compatible runtime: ${legacyHostRuntimeReasons.join(
                 '; '
-              )}. This host should stay on the legacy bridge path: ordinary typical pages may still use planner-selected page components, but the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime.${auxiliaryShellUsageOnly ? ` Auxiliary gallery/reference imports remain allowed here and do not count as direct-shell business usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}` : ''} Continue with the compatibility generation path: read .local-context/hiui-design/rules/generation-rules.md, then .local-context/hiui-design/docs/generation/legacy-host-compatibility.md, and follow the selected carrier/runtimeAdapterProof result when generating business pages.`
-            : `Detected a legacy host-compatible runtime: ${legacyHostRuntime.reasons.join(
+              )}. This host should stay on the legacy lightweight contract path: ordinary typical pages must use host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots; the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime.${auxiliaryShellUsageOnly ? ` Auxiliary gallery/reference imports remain allowed here and do not count as direct-shell business usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}` : ''} Continue with the compatibility generation path: read .local-context/hiui-design/docs/generation/legacy-host-compatibility.md and rules/typical-page-contracts/<pageType>.json, finish project-level typical-page:apply:legacy first (it runs typical-page:legacy:init internally), then run page-level typical-page:light-plan and typical-page:legacy:new|rewrite --plan only after project integration state is ready.`
+            : `Detected a legacy host-compatible runtime: ${legacyHostRuntimeReasons.join(
                 '; '
-              )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy host bridge mode (legacy-host-compatible).`,
+              )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy lightweight contract mode (legacy-host-compatible).`,
     })
     pushCheck(checks, {
       id: 'styles-import',
@@ -5293,7 +4383,7 @@ async function main() {
       severity: compatibilityGenerationOnly ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
       summary: 'typical-page shell styles are imported once in the app entry',
       detail: compatibilityGenerationOnly
-        ? 'Legacy host bridge mode (legacy-host-compatible) does not require @hiui-design/typical-page-shells/styles.css unless the project later isolates and mounts the standard shell runtime.'
+        ? 'Legacy lightweight contract mode (legacy-host-compatible) does not require @hiui-design/typical-page-shells/styles.css unless the project later isolates and mounts the standard shell runtime.'
         : hasStyleImport
         ? entryFile
         : mode === 'host-integration'
@@ -5466,6 +4556,7 @@ async function main() {
         legacyCompatibilityMode,
         manifest,
         managedPageRegistryInspection,
+        mode,
         nonTypicalSourceOwnership,
         pageContractsResult,
         referenceOnlyMode,
@@ -5786,6 +4877,21 @@ async function main() {
             : summarizeMissingImports(targetRoot, missingImports),
       })
 
+      const tsNoCheckViolations = await collectTsNoCheckDirectives(outputRoot)
+      pushCheck(checks, {
+        id: 'no-ts-nocheck-in-synced-assets',
+        ok: tsNoCheckViolations.length === 0,
+        severity: 'error',
+        summary: 'synced typical-page assets do not rely on @ts-nocheck to pass strict TypeScript projects',
+        detail:
+          tsNoCheckViolations.length === 0
+            ? 'No @ts-nocheck directives were found in synced typical-page source files.'
+            : `Remove @ts-nocheck and fix types or isolate the gallery compile scope: ${summarizeTsNoCheckViolations(
+                targetRoot,
+                tsNoCheckViolations
+              )}`,
+      })
+
       const schemaFormCheckSelectViolations = await collectSchemaFormCheckSelectViolations(outputRoot)
       pushCheck(checks, {
         id: 'schema-form-check-select-provider',
@@ -5796,22 +4902,6 @@ async function main() {
           schemaFormCheckSelectViolations.length === 0
             ? 'No raw SchemaForm + CheckSelect page is missing the typical-page field-map provider'
             : `Wrap these files with TypicalPageFieldMapProvider: ${schemaFormCheckSelectViolations.join(', ')}`,
-      })
-
-      const legacyHiUi4Violations = await collectLegacyHiUi4Violations([
-      outputRoot,
-      path.join(targetRoot, 'src', 'components'),
-      path.join(targetRoot, 'src', 'styles'),
-      ])
-      pushCheck(checks, {
-        id: 'legacy-hiui4-tokens',
-        ok: legacyHiUi4Violations.length === 0,
-        severity: 'error',
-        summary: 'synced typical-page assets and copied helper components do not contain legacy visual class names, variables, or demo copy',
-        detail:
-          legacyHiUi4Violations.length === 0
-            ? 'No legacy visual residue such as `hi-v4-*`, `--hi-v4-*`, or old demo wording was found in the reusable page assets'
-            : summarizeLegacyHiUi4Violations(targetRoot, legacyHiUi4Violations),
       })
 
       const appFramePath = path.join(outputRoot, 'app-frame.tsx')
@@ -6161,7 +5251,7 @@ async function main() {
       })
     }
 
-    const expectedScripts = getReusableScripts(lineId)
+    const expectedScripts = getReusableScripts(lineId, { mode })
     const designerSetupScript =
       pkg?.scripts?.['typical-page:designer-setup'] === expectedScripts['typical-page:designer-setup']
     pushCheck(checks, {
@@ -6186,17 +5276,52 @@ async function main() {
         : `Expected \`${expectedScripts['typical-page:doctor']}\``,
     })
 
-    const planPageTaskScript =
-      pkg?.scripts?.['typical-page:plan-page-task'] ===
-      expectedScripts['typical-page:plan-page-task']
+    const legacyInitScript =
+      pkg?.scripts?.['typical-page:legacy:init'] === expectedScripts['typical-page:legacy:init']
     pushCheck(checks, {
-      id: 'plan-page-task-script',
-      ok: planPageTaskScript,
+      id: 'legacy-init-script',
+      ok: legacyInitScript,
       severity: 'error',
-      summary: 'package.json exposes typical-page:plan-page-task as the canonical page-task planning gate',
-      detail: planPageTaskScript
-        ? 'Registered script matches the packaged machine-plan entry'
-        : `Expected \`${expectedScripts['typical-page:plan-page-task']}\``,
+      summary: 'package.json exposes typical-page:legacy:init for legacy host contract bootstrap',
+      detail: legacyInitScript
+        ? 'Registered script matches the packaged legacy init entry'
+        : `Expected \`${expectedScripts['typical-page:legacy:init']}\``,
+    })
+
+    const legacyNewScript =
+      pkg?.scripts?.['typical-page:legacy:new'] === expectedScripts['typical-page:legacy:new']
+    pushCheck(checks, {
+      id: 'legacy-new-script',
+      ok: legacyNewScript,
+      severity: 'error',
+      summary: 'package.json exposes typical-page:legacy:new for contract-slot page creation',
+      detail: legacyNewScript
+        ? 'Registered script matches the packaged legacy new entry'
+        : `Expected \`${expectedScripts['typical-page:legacy:new']}\``,
+    })
+
+    const legacyRewriteScript =
+      pkg?.scripts?.['typical-page:legacy:rewrite'] === expectedScripts['typical-page:legacy:rewrite']
+    pushCheck(checks, {
+      id: 'legacy-rewrite-script',
+      ok: legacyRewriteScript,
+      severity: 'error',
+      summary: 'package.json exposes typical-page:legacy:rewrite for contract-slot page rewrites',
+      detail: legacyRewriteScript
+        ? 'Registered script matches the packaged legacy rewrite entry'
+        : `Expected \`${expectedScripts['typical-page:legacy:rewrite']}\``,
+    })
+
+    const legacyVerifyScript =
+      pkg?.scripts?.['typical-page:legacy:verify'] === expectedScripts['typical-page:legacy:verify']
+    pushCheck(checks, {
+      id: 'legacy-verify-script',
+      ok: legacyVerifyScript,
+      severity: 'error',
+      summary: 'package.json exposes typical-page:legacy:verify for troubleshooting-only runtime and slot conformance',
+      detail: legacyVerifyScript
+        ? 'Registered script matches the packaged legacy verify entry'
+        : `Expected \`${expectedScripts['typical-page:legacy:verify']}\``,
     })
 
     const doctorSelfCheckScript =
@@ -6249,18 +5374,6 @@ async function main() {
       detail: finalizePageScript
         ? 'Registered script matches the packaged delivery gate entry'
         : `Expected \`${expectedScripts['typical-page:finalize-page']}\``,
-    })
-
-    const startPageScript =
-      pkg?.scripts?.['typical-page:start-page'] === expectedScripts['typical-page:start-page']
-    pushCheck(checks, {
-      id: 'start-page-script',
-      ok: startPageScript,
-      severity: 'warn',
-      summary: 'package.json exposes typical-page:start-page for managed page scaffolding',
-      detail: startPageScript
-        ? 'Registered script matches the packaged start-page entry'
-        : `Expected \`${expectedScripts['typical-page:start-page']}\``,
     })
 
     const preflightScript =

@@ -46,7 +46,15 @@ function pageTypeHitsHeaderGate(pageTypeId, { skillRoot } = {}) {
   return lockedRegions.includes('header') || slotManifest.some((slot) => slot?.slotId === 'headerExtra')
 }
 
-export function resolveLegacyHostHardGatesForPageTypes({ mode, pageTypeIds, skillRoot } = {}) {
+export function resolveLegacyHostHardGatesForPageTypes({
+  mode,
+  pageTypeIds,
+  skillRoot,
+  hasTypicalPageShellsDependency = false,
+  usesVendoredShellTarball = false,
+  runtimeImportsShells = false,
+  usesRuntimeProviderAdapter = false,
+} = {}) {
   if (mode !== 'legacy-host-compatible') return null
 
   const truth = loadLegacyHostHardGates({ skillRoot })
@@ -57,8 +65,18 @@ export function resolveLegacyHostHardGatesForPageTypes({ mode, pageTypeIds, skil
   const headerLayoutContractRequired = normalizedPageTypeIds.some((pageTypeId) =>
     pageTypeHitsHeaderGate(pageTypeId, { skillRoot })
   )
+  const peerExportResolutionRequired = Boolean(
+    hasTypicalPageShellsDependency || usesVendoredShellTarball || runtimeImportsShells
+  )
+  const runtimeProviderContractRequired = Boolean(usesRuntimeProviderAdapter)
   const appliedConditionalHardGates = conditionalHardGates.filter((gate) =>
-    gate?.id === 'header-layout-proof' ? headerLayoutContractRequired : false
+    gate?.id === 'header-layout-proof'
+      ? headerLayoutContractRequired
+      : gate?.id === 'peer-export-resolution'
+        ? peerExportResolutionRequired
+        : gate?.id === 'runtime-provider-contract'
+          ? runtimeProviderContractRequired
+          : false
   )
 
   return {
@@ -81,6 +99,8 @@ export function resolveLegacyHostHardGatesForPageTypes({ mode, pageTypeIds, skil
     triggerChecks,
     triggerCheckIds: triggerChecks.map((gate) => gate.id).filter(Boolean),
     headerLayoutContractRequired,
+    peerExportResolutionRequired,
+    runtimeProviderContractRequired,
     pageTypeIds: normalizedPageTypeIds,
     notes: Array.isArray(truth.notes) ? truth.notes : [],
   }

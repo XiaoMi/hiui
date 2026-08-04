@@ -18,41 +18,11 @@ import {
 } from '../generators/asset-governance.mjs'
 
 const VISUAL_SPECS_PATH = path.resolve(PAGEGEN_ROOT, 'visual', 'specs.json')
-const RUNTIME_BRIDGE_MATRIX_PATH = path.resolve(
-  PAGEGEN_ROOT,
-  '..',
-  'rules',
-  'runtime-bridged-component-matrix.json'
-)
-const LEGACY_RUNTIME_BRIDGE_PRIORITY_EQUIVALENTS = new Map([
-  ['official-mirror', 'direct-standard-component'],
-])
-
-function collectLegacyBridgePrimaryEntries(values = []) {
-  return values.reduce((entries, value, index) => {
-    const normalizedValue =
-      LEGACY_RUNTIME_BRIDGE_PRIORITY_EQUIVALENTS.get(value) || value
-
-    if (normalizedValue === 'direct-standard-component') {
-      entries.push({
-        index,
-        normalizedValue,
-        rawValue: value,
-      })
-    }
-
-    return entries
-  }, [])
-}
 
 export function verifyGovernanceCoverage() {
   const governanceRegistry = readAssetGovernanceRegistry()
   const officialRuntimeRegistry = readOfficialRuntimeRegistry()
   const visualSpecs = readJson(VISUAL_SPECS_PATH)
-  const runtimeBridgeMatrix = readJson(RUNTIME_BRIDGE_MATRIX_PATH)
-  const runtimeBridgeProfileByPageType = new Map(
-    (runtimeBridgeMatrix.profiles || []).map((profile) => [String(profile.pageTypeId || '').trim(), profile])
-  )
   const visualSpecMap = new Map(visualSpecs.map((spec) => [spec.id, spec]))
   const OFFICIAL_MIRROR_MAX_DIFF_RATIO = 0.05
   const MANAGED_ANALYTICS_MAX_DIFF_RATIO = 0.05
@@ -62,10 +32,6 @@ export function verifyGovernanceCoverage() {
   Object.keys(governanceRegistry.pageTypeProfiles || {}).forEach((pageType) => {
     const pagePolicy = resolvePageTypeGovernancePolicy(pageType, {
       projectMode: 'host-integration',
-      projectType: 'brownfield',
-    })
-    const legacyPagePolicy = resolvePageTypeGovernancePolicy(pageType, {
-      projectMode: 'legacy-host-compatible',
       projectType: 'brownfield',
     })
     const canonicalGovernance = resolveAssetGovernanceState({
@@ -85,7 +51,6 @@ export function verifyGovernanceCoverage() {
     coveredPageTypes.push(pageType)
     const parityPath = path.resolve(PAGEGEN_ROOT, 'parity', `${pageType}.json`)
     const runtimeEntry = officialRuntimeRegistry[pageType]
-    const runtimeBridgeProfile = runtimeBridgeProfileByPageType.get(pageType)
     const visualSpec = visualSpecMap.get(pageType)
 
     if (!runtimeEntry) {
@@ -145,37 +110,6 @@ export function verifyGovernanceCoverage() {
     if (!visualSpec) {
       failures.push(`${pageType} 已声明 ${compatibilityProfile}，但缺少视觉基线 spec：${relativeToRoot(VISUAL_SPECS_PATH)}`)
       return
-    }
-
-    if (runtimeBridgeProfile) {
-      const expectedLegacyPrimaryEntries = collectLegacyBridgePrimaryEntries(
-        runtimeBridgeProfile.resolutionOrder || []
-      )
-      const actualLegacyPrimaryEntries = collectLegacyBridgePrimaryEntries(
-        legacyPagePolicy.truthSourcePriority || []
-      )
-      const expectedLegacyPrimaryOrder = expectedLegacyPrimaryEntries.map(
-        (entry) => entry.normalizedValue
-      )
-      const actualLegacyPrimaryOrder = actualLegacyPrimaryEntries.map(
-        (entry) => entry.normalizedValue
-      )
-
-      if (expectedLegacyPrimaryOrder.length === 0) {
-        failures.push(
-          `${pageType} runtime bridge profile 缺少可执行的 primary resolution order：${relativeToRoot(RUNTIME_BRIDGE_MATRIX_PATH)}`
-        )
-      } else if (
-        expectedLegacyPrimaryOrder.length !== actualLegacyPrimaryOrder.length ||
-        expectedLegacyPrimaryOrder.some((value, index) => actualLegacyPrimaryOrder[index] !== value)
-      ) {
-        failures.push(
-          `${pageType} legacy truthSourcePriority 与 runtime bridge resolutionOrder 不一致；期望 ${expectedLegacyPrimaryOrder.join(
-            ' -> '
-          )}，实际 ${actualLegacyPrimaryOrder.join(' -> ')}`
-        )
-      }
-
     }
 
     const expectedPreviewPageId = `pagegen-${pageType}`

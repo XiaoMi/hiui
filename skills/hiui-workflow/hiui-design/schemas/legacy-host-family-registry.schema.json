@@ -18,7 +18,7 @@
           "matchPolicy",
           "runtimeProfile",
           "mountContract",
-          "runtimeBridge",
+          "legacyRuntimeSurface",
           "styleBoundary",
           "portalBoundary",
           "adapterPack",
@@ -37,16 +37,16 @@
           "matchPolicy": { "type": "object" },
           "runtimeProfile": { "type": "object" },
           "mountContract": { "type": "object" },
-          "runtimeBridge": { "type": "object" },
+          "legacyRuntimeSurface": { "type": "object" },
           "styleBoundary": { "type": "object" },
           "portalBoundary": { "type": "object" },
           "adapterPack": {
             "type": "object",
-            "required": ["adapterPackId", "hostContentAdapter", "runtimeBridge", "styleBoundary", "portalBoundary", "adapterIds"],
+            "required": ["adapterPackId", "hostContentAdapter", "legacyRuntimeSurface", "styleBoundary", "portalBoundary", "adapterIds"],
             "properties": {
               "adapterPackId": { "type": "string", "pattern": "^[a-z0-9-]+\\.v[0-9]+$" },
               "hostContentAdapter": { "type": "string" },
-              "runtimeBridge": { "type": "string" },
+              "legacyRuntimeSurface": { "type": "string" },
               "styleBoundary": { "type": "string" },
               "portalBoundary": { "type": "string" },
               "adapterIds": { "type": "array", "items": { "type": "string" } }

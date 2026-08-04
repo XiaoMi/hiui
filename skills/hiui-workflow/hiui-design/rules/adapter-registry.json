@@ -2,13 +2,11 @@
   "schemaVersion": "adapter-registry.v1",
   "adapters": [
     {
-      "adapterId": "legacy-runtime-adapter",
-      "kind": "legacy-runtime-adapter",
-      "label": "Legacy runtime bridge for certified page components",
-      "supportedModes": [
-        "legacy-host-compatible"
-      ],
-      "responsibility": "runtime-bridge-only",
+      "adapterId": "host-boundary-adapter",
+      "kind": "host-boundary-adapter",
+      "label": "Host boundary adapter for managed page components",
+      "supportedModes": [],
+      "responsibility": "boundary-only",
       "allowedResponsibilities": [
         "query-field-schema-binding",
         "table-column-schema-binding",
@@ -56,7 +54,6 @@
       "adapterId": "layout-search-table-adapter",
       "label": "Single white-body list workspace",
       "supportedModes": [
-        "legacy-host-compatible",
         "rules-only",
         "host-integration"
       ],
@@ -65,7 +62,7 @@
         "query-field-schema-binding",
         "table-column-schema-binding",
         "pagination-state-binding",
-        "legacy-hiui-runtime-bridge"
+        "legacy-hiui-runtime-boundary"
       ],
       "forbiddenResponsibilities": [
         "shell",
@@ -107,8 +104,8 @@
           "hi-v5-page-header-skeleton"
         ]
       },
-      "kind": "legacy-runtime-adapter",
-      "responsibility": "runtime-bridge-only",
+      "kind": "host-boundary-adapter",
+      "responsibility": "boundary-only",
       "mustNot": [
         "translateHiuiComponentsToLegacyComponents",
         "replaceQueryFilterWithLegacyForm",
@@ -121,7 +118,6 @@
       "adapterId": "layout-search-stat-table-adapter",
       "label": "Single white-body stat/search/table workspace",
       "supportedModes": [
-        "legacy-host-compatible",
         "rules-only",
         "host-integration"
       ],
@@ -131,7 +127,7 @@
         "query-field-schema-binding",
         "table-column-schema-binding",
         "pagination-state-binding",
-        "legacy-hiui-runtime-bridge"
+        "legacy-hiui-runtime-boundary"
       ],
       "forbiddenResponsibilities": [
         "shell",
@@ -173,8 +169,8 @@
           "hi-v5-page-header-skeleton"
         ]
       },
-      "kind": "legacy-runtime-adapter",
-      "responsibility": "runtime-bridge-only",
+      "kind": "host-boundary-adapter",
+      "responsibility": "boundary-only",
       "mustNot": [
         "translateHiuiComponentsToLegacyComponents",
         "replaceQueryFilterWithLegacyForm",
@@ -187,7 +183,6 @@
       "adapterId": "page-header-detail-adapter",
       "label": "Page header + detail body",
       "supportedModes": [
-        "legacy-host-compatible",
         "rules-only",
         "host-integration"
       ],
@@ -195,7 +190,7 @@
         "header-slot-binding",
         "detail-section-binding",
         "detail-field-schema-binding",
-        "legacy-hiui-runtime-bridge"
+        "legacy-hiui-runtime-boundary"
       ],
       "forbiddenResponsibilities": [
         "shell",
@@ -237,8 +232,8 @@
           "hi-v5-page-header-skeleton"
         ]
       },
-      "kind": "legacy-runtime-adapter",
-      "responsibility": "runtime-bridge-only",
+      "kind": "host-boundary-adapter",
+      "responsibility": "boundary-only",
       "mustNot": [
         "translateHiuiComponentsToLegacyComponents",
         "replaceQueryFilterWithLegacyForm",

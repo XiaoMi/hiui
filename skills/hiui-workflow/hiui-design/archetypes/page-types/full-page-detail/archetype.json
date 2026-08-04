@@ -42,8 +42,15 @@
     "generic body/content contract regions"
   ],
   "modeAdapters": {
-    "host-integration": { "templateDir": "templates/archetypes/host-integration/full-page-detail" },
-    "rules-only": { "templateDir": "templates/archetypes/rules-only/full-page-detail" },
-    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/full-page-detail" }
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/full-page-detail"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/full-page-detail"
+    },
+    "legacy-host-compatible": {
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
+    }
   }
 }

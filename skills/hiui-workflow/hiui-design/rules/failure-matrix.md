@@ -16,8 +16,6 @@
 | `PLAN_INVALID` | plan | `status=invalid`，或必填字段缺失、字段组合矛盾、action 不可解析 | 计划本身非法，不能通过补业务事实绕过 | 修复 `plan-page-task` 输入或脚本输出 | 否 | 是 |
 | `PLAN_BLOCKED` | plan | `status=blocked`、`blockingIssues.length > 0` 或 `blockingReasons.length > 0` | 计划合法但事实不足 | 只补 `blockingIssues` / `blockingReasons` 指向的事实，不生成页面 | 视原因而定 | 是 |
 | `MISSING_PAGE_TYPE` | plan | `blockingReasons` 包含 `missing pageType` | 页面类型未解析，不能直接当作非典型页处理 | 让用户确认页型，或补充需求后重新运行 plan | 否 | 是 |
-| `RUNTIME_BRIDGE_PROFILE_MISSING` | plan | legacy `page-component` 需要 runtime bridge，但 `runtimeBridgeProfile` 缺失或 `rules/runtime-bridged-component-matrix.json` 未命中 | 缺少 legacy 桥接页面组件的结构化 bridge profile，不能安全进入主链路 | 补齐 bridge profile，或显式退回合法 fallback | 部分 | 是 |
-| `RUNTIME_BRIDGE_SOURCE_UNRESOLVED` | plan | 选中的 runtime bridge profile 无法从 certification 解析 `certificationInputs.componentShell` | 无法确认真正的运行时页壳来源，不能生成 thin bridge 代码 | 修复 certification / profile 关联，或改用 project-certified carrier | 部分 | 是 |
 | `ROUTE_OWNER_MISSING` | plan/preflight | 目标页落在 `src/typical-page-reuse/**`，或 route ownership 不是业务路由 | 当前目标属于示例 gallery / smoke baseline，不是真实业务路由 | 改到 `src/pages/<business-page>/index.jsx|tsx` 或宿主业务目录 | 否 | 是 |
 | `SOURCE_MARKER_MISSING` | preflight | `checks[].id=sourceMarker` 且 `status=failed` | 源码缺少受管页面 source marker，无法确认页型与治理边界 | 使用受管起点重建，或补齐合法 source marker 后重跑 preflight | 部分 | 是 |
 | `CONTRACT_PAGE_TYPE_MISMATCH` | preflight | `checks[].id=contractPageType` 且 `status=failed` | 源码声明的新页型与旧 contract 不一致 | 执行 `write-contract-standard`，刷新合同后再 preflight | 是 | 是 |
@@ -32,8 +30,6 @@
 | `HIUI014_ACCEPTANCE_CONTRACT_MISSING` | governance | 迁移 / 重架构页缺少 `page-acceptance-contract.v1` | 缺少页面专属验收契约，通用页型规则无法保护业务体验 | 基于 source snapshot、用户需求、pageType baseline 与 page contract 生成 acceptance contract | 是 | 是 |
 | `HIUI017_REQUIREMENT_WITHOUT_PROVENANCE` | governance | blocking requirement 缺少 `provenance` | 验收要求不可追溯，不能作为 hard gate | 补充 provenance 或降级为 warning；不得让 agent 自证 requirement 来源 | 部分 | 是 |
 | `HIUI004_FAKE_SHELL_MARKER` | governance/preflight | 仅存在注释 marker / `data-hiui5-shell`，缺少 registry + AST 可证明的 shell carrier | 页面可能是手写壳伪装成典型页壳 | 使用合法 shell carrier，或补齐 registry 与真实导入 / 挂载证据 | 部分 | 是 |
-| `RUNTIME_BRIDGE_RESPONSIBILITY_DRIFT` | governance/preflight | bridge wrapper / slot adapter 接管 `shell`、`white-body`、`main-scroll`、`pagination`、`footer`，或把标准 region 翻译成宿主 look-alike primitives | 运行时桥接层越界，已不再是 thin bridge，而是在重写页面组件 | 收回到 runtime bridge / slot binding 职责边界，必要时退出 `page-component` 主链路 | 部分 | 是 |
-| `RUNTIME_BRIDGE_TEMPLATE_MISSING` | preflight | runtime bridge profile 声明了 wrapper / slot adapter 资产，但模板未 shipped 或路径缺失 | 计划已选择桥接页面组件，但配套桥接资产不完整 | 补齐并 ship 模板后重新执行 `start-page` / preflight | 是 | 是 |
 | `HIUI010_ADAPTER_SCHEMA_INVALID` | governance | adapter 纯 re-export、未注入默认值、承担 page owner，或 localBypass 与 AST 不匹配 | 第三方 UI 接入只是形式合规，不能保证典型页默认值与 ownership | 改为 Managed 组件 / 合法 adapter；记录 owner + expiry 的 local bypass | 部分 | 是 |
 | `HIUI005_QUERY_FILTER_FIELD_LOST` | governance | acceptance contract / source snapshot 要求的筛选字段在行内或抽屉中缺失 | 页面迁移丢失筛选能力或错误迁移字段位置 | 恢复字段，或用带 provenance 的 acceptance contract 说明迁移原因 | 部分 | 是 |
 | `HIUI022_MANAGED_FILTER_CHAIN_MISSING` | governance/preflight | contract 要求 `query-filter` region，但源码没有真实 `QueryFilter` / 认可 host search shell 语义，或退回 `searchConfig.fields`、`SearchForm`、`getSearchFields`、手写 primitive 筛选栏 | 页面看起来还有搜索区，但已经脱离受管 `QueryFilter / FilterDrawer` 链路 | 恢复真实 `QueryFilter / FilterDrawer` 或认可的 host search shell；只有页面语义真的改变时才允许重写 contract | 部分 | 是 |

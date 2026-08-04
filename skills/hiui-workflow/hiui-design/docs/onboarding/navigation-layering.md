@@ -142,7 +142,7 @@
 - 页面生成任务若需要新增宿主一级菜单，必须同时声明 route ownership 和 icon ownership，不能只把页面挂到最近的示例路由里
 - 一级菜单统一使用 `Filled` 变体；线型 icon、缺失 icon、多个一级菜单复用同一个占位 icon 都属于宿主导航契约失败
 - 真实业务一级菜单不得使用 `AppStoreFilled`。这个 icon 的语义是“应用/示例集合”，保留给 `示例` smoke/gallery 入口
-- 验收时以 `typical-page:doctor` 的 `top-level-menu-icon-semantics` 为机器 gate，人工 review 只补充业务域是否选得足够准确
+- 验收时以 `node ".local-context/hiui-design/scripts/typical-page-doctor.mjs"` 的 `top-level-menu-icon-semantics` 为机器 gate，人工 review 只补充业务域是否选得足够准确
 
 ## 落地建议
 

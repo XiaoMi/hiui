@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "typical-page-contract.v1",
+  "pageTypeId": "tree-split",
+  "baseMoldId": "tree-split.managed-mold.v1",
+  "shell": "TreeSplitPageFrame",
+  "sourceDocs": [
+    "docs/generation/figma-pages/tree-split.md",
+    "docs/generation/figma-pages/table-shared.md",
+    "rules/page-mold-registry.json",
+    "docs/generation/figma-page-rules.md"
+  ],
+  "regions": [
+    "shell",
+    "header",
+    "split-workspace",
+    "left-tree",
+    "right-main",
+    "table",
+    "pagination",
+    "main-scroll"
+  ],
+  "regionOrder": [
+    "header",
+    "split-workspace",
+    "left-tree",
+    "right-main",
+    "table",
+    "pagination"
+  ],
+  "ownership": {
+    "shell": "typical-page-shell",
+    "header": "typical-page-shell",
+    "split-workspace": "typical-page-shell",
+    "left-tree": "managed-component",
+    "right-main": "managed-component",
+    "table": "managed-component",
+    "pagination": "managed-component",
+    "main-scroll": "typical-page-shell"
+  },
+  "slotSchema": {
+    "editableSlots": [
+      "pageTitle",
+      "headerExtra",
+      "treeFields",
+      "queryFields",
+      "tableColumns",
+      "rowActions",
+      "mockData",
+      "apiBinding"
+    ],
+    "slotManifest": [
+      {
+        "slotId": "pageTitle",
+        "label": "页面标题",
+        "contentType": "plain-text",
+        "allowedChanges": [
+          "copy",
+          "onBack"
+        ],
+        "forbiddenChanges": [
+          "shell",
+          "header-geometry",
+          "header-carrier",
+          "page-header-portal",
+          "page-header-padding",
+          "page-header-align-items",
+          "hi-v5-page-header-skeleton"
+        ],
+        "owner": "typed-content-slot"
+      },
+      {
+        "slotId": "headerExtra",
+        "label": "页头右侧操作/信息",
+        "contentType": "actions-or-summary",
+        "allowedChanges": [
+          "buttons",
+          "statusText",
+          "timeRange",
+          "primaryAction"
+        ],
+        "forbiddenChanges": [
+          "page-header-geometry",
+          "header-carrier",
+          "page-header-portal",
+          "page-header-padding",
+          "page-header-align-items",
+          "hi-v5-page-header-skeleton"
+        ],
+        "owner": "typed-action-slot",
+        "maxItems": 3
+      },
+      {
+        "slotId": "treeFields",
+        "label": "树筛选/树节点字段",
+        "contentType": "tree-schema",
+        "allowedChanges": [
+          "nodeTitle",
+          "nodeKey",
+          "selectionMode"
+        ],
+        "forbiddenChanges": [
+          "split-pane-owner",
+          "pane-scroll-owner"
+        ],
+        "owner": "typed-structure-slot",
+        "maxItems": 50
+      },
+      {
+        "slotId": "queryFields",
+        "label": "筛选字段",
+        "contentType": "filter-controls",
+        "allowedChanges": [
+          "fieldLabels",
+          "fieldTypes",
+          "options",
+          "defaultValues"
+        ],
+        "forbiddenChanges": [
+          "query-filter-carrier",
+          "filter-grid-geometry"
+        ],
+        "owner": "typed-structure-slot",
+        "maxItems": 6
+      },
+      {
+        "slotId": "tableColumns",
+        "label": "表格列",
+        "contentType": "table-column-schema",
+        "allowedChanges": [
+          "columnTitle",
+          "dataIndex",
+          "width",
+          "render",
+          "sorter"
+        ],
+        "forbiddenChanges": [
+          "table-carrier",
+          "pagination-owner",
+          "table-viewport-wrapper",
+          "local-horizontal-scroll-owner",
+          "table-shell-padding",
+          "content-width-sizing",
+          "slot-root-geometry",
+          "pane-scroll-owner"
+        ],
+        "owner": "typed-structure-slot",
+        "maxItems": 12
+      },
+      {
+        "slotId": "rowActions",
+        "label": "行操作",
+        "contentType": "table-row-actions",
+        "allowedChanges": [
+          "actionText",
+          "visibility",
+          "handlers"
+        ],
+        "forbiddenChanges": [
+          "table-carrier",
+          "table-viewport-wrapper",
+          "local-horizontal-scroll-owner",
+          "table-shell-padding",
+          "slot-root-geometry",
+          "pane-scroll-owner"
+        ],
+        "owner": "typed-action-slot",
+        "maxItems": 4
+      },
+      {
+        "slotId": "mockData",
+        "label": "示例数据",
+        "contentType": "mock-records",
+        "allowedChanges": [
+          "records",
+          "emptyState"
+        ],
+        "forbiddenChanges": [
+          "layout"
+        ],
+        "owner": "business-data-slot",
+        "maxItems": 20
+      },
+      {
+        "slotId": "apiBinding",
+        "label": "接口绑定",
+        "contentType": "request-mapping",
+        "allowedChanges": [
+          "queryParams",
+          "responseMapping",
+          "submitHandlers"
+        ],
+        "forbiddenChanges": [
+          "layout"
+        ],
+        "owner": "host-adapter-slot"
+      }
+    ]
+  },
+  "componentSources": {
+    "shell": "HiUI typical page shell",
+    "header": "PageHeader",
+    "split-workspace": "TreeSplitPageFrame",
+    "left-tree": "Tree",
+    "right-main": "RightMain",
+    "table": "Table",
+    "pagination": "Pagination",
+    "main-scroll": "MainScroll"
+  },
+  "visualTokens": {
+    "scope": "data-hiui-page-root",
+    "tokenSource": "src/hiui-runtime/styles.css",
+    "forbidPageLocalOverrides": [
+      "font-size",
+      "line-height",
+      "padding",
+      "margin",
+      "border-radius",
+      "box-shadow",
+      "background",
+      "color"
+    ]
+  },
+  "forbiddenOverrides": [
+    "replace-managed-region-root",
+    "override-shell-or-white-body",
+    "override-main-scroll-or-pagination",
+    "replace-standard-component-with-host-lookalike",
+    "add-page-local-visual-token-overrides",
+    "expose-freeform-children-entry"
+  ],
+  "allowedExtensions": [],
+  "verificationRules": [
+    "dom-regions-match-contract",
+    "ownership-has-single-owner",
+    "slots-match-schema",
+    "visual-tokens-stay-in-boundary",
+    "adapter-capability-ready"
+  ]
+}

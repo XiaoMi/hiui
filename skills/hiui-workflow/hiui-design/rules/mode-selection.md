@@ -6,14 +6,23 @@
 2. 选择 `host-integration`、`rules-only` 或 `legacy-host-compatible`
 3. 明确后续应该扩展读取哪些文档
 
+本文件是接入模式判定的唯一事实源。`hiui-design` 不存在脱离项目现状的全局默认 mode，也不存在“为了更快接入先降级”的模式选择；接入模式必须来自项目画像、runtime 兼容性与宿主承载能力。若项目画像缺失、过期或互相冲突，必须先补齐 `package.json`、路由、runtime 与宿主结构事实，不得凭记忆或用户口头描述脑补 mode。
+
 ## 默认判定
 
 - `greenfield` + `react-vite` / `react-vite-router`
-  默认走 `host-integration`。
+  默认且应走 `host-integration`。
 - `existing-system` + `react-vite-custom-layout` / `react-router-custom`
   默认走 `rules-only`。
 - `umi` / `next` / 微前端
   默认走 `rules-only`，不要自动覆盖正式宿主。
+
+## 禁止降级
+
+- `greenfield` + `react-vite` / `react-vite-router` 不得把 `rules-only` 当作 fallback、快捷路径、reference-assets 路径或临时接入路径。
+- 当检测结果推荐 `host-integration` 时，显式传入 `rules-only` 必须被接入脚本 fail closed；只有同时提供显式 override 与非空原因时，才允许作为带审计记录的例外继续。
+- `fallbackGenerationAsset`、reference-only 示例或 scaffold 只表示页面生成资产起点，不表示接入模式可以从 `host-integration` 降级到 `rules-only`。
+- 用户口头要求的 mode 与项目画像冲突时，先指出冲突并回到本文件判定；不得为了省步骤直接采信冲突 mode。
 
 ## 旧宿主桥接接入模式
 
@@ -30,12 +39,12 @@
 
 - 继续复用典型页页型和结构节奏
 - 不默认把标准 `@hiui-design/typical-page-shells` 作为 legacy 宿主主树的直接运行时依赖前提；是否可直接接入，仍取决于宿主是否已证明可承载该运行时契约
-- 改为以 standard certified page component + `legacy-runtime-adapter` proof 作为普通典型页主链路；旧宿主只提供全局导航、左侧菜单、业务路由入口和干净内容挂载点
+- 改为以 host contract + compiled PageSpec + HiuiLegacyPage runtime + typed page slots 作为普通典型页主链路；旧宿主只提供全局导航、左侧菜单、业务路由入口和干净内容挂载点
 - 项目接入 / capabilities 阶段必须自动读取项目结构来判断内容区是否独立；当存在清晰业务页根目录（`src/views` / `src/pages` / `src/routes`）和 Module Federation remote `exposes` 时，`CleanContentMount`（clean content mount）可由结构证据自动通过，并记录为 `clean-content-mount:project-structure`
-- 项目接入 / capabilities 阶段也必须自动扫描 runtime bridge 能力；request、response、message、dictionary / i18n、permission、user、route-navigation、theme 等结果进入 `legacyHostFamily.inferredFacts.runtimeBridge`，并明确 `passedCapabilities` / `missingCapabilities`
-- `portal-root` 默认视为浮层运行时的常规能力，不作为接入期 runtime bridge 的硬必需项；只有宿主显式自定义 popup container、或存在 overflow / z-index 裁切风险时，才要求额外补 `PortalBoundary` 事实
-- 若用户需求清晰命中普通典型页型且没有特殊要求，优先使用 standard certified page component + `runtimeAdapterProof`，并只替换业务槽位；只有组件不可用、结构升级或宿主约束特殊时，才进入同页型宿主 archetype / 兼容示例 / scaffold fallback，不要重新手工推演 primitive 页面
-- 必须通过 `runtimeAdapterProof` 门禁确认 runtime bridge、style boundary、portal boundary 与 `legacy-runtime-adapter` 能力；`CleanContentMount` 优先消费自动结构识别结果，只有结构证据不足时才补宿主边界事实。proof 缺失、blocked 或职责越界时不能把页面组件作为主生成资产
+- 项目接入 / capabilities 阶段也必须自动扫描 legacy runtime surface 能力；request、response、message、dictionary / i18n、permission、user、route-navigation、theme 等结果进入 `legacyHostFamily.inferredFacts.legacyRuntimeSurface`，并明确 `passedCapabilities` / `missingCapabilities`
+- `portal-root` 默认视为浮层运行时的常规能力，不作为接入期 runtime boundary 的硬必需项；只有宿主显式自定义 popup container、或存在 overflow / z-index 裁切风险时，才要求额外补 `PortalBoundary` 事实
+- 若用户需求清晰命中普通典型页型且没有特殊要求，优先使用 compiled PageSpec + HiuiLegacyPage runtime + typed slots，并只替换业务槽位；只有 PageSpec 或 runtime mirror 不可用时才阻断生成，不要重新手工推演 primitive 页面
+- 必须通过 legacy runtime surface、style boundary、portal boundary 与 host capabilities 确认宿主不会污染 runtime；`CleanContentMount` 优先消费自动结构识别结果，只有结构证据不足时才补宿主边界事实。proof 缺失、blocked 或职责越界时不能生成业务页
 - 额外读取 `docs/generation/legacy-host-compatibility.md`
 - 需要核对页面组件策略时读取 `docs/generation/page-level-components.md` 与 `docs/generation/component-certification.md`
 - 若当前仓库是 `asp-fwt-common-front`，再额外读取 `docs/business-lines/after-sales/asp-fwt-common-front.md`
@@ -49,7 +58,7 @@
 若目标项目整体仍命中 `legacy-host-compatible`，但同时满足下面条件，可以把**单个页面的交付策略**提升为 `isolated-standard-shell`：
 
 - 标准壳页面运行在独立子应用 / 独立构建产物中
-- 独立子应用自己安装 `react@18`、`react-dom@18`、`ahooks@3` 与 `@hiui-design/typical-page-shells`
+- 独立子应用自己安装与运行时匹配、且不低于 `@hiui-design/typical-page-shells` peer 下限的 `react` / `react-dom`，再配 `ahooks@3` 与 `@hiui-design/typical-page-shells`
 - 承担 legacy 主树职责的当前 remote 不直接导入 `@hiui-design/typical-page-shells`；若需直接导入，应落到独立子应用或独立运行时边界
 - legacy 宿主只负责打开独立页面 URL、iframe 或新标签页，不承载标准壳运行时
 
@@ -86,7 +95,7 @@
 - `rules-only`
   输出 `pageComponent` 选择结果、唯一 `example path`、唯一 `host archetype path`、业务槽位替换范围；若 `generationStrategy=page-component`，说明示例只作为认证 / 结构证据和 fallback 起点；非快速路径或修改 ownership 时再展开 `example -> host` 区域映射和 ownership 映射；contract 细则看 `contract-regions.md`
 - `legacy-host-compatible`
-  输出 `pageComponent` 选择结果、`runtimeAdapterProof` 状态、所复用的 `legacy-runtime-adapter`、当前是否仍处于 legacy 主树直连标准壳之外的边界说明、业务槽位替换范围、桥接限制和待人工确认项；若计划进入 fallback / 漂移治理，再补 `host archetype`、`Semantic Lock`、`Translation Map`、`Isomorphism Check` 与 `driftExceptions`（若有）
+  输出 `pageComponent` 选择结果、runtime boundary proof 状态、所复用的 host runtime boundary、当前是否仍处于 legacy 主树直连标准壳之外的边界说明、业务槽位替换范围、桥接限制和待人工确认项；若计划进入 fallback / 漂移治理，再补 `host archetype`、`Semantic Lock`、`Translation Map`、`Isomorphism Check` 与 `driftExceptions`（若有）
 
 ## 退出后的诊断格式
 

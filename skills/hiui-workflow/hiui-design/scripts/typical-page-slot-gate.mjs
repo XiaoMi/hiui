@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import path from 'node:path'
+import { readLightPagePlan } from './lib/light-page-plan.mjs'
+import { runLightSlotGate } from './lib/light-slot-gate.mjs'
 import {
   getChangedFiles,
   isPageSourceFile,
@@ -19,6 +21,7 @@ import { validateManagedPageSlotBoundary } from './lib/managed-page-source-guard
 function printUsage() {
   console.log(`Usage:
   node ".local-context/hiui-design/scripts/typical-page-slot-gate.mjs" [--file <page>] [--files <a,b>] [--base <sha> --head <sha>]
+  node ".local-context/hiui-design/scripts/typical-page-slot-gate.mjs" --plan <light-plan.json> [--target <project-root>] [--json]
 
 Checks that changed managed pages stay within business-slot boundaries.
 It is intentionally lighter than source-gate: it requires a page contract and blocks locked-shell/provenance bypasses,
@@ -30,7 +33,61 @@ function parseArgs(argv) {
     printUsage()
     process.exit(0)
   }
+  if (argv.includes('--plan')) {
+    const options = { mode: 'plan', plan: '', target: process.cwd(), json: false }
+    for (let index = 0; index < argv.length; index += 1) {
+      const arg = argv[index]
+      if (arg === '--json') {
+        options.json = true
+        continue
+      }
+      if (arg === '--plan' || arg === '--target') {
+        const value = argv[index + 1]
+        if (!value || value.startsWith('--')) throw new Error(`Missing value for ${arg}`)
+        if (arg === '--plan') options.plan = value
+        if (arg === '--target') options.target = path.resolve(value)
+        index += 1
+        continue
+      }
+      throw new Error(`Unknown argument for --plan mode: ${arg}`)
+    }
+    if (!options.plan) throw new Error('Missing required --plan')
+    return options
+  }
   return parseDiffArgs(argv)
+}
+
+function resolvePageDir(pagePath) {
+  const normalized = String(pagePath || '').trim().replace(/\\/g, '/')
+  if (/\.[cm]?[jt]sx?$/u.test(normalized)) return path.posix.dirname(normalized)
+  return normalized.replace(/\/$/u, '')
+}
+
+async function runPlanSlotGate(options) {
+  const planResult = await readLightPagePlan(options.plan, { targetRoot: options.target })
+  if (!planResult.ok) {
+    return {
+      status: 'failed',
+      issues: planResult.issues,
+      planPath: planResult.relativePath || options.plan,
+    }
+  }
+  const pageDir = resolvePageDir(planResult.plan.pagePath)
+  const slotsPath = path.join(options.target, pageDir, 'page.slots.ts')
+  const instancePath = path.join(options.target, pageDir, 'page.instance.tsx')
+  const result = await runLightSlotGate({
+    slotsPath,
+    instancePath,
+    plan: planResult.plan,
+  })
+  return {
+    status: result.status,
+    ok: result.ok,
+    issues: result.issues,
+    facts: result.facts,
+    planPath: planResult.relativePath,
+    pagePath: planResult.plan.pagePath,
+  }
 }
 
 function isManagedCandidate({ filePath, fileContent, contractEntry }) {
@@ -44,6 +101,19 @@ function isManagedCandidate({ filePath, fileContent, contractEntry }) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2))
+  if (options.mode === 'plan') {
+    const result = await runPlanSlotGate(options)
+    if (options.json) {
+      console.log(JSON.stringify(result, null, 2))
+    } else if (result.ok) {
+      console.log(`[typical-page-slot-gate] ${result.status}: ${result.pagePath}`)
+    } else {
+      console.error('[typical-page-slot-gate] Light slot gate failed.')
+      result.issues.forEach((failure) => console.error(`  - ${failure.path || 'slots'}: ${failure.message}`))
+    }
+    if (!result.ok) process.exit(1)
+    return
+  }
   const changedFiles = getChangedFiles(options).map((filePath) => toPosixPath(filePath))
   const contracts = loadContracts()
   const failures = []

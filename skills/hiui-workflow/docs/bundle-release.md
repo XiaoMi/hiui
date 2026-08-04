@@ -13,26 +13,23 @@
 
 ## Public Install Entry
 
-仓库内 `skills/hiui-workflow/install-workflow.sh` 是公开 bundle 的默认 bootstrap 入口，负责：
-
-- 检查 `git`、`node` 和 `python3`
-- 调用 `scripts/install-workflow-bundle.mjs`
-- 透传 `--dry-run`、`--reinstall`、`--force-sync`、`--allow-downgrade` 等参数
-
-`install.sh` 与 `install-codex.sh` 如保留，仅作为兼容壳转调 `install-workflow.sh`，不作为对外默认示例。
-
-公开安装分两类：
-
-- Codex 默认安装：可以直接使用 `skills add`
-- 其他宿主：必须显式传入目标 skill 根目录，不能默认落到 `~/.codex/skills`
-
-Codex 默认安装示例：
+对外公开安装入口统一为：
 
 ```bash
 npx skills add XiaoMi/hiui/skills/hiui-workflow --skill '*'
 ```
 
-其他宿主或需要精确指定目标目录时，使用仓库内 bundle 脚本：
+该命令负责发现并安装 `hiui-workflow` 目录下公开暴露的 4 个 skill。
+
+仓库内 `skills/hiui-workflow/install-workflow.sh` 是 bundle 级 bootstrap 入口，负责：
+
+- 检查 `git`、`node` 和 `python3`
+- 调用 `scripts/install-workflow-bundle.mjs`
+- 透传 `--dry-run`、`--reinstall`、`--force-sync`、`--allow-downgrade` 等参数
+
+历史兼容壳脚本如保留，仅作为转调 `install-workflow.sh` 的兼容入口，不作为对外默认示例。
+
+当运行环境要求显式指定目标目录，或需要验证 bundle 安装链路时，使用仓库内 bundle 脚本：
 
 ```bash
 git clone https://github.com/XiaoMi/hiui.git
@@ -40,13 +37,7 @@ cd hiui
 bash skills/hiui-workflow/install-workflow.sh --target /path/to/host/skills
 ```
 
-若要通过 bundle 脚本安装到 Codex 默认 skill 目录，应显式写出：
-
-```bash
-bash skills/hiui-workflow/install-workflow.sh --host codex
-```
-
-当前 bundle 安装脚本已改为 fail closed：必须显式给出 `--host` 或 `--target`。因此在非 Codex 场景下，发布与安装文档都必须显式写出 `--target`，不要假设宿主会被自动识别。
+当前 bundle 安装脚本已改为 fail closed：必须显式给出 `--host` 或 `--target`。公开安装说明只暴露统一入口命令；宿主适配或目标目录决策仅留在 bundle 级维护文档中。
 
 ## Public Lock Policy
 
@@ -63,11 +54,16 @@ bash skills/hiui-workflow/install-workflow.sh --host codex
 
 ```bash
 node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --json
-node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --host codex --json
 node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --target /tmp/workflow-bundle-check --json
-node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --host codex --json
 node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --target /tmp/workflow-bundle-check --json
 node skills/hiui-workflow/scripts/release-workflow-bundle.mjs --target /tmp/workflow-bundle-check --json
+```
+
+若需要验证内置 host profile 的兼容性，再额外执行：
+
+```bash
+node skills/hiui-workflow/scripts/verify-workflow-bundle.mjs --host codex --json
+node skills/hiui-workflow/scripts/install-workflow-bundle.mjs --dry-run --host codex --json
 ```
 
 若当前还在工作区联调、相关变更尚未合入 `XiaoMi/hiui:master`，请改用 local lock 执行相同验证：

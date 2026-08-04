@@ -11,9 +11,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-table-stat-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -67,35 +65,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-table-basic-page.v1",
@@ -107,9 +78,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-table-basic-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -149,35 +118,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-tree-table-page.v1",
@@ -189,9 +131,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-tree-table-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -230,35 +170,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-tree-split-page.v1",
@@ -270,9 +183,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-tree-split-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -311,35 +222,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-drawer-form-page.v1",
@@ -351,9 +235,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-drawer-form-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -407,35 +289,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-drawer-detail-page.v1",
@@ -447,9 +302,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-drawer-detail-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -504,35 +357,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-feedback-status-page.v1",
@@ -544,9 +370,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-feedback-status-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -585,35 +409,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-full-page-edit-page.v1",
@@ -625,9 +422,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-full-page-edit-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -700,35 +495,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "standard-full-page-detail-page.v1",
@@ -740,9 +508,7 @@
       "certificationStatus": "certified",
       "certificationRef": "rules/page-component-certifications/standard-full-page-detail-page.v1.json",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "legacy-runtime-adapter"
-      ],
+      "adapterIds": [],
       "supportedExtensionLevels": [
         0,
         1
@@ -783,35 +549,8 @@
       ],
       "supportedModes": [
         "host-integration",
-        "rules-only",
-        "legacy-host-compatible"
-      ],
-      "legacyRuntimeAdapterSupport": {
-        "required": true,
-        "adapterKind": "legacy-runtime-adapter",
-        "defaultAdapterId": "legacy-runtime-adapter",
-        "supportedModes": [
-          "legacy-host-compatible"
-        ],
-        "supportedExtensionLevels": [
-          0,
-          1
-        ],
-        "requiredAdapterCapabilities": [
-          "query-field-schema-binding",
-          "table-column-schema-binding",
-          "pagination-state-binding",
-          "request-schema-binding",
-          "response-schema-binding",
-          "message-bridge",
-          "i18n-bridge",
-          "permission-bridge",
-          "modal-container-binding",
-          "scroll-owner-proof",
-          "style-scope-proof"
-        ],
-        "fallbackPolicy": "blocked-before-managed-fallback"
-      }
+        "rules-only"
+      ]
     },
     {
       "componentId": "host-adapted-table-basic-page.v1",
@@ -822,56 +561,6 @@
       "status": "planned",
       "certificationStatus": "missing",
       "fallbackPolicy": "managed-mold",
-      "adapterIds": [
-        "layout-search-table-adapter"
-      ],
-      "supportedExtensionLevels": [
-        0,
-        1
-      ],
-      "allowedExtensions": [
-        {
-          "slotId": "topNotice",
-          "region": "white-body.before-query-filter",
-          "contentType": [
-            "notice",
-            "alert",
-            "help-link"
-          ],
-          "maxComplexity": "simple",
-          "forbidden": [
-            "nested-table",
-            "new-scroll-owner",
-            "new-white-body",
-            "pagination-owner-change"
-          ]
-        },
-        {
-          "slotId": "toolbarSupplement",
-          "region": "table.toolbar.after-actions",
-          "contentType": [
-            "text",
-            "badge",
-            "secondary-action"
-          ],
-          "maxComplexity": "simple",
-          "forbidden": [
-            "new-toolbar-owner",
-            "new-scroll-owner",
-            "table-carrier-change"
-          ]
-        }
-      ]
-    },
-    {
-      "componentId": "legacy-table-basic-page.v1",
-      "pageTypeId": "table-basic",
-      "baseMoldId": "table-basic.managed-mold.v1",
-      "mode": "legacy-host-compatible",
-      "implementationKind": "page-level-component",
-      "status": "planned",
-      "certificationStatus": "missing",
-      "fallbackPolicy": "fail-closed-when-selected",
       "adapterIds": [
         "layout-search-table-adapter"
       ],

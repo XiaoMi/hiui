@@ -36,7 +36,7 @@
 - 优先复用现有固定页壳、共享布局和示例页
 - 先找最接近的页壳起步，再替换标题、筛选项、字段、表格列、请求和路由
 - 不要从空白文件重新发明结构
-- 若 doctor 已提示当前项目命中旧宿主桥接接入模式，优先复用目标项目自己已经跑通的页面基座，例如 `PageTable` / `page-table-v5` / schema 化搜索面板；桥接接入不等于可以自由手拼页面，也不改变普通典型页在 facts ready 且 `runtimeAdapterProof` 可用时优先 `page-component` 的主链路
+- 若 doctor 已提示当前项目命中旧宿主桥接接入模式，优先复用目标项目自己已经跑通的页面基座，例如 `PageTable` / `page-table-v5` / schema 化搜索面板；桥接接入不等于可以自由手拼页面，也不改变普通典型页在 host contract 与 HiuiLegacyPage runtime ready 时优先轻量契约主链
 - 但这条建议的优先级低于页型专章的强结构约束；若页型专章要求保留更完整的示例节奏，例如 `table-stat` / `data-visualization` / `full-page-edit` / `full-page-detail`，则先满足页型专章，再决定宿主基座是否还能承接
 - 对 `asp-fwt-common-front` 这类旧宿主，还要额外读取 `docs/business-lines/after-sales/asp-fwt-common-front.md`
 

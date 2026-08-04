@@ -73,6 +73,6 @@
     "staleReason": "",
     "reportPath": "",
     "smokeReportPath": "",
-    "lastCommand": "typical-page:start-page"
+    "lastCommand": "typical-page:generate"
   }
 }

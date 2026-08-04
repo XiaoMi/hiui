@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { legacyHostFamilyGate } from './legacy-page-component-bridge.mjs'
+
+import { collectLegacyRuntimeSurfaceFacts } from './legacy-runtime-surface-facts.mjs'
 
 export const PROJECT_INTEGRATION_STATE_SCHEMA_VERSION = 'hiui-project-integration-state.v1'
 export const PROJECT_INTEGRATION_STATE_RELATIVE_PATH =
@@ -9,6 +10,10 @@ export const LEGACY_INTEGRATION_SEAL_RELATIVE_PATH =
   '.local-context/hiui-design/outputs/legacy-integration-seal.json'
 const PROJECT_PAGE_COMPONENT_REGISTRY_RELATIVE_PATH =
   '.local-context/hiui-design/outputs/project-page-component-registry.json'
+const LEGACY_HOST_CONTRACT_RELATIVE_PATH = '.local-context/hiui-design/host-contract.json'
+const RUNTIME_COMPATIBILITY_LOCK_RELATIVE_PATH =
+  '.local-context/hiui-design/outputs/runtime-compatibility-lock.json'
+const LEGACY_REQUIRED_ADAPTERS = ['request', 'message', 'permission', 'route', 'theme']
 
 function normalizeModeId(mode) {
   const value = String(mode || '').trim()
@@ -17,6 +22,79 @@ function normalizeModeId(mode) {
     return value
   }
   return ''
+}
+
+function normalizeModeSelectionStatus(status, mode, recommendedMode) {
+  const value = String(status || '').trim()
+  if (['matched', 'overridden', 'blocked', 'unknown'].includes(value)) {
+    return value
+  }
+  if (mode && recommendedMode) {
+    return mode === recommendedMode ? 'matched' : 'unknown'
+  }
+  return 'unknown'
+}
+
+function normalizeGateStatus(status, fallback = 'not-run') {
+  const value = String(status || '').trim()
+  if (['passed', 'failed', 'skipped', 'skipped-by-user', 'not-run', 'not-applicable', 'unknown'].includes(value)) {
+    return value
+  }
+  if (typeof status === 'boolean') {
+    return status ? 'passed' : 'failed'
+  }
+  return fallback
+}
+
+function normalizeCompletionGates(raw = null, { mode = '', runtimeIntegrationReady = false } = {}) {
+  const input = raw && typeof raw === 'object' ? raw : {}
+  const bootstrapWritten = normalizeGateStatus(input.bootstrapWritten, 'passed')
+  const modeLocked = normalizeGateStatus(input.modeLocked, mode ? 'passed' : 'failed')
+  const dependencyInstalled = normalizeGateStatus(input.dependencyInstalled, 'not-run')
+  const hostAssetsReady = normalizeGateStatus(
+    input.hostAssetsReady,
+    mode === 'rules-only' ? 'not-applicable' : 'not-run'
+  )
+  const doctorPassed = normalizeGateStatus(input.doctorPassed, 'not-run')
+  const engineeringPassed = normalizeGateStatus(input.engineeringPassed, 'not-run')
+  const modeRequiredGates = {
+    legacyHostContractReady: normalizeGateStatus(
+      input.modeRequiredGates?.legacyHostContractReady,
+      mode === 'legacy-host-compatible' ? (runtimeIntegrationReady ? 'passed' : 'not-run') : 'not-applicable'
+    ),
+    legacyRuntimeReady: normalizeGateStatus(
+      input.modeRequiredGates?.legacyRuntimeReady,
+      mode === 'legacy-host-compatible' ? (runtimeIntegrationReady ? 'passed' : 'not-run') : 'not-applicable'
+    ),
+    hostRouteReady: normalizeGateStatus(
+      input.modeRequiredGates?.hostRouteReady,
+      mode === 'host-integration' ? 'not-run' : 'not-applicable'
+    ),
+  }
+
+  return {
+    bootstrapWritten,
+    modeLocked,
+    dependencyInstalled,
+    hostAssetsReady,
+    doctorPassed,
+    engineeringPassed,
+    modeRequiredGates,
+  }
+}
+
+function deriveOnboardingCompletionReady({ completionGates, modeSelectionStatus, runtimeIntegrationReady }) {
+  if (!runtimeIntegrationReady) return false
+  if (modeSelectionStatus === 'blocked' || modeSelectionStatus === 'unknown') return false
+  if (completionGates.bootstrapWritten !== 'passed') return false
+  if (completionGates.modeLocked !== 'passed') return false
+  if (!['passed', 'not-applicable'].includes(completionGates.dependencyInstalled)) return false
+  if (!['passed', 'not-applicable'].includes(completionGates.hostAssetsReady)) return false
+  if (completionGates.doctorPassed !== 'passed') return false
+  if (completionGates.engineeringPassed !== 'passed') return false
+  return Object.values(completionGates.modeRequiredGates || {}).every((status) =>
+    ['passed', 'not-applicable'].includes(status)
+  )
 }
 
 function pickHostProfileSummary(hostProfile = null) {
@@ -519,13 +597,12 @@ function defaultLegacyDeliveryPolicy(mode = '') {
     return {
       status: 'not-applicable',
       factPath: '',
-      carrierReady: null,
-      carrierFirstRequiredPageTypes: [],
-      directStandardAllowedPageTypes: [],
-      requiredLegacyPageTypes: [],
+      runtimeSurfaceReady: null,
+      runtimeSurfaceRequiredPageTypes: [],
+      runtimeSurfaceOptionalPageTypes: [],
       deferredLegacyPageTypes: [],
-      certifiedLegacyPageTypes: [],
-      missingRequiredLegacyPageTypes: [],
+      runtimeSurfaceCoveredPageTypes: [],
+      missingRuntimeSurfacePageTypes: [],
       legacyRolloutCoverageStatus: 'not-applicable',
       pageTypes: [],
       blockingReasons: [],
@@ -535,13 +612,12 @@ function defaultLegacyDeliveryPolicy(mode = '') {
   return {
     status: 'not-applicable',
     factPath: '',
-    carrierReady: false,
-    carrierFirstRequiredPageTypes: [],
-    directStandardAllowedPageTypes: [],
-    requiredLegacyPageTypes: [],
+    runtimeSurfaceReady: null,
+    runtimeSurfaceRequiredPageTypes: [],
+    runtimeSurfaceOptionalPageTypes: [],
     deferredLegacyPageTypes: [],
-    certifiedLegacyPageTypes: [],
-    missingRequiredLegacyPageTypes: [],
+    runtimeSurfaceCoveredPageTypes: [],
+    missingRuntimeSurfacePageTypes: [],
     legacyRolloutCoverageStatus: 'not-applicable',
     pageTypes: [],
     blockingReasons: [],
@@ -549,11 +625,10 @@ function defaultLegacyDeliveryPolicy(mode = '') {
 }
 
 function normalizeLegacyDeliveryPolicy(raw, mode = '') {
-  if (!raw || typeof raw !== 'object') {
-    return defaultLegacyDeliveryPolicy(mode)
-  }
-
   const fallback = defaultLegacyDeliveryPolicy(mode)
+  if (!raw || typeof raw !== 'object') {
+    return fallback
+  }
   const normalizeIds = (value) =>
     Array.isArray(value) ? value.map((item) => String(item || '').trim()).filter(Boolean) : []
   const pageTypes = Array.isArray(raw.pageTypes)
@@ -572,43 +647,27 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
           : [],
       }))
     : []
-  const carrierFirstRequiredPageTypes = normalizeIds(raw.carrierFirstRequiredPageTypes)
-  const directStandardAllowedPageTypes = normalizeIds(raw.directStandardAllowedPageTypes)
-  const requiredLegacyPageTypes = (() => {
-    const explicit = normalizeIds(raw.requiredLegacyPageTypes)
-    if (explicit.length > 0) {
-      return explicit
-    }
-    if (carrierFirstRequiredPageTypes.length > 0) {
-      return carrierFirstRequiredPageTypes
+  const runtimeSurfaceRequiredPageTypes = normalizeIds(raw.runtimeSurfaceRequiredPageTypes)
+  const runtimeSurfaceOptionalPageTypes = normalizeIds(raw.runtimeSurfaceOptionalPageTypes)
+  const resolvedRuntimeSurfaceRequiredPageTypes = (() => {
+    if (runtimeSurfaceRequiredPageTypes.length > 0) {
+      return runtimeSurfaceRequiredPageTypes
     }
     return pageTypes
-      .filter((entry) => entry.deliveryPolicy === 'carrier-first-required')
+      .filter((entry) => entry.deliveryPolicy === 'compiled-pagespec-runtime-required')
       .map((entry) => entry.pageTypeId)
   })()
   const deferredLegacyPageTypes = normalizeIds(raw.deferredLegacyPageTypes)
-  const certifiedLegacyPageTypes = (() => {
-    const explicit = normalizeIds(raw.certifiedLegacyPageTypes)
-    if (explicit.length > 0) {
-      return explicit
-    }
-    return pageTypes
-      .filter(
-        (entry) =>
-          entry.projectCarrierStatus === 'ready' ||
-          entry.selectedDeliveryKind === 'project-certified-carrier'
-      )
-      .map((entry) => entry.pageTypeId)
-  })()
-  const missingRequiredLegacyPageTypes = requiredLegacyPageTypes.filter(
-    (pageTypeId) => !certifiedLegacyPageTypes.includes(pageTypeId)
+  const runtimeSurfaceCoveredPageTypes = normalizeIds(raw.runtimeSurfaceCoveredPageTypes)
+  const missingRuntimeSurfacePageTypes = resolvedRuntimeSurfaceRequiredPageTypes.filter(
+    (pageTypeId) => !runtimeSurfaceCoveredPageTypes.includes(pageTypeId)
   )
   const derivedCoverageStatus =
     normalizeModeId(mode) !== 'legacy-host-compatible'
       ? 'not-applicable'
-      : requiredLegacyPageTypes.length === 0
+      : resolvedRuntimeSurfaceRequiredPageTypes.length === 0
         ? 'not-applicable'
-        : missingRequiredLegacyPageTypes.length === 0
+        : missingRuntimeSurfacePageTypes.length === 0
           ? 'ready'
           : 'blocked'
   const legacyRolloutCoverageStatus = ['ready', 'blocked', 'not-applicable'].includes(
@@ -617,9 +676,9 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
     ? String(raw.legacyRolloutCoverageStatus || '').trim()
     : derivedCoverageStatus
   const derivedBlockingReasons =
-    legacyRolloutCoverageStatus === 'blocked' && missingRequiredLegacyPageTypes.length > 0
+    legacyRolloutCoverageStatus === 'blocked' && missingRuntimeSurfacePageTypes.length > 0
       ? [
-          `legacy integration is incomplete because required project-certified carriers are still missing for page types: ${missingRequiredLegacyPageTypes.join(', ')}`,
+          `legacy integration is incomplete because required compiled PageSpec runtime coverage is still missing for page types: ${missingRuntimeSurfacePageTypes.join(', ')}`,
         ]
       : []
   const normalizedBlockingReasons = uniqueBlockingReasons([
@@ -628,9 +687,9 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
       : fallback.blockingReasons),
     ...derivedBlockingReasons,
   ])
-  const carrierReady =
-    typeof raw.carrierReady === 'boolean'
-      ? raw.carrierReady
+  const runtimeSurfaceReady =
+    typeof raw.runtimeSurfaceReady === 'boolean'
+      ? raw.runtimeSurfaceReady
       : legacyRolloutCoverageStatus === 'ready'
 
   return {
@@ -638,20 +697,42 @@ function normalizeLegacyDeliveryPolicy(raw, mode = '') {
       ? String(raw.status || '').trim()
       : derivedCoverageStatus,
     factPath: String(raw.factPath || '').trim(),
-    carrierReady,
-    carrierFirstRequiredPageTypes,
-    directStandardAllowedPageTypes,
-    requiredLegacyPageTypes,
+    runtimeSurfaceReady,
+    runtimeSurfaceRequiredPageTypes: resolvedRuntimeSurfaceRequiredPageTypes,
+    runtimeSurfaceOptionalPageTypes,
     deferredLegacyPageTypes,
-    certifiedLegacyPageTypes,
-    missingRequiredLegacyPageTypes,
+    runtimeSurfaceCoveredPageTypes,
+    missingRuntimeSurfacePageTypes,
     legacyRolloutCoverageStatus,
     pageTypes,
     blockingReasons: normalizedBlockingReasons,
   }
 }
 
-function defaultLegacyBridgeValidation(mode = '') {
+function mergeLegacyDeliveryPolicyWithRuntimeSurfaceFacts({ mode, legacyDeliveryPolicy, legacyRuntimeSurfaceFacts }) {
+  if (normalizeModeId(mode) !== 'legacy-host-compatible' || !legacyRuntimeSurfaceFacts) {
+    return legacyDeliveryPolicy
+  }
+
+  const missingRuntimeSurfacePageTypes = legacyRuntimeSurfaceFacts.missingRuntimeSurfacePageTypes
+  const legacyRolloutCoverageStatus = legacyRuntimeSurfaceFacts.runtimeSurfaceReady ? 'ready' : 'blocked'
+  const runtimeSurfaceReady = legacyRuntimeSurfaceFacts.runtimeSurfaceReady && legacyRolloutCoverageStatus === 'ready'
+
+  return {
+    ...legacyDeliveryPolicy,
+    status: legacyRolloutCoverageStatus,
+    runtimeSurfaceReady,
+    runtimeSurfaceCoveredPageTypes: legacyRuntimeSurfaceFacts.runtimeSurfaceCoveredPageTypes,
+    missingRuntimeSurfacePageTypes,
+    legacyRolloutCoverageStatus,
+    blockingReasons: uniqueBlockingReasons([
+      ...legacyDeliveryPolicy.blockingReasons,
+      ...legacyRuntimeSurfaceFacts.blockingReasons,
+    ]),
+  }
+}
+
+function defaultLegacyContractValidation(mode = '') {
   if (normalizeModeId(mode) !== 'legacy-host-compatible') {
     return {
       status: 'not-applicable',
@@ -665,53 +746,155 @@ function defaultLegacyBridgeValidation(mode = '') {
   }
 
   return {
-    status: 'blocked',
-    hostFamilyStatus: 'missing',
+    status: 'not-applicable',
+    hostFamilyStatus: 'not_required',
     hostFamilyId: '',
     adapterPackId: '',
     confidence: '',
-    missingFacts: ['legacy-host-family'],
-    blockingReasons: [
-      'legacy integration is incomplete because bridge validation is missing from project integration state; rerun bootstrap-target-project to certify legacy host family readiness',
-    ],
+    missingFacts: [],
+    blockingReasons: [],
   }
 }
 
-function summarizeLegacyBridgeValidation({ mode, legacyHostFamily = null }) {
+function summarizeLegacyContractValidation({ mode, legacyHostFamily = null }) {
   const normalizedMode = normalizeModeId(mode)
   if (normalizedMode !== 'legacy-host-compatible') {
-    return defaultLegacyBridgeValidation(normalizedMode)
+    return defaultLegacyContractValidation(normalizedMode)
   }
 
-  const gate = legacyHostFamilyGate({
-    mode: normalizedMode,
-    legacyHostFamily,
-  })
-
   return {
-    status: gate.allowed ? 'ready' : 'blocked',
-    hostFamilyStatus: String(legacyHostFamily?.status || '').trim() || (gate.allowed ? 'matched' : 'unmatched'),
+    status: 'ready',
+    hostFamilyStatus: String(legacyHostFamily?.status || '').trim() || 'matched',
     hostFamilyId: String(legacyHostFamily?.hostFamilyId || '').trim(),
     adapterPackId: String(legacyHostFamily?.adapterPackId || '').trim(),
     confidence: String(legacyHostFamily?.confidence || '').trim(),
     missingFacts: Array.isArray(legacyHostFamily?.missingFacts)
       ? legacyHostFamily.missingFacts.map((fact) => String(fact || '').trim()).filter(Boolean)
       : [],
-    blockingReasons: gate.allowed
-      ? []
-      : uniqueBlockingReasons([
-          ...(Array.isArray(legacyHostFamily?.blockingReasons) ? legacyHostFamily.blockingReasons : []),
-          gate.reason,
-        ]),
+    blockingReasons: [],
   }
 }
 
-function normalizeLegacyBridgeValidation(raw, mode = '') {
-  if (!raw || typeof raw !== 'object') {
-    return defaultLegacyBridgeValidation(mode)
+async function collectLegacyHostContractFacts({ targetRoot, mode }) {
+  if (normalizeModeId(mode) !== 'legacy-host-compatible') {
+    return null
   }
 
-  const fallback = defaultLegacyBridgeValidation(mode)
+  const hostContractPath = path.join(targetRoot, LEGACY_HOST_CONTRACT_RELATIVE_PATH)
+  const hostContract = await readJsonIfExists(hostContractPath)
+  if (!hostContract) {
+    return {
+      status: 'blocked',
+      hostContractPath: LEGACY_HOST_CONTRACT_RELATIVE_PATH,
+      adapters: {},
+      missingFacts: [LEGACY_HOST_CONTRACT_RELATIVE_PATH],
+      blockingReasons: [`legacy host contract is missing: ${LEGACY_HOST_CONTRACT_RELATIVE_PATH}`],
+    }
+  }
+
+  const adapters = {}
+  const blockingReasons = []
+  const missingFacts = []
+
+  if (hostContract.schemaVersion !== 'host-contract.v1') {
+    blockingReasons.push('legacy host contract schemaVersion must be host-contract.v1')
+  }
+  if (hostContract.mode !== 'legacy-host-compatible') {
+    blockingReasons.push('legacy host contract mode must be legacy-host-compatible')
+  }
+
+  for (const adapterName of LEGACY_REQUIRED_ADAPTERS) {
+    const status = String(hostContract.adapters?.[adapterName]?.status || '').trim()
+    adapters[adapterName] = {
+      status: status || 'missing',
+      source: String(hostContract.adapters?.[adapterName]?.source || '').trim(),
+    }
+    if (status !== 'ready' && status !== 'not-required') {
+      missingFacts.push(`adapters.${adapterName}`)
+      blockingReasons.push(`${adapterName} adapter must be ready or not-required; current status is ${status || 'missing'}`)
+    }
+  }
+
+  return {
+    status: blockingReasons.length === 0 ? 'ready' : 'blocked',
+    hostContractPath: LEGACY_HOST_CONTRACT_RELATIVE_PATH,
+    adapters,
+    missingFacts,
+    blockingReasons,
+  }
+}
+
+async function collectRuntimeCompatibilityLockFacts({ targetRoot, mode }) {
+  if (normalizeModeId(mode) !== 'legacy-host-compatible') {
+    return null
+  }
+
+  const lockPath = path.join(targetRoot, RUNTIME_COMPATIBILITY_LOCK_RELATIVE_PATH)
+  const lock = await readJsonIfExists(lockPath)
+  if (!lock) {
+    return {
+      status: 'unknown',
+      lockPath: RUNTIME_COMPATIBILITY_LOCK_RELATIVE_PATH,
+      shellRuntimeVariant: '',
+      blockingReasons: [],
+    }
+  }
+
+  const shellStatus = String(lock.shell?.status || '').trim()
+  const shellRuntimeVariant = String(lock.shell?.runtimeVariant || '').trim()
+  const shellBlockingReasons = Array.isArray(lock.shell?.blockingReasons)
+    ? lock.shell.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+    : []
+  const peerResolutionStatus = String(lock.peerResolution?.status || '').trim()
+  const peerResolutionBlockingReasons = Array.isArray(lock.peerResolution?.blockingReasons)
+    ? lock.peerResolution.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+    : []
+  const blockingReasons = shellStatus === 'blocked'
+    ? shellBlockingReasons.length > 0
+      ? shellBlockingReasons
+      : ['legacy shell runtime compatibility is blocked']
+    : []
+  if (peerResolutionStatus === 'blocked') {
+    blockingReasons.push(...(peerResolutionBlockingReasons.length > 0
+      ? peerResolutionBlockingReasons
+      : ['legacy runtime peer/export resolution is blocked']))
+  }
+
+  return {
+    status: blockingReasons.length > 0 ? 'blocked' : shellStatus || 'unknown',
+    lockPath: RUNTIME_COMPATIBILITY_LOCK_RELATIVE_PATH,
+    shellRuntimeVariant,
+    peerResolutionStatus,
+    blockingReasons,
+  }
+}
+
+function mergeLegacyContractValidationWithHostContractFacts({ legacyContractValidation, legacyHostContractFacts, mode }) {
+  if (normalizeModeId(mode) !== 'legacy-host-compatible' || !legacyHostContractFacts) {
+    return legacyContractValidation
+  }
+
+  const blockingReasons = uniqueBlockingReasons([
+    ...legacyContractValidation.blockingReasons,
+    ...legacyHostContractFacts.blockingReasons,
+  ])
+  return {
+    ...legacyContractValidation,
+    status: legacyContractValidation.status === 'ready' && legacyHostContractFacts.status === 'ready' ? 'ready' : 'blocked',
+    missingFacts: uniqueBlockingReasons([
+      ...legacyContractValidation.missingFacts,
+      ...legacyHostContractFacts.missingFacts,
+    ]),
+    blockingReasons,
+  }
+}
+
+function normalizeLegacyContractValidation(raw, mode = '') {
+  if (!raw || typeof raw !== 'object') {
+    return defaultLegacyContractValidation(mode)
+  }
+
+  const fallback = defaultLegacyContractValidation(mode)
   return {
     status: ['ready', 'blocked', 'not-applicable'].includes(String(raw.status || '').trim())
       ? String(raw.status || '').trim()
@@ -766,20 +949,16 @@ function typicalPageSupportBlockingReasons(typicalPageSupport) {
   )
 }
 
-function integrationUsesLegacyCarrierValidation(mode) {
-  return normalizeModeId(mode) === 'legacy-host-compatible'
-}
-
 function filterExplicitIntegrationBlockingReasons({
   blockingReasons = [],
   carrierValidation,
-  legacyBridgeValidation,
+  legacyContractValidation,
   legacyDeliveryPolicy,
   typicalPageSupport,
 }) {
   const derivedReasons = new Set([
     ...(carrierValidation?.blockingReasons || []),
-    ...(legacyBridgeValidation?.blockingReasons || []),
+    ...(legacyContractValidation?.blockingReasons || []),
     ...(legacyDeliveryPolicy?.blockingReasons || []),
     ...typicalPageSupportBlockingReasons(typicalPageSupport),
   ])
@@ -790,67 +969,83 @@ function filterExplicitIntegrationBlockingReasons({
 }
 
 function deriveIntegrationBlockingReasons({
-  mode,
   blockingReasons = [],
-  carrierValidation,
-  legacyBridgeValidation,
-  legacyDeliveryPolicy,
 }) {
-  return uniqueBlockingReasons([
-    ...blockingReasons,
-    ...(integrationUsesLegacyCarrierValidation(mode) ? carrierValidation?.blockingReasons || [] : []),
-    ...(integrationUsesLegacyCarrierValidation(mode) ? legacyBridgeValidation?.blockingReasons || [] : []),
-    ...(integrationUsesLegacyCarrierValidation(mode) ? legacyDeliveryPolicy?.blockingReasons || [] : []),
-  ])
+  return uniqueBlockingReasons(blockingReasons)
 }
 
 function deriveIntegrationReady({
-  mode,
   blockingReasons = [],
-  carrierValidation,
-  legacyBridgeValidation,
-  legacyDeliveryPolicy,
 }) {
-  if (blockingReasons.length > 0) {
-    return false
-  }
-
-  if (integrationUsesLegacyCarrierValidation(mode) && carrierValidation?.status === 'blocked') {
-    return false
-  }
-
-  if (integrationUsesLegacyCarrierValidation(mode) && legacyBridgeValidation?.status === 'blocked') {
-    return false
-  }
-
-  if (
-    integrationUsesLegacyCarrierValidation(mode) &&
-    legacyDeliveryPolicy?.legacyRolloutCoverageStatus === 'blocked'
-  ) {
-    return false
-  }
-
-  return true
+  return blockingReasons.length === 0
 }
 
-function deriveLegacyRuntimeReady({ mode, legacyBridgeValidation }) {
+function deriveLegacyContractReady({ mode, legacyContractValidation }) {
   if (normalizeModeId(mode) !== 'legacy-host-compatible') {
     return null
   }
 
-  return legacyBridgeValidation?.status === 'ready'
+  return legacyContractValidation?.status === 'ready'
 }
 
-function deriveLegacyCarrierReady({ mode, carrierValidation, legacyDeliveryPolicy }) {
+function deriveLegacyRuntimeSurfaceReady({ mode, legacyContractValidation, legacyDeliveryPolicy, legacyRuntimeSurfaceFacts }) {
   if (normalizeModeId(mode) !== 'legacy-host-compatible') {
     return null
+  }
+
+  if (legacyContractValidation?.status !== 'ready') {
+    return false
+  }
+
+  if (legacyRuntimeSurfaceFacts?.status === 'ready' || legacyRuntimeSurfaceFacts?.status === 'blocked') {
+    return Boolean(legacyRuntimeSurfaceFacts?.runtimeSurfaceReady) && legacyDeliveryPolicy?.legacyRolloutCoverageStatus !== 'blocked'
   }
 
   if (legacyDeliveryPolicy?.status === 'ready' || legacyDeliveryPolicy?.status === 'blocked') {
-    return Boolean(legacyDeliveryPolicy?.carrierReady)
+    return Boolean(legacyDeliveryPolicy?.runtimeSurfaceReady)
   }
 
-  return carrierValidation?.status === 'ready'
+  return false
+}
+
+function normalizeLegacyRuntimeSurfaceFacts(raw, mode = '') {
+  if (normalizeModeId(mode) !== 'legacy-host-compatible') {
+    return null
+  }
+  if (!raw || typeof raw !== 'object') {
+    return null
+  }
+
+  return {
+    schemaVersion: String(raw.schemaVersion || '').trim() || 'legacy-runtime-surface-facts.v1',
+    status: ['ready', 'blocked'].includes(String(raw.status || '').trim())
+      ? String(raw.status || '').trim()
+      : 'blocked',
+    runtimeSurfaceReady: Boolean(raw.runtimeSurfaceReady),
+    runtimeDir: String(raw.runtimeDir || '').trim() || 'src/hiui-runtime',
+    runtimeFiles: Array.isArray(raw.runtimeFiles) ? raw.runtimeFiles : [],
+    missingRuntimeFiles: Array.isArray(raw.missingRuntimeFiles)
+      ? raw.missingRuntimeFiles.map((filePath) => String(filePath || '').trim()).filter(Boolean)
+      : [],
+    styleScope: String(raw.styleScope || '').trim(),
+    styleScopeReady: Boolean(raw.styleScopeReady),
+    requiredPageTypes: Array.isArray(raw.requiredPageTypes)
+      ? raw.requiredPageTypes.map((pageTypeId) => String(pageTypeId || '').trim()).filter(Boolean)
+      : [],
+    optionalPageTypes: Array.isArray(raw.optionalPageTypes)
+      ? raw.optionalPageTypes.map((pageTypeId) => String(pageTypeId || '').trim()).filter(Boolean)
+      : [],
+    pageTypeSpecs: Array.isArray(raw.pageTypeSpecs) ? raw.pageTypeSpecs : [],
+    runtimeSurfaceCoveredPageTypes: Array.isArray(raw.runtimeSurfaceCoveredPageTypes)
+      ? raw.runtimeSurfaceCoveredPageTypes.map((pageTypeId) => String(pageTypeId || '').trim()).filter(Boolean)
+      : [],
+    missingRuntimeSurfacePageTypes: Array.isArray(raw.missingRuntimeSurfacePageTypes)
+      ? raw.missingRuntimeSurfacePageTypes.map((pageTypeId) => String(pageTypeId || '').trim()).filter(Boolean)
+      : [],
+    blockingReasons: Array.isArray(raw.blockingReasons)
+      ? raw.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
+      : [],
+  }
 }
 
 function normalizeProjectIntegrationState(raw) {
@@ -869,43 +1064,63 @@ function normalizeProjectIntegrationState(raw) {
   }
 
   const carrierValidation = normalizeCarrierValidation(raw.carrierValidation)
-  const legacyBridgeValidation = normalizeLegacyBridgeValidation(raw.legacyBridgeValidation, mode)
+  const legacyContractValidation = normalizeLegacyContractValidation(raw.legacyContractValidation, mode)
   const typicalPageSupport = normalizeTypicalPageSupport(raw.typicalPageSupport)
   const legacyDeliveryPolicy = normalizeLegacyDeliveryPolicy(raw.legacyDeliveryPolicy, mode)
+  const legacyRuntimeSurfaceFacts = normalizeLegacyRuntimeSurfaceFacts(raw.legacyRuntimeSurfaceFacts, mode)
   const explicitBlockingReasons = filterExplicitIntegrationBlockingReasons({
     blockingReasons: Array.isArray(raw.blockingReasons) ? raw.blockingReasons : [],
     carrierValidation,
-    legacyBridgeValidation,
+    legacyContractValidation,
     legacyDeliveryPolicy,
     typicalPageSupport,
   })
   const blockingReasons = deriveIntegrationBlockingReasons({
-    mode,
-    blockingReasons: explicitBlockingReasons,
-    carrierValidation,
-    legacyBridgeValidation,
-    legacyDeliveryPolicy,
+    blockingReasons: [
+      ...explicitBlockingReasons,
+      ...carrierValidation.blockingReasons,
+      ...legacyContractValidation.blockingReasons,
+      ...legacyDeliveryPolicy.blockingReasons,
+    ],
   })
-  const integrationReady = deriveIntegrationReady({
-    mode,
+  const runtimeIntegrationReady = deriveIntegrationReady({
     blockingReasons,
-    carrierValidation,
-    legacyBridgeValidation,
-    legacyDeliveryPolicy,
   })
-  const legacyRuntimeReady = deriveLegacyRuntimeReady({ mode, legacyBridgeValidation })
-  const legacyCarrierReady = deriveLegacyCarrierReady({
+  const normalizedRecommendedMode = normalizeModeId(raw.recommendedMode) || mode
+  const modeSelectionStatus = normalizeModeSelectionStatus(
+    raw.modeSelectionStatus,
     mode,
-    carrierValidation,
+    normalizedRecommendedMode
+  )
+  const completionGates = normalizeCompletionGates(raw.completionGates, {
+    mode,
+    runtimeIntegrationReady,
+  })
+  const onboardingCompletionReady = deriveOnboardingCompletionReady({
+    completionGates,
+    modeSelectionStatus,
+    runtimeIntegrationReady,
+  })
+  const integrationReady = onboardingCompletionReady
+  const legacyContractReady = deriveLegacyContractReady({ mode, legacyContractValidation })
+  const legacyRuntimeSurfaceReady = deriveLegacyRuntimeSurfaceReady({
+    mode,
+    legacyContractValidation,
     legacyDeliveryPolicy,
+    legacyRuntimeSurfaceFacts,
   })
 
   return {
     schemaVersion: PROJECT_INTEGRATION_STATE_SCHEMA_VERSION,
     status: 'integrated',
     integrationReady,
+    runtimeIntegrationReady,
     mode,
-    recommendedMode: normalizeModeId(raw.recommendedMode) || mode,
+    recommendedMode: normalizedRecommendedMode,
+    modeSelectionStatus,
+    overrideReason: String(raw.overrideReason || '').trim(),
+    completionGates,
+    onboardingCompletionReady,
     source: String(raw.source || '').trim() || 'unknown',
     confirmedAt: String(raw.confirmedAt || raw.updatedAt || '').trim(),
     factPath:
@@ -917,18 +1132,19 @@ function normalizeProjectIntegrationState(raw) {
       String(raw.bootstrapSummary || raw.bootstrapSummaryPath || '').trim() || '',
     hostProfile: pickHostProfileSummary(raw.hostProfile),
     carrierValidation,
-    legacyBridgeValidation,
-    legacyRuntimeReady,
-    legacyCarrierReady,
+    legacyContractValidation,
+    legacyHostContractFacts: raw.legacyHostContractFacts || null,
+    legacyContractReady,
+    legacyRuntimeSurfaceReady,
     pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
-    carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
-    directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
-    requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+    runtimeSurfaceRequiredPageTypes: legacyDeliveryPolicy.runtimeSurfaceRequiredPageTypes,
+    runtimeSurfaceOptionalPageTypes: legacyDeliveryPolicy.runtimeSurfaceOptionalPageTypes,
     deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
-    certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
-    missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+    runtimeSurfaceCoveredPageTypes: legacyDeliveryPolicy.runtimeSurfaceCoveredPageTypes,
+    missingRuntimeSurfacePageTypes: legacyDeliveryPolicy.missingRuntimeSurfacePageTypes,
     legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
     legacyDeliveryPolicy,
+    legacyRuntimeSurfaceFacts,
     typicalPageSupport,
     blockingReasons,
   }
@@ -956,6 +1172,9 @@ export async function writeProjectIntegrationState({
   targetRoot,
   mode,
   recommendedMode = '',
+  modeSelectionStatus = '',
+  overrideReason = '',
+  completionGates = null,
   source = 'bootstrap',
   confirmedAt = new Date().toISOString(),
   bootstrapSummary = '',
@@ -970,46 +1189,93 @@ export async function writeProjectIntegrationState({
     throw new Error(`Cannot persist project integration state without a supported mode. Received: ${mode || '(empty)'}`)
   }
 
-  const carrierValidation = await validateProjectCertifiedCarriers({ targetRoot })
-  const legacyBridgeValidation = summarizeLegacyBridgeValidation({
+  const carrierValidation = normalizeCarrierValidation(null)
+  let legacyContractValidation = summarizeLegacyContractValidation({
     mode: normalizedMode,
     legacyHostFamily: legacyHostFamilySummary,
   })
-  const legacyDeliveryPolicy = normalizeLegacyDeliveryPolicy(
+  const legacyHostContractFacts = await collectLegacyHostContractFacts({
+    targetRoot,
+    mode: normalizedMode,
+  })
+  legacyContractValidation = mergeLegacyContractValidationWithHostContractFacts({
+    legacyContractValidation,
+    legacyHostContractFacts,
+    mode: normalizedMode,
+  })
+  let legacyDeliveryPolicy = normalizeLegacyDeliveryPolicy(
     legacyDeliveryPolicySummary,
     normalizedMode
   )
+  const legacyRuntimeSurfaceFacts =
+    normalizedMode === 'legacy-host-compatible'
+      ? await collectLegacyRuntimeSurfaceFacts({
+          targetRoot,
+          requiredPageTypes: legacyDeliveryPolicy.runtimeSurfaceRequiredPageTypes,
+          optionalPageTypes: legacyDeliveryPolicy.runtimeSurfaceOptionalPageTypes,
+        })
+      : null
+  legacyDeliveryPolicy = mergeLegacyDeliveryPolicyWithRuntimeSurfaceFacts({
+    mode: normalizedMode,
+    legacyDeliveryPolicy,
+    legacyRuntimeSurfaceFacts,
+  })
+  const runtimeCompatibilityLockFacts = await collectRuntimeCompatibilityLockFacts({
+    targetRoot,
+    mode: normalizedMode,
+  })
   const typicalPageSupport = normalizeTypicalPageSupport(typicalPageSupportSummary)
-  const integrationReady = deriveIntegrationReady({
-    mode: normalizedMode,
-    blockingReasons: [],
-    carrierValidation,
-    legacyBridgeValidation,
-    legacyDeliveryPolicy,
-  })
   const blockingReasons = deriveIntegrationBlockingReasons({
-    mode: normalizedMode,
-    blockingReasons: [],
-    carrierValidation,
-    legacyBridgeValidation,
-    legacyDeliveryPolicy,
+    blockingReasons:
+      normalizedMode === 'legacy-host-compatible'
+        ? [
+            ...legacyContractValidation.blockingReasons,
+            ...legacyDeliveryPolicy.blockingReasons,
+            ...(runtimeCompatibilityLockFacts?.blockingReasons ?? []),
+          ]
+        : [],
   })
-  const legacyRuntimeReady = deriveLegacyRuntimeReady({
-    mode: normalizedMode,
-    legacyBridgeValidation,
+  const runtimeIntegrationReady = deriveIntegrationReady({
+    blockingReasons,
   })
-  const legacyCarrierReady = deriveLegacyCarrierReady({
+  const normalizedRecommendedMode = normalizeModeId(recommendedMode) || normalizedMode
+  const normalizedModeSelectionStatus = normalizeModeSelectionStatus(
+    modeSelectionStatus,
+    normalizedMode,
+    normalizedRecommendedMode
+  )
+  const normalizedCompletionGates = normalizeCompletionGates(completionGates, {
     mode: normalizedMode,
-    carrierValidation,
+    runtimeIntegrationReady,
+  })
+  const onboardingCompletionReady = deriveOnboardingCompletionReady({
+    completionGates: normalizedCompletionGates,
+    modeSelectionStatus: normalizedModeSelectionStatus,
+    runtimeIntegrationReady,
+  })
+  const integrationReady = onboardingCompletionReady
+  const legacyContractReady = deriveLegacyContractReady({
+    mode: normalizedMode,
+    legacyContractValidation,
+  })
+  const legacyRuntimeSurfaceReady = deriveLegacyRuntimeSurfaceReady({
+    mode: normalizedMode,
+    legacyContractValidation,
     legacyDeliveryPolicy,
+    legacyRuntimeSurfaceFacts,
   })
 
   const nextState = {
     schemaVersion: PROJECT_INTEGRATION_STATE_SCHEMA_VERSION,
     status: 'integrated',
     integrationReady,
+    runtimeIntegrationReady,
     mode: normalizedMode,
-    recommendedMode: normalizeModeId(recommendedMode) || normalizedMode,
+    recommendedMode: normalizedRecommendedMode,
+    modeSelectionStatus: normalizedModeSelectionStatus,
+    overrideReason: String(overrideReason || '').trim(),
+    completionGates: normalizedCompletionGates,
+    onboardingCompletionReady,
     source: String(source || '').trim() || 'bootstrap',
     confirmedAt: String(confirmedAt || '').trim() || new Date().toISOString(),
     factPath: PROJECT_INTEGRATION_STATE_RELATIVE_PATH,
@@ -1017,18 +1283,20 @@ export async function writeProjectIntegrationState({
     bootstrapSummary: String(bootstrapSummary || '').trim(),
     hostProfile: pickHostProfileSummary(hostProfile),
     carrierValidation,
-    legacyBridgeValidation,
-    legacyRuntimeReady,
-    legacyCarrierReady,
+    legacyContractValidation,
+    legacyHostContractFacts,
+    legacyContractReady,
+    legacyRuntimeSurfaceReady,
+    runtimeCompatibilityLockFacts,
     pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
-    carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
-    directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
-    requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+    runtimeSurfaceRequiredPageTypes: legacyDeliveryPolicy.runtimeSurfaceRequiredPageTypes,
+    runtimeSurfaceOptionalPageTypes: legacyDeliveryPolicy.runtimeSurfaceOptionalPageTypes,
     deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
-    certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
-    missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+    runtimeSurfaceCoveredPageTypes: legacyDeliveryPolicy.runtimeSurfaceCoveredPageTypes,
+    missingRuntimeSurfacePageTypes: legacyDeliveryPolicy.missingRuntimeSurfacePageTypes,
     legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
     legacyDeliveryPolicy,
+    legacyRuntimeSurfaceFacts,
     typicalPageSupport,
     blockingReasons,
   }
@@ -1058,16 +1326,17 @@ export async function writeProjectIntegrationState({
       confirmedAt: nextState.confirmedAt,
       factPath: LEGACY_INTEGRATION_SEAL_RELATIVE_PATH,
       projectIntegrationStateRef: PROJECT_INTEGRATION_STATE_RELATIVE_PATH,
-      legacyRuntimeReady,
-      legacyCarrierReady,
+      legacyContractReady,
+      legacyHostContractFacts,
+      legacyRuntimeSurfaceReady,
       pageTypeDeliveryPolicyRef: legacyDeliveryPolicy.factPath,
-      carrierFirstRequiredPageTypes: legacyDeliveryPolicy.carrierFirstRequiredPageTypes,
-      directStandardAllowedPageTypes: legacyDeliveryPolicy.directStandardAllowedPageTypes,
-      requiredLegacyPageTypes: legacyDeliveryPolicy.requiredLegacyPageTypes,
+      runtimeSurfaceRequiredPageTypes: legacyDeliveryPolicy.runtimeSurfaceRequiredPageTypes,
+      runtimeSurfaceOptionalPageTypes: legacyDeliveryPolicy.runtimeSurfaceOptionalPageTypes,
       deferredLegacyPageTypes: legacyDeliveryPolicy.deferredLegacyPageTypes,
-      certifiedLegacyPageTypes: legacyDeliveryPolicy.certifiedLegacyPageTypes,
-      missingRequiredLegacyPageTypes: legacyDeliveryPolicy.missingRequiredLegacyPageTypes,
+      runtimeSurfaceCoveredPageTypes: legacyDeliveryPolicy.runtimeSurfaceCoveredPageTypes,
+      missingRuntimeSurfacePageTypes: legacyDeliveryPolicy.missingRuntimeSurfacePageTypes,
       legacyRolloutCoverageStatus: legacyDeliveryPolicy.legacyRolloutCoverageStatus,
+      legacyRuntimeSurfaceFacts,
       blockingReasons: Array.isArray(legacyDeliveryPolicy.blockingReasons)
         ? legacyDeliveryPolicy.blockingReasons
         : [],

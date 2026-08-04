@@ -1,12 +1,30 @@
 {
   "name": "@hiui-design/typical-page-shells",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "runtimeDelivery": {
     "policyRef": "rules/runtime-delivery-policy.json",
-    "vendoredTarball": "vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+    "vendoredTarball": "vendor/hiui-design-typical-page-shells-0.1.2.tgz",
     "publicPackageRoot": "packages/typical-page-shells",
     "registryPackageName": "@hiui-design/typical-page-shells",
     "publicRegistry": "https://registry.npmjs.org"
+  },
+  "legacyCompatibility": {
+    "status": "legacy-tarball-available",
+    "targetReactRange": ">=16.8.0",
+    "legacyEntryPrefix": "@hiui-design/typical-page-shells",
+    "legacyVendoredTarball": "vendor/hiui-design-typical-page-shells-0.1.2-legacy.tgz",
+    "currentVendoredTarballContainsReactJsxRuntime": true,
+    "forbiddenLegacyRuntimeImports": [
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime"
+    ],
+    "blocker": "",
+    "legacyPeerDependencies": {
+      "react": ">=16.8.0",
+      "react-dom": ">=16.8.0"
+    },
+    "legacyBuildStrategy": "local-jsx-runtime-shim",
+    "legacyVendoredTarballContainsReactJsxRuntime": false
   },
   "peerDependencies": {
     "@hi-ui/classname": "5.0.0-experimental.0",
@@ -24,7 +42,7 @@
     "@hi-ui/use-ref-state": "4.0.0-experimental.2",
     "@hi-ui/use-subscription": "4.0.0-experimental.2",
     "ahooks": "3.9.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": ">=16.14.0",
+    "react-dom": ">=16.14.0"
   }
 }

@@ -11,6 +11,7 @@ import {
   analyzeManagedAnalyticsChartSectionLayout,
   analyzeManagedAnalyticsRolePlan,
 } from './managed-analytics-policy.mjs'
+import { buildChromiumLaunchOptions, loadPlaywrightWithFallback } from './playwright-runtime.mjs'
 
 export const DEFAULT_TIMEOUT_MS = 15000
 
@@ -320,11 +321,37 @@ function collectRequiredRegions(pageTypeId, contract) {
   return regions
 }
 
-async function loadPlaywrightMaybe() {
-  try {
-    return await import('playwright')
-  } catch {
-    return null
+function resolvePreviewSurface({ contract, normalizedPagePath, reportMode, requireOfficialRuntime }) {
+  if (String(reportMode || '').trim() !== 'legacy-host-compatible') {
+    return {
+      previewSurface: 'not-applicable',
+      officialTruthEquivalent: false,
+      check: null,
+    }
+  }
+
+  const generationProfile = contract?.generationProfile || {}
+  const selectedKind = String(generationProfile.selectedDeliveryAssetKind || '').trim()
+  const isolatedRuntimePath = /(^|\/)typical-page-shell-runtime\//.test(String(normalizedPagePath || ''))
+  const officialTruthEquivalent = selectedKind === 'official-runtime' || isolatedRuntimePath
+  const previewSurface = officialTruthEquivalent
+    ? 'official-runtime-preview'
+    : 'project-bridge-business-page-preview'
+  const requireOfficial = Boolean(requireOfficialRuntime)
+  const ok = !requireOfficial || officialTruthEquivalent
+
+  return {
+    previewSurface,
+    officialTruthEquivalent,
+    check: {
+      detail: requireOfficial
+        ? ok
+          ? `Official runtime preview is required and current previewSurface=${previewSurface}.`
+          : `Official runtime preview is required, but current previewSurface=${previewSurface}.`
+        : `Legacy preview surface semantics active. Current previewSurface=${previewSurface}.`,
+      key: 'preview-surface-truth-source',
+      ok,
+    },
   }
 }
 
@@ -337,7 +364,7 @@ async function runBrowserPreviewCheck({ timeoutMs, url }) {
     }
   }
 
-  const playwright = await loadPlaywrightMaybe()
+  const playwright = await loadPlaywrightWithFallback().catch(() => null)
   if (!playwright) {
     return {
       detail: 'Playwright is not available in the current workspace. Accepted static file-exists fallback.',
@@ -347,7 +374,7 @@ async function runBrowserPreviewCheck({ timeoutMs, url }) {
   }
 
   const { chromium } = playwright
-  const browser = await chromium.launch({ headless: true })
+  const browser = await chromium.launch(await buildChromiumLaunchOptions({ headless: true }))
 
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 960 } })
@@ -481,6 +508,12 @@ export async function evaluatePreviewReady(options) {
     generatedPagePath: normalizedPagePath,
     targetRoot: options.target,
   })
+  const previewSurface = resolvePreviewSurface({
+    contract: contractContext?.contract || null,
+    normalizedPagePath,
+    reportMode: options.reportMode,
+    requireOfficialRuntime: options.requireOfficialRuntime,
+  })
 
   const checks = [
     {
@@ -519,6 +552,15 @@ export async function evaluatePreviewReady(options) {
       ok: browserCheck.ok,
       skipped: browserCheck.skipped,
     },
+    ...(previewSurface.check
+      ? [
+          {
+            detail: `Current previewSurface=${previewSurface.previewSurface}.`,
+            key: 'preview-surface',
+            ok: true,
+          },
+        ]
+      : []),
   ]
 
   const runtimeSmokeRequired = Boolean(contractContext?.contract?.runtimeSmokePlan?.required)
@@ -550,6 +592,7 @@ export async function evaluatePreviewReady(options) {
       key: `managed-analytics-preview-${index + 1}`,
       ok: false,
     })),
+    ...(previewSurface.check ? [previewSurface.check] : []),
   ]
   const qualityVerified = checks.every((item) => item.ok) && qualityChecks.every((item) => item.ok)
 
@@ -560,6 +603,8 @@ export async function evaluatePreviewReady(options) {
     managedChartSection: chartGovernanceSummary.managedChartSection,
     chartGovernance: chartGovernanceSummary.chartGovernance,
     previewReady: checks.every((item) => item.ok),
+    previewSurface: previewSurface.previewSurface,
+    officialTruthEquivalent: previewSurface.officialTruthEquivalent,
     qualityChecks,
     qualityVerified,
     requiredRegions: collectRequiredRegions(pageTypeId, contractContext?.contract || null),

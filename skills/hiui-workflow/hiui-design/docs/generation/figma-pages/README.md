@@ -1,5 +1,9 @@
 # 页型专章索引
 
+## 最小命中文档集
+
+默认项目的数据可视化轻量面命中 `typical-page:analytics` 时，只补读 `data-visualization.md`、`table-shared.md` 与 `hiui5-visual-baseline.md`。生成事实必须保留 `analyticsArtifacts.kickoffFacts` 和 `deliveryState / deliveryReadiness`，不要把 lightweight command surface 重新扩张成旧治理链的默认主入口。
+
 按下面顺序读取：
 
 1. 先看 `../generation-principles.md` 建立共性生成边界

@@ -19,15 +19,15 @@ function createAdvice(hostProfile, recommendedMode = hostProfile.recommendedMode
     return {
       title: 'Legacy Host Compatibility Adapter',
       summary:
-        'This target should keep its current runtime and host container contract. `legacy-host-compatible` still allows typical-page components through a project-certified carrier or a runtimeAdapterProof-backed standard component, but the host main tree should not be treated as a generic host-integration mount for the standard @hiui-design/typical-page-shells runtime.',
+        'This target should keep its current runtime and host container contract. `legacy-host-compatible` uses a host contract, compiled PageSpec, one-time HiuiLegacyPage runtime, and typed page slots; it should not default to project carriers or a generic host-integration mount for the standard @hiui-design/typical-page-shells runtime.',
       steps: [
         'Use `legacy-host-compatible` mode and keep the existing route/layout system.',
-        'Run `typical-page:plan-page-task` first and follow the selected `pageComponent` plus `runtimeAdapterProof` result before generating any business page.',
-        'Prefer the planner-selected project-certified carrier first; only use a direct standard component when the plan proves runtime equivalence for the current host.',
-        'Do not add ad hoc `@hiui-design/typical-page-shells` imports just to imitate `host-integration`; keep imports aligned with the planner-selected carrier/adapter path unless you first isolate a dedicated modern runtime entry.',
-        'Reuse the target project’s own layout/container abstractions together with `hiui5` alias or local component wrappers.',
-        'Read `.local-context/hiui-design/rules/generation-rules.md` first, then `.local-context/hiui-design/docs/generation/legacy-host-compatibility.md` before generating business pages.',
-        'Generate real business pages inside the current project structure, then smoke-test one table page, one full-page page, and one drawer page through the real host.',
+        'Run `typical-page:apply:legacy` first; it runs `typical-page:legacy:init` internally and prepares the generated host contract until request/message/permission/route/theme adapters are ready or not-required.',
+        'Create a light plan with `typical-page:light-plan`, then generate or rewrite business pages with `typical-page:legacy:new --plan <light-plan.json>` or `typical-page:legacy:rewrite --plan <light-plan.json>`, using the compiled PageSpec and typed page slots only.',
+        'Do not add ad hoc `@hiui-design/typical-page-shells` imports in business pages just to imitate `host-integration`; runtime shell selection belongs in `src/hiui-runtime/HiuiLegacyPage`.',
+        'Reuse the target project’s own layout/container abstractions together with `hiui5` alias or local component wrappers inside the HiuiLegacyPage runtime, not inside each page slot file.',
+        'Read `.local-context/hiui-design/docs/generation/legacy-host-compatibility.md` and `.local-context/hiui-design/rules/typical-page-contracts/<pageType>.json` before generating business pages.',
+        'Use `typical-page:legacy:verify` only for explicit troubleshooting when adapter, slot schema, region ownership, or visual token issues are suspected.',
       ],
       entryHints,
       adapterGuide,

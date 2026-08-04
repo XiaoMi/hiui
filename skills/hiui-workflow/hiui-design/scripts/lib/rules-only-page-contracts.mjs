@@ -160,26 +160,21 @@ function applyManagedAnalyticsProvenance(profile, { pageTypeId, archetypeTemplat
 }
 
 function isLegacyPageComponentGenerationProfile({ mode, profile }) {
-  if (String(mode || '').trim() !== 'legacy-host-compatible') {
-    return false
-  }
-
-  const normalizedProfile = normalizeGenerationProfile(profile) || {}
-  const strategy = String(normalizedProfile.strategy || '').trim()
-  const legacyStrategyId = String(normalizedProfile.legacyStrategyId || '').trim()
-
-  return strategy === 'page-component' || legacyStrategyId === 'runtime-bridged-page-component'
+  return false
 }
 
 function expectedGenerationProfileSemantics({ mode, profile }) {
   const pageComponentStart =
     String(profile?.strategy || '').trim() === 'page-component' &&
     String(profile?.startFrom || '').trim() === 'page-component'
+  const legacyLightweightStart =
+    String(mode || '').trim() === 'legacy-host-compatible' &&
+    String(profile?.strategy || '').trim() === 'legacy-lightweight-contract'
   const strictSourceProof =
     String(profile?.sourceProofLevel || '').trim() === 'strict-source-adapter-proof'
 
   return {
-    hostArchetypeRequired: !pageComponentStart,
+    hostArchetypeRequired: !pageComponentStart && !legacyLightweightStart,
     requiredGates: pageComponentStart
       ? strictSourceProof
         ? ['source-gate', 'preflight', 'page-instance-validation']
@@ -193,32 +188,32 @@ function expectedGenerationProfileSemantics({ mode, profile }) {
 
 function buildDefaultGenerationProfile({ pageTypeId, archetypeMode, archetypeTemplatePath }) {
   const mode = String(archetypeMode || '').trim() || 'rules-only'
-  const usesLegacyRuntimeBridge = mode === 'legacy-host-compatible'
+  const usesLegacyLightweightContract = mode === 'legacy-host-compatible'
   const generationProfileDefaults = expectedGenerationProfileSemantics({
     mode,
     profile: {
-      strategy: usesLegacyRuntimeBridge
-        ? 'page-component'
+      strategy: usesLegacyLightweightContract
+        ? 'legacy-lightweight-contract'
         : 'managed-template-or-archetype-slot-fill',
-      startFrom: usesLegacyRuntimeBridge ? 'page-component' : archetypeTemplatePath ? 'template' : 'reference-or-scaffold',
-      legacyStrategyId: usesLegacyRuntimeBridge
-        ? 'runtime-bridged-page-component'
+      startFrom: usesLegacyLightweightContract ? 'typical-page-contract' : archetypeTemplatePath ? 'template' : 'reference-or-scaffold',
+      legacyStrategyId: usesLegacyLightweightContract
+        ? 'legacy-lightweight-contract'
         : 'managed-template-or-archetype-slot-fill',
     },
   })
 
   return applyManagedAnalyticsProvenance({
     schemaVersion: 'generation-profile.v1',
-    strategy: usesLegacyRuntimeBridge
-      ? 'page-component'
+    strategy: usesLegacyLightweightContract
+      ? 'legacy-lightweight-contract'
       : 'managed-template-or-archetype-slot-fill',
-    legacyStrategyId: usesLegacyRuntimeBridge
-      ? 'runtime-bridged-page-component'
+    legacyStrategyId: usesLegacyLightweightContract
+      ? 'legacy-lightweight-contract'
       : 'managed-template-or-archetype-slot-fill',
     mode,
     moldId: getMoldIdForPageType(pageTypeId),
-    startFrom: usesLegacyRuntimeBridge
-      ? 'page-component'
+    startFrom: usesLegacyLightweightContract
+      ? 'typical-page-contract'
       : archetypeTemplatePath
         ? 'template'
         : 'host-archetype',
@@ -298,28 +293,27 @@ function applyManagedAnalyticsProductionContractProvenance(contract, { pageTypeI
 function buildManagedPageDisplayProfile({ archetypeMode, generationProfile }) {
   const normalizedProfile = normalizeGenerationProfile(generationProfile) || {}
   const strategy = String(normalizedProfile.strategy || '').trim()
-  const legacyStrategyId = String(normalizedProfile.legacyStrategyId || '').trim()
-  const legacyRuntimeBridgeReady =
+  const legacyLightweightContractReady =
     String(archetypeMode || '').trim() === 'legacy-host-compatible' &&
-    (legacyStrategyId === 'runtime-bridged-page-component' ||
-      (strategy === 'page-component' && String(normalizedProfile.runtimeBridgeProfileId || '').trim()))
-  const pageComponentManagedPath = legacyRuntimeBridgeReady || strategy === 'page-component'
+    strategy === 'legacy-lightweight-contract'
+  const pageComponentManagedPath = strategy === 'page-component'
 
   return {
     artifactRole: 'business-managed-page',
-    deliverySemantics: pageComponentManagedPath
+    deliverySemantics: legacyLightweightContractReady
+      ? 'host-contract-plus-typical-page-contract-slot-fill'
+      : pageComponentManagedPath
       ? 'page-component-plus-slot-fill'
       : 'managed-start-point-plus-business-fill',
     runtimeDeliveryMode:
-      String(normalizedProfile.runtimeBridgeDeliveryMode || '').trim() ||
-      (legacyRuntimeBridgeReady ? 'runtime-component-filled-by-business-slots' : ''),
-    shellImportPolicy: legacyRuntimeBridgeReady
-      ? 'legacy-main-tree-forbid-ad-hoc-standard-shell-import'
+      legacyLightweightContractReady ? 'boundary-renderer-filled-by-page-slots' : '',
+    shellImportPolicy: legacyLightweightContractReady
+      ? 'legacy-main-tree-use-runtime-boundary-and-typical-page-contract'
       : 'follow-selected-delivery-asset',
-    managedPath: legacyRuntimeBridgeReady
-      ? 'runtime-bridge-wrapper-plus-business-slot-adapter'
+    managedPath: legacyLightweightContractReady
+      ? 'host-contract-typical-page-contract-boundary-slots'
       : pageComponentManagedPath
-        ? 'selected-page-component-or-certified-carrier'
+        ? 'selected-page-component'
         : 'managed-template-or-host-archetype-start-point',
   }
 }
@@ -741,6 +735,14 @@ export function getManagedPageRuntimeSmokeDefaultStatus(contract) {
   return getManagedPageRuntimeSmokeRequirement(contract).required ? 'not-run' : 'not-required'
 }
 
+function isLegacyHostCompatibleContract(contract) {
+  return (
+    String(contract?.archetypeMode || '').trim() === 'legacy-host-compatible' ||
+    String(contract?.generationProfile?.mode || '').trim() === 'legacy-host-compatible' ||
+    String(contract?.hostMode || '').trim() === 'legacy-host-compatible'
+  )
+}
+
 export function reconcileManagedPageRuntimeSmokeWorkflow(contract, workflow = {}, sourceSnapshotHash = '') {
   const requirement = getManagedPageRuntimeSmokeRequirement(contract)
   if (!requirement.required) {
@@ -803,6 +805,11 @@ export function buildManagedPageWorkflowMetadata(overrides = {}) {
       (isFinalized ? 'not-required' : 'not-required'),
     runtimeSmokeSnapshotHash: String(overrides.runtimeSmokeSnapshotHash || '').trim() || '',
     runtimeSmokeReportPath: String(overrides.runtimeSmokeReportPath || '').trim() || '',
+    legacyAcceptanceStatus: String(overrides.legacyAcceptanceStatus || '').trim() || 'not-run',
+    legacyAcceptanceReportPath: String(overrides.legacyAcceptanceReportPath || '').trim() || '',
+    legacyAcceptanceSnapshotHash: String(overrides.legacyAcceptanceSnapshotHash || '').trim() || '',
+    legacyAcceptanceAcceptedAt: String(overrides.legacyAcceptanceAcceptedAt || '').trim() || '',
+    legacyAcceptanceCommand: String(overrides.legacyAcceptanceCommand || '').trim() || '',
     sourceSnapshotHash: String(overrides.sourceSnapshotHash || '').trim() || '',
     staleReason: String(overrides.staleReason || '').trim() || '',
     preflightStage: String(overrides.preflightStage || '').trim() || '',
@@ -1189,6 +1196,10 @@ export function toContractSlug(value) {
     .replace(/\//g, '__')
     .replace(/-+/g, '-')
     .replace(/^[-_]+|[-_]+$/g, '')
+}
+
+export function toManagedPageContractSlugForPage(generatedPagePath) {
+  return toContractSlug(String(generatedPagePath || '').replace(/\.[cm]?[jt]sx?$/u, ''))
 }
 
 export function getRequiredRegionsForPageType(pageTypeId) {
@@ -2127,6 +2138,7 @@ export function validateRulesOnlyPageContract({
   }
 
   const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(contract)
+  const legacyAcceptanceRequired = isLegacyHostCompatibleContract(contract)
   const workflow = contract.workflow
   if (!workflow || typeof workflow !== 'object') {
     warnings.push(
@@ -2227,6 +2239,31 @@ export function validateRulesOnlyPageContract({
       if (runtimeSmokeRequirement.required && !workflow.runtimeSmokeReportPath) {
         warnings.push(
           'workflow.runtimeSmokeReportPath is missing on a finalized contract that requires runtime smoke. Re-run typical-page:runtime-smoke so collaborators can inspect the browser-level evidence.'
+        )
+      }
+      if (legacyAcceptanceRequired && workflow.legacyAcceptanceStatus !== 'pass') {
+        warnings.push(
+          `workflow.legacyAcceptanceStatus should be pass when a legacy-host-compatible contract is finalized; received ${workflow.legacyAcceptanceStatus || '(missing)'}. Re-run typical-page:legacy:accept so static gate, build, remoteEntry, runtime DOM, visual evidence, and warning classification are bound to this contract.`
+        )
+      }
+      if (legacyAcceptanceRequired && !workflow.legacyAcceptanceReportPath) {
+        warnings.push(
+          'workflow.legacyAcceptanceReportPath is missing on a finalized legacy-host-compatible contract. Re-run typical-page:legacy:accept so collaborators can inspect the acceptance evidence.'
+        )
+      }
+      if (legacyAcceptanceRequired && !workflow.legacyAcceptanceSnapshotHash) {
+        warnings.push(
+          'workflow.legacyAcceptanceSnapshotHash is missing on a finalized legacy-host-compatible contract. Re-run typical-page:legacy:accept on the current source snapshot.'
+        )
+      }
+      if (
+        legacyAcceptanceRequired &&
+        workflow.legacyAcceptanceSnapshotHash &&
+        workflow.sourceSnapshotHash &&
+        workflow.legacyAcceptanceSnapshotHash !== workflow.sourceSnapshotHash
+      ) {
+        warnings.push(
+          `workflow.legacyAcceptanceSnapshotHash must match workflow.sourceSnapshotHash on finalized legacy-host-compatible contracts; received ${workflow.legacyAcceptanceSnapshotHash} vs ${workflow.sourceSnapshotHash}`
         )
       }
     }
@@ -2840,6 +2877,72 @@ export async function loadRulesOnlyPageContracts(targetRoot) {
   }
 }
 
+export function findManagedPageContractEntry(contracts, generatedPagePath) {
+  const normalizedPagePath = normalizeContractPath('', generatedPagePath)
+  if (!normalizedPagePath || !Array.isArray(contracts)) return null
+
+  const matches = contracts.filter((entry) => {
+      const contractPagePath = normalizeContractPath('', entry?.contract?.generatedPagePath || '')
+      return contractPagePath === normalizedPagePath
+    })
+  if (matches.length === 0) return null
+
+  matches.sort((left, right) => {
+    const leftComplete = contractHasManagedBaseline(left?.contract)
+    const rightComplete = contractHasManagedBaseline(right?.contract)
+    if (leftComplete !== rightComplete) return leftComplete ? -1 : 1
+    return String(left.filePath || '').localeCompare(String(right.filePath || ''))
+  })
+
+  return matches[0]
+}
+
+function contractHasManagedBaseline(contract) {
+  return Boolean(
+    contract &&
+      typeof contract === 'object' &&
+      String(contract.pageTypeId || '').trim() &&
+      Array.isArray(contract.regionMapping) &&
+      contract.regionMapping.length > 0 &&
+      Array.isArray(contract.ownershipMapping) &&
+      contract.generationProfile &&
+      typeof contract.generationProfile === 'object' &&
+      contract.productionContract &&
+      typeof contract.productionContract === 'object' &&
+      contract.adapterContract &&
+      typeof contract.adapterContract === 'object'
+  )
+}
+
+export async function removeDuplicateManagedPageContractArtifacts(
+  targetRoot,
+  generatedPagePath,
+  canonicalJsonPath
+) {
+  const contractsResult = await loadRulesOnlyPageContracts(targetRoot)
+  const normalizedPagePath = normalizeContractPath('', generatedPagePath)
+  const canonicalPath = canonicalJsonPath ? path.resolve(canonicalJsonPath) : ''
+  const removedArtifacts = []
+
+  for (const entry of contractsResult.contracts) {
+    const entryPath = path.resolve(entry.filePath)
+    if (canonicalPath && entryPath === canonicalPath) continue
+    const contractPagePath = normalizeContractPath('', entry?.contract?.generatedPagePath || '')
+    if (contractPagePath !== normalizedPagePath) continue
+
+    for (const artifactPath of [entry.filePath, entry.filePath.replace(/\.json$/u, '.md')]) {
+      try {
+        await fs.rm(artifactPath, { force: true })
+        removedArtifacts.push(normalizeContractPath(targetRoot, artifactPath))
+      } catch {
+        // best-effort cleanup; callers still validate the canonical artifact afterward
+      }
+    }
+  }
+
+  return removedArtifacts
+}
+
 export function renderRulesOnlyPageContractMarkdown(contract) {
   const requiredRegions = getRequiredRegionsForPageType(contract.pageTypeId)
   const requiredOwnershipRoles = getRequiredOwnershipRolesForPageType(contract.pageTypeId)
@@ -3067,7 +3170,7 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
     }`
   )
 
-  for (const item of contract.regionMapping) {
+  for (const item of Array.isArray(contract.regionMapping) ? contract.regionMapping : []) {
     lines.push(`- ${item.region}: ${item.target}`)
   }
 
@@ -3217,20 +3320,23 @@ export function renderRulesOnlyPageContractMarkdown(contract) {
   lines.push(renderManagedPageSourceContractSnippet(contract))
   lines.push('```')
 
+  const notes = Array.isArray(contract.notes) ? contract.notes : []
+  const deviations = Array.isArray(contract.deviations) ? contract.deviations : []
+
   lines.push('', '## Notes')
-  if (contract.notes.length === 0) {
+  if (notes.length === 0) {
     lines.push('- (none)')
   } else {
-    for (const note of contract.notes) {
+    for (const note of notes) {
       lines.push(`- ${note}`)
     }
   }
 
   lines.push('', '## Deviations')
-  if (contract.deviations.length === 0) {
+  if (deviations.length === 0) {
     lines.push('- (none)')
   } else {
-    for (const deviation of contract.deviations) {
+    for (const deviation of deviations) {
       lines.push(`- ${deviation}`)
     }
   }

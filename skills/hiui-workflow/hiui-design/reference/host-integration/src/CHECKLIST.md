@@ -47,7 +47,7 @@
 
 ## 验收
 
-- 已运行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`
+- 已运行 `node ".local-context/hiui-design/scripts/typical-page-doctor.mjs"`
 - 已查看 `src/typical-page-reuse/SMOKE_REPORT.md`
 - 页头标题正确挂载到宿主 header 区
 - 宿主 header 槽允许 `PageHeader` 铺满整行宽度，操作区仍然贴右

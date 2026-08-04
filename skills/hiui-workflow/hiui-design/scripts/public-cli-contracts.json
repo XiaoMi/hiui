@@ -1019,7 +1019,7 @@
         "sideEffects": "none"
       },
       {
-        "id": "typical-page-inspect-asset-page-component-legacy-table-basic",
+        "id": "typical-page-inspect-asset-page-component-standard-table-basic",
         "script": "scripts/typical-page-inspect-asset.mjs",
         "status": "shipped",
         "jsonContract": "shipped",
@@ -1029,10 +1029,10 @@
           "--type",
           "page-component",
           "--id",
-          "legacy-table-basic-page.v1",
+          "standard-table-basic-page.v1",
           "--json"
         ],
-        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.legacy-table-basic-page.json",
+        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.standard-table-basic-page.json",
         "requiredTopLevelFields": [
           "schemaVersion",
           "assetType",
@@ -1761,7 +1761,8 @@
             "fields": [
               "pageStatus",
               "preflightStatus",
-              "formalAcceptanceStatus"
+              "formalAcceptanceStatus",
+              "usageStatsStatus"
             ]
           },
           {
@@ -1802,7 +1803,174 @@
             "fields": [
               "planSchemaVersion",
               "preflightSchemaVersion",
-              "preflightStage"
+              "preflightStage",
+              "usageStatsStatus"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-legacy-verify",
+        "script": "scripts/typical-page-legacy-verify.mjs",
+        "status": "shipped",
+        "jsonContract": "shipped",
+        "expectedExitCode": 1,
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page-type",
+          "table-basic",
+          "--page",
+          "src/pages/orders/page.instance.tsx",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/legacy-verify.missing-page.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "target",
+          "pageType",
+          "page",
+          "files",
+          "checks",
+          "issues"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "checks"
+            ],
+            "fields": [
+              "hostContract",
+              "typicalPageContract",
+              "instance",
+              "slots",
+              "srcPageComponentsAbsent",
+              "remoteExpose",
+              "remoteEntryArtifact",
+              "runtimeDomMarkers",
+              "indexBinding"
+            ]
+          },
+          {
+            "path": [
+              "files"
+            ],
+            "fields": [
+              "remoteEntry"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "typical-page-legacy-rewrite",
+        "script": "scripts/typical-page-legacy-rewrite.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--plan",
+          ".local-context/hiui-design/outputs/light-plans/orders.json",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/legacy-rewrite.documented.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "commandName",
+          "intent",
+          "pageTypeId",
+          "page"
+        ]
+      },
+      {
+        "id": "typical-page-legacy-new",
+        "script": "scripts/typical-page-legacy-new.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--plan",
+          ".local-context/hiui-design/outputs/light-plans/orders.json",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/legacy-new.documented.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "commandName",
+          "intent",
+          "pageTypeId",
+          "page"
+        ]
+      },
+      {
+        "id": "typical-page-legacy-init",
+        "script": "scripts/typical-page-legacy-init.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/legacy-init.documented.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "mode",
+          "target"
+        ]
+      },
+      {
+        "id": "typical-page-legacy-accept",
+        "script": "scripts/typical-page-legacy-accept.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page-type",
+          "table-basic",
+          "--page",
+          "src/pages/orders/page.instance.tsx",
+          "--profile",
+          "preview",
+          "--runtime-evidence",
+          ".local-context/hiui-design/outputs/runtime-smoke/orders.json",
+          "--json"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/legacy-accept.documented.json",
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "accepted",
+          "target",
+          "pageType",
+          "page",
+          "remoteEntry",
+          "buildCommand",
+          "files",
+          "steps",
+          "issues"
+        ],
+        "requiredNestedFields": [
+          {
+            "path": [
+              "steps"
+            ],
+            "fields": [
+              "staticGate",
+              "build",
+              "remoteEntry",
+              "runtimeCapture",
+              "runtimeDom",
+              "visualEvidence",
+              "warningClassification",
+              "adapterGate",
+              "domGeometry"
             ]
           }
         ]
@@ -1810,8 +1978,8 @@
       {
         "id": "typical-page-start-page",
         "script": "scripts/typical-page-start-page.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
+        "status": "retired",
+        "jsonContract": "retired",
         "command": [
           "--target",
           "<skillRoot>",
@@ -1905,7 +2073,118 @@
               "sourceSnapshotHash"
             ]
           }
-        ]
+        ],
+        "retiredReason": "Default page generation now uses typical-page:generate/analytics; legacy-host-compatible uses typical-page:legacy:new|rewrite|accept."
+      },
+      {
+        "id": "typical-page-light-plan",
+        "script": "scripts/typical-page-light-plan.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--page-type",
+          "table-basic",
+          "--page",
+          "src/pages/orders",
+          "--summary",
+          "创建订单列表",
+          "--json"
+        ],
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "mode",
+          "pageType",
+          "pagePath",
+          "writeScope",
+          "dataMode",
+          "validationLevel",
+          "source"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/light-plan.documented.json"
+      },
+      {
+        "id": "typical-page-light-readiness",
+        "script": "scripts/typical-page-light-readiness.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--plan",
+          ".local-context/hiui-design/outputs/light-plans/orders.json",
+          "--json"
+        ],
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "profile",
+          "steps"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/light-readiness.documented.json"
+      },
+      {
+        "id": "typical-page-light-rollback",
+        "script": "scripts/typical-page-light-rollback.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--plan",
+          ".local-context/hiui-design/outputs/light-plans/orders.json",
+          "--json"
+        ],
+        "requiredTopLevelFields": [
+          "schemaVersion",
+          "status",
+          "applied",
+          "plan",
+          "files"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/light-rollback.documented.json"
+      },
+      {
+        "id": "typical-page-adapter-gate",
+        "script": "scripts/typical-page-adapter-gate.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--profile",
+          "preview",
+          "--json"
+        ],
+        "requiredTopLevelFields": [
+          "ok",
+          "issues",
+          "blockingIssues",
+          "hostContractPath",
+          "profile"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/adapter-gate.documented.json"
+      },
+      {
+        "id": "typical-page-dom-geometry-gate",
+        "script": "scripts/typical-page-dom-geometry-gate.mjs",
+        "status": "documented",
+        "jsonContract": "documented",
+        "command": [
+          "--target",
+          "<skillRoot>",
+          "--runtime-evidence",
+          ".local-context/hiui-design/outputs/legacy-acceptance/orders.runtime-evidence.json",
+          "--json"
+        ],
+        "requiredTopLevelFields": [
+          "ok",
+          "issues",
+          "blockingIssues",
+          "geometry"
+        ],
+        "fixture": "scripts/tests/fixtures/public-cli/dom-geometry-gate.documented.json"
       }
     ],
     "human-cli": [

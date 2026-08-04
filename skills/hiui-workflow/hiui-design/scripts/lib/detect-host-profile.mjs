@@ -205,7 +205,7 @@ export async function detectHostProfile(targetRoot, options = {}) {
   let recommendedMode = 'rules-only'
   let strategy = 'compat'
   let reason =
-    'Target project already looks like an existing system. Keep the current layout/container contract, use non-gallery rules/reference assets as needed, and adapt inside the existing host. If the project later resolves to legacy-host-compatible, ordinary typical pages may still use planner-selected page components through project-certified carriers or runtimeAdapterProof-backed standard components.'
+    'Target project already looks like an existing system. Keep the current layout/container contract, use non-gallery rules/reference assets as needed, and adapt inside the existing host. If the project later resolves to legacy-host-compatible, ordinary typical pages should use host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots; old page-component/carrier assets are not a generation path.'
 
   if (projectType === 'greenfield' && ['react-vite-router', 'react-vite', 'unknown'].includes(framework)) {
     recommendedMode = 'host-integration'

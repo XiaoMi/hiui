@@ -76,8 +76,6 @@ function isHistoricalManagedPageContractEntry(entry) {
     Boolean(generatedPagePath) &&
     Boolean(String(workflow.status || '').trim()) &&
     (
-      String(generationProfile.strategy || '').trim() === 'page-component' ||
-      String(generationProfile.legacyStrategyId || '').trim() === 'runtime-bridged-page-component' ||
       String(generationProfile.mode || '').trim() === 'legacy-host-compatible' ||
       String(contract.archetypeMode || '').trim() === 'legacy-host-compatible'
     )

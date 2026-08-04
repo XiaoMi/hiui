@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "rulesVersion": "1.0.1",
-  "updatedAt": "2026-07-09",
+  "rulesVersion": "1.2.2",
+  "updatedAt": "2026-08-04",
   "archetypes": [
     {
       "id": "table-basic-core",

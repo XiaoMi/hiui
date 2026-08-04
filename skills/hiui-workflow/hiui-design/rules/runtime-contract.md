@@ -1,5 +1,7 @@
 # HiUI Runtime Contract
 
+默认项目执行真相以 `scripts/public-cli-contracts.json` 与 `rules/scenario-routing.json` 为准；轻量默认面标识为 `default-project-surface`，核心命令包含 `typical-page:generate`，数据可视化命中 `typical-page:analytics`。
+
 本文件是 `hiui-design` 运行时协议的唯一真相，定义 `page-task-plan.v1`、`requiredActions`、`preflight-report.v1` 与 acceptance profile 的字段语义。`SKILL.md` 只引用本文件，不复述完整 schema。
 
 ## Page Task Plan
@@ -50,10 +52,10 @@
   "requiredDocs": [],
   "requiredActions": [
     {
-      "id": "start-page",
+      "id": "generate-page",
       "phase": "GenerateOrEdit",
       "tool": "npm-script",
-      "command": "typical-page:start-page",
+      "command": "typical-page:generate",
       "args": {
         "--page-type": "table-basic",
         "--page": "src/pages/order-list/index.tsx"
@@ -61,7 +63,7 @@
       "required": true,
       "reason": "copy managed template before business slot replacement",
       "produces": [],
-      "displayCommand": "typical-page:start-page --page-type table-basic --page src/pages/order-list/index.tsx"
+      "displayCommand": "typical-page:generate --page-type table-basic --page src/pages/order-list/index.tsx"
     }
   ],
   "acceptanceLevel": "preview",
@@ -69,14 +71,14 @@
     "level": "preview",
     "formalRequired": false,
     "defaultActions": [],
-    "finalReportSections": ["pageStatus", "preflightStatus"]
+    "finalReportSections": ["pageStatus", "preflightStatus", "usageStatsStatus"]
   },
   "acceptanceReasons": [],
   "formalAcceptanceActions": [],
   "finalReportContract": {
     "schemaVersion": "final-report-contract.v1",
-    "sections": ["pageStatus", "preflightStatus"],
-    "requiredStatusFields": ["pageStatus", "preflightStatus"]
+    "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
+    "requiredStatusFields": ["pageStatus", "preflightStatus", "usageStatsStatus"]
   }
 }
 ```
@@ -107,54 +109,21 @@
 - 未知 `schemaVersion`：必须 fail closed。
 - 旧字段 `requiredCommands` 可作为 `requiredActions` 的兼容输入；旧字段 `formalAcceptanceCommands` 可作为 `formalAcceptanceActions` 的兼容输入。优先使用结构化动作对象。
 
-### Runtime-Bridged Page Component Compatibility
+### Legacy Lightweight Contract Compatibility
 
-当 legacy 页面通过 runtime bridge 进入 `page-component` 主链路时，允许计划输出一个面向人类更直观的
-`generationStrategy.id=runtime-bridged-page-component`，但必须同时满足：
+`legacy-host-compatible` 的兼容语义固定为 `legacy-lightweight-contract`：
 
-- `generationStrategy.normalizedId` 仍为 `page-component`
-- `primaryGenerationAsset.type` 仍为 `page-component`
-- `assetResolution.strategy` 仍为 `page-component`
-- 下游消费方一律按 `normalizedId` 判定主链路，不得因为用户可读 id 新增而分叉为平行体系
-
-计划可附加 `runtimeBridgeProfile` 作为 additive object，用于说明 legacy 桥接交付语义。推荐结构：
-
-```json
-{
-  "schemaVersion": "runtime-bridge-profile-ref.v1",
-  "profileId": "table-basic.runtime-bridge.v1",
-  "normalizedStrategy": "page-component",
-  "userFacingStrategy": "runtime-bridged-page-component",
-  "deliveryMode": "runtime-component-filled-by-business-slots",
-  "runtimeAssetSource": {
-    "assetKind": "certified-page-component-shell",
-    "certificationRef": "rules/page-component-certifications/standard-table-basic-page.v1.json",
-    "componentShellField": "certificationInputs.componentShell"
-  },
-  "semanticReferencePolicy": {
-    "examplePageRole": "semantic-and-structure-reference-only",
-    "runtimeComponentRole": "primary-delivery-asset",
-    "carrierPolicy": "prefer-project-certified-carrier-before-direct-standard-component"
-  },
-  "bridgeLayerPolicy": {
-    "wrapperRole": "thin-runtime-wrapper",
-    "slotAdapterRole": "slot-only-business-adapter",
-    "thickness": "runtime-bridge-only"
-  }
-}
-```
+- `generationStrategy.normalizedId` 不得回退为旧 page-component carrier 主链。
+- `primaryGenerationAsset.type` 应指向 host contract、compiled PageSpec、HiuiLegacyPage runtime 与 typed page slots。
+- `assetResolution.strategy` 应与“项目接入链 `apply:legacy`（内部 `legacy:init`）+ 页面计划链 `light-plan` + 页面生成链 `legacy:new|rewrite --plan`”的 PageSpec runtime 命令边界一致。
+- `runtimeSeal`、`canonicalShellBinding` 与 `peerResolution` 是 legacy runtime 是否可继续生成 / 验收的必需事实；缺失时不得仅凭 `HiuiLegacyPage` 入口或 DOM marker 判定 ready。
+- 下游消费方不得读取旧 carrier、wrapper、adapter 或矩阵资产作为默认生成入口。
 
 约束：
 
-- `runtimeBridgeProfile` 只能补充 legacy `page-component` 的 bridge profile，不得替代
-  `pageComponent`、`baseMoldId`、`generationRecipe`、`lockedRegions` 或 `editableSlots`。
-- runtime shell 的真实来源必须通过 `runtimeAssetSource.certificationRef +
-  componentShellField` 从 certification 解析；禁止在计划中手写猜测 import path。
-- bridge wrapper 与 slot adapter 只允许承担 runtime bridge / business slot binding 职责；
-  若接管 `shell`、`white-body`、`main-scroll`、`pagination`、`footer` 或把标准 region
-  翻译为宿主 look-alike primitives，应视为 contract drift 并 fail closed。
-- 若 `generationStrategy.id=runtime-bridged-page-component`，但 `runtimeBridgeProfile` 缺失、
-  profile 不可解析或 runtime shell 来源不可解，则计划必须 `blocked`。
+- 页面骨架、DOM region、ownership、slot schema 与视觉 token 必须来自 typical page contract。
+- runtime renderer 是唯一页面壳承载者，业务页只填 page slots。
+- 若 host contract、HiuiLegacyPage runtime、runtime seal、canonical shell binding、peer/export resolution 或 slot schema 缺失 / blocked，计划必须 `blocked`，不得降级为旧 carrier、兼容手拼、项目本地 primitive runtime 或自由 fallback。唯一例外是 `.local-context/hiui-design/outputs/runtime-provider-contract.json` 明确声明 `provider=project-runtime-adapter`，并且对应 pageType 的 `runtimeEntry` 位于 `src/hiui-runtime/adapters/**`、`componentName` 可导入、`consumesTypedSlots=true`、`canonicalShell` 与 PageSpec 一致、`regionMarkers` 覆盖必需 region。
 
 ## Structured Actions
 
@@ -164,15 +133,14 @@
 
 ```json
 {
-  "id": "write-contract-standard",
-  "phase": "WriteContract",
+  "id": "generate-page-standard",
+  "phase": "GenerateOrEdit",
   "tool": "npm-script",
-  "command": "typical-page:write-contract",
+  "command": "typical-page:generate",
   "args": {
     "--page-type": "table-basic",
     "--page": "src/pages/order-list/index.tsx",
-    "--mode": "host-integration",
-    "--preset": "standard"
+    "--mode": "host-integration"
   },
   "required": true,
   "reason": "page-type-migration",
@@ -300,6 +268,33 @@ Profile 语义：
 
 详细生命周期以 `rules/page-task-lifecycle.md` 为唯一真相；本文件只定义生命周期中交换的运行时协议字段。
 
+## Usage Stats Status
+
+`usageStatsStatus` 是页面交付最终报告与 `preview-ready` 汇总里的标准统计收口字段。它只描述统计链路状态，不改变页面交付本身的 `preflight` / `formalAcceptance` 判断。
+
+允许值：
+
+- `completed`：统计已完成。
+- `skipped`：当前执行链路允许跳过或延后统计。
+- `requires_authorization`：统计已入队或待补传，需要用户授权网络后重试。
+- `failed_retryable`：统计失败但可重试，例如 pending 队列未完全 flush。
+- `failed_non_retryable`：统计失败且不建议自动重试，例如参数非法。
+
+映射规则：
+
+- `finalize-usage` 返回 `status=completed` 或 exit code `0` 且 `ok=true` -> `completed`。
+- `record-usage` / `finalize-usage` 返回 `status=dry_run`、`dryRun=true` 或命令含 `--dry-run` -> 只能视为预览证据，不得映射为 `completed`；维护版 / 企业内部版新页面必须补跑不带 `--dry-run` 的真实上报。
+- 明确跳过 after-hook -> `skipped`。
+- `record-usage` 返回 `status=queued` / `requires_network_authorization=true`，或 `finalize-usage` 返回 `status=requires_network_authorization`，或 exit code `21` -> `requires_authorization`。
+- `status=flush_incomplete` 或 exit code `24` -> `failed_retryable`。
+- `ok=false` 或非零 exit code 且不属于上述可授权 / 可重试状态 -> `failed_non_retryable`。
+
+报告规则：
+
+- `usageStatsStatus` 必须作为独立字段呈现，不折叠进 `warnings[]`。
+- `requires_authorization`、`failed_retryable`、`failed_non_retryable` 均不默认推翻页面交付。
+- 非 `completed` 状态必须给出下一步：申请网络授权、稍后重试、或说明不可重试原因。
+
 ## Acceptance Profile
 
 `acceptanceProfile` 是验收范围的结构化主字段；`acceptanceLevel` 是兼容字符串。
@@ -315,9 +310,14 @@ Profile 语义：
   "defaultActions": [
     "typical-page:source-gate",
     "typical-page:doctor",
-    "typical-page:finalize-page"
+    "typical-page:verify"
   ],
-  "finalReportSections": ["pageStatus", "preflightStatus", "formalAcceptanceStatus"]
+  "finalReportSections": [
+    "pageStatus",
+    "preflightStatus",
+    "formalAcceptanceStatus",
+    "usageStatsStatus"
+  ]
 }
 ```
 
@@ -338,11 +338,12 @@ Profile 语义：
 ```json
 {
   "schemaVersion": "final-report-contract.v1",
-  "sections": ["pageStatus", "preflightStatus"],
-  "requiredStatusFields": ["pageStatus", "preflightStatus"],
+  "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
+  "requiredStatusFields": ["pageStatus", "preflightStatus", "usageStatsStatus"],
   "statusFields": {
     "pageStatus": ["not_started", "generated", "modified", "blocked", "failed"],
-    "preflightStatus": ["not_run", "passed", "failed", "invalid"]
+    "preflightStatus": ["not_run", "passed", "failed", "invalid"],
+    "usageStatsStatus": ["completed", "skipped", "requires_authorization", "failed_retryable", "failed_non_retryable"]
   },
   "requiredEvidence": ["executedActions", "changedFiles", "validationCommands"],
   "riskFields": ["blockingIssues", "warnings", "nextActions"],
@@ -355,7 +356,7 @@ Profile 语义：
 - `sections` 来自 `acceptanceProfile.finalReportSections`；formal 链路必须包含 `formalAcceptanceStatus`。
 - `formalAcceptanceStatus=passed` 只能在 `formalAcceptanceActions[]` 已执行且成功后输出。
 - `requiredEvidence` 不允许夸大：未执行的 action / command 不得写入已执行。
-- `blockingIssues`、`warnings` 必须进入最终回复。
+- `blockingIssues`、`warnings`、非 `completed` 的 `usageStatsStatus` 必须进入最终回复。
 
 `final-page-report.v1` 最小结构：
 
@@ -363,10 +364,11 @@ Profile 语义：
 {
   "schemaVersion": "final-page-report.v1",
   "contractSchemaVersion": "final-report-contract.v1",
-  "sections": ["pageStatus", "preflightStatus"],
+  "sections": ["pageStatus", "preflightStatus", "usageStatsStatus"],
   "statuses": {
     "pageStatus": "modified",
-    "preflightStatus": "passed"
+    "preflightStatus": "passed",
+    "usageStatsStatus": "completed"
   },
   "preflightExecution": {
     "preflightStage": "implementation",
@@ -394,13 +396,7 @@ Profile 语义：
 
 ## Public Contract Fixtures
 
-公开机器契约由 `scripts/public-cli-contracts.json` 维护，并通过 `scripts/tests/public-cli-contracts.test.mjs` 校验。当前相关 fixture：
-
-- `scripts/tests/fixtures/public-cli/plan-page-task.table-stat.json`
-- `scripts/tests/fixtures/public-cli/plan-page-task.table-stat-formal.json`
-- `scripts/tests/fixtures/public-cli/preflight.quality-pass.json`
-- `scripts/tests/fixtures/public-cli/translation-map.quality-pass.json`
-- `scripts/tests/fixtures/public-cli/final-report.quality-pass.json`
+公开机器契约由 `scripts/public-cli-contracts.json` 维护，并通过 `scripts/tests/public-cli-contracts.test.mjs` 校验。fixture 路径以 manifest 中的 `fixture` 字段为准，不在本文重复点名，避免 runtime contract 与 CLI fixture 清单产生第二事实源。
 
 ## Translation Map
 

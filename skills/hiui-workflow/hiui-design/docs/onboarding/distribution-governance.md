@@ -72,11 +72,12 @@
 ### 1.4 Team Package
 
 - 角色：团队安装视图 / team-facing package
-- 含义：面向团队项目安装 `hiui-design` 的裁剪包，不含维护者发布链、global sync 守护和 usage backend
+- 含义：面向团队项目安装 `hiui-design` 的裁剪包；可包含内部最小 usage runtime，用于生成后 usage 收口，但不含维护者发布链、global sync 守护、飞书同步、usage service 管理或私有配置
 - 注意：
   - 它是一个“分发表达”，但当前治理决定要求内部 Git 只承载这个角色，而不是承载 maintainer source
   - 物理地址应通过 `.distribution-addresses.local.json`、launch-agent 状态或 `--team-target` 指定；常见做法是与开源仓同级放置
   - `check-distribution-boundary --scope team` 适用于 user zip、team-facing Git view、internal team repo
+  - usage runtime 只允许保留 `record/finalize/report-preview-ready`、本地 pending/identity/config 客户端和 usage 合同文档；`serve/manage/sync-feishu` 等维护者运营脚本仍必须阻断
   - 对 `@hiui-design/typical-page-shells`，team package 必须保留 vendored tgz；`bootstrap-target-project.mjs` 在 team / project 内部链路上不再允许因为 tgz 缺失而静默回退到 npm registry
 - 现有规则依据：
   - `distribution-manifest.json` 的 `team-package`
@@ -208,8 +209,8 @@ flowchart LR
 
 - 当前脚本实现仍保留把 `global mirror` 直接 `git push` 的兼容能力，但这不再是官方治理口径
 - 在“维护源不进 Git、团队不可见维护侧文件”的前提下，internal Git 应承接 `team package`，而不是承接 `global mirror`
-- `auto-bump-rules-version.mjs` 会把 source 与同步基线做 guarded drift 对比；有真实规则/脚本漂移但版本还没前进时，自动推进 patch 版本，保证每次有效规则调试同步都生成新的版本号。当前要求它放在本地 fail-closed 前置校验之后、`sync-manifest-docs.mjs` / `release-skill-archive.mjs` 之前执行，避免版本号在明显前置失败前就先前进
-- `check-rules-version-alignment.mjs` 仍只对“独立 Git maintainer source 根目录”强制执行；项目内 `.local-context/hiui-design` 和非 Git 运行镜像会返回 `skipped`，避免把运行副本误判成真相源
+- `auto-bump-rules-version.mjs` 会把 source 与同步基线做 guarded drift 对比；有真实规则/脚本/manifest 漂移但版本还没前进时，自动推进 patch 版本并同步 `skill.manifest.json.version`，保证每次有效规则调试同步都生成新的版本号。当前要求它放在本地 fail-closed 前置校验之后、`sync-manifest-docs.mjs` / `release-skill-archive.mjs` 之前执行，避免版本号在明显前置失败前就先前进
+- `check-rules-version-alignment.mjs` 仍只对“独立 Git maintainer source 根目录”强制执行；项目内 `.local-context/hiui-design` 和非 Git 运行镜像会返回 `skipped`，避免把运行副本误判成真相源；维护源一旦出现 `rules/VERSION` 与 `skill.manifest.json.version` 不一致，会直接阻断同步
 - `sync-global-skill.mjs` 若命中 `maintainer source` 中转，会在真正写入 maintainer 目录前检查目标 Git workspace 是否干净；维护仓已有未提交改动时必须先提交或清理，避免同步覆盖掉维护者尚未入库的本地工作
 - 若维护者仍启用兼容 Git push，并且 maintainer 物理目录本身就是 Git workspace，默认应把同步提交落到固定分支 `maintainer`；只有显式传入其它 `--git-branch` 时才允许改写到别的分支
 

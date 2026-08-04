@@ -11,6 +11,8 @@ const COMMON_EXCLUDE_PATTERNS = [
   '.codex-write-check',
   '.learnings/*',
   '.learnings/**',
+  '.hiui-design-cache/*',
+  '.hiui-design-cache/**',
   '.release.env',
   '.release.env.example',
   '.release.env.local',
@@ -67,6 +69,7 @@ const MAINTAINER_ONLY_PATTERNS = [
 
 const RUNTIME_MIRROR_ALLOWED_USAGE_BACKEND_PATTERNS = [
   'PRIVACY.md',
+  'PRIVACY.md',
   'scripts/finalize-usage.mjs',
   'scripts/flush-pending-usage.mjs',
   'scripts/init-stats-identity.mjs',
@@ -77,6 +80,25 @@ const RUNTIME_MIRROR_ALLOWED_USAGE_BACKEND_PATTERNS = [
   'scripts/lib/stats-client.mjs',
   'scripts/lib/stats-config.mjs',
   'scripts/lib/stats-identity.mjs',
+  'scripts/tests/report-preview-ready-usage.test.mjs',
+]
+
+const TEAM_PACKAGE_ALLOWED_USAGE_RUNTIME_PATTERNS = [
+  'PRIVACY.md',
+  'PRIVACY.md',
+  'config/stats.default.env',
+  'scripts/finalize-usage.mjs',
+  'scripts/flush-pending-usage.mjs',
+  'scripts/init-stats-identity.mjs',
+  'scripts/log-usage.mjs',
+  'scripts/record-usage.mjs',
+  'scripts/report-preview-ready-usage.mjs',
+  'scripts/typical-page-preview-ready.mjs',
+  'scripts/lib/log-usage-event.mjs',
+  'scripts/lib/stats-client.mjs',
+  'scripts/lib/stats-config.mjs',
+  'scripts/lib/stats-identity.mjs',
+  'scripts/tests/report-preview-ready-usage.test.mjs',
 ]
 
 const TEAM_SYNC_ONLY_EXCLUDE_PATTERNS = [
@@ -147,9 +169,10 @@ function shouldExcludeFromAnyDistribution(relativePath) {
 }
 
 function shouldExcludeFromTeamDistribution(relativePath) {
+  const allowed = new Set(TEAM_PACKAGE_ALLOWED_USAGE_RUNTIME_PATTERNS)
   return matchesAnyPattern(relativePath, [
     ...COMMON_EXCLUDE_PATTERNS,
-    ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS,
+    ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS.filter((pattern) => !allowed.has(pattern)),
   ])
 }
 
@@ -160,7 +183,12 @@ function getArchiveExcludePatterns({ includeMaintainerFiles = false } = {}) {
 }
 
 function getTeamDistributionBlockedPatterns() {
-  return [...COMMON_EXCLUDE_PATTERNS, ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS, ...PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS]
+  const allowed = new Set(TEAM_PACKAGE_ALLOWED_USAGE_RUNTIME_PATTERNS)
+  return [
+    ...COMMON_EXCLUDE_PATTERNS,
+    ...TEAM_SYNC_ONLY_EXCLUDE_PATTERNS.filter((pattern) => !allowed.has(pattern)),
+    ...PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS,
+  ]
 }
 
 function getRuntimeMirrorBlockedPatterns() {
@@ -189,6 +217,7 @@ export {
   OPEN_SOURCE_PACKAGE_EXTRA_BLOCKED_PATTERNS,
   PROJECT_IMAGE_BINARY_BLOCKED_PATTERNS,
   RUNTIME_MIRROR_ALLOWED_USAGE_BACKEND_PATTERNS,
+  TEAM_PACKAGE_ALLOWED_USAGE_RUNTIME_PATTERNS,
   TEAM_SYNC_ONLY_EXCLUDE_PATTERNS,
   getArchiveExcludePatterns,
   getOpenSourcePackageBlockedPatterns,

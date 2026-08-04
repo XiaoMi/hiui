@@ -18,7 +18,7 @@
 - runtime smoke status: `not-required`
 - runtime smoke snapshot hash: `(empty until runtime-smoke writes a bound result)`
 - runtime smoke report path: `(empty until runtime-smoke writes a report)`
-- last command: `typical-page:start-page`
+- last command: `typical-page:generate`
 
 ## I18n Baseline
 

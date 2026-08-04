@@ -42,7 +42,7 @@
 
 - 默认 **`rules-only`**
 - 保留目标项目原布局、原路由、原宿主
-- 仅安装 `@hiui-design/typical-page-shells`、规则能力和脚本
+- 补 `@hiui-design/typical-page-shells` 依赖基线，让典型页可以接入标准页壳运行时，但默认不带示例页和 route gallery
 
 适用：
 

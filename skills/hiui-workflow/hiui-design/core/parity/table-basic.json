@@ -1,7 +1,7 @@
 {
   "pageType": "table-basic",
   "officialSnapshot": {
-    "tarball": ".local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+    "tarball": ".local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.2.tgz",
     "entry": "package/dist/pro-list-page/bridge/query-filter.js",
     "requiredTokens": [
       "FilterDrawer",

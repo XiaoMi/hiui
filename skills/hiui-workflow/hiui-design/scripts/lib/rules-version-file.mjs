@@ -99,7 +99,21 @@ export function incrementPatchVersion(version) {
   }
 
   const [, major, minor, patch] = match
-  return `${major}.${minor}.${Number(patch) + 1}`
+  return normalizeGovernedVersion(`${major}.${minor}.${Number(patch) + 1}`)
+}
+
+export function normalizeGovernedVersion(version) {
+  const match = String(version || '').trim().match(/^(\d+)\.(\d+)\.(\d+)$/)
+  if (!match) {
+    throw new Error(`Unsupported rules/VERSION semver value: ${version || '(missing)'}`)
+  }
+
+  const major = Number(match[1])
+  const minor = Number(match[2])
+  const patch = Number(match[3])
+  const normalizedMinor = minor + Math.floor(patch / 10)
+  const normalizedPatch = patch % 10
+  return `${major}.${normalizedMinor}.${normalizedPatch}`
 }
 
 export function formatIsoDate(date = new Date()) {

@@ -48,7 +48,7 @@
 | 全页编辑壳层 | 命中全页编辑时必须从 `full-page-edit.tsx` 起步，并保留宿主适配页头 portal、`formScrollBody`、`inlineEditFooter` |
 | 全页编辑吸底底栏 | `inlineEditFooter` 必须是 `formScrollBody` 的同级兄弟；宿主内容列 -> 路由出口 -> 页面根 -> `ProEditPage` 必须保持连续 `flex + min-height: 0`，否则操作区会停在内容末尾而不是吸底 |
 | 宿主页头宽度 | header 槽必须允许 `PageHeader` 根节点铺满 `100%` 宽度；否则 `extra` 操作区会挤在标题旁边而不是贴右。宿主 portal 只能保留 `width: 100%`、`minWidth: 0`，不要把 `PageHeader` 根节点改成 `display:flex` |
-| 全页页头垂直节奏 | `60px` 节奏归宿主 header slot / shared header carrier 所有；不要把 `PageHeader` 根节点写成 `height/minHeight: 60 + alignItems:center`，否则内容容易贴到上沿 |
+| 全页页头垂直节奏 | `60px` 节奏归宿主 header slot / shared header shell 所有；不要把 `PageHeader` 根节点写成 `height/minHeight: 60 + alignItems:center`，否则内容容易贴到上沿 |
 | 全页页头按钮尺寸 | `PageHeader extra` 里的按钮保持 HiUI 默认尺寸；不要把 header 的 60px 节奏再转嫁到按钮高度上 |
 | 全页编辑外观 | 如果页面变成“灰底上的单张大白卡表单”，说明 AI 退回了通用后台脚手架，没有复用固定壳层 |
 | 全页编辑根 padding | 不要在 `formScrollBody` 根上再包 `padding: 20px`；一级分组与字段区间距应由表单内部承担 |

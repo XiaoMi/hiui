@@ -3813,76 +3813,6 @@ export function getManagedPageSourceOwnershipAttributes(contract) {
   }))
 }
 
-function isLegacyPageComponentFastPathContract(contract) {
-  const generationProfile = contract?.generationProfile || {}
-  return (
-    String(contract?.archetypeMode || '').trim() === 'legacy-host-compatible' &&
-    String(generationProfile.strategy || '').trim() === 'page-component' &&
-    String(generationProfile.startFrom || '').trim() === 'page-component' &&
-    Boolean(String(generationProfile.pageComponentId || '').trim()) &&
-    Boolean(String(generationProfile.runtimeBridgeProfileId || '').trim())
-  )
-}
-
-function validateLegacyPageComponentFastPathSource({ contract, sourceRaw, pathLabel }) {
-  const errors = []
-  const generationProfile = contract?.generationProfile || {}
-  const runtimeComponentSource = String(generationProfile.runtimeComponentSource || '').trim()
-  const runtimeBridgeProfileId = String(generationProfile.runtimeBridgeProfileId || '').trim()
-  const pageComponentId = String(generationProfile.pageComponentId || '').trim()
-
-  for (const line of buildSourceContractCommentLines(contract)) {
-    if (!sourceRaw.includes(line)) {
-      errors.push(`${pathLabel} is missing source contract marker "${line}".`)
-    }
-  }
-
-  const requiredRuntimeBridgeMarkers = [
-    `runtime bridge profile: ${runtimeBridgeProfileId}`,
-    `selected component: ${pageComponentId}`,
-    `runtime shell source: ${runtimeComponentSource}`,
-  ]
-  for (const marker of requiredRuntimeBridgeMarkers) {
-    if (!sourceRaw.includes(marker)) {
-      errors.push(
-        `${pathLabel} is missing runtime bridge marker "${marker}". Legacy page-component fast path must keep the selected component and bridge profile machine-checkable.`
-      )
-    }
-  }
-
-  if (!/slot-adapter\.stub/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} does not import the runtime bridge slot adapter stub. Legacy page-component fast path must bind business slots through an explicit slot adapter boundary.`
-    )
-  }
-
-  if (!/\badaptedSlots\.businessSlots\b/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} does not route businessSlots through adaptedSlots.businessSlots. Legacy page-component fast path must fill certified business slots instead of rebuilding shell regions locally.`
-    )
-  }
-
-  if (!/\badaptedSlots\.controlledExtensions\b/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} does not expose adaptedSlots.controlledExtensions. Legacy page-component fast path must keep Level 1 controlled extensions on the slot adapter boundary.`
-    )
-  }
-
-  if (!/\badaptedSlots\.runtimeBridge\b/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} does not expose adaptedSlots.runtimeBridge. Legacy page-component fast path must keep runtime inputs at the bridge boundary instead of in local shell reimplementation.`
-    )
-  }
-
-  if (!/\bRuntimeBridgeShellAny\b/.test(sourceRaw) && !/\bRuntimeBridgeShell\b/.test(sourceRaw)) {
-    errors.push(
-      `${pathLabel} does not mount the resolved runtime bridge shell. Legacy page-component fast path must render the planner-selected runtime shell instead of page-local white-body/header/table primitives.`
-    )
-  }
-
-  return errors
-}
-
 function validateCommonSourceContract({
   contract,
   sourceRaw,
@@ -4730,7 +4660,7 @@ function validateFullPageDetailStructure({ contract, sourceRaw, styleRaw, pathLa
     )
   ) {
     errors.push(
-      `${pathLabel} forces 60px height and alignItems:center on the PageHeader root. Keep the 60px rhythm on the host header slot or shared header carrier; PageHeader root should not become a fake flex centering shell.`
+      `${pathLabel} forces 60px height and alignItems:center on the PageHeader root. Keep the 60px rhythm on the host header slot or shared header shell; PageHeader root should not become a fake flex centering shell.`
     )
   }
 
@@ -4864,7 +4794,7 @@ function validateFullPageEditStructure({ contract, sourceRaw, styleRaw, pathLabe
     )
   ) {
     errors.push(
-      `${pathLabel} forces 60px height and alignItems:center on the PageHeader root. Keep the 60px rhythm on the host header slot or shared header carrier; PageHeader root should not become a fake flex centering shell.`
+      `${pathLabel} forces 60px height and alignItems:center on the PageHeader root. Keep the 60px rhythm on the host header slot or shared header shell; PageHeader root should not become a fake flex centering shell.`
     )
   }
 
@@ -5253,7 +5183,6 @@ function hasProjectCarrierManagedFieldMapProof({ contract, sourceRaw }) {
     hasAnyPattern(sourceRaw, [
       /data-hiui5-shell-carrier\s*=/,
       /hiui-design shell-carrier:/,
-      /runtime bridge profile:/,
     ])
   )
 }
@@ -5276,7 +5205,7 @@ function validateQueryFilterFieldMapSupport({ contract, sourceRaw, pathLabel }) 
 
   if (!hasFieldMapProvider && !hasProjectCarrierManagedFieldMapProof({ contract, sourceRaw })) {
     errors.push(
-      `${pathLabel} renders QueryFilter without a colocated FieldMapProvider. Schema-driven QueryFilter fields must keep FieldMapProvider / TypicalPageFieldMapProvider semantics, inherit machine-checkable upstream field-map proof from a project-certified carrier/runtime bridge, or explicitly annotate hiui-design allow-queryfilter-with-upstream-fieldmap when the provider is mounted higher in the host tree.`
+      `${pathLabel} renders QueryFilter without a colocated FieldMapProvider. Schema-driven QueryFilter fields must keep FieldMapProvider / TypicalPageFieldMapProvider semantics, inherit machine-checkable upstream field-map proof from a project-certified source, or explicitly annotate hiui-design allow-queryfilter-with-upstream-fieldmap when the provider is mounted higher in the host tree.`
     )
   }
 
@@ -7196,6 +7125,32 @@ function validateDemoToolingIsolation({ sourceRaw, pathLabel }) {
   return errors
 }
 
+function validateLegacyBusinessPageShellImportBoundary({ contract, sourceRaw, pathLabel }) {
+  const errors = []
+  const archetypeMode = String(contract?.archetypeMode || '').trim()
+
+  if (archetypeMode !== 'legacy-host-compatible') {
+    return errors
+  }
+
+  if (pathLabel.split(path.sep).join('/').startsWith('src/hiui-runtime/')) {
+    return errors
+  }
+
+  const directShellImportPattern =
+    /(?:import|export)\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?['"]@hiui-design\/typical-page-shells(?:\/[^'"]*)?['"]/g
+  const dynamicShellImportPattern =
+    /\bimport\(\s*['"]@hiui-design\/typical-page-shells(?:\/[^'"]*)?['"]\s*\)/g
+
+  if (directShellImportPattern.test(sourceRaw) || dynamicShellImportPattern.test(sourceRaw)) {
+    errors.push(
+      `${pathLabel} directly imports @hiui-design/typical-page-shells in legacy-host-compatible mode. Business pages must import the project-owned src/hiui-runtime facade and fill HiuiLegacyPage typed slots; only src/hiui-runtime may consume the shell package.`
+    )
+  }
+
+  return errors
+}
+
 export function renderManagedPageSourceContractSnippet(contract) {
   const commentLines = getManagedPageSourceCommentLines(contract)
   const rootAttrs = getManagedPageSourceRootAttributes(contract)
@@ -7253,71 +7208,6 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     importedLocalContext,
     targetRoot,
   })
-
-  if (isLegacyPageComponentFastPathContract(contract)) {
-    return [
-      ...validateLegacyPageComponentFastPathSource({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        pathLabel,
-      }),
-      ...validateProjectCertifiedCarrierListBaseline({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-      }),
-      ...validateProjectCertifiedCarrierListSlotElasticity({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-      }),
-      ...validateProjectCertifiedCarrierFullPageEditBaseline({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-      }),
-      ...validateProjectCertifiedCarrierDrawerFormBaseline({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-      }),
-      ...validateProjectCertifiedCarrierFullPageDetailBaseline({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-      }),
-      ...validateListLikeStructure({
-        contract,
-        entrySourceRaw: sourceRaw,
-        sourceRaw: extendedSourceRaw,
-        styleRaw: extendedStyleRaw,
-        pathLabel,
-        dashboardShellUsage,
-      }),
-      ...validateDetailDescriptionsLabelOwnership({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        pathLabel,
-      }),
-      ...validateManagedPageSlotBoundary({
-        contract,
-        sourceRaw: extendedSourceRaw,
-        pathLabel,
-      }),
-      ...validateImportedLocalHelperPurity({
-        contract,
-        importedLocalContext,
-        targetRoot,
-        pathLabel,
-      }),
-      ...validateDemoToolingIsolation({ sourceRaw: extendedSourceRaw, pathLabel }),
-    ]
-  }
 
   return [
     ...validateCommonSourceContract({
@@ -7484,6 +7374,7 @@ export function validateManagedPageSource({ contract, generatedPagePath, targetR
     }),
     ...validateFeedbackStatusStructure({ contract, sourceRaw: extendedSourceRaw, pathLabel }),
     ...validateDemoToolingIsolation({ sourceRaw: extendedSourceRaw, pathLabel }),
+    ...validateLegacyBusinessPageShellImportBoundary({ contract, sourceRaw, pathLabel }),
     ...validateFullPageEditStructure({ contract, sourceRaw: extendedSourceRaw, styleRaw: extendedStyleRaw, pathLabel }),
     ...validateFullPageEditFormSpacingOwnership({
       contract,

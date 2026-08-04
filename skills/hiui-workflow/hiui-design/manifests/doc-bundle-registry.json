@@ -122,7 +122,7 @@
         {
           "path": "docs/generation/explainers/generation-gates.md",
           "readMode": "reference",
-          "reason": "complex generation modes need an explainer for gate layering, fallback boundaries, and legacy bridge interpretation"
+          "reason": "complex generation modes need an explainer for gate layering, fallback boundaries, and legacy lightweight contract interpretation"
         }
       ]
     },
@@ -153,16 +153,6 @@
           "path": "docs/generation/explainers/delivery-gates.md",
           "readMode": "reference",
           "reason": "formal acceptance and strict delivery flows need an explainer for preflight, runtime governance, and finalize boundaries"
-        }
-      ]
-    },
-    "legacy-runtime-bridge-diagnosis": {
-      "label": "legacy runtime bridge diagnosis bundle",
-      "docs": [
-        {
-          "path": "rules/runtime-bridged-component-matrix.json",
-          "readMode": "conditional",
-          "reason": "bridge profile lookup only when legacy runtime adapter responsibilities must be inspected"
         }
       ]
     },

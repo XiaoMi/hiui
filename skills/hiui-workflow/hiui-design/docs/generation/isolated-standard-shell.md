@@ -17,7 +17,7 @@
 ## 当前项目推荐落点
 
 - 子应用目录：`subapps/typical-page-shell-runtime/`
-- vendored 壳包：`.local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.1.tgz`
+- vendored 壳包：`.local-context/hiui-design/vendor/hiui-design-typical-page-shells-0.1.2.tgz`
 - legacy 主树：`src/**`
 
 约束：

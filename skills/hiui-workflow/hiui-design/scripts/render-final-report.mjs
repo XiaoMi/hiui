@@ -11,6 +11,13 @@ const DEFAULT_STATUS_FIELDS = {
   pageStatus: ["not_started", "generated", "modified", "blocked", "failed"],
   preflightStatus: ["not_run", "passed", "failed", "invalid"],
   formalAcceptanceStatus: ["not_requested", "not_run", "passed", "failed"],
+  usageStatsStatus: [
+    "completed",
+    "skipped",
+    "requires_authorization",
+    "failed_retryable",
+    "failed_non_retryable",
+  ],
 };
 
 const DESIGN_REGION_LABELS = {
@@ -51,6 +58,7 @@ function printUsage() {
     --plan <page-task-plan.json> \
     [--preflight <preflight-report.json>] \
     [--usage <preview-ready-report.json>] \
+    [--legacy-acceptance <legacy-acceptance-result.json>] \
     [--page-status <not_started|generated|modified|blocked|failed>] \
     [--formal-status <not_requested|not_run|passed|failed>] \
     [--changed-files <comma-separated-paths>] \
@@ -74,6 +82,7 @@ function parseArgs(argv) {
     executedActions: [],
     formalStatus: "",
     json: false,
+    legacyAcceptance: "",
     pageStatus: "",
     plan: "",
     preflight: "",
@@ -95,6 +104,7 @@ function parseArgs(argv) {
       arg === "--contract-fixture" ||
       arg === "--executed-action" ||
       arg === "--formal-status" ||
+      arg === "--legacy-acceptance" ||
       arg === "--page-status" ||
       arg === "--plan" ||
       arg === "--preflight" ||
@@ -118,6 +128,7 @@ function parseArgs(argv) {
       if (arg === "--contract-fixture") options.contractFixture = value;
       if (arg === "--executed-action") options.executedActions.push(value);
       if (arg === "--formal-status") options.formalStatus = value;
+      if (arg === "--legacy-acceptance") options.legacyAcceptance = value;
       if (arg === "--page-status") options.pageStatus = value;
       if (arg === "--plan") options.plan = value;
       if (arg === "--preflight") options.preflight = value;
@@ -258,11 +269,17 @@ function buildContractFixtureInputs() {
     },
     finalReportContract: {
       schemaVersion: "final-report-contract.v1",
-      sections: ["pageStatus", "preflightStatus", "formalAcceptanceStatus"],
+      sections: [
+        "pageStatus",
+        "preflightStatus",
+        "formalAcceptanceStatus",
+        "usageStatsStatus",
+      ],
       requiredStatusFields: [
         "pageStatus",
         "preflightStatus",
         "formalAcceptanceStatus",
+        "usageStatsStatus",
       ],
       statusFields: {
         pageStatus: [
@@ -274,6 +291,13 @@ function buildContractFixtureInputs() {
         ],
         preflightStatus: ["not_run", "passed", "failed", "invalid"],
         formalAcceptanceStatus: ["not_run", "passed", "failed"],
+        usageStatsStatus: [
+          "completed",
+          "skipped",
+          "requires_authorization",
+          "failed_retryable",
+          "failed_non_retryable",
+        ],
       },
       requiredEvidence: [
         "executedActions",
@@ -284,6 +308,8 @@ function buildContractFixtureInputs() {
       rules: [
         "Do not report formalAcceptanceStatus as passed unless formalAcceptanceActions were executed successfully.",
         "Do not hide preflight warnings or blockingIssues.",
+        "Do not let usageStatsStatus failure override passed page/preflight status unless the page itself is not renderable.",
+        "For every non-completed usageStatsStatus, include a concrete next action.",
       ],
     },
   };
@@ -323,6 +349,13 @@ function buildContractFixtureInputs() {
     warnings: [],
   };
 
+  const usage = {
+    ok: true,
+    previewReady: true,
+    usageStatsStatus: "completed",
+    usage: { exit_code: 0, ok: true, status: "completed" },
+  };
+
   return {
     changedFiles: [
       "src/pages/orders/index.tsx",
@@ -334,12 +367,13 @@ function buildContractFixtureInputs() {
       "formal-source-gate",
       "formal-doctor",
       "formal-finalize-page",
-      "preview-ready",
+      "preview-ready-usage",
     ],
     formalStatus: "passed",
     pageStatus: "generated",
     plan,
     preflight,
+    usage,
     validationCommands: [
       {
         command:
@@ -369,8 +403,13 @@ function fallbackFinalReportContract(plan) {
   const sections = Array.isArray(plan?.acceptanceProfile?.finalReportSections)
     ? plan.acceptanceProfile.finalReportSections
     : formalRequired
-      ? ["pageStatus", "preflightStatus", "formalAcceptanceStatus"]
-      : ["pageStatus", "preflightStatus"];
+      ? [
+          "pageStatus",
+          "preflightStatus",
+          "formalAcceptanceStatus",
+          "usageStatsStatus",
+        ]
+      : ["pageStatus", "preflightStatus", "usageStatsStatus"];
 
   return {
     schemaVersion: "final-report-contract.v1",
@@ -533,7 +572,9 @@ function collectWarnings(preflight, managedContract, preflightExecution) {
 function nextActionsForStatuses({
   managedContract,
   preflightStatus,
+  usageStatsStatus,
   formalAcceptanceStatus,
+  legacyAcceptance,
   pageStatus,
   preflight,
   preflightExecution,
@@ -587,8 +628,34 @@ function nextActionsForStatuses({
     );
   }
   if (formalAcceptanceStatus === "failed") {
+    if (legacyAcceptance) {
+      actions.push(
+        "Fix legacy acceptance failures and rerun typical-page:legacy:accept with static gate, build, remoteEntry, runtime DOM, visual evidence, and warning classification evidence.",
+      );
+    } else {
+      actions.push(
+        "Fix formal acceptance failures and rerun formalAcceptanceActions.",
+      );
+    }
+  }
+  if (usageStatsStatus === "requires_authorization") {
     actions.push(
-      "Fix formal acceptance failures and rerun formalAcceptanceActions.",
+      "Request network authorization, then rerun usage flush/finalize.",
+    );
+  }
+  if (usageStatsStatus === "failed_retryable") {
+    actions.push(
+      "Retry usage stats flush/finalize after the transient failure clears.",
+    );
+  }
+  if (usageStatsStatus === "failed_non_retryable") {
+    actions.push(
+      "Record the usage stats failure reason; do not retry automatically.",
+    );
+  }
+  if (usageStatsStatus === "skipped") {
+    actions.push(
+      "Run typical-page:record-usage later if this task still requires stats closure.",
     );
   }
   return [...new Set(actions)];
@@ -710,6 +777,7 @@ function buildDesignerSummary({
       preflightStatus: statuses.preflightStatus,
       formalAcceptanceStatus:
         statuses.formalAcceptanceStatus || "not_requested",
+      usageStatsStatus: statuses.usageStatsStatus,
     },
     remainingDesignRisks: [...blockingIssues, ...warnings],
     questionsForDesigner:
@@ -788,20 +856,70 @@ function resolveFormalAcceptanceStatus(
     : "not_run";
 }
 
+function resolveLegacyAcceptanceStatus(legacyAcceptance) {
+  if (!legacyAcceptance) return "";
+  if (legacyAcceptance.schemaVersion !== "legacy-acceptance-result.v1") {
+    return "failed";
+  }
+  return legacyAcceptance.status === "accepted" && legacyAcceptance.accepted === true
+    ? "passed"
+    : "failed";
+}
+
+function isLegacyHostCompatibleManagedContract(managedContract) {
+  return (
+    String(managedContract?.archetypeMode || "").trim() === "legacy-host-compatible" ||
+    String(managedContract?.hostMode || "").trim() === "legacy-host-compatible" ||
+    String(managedContract?.generationProfile?.mode || "").trim() === "legacy-host-compatible"
+  );
+}
+
+function resolveLegacyWorkflowAcceptanceStatus(managedContract) {
+  if (!isLegacyHostCompatibleManagedContract(managedContract)) return "";
+  const workflow = managedContract?.workflow || {};
+  if (String(workflow.legacyAcceptanceStatus || "").trim() !== "pass") {
+    return "not_run";
+  }
+  if (!String(workflow.legacyAcceptanceReportPath || "").trim()) {
+    return "failed";
+  }
+  const acceptanceSnapshotHash = String(workflow.legacyAcceptanceSnapshotHash || "").trim();
+  const sourceSnapshotHash = String(workflow.sourceSnapshotHash || "").trim();
+  if (!acceptanceSnapshotHash) return "failed";
+  if (sourceSnapshotHash && acceptanceSnapshotHash !== sourceSnapshotHash) return "failed";
+  return "passed";
+}
+
+function legacyAcceptanceWarnings(legacyAcceptance) {
+  if (!legacyAcceptance) return [];
+  const warningStep = legacyAcceptance.steps?.warningClassification || {};
+  const p1 = Array.isArray(warningStep.p1) ? warningStep.p1 : [];
+  const waivedP1 = Array.isArray(warningStep.waivedP1) ? warningStep.waivedP1 : [];
+  return [
+    ...p1.map((item) => `legacy acceptance P1 warning: ${item.text || JSON.stringify(item)}`),
+    ...waivedP1.map((item) => `legacy acceptance waived P1 warning: ${item.warning?.text || JSON.stringify(item.warning || item)}`),
+  ];
+}
+
 function renderFinalReport({
   changedFiles,
   executedActions,
   formalStatus,
+  legacyAcceptance,
   managedContract,
   pageStatus,
   plan,
   preflight,
+  usage,
   validationCommands,
 }) {
   const contract =
     plan.finalReportContract || fallbackFinalReportContract(plan);
   const preflightStatus = resolvePreflightStatus(preflight, managedContract);
-  const formalAcceptanceStatus = resolveFormalAcceptanceStatus(
+  const usageStatsStatus = normalizeStatus(usage?.usageStatsStatus, "skipped");
+  const legacyAcceptanceStatus = resolveLegacyAcceptanceStatus(legacyAcceptance);
+  const legacyWorkflowAcceptanceStatus = legacyAcceptanceStatus || resolveLegacyWorkflowAcceptanceStatus(managedContract);
+  const formalAcceptanceStatus = legacyWorkflowAcceptanceStatus || resolveFormalAcceptanceStatus(
     formalStatus,
     contract,
     managedContract,
@@ -819,6 +937,7 @@ function renderFinalReport({
   const statuses = {
     pageStatus: normalizedPageStatus,
     preflightStatus,
+    usageStatsStatus,
   };
   if (contract.sections.includes("formalAcceptanceStatus")) {
     statuses.formalAcceptanceStatus = formalAcceptanceStatus;
@@ -842,13 +961,16 @@ function renderFinalReport({
     managedContract,
     preflightExecution,
   );
+  warnings.push(...legacyAcceptanceWarnings(legacyAcceptance));
   const nextActions = nextActionsForStatuses({
     formalAcceptanceStatus,
+    legacyAcceptance,
     managedContract,
     pageStatus: normalizedPageStatus,
     preflight,
     preflightStatus,
     preflightExecution,
+    usageStatsStatus,
   });
   const productionLine = buildProductionLineSummary(preflight, managedContract);
   const designerSummary = buildDesignerSummary({
@@ -873,6 +995,19 @@ function renderFinalReport({
       executedActions,
       changedFiles,
       validationCommands,
+      legacyAcceptance: legacyAcceptance
+        ? {
+            status: legacyAcceptance.status || "",
+            accepted: legacyAcceptance.accepted === true,
+            reportPath: legacyAcceptance.reportPath || "",
+            steps: Object.fromEntries(
+              Object.entries(legacyAcceptance.steps || {}).map(([key, value]) => [
+                key,
+                value?.status || "unknown",
+              ]),
+            ),
+          }
+        : null,
     },
     risks: {
       blockingIssues,
@@ -883,6 +1018,7 @@ function renderFinalReport({
       planSchemaVersion: plan.schemaVersion || "",
       preflightSchemaVersion: preflight?.schemaVersion || "",
       preflightStage: preflightExecution.preflightStage,
+      usageStatsStatus,
     },
   };
 }
@@ -896,6 +1032,11 @@ async function main() {
       : await (async () => {
           const plan = await readJsonFile(targetRoot, options.plan);
           const preflight = await readJsonFile(targetRoot, options.preflight);
+          const usage = await readJsonFile(targetRoot, options.usage);
+          const legacyAcceptance = await readJsonFile(
+            targetRoot,
+            options.legacyAcceptance,
+          );
           const managedContract = await resolveManagedContractForFinalReport(
             targetRoot,
             plan,
@@ -906,10 +1047,12 @@ async function main() {
             changedFiles: options.changedFiles,
             executedActions: options.executedActions,
             formalStatus: options.formalStatus,
+            legacyAcceptance,
             managedContract,
             pageStatus: options.pageStatus,
             plan,
             preflight,
+            usage,
             validationCommands: options.validationCommands,
           };
         })();

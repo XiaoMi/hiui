@@ -198,11 +198,11 @@ function makeCapabilityEvidence({ id, status, source = '', reason = '' }) {
   return { id, status, source, reason }
 }
 
-function inferRuntimeBridgeFromProjectStructure(targetRoot, family) {
+function inferLegacyRuntimeSurfaceFromProjectStructure(targetRoot, family) {
   const files = listSourceFiles(targetRoot)
   const dependencies = dependenciesFromPackage(readJsonIfExists(path.join(targetRoot, 'package.json')) || {})
-  const requiredCapabilities = Array.isArray(family?.runtimeBridge?.requiredCapabilities)
-    ? family.runtimeBridge.requiredCapabilities
+  const requiredCapabilities = Array.isArray(family?.legacyRuntimeSurface?.requiredCapabilities)
+    ? family.legacyRuntimeSurface.requiredCapabilities
     : ['request', 'auth', 'permission', 'user', 'route-navigation', 'theme']
   const capabilityEvidence = []
 
@@ -383,10 +383,10 @@ function inferRuntimeBridgeFromProjectStructure(targetRoot, family) {
     source: 'project-structure-auto-detection',
     confidence: status === 'passed' ? 'medium' : status === 'partial' ? 'medium' : 'low',
     reason: status === 'passed'
-      ? 'Project structure exposes all required runtime bridge capabilities.'
+      ? 'Project structure exposes all required runtime boundary capabilities.'
       : status === 'partial'
-        ? 'Project structure exposes some runtime bridge capabilities, but required capabilities are still missing or only partially proven.'
-        : 'Project structure did not prove runtime bridge capabilities automatically.',
+        ? 'Project structure exposes some runtime boundary capabilities, but required capabilities are still missing or only partially proven.'
+        : 'Project structure did not prove runtime boundary capabilities automatically.',
     requiredCapabilities,
     passedCapabilities,
     partialCapabilities,
@@ -455,9 +455,9 @@ export function detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride = '
   for (const family of registry.families) {
     const matchedEvidence = []
     const missingFacts = []
-    const inferredRuntimeBridge = hasPassedBoundary(boundary, 'runtimeBridge')
+    const inferredLegacyRuntimeSurface = hasPassedBoundary(boundary, 'legacyRuntimeSurface')
       ? null
-      : inferRuntimeBridgeFromProjectStructure(targetRoot, family)
+      : inferLegacyRuntimeSurfaceFromProjectStructure(targetRoot, family)
 
     pushEvidence(true, matchedEvidence, 'project-mode:legacy-host-compatible')
     if (hasPassedBoundary(boundary, 'cleanContentMount')) {
@@ -469,16 +469,16 @@ export function detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride = '
       missingFacts.push('clean-content-mount')
     }
 
-    if (hasPassedBoundary(boundary, 'runtimeBridge')) {
-      matchedEvidence.push('runtime-bridge')
-    } else if (inferredRuntimeBridge.status === 'passed') {
-      matchedEvidence.push('runtime-bridge')
-      matchedEvidence.push('runtime-bridge:project-structure')
-    } else if (inferredRuntimeBridge.status === 'partial') {
-      matchedEvidence.push('runtime-bridge:project-structure-partial')
-      missingFacts.push('runtime-bridge')
+    if (hasPassedBoundary(boundary, 'legacyRuntimeSurface')) {
+      matchedEvidence.push('legacy-runtime-surface')
+    } else if (inferredLegacyRuntimeSurface.status === 'passed') {
+      matchedEvidence.push('legacy-runtime-surface')
+      matchedEvidence.push('legacy-runtime-surface:project-structure')
+    } else if (inferredLegacyRuntimeSurface.status === 'partial') {
+      matchedEvidence.push('legacy-runtime-surface:project-structure-partial')
+      missingFacts.push('legacy-runtime-surface')
     } else {
-      missingFacts.push('runtime-bridge')
+      missingFacts.push('legacy-runtime-surface')
     }
 
     pushEvidence(hasLegacyReact, matchedEvidence, 'react-legacy-runtime')
@@ -512,7 +512,7 @@ export function detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride = '
       contracts: status === 'matched'
         ? {
             mountContract: family.mountContract?.contractId || '',
-            runtimeBridge: family.runtimeBridge?.contractId || '',
+            legacyRuntimeSurface: family.legacyRuntimeSurface?.contractId || '',
             styleBoundary: family.styleBoundary?.contractId || '',
             portalBoundary: family.portalBoundary?.contractId || '',
           }
@@ -522,14 +522,14 @@ export function detectLegacyHostFamily({ targetRoot, skillRoot, modeOverride = '
         cleanContentMount: inferredCleanContentMount?.status === 'passed'
           ? inferredCleanContentMount
           : null,
-        runtimeBridge: inferredRuntimeBridge || null,
+        legacyRuntimeSurface: inferredLegacyRuntimeSurface || null,
       },
       missingFacts,
       blockingReasons: status === 'matched'
         ? []
         : missingFacts.map((fact) => {
-            if (fact === 'runtime-bridge' && inferredRuntimeBridge?.status === 'partial') {
-              return `runtime bridge auto-scan is partial; missing capabilities: ${inferredRuntimeBridge.missingCapabilities.join(', ')}`
+            if (fact === 'legacy-runtime-surface' && inferredLegacyRuntimeSurface?.status === 'partial') {
+              return `legacy runtime surface auto-scan is partial; missing capabilities: ${inferredLegacyRuntimeSurface.missingCapabilities.join(', ')}`
             }
             return `missing ${fact} evidence for legacy host family match`
           }),

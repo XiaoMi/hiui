@@ -44,7 +44,7 @@
 - `page component id`
 - `base mold id`
 - `component certification ref`
-- `runtime bridge profile id`（legacy bridge 场景）
+- `legacy host contract id`（legacy boundary 场景）
 - `instance validation status`
 - `extension policy`（若使用受控扩展）
 
@@ -52,7 +52,7 @@
 
 - `header layout contract`
 
-这些字段只记录组件实现与页面实例证据；`lockedRegions` / `editableSlots` 仍以 `base mold id` 指向的 `rules/page-mold-registry.json` 为准，不得在 contract 中平行维护第二套结构事实。`legacy-host-compatible` 的 page-component fast path 默认不再强制 `host archetype path`；只有计划显式退回 fallback / translated-reference 分支时，才重新要求 archetype provenance。
+这些字段只记录组件实现与页面实例证据；`lockedRegions` / `editableSlots` 仍以 `base mold id` 指向的 `rules/page-mold-registry.json` 为准，不得在 contract 中平行维护第二套结构事实。`legacy-host-compatible` 默认走 `host-contract + compiled PageSpec + HiuiLegacyPage runtime + typed page slots` 轻量契约主链；只有计划显式评估高风险转译时，才额外要求对应 archetype 或 provenance。
 
 ## example binding contract
 
@@ -276,6 +276,8 @@
 - `text field role = filter-text-input` 表示普通文本筛选字段必须使用与关键词搜索同皮肤、但语义独立的受管筛选输入角色；不得静默回退为裸 `Input`，也不得冒充第二个搜索入口。
 - `select/date field surface policy = shared-query-filter-surface` 表示 `Select` / `DatePicker` 等字段仍需与文本筛选位共享筛选容器皮肤，不得出现“关键词搜索灰底、其它字段白底”的混搭。
 - `filter surface baseline = query-filter-contained-shared-surface` 表示 contract 不再只证明“页面用了真实 QueryFilter”，还要证明 `QueryFilter` 内字段最终落成共享筛选表面；若当前共享组件存在能力缺口，必须在 contract / waiver / fallback 中显式记录，不得默默放过。
+- 运行时桥接层不得在 `src/hiui-runtime/shared/list.tsx` 的 `toSchemaQueryField` 内定义 `renderFormItem`、`renderer`、裸 `<Input>`、裸 `<Select>` 或 `React.createElement(Input|Select)`；字段只能输出 schema field，由 `@hiui-design/typical-page-shells/schema-field-map` 接管共享筛选皮肤。
+- `select` / `treeSelect` 查询字段必须映射为 schema `valueType = select`；不得把选择器静默降级为 `text`，也不得因为宿主 peer 缺口回退为局部裸控件。
 - 若统计页确实把一条真实 `QueryFilter` 提升为受管 region，必须显式改 contract；不要让 source gate 继续靠页型默认值猜
 
 ## split pane contract
@@ -307,6 +309,8 @@
 - `ownership mapping` 不只检查字段存在，还必须检查组合语义是否连续；若 `content-slot` 与 `main-scroll` 已由 `host-slot` 承接，`outer-padding` 默认也必须由 `host-slot` 承接，除非页面同时声明并证明自己接管了连续 `white-body / page-surface` 主体
 - `host-slot-shell` 组合：`content-slot=host-slot`、`outer-padding=host-slot`、`main-scroll=host-slot`、`white-body=none | host-slot`；此时业务页根节点只能承接布局填充，不得承接 page-level `padding / background / border-radius / overflow:auto|scroll`
 - `page-surface-shell` 组合：业务页需要自行承接外层 padding 时，`outer-padding` 必须与 `white-body` 或 `page-root` 同向，并形成连续白底主体；不得出现“宿主滚动 + pageRoot padding + 内层卡片 padding”的三段式节奏
+- `legacy-host-compatible` 页面根节点必须在 `src/hiui-runtime/styles.css` 的 `[data-hiui-page-root='legacy-host-compatible']` 下声明 `display:flex`、`flex-direction:column`、`flex:1 1 0%`、`align-self:stretch`、`height:100%`、`min-height:0`、`min-width:0`、`overflow:hidden`；只声明 `width/background/box-sizing` 视为白底撑满链路未完成。
+- DOM runtime evidence 必须证明 `whiteBody.bottom` 与 `root.bottom` 的差值不超过 8px；超过阈值说明官方白卡没有撑满主体，delivery profile 必须阻断。
 - `section-only-composition` 组合：宿主承接内容槽、外层留白和滚动，业务页只有一级分组与局部 section/card；局部 spacing 只能发生在 `section-body / card-body / metric-grid / table-body` 等真实内容容器
 - 若 `outer-padding owner` 与 `white-body owner` 位于两个不同页面局部 wrapper 上，且两者都承接横向留白或主体白底，直接按 ownership 映射失败处理
 - 若 `white-body owner` 已承接页面级 `padding / gap`，一级 region wrapper 不得再叠加第二层 `16px+` 通用节奏；局部 spacing 只能落在真实内容容器，如卡片 body、指标网格、表格头、图表卡内部
@@ -325,11 +329,8 @@
 ## 推荐命令
 
 ```bash
-npm run typical-page:finalize-page -- \
-  --page-type <page-type-id> \
-  --page <generated-page-path> \
-  --archetype <host-archetype-path> \
-  --ownership-mode <host-slot-owns-workspace|page-surface-owns-workspace>
+npm run typical-page:verify -- \
+  --page <generated-page-path>
 ```
 
-若页面刚开始生成，先用 `typical-page:start-page` 产出 started contract 和 source scaffold；不要只写 contract 就把页面视为完成。
+若页面刚开始生成，先用 `typical-page:generate` 产出页面源码、contract 和 source scaffold；legacy 模式必须改用 `typical-page:legacy:new` / `typical-page:legacy:rewrite`。不要只写 contract 就把页面视为完成。

@@ -49,7 +49,7 @@
 - 编辑页页头默认复用真实 `PageHeader` 语义：返回入口必须落在 `hi-v5-page-header__back-button` 或其等价 semantic backButton 上，不能用普通 `Button` / `Link` 冒充；标题默认 `18px`，页头可视高度默认 `60px`
 - 页面标题字重统一 `600`
 - `PageHeader` 必须铺满宿主 header 槽宽度，`extra` 操作区靠右；不要让按钮跟标题挤在左侧
-- `60px` 是宿主 header slot / shared header carrier 的垂直节奏，不要在 `PageHeader` 根节点上再写 `height/minHeight: 60` 加 `alignItems: center`；根节点不是用来做人造垂直居中壳的
+- `60px` 是宿主 header slot / shared header shell 的垂直节奏，不要在 `PageHeader` 根节点上再写 `height/minHeight: 60` 加 `alignItems: center`；根节点不是用来做人造垂直居中壳的
 - `PageHeader extra` 里的按钮保持 HiUI 默认尺寸基线；不要给 header action button 额外写 `height/minHeight: 60` 或把页头高度直接灌到按钮上
 - 宿主 `page-header-portal.tsx` 只能给 `PageHeader` 根节点补 `width: 100%`、`minWidth: 0`，不要额外写 `display: flex` / `alignItems: center`
 - 若宿主默认 `page-header` 根节点自带 `margin-bottom` 或 `20px` 标题，必须先把根间距归零、标题归一到 `18px / 600`，不要在页面局部再额外补 `8px` 之类的标题外边距

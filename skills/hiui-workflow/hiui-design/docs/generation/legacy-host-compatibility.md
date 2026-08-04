@@ -2,12 +2,15 @@
 
 ## 适用场景
 
-当目标项目命中下面任一特征时，不默认把标准 `@hiui-design/typical-page-shells` 视为 legacy 宿主主树里可直接落地的运行时依赖前提，而进入 `legacy-host-compatible` 的桥接接入判断。它不是独立生成体系，而是对既有 `page-component` / `managed-analytics` 主链路附加旧宿主边界约束。
+当目标项目命中下面任一特征时，不默认把标准 `@hiui-design/typical-page-shells` 视为 legacy 宿主主树里可直接落地的运行时依赖前提，而进入 `legacy-host-compatible` 的桥接接入判断。它不是一套平行页面生成体系，也不是把旧 `page-component` / carrier 大包默认灌入项目；默认路径是用一次性 `HiuiLegacyPage` runtime 承载 compiled PageSpec 与现有典型页壳，再让业务页通过 typed slots 填充。
 
-这里要区分两层：
+这里要区分三层：
 
-- `page-component` 仍可以作为普通典型页的主生成资产接入。
-- `@hiui-design/typical-page-shells` 是否可直接进入目标项目，要看宿主是否已经证明可直接承载该运行时契约；在 legacy 主树中默认不预设它可直接落地，但也不把它表述成逻辑上绝对不可接入。
+- 典型页结构、DOM region、ownership、slot schema 与视觉 token 仍来自 HiUI Design 事实源：`rules/typical-page-contracts/<pageType>.json`。
+- legacy 宿主只提供挂载点、路由、权限、请求、消息、主题等运行时 adapter 事实：`.local-context/hiui-design/host-contract.json`。
+- 业务页面只写 `page.instance.tsx`、`page.slots.ts`、必要时 `page.request.ts`；不得默认写入 `src/page-components`、project carrier 或页面级 support 大包。
+
+命中特征包括：
 
 - `react` / `react-dom` 主运行时 `< 18`
 - `ahooks` 主运行时 `< 3`
@@ -30,15 +33,21 @@
 
 Do：
 
-- 先读 planner 给出的 `page-component` / `runtimeAdapterProof` 结果；若为 ready，默认沿 `page-component + runtime bridge + slot fill` 主链实现。
-- 把 legacy 主树“禁止 ad hoc direct shell import”理解为运行时挂载边界，不是页面组件主链被禁用。
-- 在桥接模式下优先复用 project-certified carrier，缺 carrier 时再消费 direct standard component + `legacy-runtime-adapter` proof。
+- 项目接入阶段执行 `typical-page:legacy:init`，生成 host contract、一次性 `src/hiui-runtime/*` 运行时边界与 `.local-context/hiui-design/outputs/project-integration-state.json`。
+- 在 host contract 中补齐 `request`、`message`、`permission`、`route`、`theme` adapter；必需 adapter 仍是 `partial` / `missing` 时，project integration state 必须保持 blocked，不允许生成业务页；`typical-page:legacy:verify` 仅在显式排障时读取同一阻断事实。
+- 页面生成阶段只在 project integration state ready 后执行 `typical-page:legacy:new` 或 `typical-page:legacy:rewrite`，读取 `rules/typical-page-contracts/<pageType>.json`，只生成目标页面目录内的 slots / instance / request 文件；生成结果只能是 `generated-not-accepted`，不能直接作为交付完成态。
+- 页面接受态必须执行 `typical-page:legacy:accept`，由机器汇总 `legacy:verify`、宿主 build、remoteEntry 实物模块、runtime DOM、视觉证据与 warning 分类；任一证据缺失时保持 failed / blocked，不允许用口头说明代替。
+- warning 分类必须区分 P0 与 P1：P0 console error / pageerror 永远不能 waiver；P1 warning 只有在 waiver 同时声明 `pattern`、`reason`、`owner`、`expiresAt` 且未过期时才能临时通过。
+- 不读取旧 `page-component` carrier 资料；reference 示例只作为语义参考，不作为运行时交付资产。
 
 Don't：
 
 - 不要把缺少 legacy 主树 direct shell import 前提，误读成“只能走 reference/fallback”。
 - 不要因为 legacy 运行时较旧，就把普通典型页默认改写成 `PageHeader + QueryFilter + Table` 的兼容手拼页。
 - 不要把 example/reference 当成默认运行时交付资产；它们只负责语义和结构参考。
+- 不要为了一个壳默认创建 `src/page-components`、carrier、support、module.scss 或页面级 runtime 大包。
+- 不要在 `page.slots.ts` 里替换 `PageHeader`、`QueryFilter`、`Table`、`Pagination` 等壳层根组件。
+- 不要在 `page.instance.tsx` 里手写 `data-hiui5-region` 或覆盖 `--hiui-page-*` 视觉 token。
 
 ## 这个模式的目标
 
@@ -46,15 +55,16 @@ Don't：
 
 - 继续沿用 `hiui design` 的页型判断
 - 继续沿用 `hiui design` 的信息架构、视觉节奏、标题层级、滚动链和白底主体关系
-- 实现层优先通过 project-certified carrier page component 与目标项目运行时桥接；目标项目只提供 runtime adapter proof，不逐 region 翻译典型页组件
-- 普通典型页优先使用 project-certified carrier page component；若项目尚未提供 carrier，再评估 direct standard component 是否已证明 runtime equivalence
+- 实现层通过 `HiuiLegacyPage` 统一承载 compiled PageSpec 与现有典型页壳，业务页只提供 typed slots
+- 通过 host contract 提前锁定 request / message / permission / route / theme adapter，防止目标项目环境污染页面生成效果
+- 通过 typical page contract 提前锁定 DOM region、ownership、slot schema 与 visual token，防止 AI 生成时先写偏、再靠验收补救
 - 数据可视化优先走 `managed-analytics`，旧系统只提供业务指标、接口、权限和宿主限制事实
 
 也就是说：
 
 - **设计语言继续对齐 `hiui design`**
-- **实现语法不再强依赖 `@hiui-design/typical-page-shells`**
-- **legacy 主路径统一为 `project-certified carrier first -> page-component semantics -> explicit fallback`**
+- **实现语法不再强依赖每页 carrier 或 `src/page-components`**
+- **legacy 主路径统一为项目接入链 `apply:legacy`（内部 `legacy:init`）+ 页面计划链 `light-plan` + 页面生成链 `legacy:new|rewrite --plan` + 接受态闭环 `legacy:accept`**
 
 额外强调：
 
@@ -67,118 +77,102 @@ Don't：
 
 若当前项目已经额外准备了隔离标准壳子应用，则该结论只适用于 legacy 宿主主树本身；独立子应用中的新页面，改为读取 `isolated-standard-shell.md`。
 
-## 页面组件直挂模型
+## 旧页面组件直挂模型已删除
 
-`legacy-host-compatible` 下的页面级组件不是“只提供页面中间一小块”，而是**完整右侧内容区组件**。旧系统继续负责全局导航、左侧菜单、业务路由入口和稳定内容挂载点；页面组件自己负责页头、筛选区、主白底主体、表格 / 表单 / 详情主体、分页 / 底栏和页面主滚动链。
+旧 page-component carrier 模型不再作为 `legacy-host-compatible` 的生成、迁移、审计或 fallback 路径保留在 skill 包内。若需要回滚旧资产，使用 Git 历史版本，不在当前默认规则中长期新旧并存。
 
-因此 legacy 不需要维护一套平行的“legacy 页面组件系统”。推荐做法是：项目把自己的 carrier 通过 project-scoped overlay 认证成 page component，planner 优先选择这个 project-certified carrier；只有在项目未提供 overlay，且宿主已经证明可直接等价承载 standard component 的 runtime contract 时，才直接选择 standard component。旧宿主额外需要证明的是 `legacy-runtime-adapter` 可用，而不是把 `QueryFilter`、表格、分页或页壳翻译成旧组件。
+quick start、designer setup、legacy:new、legacy:rewrite 与默认 requiredDocs 都不得引导 AI 走旧 carrier 主链；`legacy:verify` 只保留为显式排障入口，页面交付完成态必须指向 `legacy:accept`。
 
-因此适配目标只在外层边界，不在页面内部 region 逐项改写：
+## Runtime adapter 与 host contract
 
-- `CleanContentMount`：宿主提供干净、稳定、可控高度的内容挂载点，不再重复提供页头、白底主体、分页 owner 或业务滚动容器。
-- `RuntimeAdapter`：把旧宿主的内容槽、路由、权限、请求、字典和主题能力绑定成页面组件需要的运行时输入。
-- `RuntimeBridge`：统一注入 request、auth、permission、user、route-navigation、theme 等基础运行时能力；`dictionary / i18n` 只在项目明确存在国际化需求时作为可选桥接能力接入，禁止页面组件直接读项目全局变量或硬编码菜单路径。
-- `StyleBoundary`：用 scoped reset / safe prefix 保护页面组件的 typography、table、pagination、form、drawer、modal、tag-status 和 layout spacing，避免旧宿主全局样式污染。
-- `PortalBoundary`：在宿主显式改写 popup container、或存在 overflow / z-index 裁切风险时，统一 select dropdown、tooltip、popover、modal、drawer 的挂载根和层级；未声明特殊约束时允许沿用组件库默认挂载能力。
-- `AdapterRegistry`：用 `rules/adapter-registry.json` 记录 `legacy-runtime-adapter` 的职责边界、允许的运行时绑定能力与禁止的组件翻译职责。
-- `RuntimeAdapterProof`：只有 adapter proof 为 `available`、`kind=legacy-runtime-adapter`、`responsibility=runtime-bridge-only`，`plan-page-task` 才能在 legacy 模式下把 standard 页面组件作为主生成资产。
+桥接模式下不再要求业务页逐 region 翻译典型页组件，但必须先证明宿主边界不会污染受管页面。接入期扫描结果应进入 `.local-context/hiui-design/host-contract.json`，至少包含：
 
-这套模型的设计目标是：同一类旧宿主只做一次运行时边界适配和证明，后续普通典型页按 standard page component 填业务槽位生成；不是每个项目、每个页面都重新把 `PageHeader + QueryFilter + Table` 分层转译一遍。
+- `contentMount`：宿主内容区 owner 与 selector
+- `routeOwner`：路由 owner
+- `outerPaddingOwner`、`whiteBodyOwner`、`mainScrollOwner`：布局与滚动 owner
+- `styleBoundary`：`data-hiui-page-root` 与 token source
+- `adapters.request` / `message` / `permission` / `route` / `theme`：必需 adapter 状态
+- `adapters.i18n`：可为 `not-required`，但如果项目声明正式 i18n 验收，则必须转为 ready
 
-推荐的 project-scoped overlay 落点是目标项目的 `.local-context/hiui-design/outputs/project-page-component-registry.json`。这类 overlay 属于项目事实，不属于 skill 全局通用资产。新的 legacy rollout 不应继续依赖 `legacy-table-basic-page.v1` 这类跨项目 generic placeholder 作为目标状态。
+当任一必需 adapter 为 `partial` 或 `missing` 时，`typical-page:legacy:new` 与 `typical-page:legacy:rewrite` 必须 fail closed；显式排障时 `typical-page:legacy:verify` 读取同一阻断事实；阻断项应指向真正缺口，例如 request、permission、route-navigation、message 或 theme，而不是让页面生成阶段自由猜测宿主能力。
 
-`CleanContentMount` 应优先在项目接入 / capabilities 阶段由项目结构自动识别，而不是要求 agent 通过改造某个业务页来“证明右侧内容区干净”。当仓库同时具备清晰业务页根目录（如 `src/views` / `src/pages` / `src/routes`）和 Module Federation remote `exposes` 配置时，可以自动推断旧宿主只承载全局导航、左侧菜单、业务路由入口和稳定内容挂载点，右侧内容区由 remote 页面组件独立拥有页头、筛选、白底主体、表格 / 表单 / 详情、分页 / 底栏和主滚动链。该自动推断应进入 `legacyHostFamily.inferredFacts.cleanContentMount` 与 `matchedEvidence=["clean-content-mount","clean-content-mount:project-structure"]`。
+## Runtime-Managed Typical Page 语义
 
-自动识别 `CleanContentMount` 不等于自动通过完整 `runtimeAdapterProof`。但 request、response、message、dictionary / i18n、permission、user、route-navigation、theme 等运行时能力也必须在项目接入 / capabilities 阶段被自动扫描并输出结构化结果，而不是拖到某个业务页生成时才临时追问。其中 request、auth、permission、user、route-navigation、theme 属于 legacy runtime bridge 的基础硬能力；`dictionary / i18n` 仍要扫描，但只作为可选事实，不应因为目标项目未接国际化就把宿主桥接判死。扫描结果应进入 `legacyHostFamily.inferredFacts.runtimeBridge`，包含 `status=passed|partial|missing`、`passedCapabilities`、`partialCapabilities`、`missingCapabilities` 与每项 `capabilityEvidence.source`。`portal-root` 默认视为浮层运行时的常规能力，不作为 runtime bridge 的硬必需项；只有宿主显式自定义容器或存在裁切风险时，才通过 `PortalBoundary` 补充事实。只要这些接入期事实已经足以证明宿主边界，页面生成阶段就应直接消费该证明；family registry 的 `status` 只反映宿主族规则本身的维护状态，不应再次把业务页 `page-component` 生成链路拦住。
+在 bridge 模式下，用户可读语义统一写作 `runtime-managed-typical-page`。它的机器含义是：
 
-当 runtime bridge 自动扫描为 `partial` 时，页面组件链路保持 blocked，但阻断项必须指向真正的接入期缺口，例如 request / permission / route-navigation 之类能力缺失，而不是把默认浮层挂载能力泛化成“必须先证明 portal-root”。只有扫描完整通过，或 `.local-context/hiui-design/outputs/legacy-host-boundary.json` / 对应脚本事实明确声明 `runtimeBridge.status=passed` 时，`runtime-bridge` 才能进入 `matchedEvidence` 并允许后续 `legacy-runtime-adapter` proof 继续判定。
-
-## Runtime-Bridged Page Component 语义
-
-在 bridge 模式下，用户可读语义允许写作 `runtime-bridged-page-component`，但它在机器语义上仍必须归一为
-`page-component`。这意味着：
-
-- 主生成资产仍是被选中的 certified page component 或 project-certified carrier。
-- example page、页型专章、截图和旧页面源码只提供语义与结构参考，不替代运行时主资产。
-- runtime shell 的真实来源必须从 component certification 的
-  `certificationInputs.componentShell` 解析，不得在业务页、wrapper 或 planner 里手写猜测 import。
-- bridge wrapper 只能负责宿主 runtime、mount boundary、provider、route-navigation、
-  permission、request / response、message、theme 等 runtime 注入。
-- slot adapter 只能把业务 schema / handlers 绑定到标准 slots 或 Level 1 受控扩展，不得把
-  `QueryFilter`、表格、分页、详情、底栏等 region 翻译成宿主 look-alike primitives。
-- 这套 bridge 语义的唯一规则真相是 `rules/runtime-bridged-component-matrix.json`；它补充的是
-  “如何桥接交付”，不是“重新定义页型或组件体系”。
+- 主生成事实仍是既有 typical page contract，不新增一套 legacy 页型或视觉模板。
+- runtime shell 的真实来源由 `HiuiLegacyPage` 按 compiled PageSpec 的 `pageType` / `shell` 选择现有 `@hiui-design/typical-page-shells` 导出。
+- `HiuiLegacyPage` 负责页面 root scope、DOM region owner 标记、slot 渲染与视觉 token scope；宿主 adapter 能力由 host contract 提前锁定。
+- `page.instance.tsx` 只能挂 `HiuiLegacyPage` 并传入 typed slots，不得实例化壳层根组件或手写 managed region。
+- `page.slots.ts` 只能把业务 schema / handlers 绑定到标准 slots 或 Level 1 受控扩展，不得把 `QueryFilter`、表格、分页、详情、底栏等 region 翻译成宿主 look-alike primitives。
+- `typical-page:legacy:verify` 不是默认页面生成链路；DOM region、ownership、slot schema 与视觉 token 必须作为 `legacy:new/rewrite` 的生成输入约束。
 
 ## 接入成熟度解释模型（非 public contract）
 
 该模型只用于解释和归纳现有机器字段组合所表达的接入成熟度，不新增 public contract 顶层状态，也不要求一一对应的新机器枚举。
 
-- `mountable`：页面可以稳定挂入宿主内容区，但 runtime bridge / adapter / 治理未必完整；它更适合作为人类解释语义，不绑定单一机器字段。
+- `mountable`：页面可以稳定挂入宿主内容区，但 runtime boundary / governance 未必完整；它更适合作为人类解释语义，不绑定单一机器字段。
 - `preview-mountable`：在 `mountable` 基础上已经具备预览或局部运行验证条件，可做结构 / 视觉预览，但未必达到受管生成或可交付；同样保留为人类解释语义。
-- `managed-ready`：主要由现有 `facts.status`、`assetResolution.status`、`runtimeAdapterProof.status` 等字段组合稳定解释，表示可以进入受管生成主链路。
+- `managed-ready`：主要由 host contract、compiled PageSpec、HiuiLegacyPage runtime 与 slot schema 的 ready 状态组合稳定解释，表示可以进入受管生成主链路。
 - `delivery-ready`：在 `managed-ready` 基础上，再叠加 `preflightStatus`、`governanceStatus`、formal acceptance 等交付层状态，表示可以按交付协议对外汇报。
 
 ## 使用顺序
 
-桥接模式下，生成页面时先读取项目 mode lock 与 `page-task-plan.v1`，再按 `generationStrategy` 分流。普通典型页优先 `page-component`，且 legacy 内部优先级应为 `project-certified carrier -> direct standard component -> explicit fallback`；数据可视化优先 `managed-analytics`，只有主资产不可用、结构升级或治理风险需要显式兜底时才进入 `managed-fallback`。补读文档时按这个顺序读：
+桥接模式下，生成页面时按轻量契约链路执行：
+
+1. 读取或生成 host pack：默认 `host-packs/asp-fwt-common-front.json`，不得从业务页反推宿主能力。
+2. 执行 `typical-page:legacy:init`：写入 `.local-context/hiui-design/host-contract.json` 与一次性 `src/hiui-runtime/*`。
+3. 补齐 host contract：`request`、`message`、`permission`、`route`、`theme` 必须为 `ready` 或 `not-required`。
+4. 读取 `rules/typical-page-contracts/<pageType>.json`：确认 shell、regions、regionOrder、ownership、slotSchema、componentSources、visualTokens、forbiddenOverrides 与 verificationRules。
+5. 新页面执行 `typical-page:legacy:new`，改造既有页面执行 `typical-page:legacy:rewrite`；页面目录只写 `page.instance.tsx`、`page.slots.ts`、必要 `page.request.ts`。
+6. 页面生成完成后，执行 `typical-page:legacy:accept`；该命令必须证明静态 gate、宿主 build、remoteEntry 实物模块、runtime DOM、视觉证据与 warning 分类，并把 `workflow.legacyAcceptanceStatus`、`workflow.legacyAcceptanceReportPath`、`workflow.legacyAcceptanceSnapshotHash` 写回 page contract。`typical-page:legacy:verify` 仅在排查接入或生成异常时显式调用。
+
+补读文档时按这个顺序读：
 
 1. `generation-principles.md`
 2. `page-type-map.md`
 3. 本文件
-4. `figma-page-rules.md`
-5. 命中的 `figma-pages/*.md`
+4. `rules/typical-page-contracts/<pageType>.json`
+5. `figma-page-rules.md`
+6. 命中的 `figma-pages/*.md`
 
 其中：
 
 - `page-type-map.md` 仍负责判页型
 - `figma-pages/*.md` 仍负责理解该页型的结构目标
-- `page-level-components.md` 负责普通典型页组件实例化边界
-- `runtime-bridged-component-matrix.json` 负责 legacy `page-component` 的 bridge profile、
-  runtime shell 来源与薄桥层职责
+- `rules/typical-page-contracts/<pageType>.json` 负责机器可消费的 region / ownership / slots / token / verification 事实
+- `host-packs/*.json` 与目标项目 `host-contract.json` 负责宿主边界事实
+- `runtime/legacy/src/*` 负责一次性 `src/hiui-runtime/*` runtime mirror，不是每页模板
+- `page-level-components.md` 只描述非 legacy page-component 边界，不是 legacy 默认生成入口
 - `data-visualization.md` 负责 `managed-analytics` 的 chart usage contract、图表 token 与分析布局
-- capabilities / `legacy-host-family` 检测负责在项目接入阶段自动识别 clean content mount，并自动扫描 runtime bridge 能力；`adapter-registry.json` 负责声明 runtime bridge、style boundary、portal boundary 与 `legacy-runtime-adapter` proof 的能力边界
-- `host archetype` 与 `reference-or-scaffold` 属于合法 fallback 起点；`translation map` 属于治理增强工件；只有 standard component 不可用、宿主约束特殊或 drift 风险需要显式治理时，才进入这些路径
-- 但里面提到的 `TablePageFrame` / `ProEditPage` / `ProFormDrawer` 等，桥接模式下要理解为**必须继承的页壳语义**，不要求直接导入同名标准运行时组件
-- 这条例外只豁免“直接 package import”，不豁免示例绑定、mandatory components、region 层级、ownership、source marker 或 shell-carrier 证据
-- 若不能直接挂标准壳，必须翻译到命名 shared shell / host adapter，并在源码与 contract 中声明 `shell inheritance strategy`、`shell carrier path`、`host adapter`、`example path` 与 `host archetype path`
-- 禁止把“结构参考语义”解释成在业务页局部手写 `PageHeader + QueryFilter + Table`、`Drawer + Form`、`Card + Descriptions` 等 primitives 后再补注释伪装成典型页
-- 若当前仓库存在项目级 override，例如 `docs/business-lines/after-sales/asp-fwt-common-front.md`，则其优先级高于本文件中的通用“宿主基座优先”建议
+- `host archetype` 与 `reference-or-scaffold` 属于合法 fallback 起点；只有 standard runtime boundary 不可用、宿主约束特殊或 drift 风险需要显式治理时，才进入这些路径
 
-## 桥接典型页快速路径
+## 桥接典型页轻量生成路径
 
-当用户需求清晰命中一个既有普通典型页型，且没有特殊布局、跨页型组合、非典型 section、独立分析图表或正式 i18n 验收要求时，`legacy-host-compatible` / 项目内称为 `host-compatible` 的桥接接入默认直接走快速路径。它不是独立生成体系，而是对既有 `page-component` / `managed-analytics` 主链路附加旧宿主边界约束。若 `plan-page-task` 选择 certified `pageComponent`，优先使用 standard 页面组件实现并只填业务槽位 / Level 1 受控扩展；这只说明生成层仍是 `page-component` first，不表示治理层自动降到 `rules-only`。adapter proof 缺失、过期或职责越界时只能 `blocked`，不得把 standard component 降级为 candidate 后自动手写页面。
+当用户需求清晰命中一个既有普通典型页型，且没有特殊布局、跨页型组合、非典型 section、独立分析图表或正式 i18n 验收要求时，`legacy-host-compatible` / 项目内称为 `host-compatible` 的桥接页默认进入轻量页面生成路径。该路径不是项目接入快捷路径，也不是 `plan-page-task -> start-page -> page-components`；前提是项目接入阶段已经完成 `apply:legacy`（内部执行 `legacy:init`），随后页面生成阶段执行 `light-plan` + `legacy:new|rewrite --plan`，最后用 `legacy:accept` 收口接受态。
 
-这里的“优先使用 standard 页面组件实现”默认解释为 `page-component + runtime bridge + slot fill`。桥接模式下，legacy 主树若不能 ad hoc direct import standard shell，只能阻止 direct shell mount；它不能单独推翻 planner 已判定 ready 的页面组件主链，也不能成为默认转去 reference/fallback 或兼容手拼页的理由。
+对旧系统中已经存在的业务页，bridge 快速路径默认优先下面两类实现动作：
 
-对旧系统中已经存在的业务页，bridge 快速路径还应默认优先下面两类实现动作：
+1. `slot-fill-only`：当前页已经是 ready 的 runtime-managed typical page，且本次需求没有触碰 `pageType`、`shell`、`ownership`、mandatory components 或 runtime boundary，只替换业务槽位。
+2. `rewrite-by-contract-slots`：当前页仍属于同一典型页型，但现有源码不是 ready 的 managed instance。此时应直接用 typical page contract + runtime renderer 重建业务页实例，而不是在旧 JSX 上继续修补 `header / query-filter / table / pagination / white-body`。
 
-1. `slot-fill-only`：当前页已经是 ready 的 managed instance，且本次需求没有触碰 `pageType`、`shell`、`ownership`、mandatory components 或 runtime carrier，只替换业务槽位。
-2. `rewrite-by-page-component`：当前页仍属于同一典型页型，planner 已给出 certified page component / project carrier，但现有源码不是 ready 的 managed instance。此时应直接用 page component / carrier 重建业务页实例，而不是在旧 JSX 上继续修补 `header / query-filter / table / pagination / white-body`。
-
-`rewrite-by-page-component` 仍然属于 bridge 模式下的普通典型页主链；它不是 fallback，也不是 translated-reference。
+`rewrite-by-contract-slots` 仍然属于 bridge 模式下的普通典型页主链；它不是 fallback，也不是 translated-reference。
 
 数据可视化不属于普通典型页快速路径。即使存在示例页，也必须走 `generationStrategy=managed-analytics`：先提取旧系统中的业务指标、筛选维度、接口和权限事实，再建立 `chartUsageContract`，最后由数据可视化 token 与图表组件规则生成页面实例。
 
 桥接快速路径的起点优先级：
 
-1. project-certified carrier page component + available `legacy-runtime-adapter` proof
-2. direct standard certified page component + available `legacy-runtime-adapter` proof
+1. ready host contract + compiled PageSpec + one-time HiuiLegacyPage runtime
+2. 当前仓库里同页型、同宿主基座且已跑通的 typed slots 页面
 3. `managed-analytics` 的受管分析承载器（仅数据可视化 / 分析页）
-4. 当前仓库里同页型、同宿主基座的已跑通页面或 archetype
-5. 兼容示例 / reference
-6. `templates/archetypes/rules-only/<pageType>/page.template.tsx|jsx` 或 `start-page` 的受管 scaffold / reference 起点，并把标准壳语义翻译到旧宿主可运行组件
-7. 只替换业务槽位：标题、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据、行操作；简单二次改造只能落到 `topNotice`、`toolbarSupplement` 等受控扩展槽位
+4. 当前仓库里同页型、同宿主基座的已跑通 slots 页面或 host archetype
+5. 只替换业务槽位：标题、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据、行操作；简单二次改造只能落到 `topNotice`、`toolbarSupplement` 等受控扩展槽位
 
-这里的“使用 standard 页面组件实现”指 runtime delivery 资产仍是标准页面组件或其 project-certified
-carrier，不是拿 example page 直接替换业务槽位，也不是把 example page 当成业务页壳源码复制后再做
-host look-alike 改写。example 只保留语义与结构参考职责；真正进入业务页的 bridge 代码必须是 thin wrapper +
-slot adapter。
-
-快速路径不重新发明 primitives 页面。复制后的页面必须继续保留：
+桥接快速路径必须显式保留：
 
 - 真实页头 / 筛选 / 表格 / 指标 / 分页 / 底栏语义
 - 单一 content slot / white-body / outer-padding / main-scroll ownership
-- host adapter、host archetype、example / template source marker
+- host contract、compiled PageSpec、HiuiLegacyPage runtime 与 typed slots source marker
 - 行操作 link 语义与页面级可预览能力
 
 没有显式国际化要求时，默认 `i18nMode=none`；即使宿主已有 `t()` / `intl.get()` 等能力，也不能仅因依赖存在就进入 i18n 流程。只有用户明确要求多语言 / locale / 翻译 / 英文 / RTL，或旧页面已有强制 i18n contract 时，才升级到对应 i18n 流程。
@@ -187,43 +181,39 @@ slot adapter。
 
 legacy 快速路径不是全量重流程，而是按接入层 / 生成层 / 治理层三层收敛：
 
-1. **接入层必备门禁**：所有 legacy 典型页都必须先通过 Plan Gateway、mode lock、project host pack / runtime boundary 认证、`runtimeAdapterProof`、route owner、ownership、禁止标准壳 import、禁止 reference / examples / `typical-page-reuse` 交付路径，并至少执行当前页 preflight。
-2. **生成层主链路门禁**：普通典型页默认仍以 certified `pageComponent` 为主资产；只有 component 不可用、结构升级或宿主约束特殊时，才允许进入 host archetype / reference / scaffold fallback。`component-first` 只说明生成起点，不豁免 instance validation，也不把治理要求自动降到 `rules-only`。
-3. **治理层增强门禁**：只有命中转译风险、页型迁移或正式验收条件时，才显式展开 Translation Drift Guard，并按需要补齐 finalize / source gate / doctor / runtime smoke。`StyleBoundary`、`PortalBoundary`、`runtimeSmoke` 默认属于这一层的触发式检查，而不是普通表格页的必阻断项。
+1. **接入层必备门禁**：所有 legacy 典型页都必须先通过 host pack、host contract、HiuiLegacyPage runtime、adapter readiness、route owner、ownership、禁止 `src/page-components` 默认写入、禁止 reference / examples / `typical-page-reuse` 交付路径。
+2. **生成层主链路门禁**：普通典型页默认以 `compiled PageSpec + HiuiLegacyPage runtime + typed page slots` 为主资产；只有 runtime mirror 不可用、结构升级或宿主约束特殊时，才允许进入 host archetype / reference / scaffold fallback。contract-first 只说明生成起点，不豁免 instance validation，也不把治理要求自动降到 `rules-only`。
+3. **治理层增强门禁**：只有命中转译风险、页型迁移或正式验收条件时，才显式展开 Translation Drift Guard，并按需要补齐 finalize / source gate / doctor / runtime smoke。`StyleBoundary`、`PortalBoundary`、`runtimeSmoke` 默认属于这一层的触发式检查，但 style token scope 与必需 adapter readiness 已经是生成输入硬约束。
 
 这里要明确区分两类升级：
 
 - `implementation upgrade`：只有 `pageType`、`shell`、`ownership`、split、主工作区滚动链或 mandatory components 发生变化时，才升级成重结构改造。
 - `governance upgrade`：迁移 / 重架构页、高风险 drift、正式验收 / 发布场景，会升级 snapshot、acceptance contract、translation map、source-gate、doctor、runtime smoke 等治理动作，但不必然要求页面结构重写。
 
-若 planner 已返回 `page-component` ready、`deliveryPath=page-component-plus-slot-fill` 且 `runtimeAdapterProof.status=available`，生成阶段必须沿该主链继续；此时 direct shell import 不成立、legacy 主树不能标准壳直挂、或 reference 目录存在，都不构成擅自降级为 hand-built compatibility page 的依据。
+若 host contract 中必需 adapter 仍为 `partial` / `missing`，或 typical page contract 缺少 regions / slotSchema / visualTokens，生成阶段必须停止；不得用“先拼一个能跑的页面”绕过准入。若项目结构已能自动推断 `CleanContentMount`，不得再要求通过改造页面证明内容区独立；若 capabilities 已能自动扫描 adapter 缺口，则必须复用扫描结果中的具体缺口，不得在页面阶段重新泛化成“缺运行时证明”。
 
-legacy 的最小 runtime adapter proof 必须能写清：
+legacy 的最小 host contract proof 必须能写清：
 
-- `adapterId`、`status`、`kind=legacy-runtime-adapter` 与 `responsibility=runtime-bridge-only`（若计划选择 page component）
-- `CleanContentMount` / `RuntimeBridge` / `StyleBoundary` / `PortalBoundary` 的 evidence 状态
-- `examplePath`
-- `hostArchetypePath`，或明确的 adapter scaffold plan
-- `hostAdapter`
-- `shellCarrierPath`
+- `hostId`、`mode=legacy-host-compatible` 与宿主来源
+- `contentMount.selector` 与 `contentMount.owner`
 - `routeOwner`
-- `ownershipMode`
-- `content-slot / white-body / outer-padding / main-scroll` 的唯一 owner
+- `outerPaddingOwner` / `whiteBodyOwner` / `mainScrollOwner`
+- `styleBoundary.scopeAttribute=data-hiui-page-root` 与 token source
+- `portalRoot` owner
+- `request`、`message`、`permission`、`route`、`theme` adapter 状态
 
-写不出这些事实时，不要生成业务页，也不要用“先拼一个能跑的页面”绕过准入。若项目结构已能自动推断 `CleanContentMount`，不得再要求通过改造页面证明内容区独立；若 capabilities 已能自动扫描 runtime bridge，则必须复用扫描结果中的具体缺口，不得在页面阶段重新泛化成“缺运行时证明”。`legacy-host-compatible` 的 mode 名称本身不等于一律禁止标准 `@hiui-design/typical-page-shells`；是否可直接接入，取决于宿主是否已经证明可承载对应 runtime contract。只有 style boundary、portal boundary、route owner 等无法从结构可靠推断或扫描为 partial / missing 的宿主边界事实，才补 `.local-context/hiui-design/outputs/legacy-host-boundary.json` 或对应脚本派生事实。若 `runtimeAdapterProof.status` 不是 `available`，页面组件链路必须 blocked，不能自动退到自由手写或旧组件翻译。
-
-若计划选择 certified page component，页面结构事实可由 component certification 复用，但 runtime adapter proof 仍必须单独通过；当前业务页仍必须通过 page instance validation：required slots、受控扩展、route owner、business mapping 和 runtime render 不得省略。
+若当前页面选择 runtime-managed typical page，页面结构事实必须由 compiled PageSpec 复用，runtime 能力由 host contract 单独证明；当前业务页必须保留 required slots、受控扩展、route owner、business mapping、region ownership、visual token 与 runtime render 的生成输入事实。
 
 命中下面任一情况，必须展开 Translation Drift Guard：
 
 - 没有现成且合格的 host archetype
 - 首次为该宿主生成当前页型
-- host archetype 与 reference 的 required regions 不完全一致
+- host archetype 与 typical page contract 的 required regions 不完全一致
 - 需要新增或修改 host adapter
-- `startFrom=reference-or-scaffold|scaffold`
+- 进入 reference / scaffold 高风险转译
 - 涉及 `table-stat`、`tree-split`、`drawer-form`、`drawer-detail`、`full-page-edit`、`full-page-detail`
-- 修改 ownership、shell carrier、route owner 或 source marker
-- 出现 preflight warning / source marker warning
+- 修改 ownership、runtime mirror、route owner 或 source marker
+- 出现 source marker warning 或显式排障发现的 runtime warning
 - 需要声明 `driftExceptions`
 - 进入正式验收、发布、提测或合入
 
@@ -250,7 +240,7 @@ Translation Drift Guard 只做三件事：
 逐项声明：
 
 ```text
-example region -> host carrier -> adapter strategy -> verification evidence
+example region -> host shell boundary -> adapter strategy -> verification evidence
 ```
 
 示例：
@@ -264,7 +254,7 @@ white-body -> HostContentSurface -> inherited owner -> single white-body
 main-scroll -> HostLayoutBody -> inherited owner -> single scroll owner
 ```
 
-required region 找不到 host carrier 时，不能用临时 `div`、`Card`、`SearchForm` 或 primitives 补位；必须先补 adapter，或退出快速路径。
+required region 找不到 host shell boundary 或 adapter 证明时，不能用临时 `div`、`Card`、`SearchForm` 或 primitives 补位；必须先补 adapter，或退出快速路径。
 
 ### 3. Isomorphism Check
 
@@ -274,7 +264,7 @@ required region 找不到 host carrier 时，不能用临时 `div`、`Card`、`S
 
 - source marker 存在
 - required region marker 存在
-- `examplePath`、`hostAdapter`、`hostArchetypePath` 或 adapter scaffold、`shellCarrierPath`、`ownershipMode` 存在
+- `examplePath`、`hostAdapter`、`hostArchetypePath` 或 adapter scaffold、`legacyRuntimeSurfacePath`、`ownershipMode` 存在
 - 禁止 import 不存在
 - 页面路径没有落入 reference / examples / `typical-page-reuse`
 - demo-only 内容不存在
@@ -310,7 +300,7 @@ required region 找不到 host carrier 时，不能用临时 `div`、`Card`、`S
 - `ProFormDrawer`
 - `ProDetailDrawer`
 
-这些符号首先代表必须继承的页壳语义。只有当宿主已经证明可直接承载对应 runtime contract，且机器计划明确选择直接标准壳接入边界时，才可把它们落为该边界内的真实运行时依赖；否则兼容实现必须通过宿主基座、命名 shared shell-carrier 或 host adapter 证明继承链，不能退回业务页面内的 primitive look-alike。
+这些符号首先代表必须继承的页壳语义。只有当宿主已经证明可直接承载对应 runtime contract，且机器计划明确选择直接标准壳接入边界时，才可把它们落为该边界内的真实运行时依赖；否则兼容实现必须通过宿主基座、命名 shared shell boundary 或 host adapter 证明继承链，不能退回业务页面内的 primitive look-alike。
 
 ### 2. 组件来源必须收口到目标项目自己的可运行集合
 

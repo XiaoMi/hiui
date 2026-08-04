@@ -2,11 +2,11 @@
 
 This public package keeps only the reusable page-generation and validation scripts that can be shipped to downstream projects. Private publishing, internal telemetry, Feishu sync, and global-sync automation are intentionally excluded.
 
-## Machine Public CLI
+## Default Project Surface
 
-The stable machine-readable contract surface is listed in `scripts/public-cli-contracts.json` under the `machine-public` tier.
+The stable public contract surface is listed in `scripts/public-cli-contracts.json`; route default downstream work through `typical-page:init`, `typical-page:generate`, and the public `core/` facts. Regenerate with `build-runtime-mirror.mjs --target open-source-package`.
 
-- Planning and delivery loop: `plan-page-task.mjs`, `typical-page-start-page.mjs`, `typical-page-preflight.mjs`, `typical-page-runtime-smoke.mjs`, `typical-page-preview-ready.mjs`, `render-final-report.mjs`
+- Planning and delivery loop: `plan-page-task.mjs`, `core/generators/generate.mjs`, `core/verify/verify-lite.mjs`, `typical-page-legacy-new.mjs`, `typical-page-legacy-rewrite.mjs`, `typical-page-legacy-verify.mjs`, `typical-page-preflight.mjs`, `typical-page-runtime-smoke.mjs`, `typical-page-preview-ready.mjs`, `render-final-report.mjs`
 - Asset facts and previews: `typical-page-capabilities.mjs`, `typical-page-list-assets.mjs`, `typical-page-inspect-asset.mjs`, `typical-page-add-asset.mjs`, `typical-page-diff-asset.mjs`, `typical-page-update-asset.mjs`
 
 ## Project Setup and Host Integration
@@ -15,7 +15,7 @@ The stable machine-readable contract surface is listed in `scripts/public-cli-co
 - Host / archetype helpers: `select-archetype.mjs`, `sync-host-integration.mjs`, `setup-isolated-standard-shell.mjs`, `detect-legacy-host-family.mjs`
 - Local asset/bootstrap helpers: `init-archetypes.mjs`, `init-i18n.mjs`, `init-project-images.mjs`, `validate-pre-plan-facts.mjs`
 
-## Validation and Governance
+## Checks
 
 - Doctor / contract helpers: `typical-page-doctor.mjs`, `write-rules-only-page-contract.mjs`, `finalize-rules-only-page.mjs`, `generate-translation-map.mjs`
 - Gate chain: `typical-page-candidate-gate.mjs`, `typical-page-slot-gate.mjs`, `typical-page-contract-gate.mjs`, `typical-page-archetype-gate.mjs`, `typical-page-source-gate.mjs`, `typical-page-doctor-gate.mjs`, `typical-page-ci-gate.mjs`

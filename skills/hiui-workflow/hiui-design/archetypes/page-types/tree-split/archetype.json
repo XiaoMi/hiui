@@ -50,8 +50,15 @@
     "second outer scroll owner outside the split workspace"
   ],
   "modeAdapters": {
-    "host-integration": { "templateDir": "templates/archetypes/host-integration/tree-split" },
-    "rules-only": { "templateDir": "templates/archetypes/rules-only/tree-split" },
-    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/tree-split" }
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/tree-split"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/tree-split"
+    },
+    "legacy-host-compatible": {
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
+    }
   }
 }

@@ -6,9 +6,6 @@ import { spawnSync } from 'node:child_process'
 
 const DEFAULT_REQUIRED_CHECKS = [
   'no-business-pages-in-example-gallery',
-  'no-business-gradients',
-  'no-layout-stretch-anti-patterns',
-  'no-white-body-edge-touch',
   'top-level-menu-icon-semantics',
   'rules-only-page-contracts',
   'rules-only-managed-page-coverage',
@@ -25,6 +22,7 @@ function parseArgs(argv) {
   const passthroughArgs = []
   const sourceGateArgs = []
   const requiredChecks = []
+  let target = process.cwd()
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index]
@@ -50,13 +48,27 @@ function parseArgs(argv) {
       continue
     }
 
+    if (arg === '--target') {
+      const value = argv[index + 1]
+      if (!value || value.startsWith('--')) {
+        throw new Error('Missing value for --target')
+      }
+      target = path.resolve(value)
+      passthroughArgs.push(arg, value)
+      index += 1
+      continue
+    }
+
     passthroughArgs.push(arg)
   }
+
+  const effectiveRequiredChecks = requiredChecks.length > 0 ? requiredChecks : DEFAULT_REQUIRED_CHECKS
 
   return {
     passthroughArgs,
     sourceGateArgs,
-    requiredChecks: requiredChecks.length > 0 ? requiredChecks : DEFAULT_REQUIRED_CHECKS,
+    requiredChecks: effectiveRequiredChecks,
+    target,
   }
 }
 

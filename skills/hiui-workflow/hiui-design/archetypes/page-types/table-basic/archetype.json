@@ -54,7 +54,8 @@
       "templateDir": "templates/archetypes/rules-only/table-basic"
     },
     "legacy-host-compatible": {
-      "templateDir": "templates/archetypes/legacy-host-compatible/table-basic"
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
     }
   }
 }

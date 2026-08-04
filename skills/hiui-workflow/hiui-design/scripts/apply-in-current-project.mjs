@@ -7,7 +7,7 @@ import { autoLaunchHostIntegrationPreview } from './lib/host-integration-browser
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
+  node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--host-pack <id>] [--with-host-assets] [--with-reference-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--sync-profile <minimal|workbench>] [--include-workbench] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--allow-mode-override --override-reason <reason>] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
 
 Default behavior:
   - target project: current working directory
@@ -15,8 +15,18 @@ Default behavior:
   - mode: auto
   - do not provision src/translation i18n baseline unless --init-i18n is passed
   - auto-provision src/typical-page-reuse/assets project image catalog scaffold unless --skip-project-images-init is passed
+  - sync only minimal hiui-design page-generation assets unless --include-workbench or --sync-profile workbench is passed
   - after a successful host-integration bootstrap, auto-start a local dev server when needed and open the first typical-page sample unless --skip-open-browser is passed
+
+Deprecated compatibility:
+  - --with-reference-assets maps to --mode rules-only only after mode selection confirms rules-only; it is not a greenfield onboarding shortcut
 `)
+}
+
+function warnDeprecatedReferenceAssetsAlias() {
+  console.warn(
+    '[hiui-design] --with-reference-assets is deprecated compatibility for confirmed rules-only projects only; it is not a greenfield onboarding shortcut. Greenfield React projects should use --mode host-integration unless an audited override is approved with --allow-mode-override --override-reason <reason>.'
+  )
 }
 
 function parseArgs(argv) {
@@ -49,6 +59,7 @@ function parseArgs(argv) {
     }
 
     if (arg === '--with-reference-assets') {
+      warnDeprecatedReferenceAssetsAlias()
       passthrough.push('--mode', 'rules-only')
       continue
     }
@@ -57,8 +68,11 @@ function parseArgs(argv) {
       arg === '--mode' ||
       arg === '--line' ||
       arg === '--dest' ||
+      arg === '--host-pack' ||
       arg === '--route-file' ||
       arg === '--shells-spec' ||
+      arg === '--sync-profile' ||
+      arg === '--override-reason' ||
       arg === '--install-timeout-ms'
     ) {
       const value = argv[i + 1]
@@ -73,7 +87,14 @@ function parseArgs(argv) {
       continue
     }
 
-    if (arg === '--force' || arg === '--init-i18n' || arg === '--skip-i18n-init' || arg === '--skip-project-images-init') {
+    if (
+      arg === '--force' ||
+      arg === '--allow-mode-override' ||
+      arg === '--include-workbench' ||
+      arg === '--init-i18n' ||
+      arg === '--skip-i18n-init' ||
+      arg === '--skip-project-images-init'
+    ) {
       passthrough.push(arg)
       continue
     }
@@ -98,6 +119,8 @@ async function main() {
 
     if (install) {
       args.push('--install')
+    } else {
+      args.push('--no-install')
     }
 
     const result = spawnSync(process.execPath, args, {

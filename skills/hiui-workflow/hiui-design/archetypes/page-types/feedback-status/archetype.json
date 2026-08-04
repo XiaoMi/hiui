@@ -41,8 +41,15 @@
     "collapse feedback-panel into generic body content"
   ],
   "modeAdapters": {
-    "host-integration": { "templateDir": "templates/archetypes/host-integration/feedback-status" },
-    "rules-only": { "templateDir": "templates/archetypes/rules-only/feedback-status" },
-    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/feedback-status" }
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/feedback-status"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/feedback-status"
+    },
+    "legacy-host-compatible": {
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
+    }
   }
 }

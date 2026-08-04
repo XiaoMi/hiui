@@ -110,6 +110,50 @@ async function resolveDeclaredVendoredTarball(root, contextInput) {
   return tarballPathInfo
 }
 
+async function resolveDeclaredVendoredTarballs(root, contextInput) {
+  const context = contextInput?.snapshot ? contextInput : await loadRuntimeDeliveryContext(root)
+  const runtimeDelivery = context.snapshot?.runtimeDelivery
+  const legacyCompatibility = context.snapshot?.legacyCompatibility
+  const declaredPaths = [runtimeDelivery?.vendoredTarball, legacyCompatibility?.legacyVendoredTarball]
+    .map((entry) => String(entry || '').trim())
+    .filter(Boolean)
+
+  const uniquePaths = [...new Set(declaredPaths)]
+  const tarballs = []
+  for (const declaredPath of uniquePaths) {
+    const tarballPathInfo = resolvePathWithinRoot(
+      context.root,
+      declaredPath,
+      'snapshot.runtimeDelivery.vendoredTarball'
+    )
+
+    const tarballDirectory = normalizeRelativePath(String(context.runtimePackage.vendoredTarballDirectory || '').trim())
+    if (tarballDirectory && !tarballPathInfo.relativePath.startsWith(`${tarballDirectory}/`)) {
+      throw new Error(
+        `Declared vendored runtime tarball must live under ${tarballDirectory}: ${tarballPathInfo.relativePath}`
+      )
+    }
+
+    const tarballPattern = String(context.runtimePackage.vendoredTarballPattern || '').trim()
+    if (tarballPattern) {
+      const pattern = new RegExp(tarballPattern)
+      if (!pattern.test(path.basename(tarballPathInfo.relativePath))) {
+        throw new Error(
+          `Declared vendored runtime tarball does not match ${tarballPattern}: ${tarballPathInfo.relativePath}`
+        )
+      }
+    }
+
+    if (!(await pathExists(tarballPathInfo.absolutePath))) {
+      throw new Error(`Missing declared vendored runtime tarball at ${tarballPathInfo.relativePath} under ${context.root}`)
+    }
+
+    tarballs.push(tarballPathInfo)
+  }
+
+  return tarballs
+}
+
 function resolvePublicPackagePaths(root, contextInput) {
   const context = contextInput?.snapshot ? contextInput : null
   if (!context) {
@@ -136,5 +180,6 @@ export {
   pathExists,
   readJson,
   resolveDeclaredVendoredTarball,
+  resolveDeclaredVendoredTarballs,
   resolvePublicPackagePaths,
 }

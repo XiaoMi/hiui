@@ -1,5 +1,9 @@
 # 验收门槛
 
+## 默认项目页面生成面
+
+默认项目页面生成面只要求轻量命令产物能够证明页面结构、业务槽位和必要视觉检查已经完成。默认验收不再依赖 doctor、preview-ready、usage 收口或 finalize 旧流程；这些只在正式验收、高风险迁移或计划显式要求时升级为交付门禁。
+
 这份文件只保留**页面质量验收证据**与**页面完成门槛**。
 
 它不负责：
@@ -25,10 +29,10 @@
 
 - 项目画像与接入模式一致
 - 若当前页直接使用标准壳运行时（`host-integration`、现代 `rules-only` 或 `isolated-standard-shell`），已提供 `TypicalPageHostProvider` 所需 header / footer 挂载点
-- 若当前页走 `legacy-host-compatible` 主树，已提供 `runtimeAdapterProof` / `hostAdapter` 所要求的宿主页头、主体、`white-body` 与滚动承接链；不把 `TypicalPageHostProvider` 当作通过前提
+- 若当前页走 `legacy-host-compatible` 主树，已提供 host contract / HiuiLegacyPage runtime 所要求的宿主页头、主体、`white-body` 与滚动承接链；不把 `TypicalPageHostProvider` 当作通过前提
 - 典型页所在内容列满足连续高度链：`flex`、`min-height: 0`，必要时 `overflow: hidden`
 - 若当前页直接使用标准壳运行时，`@hiui-design/typical-page-shells` 样式资源已正常生效
-- 若当前页走 `legacy-host-compatible` 主树，宿主自有布局 / 组件封装与 bridge 样式前提已通过 `runtimeAdapterProof` 或等价证据说明；不把标准壳 `styles.css` 当作通过前提
+- 若当前页走 `legacy-host-compatible` 主树，宿主自有布局 / 组件封装与 legacy runtime 样式前提已通过 host contract 或 HiuiLegacyPage runtime 证据说明；不把标准壳 `styles.css` 当作通过前提
 - 若为已有系统，模板页面没有整包同步进正式 `src/`
 - 若左侧导航由 `TypicalPageAppFrame` 驱动，一级菜单分组都显式带语义化 `icon`
 - 若 `host-integration` 保留同步典型页 gallery，`TypicalPageAppFrame routes` 必须传宿主级菜单树；禁止裸传 `typicalPageReuseRoutes`
@@ -45,12 +49,12 @@
 - `package.json` 暴露 `typical-page:plan-page-task`，避免多项目工作区或父目录 cwd 导致 Agent 跳过机器计划入口
 - 当前页的 `mode` 结论来自 project mode lock / bootstrap summary 或机器计划；doctor / host-profile 的重新检测没有覆盖该结论
 - 当前页 contract 已落盘且可被工具正常解析
-- `rules-only` / `legacy-host-compatible` 当前页已通过 `typical-page:start-page` 进入受管流程
+- `rules-only` 当前页已通过 `typical-page:generate` 进入受管流程；`legacy-host-compatible` 项目已通过 `typical-page:apply:legacy` 完成接入，当前页再通过 `typical-page:light-plan` 与 `typical-page:legacy:new|rewrite --plan <light-plan.json>` 进入 PageSpec runtime 轻量契约流程
 - `rules-only` 当前页已能追溯唯一隐藏结构基线：`example path`、`startFrom` 对应的 template / reference / scaffold / host archetype、`host adapter`、`shell carrier path`、`route owner` 与 `menu group` 均已落到 contract 或 source marker；reference 示例没有进入业务菜单或接管宿主路由
-- `legacy-host-compatible` 当前页已能追溯主生成链：当 `generationStrategy=page-component` 时，`pageComponent`、`runtimeAdapterProof`、`hostAdapter`、`shellCarrierPath`、`routeOwner`、`ownershipMode` 已落到 contract 或 source marker；若计划进入 fallback / 漂移治理，再补 `examplePath`、`hostArchetypePath` 或 adapter scaffold plan、`Translation Map` 等证据；若未明确进入已证明的直接标准壳接入边界，则标准壳运行时 import 没有进入 legacy 主树
+- `legacy-host-compatible` 当前页已能追溯主生成链：`host-contract`、compiled PageSpec、`HiuiLegacyPage` runtime、typed page slots、`routeOwner` 与 `ownershipMode` 已落到 contract 或 source marker；若计划进入漂移治理，再补 `examplePath`、`hostArchetypePath` 或 `Translation Map` 等证据；标准壳运行时不得 ad hoc 进入 legacy 主树
 - `legacy-host-compatible` 若命中漂移风险触发条件，已落盘或说明 `Semantic Lock`、`Translation Map` 与 `Isomorphism Check` 结果；`driftExceptions` 只记录等价转译，没有豁免 mandatory components、required regions、ownership 或关键交互锚点
-- 当前页若在上一次 finalize 后继续发生页壳、ownership、mandatory components、source marker 或运行时修复，已经基于**最新源码**重新执行一次 `typical-page:finalize-page`
-- 普通典型页快速生成只替换业务槽位时，允许先以当前页 preflight / preview / lint / build 作为生成完成信号；正式验收或发布仍必须回到最新源码的 `finalize-page`
+- 当前页若在上一次验收后继续发生页壳、ownership、mandatory components、source marker 或运行时修复，已经基于**最新源码**重新执行当前 mode 对应的 `typical-page:verify` / `typical-page:legacy:verify` / formal acceptance gate
+- 普通典型页快速生成只替换业务槽位时，允许先以当前页 verify / preview / lint / build 作为生成完成信号；正式验收或发布仍必须回到最新源码的当前 mode 验收 gate
 - `.local-context/hiui-design/outputs/managed-pages.index.{json,md}` 与当前受管页源码、contract 保持一致
 - 正式验收 / 发布场景下，当前页的 `source gate`、`doctor` 已通过；普通典型页快速生成可先以当前页 preflight / preview / lint / build 作为完成信号
 - `doctor PASS` 未被误当成替代 `finalize-page` 的完成信号
@@ -247,6 +251,6 @@
 
 ## 最终回复前收口边界
 
-若当前任务新生成了页面，代理在最终回复前只需按 `PRIVACY.md` 保持开源版无 telemetry / 无 usage reporting 边界；`preview_ready` 仍只用于页面质量确认。
+若当前任务新生成了页面，代理在最终回复前还必须按 `PRIVACY.md` 完成 `record-usage` 收口；`preview_ready` 仍只用于页面质量确认。
 
 这一步属于外层任务完成协议，不属于本文件的页面质量 gate；不要把“页面已通过本文件门槛”和“整个任务已完整结束”混为一谈。

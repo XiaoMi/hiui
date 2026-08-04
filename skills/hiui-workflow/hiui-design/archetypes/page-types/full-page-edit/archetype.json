@@ -54,7 +54,8 @@
       "templateDir": "templates/archetypes/rules-only/full-page-edit"
     },
     "legacy-host-compatible": {
-      "templateDir": "templates/archetypes/legacy-host-compatible/full-page-edit"
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
     }
   }
 }

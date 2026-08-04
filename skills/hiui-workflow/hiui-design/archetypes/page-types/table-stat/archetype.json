@@ -56,7 +56,8 @@
       "templateDir": "templates/archetypes/rules-only/table-stat"
     },
     "legacy-host-compatible": {
-      "templateDir": "templates/archetypes/legacy-host-compatible/table-stat"
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
     }
   }
 }

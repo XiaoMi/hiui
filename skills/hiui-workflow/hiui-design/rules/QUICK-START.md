@@ -12,6 +12,7 @@
 
 对应事实源如下：
 
+- 轻量场景路由：`scenario-routing.json`
 - 首轮输出格式：`../docs/generation/ai-kickoff-template.md`
 - 生成原则与阶段门槛：`generation-rules.md`
 - contract 字段唯一事实源：`contract-regions.md`
@@ -21,6 +22,19 @@
 - usage 收口策略与最终回复前动作：`PRIVACY.md`
 
 页面生成阶段默认**读取并确认**项目既有 `mode` 事实；只有项目事实缺失、过期或互相冲突时，才重新判定。若 doctor 或 host-profile 重新检测出不同建议，只作为诊断信号，不得覆盖 project mode lock。
+
+## Lightweight Public Surface
+
+默认项目面不再承载旧 managed-page 写链路；默认公开执行面以 `scenario-routing.json` 为准：`typical-page:init` -> `typical-page:generate` / `typical-page:analytics` -> `typical-page:verify` -> `typical-page:verify:visual`。原型图 / 旧系统升级也先识别页型，再进入同一轻量命令面。
+
+未接入先做什么：先运行 `apply-in-current-project.mjs` 或 `setup-for-designers.mjs` 完成 `.local-context/hiui-design/`、脚本表和项目 mode lock；未完成接入的目标项目不会注册 `typical-page:init / generate / analytics / verify / verify:visual`。
+
+数据可视化的最小命中文档集是 `data-visualization.md + table-shared.md + hiui5-visual-baseline.md`，执行顺序是 `brief qualification -> business semantic match -> chart usage contract`，并在 `analyticsArtifacts.kickoffFacts`、`deliveryState=result-ready`、`deliveryState / deliveryReadiness` 与 `deliveryReadiness.bindingReady.status=pending` 中保留可检查状态。高价值页面补跑 `verify:visual -- --page-path <page-dir>`。
+
+## 示例基线
+
+- `src/typical-page-reuse/**` 只作为示例 gallery / smoke baseline 资产，不是业务受管页面。
+- `.local-context/hiui-design/reference/host-integration/src/**` 是项目本地参考事实，不是要同步到业务路由的页面目录。
 
 ## 项目根与 Plan Gateway
 
@@ -47,29 +61,31 @@
 
 若 `taskLevel=minor-edit`，按 `generationStrategy=reuse-existing-contract-for-minor-edit` 执行：只复用既有 contract 做局部修改，不重新展开完整页型生成、模板选择或 runtime smoke 链路。
 
-## 典型页快速路径
+## 已锁定 mode 后的页面生成路径
 
-这条路径的目标不是“少读规则但多赌运气”，而是把 planner 已确认的 `page-component`、carrier、slot 与 fast-path 事实直接转成最小执行面。命中普通典型页快路径时，Agent 默认只消费机器计划、当前页 scaffold、slot contract 与最少补读文档；除非计划显式升级，否则不要手工重开完整治理文档。
+本节只描述项目 mode 已由 `project-mode.json`、bootstrap summary 或 `plan-page-task` 读取并确认后的页面生成路径，不负责项目接入模式选择。mode 缺失、过期或互相冲突时，必须先回到 `mode-selection.md` 补齐项目画像与接入判定；不得把 `rules-only` 当作 `greenfield` 新项目的 fallback、快捷接入或 reference-assets 降级路径。
 
-当机器计划或用户描述已经明确：
+这条路径的目标不是“少读规则但多赌运气”，而是把 planner 已确认的 `page-component`、carrier、slot 与页面生成资产事实直接转成最小执行面。命中普通典型页页面生成路径时，Agent 默认只消费机器计划、当前页 scaffold、slot contract 与最少补读文档；除非计划显式升级，否则不要手工重开完整治理文档。
+
+当机器计划已经读取并确认：
 
 - `mode` 为 `host-integration`、`rules-only`、`legacy-host-compatible`，或项目内把兼容接入称为 `host-compatible`
 - `topology` 为 `single-typical-page`，且 `pageType` 命中一个既有典型页型；或 `topology` 为 `multi-page-workflow`，且每个 `pageUnits[].pageType` 都命中既有典型页型
 - 没有特殊布局、跨页型组合、非典型 section、复杂图表新增或正式 i18n 验收要求
 
-则直接进入“使用主生成资产或 fallback 起点 + 替换业务槽位”的快速路径：
+则直接进入“使用主生成资产或页面资产 fallback 起点 + 替换业务槽位”的页面生成路径：
 
-1. 先看机器计划的 `generationStrategy` 与 `primaryGenerationAsset`；只有 `generationStrategy=managed-fallback` 时再读取 `startFrom`：`template` 表示复制 `page.template.tsx|jsx`，`host-archetype` 表示复制宿主 archetype，`reference-or-scaffold` 表示由 `start-page` 使用受管 scaffold / reference 起步
+1. 先看机器计划的 `generationStrategy` 与 `primaryGenerationAsset`；只有 `generationStrategy=managed-fallback` 时再读取 `startFrom`。这里的 fallback 只表示页面生成资产起点，不表示接入模式 fallback：`template` 表示复制 `page.template.tsx|jsx`，`host-archetype` 表示复制宿主 archetype，`reference-or-scaffold` 表示由 `start-page` 使用受管 scaffold / reference 起步
 2. `host-integration`：优先复制已同步的 `src/typical-page-reuse/pages/*` 或 host-integration reference 作为起点，但目标文件必须落到真实业务目录；业务页必须注册到真实业务路由而不是示例 gallery
-3. `rules-only`：若进入 fallback，reference-only 示例是隐藏结构基线，不进入业务菜单、不接管宿主路由；按 `startFrom` 绑定 `templates/archetypes/rules-only/<pageType>/page.template.tsx|jsx`、reference-only 示例或受管 scaffold，再确认宿主运行链、route owner、shell carrier、region / ownership mapping，最后派生真实业务页并只替换业务槽位
-4. `legacy-host-compatible` / `host-compatible`：默认进入 `page-component + runtime bridge + slot fill` fast path。优先消耗 `primaryGenerationAsset=pageComponent` 与可用的 `runtimeAdapterProof`，只替换业务槽位；legacy 主树不能 ad hoc direct import `@hiui-design/typical-page-shells`，不等于普通典型页不能走页面组件主链。只有 `generationStrategy=managed-fallback`、组件不可用、结构升级或宿主约束特殊时，才进入宿主 archetype、兼容示例 / reference、rules-only 标准骨架或受管 scaffold 起点。fallback / 漂移治理分支里，复制对象仍是典型页结构契约，不是标准壳运行时；生成前至少确认 `hostAdapter`、`shellCarrierPath`、`routeOwner` 与 ownership，若进入 fallback 再补 `examplePath`、`hostArchetypePath` 或 adapter scaffold。命中高风险转译时展开 Translation Drift Guard
+3. `rules-only`：仅当 mode lock 已确认为 `rules-only` 时适用。若进入页面资产 fallback，reference-only 示例是隐藏结构基线，不进入业务菜单、不接管宿主路由，也不代表 `greenfield` 项目已完成 host 接入；按 `startFrom` 绑定 `templates/archetypes/rules-only/<pageType>/page.template.tsx|jsx`、reference-only 示例或受管 scaffold，再确认宿主运行链、route owner、shell carrier、region / ownership mapping，最后派生真实业务页并只替换业务槽位
+4. `legacy-host-compatible` / `host-compatible`：分为项目接入链路和页面生成链路。项目接入链路以 `typical-page:apply:legacy` 为外部入口，内部执行 `legacy:init`，用 host pack 写入 `.local-context/hiui-design/host-contract.json`、一次性 `src/hiui-runtime/*`、PageSpec 覆盖、adapter facts、`.local-context/hiui-design/outputs/runtime-compatibility-lock.json` 与 `.local-context/hiui-design/outputs/project-integration-state.json`；React 16.8 到 16.13.x 走 `vendor/hiui-design-typical-page-shells-0.1.2-legacy.tgz`，React 低于 16.8 必须 blocked；pnpm + Node 16 环境使用 `npx pnpm@8.6.12 install` fallback。页面生成链路只在 project integration state ready 后执行 `legacy:new|rewrite`，用 `rules/typical-page-contracts/<pageType>.json` 编译出的 PageSpec 驱动页面目录内 `page.instance.tsx`、`page.slots.ts`、必要 `page.request.ts`；legacy 主树不能 ad hoc direct import `@hiui-design/typical-page-shells`，业务页也不能自建壳层、DOM region、ownership 或视觉 token；只有 `src/hiui-runtime` 可以作为受管边界消费 compatible shell runtime。验收时跑 `typical-page:doctor:integration`，不把存量业务样式作为 hiui-design 接入或交付检查内容；回滚按 `docs/onboarding/legacy-host-compatible-rollback.md`。命中高风险转译时展开 Translation Drift Guard；`typical-page:legacy:verify` 仅作显式排障命令
 5. 只替换标题、路由、查询字段、指标、表格列、表单 / 详情字段、接口 / mock 数据、行操作等业务槽位
 6. 保留页壳、region 层级、白底主体、滚动 owner、分页 / footer 挂载语义、source marker 与 row action 语义
 
 对旧系统升级，普通典型页的 fast path 默认再细分为：
 
 - `slot-fill-only`：当前页已经是受管实例，只改业务槽位。
-- `rewrite-by-page-component`：当前页仍命中同一典型页型，且 certified page component / project carrier 已可用，但现有源码还不是 ready 的 managed instance；此时直接用受管主资产重建业务页实例，不在旧 JSX 上继续修补壳层。
+- `rewrite-by-contract-slots`：当前页仍命中同一典型页型，但现有源码还不是 ready 的 managed instance；此时用 `typical-page-contract` 与 runtime renderer 重建轻量业务页实例，不在旧 JSX 上继续修补壳层。
 
 这两类都属于典型页快路径，不等于 `strict-structure`。
 
@@ -80,10 +96,10 @@
 快速路径的禁止升级规则：
 
 - 计划里的 `formalAcceptanceCommands` 为空时，不要把 `source-gate`、`doctor`、`runtime-smoke`、`finalize-page` 说成当前链路必需步骤。
-- `typical-page:preview-ready` 只负责当前页 `previewReady + qualityVerified` 轻量确认。开源版没有 `record-usage` / `report-preview-ready-usage` 收口链路，不要在页面交付后追加 usage 上报步骤。
+- `typical-page:preview-ready` 只负责当前页 `previewReady + qualityVerified` 轻量确认；若当前任务新生成了页面，还要在页面文件存在后单独执行 `typical-page:record-usage`。`report-preview-ready-usage` 只作为显式串联包装器，不是默认链路。
 - `npm run build`、`npm run lint`、浏览器预览可以作为额外工程验证，但不能替代 `plan-page-task`、`startFrom` 与当前页 `preflight`，也不能反过来改变 page type / mode 结论。
 - 若 `fastPath.eligible=true`，实现只允许填业务槽位、Level 1 受控扩展或受管图表配置；任何页壳、白底主体、region 层级、滚动 owner、分页 / footer 挂载语义变化都会把任务升级为标准 / 严格链路，并需要重新跑 Plan Gateway。
-- 若 legacy 计划已给出 `page-component` ready + `runtimeAdapterProof` ready，不要因为 direct shell import 在 legacy 主树里被禁止，就把任务改写成“兼容 hand-built 页面”或把 reference 当默认交付资产。
+- 若 legacy host contract 与 typical page contract 已 ready，不要因为 direct shell import 在 legacy 主树里被禁止，就把任务改写成“兼容 hand-built 页面”、旧 carrier 页面或把 reference 当默认交付资产。
 - 对 `rules-only`，`reference-driven` 不等于整页复制 reference 后交付；若 `route owner`、`shell carrier path`、`ownership mapping` 或唯一 `example path` 写不清，快速路径必须停止，先补事实或升级标准 / 严格链路。
 - 对 `legacy-host-compatible`，fallback / `translated-reference` 分支不等于直接复制标准壳 import，也不等于旧宿主 primitives 近似实现；若缺少合格宿主 archetype、首次适配页型、`startFrom=reference-or-scaffold|scaffold`、涉及 `table-stat` / `tree-split` / drawer / full-page、修改 ownership / shell carrier、出现 warning 或进入正式验收，必须补 `Semantic Lock`、`Translation Map` 与 `Isomorphism Check`。
 
@@ -131,7 +147,7 @@
 ### 6. 交付与验收
 
 - 页面质量验收证据、真实页面核验与页面完成门槛只看 `validation-checklist.md`
-- 若当前任务新生成了页面，默认仍需完成当前页 `preview_ready` 轻量确认；开源版最终回复只披露页面交付与质量验证结果，不追加 usage 补传动作
+- 若当前任务新生成了页面，默认仍需完成当前页 `preview_ready` 轻量确认，并在页面文件存在后单独执行 `typical-page:record-usage`；若 usage 失败，只能作为非阻断风险披露并给出补传动作
 - 不要回到 kickoff 模板或本文件抄一遍前置字段
 
 ## 文档职责图
@@ -149,7 +165,7 @@
 - `validation-checklist.md`
   只定义页面质量验收证据与页面完成门槛。
 - `PRIVACY.md`
-  只定义开源版无 telemetry / 无 usage reporting 的边界；`preview_ready` 继续属于质量确认。
+  只定义 `record-usage` 收口与最终回复前动作；`preview_ready` 继续属于质量确认。
 - `non-typical-pages.md`
   只定义非典型 / overlay 布局推理与 archetype 语义。
 
@@ -166,7 +182,7 @@
 - `docs/generation/legacy-host-compatibility.md`
   命中旧宿主兼容路径时补读。
 - `docs/generation/explainers/*.md`
-  仅在 planner 明确输出、或处于 legacy bridge / managed-fallback / non-typical / strict governance 等复杂场景时补读；普通典型页快路径不要主动展开 explainers。
+  仅在 planner 明确输出、或处于 legacy lightweight contract / managed-fallback / non-typical / strict governance 等复杂场景时补读；普通典型页快路径不要主动展开 explainers。
 - `docs/generation/layout-anti-patterns.md`
   做结构与视觉误区复核时补读。
 - `docs/generation/non-typical-component-routing.md` 与 `docs/generation/hiui-v5-component-map.md`

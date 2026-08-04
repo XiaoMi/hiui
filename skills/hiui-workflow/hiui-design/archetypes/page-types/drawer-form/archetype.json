@@ -39,8 +39,15 @@
     "replace drawer shell with a generic page container"
   ],
   "modeAdapters": {
-    "host-integration": { "templateDir": "templates/archetypes/host-integration/drawer-form" },
-    "rules-only": { "templateDir": "templates/archetypes/rules-only/drawer-form" },
-    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/drawer-form" }
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/drawer-form"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/drawer-form"
+    },
+    "legacy-host-compatible": {
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
+    }
   }
 }

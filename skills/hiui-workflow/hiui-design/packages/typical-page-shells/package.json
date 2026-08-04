@@ -1,6 +1,6 @@
 {
   "name": "@hiui-design/typical-page-shells",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Reusable HiUI typical page shells extracted from hiui-design.",
   "files": [
@@ -87,8 +87,8 @@
     "@hi-ui/use-ref-state": "4.0.0-experimental.2",
     "@hi-ui/use-subscription": "4.0.0-experimental.2",
     "ahooks": "3.9.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": ">=16.14.0",
+    "react-dom": ">=16.14.0"
   },
   "publishConfig": {
     "access": "public"

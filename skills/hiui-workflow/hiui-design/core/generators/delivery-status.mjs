@@ -454,7 +454,7 @@ export function resolveDeliveryBindingStatus(targetPagePath) {
   }
 
   const carrierValidation = integrationState.carrierValidation || {}
-  const legacyBridgeValidation = integrationState.legacyBridgeValidation || {}
+  const legacyContractValidation = integrationState.legacyContractValidation || {}
   const bindingPage = resolveBindingPageType(targetPagePath)
   const registryPath = normalizePath(carrierValidation.registryPath)
   const evidencePaths = Array.from(
@@ -465,7 +465,7 @@ export function resolveDeliveryBindingStatus(targetPagePath) {
     ].filter(Boolean))
   )
   const integrationReady = integrationState.integrationReady === true
-  const bridgeReady = String(legacyBridgeValidation.status || '').trim() === 'ready'
+  const contractReady = String(legacyContractValidation.status || '').trim() === 'ready'
   const carrierReady = ['ready', 'not-applicable'].includes(
     String(carrierValidation.status || '').trim()
   )
@@ -510,7 +510,7 @@ export function resolveDeliveryBindingStatus(targetPagePath) {
     }
   }
 
-  const bindingReady = integrationReady && bridgeReady && carrierReady
+  const bindingReady = integrationReady && contractReady && carrierReady
 
   return {
     bindingReady,

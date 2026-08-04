@@ -11,15 +11,31 @@ export function getLightweightChainSummary() {
 }
 
 export function getLegacyLightweightChainSummary() {
-  return 'typical-page:legacy:new | typical-page:legacy:rewrite'
+  return 'typical-page:apply:legacy -> typical-page:light-plan -> typical-page:legacy:new|rewrite --plan -> typical-page:legacy:accept'
 }
 
-export function getLegacyNewCommand(pagePath = '<page-or-dir>') {
-  return `pnpm typical-page:legacy:new -- --page ${pagePath} --change "<task>"`
+export function getLegacyInitCommand() {
+  return 'pnpm typical-page:apply:legacy -- --sync-profile minimal'
 }
 
-export function getLegacyRewriteCommand(pagePath = '<page-or-dir>') {
-  return `pnpm typical-page:legacy:rewrite -- --page ${pagePath} --change "<task>"`
+export function getLegacyLightPlanCommand(planPath = '<light-plan.json>') {
+  return `pnpm typical-page:light-plan -- --page-type <page-type> --page <page-or-dir> --summary "<task>" --out ${planPath}`
+}
+
+export function getLegacyNewCommand(planPath = '<light-plan.json>') {
+  return `pnpm typical-page:legacy:new -- --plan ${planPath}`
+}
+
+export function getLegacyRewriteCommand(planPath = '<light-plan.json>') {
+  return `pnpm typical-page:legacy:rewrite -- --plan ${planPath}`
+}
+
+export function getLegacyVerifyCommand(pagePath = '<page-or-dir>') {
+  return `pnpm typical-page:legacy:verify -- --page-type <page-type> --page ${pagePath}`
+}
+
+export function getLegacyTroubleshootingCommand(pagePath = '<page-or-dir>') {
+  return `${getLegacyVerifyCommand(pagePath)} (仅显式排障时使用，不属于默认生成链路)`
 }
 
 export function getLightweightGenerateCommand(pagePath = '<page-dir>') {

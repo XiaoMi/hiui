@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hiui-design.local/schemas/vendor-tarballs.schema.json",
+  "title": "HiUI Design Vendor Tarballs Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tarballs"],
+  "properties": {
+    "schemaVersion": {
+      "const": "hiui-design-vendor-tarballs.v1"
+    },
+    "tarballs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["filePath", "packageName", "version", "sha256", "reactRange", "allowedProfiles"],
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "pattern": "^vendor/[^/]+\\.tgz$"
+          },
+          "packageName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "reactRange": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allowedProfiles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}

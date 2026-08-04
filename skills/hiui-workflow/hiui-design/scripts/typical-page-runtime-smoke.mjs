@@ -23,6 +23,7 @@ import {
   classifyQueryFilterSurfaceKind,
   isWhiteLikeQueryFilterSurfaceColor,
 } from './lib/query-filter-governance.mjs'
+import { buildChromiumLaunchOptions, loadPlaywrightWithFallback } from './lib/playwright-runtime.mjs'
 
 function printUsage() {
   console.log(`Usage:
@@ -192,29 +193,6 @@ async function persistRuntimeSmokeResult({
   await syncManagedPageRegistry(targetRoot)
 }
 
-async function loadPlaywright() {
-  try {
-    return await import('playwright')
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : String(error)
-    const nodeVersion = String(process.versions?.node || process.version || '').trim()
-    const nodeMajor = Number.parseInt(nodeVersion.split('.')[0] || '', 10)
-    const missingPackage =
-      detail.includes("Cannot find package 'playwright'") ||
-      detail.includes("Cannot find module 'playwright'")
-    const installHint = missingPackage
-      ? Number.isFinite(nodeMajor) && nodeMajor > 0 && nodeMajor < 16
-        ? `Current workspace Node.js is v${nodeVersion}. Newer Playwright releases often require Node.js >=16, so install a workspace-compatible Playwright version before rerunning runtime smoke.`
-        : 'Install playwright in this workspace, then rerun runtime smoke.'
-      : Number.isFinite(nodeMajor) && nodeMajor > 0 && nodeMajor < 16
-        ? `Current workspace Node.js is v${nodeVersion}. If playwright is installed but still cannot load, verify that the installed Playwright release supports this Node.js runtime.`
-        : 'Verify that playwright and its browser binaries are installed correctly in this workspace before rerunning runtime smoke.'
-    throw new Error(
-      `playwright is not available in this workspace. Import error: ${detail} Hint: ${installHint}`
-    )
-  }
-}
-
 function formatCheck(ok, label, detail) {
   return `${ok ? '[PASS]' : '[FAIL]'} ${label}${detail ? `\n  ${detail}` : ''}`
 }
@@ -302,8 +280,8 @@ async function main() {
       return
     }
 
-    const { chromium } = await loadPlaywright()
-    const browser = await chromium.launch({ headless: true })
+    const { chromium } = await loadPlaywrightWithFallback()
+    const browser = await chromium.launch(await buildChromiumLaunchOptions({ headless: true }))
     const page = await browser.newPage({ viewport: { width: 1440, height: 1200 } })
 
     try {
@@ -619,8 +597,8 @@ async function main() {
         const headerExtra = headerRegion?.querySelector('.hi-v5-page-header__extra')
         const whiteBody = root.querySelector('[data-hiui5-region="white-body"]')
         const statSection = root.querySelector('[data-hiui5-region="stat-section"]')
-        const leftTreeRegion = root.querySelector('[data-hiui5-region="left-tree"]')
-        const rightListRegion = root.querySelector('[data-hiui5-region="right-list"]')
+        const splitTreeRegion = root.querySelector('[data-hiui5-region="tree"]')
+        const splitRightMainRegion = root.querySelector('[data-hiui5-region="right-main"]')
         const splitWorkspaceRegion = root.querySelector('[data-hiui5-region="split-workspace"]')
         const drawerShellRegion =
           document.querySelector('[data-hiui5-owner-drawer-shell="true"]') ||
@@ -904,8 +882,8 @@ async function main() {
           statRect,
           statSectionChildCount:
             statSection instanceof HTMLElement ? statSection.children.length : 0,
-          leftTreeExists: leftTreeRegion instanceof HTMLElement,
-          rightListExists: rightListRegion instanceof HTMLElement,
+          splitTreeExists: splitTreeRegion instanceof HTMLElement,
+          splitRightMainExists: splitRightMainRegion instanceof HTMLElement,
           splitWorkspaceExists: splitWorkspaceRegion instanceof HTMLElement,
           detailBodyExists: detailBodyRegion instanceof HTMLElement,
           detailBodyRect,
@@ -1293,7 +1271,7 @@ async function main() {
           !strictTableStatCarrierRollout || result.filterRect.top >= result.statRect.bottom - 4
         const treeTableAvoidsSplitWorkspace =
           !strictTreeTableCarrierRollout ||
-          (!result.leftTreeExists && !result.rightListExists && !result.splitWorkspaceExists)
+          (!result.splitTreeExists && !result.splitRightMainExists && !result.splitWorkspaceExists)
         const treeTableShowsInlineTreeAffordance =
           !strictTreeTableCarrierRollout ||
           result.inlineTreeMarker ||
@@ -1492,7 +1470,7 @@ async function main() {
           formatCheck(
             treeTableAvoidsSplitWorkspace,
             'strict tree-table carriers keep tree semantics inside the single table region',
-            `strictTreeTable=${String(strictTreeTableCarrierRollout)}, leftTree=${String(result.leftTreeExists)}, rightList=${String(result.rightListExists)}, splitWorkspace=${String(result.splitWorkspaceExists)}`
+            `strictTreeTable=${String(strictTreeTableCarrierRollout)}, tree=${String(result.splitTreeExists)}, rightMain=${String(result.splitRightMainExists)}, splitWorkspace=${String(result.splitWorkspaceExists)}`
           )
         )
         checks.push(

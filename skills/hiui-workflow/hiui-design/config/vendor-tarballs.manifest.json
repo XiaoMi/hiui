@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "hiui-design-vendor-tarballs.v1",
+  "tarballs": [
+    {
+      "filePath": "vendor/hiui-design-typical-page-shells-0.1.2.tgz",
+      "packageName": "@hiui-design/typical-page-shells",
+      "version": "0.1.2",
+      "sha256": "00c545125abce448e7301c4d58dc5eb85239c63c234fe846c42bca78e2381cc1",
+      "reactRange": ">=18.0.0",
+      "allowedProfiles": ["host-integration-minimal", "rules-only-minimal", "legacy-workbench"]
+    },
+    {
+      "filePath": "vendor/hiui-design-typical-page-shells-0.1.2-legacy.tgz",
+      "packageName": "@hiui-design/typical-page-shells",
+      "version": "0.1.2-legacy",
+      "sha256": "cc3dc4b75cc46aba3c6e941a07d66d270310a51e4931860fec6fbf796c995830",
+      "reactRange": ">=16.8.0 <18.0.0",
+      "allowedProfiles": ["legacy-minimal", "legacy-workbench"]
+    },
+    {
+      "filePath": "vendor/hiui-design-typical-page-shells-0.1.1.tgz",
+      "packageName": "@hiui-design/typical-page-shells",
+      "version": "0.1.1",
+      "sha256": "2247efceef8a2f524ba6e1d6d3f7c75f93bb2a12b2a6003a10ce35caaf153f37",
+      "reactRange": ">=18.0.0",
+      "allowedProfiles": []
+    }
+  ]
+}

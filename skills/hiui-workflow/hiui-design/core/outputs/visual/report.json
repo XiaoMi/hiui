@@ -1,0 +1,6 @@
+{
+  "verifiedAt": "2026-07-14T15:15:00.167Z",
+  "specs": [],
+  "status": "failed",
+  "errorMessage": "视觉校验依赖缺失：playwright, pixelmatch, pngjs。请先在 .local-context/subapps/typical-page-shell-runtime 补齐这些依赖后再执行 typical-page:verify:visual。"
+}

@@ -41,7 +41,7 @@ brief qualification
 
 - 上述五命令默认适用于已完成接入的 `rules-only` / `host-integration` 标准 pagegen 项目
 - `rules-only` / `host-integration` 下普通典型页默认不再把 canonical 当作新项目起点；优先级由 `asset-governance/governance-registry.json` 决定，不允许产出 official-runtime 宿主入口页
-- 若项目 mode lock 是 `legacy-host-compatible`，主树默认**不暴露**这组根脚本；普通典型页继续走 planner-selected certified `page-component` / runtime bridge 承接链，reference-only 示例只保留为 parity / fallback evidence，只有隔离出的独立现代运行时入口才重新暴露标准轻量命令面，并且只有该场景允许 `official-runtime`
+- 若项目 mode lock 是 `legacy-host-compatible`，主树默认**不暴露**这组根脚本；普通典型页继续走项目接入链 `apply:legacy`（内部 `legacy:init`）+ 页面计划链 `light-plan` + 页面生成链 `legacy:new|rewrite --plan` + 接受态闭环 `legacy:accept` 的 PageSpec runtime 轻量契约边界，reference-only 示例只保留为 parity evidence，只有隔离出的独立现代运行时入口才重新暴露标准轻量命令面，并且只有该场景允许 `official-runtime`
 - `plan-page-task`、doctor、各类 gate、distribution、release 与 maintainer 回归能力可以继续存在，但它们不属于默认项目执行面
 
 ## Generation Contract
@@ -73,5 +73,5 @@ brief qualification
 ## Boundary
 
 - `core/` 不承载 global sync、release archive、launch-agent 或发布自动化
-- 开源版 `core/` 只负责页面生成与验证输出，不承担 usage telemetry、上报后端或身份材料能力
+- 页面生成后的 `usageStatsStatus` 可以作为运行结果的一部分被呈现，但 telemetry transport、隐私策略、上报后端与 maintainer 文档不属于默认 `core/` surface
 - 旧 `start-page` / `preflight` / `finalize-page` 写链仍是兼容/退役工具，不再是默认页面生成合同

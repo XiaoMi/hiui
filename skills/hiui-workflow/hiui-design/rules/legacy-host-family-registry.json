@@ -13,7 +13,7 @@
         "requiredSignals": [
           "project-mode:legacy-host-compatible",
           "clean-content-mount",
-          "runtime-bridge"
+          "legacy-runtime-surface"
         ],
         "optionalSignals": [
           "react-legacy-runtime",
@@ -38,7 +38,7 @@
           "business-route-owner",
           "stable-content-mount"
         ],
-        "ownedByPageComponent": [
+        "ownedByHiuiRuntime": [
           "page-header",
           "white-body",
           "query-filter",
@@ -62,17 +62,17 @@
           "overflow",
           "min-height"
         ],
-        "scrollOwnership": "page-component",
+        "scrollOwnership": "hiui-runtime",
         "requiredEvidence": [
           "no-double-page-header",
           "no-double-white-body",
           "no-double-scroll",
-          "pagination-remains-inside-page-component",
+          "pagination-remains-inside-hiui-runtime",
           "stable-content-height"
         ]
       },
-      "runtimeBridge": {
-        "contractId": "runtime-bridge.v1",
+      "legacyRuntimeSurface": {
+        "contractId": "legacy-runtime-surface.v1",
         "requiredCapabilities": [
           "request",
           "auth",
@@ -108,7 +108,7 @@
           "layout-spacing"
         ],
         "requiredEvidence": [
-          "host-global-css-does-not-override-page-component",
+          "host-global-css-does-not-override-hiui-runtime",
           "component-spacing-preserved",
           "status-tag-style-preserved"
         ]
@@ -131,7 +131,7 @@
       "adapterPack": {
         "adapterPackId": "generic-clean-content-adapter-pack.v1",
         "hostContentAdapter": "HostContentAdapter",
-        "runtimeBridge": "RuntimeBridge",
+        "legacyRuntimeSurface": "LegacyRuntimeSurface",
         "styleBoundary": "StyleBoundary",
         "portalBoundary": "PortalBoundary",
         "adapterIds": [

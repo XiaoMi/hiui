@@ -13,19 +13,30 @@ const GIT_REGISTRY = process.env.HIUI_DESIGN_LCM_GIT_REGISTRY || ''
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/setup-for-designers.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--skip-link] [--skip-lcm] [--skip-doctor-gate] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
+  node ".local-context/hiui-design/scripts/setup-for-designers.mjs" [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--with-reference-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--no-install] [--install-timeout-ms <ms>] [--force] [--allow-mode-override --override-reason <reason>] [--skip-link] [--skip-lcm] [--skip-doctor-gate] [--init-i18n] [--skip-i18n-init] [--skip-project-images-init] [--skip-open-browser]
 
 Default behavior:
   - if lcm exists, initialize project context and link to Cursor when available
   - detect the target project type automatically
   - greenfield React/Vite apps default to host-integration
-  - existing systems default to non-gallery installation paths, and incompatible legacy runtimes are routed into legacy-host-compatible bridge mode, which still allows typical-page components through planner-selected carrier / runtimeAdapterProof paths
+  - existing systems default to non-gallery installation paths, and incompatible legacy runtimes are routed into legacy-host-compatible mode, which uses host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots
   - do not provision src/translation i18n baseline unless --init-i18n is passed
   - auto-provision src/typical-page-reuse/assets project image catalog scaffold unless --skip-project-images-init is passed
+  - rerun i18n baseline manually with node ".local-context/hiui-design/scripts/init-i18n.mjs" when the project explicitly needs locale assets
+  - rebuild image catalog scaffold manually with node ".local-context/hiui-design/scripts/init-project-images.mjs" when the asset bridge drifts
   - run typical-page:doctor immediately after setup and stop on doctor failures
   - validate the target project's build result after doctor; lint is also checked when a script exists and reported as an explainable follow-up item
   - after a successful host-integration setup, auto-start a local dev server when needed and open the first typical-page sample unless --skip-open-browser is passed
+
+Deprecated compatibility:
+  - --with-reference-assets maps to --mode rules-only only after mode selection confirms rules-only; it is not a greenfield onboarding shortcut
 `)
+}
+
+function warnDeprecatedReferenceAssetsAlias() {
+  console.warn(
+    '[hiui-design] --with-reference-assets is deprecated compatibility for confirmed rules-only projects only; it is not a greenfield onboarding shortcut. Greenfield React projects should use --mode host-integration unless an audited override is approved with --allow-mode-override --override-reason <reason>.'
+  )
 }
 
 function parseArgs(argv) {
@@ -65,6 +76,7 @@ function parseArgs(argv) {
     }
 
     if (arg === '--with-reference-assets') {
+      warnDeprecatedReferenceAssetsAlias()
       passthrough.push('--mode', 'rules-only')
       continue
     }
@@ -73,6 +85,7 @@ function parseArgs(argv) {
       arg === '--install' ||
       arg === '--no-install' ||
       arg === '--force' ||
+      arg === '--allow-mode-override' ||
       arg === '--init-i18n' ||
       arg === '--skip-i18n-init' ||
       arg === '--skip-project-images-init'
@@ -87,6 +100,7 @@ function parseArgs(argv) {
       arg === '--dest' ||
       arg === '--route-file' ||
       arg === '--shells-spec' ||
+      arg === '--override-reason' ||
       arg === '--install-timeout-ms'
     ) {
       const value = argv[i + 1]
@@ -170,6 +184,60 @@ async function pathExists(targetPath) {
   }
 }
 
+async function readJsonIfExists(targetPath) {
+  try {
+    return JSON.parse(await fs.readFile(targetPath, 'utf8'))
+  } catch {
+    return null
+  }
+}
+
+function isCompletionGateSatisfied(status) {
+  return status === 'passed' || status === 'not-applicable'
+}
+
+function deriveOnboardingCompletionReady(state) {
+  const gates = state?.completionGates || {}
+  if (state?.runtimeIntegrationReady !== true) return false
+  if (!['matched', 'overridden'].includes(state?.modeSelectionStatus)) return false
+  if (gates.bootstrapWritten !== 'passed') return false
+  if (gates.modeLocked !== 'passed') return false
+  if (!isCompletionGateSatisfied(gates.dependencyInstalled)) return false
+  if (!isCompletionGateSatisfied(gates.hostAssetsReady)) return false
+  if (gates.doctorPassed !== 'passed') return false
+  if (gates.engineeringPassed !== 'passed') return false
+  return Object.values(gates.modeRequiredGates || {}).every(isCompletionGateSatisfied)
+}
+
+async function updateProjectIntegrationCompletionState({ projectRoot, doctorPassed, engineeringPassed }) {
+  const statePath = path.join(
+    projectRoot,
+    '.local-context',
+    'hiui-design',
+    'outputs',
+    'project-integration-state.json'
+  )
+  const state = await readJsonIfExists(statePath)
+  if (!state) {
+    warn('未找到 project-integration-state.json，无法写回接入完成态；不要把当前 setup 视为完整完成')
+    return
+  }
+
+  const nextState = {
+    ...state,
+    completionGates: {
+      ...(state.completionGates || {}),
+      doctorPassed,
+      engineeringPassed,
+      modeRequiredGates: state.completionGates?.modeRequiredGates || {},
+    },
+  }
+  nextState.onboardingCompletionReady = deriveOnboardingCompletionReady(nextState)
+  nextState.integrationReady = nextState.onboardingCompletionReady
+
+  await fs.writeFile(statePath, `${JSON.stringify(nextState, null, 2)}\n`, 'utf8')
+}
+
 function hasLcm() {
   const result = spawnSync('lcm', ['--version'], { encoding: 'utf8', stdio: 'pipe' })
   return !result.error && (result.status ?? 1) === 0
@@ -246,7 +314,7 @@ function runApplyScript({ applyScript, passthrough }) {
 function runDoctorGate({ doctorScript, projectRoot, skipDoctorGate }) {
   if (skipDoctorGate) {
     warn('按 --skip-doctor-gate 跳过接入完成后的 doctor 阻断校验，仅建议在高级维护或源仓库排障时使用')
-    return
+    return 'skipped-by-user'
   }
 
   info('执行 typical-page doctor 作为接入完成门槛')
@@ -260,10 +328,11 @@ function runDoctorGate({ doctorScript, projectRoot, skipDoctorGate }) {
     process.stdout.write(result.stdout ?? '')
     if ((result.stdout ?? '').includes('Typical Page Doctor: WARN')) {
       warn('doctor 以 WARN 结束：可以继续，但仅应按当前项目命中的兼容/手工路径生成，不要忽略报告里的约束')
+      return 'failed'
     } else {
       info('doctor 通过，可以继续生成业务典型页')
+      return 'passed'
     }
-    return
   }
 
   process.stdout.write(result.stdout ?? '')
@@ -309,10 +378,11 @@ async function runEngineeringGate({ projectRoot }) {
 
   if (report.status === 'passed') {
     info('工程闭环校验通过')
-    return
+    return 'passed'
   }
 
   warn('工程闭环校验已完成，但仍有缺失或非阻断项需要解释；不要把 doctor 通过误当成完整工程完成态')
+  return 'failed'
 }
 
 async function main() {
@@ -322,6 +392,7 @@ async function main() {
     const projectRoot = process.cwd()
     const scriptDir = path.dirname(fileURLToPath(import.meta.url))
     const applyScript = path.join(scriptDir, 'apply-in-current-project.mjs')
+    const preflightScript = path.join(scriptDir, 'preflight-new-project.mjs')
     const doctorScript = path.join(scriptDir, 'typical-page-doctor.mjs')
     const lcmAvailable = hasLcm()
     const rerunCommand = formatCurrentSetupCommand(rawArgs)
@@ -347,9 +418,12 @@ async function main() {
       warn('未检测到 lcm。当前将跳过项目上下文初始化与 Cursor link，仅依赖已复制到项目内的 hiui-design 继续接入。')
     }
 
+    info('执行新项目接入预检')
+    runCommand(process.execPath, [preflightScript, '--target', projectRoot])
     runApplyScript({ applyScript, passthrough: [...passthrough, '--skip-open-browser'] })
-    runDoctorGate({ doctorScript, projectRoot, skipDoctorGate })
-    await runEngineeringGate({ projectRoot })
+    const doctorPassed = runDoctorGate({ doctorScript, projectRoot, skipDoctorGate })
+    const engineeringPassed = await runEngineeringGate({ projectRoot })
+    await updateProjectIntegrationCompletionState({ projectRoot, doctorPassed, engineeringPassed })
 
     if (!skipOpenBrowser) {
       const launchResult = await autoLaunchHostIntegrationPreview({
@@ -371,7 +445,8 @@ async function main() {
     info('设计师模式安装完成')
     console.log('- 后续同步：pnpm typical-page:designer-setup 或 npm run typical-page:designer-setup')
     console.log('- `typical-page:designer-setup` 默认已自动执行 doctor、build 校验，并在 lint script 存在时给出可解释结果；后续页面生成默认沿用已写入的 project mode lock')
-    console.log('- 页面生成前先执行 `pnpm typical-page:plan-page-task -- --json ...` 或 `npm run typical-page:plan-page-task -- --json ...` 获取机器计划')
+    console.log('- legacy 普通典型页默认沿 host-contract + compiled PageSpec + HiuiLegacyPage runtime + typed page slots 轻量生成链路实现；旧 page-component / carrier 不是生成路径')
+    console.log('- legacy 页面生成前先执行 `pnpm typical-page:apply:legacy -- --sync-profile minimal` 完成轻量接入并捕获 host contract；`typical-page:legacy:init` 是 apply 内部步骤，不作为默认手工入口。')
     console.log('- 后续若手工改宿主、依赖、路由或样式入口，再手动执行 pnpm typical-page:doctor 或 npm run typical-page:doctor')
     console.log('- 接入阶段默认已自动补齐 `src/translation/*`、`messages.ts` 与 `i18n:sync`；后续若需要重同步 locale 基线，再执行 pnpm typical-page:i18n:init 或 npm run typical-page:i18n:init')
     console.log('- 页面生成先确认 project mode lock，再判页型：.local-context/hiui-design/rules/page-type-map.md')
@@ -384,11 +459,11 @@ async function main() {
     console.log('- 如果识别为已有框架，默认不会把模版页面、路由或宿主桥接挂进项目源码；请直接在目标项目既有目录结构中生成业务页')
     console.log(`- 旧系统会默认把一份 reference-only 示例页同步到：${RULES_ONLY_REFERENCE_PAGES_GLOB}；这只是本地参考/回退资产，不表示 legacy-host-compatible 禁用典型页组件`)
     console.log('- 若 reference 目录被手工清理，再回退使用 skill 内示例：.local-context/hiui-design/examples/host-integration/src/pages/*')
-    console.log('- 若当前项目走 rules-only，或 legacy-host-compatible 但尚未命中 page-component fast path，先用 `pnpm typical-page:plan-page-task -- --page-type <id> --page <generated-page-path> --json` 锁定计划，再用 `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` 生成带 source contract 的起手骨架。若 legacy-host-compatible 计划已选中 pageComponent，则默认主链是 `page-component + runtime bridge + slot fill`；此时 reference 只作本地参考/回退资产，不是默认翻译结果。')
-    console.log('- 页面实现过程中，先补齐 host region / ownership 映射，再执行 `pnpm typical-page:preflight -- --page <generated-page-path>` 提前暴露 contract 占位符、source marker 与 transitive helper 污染。')
-    console.log('- 快速典型页完成口径是当前页可预览、preflight 通过、lint / build 可解释；正式验收、发布、结构修复或 ownership / marker 变化时才执行 `typical-page:finalize-page`。')
+    console.log('- 若当前项目走 legacy-host-compatible，先补齐 host-contract 中 request/message/permission/route/theme adapter，再执行 `pnpm typical-page:light-plan -- --page-type <id> --page <generated-page-path> --summary <summary> --out <light-plan.json>`，随后用 `pnpm typical-page:legacy:new -- --plan <light-plan.json>` 或 `pnpm typical-page:legacy:rewrite -- --plan <light-plan.json>` 生成 typed slots 页面。`typical-page:legacy:verify` 仅用于排障。')
+    console.log('- legacy 页面实现过程中，先补齐 host region / ownership 映射，再执行 `pnpm typical-page:legacy:accept -- --profile preview|delivery --page <generated-page-path>` 分层验收；`typical-page:preflight` 不属于普通 legacy 轻量生成主链。')
+    console.log('- 快速典型页完成口径是当前页可预览、legacy accept preview 通过、lint / build 可解释；正式交付、发布或结构修复时再提升到 legacy accept delivery，不再用 `typical-page:finalize-page` 作为 legacy 默认收口。')
     console.log('- 如果是数据统计页，参考 table-stat.tsx；如果是全页编辑，参考 full-page-edit.tsx，但不要把 reference-only 目录当成正式 gallery 接进项目，也不要把它误解成 legacy-host-compatible 只能走 reference/fallback。')
-    console.log('- 只有明确需要基线联调页和宿主桥接示例时，才执行 typical-page:apply:host-assets 或 setup-for-designers.mjs --mode host-integration')
+    console.log('- 只有明确需要基线联调页和宿主桥接示例时，才执行 node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode host-integration 或 setup-for-designers.mjs --mode host-integration')
     console.log('- 若目标项目里还残留旧视觉依赖或旧演示页，请先清理，再安装典型页依赖')
     console.log('- 如果脚本卡在 lcm init，请检查 HIUI_DESIGN_LCM_REGISTRY 是否可访问；必要时把同一条命令切到沙箱外重跑')
   } catch (error) {

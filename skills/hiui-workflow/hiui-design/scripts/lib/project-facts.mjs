@@ -217,3 +217,72 @@ export async function loadProjectCapabilitiesFact({
       }),
   })
 }
+
+export async function loadProjectCarrierRealizationFact({
+  targetRoot,
+  modeOverride = 'legacy-host-compatible',
+}) {
+  const modeKey = normalizeModeKey(modeOverride)
+
+  return loadCachedProjectFact({
+    targetRoot,
+    factId: 'project-carrier-realization',
+    modeKey,
+    fingerprintPaths: PROJECT_CAPABILITIES_FINGERPRINT_PATHS,
+    compute: async () => {
+      return {
+        schemaVersion: 'project-carrier-realization.v1',
+        status: 'not-applicable',
+        removed: true,
+        reason: 'legacy-host-compatible no longer provisions or validates project page-component carriers; use host-contract + compiled PageSpec + HiuiLegacyPage runtime + typed page slots',
+        checkedComponentCount: 0,
+        readyPageTypeIds: [],
+        blockedPageTypeIds: [],
+        components: [],
+      }
+    },
+  })
+}
+
+export async function loadProjectTypicalPageSupportFact({
+  targetRoot,
+  modeOverride = 'legacy-host-compatible',
+  projectCarrierRealization = null,
+}) {
+  const modeKey = normalizeModeKey(modeOverride)
+  const carrierFact =
+    projectCarrierRealization ||
+    (await loadProjectCarrierRealizationFact({
+      targetRoot,
+      modeOverride,
+    }))
+
+  return loadCachedProjectFact({
+    targetRoot,
+    factId: 'project-typical-page-support',
+    modeKey,
+    fingerprintPaths: PROJECT_CAPABILITIES_FINGERPRINT_PATHS,
+    compute: async () => {
+      const pageTypeIds = ['table-basic', 'full-page-detail']
+      const pageTypes = pageTypeIds.map((pageTypeId) => {
+        return {
+          pageTypeId,
+          supportStatus: 'ready',
+          selectedDeliveryKind: 'legacy-lightweight-contract',
+          selectedComponentId: '',
+          projectCarrier: carrierFact,
+          standardComponent: {
+            status: 'not-applicable',
+            componentId: '',
+            legacyRuntimeSurface: { status: 'removed', adapterId: '', blockingReasons: [] },
+          },
+        }
+      })
+      return {
+        schemaVersion: 'project-typical-page-support.v1',
+        status: pageTypes.every((entry) => entry.supportStatus === 'ready') ? 'ready' : 'blocked',
+        pageTypes,
+      }
+    },
+  })
+}

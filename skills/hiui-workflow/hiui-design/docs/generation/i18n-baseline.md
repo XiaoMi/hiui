@@ -41,7 +41,7 @@
 | `key-only` | 宿主项目已有 `t()` / `intl.get()` / `formatMessage()` 等写法 | 沿用宿主 key 风格和 formatter；只补当前页面必要 key 或沿用中文 key；不强制补齐 7 语言资源 |
 | `full` | 明确要求 i18n / 多语言 / 英文 / RTL / locale 验收，或正式国际化交付 | 执行本文全部硬门槛、默认支持语言、RTL、formatter 与文本膨胀验收 |
 
-`rules-only` 典型页快速路径默认使用 `none`；若目标项目已经统一使用翻译函数，则使用 `key-only`。`legacy-host-compatible` / `host-compatible` 默认跟随宿主既有文案与 i18n 风格。只有进入 `full` 时，本文件后续的硬门槛全部生效。
+已锁定 `rules-only` mode 后的典型页页面生成路径默认使用 `none`；若目标项目已经统一使用翻译函数，则使用 `key-only`。`legacy-host-compatible` / `host-compatible` 默认跟随宿主既有文案与 i18n 风格。只有进入 `full` 时，本文件后续的硬门槛全部生效。
 
 ## full 模式默认支持语言
 

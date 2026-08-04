@@ -51,8 +51,15 @@
     "second white-body around chart section"
   ],
   "modeAdapters": {
-    "host-integration": { "templateDir": "templates/archetypes/host-integration/data-visualization" },
-    "rules-only": { "templateDir": "templates/archetypes/rules-only/data-visualization" },
-    "legacy-host-compatible": { "templateDir": "templates/archetypes/legacy-host-compatible/data-visualization" }
+    "host-integration": {
+      "templateDir": "templates/archetypes/host-integration/data-visualization"
+    },
+    "rules-only": {
+      "templateDir": "templates/archetypes/rules-only/data-visualization"
+    },
+    "legacy-host-compatible": {
+      "deliveryKind": "legacy-lightweight-contract",
+      "templateRole": "retired-reference-only"
+    }
   }
 }

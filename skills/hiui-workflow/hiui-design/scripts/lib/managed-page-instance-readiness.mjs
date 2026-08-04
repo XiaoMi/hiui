@@ -1,3 +1,5 @@
+import { CANDIDATE_IGNORE_MARKER } from './detection/typical-page-candidates.mjs'
+
 export function readManagedInstanceSourceMarkers(sourceRaw) {
   const source = String(sourceRaw || '')
   const hasAttr = (name) => new RegExp(`data-hiui5-${name}=["'][^"']+["']`).test(source)
@@ -56,6 +58,17 @@ export function managedInstanceReadinessForPageFact({
       reuseEligible: false,
       blockerCodes: [],
       reason: 'target page does not exist yet',
+      sourceMarkers,
+    }
+  }
+
+  if (String(sourceRaw || '').includes(CANDIDATE_IGNORE_MARKER)) {
+    return {
+      schemaVersion: 'managed-instance-readiness.v1',
+      status: 'not-applicable',
+      reuseEligible: false,
+      blockerCodes: [],
+      reason: 'source is marked as ignored candidate fixture',
       sourceMarkers,
     }
   }

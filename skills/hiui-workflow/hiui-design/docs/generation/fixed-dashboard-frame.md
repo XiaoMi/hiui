@@ -156,7 +156,7 @@ export function BusinessPage() {
 }
 ```
 
-`typical-page:start-page` 在命中 `data-visualization` 且已具备标准宿主骨架时，默认就应该生成这一套 shared-shell scaffold，而不是再回退成页面里手写 `PageHeader + white-body + control strip + chart card + table shell` 的自由拼装版本。analytics 页面默认再按 planner 选中的 `layoutArchetype` 产出 `primary-secondary`、`linear-stack` 或 `parallel-sections` 三类受管骨架；不要继续生成没有主次的 chart wall。
+`typical-page:analytics` / `typical-page:generate` 在命中 `data-visualization` 且已具备标准宿主骨架时，默认就应该生成这一套 shared-shell scaffold，而不是再回退成页面里手写 `PageHeader + white-body + control strip + chart card + table shell` 的自由拼装版本。analytics 页面默认再按 planner 选中的 `layoutArchetype` 产出 `primary-secondary`、`linear-stack` 或 `parallel-sections` 三类受管骨架；不要继续生成没有主次的 chart wall。
 
 对这类页面，起手说明里还必须显式写出三条继承边界：
 

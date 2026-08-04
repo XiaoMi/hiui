@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import process from 'node:process'
-import { runLegacyLightweightSurface } from './lib/legacy-lightweight-surface.mjs'
+import { runLegacyContractPageCommand } from './lib/legacy-contract-page-generator.mjs'
 
-runLegacyLightweightSurface({
+runLegacyContractPageCommand({
   argv: process.argv.slice(2),
   commandName: 'typical-page:legacy:rewrite',
   intent: 'rewrite',
@@ -12,4 +12,3 @@ runLegacyLightweightSurface({
   console.error(`[typical-page:legacy:rewrite] ${message}`)
   process.exit(1)
 })
-

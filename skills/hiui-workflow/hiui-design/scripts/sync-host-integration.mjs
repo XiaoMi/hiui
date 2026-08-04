@@ -294,7 +294,7 @@ async function main() {
         '3. For each reference-only business page, run `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>`, then `pnpm typical-page:preflight -- --page <generated-page-path>`, and only treat delivery as complete after `pnpm typical-page:finalize-page -- --page-type <id> --page <generated-page-path> --archetype <host-archetype-path> --region <name=target> ...`.'
       )
       console.log(
-        '4. If you later need a smoke gallery or host bridge demo, rerun bootstrap/apply in host-integration mode instead of wiring this reference tree into the main route tree.'
+        '4. If you later need a host-integration smoke gallery demo, rerun bootstrap/apply in host-integration mode instead of wiring this reference tree into the main route tree.'
       )
     } else {
       console.log(

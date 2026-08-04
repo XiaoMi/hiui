@@ -78,7 +78,7 @@ test('resolveDeliveryBindingStatus reads certified binding evidence from project
               status: 'ready',
               registryPath: '.local-context/hiui-design/outputs/project-delivery-plugin-registry.json',
             },
-            legacyBridgeValidation: {
+            legacyContractValidation: {
               status: 'ready',
             },
             requiredLegacyPageTypes: ['table-basic'],
@@ -127,7 +127,7 @@ export default function DeliveryBindingMissingPage() {
               status: 'ready',
               registryPath: '.local-context/hiui-design/outputs/project-delivery-plugin-registry.json',
             },
-            legacyBridgeValidation: {
+            legacyContractValidation: {
               status: 'ready',
             },
             requiredLegacyPageTypes: ['full-page-detail'],
@@ -194,7 +194,7 @@ test('resolveDeliveryBindingStatus fails closed when legacy binding coverage exi
               status: 'ready',
               registryPath: '.local-context/hiui-design/outputs/project-delivery-plugin-registry.json',
             },
-            legacyBridgeValidation: {
+            legacyContractValidation: {
               status: 'ready',
             },
             requiredLegacyPageTypes: ['table-basic'],
@@ -230,7 +230,7 @@ test('generate output distinguishes result readiness from legacy binding and rel
           status: 'blocked',
           registryPath: '.local-context/hiui-design/outputs/project-delivery-plugin-registry.json',
         },
-        legacyBridgeValidation: {
+        legacyContractValidation: {
           status: 'blocked',
         },
       },
@@ -294,7 +294,7 @@ test('managed page delivery status reaches result-ready only after preflight pas
           status: 'blocked',
           registryPath: '.local-context/hiui-design/outputs/project-delivery-plugin-registry.json',
         },
-        legacyBridgeValidation: {
+        legacyContractValidation: {
           status: 'blocked',
         },
       },

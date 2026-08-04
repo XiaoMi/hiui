@@ -291,6 +291,14 @@ Plan Gateway
 
 禁止模式：手写 `div + h1 + QueryFilter + Table + Pagination` 后补 `hiui-design shell: TablePageFrame`。
 
+典型页生成后的 runtime 失败不能作为改成原生手写 HiUI 页面的理由。若 `HiuiLegacyPage`、`@hiui-design/typical-page-shells`、schema peer 或宿主兼容性失败，处置路径只能是修官方受管 runtime / peer resolution / PageSpec / typed slots，或在 `src/hiui-runtime/adapters/**` 增加受管 runtime adapter 并写入 `.local-context/hiui-design/outputs/runtime-provider-contract.json`，否则输出 blocked；不得删除 `page.instance.tsx`、`page.slots.ts` 后把 `index.tsx` 改成 `hiui5` primitive 直写页，也不得把 `src/hiui-runtime/HiuiLegacyPage.tsx` 改成项目本地 primitive renderer 来伪装仍在走典型页链路。
+
+`page.instance.tsx -> HiuiLegacyPage` 或 `page.instance.tsx -> src/hiui-runtime/pages/<PageType>Page` 只能证明业务页入口仍在受管链路上，不能单独证明 runtime shell ownership。`legacy-host-compatible` 还必须由 runtime provenance / runtime seal、PageSpec canonical shell binding、runtime provider contract 与 peer/export resolution 共同证明：`table-basic` / `tree-table` 必须真实绑定 `TablePageFrame` 或声明等价的受管 runtime adapter，`table-stat` 必须真实绑定 `StatListPageFrame` 或声明等价的受管 runtime adapter，`tree-split` 必须真实绑定 `TreeSplitPageFrame` 或声明等价的受管 runtime adapter，不得仅依赖 `data-hiui-legacy-shell`、注释或合同字段自证。
+
+`legacy-host-compatible` 根样式也是 runtime ownership 证据的一部分：`src/hiui-runtime/styles.css` 必须让 `[data-hiui-page-root='legacy-host-compatible']` 保持 `display:flex`、`flex-direction:column`、`flex:1 1 0%`、`align-self:stretch`、`height:100%`、`min-height:0`、`min-width:0`、`overflow:hidden`。只证明 adapter path、slots 或 region marker 不足以证明官方白卡能撑满主体。
+
+列表类页面的 `QueryFilter` 字段皮肤必须由 `src/hiui-runtime/shared/list.tsx` 的 schema field map 托管：不得在 `toSchemaQueryField` 内写 `renderFormItem` / `renderer`，不得直接 import 并渲染 `@hi-ui/hiui` 的 `Input` / `Select` 来绕开 `shared-query-filter-skin`。
+
 同样禁止以下伪合规模式：
 
 - 在业务页中把标准 shell 名称声明为普通 DOM / 字符串别名（例如 `TablePageFrame = 'div'`）。
@@ -300,7 +308,7 @@ Plan Gateway
 
 ### Managed Components / Adapter
 
-`hiui5` 是底层组件库，可以在 adapter / managed components / shell carrier 内部使用。受管页面不得裸用 `hiui5` primitive 承担 shell、header、white-body、query-filter、table、pagination 等关键 region 职责。
+`hiui5` 是底层组件库，可以在 adapter / managed components / shell carrier 内部使用。受管页面与受管 runtime 不得裸用 `hiui5` primitive 承担 shell、header、white-body、query-filter、table、pagination、main-scroll、drawer-shell、form-body、detail-body 等 locked region 职责。
 
 合法 adapter 必须满足：
 

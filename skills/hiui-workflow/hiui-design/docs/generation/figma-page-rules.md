@@ -1,6 +1,6 @@
 <!-- Generated from rules/common.page-types.json by scripts/sync-manifest-docs.mjs. -->
 <!-- Do not edit page-type facts directly in this file. Canonical machine facts live in rules/common.page-types.json. -->
-<!-- Rules version: 1.0.7 (2026-07-21). -->
+<!-- Rules version: 1.2.2 (2026-08-04). -->
 
 # 当前项目 Figma 典型页注册总表
 
@@ -56,7 +56,7 @@
 ## 跨页前置
 
 - 对 `host-integration`、现代 `rules-only` 或 `isolated-standard-shell`，必须优先复用 `@hiui-design/typical-page-shells`
-- 若目标项目主树处于 `legacy-host-compatible`（旧宿主桥接接入模式），普通典型页仍优先遵循 `page-component + runtimeAdapterProof` 主链路；只有宿主已证明可直接承载，或另行隔离现代运行时入口时，才直接落标准壳运行时
+- 若目标项目主树处于 `legacy-host-compatible`，普通典型页必须先完成项目接入链 `apply:legacy`（内部执行 `legacy:init`），再遵循 `light-plan` + `legacy:new|rewrite --plan` 的 PageSpec runtime 轻量契约；宿主通过 `HiuiLegacyPage` 承载现有典型页壳，业务页只填 typed page slots
 - 必须优先从示例页起步，不要从空白文件发明典型页结构
 - 外部项目默认只把 `.local-context/hiui-design/` 作为规则能力保留在项目中，不把模版页面、路由 gallery 或宿主桥接整包同步进 `src/`
 - 外部项目应直接在目标项目既有目录结构中生成业务页，并用 `examples/host-integration/src/pages/*` 作为参考示例

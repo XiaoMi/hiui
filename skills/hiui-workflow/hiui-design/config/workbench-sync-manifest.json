@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "hiui-design-sync-manifest.v1",
+  "profile": "workbench",
+  "description": "Maintainer-only workbench assets for full hiui-design diagnostics, examples, tests, and reference data.",
+  "paths": [
+    "SKILL.md",
+    "README.md",
+    "agents",
+    "archetypes",
+    "config",
+    "core",
+    "docs",
+    "examples",
+    "manifests",
+    "reference",
+    "references",
+    "rules",
+    "schemas",
+    "scripts",
+    "templates",
+    "vendor"
+  ],
+  "exclude": [
+    "core/outputs/**"
+  ]
+}
