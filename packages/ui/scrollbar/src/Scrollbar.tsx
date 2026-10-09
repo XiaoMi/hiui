@@ -47,10 +47,15 @@ export const Scrollbar = forwardRef<HTMLDivElement | null, ScrollbarProps>(
 
     useEffect(() => {
       if (containerElement) {
-        setPs(new PerfectScrollbar(containerElement, settings))
+        const instance = new PerfectScrollbar(containerElement, settings)
+        setPs(instance)
 
         // 动态设置滚动条 z-index
         zIndex && containerElement.style.setProperty('--scrollbar-zIndex', String(zIndex))
+
+        return () => {
+          instance.destroy()
+        }
       }
     }, [containerElement, zIndex])
 
