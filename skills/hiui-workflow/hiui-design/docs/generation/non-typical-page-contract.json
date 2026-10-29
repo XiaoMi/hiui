@@ -1,0 +1,112 @@
+{
+  "schema": "hiui-design-non-typical-page-contract.v1",
+  "pageFamily": "non-typical-page",
+  "status": "generator-ready-public-open",
+  "capabilityStage": "v1-generator-ready-public-open",
+  "executionReadiness": {
+    "source": "docs/generation/page-family-workflows.manifest.json",
+    "scopeFrozen": true,
+    "notes": [
+      "Planner, brief, generator, and legacy refactor readiness must be read from page-family-workflows.manifest.json.",
+      "This contract freezes v1 scope and public boundaries, but it is not the execution readiness source of truth.",
+      "supportedArchetypes here means internal coordination-pattern contracts for execution planning, not page-template or screenshot-example enumeration.",
+      "When inputMode is figma-design-restore, upper layers must provide confirmedDesignRestoreInput before brief creation.",
+      "When inputMode is figma-design-restore, nonTypicalExecutionBrief must materialize restorePrimitivePlan from confirmedDesignRestoreInput.restoreDecisionPackage.",
+      "design-screenshot-restore remains reserved for the second-stage degraded lane and is not publicly open yet."
+    ]
+  },
+  "allowedInputModes": [
+    "page-prompt",
+    "prototype-screenshot",
+    "figma-design-restore"
+  ],
+  "supportedIntegrationModes": [
+    "host-integration",
+    "rules-only"
+  ],
+  "supportedScenarios": [
+    "new-page-generation"
+  ],
+  "supportedArchetypes": [
+    "process-stage-sync",
+    "selection-detail-sync"
+  ],
+  "supportedCoordinationPatterns": [
+    "process-stage-sync",
+    "selection-detail-sync"
+  ],
+  "unsupportedScenarios": [
+    "legacy-system-reconstruction",
+    "third-party-canvas-or-graph-engine-page",
+    "unvalidated-archetype",
+    "design-system-free-generation"
+  ],
+  "scriptExecution": {
+    "generationBrief": "brief-ready-supported-scope",
+    "planPageTask": "planner-ready-supported-scope",
+    "generatePageFromBrief": "generator-ready-supported-scope",
+    "legacyRefactorContract": "not-supported"
+  },
+  "requiredDecisionPackage": [
+    "pageGoal",
+    "primaryWorkflows",
+    "pageHeaderPlan.title",
+    "pageHeaderPlan.hostConflictPolicy",
+    "pageHeaderPlan.restorePolicy",
+    "whiteBodyPlan.owner",
+    "whiteBodyPlan.workspaceMode",
+    "whiteBodyPlan.mountRegionFillPolicy",
+    "whiteBodyPlan.hostEscalationRule",
+    "regionPlan.primaryRegion",
+    "regionPlan.stableRegions",
+    "regionPlan.mutableRegions",
+    "regionPlan.readingFlow",
+    "coordinationModel.type",
+    "coordinationModel.sourceRegion",
+    "coordinationModel.targetRegions",
+    "coordinationModel.interactionRule",
+    "dataCarriers",
+    "dataShape.chartUsage",
+    "dataShape.regionShapes",
+    "interactionContracts",
+    "designSystemPlan.preferredSources",
+    "designSystemPlan.approvedEscapes",
+    "stopReason"
+  ],
+  "stopRules": [
+    "stop when the page can still be covered by an existing typical-page or analytics-page family",
+    "stop when the page only looks unusual because it adds side regions or control regions, but a classic table, form, or detail still remains the primary carrier",
+    "stop when pageHeaderPlan or whiteBodyPlan cannot be formed clearly",
+    "stop when the host cannot provide a stretchable mount region",
+    "stop when primaryRegion is not unique",
+    "stop when stableRegions and mutableRegions cannot be separated clearly",
+    "stop when the primary cross-region coordination cannot be explained clearly",
+    "stop when critical interactions require an unproven third-party canvas or host-only runtime",
+    "stop when design system sources cannot be mapped back to HiUI5 or local-managed-runtime",
+    "stop when the request attempts to bypass current legacyRefactorReady=false or v1 scope-frozen boundaries",
+    "do not stop only because shared host header collapse is unproven when page-owned suppression is available"
+  ],
+  "lightSanityChecklist": [
+    "family classification is explicit",
+    "page goal is concrete",
+    "primary workflows are limited to core paths",
+    "pageHeaderPlan is explicit",
+    "whiteBodyPlan is explicit",
+    "primaryRegion is unique",
+    "region data shape is explicit",
+    "stable and mutable regions are declared separately",
+    "reading flow is explicit",
+    "cross-region coordination is explicit",
+    "preferredSources remain inside the approved design system",
+    "approvedEscapes is empty unless explicitly justified",
+    "design-restore inputs must produce a non-empty restorePrimitivePlan.regionBindings"
+  ],
+  "planningArtifacts": [
+    "docs/generation/page-family-workflows.manifest.json",
+    "docs/generation/shared-page-design-guidance.md",
+    "docs/generation/non-typical-block-design-map.md",
+    "docs/generation/non-typical-workflow-archetypes.json",
+    "docs/architecture/non-typical-page-execution-plan.md",
+    "docs/architecture/non-typical-page-readiness-checklist.md"
+  ]
+}

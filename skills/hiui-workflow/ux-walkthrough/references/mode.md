@@ -28,7 +28,7 @@ python3 {SKILL_DIR}/scripts/probe_dev_server.py <项目路径> --json
 
 - precheck 通过（gate `continue_walkthrough` 或 runtime 分支 `next_action`）
 - 扫描或手动识别：路由、页面组件、样式、通用组件
-- 非页面项目 → 说明原因并请求补充页面输入
+- 非页面项目 → `closeout` + `code_not_page_project`
 - 扫描失败且无手动证据 → `code_scan_failed`
 
 ### 体验边界（fallback / 未启动 dev 时）
@@ -57,7 +57,7 @@ python3 {SKILL_DIR}/scripts/probe_dev_server.py <项目路径> --json
 
 ### 交付
 
-- 可无截图，仍须生成 docx
+- 可无截图，仍须 docx + closeout
 - docx 嵌图与命名见 `report-json.md` § DOCX
 - 完整条件见 `SKILL.md` 完成定义
 

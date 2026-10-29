@@ -5,7 +5,7 @@ UX Walkthrough - 输入识别与代码仓库门禁判断脚本
 用途：
 - 在正式走查前，先做一次确定性输入识别
 - 对代码仓库额外判断其是否属于可执行页面走查的页面项目
-- 输出结构化 JSON，供外层决定是继续、补充输入，还是明确失败原因并等待补充
+- 输出结构化 JSON，供外层决定是继续、补充输入，还是进入统一收口判定
 
 用法：
 - python3 detect_input_mode.py <输入> --json
@@ -100,6 +100,13 @@ SKIP_DIRECTORIES = {
     ".output",
     "coverage",
     ".turbo",
+    "test",
+    "tests",
+    "__tests__",
+    "fixtures",
+    "__fixtures__",
+    "__mocks__",
+    "storybook-static",
 }
 
 
@@ -326,7 +333,7 @@ def _result_for_repo(project_path: Path) -> dict:
             "path": str(project_path),
             "reason": "repo_not_found",
             "should_continue": False,
-            "should_report_completion": False,
+            "should_finalize_usage": False,
             "status": "needs_input",
         }
 
@@ -339,7 +346,7 @@ def _result_for_repo(project_path: Path) -> dict:
             "path": str(project_path),
             "reason": "repo_not_directory",
             "should_continue": False,
-            "should_report_completion": False,
+            "should_finalize_usage": False,
             "status": "needs_input",
         }
 
@@ -352,7 +359,7 @@ def _result_for_repo(project_path: Path) -> dict:
         "path": str(project_path.resolve()),
         "repo": repo,
         "should_continue": False,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "status": "needs_input",
     }
 
@@ -375,9 +382,18 @@ def _result_for_repo(project_path: Path) -> dict:
                 "failure_preset": "code_not_page_project",
                 "failure_reason": "not_page_project",
                 "failure_stage": "evidence_ready",
-                "message": "已识别为代码仓库输入，但仓库更像服务端或非页面项目，请说明失败原因，并提示用户补充真正的页面输入。",
-                "next_action": "explain_failure",
-                "should_report_completion": True,
+                "finalize_usage": {
+                    "args": {
+                        "failure_detail": failure_detail,
+                        "failure_preset": "code_not_page_project",
+                        "source": "code",
+                        "status": "failed",
+                    },
+                    "recommended": True,
+                },
+                "message": "已识别为代码仓库输入，但仓库更像服务端或非页面项目，建议进入统一收口判定，并提示用户补充真正的页面输入。",
+                "next_action": "run_closeout_walkthrough",
+                "should_finalize_usage": True,
                 "status": "failed",
             }
         )
@@ -401,7 +417,7 @@ def _result_for_url(value: str) -> dict:
         "ok": True,
         "path": value,
         "should_continue": True,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "status": "continue",
     }
 
@@ -419,7 +435,7 @@ def _result_for_image(value: str) -> dict:
         "ok": exists,
         "path": str(path),
         "should_continue": exists,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "status": "continue" if exists else "needs_input",
     }
 
@@ -432,7 +448,7 @@ def _result_for_unknown(value: str) -> dict:
         "ok": False,
         "raw_input": value,
         "should_continue": False,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "status": "needs_clarification",
     }
 

@@ -1,31 +1,31 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Button, Message, Space, Tree } from '@hi-ui/hiui'
 import type { TreeDataItem } from '@hi-ui/tree'
 import { SearchInput } from '@hi-ui/query-filter'
-import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
-import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
+import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { TypicalPageFieldMapProvider } from '../components/hiui-design-runtime'
 import {
   ProListPageProvider,
   queryFilterPickerOverlay,
   useProListPageContext,
-} from '@hiui-design/typical-page-shells/pro-list-page'
-import { TreeSplitPageFrame, proTreeSplitPageStyles } from '@hiui-design/typical-page-shells/pro-tree-split-page'
+} from '../components/hiui-design-runtime/pro-list-page'
+import { TreeSplitPageFrame, proTreeSplitPageStyles } from '../components/hiui-design-runtime/pro-tree-split-page'
 import {
   conditionOptions,
   createInventoryRowQuery,
   itemAttrOptions,
   materialCategoryTree,
   materialDefaultExpandedIds,
+  serialManagedOptions,
 } from './typical-pages.mock'
 import {
   filterListByKeyword,
   getKeywordValue,
   getParamsWithoutKeyword,
   paginateList,
-} from './request-utils'
-import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
+} from './data-visualization/request-utils'
 import styles from './inventory-split.module.scss'
-import { useTranslation } from '../../translation'
+import { useTranslation } from './page-localization'
 
 const T = extendDsl(ReadonlyFieldCreator, {
 })
@@ -45,9 +45,9 @@ function filterTreeByKeyword(nodes: TreeDataItem[], keyword: string): TreeDataIt
 }
 
 function InventorySplitInner({
-  treeCategoryRef,
+  onCategoryChange,
 }: {
-  treeCategoryRef: React.MutableRefObject<string | null>
+  onCategoryChange: (categoryId: string | null) => void
 }) {
   const { locale, t, formatNumber } = useTranslation()
   const { subscription, refreshListData } = useProListPageContext()
@@ -72,18 +72,27 @@ function InventorySplitInner({
 
   const queryFields = useMemo(
     () => [
-      createManagedQuerySelectField({
-        field: 'itemAttr',
-        label: t('物品属性'),
-        data: itemAttrOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
-      createManagedQuerySelectField({
-        field: 'conditionGrade',
-        label: t('品相'),
-        data: conditionOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
+      F(t('物品属性'), 'itemAttr')
+        .Select({
+          data: itemAttrOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('品相'), 'conditionGrade')
+        .Select({
+          data: conditionOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('串号管理'), 'serialManagedList')
+        .CheckSelect({
+          data: serialManagedOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
     ],
     [t]
   )
@@ -111,11 +120,7 @@ function InventorySplitInner({
             <Button
               type="primary"
               appearance="link"
-              onClick={() =>
-                Message.open({
-                  title: t('查看 {name}', { name: t(row.name) }),
-                })
-              }
+              onClick={() => Message.open({ title: `${t('查看')} ${row.name}` })}
             >
               {t('查看')}
             </Button>
@@ -129,13 +134,13 @@ function InventorySplitInner({
   const handleTreeSelect = useCallback(
     (id: string | number | null) => {
       setSelectedId(id)
-      treeCategoryRef.current = id == null || id === '' ? null : String(id)
+      onCategoryChange(id == null || id === '' ? null : String(id))
       subscription.mergeValue({
         pagination: { current: 1 },
       })
       void refreshListData()
     },
-    [refreshListData, subscription, treeCategoryRef]
+    [onCategoryChange, refreshListData, subscription]
   )
 
   return (
@@ -185,9 +190,9 @@ function InventorySplitInner({
 
 export function InventorySplitPage() {
   const { locale, t } = useTranslation()
-  const treeCategoryRef = useRef<string | null>(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
   const request = useMemo(() => {
-    const queryInventoryRows = createInventoryRowQuery(() => treeCategoryRef.current)
+    const queryInventoryRows = createInventoryRowQuery(() => selectedCategoryId)
 
     return async (params: Parameters<typeof queryInventoryRows>[0]) => {
       const keyword = getKeywordValue(params)
@@ -207,13 +212,15 @@ export function InventorySplitPage() {
 
       return paginateList(filteredList, nextParams)
     }
-  }, [t])
+  }, [selectedCategoryId, t])
 
   return (
     <ProListPageProvider key={locale} request={request}>
       <TypicalPageFieldMapProvider key={locale}>
-        <InventorySplitInner treeCategoryRef={treeCategoryRef} />
+        <InventorySplitInner onCategoryChange={setSelectedCategoryId} />
       </TypicalPageFieldMapProvider>
     </ProListPageProvider>
   )
 }
+
+export default InventorySplitPage

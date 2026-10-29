@@ -1,0 +1,50 @@
+{
+  "name": "hiui-design-preview-runtime",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/charts": "2.6.7",
+    "@hi-ui/avatar": "5.0.0-experimental.1",
+    "@hi-ui/classname": "5.0.0-experimental.0",
+    "@hi-ui/core": "5.0.0",
+    "@hi-ui/descriptions": "5.0.0-experimental.1",
+    "@hi-ui/ellipsis-tooltip": "5.0.0-experimental.1",
+    "@hi-ui/empty-state": "5.0.0-experimental.1",
+    "@hi-ui/hiui": "5.0.0-experimental.6",
+    "@hi-ui/icons": "5.0.0-experimental.1",
+    "@hi-ui/layout": "5.0.0-experimental.3",
+    "@hi-ui/loading": "5.0.0-experimental.1",
+    "@hi-ui/menu": "5.0.0-experimental.3",
+    "@hi-ui/patch-for-react": "5.0.0",
+    "@hi-ui/query-filter": "5.0.0-experimental.2",
+    "@hi-ui/schema-core": "4.0.0-experimental.10",
+    "@hi-ui/schema-fields": "4.0.0-experimental.12",
+    "@hi-ui/schema-form": "4.0.0-experimental.4",
+    "@hi-ui/schema-group": "4.0.0-experimental.7",
+    "@hi-ui/schema-table": "4.0.0-experimental.4",
+    "@hi-ui/textarea": "5.0.0-experimental.3",
+    "@hi-ui/tree": "5.0.0-experimental.4",
+    "@hi-ui/use-ref-state": "4.0.0-experimental.2",
+    "@hi-ui/use-subscription": "4.0.0-experimental.2",
+    "ahooks": "3.9.7",
+    "hiui5": "npm:@hi-ui/hiui@5.0.0-experimental.6",
+    "hiui5-descriptions": "npm:@hi-ui/descriptions@5.0.0-experimental.1",
+    "hiui5-table": "npm:@hi-ui/table@5.0.0-experimental.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.3",
+    "sass-embedded": "^1.97.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^8.2.0"
+  }
+}

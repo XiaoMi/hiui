@@ -1,270 +1,253 @@
 # 数据可视化
 
-`data-visualization` 的生成策略固定为 `managed-analytics`。它可以有典型页面示例和受管承载组件，但不走普通 `page-component-only` 流程；页面组件只负责页头、单一白底主体、指标区、图表区、明细表区、滚动和间距，真正的图表表达由 `chart usage contract`、数据可视化 token 与图表组件规则决定。
+## 默认稿
 
-## 何时使用
+- 当前 `hiui-design` 不提供独立默认 `nodeId`
+- 官方起点：`examples/host-integration/src/pages/data-visualization/index.tsx`
+- 运行时对照页：`examples/host-integration/src/pages/data-visualization/index.tsx`
+- 共享表格规则继续复用 [`table-shared.md`](table-shared.md)
 
-- 页面主结构是“指标卡 + 多图表 + 明细表”
-- 需要在同一白底工作区里承接趋势、构成、排行、双轴、漏斗等多种图表
-- 图表只是页面主体，不是某个表格页里的附属小卡片
+## 当前 skill 范围
 
-若普通表格页中新增局部辅助图表，先归类为 `analytics-extension`；只有当图表形成独立业务分析块、多图表阅读线或“指标卡 + 多图表 + 明细表”的主体结构时，才升级为 `managed-analytics`。
+当前 `hiui-design` 已把 `data-visualization` 注册为可落地的扩展页型，但能力边界收敛在：
 
-## 示例起点
+- manifest 机读合同
+- 页头与 `whiteBody` 固定壳层
+- 规则驱动的内容区生成
+- `@ant-design/charts` 真实图表基线
+- 本地 `chart-theme.ts` 主题与配色 helper
 
-- `examples/host-integration/src/pages/data-visualization.tsx`
-- 共享规则继续复用 `table-shared.md`
+当前 skill 不额外引入旧版 `hiui-design` 包那套独立的 managed-analytics 治理链、chart registry 或 certified variant 审批流程。后续如果需要跨业务复用更重的图表治理能力，应单独扩展，不要在当前 skill 文档里假定这些能力已经存在。
 
-## 壳层
+## 适用
 
-- 固定页壳：`StatListPageFrame`
-- 不要退化成普通 `table-stat`
-- 不要退化成自由拼接的图表墙
-- 即使沿用 `StatListPageFrame`，默认也不要直接套用 `table-stat` 的“表体独占纵滚 + 吸底分页”实现；除非示例页或宿主 contract 明确要求，`data-visualization` 应保持单一白底主体内的页面级纵滚，让图表区和明细表顺着同一阅读流自然出现
+- 图表是页面主信息载体，而不是列表页里的局部辅助卡片
+- 页面主体是“指标卡 + 多图表”为主的分析阅读流；是否追加明细表取决于业务是否需要记录下钻、复核或后续操作承接
+- 需要趋势、分布、排行、监控、对比等图表阅读；若业务包含表格，它只承接精确明细
 
-## 实现顺序
+如果页面仍然是“指标卡 + 筛选 + 表格 + 分页”，优先使用 `table-stat`，不要误判成 `data-visualization`。
 
-`data-visualization` 的安全实现顺序固定为：
+## P0
 
-1. 读取项目 mode lock 与 `page-task-plan.v1`
-2. 锁定 `generationStrategy=managed-analytics`
-3. 锁定 `page type` 与 `shell inheritance`
-4. 冻结 `white-body / outer-padding / main-scroll` ownership
-5. 写 `chart usage contract`
-6. 判断内部 `layout strategy`
-7. 最后才进入业务 JSX 与图表配置实现
+- 必须从 `data-visualization` 的固定壳层起步，不要从 `table-stat.tsx` 或空白文件降级生成
+- 必须保留 `ProListPageProvider`、`TypicalPageFieldMapProvider`、`StatListPageFrame`
+- 固定区域只有页头与 `whiteBody` 主体；内容区域不复制整页示例，而是按规则生成
+- `queryFields + searchPlaceholder` 承担页面级 control strip；若业务存在记录级筛选，它仍应留在明细表附近，不与 page-global 控制混线
+- 单维度主切换默认使用 HiUI5 `Radio` 按钮组；不要用普通 `Button` 列表伪造单选切换
+- 指标卡与图表区必须位于同一个 `whiteBody` 工作区内；若业务包含明细表，它也必须位于同一个工作区内
+- 页面主滚动默认由白底主体自然承接，不要再拆第二层页面白底或第二套主滚动
+- 明细表在这里是按业务诉求决定的可选收口层，不是独立二级页；无此诉求时不要为了套示例硬补表格
+- 图表必须继续使用真实 `@ant-design/charts`，不要用占位 DOM、纯 CSS 趋势线或“先画个近似图”顶替
+- 图表主题、色板和图表容器节奏优先复用 `chart-theme.ts`，不要直接回退到图表库默认皮肤
+- 共享 `MetricCard` / `ChartCard` 的视觉基线由项目共享运行时持有；页面本地样式默认只允许布局辅助，不得再对共享卡片追加 `min-height`、`border`、`background`、`padding` 等局部视觉覆写
+- 已有图表允许从官方示例页中按图表级别选择性复制，并替换业务内容；不允许把整页布局原样搬运
 
-注意：
+## 生成时边界
 
-- 第 5 步前置的是“图表职责判断”，不是“图表容器实现”
-- 不要把“先想图表”执行成“先搭图表壳层”
-- 不要为了安放图表，在 `white-body` 外额外新增页面级白底、描边、圆角或统一 inset 容器
-- 默认的 analytics layout overlay 只允许收口到 `primary-secondary`、`linear-stack`、`parallel-sections` 这三类受管 archetype；不要把 `data-visualization` 回退成 generic `typical-page`
-- `preview-ready` 只能发生在 `chartUsageContract.contractStatus=ready` 且主次 layout marker 已在源码落地之后；占位 contract 只允许停留在 scaffold / started 阶段
+- 写代码前先按 `../ai-page-generation-guidance.md` 形成 `coverageDecision`
+- 不走常规典型页“复制母版后只替换业务槽位”的默认生成链；manifest 中声明的 `businessSlots` / `allowedSlots` 在本页型里只表示受控重构面，不表示可批量自动替换
+- 规则驱动的固定区域只有 `header` 与 `whiteBody`；`queryFields + searchPlaceholder` 承担 page-global control strip，`summarySection`、`chartSection` 按规范生成；只有业务明确需要时才生成 `detailTable`。其中 `summarySection` 可独立使用摘要 grid，正式 `chartSection` 需在整个图表区保持一种基础 grid mode
+- `statSection` 是整个分析工作区的业务入口，不是额外页面壳；在这里替换指标卡和图表内容时，不得创建第二个 `whiteBody`
+- `queryFields + searchPlaceholder` 承担 shell-owned page-global control strip；不要在 `statSection` 里再手拼第二条页面级查询面板
+- `tableFields` / `listRequest` 只在业务确实需要明细表时承接该区域；不要把页面重新写回“表格页主导、图表点缀”的结构，也不要在无明细诉求时硬补示例表格
+- 接口未接入、mock、生成说明、测试说明不得作为页面常驻内容渲染
 
-## 图表使用契约
+## AI 一次写对 Golden Path
 
-命中 `data-visualization` 时，图表不是装饰性占位，也不是示例同构复制项。
-进入实现前，必须先为每张图写清：
+`data-visualization` 的默认目标不是先产出空脚手架再修补，而是在首次写代码时就落到可运行、可替换业务数据的标准分析页骨架。AI 生成前必须按下面顺序组织代码：
 
-- 这张图回答哪个业务问题
-- 它属于哪一种信息任务：`trend / comparison / composition / process / relationship / status`
-- 为什么选择当前图，而不是相邻替代图
-- 它位于哪条阅读线：`summary / primary / secondary / full-span follow-up`
+1. 先确定核心业务数据：`summaryMetrics`、`chartCards`；只有业务明确需要记录下钻、复核或后续操作承接时，再补 `detailRows`。没有后端接口时生成可信 mock 数据，但不要留下“稍后接入 / 占位图表 / TODO 替换”的常驻内容。
+2. 默认使用同目录 `chart-theme.ts`，从中导入 `hiuiChartTokens`、色板、坐标轴、响应式或颜色 scale helper；图表不得直接回退到 `@ant-design/charts` 默认皮肤。只要页面出现 `Column` 或 `Bar`，对应配置必须使用 `createHiuiColumnLikeScale` / `createHiuiColumnLikeColorScale` 或 `createHiuiBarLikeScale` / `createHiuiBarLikeColorScale`，不要只把柱图/条图挂到通用 `chartCommonConfig`。
+   若页面使用单序列趋势 `Area`，对应配置必须走面积图 archetype 合同：通过 `withHiuiResponsiveChart` 包装、`line.style.lineWidth = 2`、使用批准的 HiUI 渐变填充与 `fillOpacity = 0.2`，并禁止使用 `shapeField: 'smooth'` 这类绕过受管样式的写法。
+3. 先完成桌面端图表区规划，再落 JSX：常规默认三列 grid，主图用 `chartGridFeatured` 跨两列；`chartCards` 里要用 `featured` 或等价字段表达 `slotPlan / rowFillDecision` 的结果，避免最后一行孤图。
+4. 统一通过 `MetricCard` 和 `ChartCard` 渲染；优先复用项目共享运行时 `src/runtime/analytics-primitives`，不要在业务页本地再次定义同名卡片实现。`MetricCard` 使用统一白底描边卡片，不要给单张指标卡增加彩色顶边、渐变条、角标等装饰；`ChartCard` 固定 `chartHeader -> chartContent`，`chartContent` 拉伸填满网格单元，不能每张图自己决定卡片 DOM、颜色和间距。
+5. 若业务需要明细表，再接入 `queryFields + searchPlaceholder + tableFields + queryVisualizationDetailList`，让 control strip 属于 shell，明细表作为同一个 `whiteBody` 阅读流尾部收口；无此诉求时页面可以在图表阅读流结束。
+6. 图表标题、区块标题和分组标题默认不展示副标题；只有在用户明确要求阅读提示、补充说明或统计口径时，才允许显式传入 `subtitle` / `summary`。
+7. 若业务需要尾部明细表，且表格前面还需要补一个分组标题或操作条，标题到表格的收口间距必须作为受管阅读节奏处理；不要只在标题分组内部加 `gap`，否则会出现标题改了、shell 持有的表格起点没动的假修复。
 
-未完成上述映射时，不得直接复用示例图表网格开始业务实现。
+轻量兜底只看少量硬约束：存在真实 `@ant-design/charts` 实例、存在 `./chart-theme` 主题来源、柱图/条图使用对应 HiUI scale helper、指标卡没有彩色顶边装饰、没有残留 placeholder / TODO / “稍后替换”文本。不要因为这些兜底再引入重审批或复杂组件决策表。
 
-## 生成期硬约束输入
+## 规则驱动内容区
 
-`managed-analytics` 不是“先写页面，再看像不像”。进入业务 JSX 前，planner 必须先给出 3 份机器输入：
+内容区必须按规范生成，而不是按示例页一比一拷贝。至少遵守下面四层规则：
 
-- `visualBaselinePlan`：锁定颜色、图表主题、紧凑卡片边框/圆角/内边距，以及“页面任务不得改共享壳和公共图表 primitives”。
-- `visualizationRolePlan`：锁定主图、辅助图、摘要信息分别应该占什么位置，哪些图默认不能独占主区域，同时冻结 `chartSectionLayoutPlan` 与 `controlStripPlan`，避免控制条语义再漂回真实 `QueryFilter`。
-- `writeScope`：锁定这次页面任务只允许改页面本地文件和 contract，不允许顺手改公共壳、共享 carrier、公共图表 helper。
+1. 工作区顺序
+   `queryFields/searchPlaceholder(control strip) -> stat-section -> chart-section -> detail-table（按需）`
+2. 正式图表区布局
+   `summarySection` 可使用独立摘要卡 grid，不受正式图表区单一基础 `grid mode` 约束；正式 `chartSection` 只允许一种基础 `grid mode`，主图通过同一 grid 中的 `span` / 主次权重强调，不要按每一行切换 grid 类型，并避免最后一行的破洞布局
+   生成前必须先做图表占位规划：至少明确 `chartCount`、`desktopBaseColumns`、`slotPlan`、`slotRemainder`、`selectedChartArchetype` 和 `rowFillDecision`
+   若 `slotPlan` 在桌面主布局下不能形成完整行，不要直接落图；先按 `merge-secondary -> remove-weak-chart -> switch-archetype -> adjust-span` 的顺序收口，避免最后一行只剩单卡
+   主图强调只允许在同一 chart grid 内通过 `span` 或主次权重完成；不要为了补齐最后一行再切回第二种 grid 写法
+3. 色彩与图表主题
+   业务页不直接回退到图表库默认色板；优先复用 `chart-theme.ts` 的色槽与轴线基线
+   只要出现面积趋势图，就继续遵守同一套面积图 archetype 合同；这条合同同样适用于其他包含图表的页型，不因为页面不是 `data-visualization` 就放宽
+4. 组件优先级
+   正式图表使用真实 `@ant-design/charts`；若业务包含记录级筛选和明细承接，继续复用 `QueryFilter + Table` 语义
+5. 指标卡表达
+   指标卡默认只要求标题 + 主值；迷你图属于可选增强，没有业务依据时可以不展示
+6. 图表卡填充
+   图表项容器必须可拉伸，图表卡必须填满所在网格单元；卡片内部采用“header 固定 + chart body 拉伸”的结构，不要只靠图表内容自然撑高
 
-这 3 份输入缺任何一份，都不应进入具体图表实现。
+如果某张图表在官方示例里已经有接近的实现，可以复制那一张图表卡或图表配置，再替换业务数据与文案；不要因此把整页结构也一起复制。
 
-## 图表主次与占位
+## 默认生成步骤
 
-- 主区域优先给带 `X/Y` 轴、需要承接主要阅读任务的图：`面积图 / 折线图 / 柱状图 / 条形图 / 双轴图 / 堆叠面积图`
-- 这些图默认需要更大的展示面积，因为它们承载趋势、对比、波动或结构变化，读图成本高，信息密度也更高
-- 次区域优先给摘要型或补充型图：`饼图 / 环图 / 雷达图 / 漏斗图 / 仪表盘`
-- 这类图默认用于解释“构成、画像、阶段摘要、状态”，更适合作为辅助判断，而不是整页的视觉中心
-- `漏斗图` 只有在页面 brief 明确是“流程型 / 阶段型 / 转化型看板”，且 layout 为 `linear-stack` 时，才允许升级为主区域图；否则默认只能做辅助图
-- `饼图 / 环图 / 雷达图 / 仪表盘` 默认不能占主区域；如果业务问题真的要求它们主导页面，必须在 `chartUsageContract` 里显式说明原因
+1. 先判页型
+   确认页面是“图表主导，是否带表格由业务决定”的分析阅读流；如果仍然是“指标卡 + 筛选 + 表格 + 分页”，回退到 `table-stat`。
+2. 再读机读合同
+   读取 `../page-types.manifest.json` 中 `data-visualization.generationContract`，确认 `requiredShell`、`generationWorkflow`、`lightSanityChecks`、固定区域与图表复用策略。
+3. 再锁槽位边界
+   对照 `../page-slot-boundaries.md` 的 `data-visualization` 小节，先声明受控重构面和“禁止第二个 whiteBody / 第二套主滚动”的边界。
+4. 生成壳层骨架
+   固定 `header + whiteBody` 的受管壳层，由 `queryFields + searchPlaceholder` 落位 page-global control strip，内容区生成 `summarySection / chartSection` 的规则骨架；只有业务明确需要时才追加 `detailTable`；不要复制整页示例。
+5. 先生成全局控制与摘要区
+   先在 `queryFields + searchPlaceholder` 中配置页面级控制，再围绕指标卡和摘要带生成内容，保持它们位于同一个 `whiteBody` 顶部阅读流中。指标卡默认展示标题 + 主值，迷你图按业务依据可选补充。
+6. 再生成图表区
+   根据主问题选择布局 archetype、基础 grid mode、主图与辅图角色；正式图表区从头到尾保持一种基础 grid mode，如需强调主图，只能在同一 chart grid 中用 span / 主次权重表达；先完成 `slotPlan / rowFillDecision` 收口，确保桌面主布局下没有最后一行孤图，再落图；如有现成图表可复用，只复制该图表块并替换业务内容。
+7. 按需生成明细表收口
+   只有业务明确需要记录下钻、复核或后续操作承接时，才结合 `tableFields`、`tableProps`、`listRequest`、`mockData` 生成分析尾部明细；明细表仍属于同一个工作区，不得抽离为独立子页。无此诉求时，不生成该段。
+8. 做轻量自检
+   核对单白底工作区、真实 `@ant-design/charts`、`chart-theme.ts` 主题来源、主滚动和 `.hi-v5-table-footer` 的普通文档流状态是否保留。
 
-## 布局与面积分配
+## 图表与表格职责
 
-- `primary-secondary`：适合“一个主问题 + 若干辅助判断”。主图应明显更大，辅助图只承接解释和补充
-- `linear-stack`：适合“按顺序阅读的流程型分析”。主图在上，后续图按判断链条往下展开
-- `parallel-sections`：适合“多个并列主题横向对照”。并列 section 仍然有主次，不是平均分配后做成一面图表墙
+- 指标卡负责摘要和快速扫读，默认可只展示数值，迷你图是可选增强
+- 图表负责趋势、分布、排行、对比等分析判断
+- 若存在明细表，它负责精确记录、筛选复核和后续操作承接
 
-不要把“所有图都画出来”当成完成信号。看板页更重要的是：谁是主问题、哪张图应该先被读、哪张图只是补充说明。
+推荐阅读路径通常是：摘要带 -> 主图表 -> 辅助图表 -> 明细表（按需）。
 
-## Chart Section Grid Consistency
+## 样式与滚动
 
-- `data-visualization` 的主图表工作区默认视为一个受管 `chart-section`
-- `chart-section` 必须采用单一基础栏数模式
-- 允许的基础栏数模式为：`two-column`、`three-column`、`four-column`
-- 模式一旦选定，同一 `chart-section` 内不得混用其它基础栏数模式
-- 单图独占整行 `12` 视为 `full-span`，不视为切换基础栏数模式
-- 不允许 `6/6 + 4/4/4`
-- 不允许 `4/4/4 + 3/3/3/3`
-- `two-column` 允许 `6/6` 与 `12`
-- `three-column` 允许 `4/4/4`、`8/4`、`4/8` 与 `12`
-- `four-column` 允许 `6/6`、`6/3/3`、`3/3/6`、`9/3`、`3/9` 与 `12`
-- `four-column` 禁止 `3/3/3/3` 的四等分图表墙；若整行都是正式数据图表，最小跨栏仍应保持 `2`
+- 页面根必须保持连续的 `flex + min-height: 0` 高度链
+- `whiteBody` 默认承接页面级纵向滚动
+- 若存在明细表，它的容器应跟随工作区自然流动，不要恢复成列表页里的吸底分页脚手架
+- `.hi-v5-table-footer` 在本页型中应保持普通文档流，不要固定吸底
+- 正式图表区的图表项容器必须支持子项拉伸；图表卡默认填满网格单元，卡片标题区固定，图表内容区拉伸承接剩余高度
 
-## Scope Boundary
+## 页面逐层拆解
 
-- 上述栏数与一致性规则仅适用于 `chart-section` 中的数据图表布局
-- `stat-section` 中的指标卡不受该规则约束
-- 指标卡中的 `sparkline`、`mini trend`、迷你柱图、微型面积图等，默认视为指标卡内部辅助可视元素，而不是独立数据图表
-- 只要该可视元素没有形成独立分析块、独立标题、独立图表容器或独立阅读任务，就不得计入 `chart-section` 的基础栏数模式、span 计算或混用校验
-- 因此允许“上方指标卡多宫格 / 自适应网格 + 下方三栏图表区”或“上方指标卡多宫格 / 自适应网格 + 下方四栏图表区”的组合；这不视为栏数模式混用
+### 1. 运行骨架
 
-## 结构 P0
+- 数据可视化页的运行骨架仍然是 `ProListPageProvider -> TypicalPageFieldMapProvider -> StatListPageFrame`，但它不是普通统计表。
+- `StatListPageFrame` 在这里负责页头、全局筛选和单一 `whiteBody` 工作区；若业务包含明细表，它也由同一个壳层承接。
+- 分析页和统计表的分界点在于：`statSection` 不再只是几张指标卡，而是整个分析工作区主体。
 
-- 保留页头、筛选区、指标卡区、多图表区、明细表区
-- 指标卡、图表和明细表必须位于同一白底工作区
-- 图表卡片可以分多行，但不要拆成第二层主白卡工作区
-- 明细表仍是页面的一部分，不要挪成独立二级页
-- `query-filter` 在 `data-visualization` 中默认表示“图表控制条 / dashboard control strip”，不等于“必须用真实 QueryFilter”
-- 当这条控制区会联动指标卡、图表区和明细表时，它的 `control scope` 默认是 `page-global`；位置固定在 `white-body` 顶部并先于 `stat-section`
-- `dashboard-control-strip` 默认必须写成独立单行，视觉处理是 `plain-row-no-panel`；不要包成整块灰底查询面板
-- 若这一行承担的是 `日 / 周 / 月 / 年`、指标视角、统计粒度或图表视图切换，默认使用 `Radio.Group / Tabs / Segmented` 这类切换控件；只有真实筛选字段才使用 `QueryFilter`
-- 明细表上方若还存在记录级筛选、关键词搜索、全部筛选抽屉，则该区域仍按 `table-shared.md` 使用真实 `QueryFilter + FilterDrawer`，并贴近 detail table，而不是与 `dashboard-control-strip` 共用同一行
-- 对受管页 contract，默认把这条约束写成：`semanticContract.queryFilterRegionRole = dashboard-control-strip`；不要因为 contract 有 `query-filter` region 就自动生成 `QueryFilter`
-- 对受管页 contract，默认同时写成：`semanticContract.controlScope = page-global`、`semanticContract.controlStripPlacement = top-of-white-body-before-stat-section`、`semanticContract.controlStripVisualTreatment = plain-row-no-panel`
-- 对受管页 contract，默认还要写成：`semanticContract.detailQueryFilterPolicy = separate-detail-query-filter-near-detail-table`、`semanticContract.mixedScopeControls = forbid-shared-control-row`
-- 对受管页 contract，默认把统计页防退化约束写成：`semanticContract.listShellComposition = forbid-table-list-scaffold`；不要把 `data-visualization` 借道 `ProListPageProvider / TablePageFrame / searchConfig` 生成成“带图表的列表页”
+### 2. 全局控制带
 
-## 主体骨架保护
+- `queryFields + searchPlaceholder` 是页面级 control strip；区域、来源、时间范围加关键词搜索只是常见组合，具体控件和字段能力仍以当前项目接入的 HiUI5 `QueryFilter` / schema 支持能力为准。
+- 这条控制带位于白底工作区顶部，只承担页面级查询，不混入记录级过滤或图表局部筛选。
+- 样式和组件模式继续沿用 `QueryFilter` 体系；不要在这里再手拼第二条“分析条件栏”。
+- 若控制带只承载单维度主切换，例如“日 / 周 / 月 / 年”，默认使用 HiUI5 `Radio` 按钮组语法；不要退回普通按钮列表。
 
-- 主体白色背景默认由既定 `white-body` 连续承接
-- 指标卡区、图表区、明细表区必须继续落在同一主体白色背景之内
-- 不要为了图表区完整感，在业务页新增第二层页面级 surface
-- 图表卡内部的 `padding / border / radius` 只属于卡片内部，不属于页面主体骨架
-- 这里的“骨架”特指主体白色背景承接层，即 `white-body` 与其 page-level geometry；它不等于一级分组，不等于图表卡，也不等于局部 section 容器
+### 3. 摘要区 `summarySection`
 
-## 图表技术栈硬门槛
+- 摘要区落在分析工作区内部，通常使用 `summaryGrid` 组织 `MetricCard`；实现默认复用项目共享运行时 `src/runtime/analytics-primitives`。
+- 这套 `MetricCard` 也是 `table-stat` 指标卡的共享视觉基线；统计表若继续使用 `StatOverviewGrid`，它只负责网格排布，不再自带另一套卡片皮肤。
+- `summaryGrid` 是独立摘要网格，桌面端四列、收缩时两列/一列；这块可以和正式图表区使用不同 grid，因为它承担的是摘要，不是图表主阅读流。
+- 每张 `MetricCard` 的内部结构固定为“标题 -> 主值行 -> 可选迷你图”，并与 `table-stat` 原生统计卡保持同一排版基线。
+- 标题使用 `14 / 22 / 400`，主值使用 `24 / 32 / 700`，标题与主值之间不额外拉开竖向间距；有备注时与主值基线对齐并排展示。
+- 样式上卡片是白底、`1px` 描边、`8px` 圆角、`16px` 内边距；默认保持紧凑的统计卡节奏，不人为增加标题区和主值区之间的额外 `gap`。
+- 页面本地样式若只是为了排布卡片，允许设置 grid 列数、响应式断点和最外层布局；不允许再给共享 `MetricCard` 单独加 `min-height`、重新描边、改背景或重写内边距。
+- 指标卡不使用 `borderTop`、渐变顶条、彩色角标等单卡装饰；指标状态只能通过文案、主值语义或可选迷你图表达，避免破坏统一卡片节奏。
 
-- 默认沿用 `examples/host-integration/src/pages/data-visualization.tsx` 的图表实现基线：真实 `@ant-design/charts`
-- 下列视觉与交互基线不只约束 `data-visualization`，任何 `hiui-design` 受管页只要实际渲染图表并声明 `chart-section`，都必须一起遵守
-- `legacy-host-compatible` / `rules-only` 也不能把 `chart-section` 降级成手写 `svg`、`canvas`、纯 CSS 走势线或其他“视觉近似图”
-- 若目标项目尚未安装 `@ant-design/charts`，或运行时/打包链无法承接该依赖，先停下补依赖与宿主兼容方案；不要继续生成业务页再用 primitives 顶替
-- 除非需求文字明确允许偏离，否则面积图、柱状图、饼图、雷达图、双轴图等都应继续使用 `@ant-design/charts` 或与其同源的受控 wrapper；“能画出来”不等于“满足页型要求”
-- 图表主题、颜色、坐标轴、tooltip、legend 和交互节奏默认跟随示例页的 HiUI 图表主题，不要回退到库默认皮肤
-- 业务页必须通过共享 helper 继承上述基线：默认使用 `withHiuiResponsiveChart` / `withHiuiMiniChart`；不要在业务页重新拼 theme 对象，更不要直接省略 theme
-- `Column`、堆叠柱、分组柱、双轴图中的柱形 interval 默认复用 `createHiuiColumnLikeScale`、`createHiuiColumnLikeColorScale` 或 `withHiuiColumnLikeChart`，保持柱形与间隙 `1:2`
-- `Bar` 默认复用 `createHiuiBarLikeScale`、`createHiuiBarLikeColorScale` 或 `withHiuiBarLikeChart`，保持条宽与间隙 `1:1`
-- 面积图默认不展示数据点、marker、symbol 或逐点高亮；除非需求、设计稿或 contract 明确要求，否则禁止开启 `point`、自定义点样式或沿折线默认点标记输出
-- 指标卡、图表卡和其他紧凑分析卡默认沿用 `紧凑卡片` 基线：`1px solid #E6E8EB`、圆角 `8px`、内边距 `16px`；不要沿共享 helper 默认值或页面局部样式把这些卡片放大成 `12px / 16px` 圆角表面
-- 指标卡、图表卡和其他紧凑分析卡默认沿用 `紧凑卡片` 基线：`1px solid #E6E8EB`、圆角 `8px`、内边距 `16px`；不要沿共享 helper 默认值或页面局部样式把这些卡片放大成 `12px / 16px` 圆角表面
+### 4. 正式图表区 `chartSection`
 
-## 图表选型口径
+- 正式图表区由 `chartGrid` 持有，是整个分析页最核心的阅读区域。
+- 正式图表区应明确使用一套基础三列 grid；重点图表通过 `chartGridFeatured` 跨两列表达，不通过切换第二套 grid 语法表达强调。
+- 这意味着图表区的布局单位是“网格单元”，不是“每张图自己决定宽高”；落图前必须先收口 `slotPlan`。
+- 每张图表卡都通过统一的 `ChartCard` 包裹，内部结构固定为“chartHeader -> chartContent”，header 不跟着图表内容高度漂移；实现默认复用项目共享运行时 `src/runtime/analytics-primitives`。
+- `chartContent` 负责拉伸填满网格单元；不要把图表卡写成内容自然撑高，导致同一行卡片高低不齐。
+- 页面本地样式若只是为了组织图表网格，允许设置 grid 和卡片占位；不要在业务页重新发明图表卡内边距、边框和内容区留白节奏。
 
-- 先判断信息任务，再决定图表类型；不要从“哪个图更好看”出发选图
-- 总览型信息优先使用指标卡、摘要卡；不要先手把可扫读指标做成图表
-- 同一张图表默认只回答一个主问题；不要在一张图里混合趋势、构成、排名、过程等多个核心任务
-- 图表标题必须能直接说明这张图回答的问题，例如“近 30 天销售额趋势”“各渠道流量占比”“重点区域销售额排名”
-- 看 `单个指标` 的时间趋势，默认优先 `面积图`
-- 看 `多个指标` 的时间趋势对比，默认优先 `折线图`
-- 看 `多个指标的构成随时间变化`，默认使用 `堆叠面积图`
-- 单指标若属于比率型、评分型、指数型，且重点是走势、波动、阈值穿越而不是体量感，可优先 `折线图`
-- 多系列若没有明确“构成演变”任务，不得为了视觉丰富而使用面积图叠加
-- 若图表会进入主区域，优先从带轴图开始选；不要先拿 `饼图 / 雷达图 / 漏斗图` 去争主位
+### 5. 图表卡组件模式
 
-### 对比与构成补充
+- 图表卡不是自由 DOM 卡片，而是“受管卡片壳 + 真实图表实例”的组合。
+- 图表类型以当前运行时可用、且适合该页型阅读流的真实 `@ant-design/charts` 能力为准；`Line`、`Pie`、`DualAxes`、`Column`、`Bar`、`Area`、`Gauge`、`Radar`、`Liquid`、`Funnel` 等都只是常见示例，不构成封闭列表，但都应落在统一图表卡模式中。
+- 颜色、坐标轴、legend、mini chart、响应式行为都通过 `chart-theme.ts` 和 `hiuiChartTokens` 统一收口；不要直接用图表库默认主题。
+- 特殊图表如 `Liquid` 允许在卡片内部加受控 overlay，但 overlay 仍应服务图表，不变成额外说明卡。
 
-- 分类项不多的单时点对比，默认优先 `柱状图`
-- 排名 / Top N / 长类目名称的并列比较，默认优先 `条形图`
-- 同一类目下比较多个系列，默认优先 `分组柱状图`
-- 单一时点的占比构成且类目较少，可使用 `环图 / 饼图`
-- 既要看总量又要看内部构成，可使用 `堆叠柱状图`
+### 5.1 面积趋势图 archetype 合同
 
-### 过程与关系补充
+- 适用范围不是只有 `data-visualization`；只要页面里用 `Area` 承接趋势判断，就要复用这套合同。
+- 面积趋势图配置必须通过 `withHiuiResponsiveChart` 输出，不要直接返回裸配置对象。
+- 线条样式必须显式声明 `line.style.lineWidth = 2`，不要依赖图表库默认线宽。
+- 面填充必须使用批准的 HiUI 渐变填充，并配合 `fillOpacity = 0.2` 形成统一视觉层次。
+- 禁止使用 `shapeField: 'smooth'` 这类会绕开受管面积图样式的写法；平滑趋势应通过受管配置表达。
 
-- 阶段型流程转化，默认优先 `漏斗图`
-- 但漏斗图默认是辅助信息图，不是大面积主图；只有流程转化本身是页面主问题时，才允许它占主位
-- 行为记录、审批轨迹、物流轨迹、关键事件流，优先 `Timeline`；不要手写等价 DOM 伪复用
-- 目标达成、进度完成、阈值状态，优先 `Progress` / `Gauge`；不要用仪表盘替代趋势图
-- 看相关性、聚类、离群点，可使用 `散点图 / 气泡图`
-- 看高密度矩阵分布，可使用 `热力图`
-- 少量对象的多维画像比较，可使用 `雷达图`
-- 地理位置本身是关键分析维度时才使用 `地图`；若只是区域对比或区域排名，通常优先 `条形图`
+### 6. 尾部明细表 `detailTable`
 
-### 表格角色
+- 这是一段按业务诉求决定的可选区域，不是 `data-visualization` 的固定必带结构。
+- 只有在需要记录下钻、筛选复核或后续操作承接时，才由 `tableFields + listRequest` 生成该区域；它是分析阅读流的最后一段，不是第二张页面。
+- 明细表仍放在 `StatListPageFrame` 里，使用普通文档流 footer，不采用列表页那种强吸底分页语法。
+- 样式上表格区跟随同一工作区自然延展，并在容器底部补 `20px` 收口；不要把它抽出去再造一张“明细大卡”。
+- 若明细表前面还有 `SectionHeader` 或导出操作区，标题与表格之间的留白必须沿着受管工作区一起收口；不要只改标题容器内部的 `gap`，否则无法真正改变 shell 持有的表格起点。
 
-- 表格是图表后的精确明细承接层，不是图表的替代品
-- 当用户需要筛选、排序、导出、下钻到具体记录或对单条数据执行操作时，最终应回到表格
-- `data-visualization` 页的推荐阅读路径通常为：摘要带 -> 主图表 -> 辅助图表 -> 明细表格
+## 关键组件与属性契约
 
-## 图表配色 Contract
+### `ProListPageProvider`
 
-- 配色策略默认遵循：`保留 Ant Design Charts / G2 的分配结构，不照抄其原始 hex；HiUI 负责提供最终受控色值`
-- 禁止把“找最相近 hex”理解成逐个颜色的机械替换；映射时必须同时考虑图表角色、HiUI 语义角色与同图区分度
-- 项目若封装共享 chart theme，应直接暴露图表色槽；业务页优先复用共享 helper，不要退回图表库默认色板
-- 对本地化后的 `series / label / type / team / phase / stage` 文案，默认把文本只放在 `colorField` 与 `scale.color.domain`；不要把中文标签直接从 `color` / `fill` / `stroke` 回调返回给图表库
-- 多分类图默认优先显式绑定 `domain -> range`，例如复用 `createHiuiCategoricalDomainScale([...domain], [...range])`；不要只给 `range`，更不要把系列名传进 `resolveHiuiSeriesColor(...)` 试图“猜颜色”
+- `request`：尾部明细表数据入口；只有生成明细表时才需要，接收全局筛选、搜索和分页参数。
 
-### 色槽定义
+### `StatListPageFrame`
 
-- `chart-primary`：`#2660FF`
-- `chart-primary-hover`：`#4D82FF`
-- `chart-primary-strong`：`#1843D2`
-- `chart-primary-wash`：`#EDF2FF`
-- `chart-primary-soft-wash`：`#E5ECFF`
-- `chart-info`：`#04C2AC`
-- `chart-success`：`#24B237`
-- `chart-warning`：`#FFBE0A`
-- `chart-danger`：`#FA4646`
-- `chart-text-secondary`：`#4E5969`
-- `chart-border`：`#E6E8EB`
+- `title`：页面标题入口。
+- `queryFields`：页面级 control strip 入口。
+- `searchPlaceholder`：合并搜索文案。
+- `statSection`：分析工作区主体入口；摘要区和图表区都应从这里进入。
+- `tableFields`：明细表列入口；只有生成明细表时才需要。
+- `tableProps`：尾部明细表行为补充入口；只有生成明细表时才需要，不要借此把明细表改回吸底列表页。
 
-### 默认分配口径
+### `MetricCard`
 
-- `单序列`：默认使用 `chart-primary`；面积图描边与面积填充必须绑定到同一颜色槽，默认写成 `chart-primary + fillOpacity: 0.2`
-- `双序列`：默认固定顺序 `series-1 -> chart-primary`、`series-2 -> chart-info`；顺序应由主次阅读关系决定，不得跟随接口返回顺序漂移
-- `多分类`：默认固定槽位顺序 `chart-primary -> chart-info -> chart-primary-hover -> chart-warning -> chart-success -> chart-primary-strong`
-- `语义态`：`success / 完成 / 健康 / 达标 -> chart-success`，`warning / 待处理 / 临界 / 关注 -> chart-warning`，`danger / 风险 / 异常 / 失败 -> chart-danger`
-- `当前值 / 参考值` 这类稳定标签，优先使用显式 `category -> color slot` 映射，而不是仅依赖 palette 顺序
+- 默认来源：项目共享运行时 `src/runtime/analytics-primitives`；规则源参考 `examples/host-integration/src/runtime/analytics-primitives`。
+- `title`：指标标题。
+- `value`：主值。
+- `note`：补充说明 / 单位 / 辅助指标文本。
+- `stateHint`：右上角状态提示；用于“当前趋势 / 点击查看”这类轻量状态，不得替代标题。
+- `visual`：迷你图或其他受控补充内容入口；可选，不是每张卡都必须有。
 
-### 禁止项
+### `ChartCard`
 
-- 不要直接照搬 `Ant Design Charts / G2` 的原始 hex 到业务页
-- 不要让颜色跟随排序、筛选、接口返回顺序自动漂移
-- 不要在同一 legend 维度中混用“普通分类色板”与“状态语义色板”而不声明规则
-- 类目数超过 `6` 时，不要继续扩容新颜色；优先合并长尾类目、拆图或调整信息架构
+- 默认来源：项目共享运行时 `src/runtime/analytics-primitives`；规则源参考 `examples/host-integration/src/runtime/analytics-primitives`。
+- `title`：图表标题。
+- `subtitle`：图表副标题；可选，默认不展示。
+- `children`：真实图表实例入口。
+- `contentStyle`：图表内容区样式补充入口；仅用于特殊图表卡，不应用来重造卡片壳。
 
-## 指标卡与文案硬门槛
+### 图表配置
 
-- 指标卡必须保持 HiUI 典型页的白卡 + 描边基线；全局装饰限制统一遵循 `rules/page-governance.md` 与 `../hiui5-visual-baseline.md`，不要把统计页指标卡升级成强装饰 surface
-- 指标卡若存在选中态，默认只允许通过描边、轻量背景色、字重或图表联动来表达；除非需求、设计稿或 contract 明确要求，不允许把选中态做成渐变卡
-- 页面中不允许出现需求、设计稿、contract 或示例语义之外的额外文案与派生统计；默认禁止自行补分组副标题、解释性说明、累计值、峰值、周期均值、同比环比总结卡或其他衍生指标
-- 若需求只描述“指标卡 + 图表 + 明细表”，则页面只能输出被明确点名的指标卡、图表和明细表内容；不得因为图表库默认能力、统计页习惯或 AI 补全倾向额外生成摘要卡或说明文案
-- 页面可见区域默认只承载业务语义内容；示例生成提示词、图表实现说明、配色 / 交互 guideline、验收提醒等 `demo-only` 文本不得直接出现在图表卡、指标卡、页头或正文里
-- 若示例页为了演示接入保留“复制提示词”“示例导出”这类工具动作，必须明确标注为 `demo-only tooling` 并与业务页默认 header action 隔离；受管业务页默认不继承这类动作
+- `data`：图表数据入口。
+- `height`：图表高度入口；必须服从图表卡填充规则。
+- `xField` / `yField` / `colorField`：图表维度映射入口；按图表类型选择。
+- `scale` / `axis` / `legend`：主题与阅读流配置入口；应优先复用 `chart-theme.ts` 产物。
 
-## 禁止项
+## 禁止
 
-- 不要手拼 `PageHeader + 多层 Card + 默认图表主题`
-- 不要把每一张图都包成新的页面级主白卡
-- 不要把图表区与表格区拆成两个独立路由或两个独立工作区
-- 不要让图表区和表格区各自拥有一套主滚动
-- 不要让 `outer-padding`、`white-body`、`stat-section/chart-section` 同时承接 16px+ 页面节奏；统计页只能有一个 page-level spacing owner
-- 不要以“当前仓库没装图表库”“legacy-host-compatible 要保守一点”“先画个趋势占位”作为理由绕过 `@ant-design/charts` 基线
-- 不要把示例页里的真实图表替换成手写 `svg path`、`canvas`、绝对定位 `div` 或静态图片
-- 不要在面积图上默认打开数据点
-- 不要给单序列面积图散落多个 `fillOpacity` 变体；默认就是同色描边 + `0.2` 透明度填充
-- 不要只写描边色而让面积填充继续落回图表库默认色；面积图必须显式绑定 fill 颜色
-- 不要自行补“累计”“峰值”“周期均值”这类需求未描述的派生指标卡
-- 不要自行补“当前按日维度查看近 30 日趋势”这类分组副标题、说明文案或图表解释语
-- 不要把“主趋势保持蓝色系”“柱形与间隙比例为 1:2”这类图表实现说明直接写成用户可见的图表说明文案
-- 不要把“复制提示词”“示例导出”等 `demo-only tooling` 默认挂进业务页页头；除非任务明确要求交付示例宿主工具区
-- 不要为了摆放图表，在 `white-body` 外再包一层页面级白底容器
-- 不要为了让图表区“更像看板”，给主体白色背景额外加描边、圆角或统一 inset
-- 不要把图表卡内部的 `padding / border / radius` 抬升到页面主体骨架层
-- 不要先写图表容器，再倒推 `white-body` 的尺寸、滚动和留白
+- 不要把 `data-visualization` 退化成 `table-stat`
+- 不要把图表区拆成第二个页面壳、第二层白卡主体或独立二级页
+- 不要把多个图表随意堆成没有阅读顺序的图表墙
+- 不要直接用第三方 UI 容器绕过当前页型的壳层和主题 helper
+- 不要在页面常驻区域渲染“接口未接入 / 当前为示例 / 测试说明”等说明文本
 
 ## 自检
 
-- planner 是否已经给出 `visualBaselinePlan`、`visualizationRolePlan`、`writeScope`
-- planner 是否已经冻结 `chart-section` 的基础栏数模式、`full-span` 中性策略和单区一致性约束
-- 主区域是否优先给了带轴主分析图，而不是把摘要型图形放大成视觉中心
-- `饼图 / 环图 / 雷达图 / 漏斗图 / 仪表盘` 是否只停留在辅助区；若没有，是否存在明确的 process-centric / composition-centric 业务说明
-- 图表实现真实接入 `@ant-design/charts` 或明确批准的同源 wrapper，而不是手写 primitives 模拟
-- 图表主题、颜色、坐标轴和文本样式没有回退成库默认值
-- 单指标趋势是否优先使用面积图，多指标趋势对比是否优先使用折线图，多指标构成演变是否使用堆叠面积图
-- 若单指标趋势使用折线图，是否已明确说明该指标属于比率型 / 评分型 / 指数型，且页面任务重在波动与拐点
-- 面积图是否没有默认点标记
-- 单序列面积图是否保持“同色描边 + 同色 20% 透明填充”
-- 指标卡及其选中态是否仍为白卡 + 描边，而不是渐变卡
-- 页面中是否没有出现需求未描述的分组副标题、解释语和派生统计卡
-- 页面可见区域是否没有混入示例生成提示词、图表实现说明或其他 `demo-only tooling` 文案 / 动作
-- 每张图标题是否都能直接回指到明确业务问题，而不是模板化或泛化标题
-- 若页面声明 `primary-secondary`，主线核心图是否仍位于 `primary`，`secondary` 是否只承接辅助判断图与洞察图
-- 同一 `chart-section` 是否只使用了一种基础栏数模式，且 `12` 没有被误判为模式切换
-- `stat-section` 的指标卡及其中的迷你图是否没有被误计入 `chart-section` 的 mode / span 校验
-- 指标卡、图表区和明细表仍在同一白底主体里
-- 页面没有双滚动和双层主工作区
+- 是否从 `data-visualization` 官方示例页起步，而不是从 `table-stat` 或空白文件起步
+- 是否保留 `ProListPageProvider`、`TypicalPageFieldMapProvider`、`StatListPageFrame`
+- 指标卡、图表区是否仍位于同一个 `whiteBody` 工作区；若业务包含明细表，它是否也留在同一个工作区
+- `summarySection` 是否只承担摘要表达并允许独立摘要 grid；正式 `chartSection` 是否从头到尾只保持一种基础 `grid mode`，主图通过同一 grid 内的 span / 主次权重强调
+- 正式图表区是否先完成 `slotPlan / rowFillDecision / selectedChartArchetype` 收口，没有把最后一张图孤立到单独一行
+- 图表项容器和图表卡是否具备 fill contract，没有只靠不同图表内容自然撑高
+- 图表是否仍是 `@ant-design/charts` 真实实现，而不是占位近似图
+- 若业务包含明细表，它是否仍位于页面阅读流尾部，没有退回吸底列表脚手架
+- 页面本地样式是否只负责布局，而没有对共享 `MetricCard` / `ChartCard` 重写视觉基线
+- 页面是否没有新增第二层白底主体、第二套主滚动或常驻交付说明
+
+## 失败信号
+
+- 页面整体看起来像“带几张图的普通统计表”，而不是分析页
+- 正式图表区按每一行切换不同删格写法，主图靠切换另一套图表 grid 抢强调
+- 图表被替换成文本占位、假走势图或不受控的第三方默认主题
+- 图表区和可选明细表被拆成两块独立大白卡，阅读流断裂
+- 明细表在存在时恢复成吸底分页列表，图表区和表格区像两张不同页
+- 页面本地通过给共享卡片增加 `min-height`、重写描边或补内部假间距来“修”视觉，导致最终效果偏离典型页面模板

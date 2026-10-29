@@ -1,7 +1,0 @@
-{
-  "id": "legacy-host-compatible",
-  "label": "Legacy host compatible",
-  "runtimePolicy": "Prefer project-certified carrier page components or runtimeAdapterProof-backed standard components, but do not treat the legacy host main tree as a generic host-integration mount for the standard shell runtime.",
-  "allowsShellRuntimeImports": false,
-  "requiresAdapterContract": true
-}

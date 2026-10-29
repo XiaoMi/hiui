@@ -1,1 +1,7 @@
-export { engineerOptions, getTableStatList, getTableStatOverview } from './typical-pages.mock'
+export {
+  engineerGroupOptions,
+  engineerOptions,
+  getTableStatList,
+  getTableStatOverview,
+  queryTableStatRows,
+} from './typical-pages.mock'

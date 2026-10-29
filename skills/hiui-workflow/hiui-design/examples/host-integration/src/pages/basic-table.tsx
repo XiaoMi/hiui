@@ -1,67 +1,85 @@
 import { useMemo } from 'react'
 import { Button, Message, Space, Tag } from '@hi-ui/hiui'
 import { DownloadOutlined, PlusOutlined } from '@hi-ui/icons'
-import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
-import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
+import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { TypicalPageFieldMapProvider } from '../components/hiui-design-runtime'
 import {
   ProListPageProvider,
   queryFilterPickerOverlay,
-} from '@hiui-design/typical-page-shells/pro-list-page'
+} from '../components/hiui-design-runtime/pro-list-page'
 import {
   TablePageFrame,
   proTablePageStyles,
   renderTableTextEllipsis,
-} from '@hiui-design/typical-page-shells/pro-table-page'
+} from '../components/hiui-design-runtime/pro-table-page'
 import {
   basicUserOrganizationOptions,
+  basicUserPositionOptions,
   basicUserRoleOptions,
   basicUserStatusOptions,
+  getBasicTableList,
   queryBasicTableRows,
 } from './typical-pages.mock'
-import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
 import {
   filterListByKeyword,
   getKeywordValue,
   getParamsWithoutKeyword,
   paginateList,
-} from './request-utils'
-import { useTranslation } from '../../translation'
+} from './data-visualization/request-utils'
+import { useTranslation } from './page-localization'
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderEllipsis() {
+  renderEllipsis(this) {
     return this.renderCell((cellValue) => renderTableTextEllipsis(cellValue))
   },
 })
 
-const userStatusTagTypeMap = {
-  enabled: 'success',
-  paused: 'danger',
-  training: 'warning',
-} as const
+function getUserStatusTagType(userStatus: string | null | undefined) {
+  switch (userStatus) {
+    case 'enabled':
+      return 'success'
+    case 'training':
+      return 'primary'
+    case 'paused':
+      return 'danger'
+    default:
+      return 'default'
+  }
+}
 
 function BasicTableInner() {
   const { locale, t } = useTranslation()
 
   const queryFields = useMemo(
     () => [
-      createManagedQuerySelectField({
-        field: 'roleId',
-        label: t('角色'),
-        data: basicUserRoleOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
-      createManagedQuerySelectField({
-        field: 'organizationId',
-        label: t('所属机构'),
-        data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
-      createManagedQuerySelectField({
-        field: 'userStatus',
-        label: t('用户状态'),
-        data: basicUserStatusOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
+      F(t('角色'), 'roleId')
+        .Select({
+          data: basicUserRoleOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('所属机构'), 'organizationId')
+        .Select({
+          data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('用户状态'), 'userStatus')
+        .Select({
+          data: basicUserStatusOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('岗位类型'), 'positionIds')
+        .CheckSelect({
+          data: basicUserPositionOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
     ],
     [t]
   )
@@ -72,26 +90,22 @@ function BasicTableInner() {
       T(t('米聊号'), 'miTalkId').W(140).renderEllipsis().val,
       T(t('用户电话'), 'phone').W(140).renderEllipsis().val,
       T(t('邮箱'), 'email').W(220).renderEllipsis().val,
-      T(t('用户角色'), 'roleTitle')
-        .W(120)
-        .renderCell((cellValue) => renderTableTextEllipsis(t(String(cellValue ?? ''))))
-        .val,
-      T(t('岗位名称'), 'positionTitle')
-        .W(120)
-        .renderCell((cellValue) => renderTableTextEllipsis(t(String(cellValue ?? ''))))
-        .val,
-      T(t('所属机构'), 'organizationTitle')
-        .W(160)
-        .renderCell((cellValue) => renderTableTextEllipsis(t(String(cellValue ?? ''))))
-        .val,
+      T(t('用户角色'), 'roleTitle').W(120).renderEllipsis().val,
+      T(t('岗位名称'), 'positionTitle').W(120).renderEllipsis().val,
+      T(t('所属机构'), 'organizationTitle').W(160).renderEllipsis().val,
       T(t('用户状态'), 'userStatusTitle')
         .W(100)
         .renderCell((cellValue, ctx) => {
-          const row = ctx.rawData as { userStatus: keyof typeof userStatusTagTypeMap }
+          const row = ctx.rawData as { userStatus?: string }
+          const statusTitle = String(cellValue ?? '').trim()
+
+          if (!statusTitle) {
+            return '—'
+          }
 
           return (
-            <Tag appearance="filled" type={userStatusTagTypeMap[row.userStatus]}>
-              {String(cellValue ?? '')}
+            <Tag type={getUserStatusTagType(row.userStatus)} appearance="filled">
+              {statusTitle}
             </Tag>
           )
         })
@@ -160,7 +174,7 @@ function BasicTableInner() {
 export function BasicTablePage() {
   const { locale, t } = useTranslation()
   const request = useMemo(
-    () => async (params: Parameters<typeof queryBasicTableRows>[0]) => {
+    () => async (params: Parameters<typeof getBasicTableList>[0]) => {
       const keyword = getKeywordValue(params)
       const nextParams = getParamsWithoutKeyword(params)
       const translatedList = queryBasicTableRows(nextParams).map((row) => ({
@@ -190,3 +204,5 @@ export function BasicTablePage() {
     </ProListPageProvider>
   )
 }
+
+export default BasicTablePage

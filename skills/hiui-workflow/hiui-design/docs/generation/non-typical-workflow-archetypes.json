@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "schema": "hiui-design-non-typical-workflow-archetypes.v1",
+  "workflowId": "non-typical-rules-composition",
+  "status": "generator-ready-public-open",
+  "notes": [
+    "Only archetypes validated by real samples should appear here.",
+    "Planner, brief, and generator execution are wired for the validated v1 scope.",
+    "In this file, archetype means internal coordination schema for rules-composition planning, not a new page-template catalog derived from screenshots."
+  ],
+  "archetypes": [
+    {
+      "archetypeId": "process-stage-sync",
+      "coordinationPatternId": "process-stage-sync",
+      "label": "流程阶段协同",
+      "description": "A stage rail or process region coordinates the current task context across the primary workspace and one or more supporting regions.",
+      "requiredPrimitives": [
+        "NonTypicalPageFrame",
+        "WhiteBodyWorkspace",
+        "StageRail",
+        "SectionGroup",
+        "ActionStrip"
+      ],
+      "optionalPrimitives": [
+        "SnapshotPane",
+        "SelectionPane"
+      ],
+      "requiredRegions": [
+        "primaryRegion",
+        "stageRegion"
+      ],
+      "coordinationSchema": {
+        "sourceRegionRole": "stage-region",
+        "targetRegionRoles": [
+          "primary-region",
+          "supporting-context-region"
+        ],
+        "requiredInteractionRule": "The stage region must deterministically drive current-step content and supporting context."
+      },
+      "primaryRegionRule": "The primary region must remain unique and carry the page's main task completion surface.",
+      "stopRules": [
+        "stop when no stable stage region exists",
+        "stop when the stage region is only decorative and does not coordinate task progression",
+        "stop when a classic detail page still remains the dominant carrier"
+      ]
+    },
+    {
+      "archetypeId": "selection-detail-sync",
+      "coordinationPatternId": "selection-detail-sync",
+      "label": "选择明细协同",
+      "description": "A stable selection region coordinates which grouped detail content is rendered in the primary region.",
+      "requiredPrimitives": [
+        "NonTypicalPageFrame",
+        "WhiteBodyWorkspace",
+        "SelectionPane",
+        "DetailHeaderPane",
+        "StatusTabStrip",
+        "DataTable"
+      ],
+      "optionalPrimitives": [
+        "ActionStrip",
+        "SectionGroup",
+        "SnapshotPane",
+        "StageRail"
+      ],
+      "requiredRegions": [
+        "primaryRegion",
+        "selectionRegion"
+      ],
+      "coordinationSchema": {
+        "sourceRegionRole": "selection-region",
+        "targetRegionRoles": [
+          "primary-region"
+        ],
+        "requiredInteractionRule": "Selection must stably drive which grouped detail workspace is rendered."
+      },
+      "primaryRegionRule": "The primary region must not collapse into a classic table-only, form-only, or detail-only carrier.",
+      "stopRules": [
+        "stop when the right or center region is still a classic table-only carrier",
+        "stop when the selection region behaves only as a filter and does not control grouped detail content",
+        "stop when the layout still fits a typical-page split variant"
+      ]
+    }
+  ]
+}

@@ -14,49 +14,24 @@ async function readJson(filePath) {
   return JSON.parse(await fs.readFile(filePath, 'utf8'))
 }
 
-async function readText(filePath) {
-  return fs.readFile(filePath, 'utf8')
-}
-
 function cloneJson(value) {
   return JSON.parse(JSON.stringify(value))
 }
 
-function parseVersionFile(content) {
-  const metadata = {}
-
-  for (const rawLine of content.split('\n')) {
-    const line = rawLine.trimEnd()
-    if (!line || line.trimStart().startsWith('- ')) {
-      continue
-    }
-
-    const match = line.match(/^([a-z-]+):\s*(.+)$/)
-    if (!match) {
-      continue
-    }
-
-    const [, key, value] = match
-    metadata[key] = value
-  }
-
-  return metadata
+function normalizeString(value) {
+  return String(value || '').trim()
 }
 
-function validateRulesVersion({ manifest, manifestPath, versionMetadata, versionPath }) {
-  if (!versionMetadata.version) {
-    throw new Error(`Missing "version" in ${versionPath}`)
-  }
+function normalizePageTypePreviewContract(pageType = {}) {
+  const nextPageType = cloneJson(pageType)
+  const baseTemplatePath = normalizeString(nextPageType?.generationContract?.baseTemplatePath)
 
-  if (!manifest.rulesVersion) {
-    return
-  }
+  nextPageType.runtimeExamplePath =
+    normalizeString(nextPageType.runtimeExamplePath) || baseTemplatePath
+  nextPageType.globalPreviewRoute =
+    normalizeString(nextPageType.globalPreviewRoute) || normalizeString(nextPageType.smokePath)
 
-  if (manifest.rulesVersion !== versionMetadata.version) {
-    throw new Error(
-      `Rules version mismatch: ${manifestPath} declares ${manifest.rulesVersion}, but ${versionPath} declares ${versionMetadata.version}`
-    )
-  }
+  return nextPageType
 }
 
 function mergePageTypes(basePageTypes, overlay) {
@@ -104,6 +79,7 @@ function mergeManifest(baseManifest, overlay, overlayPath) {
   }
 
   nextManifest.pageTypes = mergePageTypes(nextManifest.pageTypes, overlay)
+    .map((pageType) => normalizePageTypePreviewContract(pageType))
   nextManifest.lineId = overlay.lineId ?? nextManifest.lineId ?? ''
   nextManifest.overlayPath = overlayPath
   return nextManifest
@@ -125,21 +101,14 @@ async function resolveOverlayPath(skillRoot, line) {
 }
 
 export async function loadPageTypeManifest({ skillRoot, line = '' }) {
-  const nextBaseManifestPath = path.join(skillRoot, 'rules', 'common.page-types.json')
-  const legacyBaseManifestPath = path.join(skillRoot, 'docs', 'generation', 'page-types.manifest.json')
-  const baseManifestPath = (await pathExists(nextBaseManifestPath)) ? nextBaseManifestPath : legacyBaseManifestPath
-  const baseManifest = await readJson(baseManifestPath)
-  const rulesVersionPath = path.join(skillRoot, 'rules', 'VERSION')
-  const rulesVersionMetadata = (await pathExists(rulesVersionPath))
-    ? parseVersionFile(await readText(rulesVersionPath))
-    : {}
-
-  validateRulesVersion({
-    manifest: baseManifest,
-    manifestPath: baseManifestPath,
-    versionMetadata: rulesVersionMetadata,
-    versionPath: rulesVersionPath,
-  })
+  const baseManifestPath = path.join(skillRoot, 'docs', 'generation', 'page-types.manifest.json')
+  const rawBaseManifest = await readJson(baseManifestPath)
+  const baseManifest = {
+    ...rawBaseManifest,
+    pageTypes: (rawBaseManifest?.pageTypes ?? []).map((pageType) =>
+      normalizePageTypePreviewContract(pageType)
+    ),
+  }
 
   if (!line) {
     return {
@@ -148,8 +117,6 @@ export async function loadPageTypeManifest({ skillRoot, line = '' }) {
       baseManifestPath,
       overlayPath: '',
       lineId: '',
-      rulesVersionPath,
-      rulesVersionMetadata,
     }
   }
 
@@ -169,7 +136,5 @@ export async function loadPageTypeManifest({ skillRoot, line = '' }) {
     baseManifestPath,
     overlayPath,
     lineId: overlay.lineId ?? line,
-    rulesVersionPath,
-    rulesVersionMetadata,
   }
 }

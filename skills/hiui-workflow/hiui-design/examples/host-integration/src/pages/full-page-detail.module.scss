@@ -1,14 +1,96 @@
-.detailBody {
-  margin: 2px 0 0;
+.detailPageRoot {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #f5f8fc;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 60px;
+  padding: 0 !important;
+  background: #f5f8fc;
+
+  :global(.hi-v5-page-header__content) {
+    flex: 1;
+    min-width: 0;
+    gap: 40px;
+  }
+}
+
+.whiteBody {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
   box-sizing: border-box;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+
+  :global(.pro-detail-page) {
+    flex: 1 1 0%;
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  :global(.pro-detail-page > .hi-v5-loading__wrapper) {
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+  }
+}
+
+.detailBody {
+  min-height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  background: #fff;
 
   :global(.group-container.schema-group__container) {
     gap: 16px;
   }
 
-  :global(.hi-v5-card.group-panel[data-nest-level='1'] > .hi-v5-card__body) {
-    padding-inline: 20px;
+  :global(.group-panel[data-nest-level='1'] > [data-schema-group-compat='card'] > .hi-v5-card__body) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  :global(.group-panel > [data-schema-group-compat='card']) {
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+
+  :global(.group-panel > [data-schema-group-compat='card'] > .hi-v5-card__header) {
+    padding: 20px 20px 8px;
+  }
+
+  :global(.group-panel > [data-schema-group-compat='card'] > .hi-v5-card__header .hi-v5-card__title) {
+    color: #1f2733;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  :global(.group-panel > [data-schema-group-compat='card'] > .hi-v5-card__body) {
+    padding: 0 20px 20px;
+  }
+
+  :global(.schema-descriptions.hi-v5-descriptions--placement-vertical.hi-v5-descriptions--label-placement-left .hi-v5-descriptions-row > th) {
+    text-align: left;
   }
 }
 
@@ -92,6 +174,11 @@
   }
 }
 
+.serviceRecordTable {
+  :global(.hi-v5-table) {
+    background: transparent;
+  }
+}
 
 @media (max-width: 900px) {
   .warrantyGrid {

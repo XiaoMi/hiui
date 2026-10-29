@@ -112,6 +112,10 @@ def build_result(args: argparse.Namespace) -> dict:
         return annotate
 
     return {
+        "annotation_meta": {
+            "generated_by": "annotate_issue.py",
+            "preview_path": preview_path,
+        },
         "annotate": annotate,
         "bbox": bbox,
         "bbox_raw": located.get("bbox_raw"),

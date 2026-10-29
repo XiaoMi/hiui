@@ -1,12 +1,19 @@
 import React from 'react'
-import { TypicalPageHostProvider } from '@hiui-design/typical-page-shells/host'
-import { HostPageFooterPortal, HostPageHeaderPortal } from './page-header-portal'
+import { TypicalPageHostProvider } from '../hiui-design-runtime/host'
+import { HostPageFooterPortal } from './page-header-portal'
 
-export function TypicalPageHostBridge({ children }: React.PropsWithChildren) {
+type TypicalPageHostBridgeProps = React.PropsWithChildren<{
+  getOverlayContainer?: () => HTMLElement | null
+}>
+
+export function TypicalPageHostBridge({
+  children,
+  getOverlayContainer,
+}: TypicalPageHostBridgeProps) {
   return (
     <TypicalPageHostProvider
-      headerPortal={HostPageHeaderPortal}
       footerPortal={HostPageFooterPortal}
+      getOverlayContainer={getOverlayContainer}
     >
       {children}
     </TypicalPageHostProvider>

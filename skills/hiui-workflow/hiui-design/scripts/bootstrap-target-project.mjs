@@ -1,120 +1,234 @@
 #!/usr/bin/env node
 
 import fs from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { syncArchetypeAssets } from './lib/archetypes/sync-archetype-assets.mjs'
+import {
+  APPLY_PROGRESS_STATUS,
+  clearApplyProgress,
+  resolveApplyProgressPath,
+  resolveApplyStatePath,
+  writeApplyProgress,
+  writeApplyState,
+} from './lib/apply-state.mjs'
 import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
-import { detectLegacyHostFamily } from './lib/legacy-host-family-registry.mjs'
+import { inspectIntegrationReadiness } from './lib/integration-readiness.mjs'
+import { resolveAutoInstallMode } from './lib/install-mode-resolution.mjs'
 import {
-  provisionLegacyProjectCarriers,
-  summarizeLegacyDeliveryPolicy,
-} from './lib/legacy-carrier-provisioning.mjs'
+  findObjectPropertyRange,
+  findRootConfigObjectRange,
+  insertIntoObjectLiteral,
+} from './lib/js-config-object-edit.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import { writeProjectIntegrationState } from './lib/project-integration-state.mjs'
-import { RULES_ONLY_REFERENCE_DEST, RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
+import { inspectNodeRuntimePolicy } from './lib/node-runtime-policy.mjs'
+import { runProjectNodeScriptSync } from './lib/project-node-launcher.mjs'
+import { syncProjectContext } from './lib/project-context-sync.mjs'
+import { patchViewportRootStyles } from './lib/root-viewport-style.mjs'
+import { writeEnsureOnlyPageTaskStatus } from './lib/page-task-gate.mjs'
+import {
+  formatInstallModeUsage,
+  getInstallModeErrorMessage,
+  isRecognizedInstallMode,
+} from './lib/mode-contract.mjs'
+import { CliUsageError, isCliUsageError } from './lib/cli-usage-error.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
 import {
-  buildLegacyRuntimeGuardIssues,
-  collectLegacyHiUiEsImports,
-  inspectInstalledRootRuntime,
-  parseLeadingMajorVersion,
-  summarizeLegacyImportHits,
-} from './lib/legacy-runtime-guard.mjs'
+  SKILL_PUBLIC_NAME,
+  getContextDocPath,
+  getContextPath,
+  getContextScriptPath,
+  resolveProjectContextPath,
+} from './lib/skill-identity.mjs'
+import {
+  getIsolatedAliasCompatibility,
+  getVersionFromAliasSpec,
+} from './lib/isolated-alias-compat.mjs'
+import { loadSharedRuntimeDirectDependencySnapshot } from './lib/shared-runtime-direct-dependencies.mjs'
+import { isVersionCompatible } from './lib/version-compatibility.mjs'
+import {
+  getManagedLocalRuntimeRoot,
+  getManagedLocalRuntimeStylePath,
+} from './lib/managed-local-runtime-contract.mjs'
+import { collectManagedLocalRuntimeProjectDistributionFiles } from './lib/managed-runtime-distribution.mjs'
+import {
+  loadManagedLocalRuntimeDependencyContract,
+  loadManagedLocalRuntimePeerDependencies,
+  resolveManagedLocalRuntimeEmbeddedSourceSnapshot,
+} from './lib/managed-local-runtime-dependencies.mjs'
+
+const LEGACY_PREVIEW_OUTPUT_ROOT = 'src/typical-page-preview'
+const skillRequire = createRequire(import.meta.url)
+const {
+  HIUI5_ISOLATED_PEER_ALIASES,
+  HIUI5_REQUIRED_TRANSITIVE_PEERS,
+} = skillRequire('./lib/hiui5-peer-contract.cjs')
+const HIUI5_ALIAS_SOURCE_BY_ALIAS_NAME = Object.fromEntries(
+  Object.entries(HIUI5_ISOLATED_PEER_ALIASES).map(([sourceDepName, aliasDepName]) => [
+    aliasDepName,
+    sourceDepName,
+  ])
+)
+const DEFAULT_INSTALL_TIMEOUT_MS = 5 * 60 * 1000
+
+function stripJsonComments(source) {
+  let output = ''
+  let inString = false
+  let quote = ''
+  let escaped = false
+
+  for (let index = 0; index < source.length; index += 1) {
+    const char = source[index]
+    const next = source[index + 1]
+
+    if (inString) {
+      output += char
+      if (escaped) {
+        escaped = false
+      } else if (char === '\\') {
+        escaped = true
+      } else if (char === quote) {
+        inString = false
+        quote = ''
+      }
+      continue
+    }
+
+    if (char === '"' || char === "'") {
+      inString = true
+      quote = char
+      output += char
+      continue
+    }
+
+    if (char === '/' && next === '/') {
+      while (index < source.length && source[index] !== '\n') index += 1
+      output += '\n'
+      continue
+    }
+
+    if (char === '/' && next === '*') {
+      index += 2
+      while (index < source.length && !(source[index] === '*' && source[index + 1] === '/')) {
+        if (source[index] === '\n') output += '\n'
+        index += 1
+      }
+      index += 1
+      continue
+    }
+
+    output += char
+  }
+
+  return output
+}
+
+function resolveManagedOutputRoot({ targetRoot, mode }) {
+  const bucketName = mode === 'host-integration' ? 'host-integration-guidance' : 'rules-only-guidance'
+
+  return resolveProjectContextPath(targetRoot, 'outputs', bucketName)
+}
+
+function resolveSchemaTypesShimPath(targetRoot) {
+  return resolveProjectContextPath(
+    targetRoot,
+    'examples',
+    'host-integration',
+    'src',
+    'shims',
+    'schema-types-empty.js'
+  )
+}
+
+function resolveManagedLocalRuntimeSourceRoot(skillRoot) {
+  return path.join(
+    skillRoot,
+    'examples',
+    'host-integration',
+    'src',
+    getManagedLocalRuntimeRoot()
+  )
+}
+
+function resolveTargetManagedLocalRuntimeRoot(targetRoot) {
+  return path.join(targetRoot, 'src', getManagedLocalRuntimeRoot())
+}
 
 function printUsage() {
   console.log(`Usage:
-  node scripts/bootstrap-target-project.mjs --target <project-root> [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--with-host-assets] [--dest <relative-dir>] [--route-file <relative-file>] [--shells-spec <version>] [--install] [--install-timeout-ms <ms>] [--force] [--skip-i18n-init] [--skip-project-images-init]
+  node scripts/bootstrap-target-project.mjs --target <project-root> [--mode <${formatInstallModeUsage()}>] [--line <line-id>] [--install] [--install-timeout-ms <ms>] [--init-i18n]
 
 Options:
   --target      Target project root. Required.
-  --mode        Install mode. Default: auto
+  --mode        Install mode. Default: auto. Auto reuses recorded mode evidence first, then chooses host-integration unless the target would require a project-local compatibility bridge.
   --line        Optional business-line overlay id. Example: retail
-  --with-host-assets  Alias of --mode host-integration
-  --dest        Relative output directory inside target project for host-integration mode. Default: src/typical-page-reuse
-  --route-file  Target route config file to patch. Optional. If omitted, common locations are probed.
-  --shells-spec Dependency version/range for @hiui-design/typical-page-shells. Default: ^<local-version>
   --install     Run the target project's package manager install command after patching package.json
-  --install-timeout-ms  Timeout for dependency install command. Default: 60000
-  --force       Overwrite synced asset files in host-integration mode.
-  --skip-i18n-init  Skip automatic src/translation baseline provisioning.
-  --skip-project-images-init  Skip automatic src/typical-page-reuse/assets project image catalog scaffold provisioning.
+  --install-timeout-ms  Timeout for dependency install command. Default: ${DEFAULT_INSTALL_TIMEOUT_MS}
+  --init-i18n   Explicitly provision src/translation baseline assets and register the rerun script.
 `)
 }
 
 function parseArgs(argv) {
   const options = {
-    dest: 'src/typical-page-reuse',
-    force: false,
+    i18nInitMode: 'none',
     install: false,
-    installTimeoutMs: 60000,
+    installTimeoutMs: DEFAULT_INSTALL_TIMEOUT_MS,
     line: '',
     mode: 'auto',
-    routeFile: '',
-    shellsSpec: '',
-    skipI18nInit: false,
-    skipProjectImagesInit: false,
     target: '',
   }
+  const deprecatedArgs = new Set(['--shells-spec'])
+  const removedPreviewArgs = new Set([
+    '--materialize-preview',
+    '--with-host-assets',
+    '--dest',
+    '--route-file',
+    '--force',
+  ])
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i]
-
-    if (arg === '--force') {
-      options.force = true
-      continue
-    }
 
     if (arg === '--install') {
       options.install = true
       continue
     }
 
-    if (arg === '--skip-i18n-init') {
-      options.skipI18nInit = true
+    if (arg === '--init-i18n') {
+      options.i18nInitMode = 'init'
       continue
     }
 
-    if (arg === '--skip-project-images-init') {
-      options.skipProjectImagesInit = true
-      continue
+    if (deprecatedArgs.has(arg)) {
+      throw new CliUsageError(
+        `${arg} is no longer supported. Managed local runtime dependencies now come from docs/onboarding/managed-local-runtime-dependencies.json, so remove this flag.`
+      )
     }
 
-    if (arg === '--with-host-assets') {
-      options.mode = 'host-integration'
-      continue
-    }
-
-    if (arg === '--with-reference-assets') {
-      options.mode = 'rules-only'
-      continue
+    if (removedPreviewArgs.has(arg)) {
+      throw new CliUsageError(
+        `${arg} is no longer supported. Preview examples now stay in the packaged preview runtime and are not materialized into target projects.`
+      )
     }
 
     if (
       arg === '--target' ||
       arg === '--mode' ||
       arg === '--line' ||
-      arg === '--dest' ||
-      arg === '--route-file' ||
-      arg === '--shells-spec' ||
       arg === '--install-timeout-ms'
     ) {
       const value = argv[i + 1]
       if (!value || value.startsWith('--')) {
-        throw new Error(`Missing value for ${arg}`)
+        throw new CliUsageError(`Missing value for ${arg}`)
       }
       const key =
         arg === '--mode'
           ? 'mode'
           : arg === '--line'
             ? 'line'
-          : arg === '--route-file'
-            ? 'routeFile'
-            : arg === '--shells-spec'
-              ? 'shellsSpec'
-              : arg === '--install-timeout-ms'
+          : arg === '--install-timeout-ms'
                 ? 'installTimeoutMs'
                 : arg.slice(2)
       options[key] = arg === '--install-timeout-ms' ? Number(value) : value
@@ -127,19 +241,19 @@ function parseArgs(argv) {
       process.exit(0)
     }
 
-    throw new Error(`Unknown argument: ${arg}`)
+    throw new CliUsageError(`Unknown argument: ${arg}`)
   }
 
   if (!options.target) {
-    throw new Error('Missing required --target <project-root>')
+    throw new CliUsageError('Missing required --target <project-root>')
   }
 
-  if (!['auto', 'rules-only', 'host-integration', 'legacy-host-compatible'].includes(options.mode)) {
-    throw new Error('Expected --mode to be auto, rules-only, host-integration, or legacy-host-compatible')
+  if (!isRecognizedInstallMode(options.mode)) {
+    throw new CliUsageError(getInstallModeErrorMessage())
   }
 
   if (!Number.isFinite(options.installTimeoutMs) || options.installTimeoutMs <= 0) {
-    throw new Error('Expected --install-timeout-ms to be a positive number')
+    throw new CliUsageError('Expected --install-timeout-ms to be a positive number')
   }
 
   return options
@@ -158,13 +272,47 @@ async function ensureDir(targetDir) {
   await fs.mkdir(targetDir, { recursive: true })
 }
 
-async function readTextIfExists(targetPath) {
-  if (!(await pathExists(targetPath))) return ''
-  return fs.readFile(targetPath, 'utf8')
-}
-
 function sortObjectKeys(input) {
   return Object.fromEntries(Object.entries(input).sort(([a], [b]) => a.localeCompare(b)))
+}
+
+function splitScriptChain(scriptValue) {
+  return String(scriptValue || '')
+    .split('&&')
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
+function upsertScriptCommand(scriptValue, command) {
+  const commands = splitScriptChain(scriptValue)
+  if (commands.includes(command)) {
+    return {
+      nextValue: scriptValue,
+      action: 'unchanged',
+    }
+  }
+
+  return {
+    nextValue: commands.length === 0 ? command : `${commands.join(' && ')} && ${command}`,
+    action: commands.length === 0 ? 'added' : 'updated',
+  }
+}
+
+function removeScriptCommand(scriptValue, command) {
+  const commands = splitScriptChain(scriptValue)
+  const nextCommands = commands.filter((item) => item !== command)
+
+  if (nextCommands.length === commands.length) {
+    return {
+      nextValue: scriptValue,
+      action: 'unchanged',
+    }
+  }
+
+  return {
+    nextValue: nextCommands.join(' && '),
+    action: 'updated',
+  }
 }
 
 function upsertManagedDependency({
@@ -173,11 +321,14 @@ function upsertManagedDependency({
   peerDeps,
   depName,
   depVersion,
-  preferredBucket = 'dependencies',
+  preserveCompatibleRange = false,
 }) {
   if (Object.prototype.hasOwnProperty.call(dependencies, depName)) {
     const previous = dependencies[depName]
     if (previous === depVersion) return { action: 'unchanged', previous }
+    if (preserveCompatibleRange && isVersionCompatible(previous, depVersion)) {
+      return { action: 'preserved-compatible', previous }
+    }
     dependencies[depName] = depVersion
     return { action: 'updated', previous }
   }
@@ -185,6 +336,9 @@ function upsertManagedDependency({
   if (Object.prototype.hasOwnProperty.call(devDependencies, depName)) {
     const previous = devDependencies[depName]
     if (previous === depVersion) return { action: 'unchanged', previous }
+    if (preserveCompatibleRange && isVersionCompatible(previous, depVersion)) {
+      return { action: 'preserved-compatible', previous }
+    }
     devDependencies[depName] = depVersion
     return { action: 'updated', previous }
   }
@@ -192,43 +346,43 @@ function upsertManagedDependency({
   if (Object.prototype.hasOwnProperty.call(peerDeps, depName)) {
     const previous = peerDeps[depName]
     if (previous === depVersion) return { action: 'unchanged', previous }
+    if (preserveCompatibleRange && isVersionCompatible(previous, depVersion)) {
+      return { action: 'preserved-compatible', previous }
+    }
     peerDeps[depName] = depVersion
     return { action: 'updated', previous }
-  }
-
-  if (preferredBucket === 'devDependencies') {
-    devDependencies[depName] = depVersion
-    return { action: 'added', previous: '' }
-  }
-
-  if (preferredBucket === 'peerDependencies') {
-    peerDeps[depName] = depVersion
-    return { action: 'added', previous: '' }
   }
 
   dependencies[depName] = depVersion
   return { action: 'added', previous: '' }
 }
 
-async function loadLocalShellPackage(skillRoot) {
-  const embeddedPackageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
-  const fallbackPackageJsonPath = path.resolve(skillRoot, '..', '..', 'packages', 'typical-page-shells', 'package.json')
-  const packageJsonPath = (await pathExists(embeddedPackageJsonPath))
-    ? embeddedPackageJsonPath
-    : fallbackPackageJsonPath
-  const raw = await fs.readFile(packageJsonPath, 'utf8')
-  return JSON.parse(raw)
-}
-
-async function resolveEmbeddedShellsSpec(skillRoot, version) {
-  const filename = `hiui-design-typical-page-shells-${version}.tgz`
-  const embeddedTarballPath = path.join(skillRoot, 'vendor', filename)
-
-  if (!(await pathExists(embeddedTarballPath))) {
-    return ''
+function findManagedDependencyEntry({ dependencies, devDependencies, peerDeps, depName }) {
+  if (Object.prototype.hasOwnProperty.call(dependencies, depName)) {
+    return {
+      bucketName: 'dependencies',
+      previous: dependencies[depName],
+    }
   }
 
-  return `file:.local-context/hiui-design/vendor/${filename}`
+  if (Object.prototype.hasOwnProperty.call(devDependencies, depName)) {
+    return {
+      bucketName: 'devDependencies',
+      previous: devDependencies[depName],
+    }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(peerDeps, depName)) {
+    return {
+      bucketName: 'peerDependencies',
+      previous: peerDeps[depName],
+    }
+  }
+
+  return {
+    bucketName: '',
+    previous: '',
+  }
 }
 
 async function readJsonFile(jsonPath) {
@@ -236,19 +390,29 @@ async function readJsonFile(jsonPath) {
   return JSON.parse(raw)
 }
 
-function getRecommendedMode({ hostProfile, legacyHostRuntime }) {
-  return legacyHostRuntime?.incompatible ? 'legacy-host-compatible' : hostProfile.recommendedMode
-}
-
-function resolveInstallMode({ requestedMode, hostProfile, legacyHostRuntime }) {
-  const baseMode = requestedMode !== 'auto' ? requestedMode : hostProfile.recommendedMode
-  if (
-    legacyHostRuntime?.incompatible &&
-    (baseMode === 'rules-only' || baseMode === 'host-integration')
-  ) {
-    return 'legacy-host-compatible'
+async function loadSkillVersion(skillRoot) {
+  const manifestPath = path.join(skillRoot, 'skill.manifest.json')
+  try {
+    const manifest = await readJsonFile(manifestPath)
+    const manifestVersion = String(manifest?.version || '').trim()
+    if (manifestVersion) {
+      return {
+        contextPath: manifestPath,
+        version: manifestVersion,
+      }
+    }
+  } catch {
+    // Fall back to the legacy context file when the manifest is unavailable.
   }
-  return baseMode
+
+  const contextPath = path.join(skillRoot, '.context.jsonc')
+  const raw = await fs.readFile(contextPath, 'utf8')
+  const context = JSON.parse(stripJsonComments(raw))
+
+  return {
+    contextPath,
+    version: String(context?.version || '').trim(),
+  }
 }
 
 async function collectSourceFiles(rootDir) {
@@ -268,6 +432,33 @@ async function collectSourceFiles(rootDir) {
   }
 
   return files
+}
+
+async function materializeManagedLocalRuntimeAssets({ skillRoot, targetRoot }) {
+  const sourceRoot = resolveManagedLocalRuntimeSourceRoot(skillRoot)
+  const targetRuntimeRoot = resolveTargetManagedLocalRuntimeRoot(targetRoot)
+  const sourceFiles = await collectManagedLocalRuntimeProjectDistributionFiles({
+    sourceRoot,
+    targetRoot: targetRuntimeRoot,
+  })
+
+  const syncedFiles = []
+  for (const file of sourceFiles) {
+    await ensureDir(path.dirname(file.destPath))
+    if (typeof file.content === 'string') {
+      await fs.writeFile(file.destPath, file.content, 'utf8')
+    } else {
+      await fs.writeFile(file.destPath, file.binaryContent)
+    }
+    syncedFiles.push(file.destPath)
+  }
+
+  return {
+    status: 'materialized',
+    sourceRoot,
+    targetRoot: targetRuntimeRoot,
+    syncedFiles,
+  }
 }
 
 function extractImportSpecifiers(source) {
@@ -310,68 +501,86 @@ function normalizePackageName(specifier) {
   return specifier.split('/')[0]
 }
 
-function resolveLegacyCarrierRuntimeDependencies({
+function toNpmAliasSpec(depName, depVersion) {
+  return `npm:${depName}@${depVersion}`
+}
+
+function buildHiui5IsolatedAliasDependencies(peerDependencies = {}) {
+  const expectedSourceDependencies = {
+    ...peerDependencies,
+    ...HIUI5_REQUIRED_TRANSITIVE_PEERS,
+  }
+  const isolatedAliasDependencies = {}
+
+  for (const [sourceDepName, aliasDepName] of Object.entries(HIUI5_ISOLATED_PEER_ALIASES)) {
+    const depVersion = expectedSourceDependencies[sourceDepName]
+    if (!depVersion) continue
+    isolatedAliasDependencies[aliasDepName] = toNpmAliasSpec(sourceDepName, depVersion)
+  }
+
+  return isolatedAliasDependencies
+}
+
+function upsertManagedIsolatedAliasDependency({
   dependencies,
   devDependencies,
   peerDeps,
-  shellPeerDependencies,
+  depName,
+  depVersion,
+  expectedSourceDepName,
 }) {
-  const hiui5AliasSpec =
-    String(dependencies.hiui5 || devDependencies.hiui5 || peerDeps.hiui5 || '').trim()
-  if (hiui5AliasSpec) {
-    return {}
+  const buckets = [dependencies, devDependencies, peerDeps]
+
+  for (const bucket of buckets) {
+    if (!Object.prototype.hasOwnProperty.call(bucket, depName)) continue
+
+    const previous = bucket[depName]
+    if (previous === depVersion) return { action: 'unchanged', previous }
+
+    const compatibility = getIsolatedAliasCompatibility({
+      actualSpec: previous,
+      expectedSourceDepName,
+      expectedVersion: getVersionFromAliasSpec(depVersion),
+    })
+    if (compatibility.compatible) {
+      return { action: 'preserved-compatible', previous }
+    }
+
+    bucket[depName] = depVersion
+    return { action: 'updated', previous }
   }
 
-  const existingHiuiRuntimeSpec = [
-    dependencies['@hi-ui/hiui'],
-    devDependencies['@hi-ui/hiui'],
-    peerDeps['@hi-ui/hiui'],
-  ]
-    .map((value) => String(value || '').trim())
-    .find(Boolean)
-  const existingHiuiRuntimeMajor = parseLeadingMajorVersion(existingHiuiRuntimeSpec)
-  const fallbackHiuiRuntimeSpec = String(shellPeerDependencies?.['@hi-ui/hiui'] || '').trim()
-  const resolvedHiuiRuntimeSpec =
-    existingHiuiRuntimeMajor != null && existingHiuiRuntimeMajor >= 5
-      ? existingHiuiRuntimeSpec
-      : fallbackHiuiRuntimeSpec
-
-  if (!resolvedHiuiRuntimeSpec) {
-    return {}
-  }
-
-  return {
-    hiui5: `npm:@hi-ui/hiui@${resolvedHiuiRuntimeSpec}`,
-  }
+  dependencies[depName] = depVersion
+  return { action: 'added', previous: '' }
 }
 
-async function loadHostIntegrationDependencies(skillRoot, peerDependencies, line = '') {
+async function loadHostIntegrationDependencies(
+  skillRoot,
+  peerDependencies,
+  sharedRuntimeDirectDependencies = {},
+  { sourcePackageName = '' } = {}
+) {
   const referencePath = path.join(skillRoot, 'docs', 'onboarding', 'host-integration-dependencies.json')
+  const assetRoot = path.join(skillRoot, 'examples', 'host-integration', 'src')
   const reference = await readJsonFile(referencePath)
-  const runtimeVersionMap = reference?.dependencies ?? {}
-  const buildVersionMap = reference?.devDependencies ?? {}
+  const versionMap = reference?.dependencies ?? {}
   const ignoredPackages = new Set([
-    '@hiui-design/typical-page-shells',
+    // The vendored upstream shell package remains provenance only; bootstrap
+    // must not treat it as a direct dependency of the target project.
+    ...(sourcePackageName ? [sourcePackageName] : []),
     'react',
     'react-dom',
     ...Object.keys(peerDependencies ?? {}),
+    ...Object.keys(sharedRuntimeDirectDependencies ?? {}),
   ])
 
-  const assetRoots = [path.join(skillRoot, 'examples', 'host-integration', 'src')]
-  if (line) {
-    const businessLineRoot = path.join(skillRoot, 'examples', 'business-lines', line, 'host-integration', 'src')
-    if (await pathExists(businessLineRoot)) {
-      assetRoots.push(businessLineRoot)
-    }
-  }
-
-  const files = []
-  for (const assetRoot of assetRoots) {
-    files.push(...(await collectSourceFiles(assetRoot)))
-  }
+  const files = await collectSourceFiles(assetRoot)
   const requiredPackages = new Set()
 
   for (const filePath of files) {
+    if (filePath.endsWith('.d.ts')) {
+      continue
+    }
     const raw = await fs.readFile(filePath, 'utf8')
     for (const specifier of extractImportSpecifiers(raw)) {
       const depName = normalizePackageName(specifier)
@@ -380,35 +589,21 @@ async function loadHostIntegrationDependencies(skillRoot, peerDependencies, line
     }
   }
 
-  const missingVersionSpecs = [...requiredPackages].filter(
-    (depName) => !runtimeVersionMap[depName] && !buildVersionMap[depName]
-  )
+  const missingVersionSpecs = [...requiredPackages].filter((depName) => !versionMap[depName])
   if (missingVersionSpecs.length > 0) {
     throw new Error(
       `host-integration-dependencies.json is missing version specs for: ${missingVersionSpecs.join(', ')}`
     )
   }
 
-  const managedRuntimePackages = new Set([
-    ...[...requiredPackages].filter((depName) => runtimeVersionMap[depName]),
-    ...Object.keys(runtimeVersionMap),
-  ])
-  const managedBuildPackages = new Set(Object.keys(buildVersionMap))
+  const managedPackages = new Set([...requiredPackages, ...Object.keys(versionMap)])
 
-  return {
-    dependencies: Object.fromEntries(
-      [...managedRuntimePackages]
-        .sort((a, b) => a.localeCompare(b))
-        .map((depName) => [depName, runtimeVersionMap[depName]])
-        .filter(([, depVersion]) => Boolean(depVersion))
-    ),
-    devDependencies: Object.fromEntries(
-      [...managedBuildPackages]
-        .sort((a, b) => a.localeCompare(b))
-        .map((depName) => [depName, buildVersionMap[depName]])
-        .filter(([, depVersion]) => Boolean(depVersion))
-    ),
-  }
+  return Object.fromEntries(
+    [...managedPackages]
+      .sort((a, b) => a.localeCompare(b))
+      .map((depName) => [depName, versionMap[depName]])
+      .filter(([, depVersion]) => Boolean(depVersion))
+  )
 }
 
 async function readTargetPackageJson(targetRoot) {
@@ -447,84 +642,72 @@ function detectLegacyHiUi4VisualDeps(pkg) {
   return [...new Set(hits)].sort((a, b) => a.localeCompare(b))
 }
 
-async function detectLegacyHostRuntimeMode({ targetRoot, pkg }) {
-  const reasons = []
-  const dependencies = {
-    ...(pkg?.dependencies ?? {}),
-    ...(pkg?.devDependencies ?? {}),
-    ...(pkg?.peerDependencies ?? {}),
+function findDeclaredDependency(pkg, depName) {
+  return (
+    pkg?.dependencies?.[depName] ||
+    pkg?.devDependencies?.[depName] ||
+    pkg?.peerDependencies?.[depName] ||
+    ''
+  )
+}
+
+function parseDeclaredMajorVersion(spec) {
+  const match = String(spec || '')
+    .trim()
+    .match(/^(?:npm:[^@]+@)?(?:\^|~|>=|>|<=|<)?\s*(\d+)/)
+  return match ? Number(match[1]) : 0
+}
+
+function shouldRequireManagedRuntimePatch({ hostProfile, pkg }) {
+  const reactMajor = Number(hostProfile?.reactMajor || 0)
+  if (reactMajor >= 19) return true
+
+  const declaredReactSpecs = [
+    findDeclaredDependency(pkg, 'react'),
+    findDeclaredDependency(pkg, 'react-dom'),
+  ].filter(Boolean)
+
+  if (declaredReactSpecs.some((spec) => parseDeclaredMajorVersion(spec) >= 19)) {
+    return true
   }
 
-  const reactSpec = dependencies.react ?? ''
-  const reactDomSpec = dependencies['react-dom'] ?? ''
-  const ahooksSpec = dependencies.ahooks ?? ''
-  const hiuiSpec = dependencies['@hi-ui/hiui'] ?? ''
-  const hiui5AliasSpec = dependencies.hiui5 ?? ''
+  return shouldUseLegacyRulesOnlyPeerIsolation(hostProfile)
+}
 
-  const reactMajor = parseLeadingMajorVersion(reactSpec)
-  const reactDomMajor = parseLeadingMajorVersion(reactDomSpec)
-  const ahooksMajor = parseLeadingMajorVersion(ahooksSpec)
-  const hiuiMajor = parseLeadingMajorVersion(hiuiSpec)
+function shouldUseLegacyRulesOnlyPeerIsolation(hostProfile) {
+  const framework = String(hostProfile?.framework || '')
 
-  if (reactMajor > 0 && reactMajor < 18) {
-    reasons.push(`react is pinned to ${reactSpec}`)
-  }
+  return (
+    hostProfile?.projectType === 'existing-system' &&
+    hostProfile?.riskLevel === 'high' &&
+    (hostProfile?.hasModuleFederation ||
+      hostProfile?.legacyReactRuntime ||
+      hostProfile?.hiuiFacts?.hasMixedRuntimePackages ||
+      hostProfile?.hiuiFacts?.hasLegacyRuntimePackages ||
+      ['rspack-module-federation', 'webpack-module-federation', 'rspack-react', 'webpack-react', 'micro-frontend'].includes(
+        framework
+      ))
+  )
+}
 
-  if (reactDomMajor > 0 && reactDomMajor < 18) {
-    reasons.push(`react-dom is pinned to ${reactDomSpec}`)
-  }
-
-  if (ahooksMajor > 0 && ahooksMajor < 3) {
-    reasons.push(`ahooks is pinned to ${ahooksSpec}`)
-  }
-
-  if (hiui5AliasSpec && hiuiMajor > 0 && hiuiMajor < 5) {
-    reasons.push(
-      `the host keeps legacy @hi-ui/hiui ${hiuiSpec} while exposing a separate hiui5 alias ${hiui5AliasSpec}`
-    )
-  }
-
-  const buildConfigCandidates = [
-    path.join(targetRoot, 'build', 'rspack.base.conf.js'),
-    path.join(targetRoot, 'build', 'webpack.base.conf.js'),
-    path.join(targetRoot, 'build', 'webpack.common.js'),
-  ]
-
-  for (const buildConfigPath of buildConfigCandidates) {
-    const raw = await readTextIfExists(buildConfigPath)
-    if (!raw) continue
-
-    const usesLegacyFederationRuntime =
-      raw.includes('ModuleFederationPlugin') &&
-      raw.includes('shared:') &&
-      raw.includes('singleton: true') &&
-      (raw.includes("react$': reactPath") ||
-        raw.includes('"react$": reactPath') ||
-        raw.includes("'react-dom$': reactDomPath") ||
-        raw.includes('"react-dom$": reactDomPath'))
-
-    if (usesLegacyFederationRuntime) {
-      reasons.push(
-        `build config ${path.relative(targetRoot, buildConfigPath)} aliases and shares react/react-dom as a singleton host runtime`
-      )
-      break
-    }
-  }
-
-  return {
-    incompatible: reasons.length > 0,
-    reasons,
-  }
+function shouldIsolateRulesOnlyPeerAtAliasLayer({ mode, hostProfile, depName }) {
+  return (
+    mode === 'rules-only' &&
+    shouldUseLegacyRulesOnlyPeerIsolation(hostProfile) &&
+    Object.prototype.hasOwnProperty.call(HIUI5_ISOLATED_PEER_ALIASES, depName)
+  )
 }
 
 async function patchPackageJson({
   targetRoot,
-  shellsSpec,
   peerDependencies,
+  isolatedAliasDependencies,
   directDependencies,
-  directDevDependencies,
   line,
-  legacyCompatibilityOnly = false,
+  mode,
+  hostProfile,
+  managedRuntimePatchRequired,
+  includeI18nInitScript = false,
 }) {
   const packageJsonPath = path.join(targetRoot, 'package.json')
   if (!(await pathExists(packageJsonPath))) {
@@ -532,8 +715,11 @@ async function patchPackageJson({
       status: 'missing',
       packageJsonPath,
       addedDeps: [],
+      isolatedPeerDeps: [],
+      preservedRootPeerDeps: [],
       updatedDeps: [],
       addedScripts: [],
+      updatedScripts: [],
       skippedScripts: [],
     }
   }
@@ -545,103 +731,99 @@ async function patchPackageJson({
   const peerDeps = { ...(pkg.peerDependencies ?? {}) }
   const scripts = { ...(pkg.scripts ?? {}) }
   const addedDeps = []
+  const isolatedPeerDeps = []
+  const preservedRootPeerDeps = []
   const updatedDeps = []
   const addedScripts = []
+  const updatedScripts = []
   const skippedScripts = []
-  const legacyRuntimeDependencies = legacyCompatibilityOnly
-    ? resolveLegacyCarrierRuntimeDependencies({
-        dependencies,
-        devDependencies,
-        peerDeps,
-        shellPeerDependencies: peerDependencies,
+  const expectedScripts = getReusableScripts(line, {
+    includeManagedRuntimePatchScripts: managedRuntimePatchRequired,
+    includeI18nInitScript,
+  })
+  const managedRuntimePatchScripts = getReusableScripts(line, {
+    includeManagedRuntimePatchScripts: true,
+  })
+  const i18nInitScripts = getReusableScripts(line, {
+    includeManagedRuntimePatchScripts: false,
+    includeI18nInitScript: true,
+  })
+  const managedRuntimePatchScriptNames = [
+    'typical-page:runtime-patch',
+    'typical-page:react19-runtime-patch',
+  ]
+
+  for (const [depName, depVersion] of Object.entries(peerDependencies)) {
+    if (
+      shouldIsolateRulesOnlyPeerAtAliasLayer({
+        mode,
+        hostProfile,
+        depName,
       })
-    : {}
-
-  if (!legacyCompatibilityOnly) {
-    {
-      const result = upsertManagedDependency({
-        dependencies,
-        devDependencies,
-        peerDeps,
-        depName: '@hiui-design/typical-page-shells',
-        depVersion: shellsSpec,
-      })
-
-      if (result.action === 'added') {
-        addedDeps.push('@hiui-design/typical-page-shells')
-      } else if (result.action === 'updated') {
-        updatedDeps.push(`@hiui-design/typical-page-shells (${result.previous} -> ${shellsSpec})`)
-      }
-    }
-
-    for (const [depName, depVersion] of Object.entries(peerDependencies)) {
-      const result = upsertManagedDependency({
+    ) {
+      isolatedPeerDeps.push(depName)
+      const existingEntry = findManagedDependencyEntry({
         dependencies,
         devDependencies,
         peerDeps,
         depName,
-        depVersion,
       })
-
-      if (result.action === 'added') {
-        addedDeps.push(depName)
-      } else if (result.action === 'updated') {
-        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
+      if (existingEntry.previous) {
+        preservedRootPeerDeps.push(`${depName} (${existingEntry.previous})`)
       }
+      continue
     }
 
-    for (const [depName, depVersion] of Object.entries(directDependencies ?? {})) {
-      const result = upsertManagedDependency({
-        dependencies,
-        devDependencies,
-        peerDeps,
-        depName,
-        depVersion,
-        preferredBucket: 'dependencies',
-      })
+    const result = upsertManagedDependency({
+      dependencies,
+      devDependencies,
+      peerDeps,
+      depName,
+      depVersion,
+      preserveCompatibleRange: depName === 'react' || depName === 'react-dom',
+    })
 
-      if (result.action === 'added') {
-        addedDeps.push(depName)
-      } else if (result.action === 'updated') {
-        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
-      }
-    }
-
-    for (const [depName, depVersion] of Object.entries(directDevDependencies ?? {})) {
-      const result = upsertManagedDependency({
-        dependencies,
-        devDependencies,
-        peerDeps,
-        depName,
-        depVersion,
-        preferredBucket: 'devDependencies',
-      })
-
-      if (result.action === 'added') {
-        addedDeps.push(depName)
-      } else if (result.action === 'updated') {
-        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
-      }
-    }
-  } else {
-    for (const [depName, depVersion] of Object.entries(legacyRuntimeDependencies)) {
-      const result = upsertManagedDependency({
-        dependencies,
-        devDependencies,
-        peerDeps,
-        depName,
-        depVersion,
-      })
-
-      if (result.action === 'added') {
-        addedDeps.push(depName)
-      } else if (result.action === 'updated') {
-        updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
-      }
+    if (result.action === 'added') {
+      addedDeps.push(depName)
+    } else if (result.action === 'updated') {
+      updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
     }
   }
 
-  for (const [scriptName, scriptValue] of Object.entries(getReusableScripts(line))) {
+  for (const [depName, depVersion] of Object.entries(isolatedAliasDependencies ?? {})) {
+    const result = upsertManagedIsolatedAliasDependency({
+      dependencies,
+      devDependencies,
+      peerDeps,
+      depName,
+      depVersion,
+      expectedSourceDepName: HIUI5_ALIAS_SOURCE_BY_ALIAS_NAME[depName] || '',
+    })
+
+    if (result.action === 'added') {
+      addedDeps.push(depName)
+    } else if (result.action === 'updated') {
+      updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
+    }
+  }
+
+  for (const [depName, depVersion] of Object.entries(directDependencies ?? {})) {
+    const result = upsertManagedDependency({
+      dependencies,
+      devDependencies,
+      peerDeps,
+      depName,
+      depVersion,
+    })
+
+    if (result.action === 'added') {
+      addedDeps.push(depName)
+    } else if (result.action === 'updated') {
+      updatedDeps.push(`${depName} (${result.previous} -> ${depVersion})`)
+    }
+  }
+
+  for (const [scriptName, scriptValue] of Object.entries(expectedScripts)) {
     if (scripts[scriptName] == null) {
       scripts[scriptName] = scriptValue
       addedScripts.push(scriptName)
@@ -653,17 +835,68 @@ async function patchPackageJson({
     }
   }
 
+  if (!managedRuntimePatchRequired) {
+    for (const scriptName of managedRuntimePatchScriptNames) {
+      const expectedManagedScript = managedRuntimePatchScripts[scriptName]
+      if (scripts[scriptName] !== expectedManagedScript) continue
+      delete scripts[scriptName]
+      updatedScripts.push(scriptName)
+    }
+  }
+
+  if (!includeI18nInitScript) {
+    const expectedI18nInitScript = i18nInitScripts['typical-page:i18n:init']
+    if (scripts['typical-page:i18n:init'] === expectedI18nInitScript) {
+      delete scripts['typical-page:i18n:init']
+      updatedScripts.push('typical-page:i18n:init')
+    }
+  }
+
+  const legacyReact19PatchCommand = `node "${getContextScriptPath('apply-react19-runtime-patches.mjs')}"`
+  const runtimePatchCommand = `node "${getContextScriptPath('apply-runtime-patches.mjs')}"`
+  const removeLegacyResult = removeScriptCommand(scripts.postinstall, legacyReact19PatchCommand)
+  const removeManagedResult = removeScriptCommand(removeLegacyResult.nextValue, runtimePatchCommand)
+
+  if (managedRuntimePatchRequired) {
+    const postinstallResult = upsertScriptCommand(removeLegacyResult.nextValue, runtimePatchCommand)
+
+    if (
+      removeLegacyResult.action !== 'unchanged' ||
+      postinstallResult.action !== 'unchanged'
+    ) {
+      scripts.postinstall = postinstallResult.nextValue
+      if (
+        removeLegacyResult.action === 'unchanged' &&
+        postinstallResult.action === 'added'
+      ) {
+        addedScripts.push('postinstall')
+      } else {
+        updatedScripts.push('postinstall')
+      }
+    }
+  } else if (
+    removeLegacyResult.action !== 'unchanged' ||
+    removeManagedResult.action !== 'unchanged'
+  ) {
+    if (removeManagedResult.nextValue) {
+      scripts.postinstall = removeManagedResult.nextValue
+    } else {
+      delete scripts.postinstall
+    }
+    updatedScripts.push('postinstall')
+  }
+
   const nextPkg = {
     ...pkg,
     dependencies: sortObjectKeys(dependencies),
     scripts: sortObjectKeys(scripts),
   }
 
-  if (pkg.devDependencies || Object.keys(devDependencies).length > 0) {
+  if (pkg.devDependencies) {
     nextPkg.devDependencies = sortObjectKeys(devDependencies)
   }
 
-  if (pkg.peerDependencies || Object.keys(peerDeps).length > 0) {
+  if (pkg.peerDependencies) {
     nextPkg.peerDependencies = sortObjectKeys(peerDeps)
   }
 
@@ -673,77 +906,27 @@ async function patchPackageJson({
       status: 'unchanged',
       packageJsonPath,
       addedDeps,
+      isolatedPeerDeps,
+      preservedRootPeerDeps,
       updatedDeps,
       addedScripts,
+      updatedScripts,
       skippedScripts,
     }
   }
 
   await fs.writeFile(packageJsonPath, nextRaw, 'utf8')
   return {
-    status: legacyCompatibilityOnly ? 'updated (legacy-host-compatibility)' : 'updated',
+    status: 'updated',
     packageJsonPath,
     addedDeps,
+    isolatedPeerDeps,
+    preservedRootPeerDeps,
     updatedDeps,
     addedScripts,
+    updatedScripts,
     skippedScripts,
   }
-}
-
-async function detectRouteFile(targetRoot) {
-  const candidates = [
-    'src/routes/config.tsx',
-    'src/routes/config.jsx',
-    'src/routes/config.ts',
-    'src/routes/config.js',
-    'src/routes/index.tsx',
-    'src/routes/index.jsx',
-    'src/routes/index.ts',
-    'src/routes/index.js',
-    'src/router/routes.tsx',
-    'src/router/routes.jsx',
-    'src/router/routes.ts',
-    'src/router/routes.js',
-    'src/router/index.tsx',
-    'src/router/index.jsx',
-    'src/router/index.ts',
-    'src/router/index.js',
-    'src/routes.tsx',
-    'src/routes.jsx',
-    'src/routes.ts',
-    'src/routes.js',
-  ]
-
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) {
-      return absPath
-    }
-  }
-
-  return ''
-}
-
-async function detectAppShellFile(targetRoot) {
-  const candidates = [
-    'src/App.tsx',
-    'src/App.jsx',
-    'src/App.ts',
-    'src/App.js',
-    'src/app.tsx',
-    'src/app.jsx',
-    'src/app.ts',
-    'src/app.js',
-  ]
-
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) {
-      return absPath
-    }
-  }
-
-  return ''
 }
 
 async function detectAppEntryFile(targetRoot) {
@@ -778,19 +961,6 @@ async function detectAppEntryFile(targetRoot) {
   return ''
 }
 
-async function detectStarterRootStyleFile(targetRoot) {
-  const candidates = ['src/index.css', 'src/main.css', 'src/app.css', 'src/App.css']
-
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) {
-      return absPath
-    }
-  }
-
-  return ''
-}
-
 async function detectViteConfigFile(targetRoot) {
   const candidates = [
     'vite.config.ts',
@@ -813,156 +983,176 @@ async function detectViteConfigFile(targetRoot) {
   return ''
 }
 
-function findMatchingBrace(source, openBraceIndex) {
-  let quote = ''
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-  let depth = 0
-
-  for (let index = openBraceIndex; index < source.length; index += 1) {
-    const char = source[index]
-    const nextChar = source[index + 1]
-
-    if (lineComment) {
-      if (char === '\n') lineComment = false
-      continue
-    }
-
-    if (blockComment) {
-      if (char === '*' && nextChar === '/') {
-        blockComment = false
-        index += 1
-      }
-      continue
-    }
-
-    if (quote) {
-      if (escaped) {
-        escaped = false
-        continue
-      }
-
-      if (char === '\\') {
-        escaped = true
-        continue
-      }
-
-      if (char === quote) {
-        quote = ''
-      }
-      continue
-    }
-
-    if (char === '/' && nextChar === '/') {
-      lineComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '/' && nextChar === '*') {
-      blockComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '"' || char === "'" || char === '`') {
-      quote = char
-      continue
-    }
-
-    if (char === '{') {
-      depth += 1
-      continue
-    }
-
-    if (char === '}') {
-      depth -= 1
-      if (depth === 0) {
-        return index
-      }
-    }
-  }
-
-  return -1
-}
-
-function findObjectPropertyRange(source, propertyName) {
-  const pattern = new RegExp(`(?:['"]${propertyName}['"]|\\b${propertyName}\\b)\\s*:`, 'g')
-
-  for (const match of source.matchAll(pattern)) {
-    const colonIndex = source.indexOf(':', match.index)
-    if (colonIndex < 0) continue
-
-    let cursor = colonIndex + 1
-    while (cursor < source.length && /\s/.test(source[cursor])) {
-      cursor += 1
-    }
-
-    if (source[cursor] !== '{') continue
-
-    const closeIndex = findMatchingBrace(source, cursor)
-    if (closeIndex < 0) continue
-
-    return { openBraceIndex: cursor, closeBraceIndex: closeIndex }
-  }
-
-  return null
-}
-
-function findRootConfigObjectRange(source) {
-  const patterns = [
-    /defineConfig\s*\(/g,
-    /export\s+default\s*\{/g,
-    /module\.exports\s*=\s*\{/g,
+async function detectRspackLikeDevConfigFile(targetRoot) {
+  const candidates = [
+    'build/rspack.dev.conf.js',
+    'build/rspack.dev.conf.ts',
+    'build/webpack.dev.conf.js',
+    'build/webpack.dev.conf.ts',
+    'rspack.config.js',
+    'rspack.config.ts',
+    'webpack.config.js',
+    'webpack.config.ts',
   ]
 
-  for (const pattern of patterns) {
-    const match = pattern.exec(source)
-    if (!match) continue
-    const openBraceIndex =
-      pattern.source.includes('\\{') ? source.indexOf('{', match.index) : source.indexOf('{', match.index + match[0].length)
-    if (openBraceIndex < 0) continue
-    const closeBraceIndex = findMatchingBrace(source, openBraceIndex)
-    if (closeBraceIndex < 0) continue
-    return { openBraceIndex, closeBraceIndex }
+  for (const candidate of candidates) {
+    const absPath = path.join(targetRoot, candidate)
+    if (await pathExists(absPath)) {
+      return absPath
+    }
   }
 
-  return null
+  return ''
 }
 
-function insertIntoObjectLiteral(source, objectRange, entryText) {
-  const beforeClose = source.slice(0, objectRange.closeBraceIndex)
-  const afterClose = source.slice(objectRange.closeBraceIndex)
-  const lineStart = source.lastIndexOf('\n', objectRange.closeBraceIndex - 1) + 1
-  const closingIndent = source.slice(lineStart, objectRange.closeBraceIndex).match(/^\s*/)?.[0] ?? ''
-  const innerIndent = `${closingIndent}  `
-  const trimmedBefore = beforeClose.trimEnd()
-  const separator = trimmedBefore.endsWith('{') || trimmedBefore.endsWith(',') ? '' : ','
-  const body = entryText
-    .split('\n')
-    .map((line) => `${innerIndent}${line}`)
-    .join('\n')
-
-  return `${beforeClose}${separator}\n${body}\n${closingIndent}${afterClose}`
-}
+const MANAGED_CAMORA_NO_CACHE_HEADERS = Object.freeze({
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  Pragma: 'no-cache',
+  Expires: '0',
+})
 
 function escapeRegExp(source) {
-  return String(source).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return String(source || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function hasViteAliasEntry(source, aliasName) {
-  return new RegExp(`['"]${escapeRegExp(aliasName)}['"]\\s*:`, 'm').test(source)
+function hasObjectPropertyKey(source, propertyName) {
+  return new RegExp(`(?:['"]${escapeRegExp(propertyName)}['"]|\\b${escapeRegExp(propertyName)}\\b)\\s*:`).test(
+    source
+  )
 }
 
-async function writeViteAliasSnippet({ outputRoot, viteFile, shimPath, srcAliasPath }) {
+function buildManagedCamoraNoCacheHeaderBlock(missingHeaderEntries) {
+  return missingHeaderEntries
+    .map(([headerName, headerValue]) => `${JSON.stringify(headerName)}: ${JSON.stringify(headerValue)}`)
+    .join(',\n')
+}
+
+async function writeCamoraDevServerNoCacheSnippet({ outputRoot, devConfigFile }) {
+  const snippetPath = path.join(outputRoot, 'CAMORA_DEVSERVER_NO_CACHE_SNIPPET.md')
+  const configLabel = devConfigFile
+    ? path.relative(path.dirname(outputRoot), devConfigFile)
+    : 'your Rspack/Webpack dev config'
+  const headerBlock = buildManagedCamoraNoCacheHeaderBlock(
+    Object.entries(MANAGED_CAMORA_NO_CACHE_HEADERS)
+  )
+  const content = `# Camora DevServer No-Cache Snippet
+
+Camora regex proxy hosts can observe a mixed runtime when the browser or proxy keeps an older chunk while the live \`remoteEntry.js\` has already changed.
+Add the managed no-cache headers below to the devServer responses so local remote debug uses a single fresh runtime source.
+
+## Suggested target
+
+- ${configLabel}
+
+## Headers block
+
+\`\`\`ts
+devServer: {
+  headers: {
+    ${headerBlock.replace(/\n/g, '\n    ')}
+  },
+}
+\`\`\`
+`
+
+  await ensureDir(path.dirname(snippetPath))
+  await fs.writeFile(snippetPath, content, 'utf8')
+  return snippetPath
+}
+
+async function patchCamoraDevServerNoCacheHeaders({ targetRoot, outputRoot, hostProfile }) {
+  const remoteDebugContract = hostProfile?.remoteDebugContract || {}
+  if (!(remoteDebugContract.enabled && remoteDebugContract.mode === 'camora-regex-proxy')) {
+    return {
+      status: 'not-applicable',
+      devConfigFile: '',
+      snippetPath: '',
+      addedHeaders: [],
+    }
+  }
+
+  const devConfigFile = await detectRspackLikeDevConfigFile(targetRoot)
+  if (!devConfigFile) {
+    const snippetPath = await writeCamoraDevServerNoCacheSnippet({ outputRoot, devConfigFile: '' })
+    return {
+      status: 'not-detected',
+      devConfigFile: '',
+      snippetPath,
+      addedHeaders: [],
+    }
+  }
+
+  const raw = await fs.readFile(devConfigFile, 'utf8')
+  const missingHeaderEntries = Object.entries(MANAGED_CAMORA_NO_CACHE_HEADERS).filter(
+    ([headerName]) => !hasObjectPropertyKey(raw, headerName)
+  )
+
+  if (missingHeaderEntries.length === 0) {
+    return {
+      status: 'already-patched',
+      devConfigFile,
+      snippetPath: '',
+      addedHeaders: [],
+    }
+  }
+
+  const headerBlock = buildManagedCamoraNoCacheHeaderBlock(missingHeaderEntries)
+  const headersRange = findObjectPropertyRange(raw, 'headers')
+  if (headersRange) {
+    const nextRaw = insertIntoObjectLiteral(raw, headersRange, headerBlock)
+    await fs.writeFile(devConfigFile, nextRaw, 'utf8')
+    return {
+      status: 'patched',
+      devConfigFile,
+      snippetPath: '',
+      addedHeaders: missingHeaderEntries.map(([headerName]) => headerName),
+    }
+  }
+
+  const devServerRange = findObjectPropertyRange(raw, 'devServer')
+  if (devServerRange) {
+    const nextRaw = insertIntoObjectLiteral(raw, devServerRange, `headers: {\n  ${headerBlock.replace(/\n/g, '\n  ')}\n}`)
+    await fs.writeFile(devConfigFile, nextRaw, 'utf8')
+    return {
+      status: 'patched',
+      devConfigFile,
+      snippetPath: '',
+      addedHeaders: missingHeaderEntries.map(([headerName]) => headerName),
+    }
+  }
+
+  const rootRange = findRootConfigObjectRange(raw)
+  if (rootRange) {
+    const nextRaw = insertIntoObjectLiteral(
+      raw,
+      rootRange,
+      `devServer: {\n  headers: {\n    ${headerBlock.replace(/\n/g, '\n    ')}\n  }\n}`
+    )
+    await fs.writeFile(devConfigFile, nextRaw, 'utf8')
+    return {
+      status: 'patched',
+      devConfigFile,
+      snippetPath: '',
+      addedHeaders: missingHeaderEntries.map(([headerName]) => headerName),
+    }
+  }
+
+  const snippetPath = await writeCamoraDevServerNoCacheSnippet({ outputRoot, devConfigFile })
+  return {
+    status: 'snippet-only',
+    devConfigFile,
+    snippetPath,
+    addedHeaders: missingHeaderEntries.map(([headerName]) => headerName),
+  }
+}
+
+async function writeViteAliasSnippet({ outputRoot, viteFile, shimPath }) {
   const snippetPath = path.join(outputRoot, 'VITE_ALIAS_SNIPPET.md')
   const viteLabel = viteFile ? path.relative(path.dirname(outputRoot), viteFile) : 'your vite config file'
-  const content = `# Vite Alias Snippet
+  const content = `# Vite Schema Types Alias Snippet
 
-Host-integration example assets expect both the project-level \`@\` source alias and the
-\`@hi-ui/schema-types\` shim alias. Add the block below to your Vite config before running
-\`vite\`, \`pnpm dev\`, or \`pnpm build\`.
+Vite prebundling fails on \`@hi-ui/schema-types\` because the package only ships declarations.
+Add the alias below to your Vite config before running \`vite\`, \`pnpm dev\`, or \`pnpm build\`.
 
 ## Suggested target
 
@@ -973,7 +1163,6 @@ Host-integration example assets expect both the project-level \`@\` source alias
 \`\`\`ts
 resolve: {
   alias: {
-    '@': ${JSON.stringify(srcAliasPath)},
     '@hi-ui/schema-types': ${JSON.stringify(shimPath)},
   },
 }
@@ -989,45 +1178,30 @@ resolve: {
   return snippetPath
 }
 
-async function patchViteSchemaTypesAlias({ targetRoot, outputRoot }) {
+async function patchViteSchemaTypesAlias({ targetRoot, outputRoot, shimPath }) {
   const viteFile = await detectViteConfigFile(targetRoot)
-  const shimPath = path.join(outputRoot, 'shims', 'schema-types-empty.js')
-  const srcAliasPath = path.join(targetRoot, 'src')
 
   if (!viteFile) {
     return { status: 'not-detected', viteFile: '', snippetPath: '' }
   }
 
   const raw = await fs.readFile(viteFile, 'utf8')
-  const missingAliasEntries = []
-
-  if (!hasViteAliasEntry(raw, '@')) {
-    missingAliasEntries.push(`'@': ${JSON.stringify(srcAliasPath)}`)
-  }
-
-  if (!hasViteAliasEntry(raw, '@hi-ui/schema-types')) {
-    missingAliasEntries.push(`'@hi-ui/schema-types': ${JSON.stringify(shimPath)}`)
-  }
-
-  if (missingAliasEntries.length === 0) {
+  if (raw.includes('@hi-ui/schema-types')) {
     return { status: 'already-patched', viteFile, snippetPath: '' }
   }
 
+  const aliasEntry = `'@hi-ui/schema-types': ${JSON.stringify(shimPath)}`
   const aliasRange = findObjectPropertyRange(raw, 'alias')
 
   if (aliasRange) {
-    const nextRaw = insertIntoObjectLiteral(raw, aliasRange, missingAliasEntries.join(',\n'))
+    const nextRaw = insertIntoObjectLiteral(raw, aliasRange, aliasEntry)
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
 
   const resolveRange = findObjectPropertyRange(raw, 'resolve')
   if (resolveRange) {
-    const nextRaw = insertIntoObjectLiteral(
-      raw,
-      resolveRange,
-      `alias: {\n  ${missingAliasEntries.join(',\n  ')}\n}`
-    )
+    const nextRaw = insertIntoObjectLiteral(raw, resolveRange, `alias: {\n  ${aliasEntry}\n}`)
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
@@ -1037,18 +1211,13 @@ async function patchViteSchemaTypesAlias({ targetRoot, outputRoot }) {
     const nextRaw = insertIntoObjectLiteral(
       raw,
       rootRange,
-      `resolve: {\n  alias: {\n    ${missingAliasEntries.join(',\n    ')}\n  }\n}`
+      `resolve: {\n  alias: {\n    ${aliasEntry}\n  }\n}`
     )
     await fs.writeFile(viteFile, nextRaw, 'utf8')
     return { status: 'patched', viteFile, snippetPath: '' }
   }
 
-  const snippetPath = await writeViteAliasSnippet({
-    outputRoot,
-    viteFile,
-    shimPath,
-    srcAliasPath,
-  })
+  const snippetPath = await writeViteAliasSnippet({ outputRoot, viteFile, shimPath })
   return { status: 'snippet-only', viteFile, snippetPath }
 }
 
@@ -1115,7 +1284,7 @@ async function runInstall({ targetRoot, timeoutMs }) {
       command,
       message:
         result.error.code === 'ETIMEDOUT'
-          ? `${command} timed out after ${timeoutMs}ms`
+          ? `${command} timed out after ${timeoutMs}ms. Large first-time dependency installs can take longer; rerun with --install-timeout-ms <ms> if the target project is still provisioning packages normally.`
           : result.error.message,
     }
   }
@@ -1132,6 +1301,27 @@ async function runInstall({ targetRoot, timeoutMs }) {
 
   return {
     status: 'installed',
+    command,
+    message: '',
+  }
+}
+
+async function inspectInstallPreflight(targetRoot) {
+  const manager = await detectPackageManager(targetRoot)
+  const args = getInstallArgs(manager)
+  const command = [manager, ...args].join(' ')
+  const nodeRuntimePolicy = await inspectNodeRuntimePolicy(targetRoot)
+
+  if (nodeRuntimePolicy.blocking) {
+    return {
+      status: 'blocked',
+      command,
+      message: `Dependency install was blocked before execution. ${nodeRuntimePolicy.detail}`,
+    }
+  }
+
+  return {
+    status: 'ready',
     command,
     message: '',
   }
@@ -1160,17 +1350,20 @@ function parseI18nInitOutput(stdout, targetRoot) {
   }
 
   return {
-    status: 'auto-synced',
+    status: 'initialized (--init-i18n)',
     command: `node ".local-context/hiui-design/scripts/init-i18n.mjs" --target ${targetRoot}`,
     ...details,
   }
 }
 
-function runI18nInit({ skillRoot, targetRoot }) {
+async function runI18nInit({ skillRoot, targetRoot }) {
   const i18nScriptPath = path.join(skillRoot, 'scripts', 'init-i18n.mjs')
-  const result = spawnSync(process.execPath, [i18nScriptPath, '--target', targetRoot], {
+  const { result } = await runProjectNodeScriptSync({
+    targetRoot,
+    scriptPath: i18nScriptPath,
+    scriptArgs: ['--target', targetRoot],
     cwd: skillRoot,
-    encoding: 'utf8',
+    capture: true,
   })
 
   if (result.status !== 0) {
@@ -1182,819 +1375,208 @@ function runI18nInit({ skillRoot, targetRoot }) {
   return parseI18nInitOutput(result.stdout, targetRoot)
 }
 
-function parseProjectImagesInitOutput(stdout, targetRoot) {
-  const details = {
-    registryPath: '',
-    assetDir: '',
-    syncedImageFiles: '',
-    seededFiles: '',
-    preservedFiles: '',
-  }
-
-  for (const line of String(stdout ?? '').split('\n')) {
-    const trimmed = line.trim()
-    if (trimmed.startsWith('- registry: ')) {
-      details.registryPath = trimmed.slice('- registry: '.length)
-      continue
-    }
-    if (trimmed.startsWith('- asset dir: ')) {
-      details.assetDir = trimmed.slice('- asset dir: '.length)
-      continue
-    }
-    if (trimmed.startsWith('- synced image files: ')) {
-      details.syncedImageFiles = trimmed.slice('- synced image files: '.length)
-      continue
-    }
-    if (trimmed.startsWith('- seeded files: ')) {
-      details.seededFiles = trimmed.slice('- seeded files: '.length)
-      continue
-    }
-    if (trimmed.startsWith('- preserved existing files: ')) {
-      details.preservedFiles = trimmed.slice('- preserved existing files: '.length)
-    }
-  }
-
-  return {
-    status: 'auto-synced',
-    command: `node ".local-context/hiui-design/scripts/init-project-images.mjs" --target ${targetRoot}`,
-    ...details,
-  }
-}
-
-function runProjectImagesInit({ skillRoot, targetRoot }) {
-  const scriptPath = path.join(skillRoot, 'scripts', 'init-project-images.mjs')
-  const result = spawnSync(process.execPath, [scriptPath, '--target', targetRoot], {
-    cwd: skillRoot,
-    encoding: 'utf8',
-  })
-
-  if (result.status !== 0) {
-    const stderr = result.stderr?.trim()
-    const stdout = result.stdout?.trim()
-    throw new Error(stderr || stdout || 'init-project-images.mjs failed')
-  }
-
-  return parseProjectImagesInitOutput(result.stdout, targetRoot)
-}
-
-function toImportPath(fromDir, targetFile) {
-  const relative = path.relative(fromDir, targetFile).split(path.sep).join('/')
-  const withoutExt = relative.replace(/\.[^.]+$/, '')
-  return withoutExt.startsWith('.') ? withoutExt : `./${withoutExt}`
-}
-
-function getLineIndent(source, index) {
-  const lineStart = source.lastIndexOf('\n', index - 1) + 1
-  return source.slice(lineStart, index).match(/^\s*/)?.[0] ?? ''
-}
-
-function appendArrayEntry(source, closeBracketIndex, entryText) {
-  const closeIndent = getLineIndent(source, closeBracketIndex)
-  const beforeClose = source
-    .slice(0, closeBracketIndex)
-    .replace(/[ \t]*$/, '')
-    .replace(/\n$/, '')
-  const trimmedBeforeClose = beforeClose.trimEnd()
-  const separator =
-    trimmedBeforeClose.endsWith('[') || trimmedBeforeClose.endsWith(',') ? '' : ','
-
-  return (
-    beforeClose +
-    `${separator}\n${entryText}\n${closeIndent}` +
-    source.slice(closeBracketIndex)
-  )
-}
-
-function createExampleMenuRouteBlock(baseIndent, importIdentifier, iconIdentifier) {
-  return [
-    `${baseIndent}{`,
-    `${baseIndent}  title: '示例',`,
-    `${baseIndent}  icon: <${iconIdentifier} />,`,
-    `${baseIndent}  children: ${importIdentifier},`,
-    `${baseIndent}}`,
-  ].join('\n')
-}
-
-const FIRST_LEVEL_MENU_ICON_CONTRACT = [
-  '- First-level navigation icons are information-architecture signals, not decorative placeholders.',
-  '- Use semantic `@hi-ui/icons` Filled variants for every visible first-level route group.',
-  '- Reserve `AppStoreFilled` for the `示例` smoke/gallery group only.',
-  '- Business groups such as `业务` / `项目` / `订单` / `工单` must use domain-specific icons, for example `BusinessCardFilled`, `FolderOpenFilled`, or another matching Filled icon.',
-  '- Do not reuse the same icon across multiple first-level groups unless the route owner documents that they intentionally represent the same domain.',
-].join('\n')
-
-function findMatchingToken(source, startIndex, openToken, closeToken) {
-  if (startIndex < 0 || source[startIndex] !== openToken) {
-    return -1
-  }
-
-  let depth = 0
-  let quote = null
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-
-  for (let index = startIndex; index < source.length; index += 1) {
-    const char = source[index]
-    const nextChar = source[index + 1]
-
-    if (lineComment) {
-      if (char === '\n') {
-        lineComment = false
-      }
-      continue
-    }
-
-    if (blockComment) {
-      if (char === '*' && nextChar === '/') {
-        blockComment = false
-        index += 1
-      }
-      continue
-    }
-
-    if (quote) {
-      if (escaped) {
-        escaped = false
-        continue
-      }
-
-      if (char === '\\') {
-        escaped = true
-        continue
-      }
-
-      if (char === quote) {
-        quote = null
-      }
-      continue
-    }
-
-    if (char === '/' && nextChar === '/') {
-      lineComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '/' && nextChar === '*') {
-      blockComment = true
-      index += 1
-      continue
-    }
-
-    if (char === "'" || char === '"' || char === '`') {
-      quote = char
-      continue
-    }
-
-    if (char === openToken) {
-      depth += 1
-      continue
-    }
-
-    if (char === closeToken) {
-      depth -= 1
-      if (depth === 0) {
-        return index
-      }
-    }
-  }
-
-  return -1
-}
-
-function findExampleChildrenCloseIndex(source, title) {
-  const titlePattern = new RegExp(`title\\s*:\\s*(['"])${title}\\1`, 'g')
-  let titleMatch = titlePattern.exec(source)
-
-  while (titleMatch) {
-    const objectStart = source.lastIndexOf('{', titleMatch.index)
-    if (objectStart >= 0) {
-      const objectEnd = findMatchingToken(source, objectStart, '{', '}')
-      if (objectEnd > objectStart) {
-        const objectText = source.slice(objectStart, objectEnd + 1)
-        const childrenMatch = /children\s*:\s*\[/.exec(objectText)
-
-        if (childrenMatch) {
-          const childrenStart =
-            objectStart +
-            childrenMatch.index +
-            childrenMatch[0].lastIndexOf('[')
-          const childrenCloseIndex = findMatchingToken(source, childrenStart, '[', ']')
-
-          if (childrenCloseIndex > childrenStart) {
-            return childrenCloseIndex
-          }
-        }
-      }
-    }
-
-    titleMatch = titlePattern.exec(source)
-  }
-
-  return -1
-}
-
-async function writeRouteSnippet({ outputRoot, routeFile, importPath }) {
-  const snippetPath = path.join(outputRoot, 'ROUTE_MOUNT_SNIPPET.md')
-  const routeLabel = routeFile ? path.relative(path.dirname(outputRoot), routeFile) : 'your route config file'
-  const content = `# Route Mount Snippet
-
-Route auto-patch was not applied. Mount the typical page routes manually.
-
-## Import
-
-\`\`\`tsx
-import { AppStoreFilled } from '@hi-ui/icons'
-import typicalPageReuseRoutes from '${importPath}'
-\`\`\`
-
-## Preferred mount
-
-\`\`\`tsx
-{
-  title: '示例',
-  icon: <AppStoreFilled />,
-  children: typicalPageReuseRoutes,
-}
-\`\`\`
-
-If the target project already has a top-level \`示例\` menu group, merge
-\`...typicalPageReuseRoutes\` into that group's \`children\` array instead of creating a
-second \`示例\` node.
-
-## First-level menu icon contract
-
-${FIRST_LEVEL_MENU_ICON_CONTRACT}
-
-## Suggested target
-
-- ${routeLabel}
-`
-
-  await ensureDir(path.dirname(snippetPath))
-  await fs.writeFile(snippetPath, content, 'utf8')
-  return snippetPath
-}
-
-async function writeRouteGuardNote({ outputRoot, routeFile }) {
-  const snippetPath = path.join(outputRoot, 'ROUTE_MOUNT_SNIPPET.md')
-  const routeLabel = routeFile ? path.relative(path.dirname(outputRoot), routeFile) : 'your route config file'
-  const content = `# Route Mount Guard
-
-The target project was detected as an existing system, so the host-integration gallery was synced
-for smoke/reference only and was not auto-mounted into the main route tree.
-
-## Do not do this by default
-
-- Do not append \`typicalPageReuseRoutes\` directly to the existing production route array.
-- Do not expose the smoke gallery through the normal left navigation of an existing system.
-
-## If you explicitly need the gallery
-
-- Mount it under an isolated debug/dev-only route.
-- Keep it out of the production navigation, permission tree, and default landing flow.
-
-## Suggested route file to review
-
-- ${routeLabel}
-`
-
-  await ensureDir(path.dirname(snippetPath))
-  await fs.writeFile(snippetPath, content, 'utf8')
-  return snippetPath
-}
-
-async function writeAppFrameSnippet({ outputRoot, appFile, importPath, routesIdentifier }) {
-  return writeAppFrameSnippetWithReason({
-    outputRoot,
-    appFile,
-    importPath,
-    routesIdentifier,
-    reason: '',
-  })
-}
-
-async function writeAppFrameSnippetWithReason({
-  outputRoot,
-  appFile,
-  importPath,
-  routesIdentifier,
-  reason,
-}) {
-  const snippetPath = path.join(outputRoot, 'APP_FRAME_SNIPPET.md')
-  const appLabel = appFile ? path.relative(path.dirname(outputRoot), appFile) : 'your App file'
-  const content = `# App Frame Mount Snippet
-
-Mount the greenfield host-integration app frame so the synced example routes render inside an
-application-level navigation shell instead of as standalone pages.
-
-${reason ? `## Why auto-patch was skipped\n\n- ${reason}\n\n` : ''}## Import
-
-\`\`\`tsx
-import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { AppStoreFilled } from '@hi-ui/icons'
-import { TypicalPageAppFrame } from '${importPath}'
-\`\`\`
-
-## Wrap the route outlet
-
-Use one host-level gallery route object for both page routing and the app-frame menu. Do not
-pass bare \`${routesIdentifier}\` into \`TypicalPageAppFrame\`, because that makes the synced
-typical-page categories render as first-level menus.
-
-\`\`\`tsx
-const typicalPageGalleryRoute = {
-  title: '示例',
-  path: 'examples',
-  icon: <AppStoreFilled />,
-  element: <Outlet />,
-  children: ${routesIdentifier},
-}
-
-// New business route groups should sit beside this gallery route and use their
-// own semantic Filled icons, for example BusinessCardFilled for 业务 and
-// FolderOpenFilled for 项目. AppStoreFilled is reserved for 示例 only.
-const appRoutes = [
-  {
-    path: '/',
-    element: <Navigate to="/examples/table/common/basic" replace />,
-  },
-  typicalPageGalleryRoute,
-]
-
-export default function AppRoutes() {
-  const element = useRoutes(appRoutes)
-  return <TypicalPageAppFrame routes={[typicalPageGalleryRoute]}>{element}</TypicalPageAppFrame>
-}
-\`\`\`
-
-## Keep HiUI component locale in sync
-
-If the target project uses the generated \`src/translation\` bridge, also keep the top-level
-HiUI locale provider in sync with the selected page locale.
-
-## First-level menu icon contract
-
-${FIRST_LEVEL_MENU_ICON_CONTRACT}
-
-\`\`\`tsx
-import { LocaleProvider } from '@hi-ui/hiui'
-import { useTranslation } from './translation' // adjust the import path if needed
-
-LocaleProvider.merge('en-US', 'id-ID', {})
-LocaleProvider.merge('en-US', 'th-TH', {})
-LocaleProvider.merge('en-US', 'de-DE', {})
-LocaleProvider.merge('en-US', 'ar-SA', {})
-
-const HIUI_LOCALE_MAP = {
-  'zh-CN': 'zh-CN',
-  'zh-TW': 'zh-TW',
-  'en-US': 'en-US',
-  'id-ID': 'id-ID',
-  'th-TH': 'th-TH',
-  'de-DE': 'de-DE',
-  'ar-SA': 'ar-SA',
-}
-
-export default function App() {
-  const { locale } = useTranslation()
-
-  return <LocaleProvider locale={HIUI_LOCALE_MAP[locale]}>{/* app tree */}</LocaleProvider>
-}
-\`\`\`
-
-## Suggested target
-
-- ${appLabel}
-`
-
-  await ensureDir(path.dirname(snippetPath))
-  await fs.writeFile(snippetPath, content, 'utf8')
-  return snippetPath
-}
-
-async function writeEntryRouterSnippet({ outputRoot, entryFile, reason }) {
-  const snippetPath = path.join(outputRoot, 'APP_ENTRY_ROUTER_SNIPPET.md')
-  const entryLabel = entryFile ? path.relative(path.dirname(outputRoot), entryFile) : 'your app entry file'
-  const content = `# App Entry Router Snippet
-
-Wrap the top-level application render with \`BrowserRouter\` so \`useRoutes\`, \`useNavigate\`, and
-\`TypicalPageAppFrame\` can run inside a router context.
-
-${reason ? `## Why auto-patch was skipped\n\n- ${reason}\n\n` : ''}## Import
-
-\`\`\`tsx
-import { BrowserRouter } from 'react-router-dom'
-\`\`\`
-
-## Wrap the app root
-
-\`\`\`tsx
-<BrowserRouter>
-  <App />
-</BrowserRouter>
-\`\`\`
-
-## Suggested target
-
-- ${entryLabel}
-`
-
-  await ensureDir(path.dirname(snippetPath))
-  await fs.writeFile(snippetPath, content, 'utf8')
-  return snippetPath
-}
-
-async function patchRouteFile({ targetRoot, routeFile, outputRoot }) {
-  const resolvedRouteFile = routeFile
-    ? path.resolve(targetRoot, routeFile)
-    : await detectRouteFile(targetRoot)
-
-  if (!resolvedRouteFile || !(await pathExists(resolvedRouteFile))) {
-    const snippetPath = await writeRouteSnippet({
-      outputRoot,
-      routeFile: '',
-      importPath: './routes/config',
-    })
-    return { status: 'snippet-only', routeFile: '', snippetPath }
-  }
-
-  const raw = await fs.readFile(resolvedRouteFile, 'utf8')
-  const importIdentifier = 'typicalPageReuseRoutes'
-  const iconIdentifier = 'AppStoreFilled'
-  const importPath = toImportPath(path.dirname(resolvedRouteFile), path.join(outputRoot, 'routes', 'config.tsx'))
-  const importLine = `import ${importIdentifier} from '${importPath}'`
-  const iconImportLine = `import { ${iconIdentifier} } from '@hi-ui/icons'`
-
-  if (
-    raw.includes(`...${importIdentifier}`) ||
-    raw.includes(`children: ${importIdentifier}`) ||
-    raw.includes(`children:${importIdentifier}`)
-  ) {
-    return { status: 'already-mounted', routeFile: resolvedRouteFile, snippetPath: '' }
-  }
-
-  const exportMatch = raw.match(/export\s+default\s+([A-Za-z_$][\w$]*)\s*$/m)
-  if (!exportMatch) {
-    const snippetPath = await writeRouteSnippet({
-      outputRoot,
-      routeFile: resolvedRouteFile,
-      importPath,
-    })
-    return { status: 'snippet-only', routeFile: resolvedRouteFile, snippetPath }
-  }
-
-  const routesVarName = exportMatch[1]
-  const declarationRegex = new RegExp(`(?:const|let|var)\\s+${routesVarName}\\b[\\s\\S]*?=\\s*\\[`, 'm')
-  const declarationMatch = declarationRegex.exec(raw)
-  if (!declarationMatch || declarationMatch.index == null) {
-    const snippetPath = await writeRouteSnippet({
-      outputRoot,
-      routeFile: resolvedRouteFile,
-      importPath,
-    })
-    return { status: 'snippet-only', routeFile: resolvedRouteFile, snippetPath }
-  }
-
-  const exportIndex = raw.lastIndexOf(`export default ${routesVarName}`)
-  const importInjected = raw.includes(importLine)
-    ? raw
-    : raw.match(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/)
-      ? raw.replace(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/, `$1${importLine}\n`)
-      : `${importLine}\n${raw}`
-
-  const iconImportInjected =
-    /import[\s\S]*?\bAppStoreFilled\b[\s\S]*?from\s+['"]@hi-ui\/icons['"]/.test(importInjected)
-      ? importInjected
-      : importInjected.match(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/)
-        ? importInjected.replace(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/, `$1${iconImportLine}\n`)
-        : `${iconImportLine}\n${importInjected}`
-
-  if (!iconImportInjected.includes(importLine) || !iconImportInjected.includes(iconIdentifier)) {
-    const snippetPath = await writeRouteSnippet({
-      outputRoot,
-      routeFile: resolvedRouteFile,
-      importPath,
-    })
-    return { status: 'snippet-only', routeFile: resolvedRouteFile, snippetPath }
-  }
-
-  const exportIndexInjected = iconImportInjected.lastIndexOf(`export default ${routesVarName}`)
-  const closeBracketIndex = iconImportInjected.lastIndexOf(']', exportIndexInjected)
-  if (closeBracketIndex < 0) {
-    const snippetPath = await writeRouteSnippet({
-      outputRoot,
-      routeFile: resolvedRouteFile,
-      importPath,
-    })
-    return { status: 'snippet-only', routeFile: resolvedRouteFile, snippetPath }
-  }
-
-  const exampleChildrenCloseIndex = findExampleChildrenCloseIndex(iconImportInjected, '示例')
-  const routeMounted =
-    exampleChildrenCloseIndex >= 0
-      ? appendArrayEntry(
-          iconImportInjected,
-          exampleChildrenCloseIndex,
-          `${getLineIndent(iconImportInjected, exampleChildrenCloseIndex)}  ...${importIdentifier}`
-        )
-      : appendArrayEntry(
-          iconImportInjected,
-          closeBracketIndex,
-          createExampleMenuRouteBlock(
-            `${getLineIndent(iconImportInjected, closeBracketIndex)}  `,
-            importIdentifier,
-            iconIdentifier
-          )
-        )
-
-  await fs.writeFile(resolvedRouteFile, routeMounted, 'utf8')
-  return { status: 'patched', routeFile: resolvedRouteFile, snippetPath: '' }
-}
-
-async function patchGreenfieldAppFrame({ targetRoot, outputRoot, hostProfile }) {
-  const supportsAppFrame =
-    hostProfile.projectType === 'greenfield' &&
-    ['react-vite-router', 'react-vite', 'react-router-custom'].includes(hostProfile.framework)
-
-  if (!supportsAppFrame) {
-    return { status: 'not-applied', appFile: '', snippetPath: '', routeHandledInApp: false, detail: '' }
-  }
-
-  const appFile = await detectAppShellFile(targetRoot)
-  const importPath = toImportPath(path.join(targetRoot, 'src'), path.join(outputRoot, 'app-frame.tsx'))
-
-  if (!appFile || !(await pathExists(appFile))) {
-    const snippetPath = await writeAppFrameSnippetWithReason({
-      outputRoot,
-      appFile: '',
-      importPath,
-      routesIdentifier: 'routes',
-      reason: 'No supported App.* entry was found in the target project.',
-    })
-    return { status: 'snippet-only', appFile: '', snippetPath, routeHandledInApp: false, detail: 'missing App.* entry' }
-  }
-
-  const raw = await fs.readFile(appFile, 'utf8')
-  const importIdentifier = 'TypicalPageAppFrame'
-  const iconIdentifier = 'AppStoreFilled'
-  const routeImportPath = toImportPath(path.dirname(appFile), path.join(outputRoot, 'routes', 'config.tsx'))
-
-  if (raw.includes(importIdentifier)) {
-    const bareTypicalRoutesPattern =
-      /<TypicalPageAppFrame([^>]*)\broutes=\{typicalPageReuseRoutes\}([^>]*)>/m
-
-    if (
-      bareTypicalRoutesPattern.test(raw) &&
-      /(?:const|let|var)\s+typicalPageGalleryRoute\s*=/.test(raw)
-    ) {
-      const nextRaw = raw.replace(
-        bareTypicalRoutesPattern,
-        '<TypicalPageAppFrame$1routes={[typicalPageGalleryRoute]}$2>'
-      )
-      await fs.writeFile(appFile, nextRaw, 'utf8')
-      return {
-        status: 'patched',
-        appFile,
-        snippetPath: '',
-        routeHandledInApp: true,
-        detail: 'repointed TypicalPageAppFrame to the host-level typicalPageGalleryRoute menu tree',
-      }
-    }
-
-    if (
-      bareTypicalRoutesPattern.test(raw) &&
-      /(?:const|let|var)\s+appRoutes\s*=/.test(raw) &&
-      /title\s*:\s*['"]示例['"]/.test(raw) &&
-      /children\s*:\s*typicalPageReuseRoutes/.test(raw)
-    ) {
-      const nextRaw = raw.replace(
-        bareTypicalRoutesPattern,
-        '<TypicalPageAppFrame$1routes={appRoutes}$2>'
-      )
-      await fs.writeFile(appFile, nextRaw, 'utf8')
-      return {
-        status: 'patched',
-        appFile,
-        snippetPath: '',
-        routeHandledInApp: true,
-        detail: 'repointed TypicalPageAppFrame to the appRoutes tree that owns the top-level 示例 group',
-      }
-    }
-
-    return { status: 'already-patched', appFile, snippetPath: '', routeHandledInApp: true, detail: '' }
-  }
-
-  const routesImportMatch = raw.match(
-    /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"][^'"]*routes(?:\/config)?(?:\.[^'"]+)?['"]/
-  )
-  const routesIdentifier = routesImportMatch?.[1] ?? 'routes'
-  const appFrameImportPath = toImportPath(path.dirname(appFile), path.join(outputRoot, 'app-frame.tsx'))
-  const importLine = `import { ${importIdentifier} } from '${appFrameImportPath}'`
-
-  if (!routesImportMatch) {
-    const isStarterLikeApp =
-      /\.(?:jsx|tsx|js)$/.test(appFile) &&
-      !raw.includes('useRoutes(') &&
-      !raw.includes('react-router-dom') &&
-      (/import\s+['"]\.\/App\.css['"]/.test(raw) ||
-        /Vite \+ React/.test(raw) ||
-        /count is/i.test(raw) ||
-        /className=["']card["']/.test(raw) ||
-        /className=["']logo["']/.test(raw))
-
-    if (isStarterLikeApp) {
-      const nextRaw = [
-        `import { Navigate, Outlet, useRoutes } from 'react-router-dom'`,
-        `import { ${iconIdentifier} } from '@hi-ui/icons'`,
-        `import { ${importIdentifier} } from '${appFrameImportPath}'`,
-        `import typicalPageReuseRoutes from '${routeImportPath}'`,
-        '',
-        'const typicalPageGalleryRoute = {',
-        `  title: '示例',`,
-        `  path: 'examples',`,
-        `  icon: <${iconIdentifier} />,`,
-        '  element: <Outlet />,',
-        '  children: typicalPageReuseRoutes,',
-        '}',
-        '',
-        'const appRoutes = [',
-        '  {',
-        `    path: '/',`,
-        `    element: <Navigate to="/examples/table/common/basic" replace />,`,
-        '  },',
-        '  typicalPageGalleryRoute,',
-        ']',
-        '',
-        'export default function App() {',
-        '  const element = useRoutes(appRoutes)',
-        `  return <${importIdentifier} routes={[typicalPageGalleryRoute]}>{element}</${importIdentifier}>`,
-        '}',
-        '',
-      ].join('\n')
-
-      await fs.writeFile(appFile, nextRaw, 'utf8')
-      return {
-        status: 'patched (starter app)',
-        appFile,
-        snippetPath: '',
-        routeHandledInApp: true,
-        detail: 'replaced the Vite starter placeholder app with typical-page route mounting',
-      }
-    }
-
-    const snippetPath = await writeAppFrameSnippetWithReason({
-      outputRoot,
-      appFile,
-      importPath: appFrameImportPath,
-      routesIdentifier,
-      reason:
-        'No reusable route import was detected in App.* and the file did not match the supported greenfield Vite starter placeholder patterns.',
-    })
-    return { status: 'snippet-only', appFile, snippetPath, routeHandledInApp: false, detail: 'unsupported App.* shape' }
-  }
-
-  const importInjected = raw.includes(importLine)
-    ? raw
-    : raw.match(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/)
-      ? raw.replace(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/, `$1${importLine}\n`)
-      : `${importLine}\n${raw}`
-
-  if (!importInjected.includes(importLine)) {
-    const snippetPath = await writeAppFrameSnippetWithReason({
-      outputRoot,
-      appFile,
-      importPath: appFrameImportPath,
-      routesIdentifier,
-      reason: 'Failed to inject TypicalPageAppFrame import into the App.* entry.',
-    })
-    return { status: 'snippet-only', appFile, snippetPath, routeHandledInApp: false, detail: 'failed to inject app-frame import' }
-  }
-
-  const useRoutesReturnPattern = new RegExp(
-    `^([ \\t]*)return\\s+useRoutes\\(\\s*${routesIdentifier}\\s*\\)\\s*;?\\s*$`,
-    'm'
-  )
-  const match = importInjected.match(useRoutesReturnPattern)
-
-  if (!match) {
-    const snippetPath = await writeAppFrameSnippetWithReason({
-      outputRoot,
-      appFile,
-      importPath: appFrameImportPath,
-      routesIdentifier,
-      reason:
-        'App.* already imports routes, but the return shape is not the supported `return useRoutes(routes)` pattern required for safe text patching.',
-    })
-    return { status: 'snippet-only', appFile, snippetPath, routeHandledInApp: false, detail: 'unsupported useRoutes return shape' }
-  }
-
-  const indent = match[1] ?? ''
-  const replacement = [
-    `${indent}const element = useRoutes(${routesIdentifier})`,
-    `${indent}return <${importIdentifier} routes={${routesIdentifier}}>{element}</${importIdentifier}>`,
-  ].join('\n')
-
-  const nextRaw = importInjected.replace(useRoutesReturnPattern, replacement)
-  await fs.writeFile(appFile, nextRaw, 'utf8')
-  return { status: 'patched', appFile, snippetPath: '', routeHandledInApp: true, detail: 'wrapped existing useRoutes() outlet with TypicalPageAppFrame' }
-}
-
-async function patchGreenfieldRouterEntry({ targetRoot, outputRoot, hostProfile }) {
-  const supportsRouterEntry =
-    hostProfile.projectType === 'greenfield' &&
-    ['react-vite-router', 'react-vite', 'react-router-custom'].includes(hostProfile.framework)
-
-  if (!supportsRouterEntry) {
-    return { status: 'not-applied', entryFile: '', snippetPath: '', detail: '' }
-  }
-
-  const entryFile = await detectAppEntryFile(targetRoot)
-  if (!entryFile || !(await pathExists(entryFile))) {
-    const snippetPath = await writeEntryRouterSnippet({
-      outputRoot,
-      entryFile: '',
-      reason: 'No supported app entry file was found for BrowserRouter patching.',
-    })
-    return { status: 'snippet-only', entryFile: '', snippetPath, detail: 'missing app entry' }
-  }
-
-  const raw = await fs.readFile(entryFile, 'utf8')
-  if (raw.includes('BrowserRouter') || raw.includes('createBrowserRouter(')) {
-    return { status: 'already-patched', entryFile, snippetPath: '', detail: '' }
-  }
-
-  const appImportMatch = raw.match(/import\s+([A-Za-z_$][\w$]*)\s+from\s+['"][^'"]*App(?:\.[^'"]+)?['"]/)
-  const appIdentifier = appImportMatch?.[1] ?? ''
-
-  if (!appIdentifier) {
-    const snippetPath = await writeEntryRouterSnippet({
-      outputRoot,
-      entryFile,
-      reason: 'The entry file does not default-import App.*, so BrowserRouter could not be inserted safely.',
-    })
-    return { status: 'snippet-only', entryFile, snippetPath, detail: 'missing App import in entry file' }
-  }
-
-  const importLine = `import { BrowserRouter } from 'react-router-dom'`
-  const importInjected =
-    raw.includes(importLine) || raw.includes(`import { BrowserRouter } from "react-router-dom"`)
-      ? raw
-      : raw.match(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/)
-        ? raw.replace(/((?:import[\s\S]*?from\s+['"][^'"]+['"]\s*;?\n)+)/, `$1${importLine}\n`)
-        : `${importLine}\n${raw}`
-
-  const appTagPattern = new RegExp(`^([ \\t]*)<${appIdentifier}\\s*/>\\s*$`, 'm')
-  const appTagMatch = appTagPattern.exec(importInjected)
-
-  if (!appTagMatch) {
-    const snippetPath = await writeEntryRouterSnippet({
-      outputRoot,
-      entryFile,
-      reason:
-        'The entry file does not render a simple standalone <App /> node, so BrowserRouter wrapping requires manual review.',
-    })
-    return { status: 'snippet-only', entryFile, snippetPath, detail: 'unsupported entry render shape' }
-  }
-
-  const indent = appTagMatch[1] ?? ''
-  const replacement = [
-    `${indent}<BrowserRouter>`,
-    `${indent}  <${appIdentifier} />`,
-    `${indent}</BrowserRouter>`,
-  ].join('\n')
-  const nextRaw = importInjected.replace(appTagPattern, replacement)
-
-  await fs.writeFile(entryFile, nextRaw, 'utf8')
-  return {
-    status: 'patched',
-    entryFile,
-    snippetPath: '',
-    detail: 'wrapped the App root with BrowserRouter',
-  }
-}
-
-function shouldAutoMountHostIntegrationRoutes(hostProfile) {
-  return hostProfile.projectType === 'greenfield'
-}
-
-async function writeStyleImportSnippet({ outputRoot, entryFile }) {
+async function writeStyleImportSnippet({ outputRoot, entryFile, styleImportPath }) {
   const snippetPath = path.join(outputRoot, 'STYLE_IMPORT_SNIPPET.md')
   const entryLabel = entryFile ? path.basename(entryFile) : 'your app entry file'
   const content = `# Style Import Snippet
 
-Import the typical page shell styles once in the target project's app entry.
+Import the React compatibility patch and the managed local runtime styles once in the target project's app entry.
 
-## Import
+## Imports
 
 \`\`\`ts
-import '@hiui-design/typical-page-shells/styles.css'
+import '@hi-ui/patch-for-react'
+import '${styleImportPath || './components/hiui-design-runtime/styles.css'}'
 \`\`\`
 
 ## Suggested target
 
 - ${entryLabel}
+`
+
+  await ensureDir(path.dirname(snippetPath))
+  await fs.writeFile(snippetPath, content, 'utf8')
+  return snippetPath
+}
+
+function buildRulesOnlyHostBaselineSource() {
+  return `/* hiui-design managed public viewport baseline for rules-only mode. */
+body {
+  margin: 0;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+html,
+#root,
+#app,
+#__next {
+  width: 100%;
+  min-height: 100vh;
+}
+`
+}
+
+function buildRelativeImportSpecifier(fromFilePath, toFilePath) {
+  const relativePath = path.relative(path.dirname(fromFilePath), toFilePath).replace(/\\/g, '/')
+  return relativePath.startsWith('.') ? relativePath : `./${relativePath}`
+}
+
+function getSourceLines(source) {
+  return source.match(/.*(?:\n|$)/g) ?? []
+}
+
+function isCompleteImportStatement(statement) {
+  const normalizedStatement = statement.trim()
+  if (!normalizedStatement.startsWith('import')) {
+    return false
+  }
+
+  return (
+    /^import\s+['"][^'"]+['"]\s*;?$/.test(normalizedStatement) ||
+    /\bfrom\s+['"][^'"]+['"]\s*;?$/.test(normalizedStatement)
+  )
+}
+
+function collectTopLevelImportStatements(source) {
+  const imports = []
+  const lines = getSourceLines(source)
+  let offset = 0
+  let blockCommentOpen = false
+  let currentImportStart = -1
+  let currentImportStatement = ''
+
+  for (const line of lines) {
+    const trimmedLine = line.trim()
+
+    if (currentImportStart >= 0) {
+      currentImportStatement += line
+
+      if (isCompleteImportStatement(currentImportStatement)) {
+        imports.push({
+          end: offset + line.length,
+          start: currentImportStart,
+          statement: currentImportStatement,
+        })
+        currentImportStart = -1
+        currentImportStatement = ''
+      }
+
+      offset += line.length
+      continue
+    }
+
+    if (blockCommentOpen) {
+      offset += line.length
+      if (trimmedLine.includes('*/')) {
+        blockCommentOpen = false
+      }
+      continue
+    }
+
+    if (!trimmedLine) {
+      offset += line.length
+      continue
+    }
+
+    if (trimmedLine.startsWith('//')) {
+      offset += line.length
+      continue
+    }
+
+    if (trimmedLine.startsWith('/*')) {
+      offset += line.length
+      if (!trimmedLine.includes('*/')) {
+        blockCommentOpen = true
+      }
+      continue
+    }
+
+    if (/^\s*import\b/.test(line)) {
+      currentImportStart = offset
+      currentImportStatement = line
+
+      if (isCompleteImportStatement(currentImportStatement)) {
+        imports.push({
+          end: offset + line.length,
+          start: currentImportStart,
+          statement: currentImportStatement,
+        })
+        currentImportStart = -1
+        currentImportStatement = ''
+      }
+
+      offset += line.length
+      continue
+    }
+
+    break
+  }
+
+  return imports
+}
+
+function appendImportStatement(source, importStatement) {
+  const normalizedImportStatement = importStatement.trim().replace(/;$/, '').replace(/"/g, "'")
+  const existingImportStatement = getSourceLines(source).some(
+    (line) => line.trim().replace(/;$/, '').replace(/"/g, "'") === normalizedImportStatement
+  )
+  if (existingImportStatement) return source
+
+  const importStatements = collectTopLevelImportStatements(source)
+  const insertionIndex =
+    importStatements.length > 0 ? importStatements[importStatements.length - 1].end : 0
+
+  const prefix = source.slice(0, insertionIndex)
+  const suffix = source.slice(insertionIndex)
+  const needsLeadingNewline = insertionIndex > 0 && !prefix.endsWith('\n')
+  const normalizedImport = `${needsLeadingNewline ? '\n' : ''}${importStatement}\n`
+  return `${prefix}${normalizedImport}${suffix}`
+}
+
+function stripStandaloneImportLines(source, requiredImportLines) {
+  const normalizedRequiredImportLines = new Set(
+    requiredImportLines.map((line) => line.trim().replace(/;$/, '').replace(/"/g, "'"))
+  )
+
+  return getSourceLines(source)
+    .filter((line) => {
+      const normalizedLine = line.trim().replace(/;$/, '').replace(/"/g, "'")
+      return !normalizedRequiredImportLines.has(normalizedLine)
+    })
+    .join('')
+}
+
+async function writeRulesOnlyHostBaselineSnippet({
+  outputRoot,
+  entryFile,
+  hostBaselineImportPath,
+  hostBaselineFile,
+}) {
+  const snippetPath = path.join(outputRoot, 'RULES_ONLY_HOST_BASELINE_SNIPPET.md')
+  const entryLabel = entryFile ? path.basename(entryFile) : 'your app entry file'
+  const baselineLabel = hostBaselineFile ? path.basename(hostBaselineFile) : 'hiui-design-host.generated.css'
+  const content = `# Rules-Only Host Baseline Snippet
+
+Rules-only mode still needs a project-local host baseline so the public viewport contract can be proven before page generation.
+
+## Add this import to the app entry
+
+\`\`\`ts
+import '${hostBaselineImportPath || './hiui-design-host.generated.css'}'
+\`\`\`
+
+## Create this file next to the entry
+
+\`\`\`css
+${buildRulesOnlyHostBaselineSource().trim()}
+\`\`\`
+
+## Suggested target
+
+- entry: ${entryLabel}
+- host baseline file: ${baselineLabel}
 `
 
   await ensureDir(path.dirname(snippetPath))
@@ -2004,22 +1586,98 @@ import '@hiui-design/typical-page-shells/styles.css'
 
 async function patchStyleImport({ targetRoot, outputRoot }) {
   const resolvedEntryFile = await detectAppEntryFile(targetRoot)
+  const localRuntimeStyleFile = path.join(
+    targetRoot,
+    getManagedLocalRuntimeStylePath(resolvedEntryFile || 'src/main.jsx')
+  )
+  const localRuntimeStyleImportPath = resolvedEntryFile
+    ? buildRelativeImportSpecifier(resolvedEntryFile, localRuntimeStyleFile)
+    : './components/hiui-design-runtime/styles.css'
   if (!resolvedEntryFile || !(await pathExists(resolvedEntryFile))) {
-    const snippetPath = await writeStyleImportSnippet({ outputRoot, entryFile: '' })
+    const snippetPath = await writeStyleImportSnippet({
+      outputRoot,
+      entryFile: '',
+      styleImportPath: localRuntimeStyleImportPath,
+    })
     return { status: 'snippet-only', entryFile: '', snippetPath }
   }
 
   const raw = await fs.readFile(resolvedEntryFile, 'utf8')
-  const importLine = `import '@hiui-design/typical-page-shells/styles.css'`
-
-  if (
-    raw.includes(importLine) ||
-    raw.includes(`import "@hiui-design/typical-page-shells/styles.css"`)
-  ) {
+  const requiredImportLines = [
+    `import '@hi-ui/patch-for-react'`,
+    `import '${localRuntimeStyleImportPath}'`,
+  ]
+  let nextSource = stripStandaloneImportLines(raw, requiredImportLines)
+  for (const requiredImportLine of requiredImportLines) {
+    nextSource = appendImportStatement(nextSource, requiredImportLine)
+  }
+  if (nextSource === raw || `${nextSource}\n` === raw) {
     return { status: 'already-imported', entryFile: resolvedEntryFile, snippetPath: '' }
   }
+  await fs.writeFile(resolvedEntryFile, nextSource.endsWith('\n') ? nextSource : `${nextSource}\n`, 'utf8')
 
-  const lines = raw.split('\n')
+  return { status: 'patched', entryFile: resolvedEntryFile, snippetPath: '' }
+}
+
+async function patchRulesOnlyHostBaseline({ targetRoot, outputRoot, mode }) {
+  if (mode !== 'rules-only') {
+    return {
+      status: 'not-applied',
+      entryFile: '',
+      hostBaselineFile: '',
+      snippetPath: '',
+    }
+  }
+
+  const resolvedEntryFile = await detectAppEntryFile(targetRoot)
+  if (!resolvedEntryFile || !(await pathExists(resolvedEntryFile))) {
+    const snippetPath = await writeRulesOnlyHostBaselineSnippet({
+      outputRoot,
+      entryFile: '',
+      hostBaselineImportPath: './hiui-design-host.generated.css',
+      hostBaselineFile: '',
+    })
+    return {
+      status: 'snippet-only',
+      entryFile: '',
+      hostBaselineFile: '',
+      snippetPath,
+    }
+  }
+
+  const hostBaselineFile = path.join(path.dirname(resolvedEntryFile), 'hiui-design-host.generated.css')
+  const hostBaselineSource = buildRulesOnlyHostBaselineSource()
+  const relativeHostBaselineFile = path.relative(targetRoot, hostBaselineFile).replace(/\\/g, '/')
+  const hostBaselineImportPath = buildRelativeImportSpecifier(resolvedEntryFile, hostBaselineFile)
+  let baselineChanged = false
+
+  if (!(await pathExists(hostBaselineFile))) {
+    await ensureDir(path.dirname(hostBaselineFile))
+    await fs.writeFile(hostBaselineFile, hostBaselineSource, 'utf8')
+    baselineChanged = true
+  } else {
+    const rawBaseline = await fs.readFile(hostBaselineFile, 'utf8')
+    if (rawBaseline !== hostBaselineSource) {
+      await fs.writeFile(hostBaselineFile, hostBaselineSource, 'utf8')
+      baselineChanged = true
+    }
+  }
+
+  const rawEntry = await fs.readFile(resolvedEntryFile, 'utf8')
+  const hasHostBaselineImport =
+    rawEntry.includes(`import '${hostBaselineImportPath}'`) ||
+    rawEntry.includes(`import "${hostBaselineImportPath}"`)
+
+  if (hasHostBaselineImport) {
+    return {
+      status: baselineChanged ? 'patched' : 'already-patched',
+      entryFile: resolvedEntryFile,
+      hostBaselineFile: relativeHostBaselineFile,
+      snippetPath: '',
+    }
+  }
+
+  const lines = rawEntry.split('\n')
   let insertIndex = 0
   let lastImportIndex = -1
 
@@ -2049,161 +1707,77 @@ async function patchStyleImport({ targetRoot, outputRoot }) {
 
   const nextLines = [
     ...lines.slice(0, insertIndex),
-    importLine,
+    `import '${hostBaselineImportPath}'`,
     ...lines.slice(insertIndex),
   ]
   await fs.writeFile(resolvedEntryFile, `${nextLines.join('\n')}\n`, 'utf8')
 
-  return { status: 'patched', entryFile: resolvedEntryFile, snippetPath: '' }
-}
-
-async function patchGreenfieldRootStyles({ targetRoot, hostProfile }) {
-  const supportsStyleReset =
-    hostProfile.projectType === 'greenfield' &&
-    ['react-vite-router', 'react-vite', 'react-router-custom'].includes(hostProfile.framework)
-
-  if (!supportsStyleReset) {
-    return { status: 'not-applied', cssFile: '', detail: '' }
-  }
-
-  const cssFile = await detectStarterRootStyleFile(targetRoot)
-  if (!cssFile || !(await pathExists(cssFile))) {
-    return { status: 'not-detected', cssFile: '', detail: '' }
-  }
-
-  const raw = await fs.readFile(cssFile, 'utf8')
-  if (raw.includes('hiui-design host-integration root reset')) {
-    return { status: 'already-patched', cssFile, detail: '' }
-  }
-
-  const hasViteStarterRootConflict =
-    /body\s*\{[\s\S]*place-items\s*:\s*center/i.test(raw) ||
-    /body\s*\{[\s\S]*display\s*:\s*flex/i.test(raw) ||
-    /#root\s*\{[\s\S]*max-width\s*:\s*1280px/i.test(raw) ||
-    /#root\s*\{[\s\S]*text-align\s*:\s*center/i.test(raw) ||
-    /#root\s*\{[\s\S]*padding\s*:\s*2rem/i.test(raw)
-
-  if (!hasViteStarterRootConflict) {
-    return { status: 'not-needed', cssFile, detail: '' }
-  }
-
-  const resetBlock = [
-    '',
-    '/* hiui-design host-integration root reset */',
-    ':root {',
-    '  font-size: 16px;',
-    '}',
-    '',
-    'html,',
-    'body {',
-    '  height: 100%;',
-    '  min-height: 100%;',
-    '}',
-    '',
-    'body {',
-    '  margin: 0;',
-    '  min-width: 320px;',
-    '  min-height: 100%;',
-    '  display: block;',
-    '  overflow: hidden;',
-    '  place-items: initial;',
-    '}',
-    '',
-    '#root {',
-    '  width: 100%;',
-    '  height: 100%;',
-    '  min-height: 100%;',
-    '  max-width: none;',
-    '  margin: 0;',
-    '  padding: 0;',
-    '  overflow: hidden;',
-    '  display: flex;',
-    '  flex-direction: column;',
-    '  text-align: initial;',
-    '}',
-    '',
-  ].join('\n')
-
-  await fs.writeFile(cssFile, `${raw.replace(/\s*$/, '')}${resetBlock}`, 'utf8')
   return {
     status: 'patched',
-    cssFile,
-    detail: 'appended a root/container reset to neutralize Vite starter centering styles',
+    entryFile: resolvedEntryFile,
+    hostBaselineFile: relativeHostBaselineFile,
+    snippetPath: '',
   }
 }
 
 async function writeBootstrapSummary({
-  archetypeAssetCount,
-  targetRoot,
+  applyStatePath,
   hostProfile,
-  recommendedMode,
   hostAdapterSnippetPath,
+  skillVersion,
   line,
   manifestPath,
   mode,
+  modeSource,
   outputRoot,
   legacyHiUi4Deps,
-  legacyHostRuntime,
-  i18nInitResult,
-  projectImagesInitResult,
+  localRuntimeMaterializationResult,
   packageResult,
+  rulesOnlyHostBaselineResult,
+  rootViewportResult,
+  i18nInitResult,
   styleResult,
-  routerEntryResult,
-  rootStyleResult,
-  routeResult,
-  appFrameResult,
   viteResult,
+  camoraDevServerNoCacheResult,
   installResult,
   installRequested,
-  installedRootRuntime,
-  legacyHiUiEsImports,
-  legacyRuntimeGuardIssues,
-  legacyCarrierProvisioningResult = null,
-  legacyDeliveryPolicySummary = null,
-  syncStatus,
-  referencePagesPathLabel,
 }) {
   const summaryPath = path.join(outputRoot, 'BOOTSTRAP_SUMMARY.md')
-  const projectModePath = path.join(targetRoot, '.local-context', 'hiui-design', 'outputs', 'project-mode.json')
-  const projectMode = {
-    mode,
-    source: 'bootstrap',
-    recommendedMode,
-    framework: hostProfile.framework,
-    projectType: hostProfile.projectType,
-    runtime: hostProfile.runtime,
-    routing: hostProfile.routing,
-    confirmedAt: new Date().toISOString(),
-    bootstrapSummary: path.relative(targetRoot, summaryPath),
-  }
   const lines = [
-    '# Typical Page Reuse Bootstrap Summary',
+    '# Typical Page Preview Bootstrap Summary',
     '',
     '## Result',
     `- project type: ${hostProfile.projectType}`,
     `- detected framework: ${hostProfile.framework}`,
     `- runtime: ${hostProfile.runtime}`,
     `- routing: ${hostProfile.routing}`,
-    `- recommended strategy: ${hostProfile.strategy}`,
-    `- recommended mode: ${recommendedMode}`,
+    `- integration strategy: ${hostProfile.strategy}`,
     `- mode: ${mode}`,
-    `- project mode lock: ${path.relative(targetRoot, projectModePath)}`,
+    `- mode source: ${modeSource}`,
+    `- ${SKILL_PUBLIC_NAME} version: ${skillVersion || '(missing)'}`,
     ...(line ? [`- business line: ${line}`] : []),
-    `- asset sync: ${syncStatus}`,
+    `- preview asset policy: ${mode === 'host-integration' ? 'global-skill-only' : `not-applicable (${mode})`}`,
+    `- managed local runtime assets: ${localRuntimeMaterializationResult.status}`,
     `- package.json: ${packageResult.status}`,
+    `- rules-only host baseline: ${rulesOnlyHostBaselineResult.status}`,
+    `- root viewport styles: ${rootViewportResult.status}`,
     `- i18n baseline: ${i18nInitResult.status}`,
-    `- project image scaffold: ${projectImagesInitResult.status}`,
     `- style import: ${styleResult.status}`,
-    `- app entry router: ${routerEntryResult.status}`,
-    `- starter root styles: ${rootStyleResult.status}`,
-    `- route integration: ${routeResult.status}`,
-    `- app frame integration: ${appFrameResult.status}`,
-    `- vite aliases: ${viteResult.status}`,
+    `- vite schema-types alias: ${viteResult.status}`,
+    `- camora dev-server anti-cache: ${camoraDevServerNoCacheResult.status}`,
     `- dependency install: ${installRequested ? installResult.status : 'not-requested'}`,
   ]
 
   if (packageResult.addedDeps.length > 0) {
     lines.push(`- added dependencies: ${packageResult.addedDeps.join(', ')}`)
+  }
+
+  if (packageResult.isolatedPeerDeps.length > 0) {
+    lines.push(`- isolated shell peer deps: ${packageResult.isolatedPeerDeps.join(', ')}`)
+  }
+
+  if (packageResult.preservedRootPeerDeps.length > 0) {
+    lines.push(`- preserved root peer deps: ${packageResult.preservedRootPeerDeps.join(', ')}`)
   }
 
   if (packageResult.updatedDeps.length > 0) {
@@ -2214,10 +1788,57 @@ async function writeBootstrapSummary({
     lines.push(`- added scripts: ${packageResult.addedScripts.join(', ')}`)
   }
 
+  if (packageResult.updatedScripts.length > 0) {
+    lines.push(`- updated scripts: ${packageResult.updatedScripts.join(', ')}`)
+  }
+
   if (packageResult.skippedScripts.length > 0) {
     lines.push(`- preserved existing scripts: ${packageResult.skippedScripts.join(', ')}`)
   }
 
+  if (legacyHiUi4Deps.length > 0) {
+    lines.push(`- detected legacy visual deps: ${legacyHiUi4Deps.join(', ')}`)
+  }
+
+  if (hostProfile.existingStructureSummary.length > 0) {
+    lines.push(`- existing structure markers: ${hostProfile.existingStructureSummary.join(', ')}`)
+  }
+  if (hostProfile.adapterDoc) {
+    lines.push(`- framework adapter guide: ${getContextPath(hostProfile.adapterDoc)}`)
+  }
+  if (hostProfile.adapterEntryHints.length > 0) {
+    lines.push(`- candidate host entry files: ${hostProfile.adapterEntryHints.join(', ')}`)
+  }
+  if (hostProfile.remoteOnlyRuntime?.enabled) {
+    lines.push(`- remote-only runtime: enabled`)
+    if (hostProfile.remoteOnlyRuntime.remoteEntryFilenames?.length > 0) {
+      lines.push(
+        `- remote entry filenames: ${hostProfile.remoteOnlyRuntime.remoteEntryFilenames.join(', ')}`
+      )
+    }
+    if (hostProfile.remoteOnlyRuntime.localOrigins?.length > 0) {
+      lines.push(
+        `- README localOrigin hints: ${hostProfile.remoteOnlyRuntime.localOrigins.join(', ')}`
+      )
+    }
+  }
+  if (hostAdapterSnippetPath) {
+    lines.push(`- host adapter snippet: ${hostAdapterSnippetPath}`)
+  }
+  if (localRuntimeMaterializationResult.targetRoot) {
+    lines.push(`- managed local runtime root: ${localRuntimeMaterializationResult.targetRoot}`)
+  }
+  if (localRuntimeMaterializationResult.syncedFiles?.length > 0) {
+    lines.push(`- managed local runtime file count: ${localRuntimeMaterializationResult.syncedFiles.length}`)
+  }
+
+  if (manifestPath) {
+    lines.push(`- manifest: ${manifestPath}`)
+  }
+
+  if (rootViewportResult.patchedFiles.length > 0) {
+    lines.push(`- root viewport files: ${rootViewportResult.patchedFiles.join(', ')}`)
+  }
   if (i18nInitResult.generatedPath) {
     lines.push(`- generated translation entry: ${i18nInitResult.generatedPath}`)
   }
@@ -2226,113 +1847,31 @@ async function writeBootstrapSummary({
     lines.push(`- supported locales: ${i18nInitResult.locales}`)
   }
 
-  if (projectImagesInitResult.registryPath) {
-    lines.push(`- image registry: ${projectImagesInitResult.registryPath}`)
+  if (i18nInitResult.syncedFiles) {
+    lines.push(`- synced locale files: ${i18nInitResult.syncedFiles}`)
   }
-
-  if (projectImagesInitResult.assetDir) {
-    lines.push(`- image asset dir: ${projectImagesInitResult.assetDir}`)
-  }
-
-  if (projectImagesInitResult.syncedImageFiles) {
-    lines.push(`- synced default image files: ${projectImagesInitResult.syncedImageFiles}`)
-  }
-
-  if (legacyHiUi4Deps.length > 0) {
-    lines.push(`- detected legacy visual deps: ${legacyHiUi4Deps.join(', ')}`)
-  }
-
-  if (mode === 'legacy-host-compatible') {
-    lines.push(`- legacy host runtime reasons: ${legacyHostRuntime.reasons.join('; ')}`)
-    if (legacyCarrierProvisioningResult) {
-      lines.push(
-        `- legacy carrier bootstrap: ${legacyCarrierProvisioningResult.status} (provisioned ${legacyCarrierProvisioningResult.provisioned.length}, reused ${legacyCarrierProvisioningResult.reused.length}, conflicts ${legacyCarrierProvisioningResult.conflicts.length})`
-      )
-    }
-    if (legacyDeliveryPolicySummary) {
-      lines.push(
-        `- legacy required carrier readiness: ${legacyDeliveryPolicySummary.legacyRolloutCoverageStatus}`
-      )
-      if (Array.isArray(legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes) &&
-        legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
-        lines.push(
-          `- missing required legacy carriers before integration can be ready: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}`
-        )
-      }
-    }
-  }
-
-  if (legacyHiUiEsImports.length > 0) {
-    lines.push(`- legacy @hi-ui/hiui/es consumers: ${legacyHiUiEsImports.length}`)
-  }
-
-  if (legacyRuntimeGuardIssues.length > 0) {
-    lines.push(`- installed root runtime guard: fail`)
-  } else if (Object.keys(installedRootRuntime.installedPackages).length > 0) {
-    lines.push(`- installed root runtime guard: pass`)
-  }
-
-  for (const depName of ['react', 'react-dom', '@hi-ui/hiui']) {
-    const info = installedRootRuntime.installedPackages[depName]
-    if (!info?.exists) continue
-    lines.push(`- installed ${depName}: ${info.installedVersion}`)
-  }
-
-  if (hostProfile.existingStructureSummary.length > 0) {
-    lines.push(`- existing structure markers: ${hostProfile.existingStructureSummary.join(', ')}`)
-  }
-  if (hostProfile.adapterDoc) {
-    lines.push(`- framework adapter guide: .local-context/hiui-design/${hostProfile.adapterDoc}`)
-  }
-  if (hostProfile.adapterEntryHints.length > 0) {
-    lines.push(`- candidate host entry files: ${hostProfile.adapterEntryHints.join(', ')}`)
-  }
-  if (hostAdapterSnippetPath) {
-    lines.push(`- host adapter snippet: ${hostAdapterSnippetPath}`)
-  }
-
-  if (referencePagesPathLabel) {
-    lines.push(`- local reference pages: ${referencePagesPathLabel}`)
-  }
-
-  if (manifestPath) {
-    lines.push(`- manifest: ${manifestPath}`)
+  if (applyStatePath) {
+    lines.push(`- apply state file: ${applyStatePath}`)
   }
 
   if (styleResult.entryFile) {
     lines.push(`- app entry file: ${styleResult.entryFile}`)
   }
 
+  if (rulesOnlyHostBaselineResult.hostBaselineFile) {
+    lines.push(`- rules-only host baseline file: ${rulesOnlyHostBaselineResult.hostBaselineFile}`)
+  }
+
+  if (rootViewportResult.snippetPath) {
+    lines.push(`- root viewport snippet: ${rootViewportResult.snippetPath}`)
+  }
+
+  if (rulesOnlyHostBaselineResult.snippetPath) {
+    lines.push(`- rules-only host baseline snippet: ${rulesOnlyHostBaselineResult.snippetPath}`)
+  }
+
   if (styleResult.snippetPath) {
     lines.push(`- style snippet: ${styleResult.snippetPath}`)
-  }
-
-  if (routerEntryResult.entryFile) {
-    lines.push(`- app entry file: ${routerEntryResult.entryFile}`)
-  }
-
-  if (routerEntryResult.snippetPath) {
-    lines.push(`- app entry router snippet: ${routerEntryResult.snippetPath}`)
-  }
-
-  if (rootStyleResult.cssFile) {
-    lines.push(`- root style file: ${rootStyleResult.cssFile}`)
-  }
-
-  if (routeResult.routeFile) {
-    lines.push(`- route file: ${routeResult.routeFile}`)
-  }
-
-  if (routeResult.snippetPath) {
-    lines.push(`- route snippet: ${routeResult.snippetPath}`)
-  }
-
-  if (appFrameResult.appFile) {
-    lines.push(`- app file: ${appFrameResult.appFile}`)
-  }
-
-  if (appFrameResult.snippetPath) {
-    lines.push(`- app frame snippet: ${appFrameResult.snippetPath}`)
   }
 
   if (viteResult.viteFile) {
@@ -2343,6 +1882,20 @@ async function writeBootstrapSummary({
     lines.push(`- vite snippet: ${viteResult.snippetPath}`)
   }
 
+  if (camoraDevServerNoCacheResult.devConfigFile) {
+    lines.push(`- camora dev config: ${camoraDevServerNoCacheResult.devConfigFile}`)
+  }
+
+  if (camoraDevServerNoCacheResult.addedHeaders.length > 0) {
+    lines.push(
+      `- camora anti-cache headers: ${camoraDevServerNoCacheResult.addedHeaders.join(', ')}`
+    )
+  }
+
+  if (camoraDevServerNoCacheResult.snippetPath) {
+    lines.push(`- camora anti-cache snippet: ${camoraDevServerNoCacheResult.snippetPath}`)
+  }
+
   if (installRequested && installResult.command) {
     lines.push(`- install command: ${installResult.command}`)
   }
@@ -2350,24 +1903,12 @@ async function writeBootstrapSummary({
   lines.push('', '## Next steps')
   lines.push(`- Host profile: ${hostProfile.reason}`)
 
-  if (installRequested && installResult.status === 'failed') {
-    lines.push(`- Re-run \`${installResult.command}\` in the target project. Failure detail: ${installResult.message}`)
-  } else if (legacyRuntimeGuardIssues.length > 0) {
-    lines.push(
-      `- Installed root runtime drift was detected. Do not generate business pages yet. Repair node_modules so the host root stays on its declared legacy runtime and keep HiUI5 limited to the explicit alias lane.`
-    )
-    if (legacyHiUiEsImports.length > 0) {
-      lines.push(
-        `- Current source still imports @hi-ui/hiui/es* (${legacyHiUiEsImports.length} files). Examples: ${summarizeLegacyImportHits(targetRoot, legacyHiUiEsImports)}`
-      )
-    }
-  } else if (mode === 'legacy-host-compatible') {
-    lines.push('- This host was detected as a legacy compatibility runtime. The legacy host main tree was not auto-patched into a generic `@hiui-design/typical-page-shells` host-integration runtime; ordinary typical pages should instead follow the planner-selected carrier / runtimeAdapterProof path.')
-    if (legacyDeliveryPolicySummary?.legacyRolloutCoverageStatus === 'ready') {
-      lines.push('- Legacy integration is ready for the required ordinary typical page families. The required project-certified carriers are in place, so planner may continue on the `page-component + runtime bridge + slot fill` main path.')
-    } else if (Array.isArray(legacyDeliveryPolicySummary?.missingRequiredLegacyPageTypes) && legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
-      lines.push(`- Legacy integration is still incomplete because required project-certified carriers are missing for: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}.`)
-    }
+  if (installRequested && ['failed', 'blocked'].includes(installResult.status)) {
+    const lead =
+      installResult.status === 'blocked'
+        ? 'Fix the install blocker and then rerun'
+        : 'Re-run'
+    lines.push(`- ${lead} \`${installResult.command}\` in the target project. Failure detail: ${installResult.message}`)
   } else if (!installRequested) {
     lines.push('- Run your target project package manager install command after reviewing package.json changes.')
   }
@@ -2376,105 +1917,79 @@ async function writeBootstrapSummary({
     lines.push('- Clear the legacy visual dependencies above before installing the typical-page dependency set; keep schema 4.x packages only when they belong to the current schema ecosystem.')
   }
 
+  if (rootViewportResult.status === 'snippet-only' && rootViewportResult.snippetPath) {
+    lines.push(`- Apply the root viewport style guidance in \`${rootViewportResult.snippetPath}\` before opening preview or business pages.`)
+  }
+
   if (styleResult.status === 'snippet-only' && styleResult.snippetPath) {
-    lines.push(`- Add the manual style import from \`${styleResult.snippetPath}\` to your app entry before opening the example pages.`)
+    lines.push(`- Add the manual style import from \`${styleResult.snippetPath}\` to your app entry before opening preview or business pages.`)
   }
 
-  if (routerEntryResult.status === 'snippet-only' && routerEntryResult.snippetPath) {
-    lines.push(`- Apply the app entry router snippet in \`${routerEntryResult.snippetPath}\` so BrowserRouter wraps the root app render.`)
-  }
-
-  if (routeResult.status === 'snippet-only' && routeResult.snippetPath) {
-    lines.push(`- Apply the manual route snippet in \`${routeResult.snippetPath}\`.`)
-  }
-
-  if (routeResult.status === 'guarded (existing-system)' && routeResult.snippetPath) {
-    lines.push(`- Auto route patch was intentionally skipped for the existing host. Review \`${routeResult.snippetPath}\` before wiring any smoke route manually.`)
-  }
-
-  if (appFrameResult.status === 'snippet-only' && appFrameResult.snippetPath) {
-    lines.push(`- Apply the manual app frame snippet in \`${appFrameResult.snippetPath}\` so greenfield example pages render inside a navigation shell.`)
+  if (rulesOnlyHostBaselineResult.status === 'snippet-only' && rulesOnlyHostBaselineResult.snippetPath) {
+    lines.push(
+      `- In rules-only mode, add the managed local host baseline from \`${rulesOnlyHostBaselineResult.snippetPath}\` before opening preview or generating business pages.`
+    )
   }
 
   if (viteResult.status === 'snippet-only' && viteResult.snippetPath) {
     lines.push(`- Apply the Vite alias snippet in \`${viteResult.snippetPath}\` before running dev/build commands.`)
   }
 
+  if (camoraDevServerNoCacheResult.status === 'patched') {
+    lines.push(
+      '- Camora anti-cache headers were patched into the local devServer config. Restart the local remote once so the new response headers take effect before validating the test link.'
+    )
+  } else if (
+    ['not-detected', 'snippet-only'].includes(camoraDevServerNoCacheResult.status) &&
+    camoraDevServerNoCacheResult.snippetPath
+  ) {
+    lines.push(
+      `- Camora runtime uses a proxy-backed local remote. Apply the anti-cache snippet in \`${camoraDevServerNoCacheResult.snippetPath}\` and restart the local remote before validating the test link.`
+    )
+  }
+
   if (packageResult.addedScripts.includes('typical-page:apply') || packageResult.status !== 'missing') {
-    lines.push('- Re-run the default reference-only installation later with `pnpm typical-page:apply`, `npm run typical-page:apply`, or the equivalent package-manager script command. It will auto-resolve to `rules-only` or `legacy-host-compatible` based on the host runtime.')
+    lines.push('- Re-run the rules-only installation later with `pnpm typical-page:apply`, `npm run typical-page:apply`, or the equivalent package-manager script command.')
   }
   if (packageResult.addedScripts.includes('typical-page:designer-setup') || packageResult.status !== 'missing') {
-    lines.push('- For non-technical designers, prefer `pnpm typical-page:designer-setup` or `npm run typical-page:designer-setup`; that entry now auto-runs doctor, checks build, and reports lint as an explainable follow-up when the script exists.')
+    lines.push('- For non-technical designers, prefer `pnpm typical-page:designer-setup` or `npm run typical-page:designer-setup`; that entry now opens the page-task gate through typical-page:preflight by default, and only runs doctor when `--with-doctor-gate` is added for acceptance.')
   }
-  if (packageResult.addedScripts.includes('typical-page:i18n:init') || packageResult.status !== 'missing') {
-    lines.push('- The target project already received the default locale resources, formatter bridge, and RTL baseline during bootstrap. Re-run `pnpm typical-page:i18n:init` or `npm run typical-page:i18n:init` only when you want to resync locale files or refresh the wrapper template.')
-  }
-  if (packageResult.addedScripts.includes('typical-page:images:init') || packageResult.status !== 'missing') {
-    lines.push('- The target project already received the project image catalog scaffold during bootstrap. Re-run `pnpm typical-page:images:init` or `npm run typical-page:images:init` only when you want to refresh the scaffold or seed a fresh project.')
+  if (i18nInitResult.status === 'not-requested (default)') {
+    lines.push('- Internationalization baseline was not provisioned by default. Only run `node ".local-context/hiui-design/scripts/init-i18n.mjs"` or re-run bootstrap/apply with `--init-i18n` when the user explicitly asks for i18n in this project.')
+  } else if (packageResult.addedScripts.includes('typical-page:i18n:init') || packageResult.updatedScripts.includes('typical-page:i18n:init')) {
+    lines.push('- The target project received locale resources, formatter bridge, and the managed `typical-page:i18n:init` rerun script because `--init-i18n` was requested during bootstrap.')
   }
 
   if (mode === 'host-integration') {
-    lines.push('- 接入阶段的 mode 已写入 project mode lock；后续页面生成默认读取并确认该 mode，不再重新判定接入模式。')
-    lines.push('- 页面生成前先运行 `pnpm typical-page:plan-page-task -- --json ...` 或 `npm run typical-page:plan-page-task -- --json ...` 获取机器计划；不要从父级工作区或 skill 源码目录手工拼流程。')
-    lines.push('- 接入阶段 doctor 已作为安装门槛；只有手工改宿主、依赖、路由或样式入口后，才需要重新执行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`。')
-    lines.push(`- Review \`${path.join(outputRoot, 'SMOKE_REPORT.md')}\` and open the listed smoke pages before generating business pages.`)
-    lines.push('- If the synced smoke/gallery assets drift behind the source-of-truth examples, refresh them with `pnpm typical-page:apply:host-assets:force` or `npm run typical-page:apply:host-assets:force`.')
-    lines.push('- 槽位型典型页默认复制最接近的 `src/typical-page-reuse/pages/*` / reference 示例并只替换业务槽位。')
-    lines.push('- 快速链路完成口径是当前页可预览、当前页 preflight 通过、lint / build 结果可解释；正式验收 / 发布时才追加 source-gate、doctor 与 finalize-page。')
+    lines.push('- If you used this advanced bootstrap/apply entry directly instead of `typical-page:designer-setup`, run `pnpm typical-page:preflight` or `npm run typical-page:preflight` before generating business pages.')
+    lines.push('- Run `pnpm typical-page:doctor` or `npm run typical-page:doctor` for first-time acceptance, runtime troubleshooting, or formal handoff, not as the default generation gate.')
+    lines.push('- Official preview examples now stay in the packaged preview runtime. Start them from the skill root with `node scripts/start-preview-runtime.mjs` instead of using project-local commands or preview routes.')
+    lines.push(`- Review \`${path.join(outputRoot, 'SMOKE_REPORT.md')}\` and open the listed smoke pages through the packaged preview runtime before generating business pages.`)
+    lines.push('- Do not create or keep `src/typical-page-preview/**`, `typical-page:materialize-preview`, or `typical-page:apply:host-assets` in target projects.')
+    lines.push(`- Generate business pages from \`page-types.manifest.json\` and the official source templates inside \`${getContextPath('examples/host-integration/src/pages/*')}\`; project-local preview copies are no longer part of the contract.`)
   } else {
-    lines.push('- No route gallery or host bridge files were wired into the target project source tree.')
-    lines.push(`- A reference-only typical-page baseline was synced to \`${referencePagesPathLabel}\`. It is for generation guidance only, not for production routes or host bridging.`)
-    lines.push(`- Archetype assets were synced to \`.local-context/hiui-design/archetypes\` and the current-mode template set. Copied files: ${archetypeAssetCount}.`)
-    lines.push('- Generate new business pages directly under the target project’s existing structure; do not create `src/typical-page-reuse/*` unless you explicitly need host-integration mode.')
-    lines.push(
-      mode === 'legacy-host-compatible'
-        ? '- When generating a page in this host, read `.local-context/hiui-design/rules/generation-rules.md`, then `rules/page-type-map.md`, then `docs/generation/legacy-host-compatibility.md`, then `docs/generation/figma-page-rules.md`, then the matched `docs/generation/figma-pages/*.md` chapter.'
-        : '- When generating a page, first read `.local-context/hiui-design/rules/generation-rules.md`, then `rules/page-type-map.md`, then `docs/generation/figma-page-rules.md`, then the matched `docs/generation/figma-pages/*.md` chapter.'
-    )
-    lines.push('- 接入阶段的 mode 已写入 project mode lock；后续页面生成默认读取并确认该 mode，不再重新判定接入模式。')
-    lines.push('- Before generating a page, run `pnpm typical-page:select-archetype -- --page-type <id>` or the npm equivalent to lock the packaged example, mode template, and required regions/ownership contract.')
-    lines.push('- Then plan the page with `pnpm typical-page:plan-page-task -- --page-type <id> --page <generated-page-path> --json`, and start the managed page with `pnpm typical-page:start-page -- --page-type <id> --page <generated-page-path>` so the file is born with source markers, root data attributes, and a started contract.')
-    lines.push(`- Use \`${referencePagesPathLabel}\` as the default local reference template set. If that directory is removed manually, fall back to \`.local-context/hiui-design/examples/host-integration/src/pages/*\`.`)
-    lines.push('- Before visual/detail polish, run `pnpm typical-page:preflight -- --page <generated-page-path>` so placeholder mappings, source marker gaps, and transitive import contamination fail early.')
-    lines.push('- 快速链路完成口径是当前页可预览、当前页 preflight 通过、lint / build 结果可解释；正式验收 / 发布、结构修复或 ownership / marker 变化时才执行 `typical-page:finalize-page`。')
-    lines.push(
-      mode === 'legacy-host-compatible'
-        ? '- In legacy-host-compatible (legacy host bridge) mode, do not treat the legacy host main tree as a generic direct mount for `@hiui-design/typical-page-shells`. Ordinary typical pages may still use planner-selected page components through a project-certified carrier or runtimeAdapterProof-backed standard component; only ad hoc host-integration-style shell imports remain out of bounds for the legacy main tree. If you later isolate a dedicated modern runtime entry, re-evaluate standard shell imports there instead of in the host main tree.'
-        : '- If the generated page imports `@hiui-design/typical-page-shells`, then add `@hiui-design/typical-page-shells/styles.css` plus the Vite `@` and `@hi-ui/schema-types` aliases in the target project.'
-    )
-    lines.push('- Only when you explicitly want a baseline gallery and host bridge demo, run `pnpm typical-page:apply:host-assets` or `npm run typical-page:apply:host-assets`.')
-    lines.push('- 接入阶段 doctor 已作为安装门槛；只有手工改宿主、依赖、路由或样式入口后，才需要重新执行 `pnpm typical-page:doctor` 或 `npm run typical-page:doctor`。')
+    lines.push('- No template pages, route gallery, or host bridge files were synced into the target project.')
+    lines.push('- Generate new business pages directly under the target project’s existing structure; do not create a preview asset directory in the target project.')
+    lines.push(`- When generating a page, first read \`${getContextDocPath('generation', 'generation-principles.md')}\`, then \`page-type-map.md\`, then \`figma-page-rules.md\`, then the matched \`figma-pages/*.md\` chapter.`)
+    lines.push(`- Use \`${getContextPath('examples/host-integration/src/pages/*')}\` only as runtime contrast inside the skill package and open official examples through the packaged preview runtime when needed.`)
+    lines.push('- Rules-only still uses the managed local runtime baseline. Keep `src/components/hiui-design-runtime/styles.css`, the local runtime files under `src/components/hiui-design-runtime`, the React compatibility patch, and the Vite schema-types alias in place before generating business pages.')
+    lines.push('- If you used this advanced bootstrap/apply entry directly instead of `typical-page:designer-setup`, run `pnpm typical-page:preflight` or `npm run typical-page:preflight` before generating business pages.')
+    lines.push('- Run `pnpm typical-page:doctor` or `npm run typical-page:doctor` only for first-time acceptance, runtime troubleshooting, or formal handoff.')
   }
   lines.push('')
 
   await ensureDir(path.dirname(summaryPath))
-  await ensureDir(path.dirname(projectModePath))
-  await fs.writeFile(projectModePath, `${JSON.stringify(projectMode, null, 2)}\n`, 'utf8')
   await fs.writeFile(summaryPath, `${lines.join('\n')}\n`, 'utf8')
   return summaryPath
 }
 
-function runSyncScript({ skillRoot, targetRoot, dest, force, line = '', syncMode = 'host-integration' }) {
-  const syncScriptPath = path.join(skillRoot, 'scripts', 'sync-host-integration.mjs')
-  const args = [syncScriptPath, '--target', targetRoot, '--dest', dest, '--mode', syncMode]
-  if (line) args.push('--line', line)
-  if (force) args.push('--force')
-
-  const result = spawnSync(process.execPath, args, {
-    cwd: skillRoot,
-    encoding: 'utf8',
-  })
-
-  if (result.status !== 0) {
-    const stderr = result.stderr?.trim()
-    const stdout = result.stdout?.trim()
-    throw new Error(stderr || stdout || 'sync-host-integration.mjs failed')
-  }
-
-  return result.stdout?.trim() ?? ''
-}
-
 async function main() {
+  let applyProgressPath = ''
+  let applyProgressStartedAt = ''
+  let applyProgressRequestedMode = ''
+  let applyProgressSkillVersion = ''
+  let applyProgressStage = ''
+
   try {
     const options = parseArgs(process.argv.slice(2))
     const scriptDir = path.dirname(fileURLToPath(import.meta.url))
@@ -2484,343 +1999,261 @@ async function main() {
       skillRoot,
       line: options.line,
     })
+    const { version: skillVersion } = await loadSkillVersion(skillRoot)
+    applyProgressSkillVersion = skillVersion
     const hostProfile = await detectHostProfile(targetRoot, {
-      ignoreRelativePaths: [options.dest],
+      ignoreRelativePaths: [LEGACY_PREVIEW_OUTPUT_ROOT],
     })
-    const shellPackage = await loadLocalShellPackage(skillRoot)
+    const modeResolution = await resolveAutoInstallMode({
+      requestedMode: options.mode,
+      targetRoot,
+    })
+    if (!modeResolution.mode) {
+      throw new Error(
+        `Install mode resolution returned no mode for ${targetRoot}. This indicates an internal bug in resolveAutoInstallMode().`
+      )
+    }
+    const mode = modeResolution.mode
+    const outputRoot = resolveManagedOutputRoot({
+      targetRoot,
+      mode,
+    })
+    const managedRuntimeDependencyContract =
+      await loadManagedLocalRuntimeDependencyContract(skillRoot).catch(() => null)
+    const managedRuntimeSourcePackageName =
+      resolveManagedLocalRuntimeEmbeddedSourceSnapshot(managedRuntimeDependencyContract).name || ''
+    const managedRuntimePeerDependencies = await loadManagedLocalRuntimePeerDependencies(skillRoot)
     const originalTargetPkg = await readTargetPackageJson(targetRoot)
     const legacyHiUi4Deps = detectLegacyHiUi4VisualDeps(originalTargetPkg)
-    const legacyHostRuntime = await detectLegacyHostRuntimeMode({
-      targetRoot,
+    const isolatedAliasDependencies = buildHiui5IsolatedAliasDependencies(
+      managedRuntimePeerDependencies
+    )
+    const managedRuntimePatchRequired = shouldRequireManagedRuntimePatch({
+      hostProfile,
       pkg: originalTargetPkg,
-    })
-    const legacyHiUiEsImports = await collectLegacyHiUiEsImports(path.join(targetRoot, 'src'))
-    const installedRootRuntime = originalTargetPkg
-      ? await inspectInstalledRootRuntime({
-          targetRoot,
-          pkg: originalTargetPkg,
-        })
-      : { installedPackages: {}, driftItems: [] }
-    const legacyRuntimeGuardIssues = buildLegacyRuntimeGuardIssues({
-      legacyHostRuntime,
-      installedRootRuntime,
-      legacyHiUiEsImports,
-    })
-    const embeddedShellsSpec = await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
-    const shellsSpec = options.shellsSpec || embeddedShellsSpec || shellPackage.version
-    const recommendedMode = getRecommendedMode({
-      hostProfile,
-      legacyHostRuntime,
-    })
-    const mode = resolveInstallMode({
-      requestedMode: options.mode,
-      hostProfile,
-      legacyHostRuntime,
     })
 
     if (!(await pathExists(targetRoot))) {
       throw new Error(`Target project root does not exist: ${targetRoot}`)
     }
 
-    if (legacyHostRuntime.incompatible && options.mode === 'host-integration') {
-      console.warn(
-        `Detected a legacy host-compatible runtime. Downgrading install mode from host-integration to legacy-host-compatible: ${legacyHostRuntime.reasons.join(
-          '; '
-        )}`
+    const projectContextSyncResult = await syncProjectContext({
+      skillRoot,
+      targetRoot,
+    })
+    if (projectContextSyncResult.status === 'completed-with-conflicts') {
+      throw new Error(
+        `Project context sync encountered conflicts under ${projectContextSyncResult.targetContextRoot}. Review ${projectContextSyncResult.syncManifestPath} and rerun from the packaged skill with --force-context-sync only if overwriting those files is safe.`
       )
     }
 
-    const resolvedOutputRoot =
-      mode === 'host-integration'
-        ? path.join(targetRoot, options.dest)
-        : path.join(targetRoot, '.local-context', 'hiui-design', 'outputs')
+    applyProgressPath = resolveApplyProgressPath(targetRoot)
+    applyProgressRequestedMode = mode
+    const applyProgress = await writeApplyProgress({
+      applyProgressPath,
+      skillVersion,
+      requestedMode: mode,
+      stage: 'bootstrap-started',
+      detail:
+        'hiui-design bootstrap has started. Apply-state will be written after package and host baseline patch steps complete.',
+    })
+    applyProgressStartedAt = applyProgress.startedAt
+    applyProgressStage = applyProgress.stage
 
+    const sharedRuntimeDirectDependencies =
+      await loadSharedRuntimeDirectDependencySnapshot(skillRoot)
     const hostIntegrationDependencies =
       mode === 'host-integration'
-        ? await loadHostIntegrationDependencies(skillRoot, shellPackage.peerDependencies ?? {}, lineId)
-        : { dependencies: {}, devDependencies: {} }
+        ? await loadHostIntegrationDependencies(
+            skillRoot,
+            managedRuntimePeerDependencies,
+            sharedRuntimeDirectDependencies,
+            { sourcePackageName: managedRuntimeSourcePackageName },
+          )
+        : {}
+    const directDependencies = {
+      ...sharedRuntimeDirectDependencies,
+      ...hostIntegrationDependencies,
+    }
 
-    const syncConfig =
+    const syncOutput =
       mode === 'host-integration'
-        ? {
-            dest: options.dest,
-            status: 'completed',
-            mode: 'host-integration',
-            referencePagesPathLabel: 'src/typical-page-reuse/pages/*',
-          }
-        : {
-            dest: RULES_ONLY_REFERENCE_DEST,
-            status: 'completed (reference-only)',
-            mode: 'reference-only',
-            referencePagesPathLabel: RULES_ONLY_REFERENCE_PAGES_GLOB,
-          }
-
-    const syncOutput = runSyncScript({
-      skillRoot,
-      targetRoot,
-      dest: syncConfig.dest,
-      force: options.force,
-      line: lineId,
-      syncMode: syncConfig.mode,
-    })
-    const archetypeSyncResult = await syncArchetypeAssets({
-      skillRoot,
-      targetRoot,
-      mode,
-      force: options.force,
-    })
+        ? 'Host-integration mode: preview examples stay in the packaged skill runtime. No project-local preview assets were synced.'
+        : 'Rules-only mode: no host integration assets were synced into the target project.'
+    const skippedModeStatus =
+      mode === 'host-integration'
+          ? 'not-applied (preview-stays-in-skill-package)'
+          : 'not-applied (rules-only)'
+    const localRuntimeMaterializationResult =
+      await materializeManagedLocalRuntimeAssets({
+        skillRoot,
+        targetRoot,
+      })
 
     const packageResult = await patchPackageJson({
       targetRoot,
-      shellsSpec,
-      peerDependencies: shellPackage.peerDependencies ?? {},
-      directDependencies: hostIntegrationDependencies.dependencies,
-      directDevDependencies: hostIntegrationDependencies.devDependencies,
+      peerDependencies: managedRuntimePeerDependencies,
+      isolatedAliasDependencies,
+      directDependencies,
       line: lineId,
-      legacyCompatibilityOnly: mode === 'legacy-host-compatible',
+      mode,
+      hostProfile,
+      managedRuntimePatchRequired,
+      includeI18nInitScript: options.i18nInitMode === 'init',
     })
-    const i18nInitResult = options.skipI18nInit
-      ? { status: 'skipped (--skip-i18n-init)', command: '', generatedPath: '', locales: '', syncedFiles: '' }
-      : runI18nInit({ skillRoot, targetRoot })
-    const projectImagesInitResult = options.skipProjectImagesInit
-      ? {
-          status: 'skipped (--skip-project-images-init)',
-          command: '',
-          registryPath: '',
-          assetDir: '',
-          syncedImageFiles: '',
-          seededFiles: '',
-          preservedFiles: '',
-        }
-      : runProjectImagesInit({ skillRoot, targetRoot })
+    const i18nInitResult =
+      options.i18nInitMode !== 'init'
+        ? {
+            status: 'not-requested (default)',
+            command: 'node ".local-context/hiui-design/scripts/init-i18n.mjs"',
+            generatedPath: '',
+            locales: '',
+            syncedFiles: '',
+          }
+        : await runI18nInit({ skillRoot, targetRoot })
 
     const styleResult =
+      await patchStyleImport({
+        targetRoot,
+        outputRoot,
+      })
+    const rulesOnlyHostBaselineResult =
+      await patchRulesOnlyHostBaseline({
+        targetRoot,
+        outputRoot,
+        mode,
+      })
+    const rootViewportResult =
       mode === 'host-integration'
-        ? await patchStyleImport({
+        ? await patchViewportRootStyles({
             targetRoot,
-            outputRoot: resolvedOutputRoot,
+            outputRoot,
           })
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', entryFile: '', snippetPath: '' }
-          : { status: 'not-applied (rules-only)', entryFile: '', snippetPath: '' }
-
-    const routerEntryResult =
-      mode === 'host-integration'
-        ? await patchGreenfieldRouterEntry({
-            targetRoot,
-            outputRoot: resolvedOutputRoot,
-            hostProfile,
-          })
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', entryFile: '', snippetPath: '', detail: '' }
-          : { status: 'not-applied (rules-only)', entryFile: '', snippetPath: '', detail: '' }
-
-    const rootStyleResult =
-      mode === 'host-integration'
-        ? await patchGreenfieldRootStyles({
-            targetRoot,
-            hostProfile,
-          })
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', cssFile: '', detail: '' }
-          : { status: 'not-applied (rules-only)', cssFile: '', detail: '' }
-
-    let routeResult =
-      mode === 'host-integration'
-        ? shouldAutoMountHostIntegrationRoutes(hostProfile)
-          ? await patchRouteFile({
-              targetRoot,
-              routeFile: options.routeFile,
-              outputRoot: resolvedOutputRoot,
-            })
-          : {
-              status: 'guarded (existing-system)',
-              routeFile: await detectRouteFile(targetRoot),
-              snippetPath: await writeRouteGuardNote({
-                targetRoot,
-                routeFile: options.routeFile
-                  ? path.resolve(targetRoot, options.routeFile)
-                  : await detectRouteFile(targetRoot),
-                outputRoot: resolvedOutputRoot,
-              }),
-            }
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', routeFile: '', snippetPath: '' }
-          : { status: 'not-applied (rules-only)', routeFile: '', snippetPath: '' }
-
-    const appFrameResult =
-      mode === 'host-integration'
-        ? shouldAutoMountHostIntegrationRoutes(hostProfile)
-          ? await patchGreenfieldAppFrame({
-              targetRoot,
-              outputRoot: resolvedOutputRoot,
-              hostProfile,
-            })
-          : { status: 'not-applied (existing-system)', appFile: '', snippetPath: '' }
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', appFile: '', snippetPath: '', routeHandledInApp: false, detail: '' }
-        : { status: 'not-applied (rules-only)', appFile: '', snippetPath: '', routeHandledInApp: false, detail: '' }
-
-    if (routeResult.status === 'snippet-only' && appFrameResult.routeHandledInApp) {
-      if (routeResult.snippetPath) {
-        await fs.rm(routeResult.snippetPath, { force: true })
-      }
-      routeResult = {
-        status: 'mounted-in-app',
-        routeFile: appFrameResult.appFile,
-        snippetPath: '',
-      }
-    }
+        : { status: skippedModeStatus, patchedFiles: [], snippetPath: '', issueSummary: '', styleFiles: [] }
 
     const viteResult =
-      mode === 'host-integration'
-        ? await patchViteSchemaTypesAlias({
-            targetRoot,
-            outputRoot: resolvedOutputRoot,
-          })
-        : mode === 'legacy-host-compatible'
-          ? { status: 'skipped (legacy-host-compatibility)', viteFile: '', snippetPath: '' }
-          : { status: 'not-applied (rules-only)', viteFile: '', snippetPath: '' }
+      await patchViteSchemaTypesAlias({
+        targetRoot,
+        outputRoot,
+        shimPath: resolveSchemaTypesShimPath(targetRoot),
+      })
+    const camoraDevServerNoCacheResult =
+      await patchCamoraDevServerNoCacheHeaders({
+        targetRoot,
+        outputRoot,
+        hostProfile,
+      })
 
-    const installResult = options.install && mode !== 'legacy-host-compatible'
-      ? await runInstall({ targetRoot, timeoutMs: options.installTimeoutMs })
-      : mode === 'legacy-host-compatible'
-        ? { status: 'skipped (legacy-host-compatibility)', command: '', message: '' }
-        : { status: 'not-requested', command: '', message: '' }
+    const installPreflight = options.install
+      ? await inspectInstallPreflight(targetRoot)
+      : { status: 'skipped', command: '', message: '' }
+    const installResult = options.install
+      ? installPreflight.status === 'ready'
+        ? await runInstall({ targetRoot, timeoutMs: options.installTimeoutMs })
+        : installPreflight
+      : { status: 'not-requested', command: '', message: '' }
+    const shouldWriteApplyState = !options.install || installResult.status === 'installed'
     const { snippetPath: hostAdapterSnippetPath } = await writeHostAdapterSnippet({
-      outputRoot: resolvedOutputRoot,
+      outputRoot,
       hostProfile,
-      recommendedModeOverride: recommendedMode,
     })
-    const legacyCarrierProvisioningResult =
-      mode === 'legacy-host-compatible'
-        ? await provisionLegacyProjectCarriers({
-            targetRoot,
-            skillRoot,
-          })
-        : null
-    const legacyDeliveryPolicySummary =
-      mode === 'legacy-host-compatible'
-        ? await summarizeLegacyDeliveryPolicy({
-            targetRoot,
-            skillRoot,
-          })
-        : null
+    const applyStatePath = shouldWriteApplyState ? resolveApplyStatePath(targetRoot) : ''
 
     const summaryPath = await writeBootstrapSummary({
-      archetypeAssetCount: archetypeSyncResult.copiedFiles.length,
-      targetRoot,
+      applyStatePath,
       hostProfile,
-      recommendedMode,
       hostAdapterSnippetPath,
+      skillVersion,
       line: lineId,
       manifestPath,
       mode,
-      outputRoot: resolvedOutputRoot,
+      modeSource: modeResolution.source,
+      outputRoot,
       legacyHiUi4Deps,
-      legacyHostRuntime,
-      i18nInitResult,
-      projectImagesInitResult,
+      localRuntimeMaterializationResult,
       packageResult,
+      rulesOnlyHostBaselineResult,
+      rootViewportResult,
+      i18nInitResult,
       styleResult,
-      routerEntryResult,
-      rootStyleResult,
-      routeResult,
-      appFrameResult,
       viteResult,
+      camoraDevServerNoCacheResult,
       installResult,
       installRequested: options.install,
-      installedRootRuntime,
-      legacyHiUiEsImports,
-      legacyRuntimeGuardIssues,
-      legacyCarrierProvisioningResult,
-      legacyDeliveryPolicySummary,
-      syncStatus: syncConfig.status,
-      referencePagesPathLabel: syncConfig.referencePagesPathLabel,
     })
-    const legacyHostFamilySummary =
-      mode === 'legacy-host-compatible'
-        ? detectLegacyHostFamily({
-            targetRoot,
-            skillRoot,
-            modeOverride: mode,
-          })
-        : null
-    const projectIntegrationResult = await writeProjectIntegrationState({
-      targetRoot,
-      mode,
-      recommendedMode,
-      source: 'bootstrap-target-project',
-      bootstrapSummary: path.relative(targetRoot, summaryPath),
-      hostProfile,
-      legacyHostFamilySummary,
-      legacyDeliveryPolicySummary,
-    })
+    if (shouldWriteApplyState) {
+      const applyProgress = await writeApplyProgress({
+        applyProgressPath,
+        skillVersion,
+        requestedMode: mode,
+        stage: 'writing-apply-state',
+        startedAt: applyProgressStartedAt,
+        detail:
+          'Bootstrap patch steps finished. Writing apply-state and resetting the project page-task gate to ensure-only.',
+      })
+      applyProgressStage = applyProgress.stage
+      await writeApplyState({
+        applyStatePath,
+        skillVersion,
+        appliedMode: mode,
+      })
+      const integrationReadiness = await inspectIntegrationReadiness(targetRoot)
+      if (integrationReadiness.ready) {
+        await writeEnsureOnlyPageTaskStatus({
+          targetRoot,
+          integrationReadiness,
+          updatedBy: 'scripts/bootstrap-target-project.mjs',
+          reason: `hiui-design apply completed in ${mode} mode. Run typical-page:preflight before starting any hiui-design page task.`,
+          mode,
+          doctor: {
+            lastStatus: 'not-run',
+          },
+        })
+      }
+    }
+    await clearApplyProgress(applyProgressPath)
 
     console.log(syncOutput)
     console.log('')
     console.log('Bootstrap summary:')
     console.log(`- detected project type: ${hostProfile.projectType}`)
     console.log(`- detected framework: ${hostProfile.framework}`)
-    console.log(`- recommended mode: ${recommendedMode}`)
     console.log(`- chosen mode: ${mode}`)
-    if (mode === 'legacy-host-compatible') {
-      console.log(`  reason: ${legacyHostRuntime.reasons.join('; ')}`)
-      if (legacyCarrierProvisioningResult) {
-        console.log(
-          `- legacy carrier bootstrap: ${legacyCarrierProvisioningResult.status} (provisioned ${legacyCarrierProvisioningResult.provisioned.length}, reused ${legacyCarrierProvisioningResult.reused.length}, conflicts ${legacyCarrierProvisioningResult.conflicts.length})`
-        )
-      }
-      if (legacyCarrierProvisioningResult?.conflicts?.length > 0) {
-        for (const conflict of legacyCarrierProvisioningResult.conflicts) {
-          console.log(`  conflict: ${conflict.pageTypeId} -> ${conflict.reason}`)
-        }
-      }
-      if (legacyDeliveryPolicySummary) {
-        console.log(`- legacy required carrier readiness: ${legacyDeliveryPolicySummary.legacyRolloutCoverageStatus}`)
-        if (legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.length > 0) {
-          console.log(
-            `  missing required carriers before integration can be ready: ${legacyDeliveryPolicySummary.missingRequiredLegacyPageTypes.join(', ')}`
-          )
-        }
-      }
-    }
-    if (legacyHiUiEsImports.length > 0) {
-      console.log(`- legacy @hi-ui/hiui/es consumers: ${legacyHiUiEsImports.length}`)
-    }
-    if (legacyRuntimeGuardIssues.length > 0) {
-      console.log(`- installed root runtime guard: FAIL`)
-      for (const issue of legacyRuntimeGuardIssues) {
-        console.log(`  ${issue.detail}`)
-      }
-    }
+    console.log(`- mode source: ${modeResolution.source}`)
+    console.log(`- ${SKILL_PUBLIC_NAME} version: ${skillVersion || '(missing)'}`)
     if (hostProfile.adapterDoc) {
-      console.log(`- framework adapter guide: .local-context/hiui-design/${hostProfile.adapterDoc}`)
+      console.log(`- framework adapter guide: ${getContextPath(hostProfile.adapterDoc)}`)
     }
     if (hostProfile.adapterEntryHints.length > 0) {
       console.log(`- candidate host entry files: ${hostProfile.adapterEntryHints.join(', ')}`)
     }
+    if (hostProfile.remoteOnlyRuntime?.enabled) {
+      console.log(`- remote-only runtime: enabled`)
+      if (hostProfile.remoteOnlyRuntime.remoteEntryFilenames?.length > 0) {
+        console.log(
+          `  remote entry filenames: ${hostProfile.remoteOnlyRuntime.remoteEntryFilenames.join(', ')}`
+        )
+      }
+      if (hostProfile.remoteOnlyRuntime.localOrigins?.length > 0) {
+        console.log(
+          `  README localOrigin hints: ${hostProfile.remoteOnlyRuntime.localOrigins.join(', ')}`
+        )
+      }
+    }
     console.log(`- host adapter snippet: ${hostAdapterSnippetPath}`)
+    console.log(`- managed local runtime assets: ${localRuntimeMaterializationResult.status}`)
+    if (localRuntimeMaterializationResult.targetRoot) {
+      console.log(`  root: ${localRuntimeMaterializationResult.targetRoot}`)
+    }
     console.log(`- package.json: ${packageResult.status}`)
-    console.log(`- i18n baseline: ${i18nInitResult.status}`)
-    console.log(`- project image scaffold: ${projectImagesInitResult.status}`)
-    if (i18nInitResult.generatedPath) {
-      console.log(`  generated: ${i18nInitResult.generatedPath}`)
-    }
-    if (i18nInitResult.locales) {
-      console.log(`  locales: ${i18nInitResult.locales}`)
-    }
-    if (projectImagesInitResult.registryPath) {
-      console.log(`  registry: ${projectImagesInitResult.registryPath}`)
-    }
-    if (projectImagesInitResult.assetDir) {
-      console.log(`  asset dir: ${projectImagesInitResult.assetDir}`)
-    }
-    if (projectImagesInitResult.syncedImageFiles) {
-      console.log(`  synced image files: ${projectImagesInitResult.syncedImageFiles}`)
-    }
     if (packageResult.addedDeps.length > 0) {
       console.log(`  added deps: ${packageResult.addedDeps.join(', ')}`)
+    }
+    if (packageResult.isolatedPeerDeps.length > 0) {
+      console.log(`  isolated shell peer deps: ${packageResult.isolatedPeerDeps.join(', ')}`)
+    }
+    if (packageResult.preservedRootPeerDeps.length > 0) {
+      console.log(`  preserved root peer deps: ${packageResult.preservedRootPeerDeps.join(', ')}`)
     }
     if (packageResult.updatedDeps.length > 0) {
       console.log(`  normalized deps: ${packageResult.updatedDeps.join(', ')}`)
@@ -2828,11 +2261,35 @@ async function main() {
     if (packageResult.addedScripts.length > 0) {
       console.log(`  added scripts: ${packageResult.addedScripts.join(', ')}`)
     }
+    if (packageResult.updatedScripts.length > 0) {
+      console.log(`  updated scripts: ${packageResult.updatedScripts.join(', ')}`)
+    }
     if (packageResult.skippedScripts.length > 0) {
       console.log(`  preserved existing scripts: ${packageResult.skippedScripts.join(', ')}`)
     }
     if (legacyHiUi4Deps.length > 0) {
       console.log(`  legacy visual deps: ${legacyHiUi4Deps.join(', ')}`)
+    }
+    console.log(`- rules-only host baseline: ${rulesOnlyHostBaselineResult.status}`)
+    if (rulesOnlyHostBaselineResult.hostBaselineFile) {
+      console.log(`  file: ${rulesOnlyHostBaselineResult.hostBaselineFile}`)
+    }
+    if (rulesOnlyHostBaselineResult.snippetPath) {
+      console.log(`  snippet: ${rulesOnlyHostBaselineResult.snippetPath}`)
+    }
+    console.log(`- root viewport styles: ${rootViewportResult.status}`)
+    if (rootViewportResult.patchedFiles.length > 0) {
+      console.log(`  files: ${rootViewportResult.patchedFiles.join(', ')}`)
+    }
+    if (rootViewportResult.snippetPath) {
+      console.log(`  snippet: ${rootViewportResult.snippetPath}`)
+    }
+    console.log(`- i18n baseline: ${i18nInitResult.status}`)
+    if (i18nInitResult.generatedPath) {
+      console.log(`  generated: ${i18nInitResult.generatedPath}`)
+    }
+    if (i18nInitResult.locales) {
+      console.log(`  locales: ${i18nInitResult.locales}`)
     }
     console.log(`- style import: ${styleResult.status}`)
     if (styleResult.entryFile) {
@@ -2841,37 +2298,22 @@ async function main() {
     if (styleResult.snippetPath) {
       console.log(`  snippet: ${styleResult.snippetPath}`)
     }
-    console.log(`- app entry router: ${routerEntryResult.status}`)
-    if (routerEntryResult.entryFile) {
-      console.log(`  entry file: ${routerEntryResult.entryFile}`)
-    }
-    if (routerEntryResult.snippetPath) {
-      console.log(`  snippet: ${routerEntryResult.snippetPath}`)
-    }
-    console.log(`- starter root styles: ${rootStyleResult.status}`)
-    if (rootStyleResult.cssFile) {
-      console.log(`  css file: ${rootStyleResult.cssFile}`)
-    }
-    console.log(`- route integration: ${routeResult.status}`)
-    if (routeResult.routeFile) {
-      console.log(`  route file: ${routeResult.routeFile}`)
-    }
-    if (routeResult.snippetPath) {
-      console.log(`  snippet: ${routeResult.snippetPath}`)
-    }
-    console.log(`- app frame integration: ${appFrameResult.status}`)
-    if (appFrameResult.appFile) {
-      console.log(`  app file: ${appFrameResult.appFile}`)
-    }
-    if (appFrameResult.snippetPath) {
-      console.log(`  snippet: ${appFrameResult.snippetPath}`)
-    }
-    console.log(`- vite aliases: ${viteResult.status}`)
+    console.log(`- vite schema-types alias: ${viteResult.status}`)
     if (viteResult.viteFile) {
       console.log(`  vite file: ${viteResult.viteFile}`)
     }
     if (viteResult.snippetPath) {
       console.log(`  snippet: ${viteResult.snippetPath}`)
+    }
+    console.log(`- camora dev-server anti-cache: ${camoraDevServerNoCacheResult.status}`)
+    if (camoraDevServerNoCacheResult.devConfigFile) {
+      console.log(`  dev config: ${camoraDevServerNoCacheResult.devConfigFile}`)
+    }
+    if (camoraDevServerNoCacheResult.addedHeaders.length > 0) {
+      console.log(`  added headers: ${camoraDevServerNoCacheResult.addedHeaders.join(', ')}`)
+    }
+    if (camoraDevServerNoCacheResult.snippetPath) {
+      console.log(`  snippet: ${camoraDevServerNoCacheResult.snippetPath}`)
     }
     console.log(`- dependency install: ${options.install ? installResult.status : 'not-requested'}`)
     if (options.install && installResult.command) {
@@ -2880,18 +2322,43 @@ async function main() {
     if (options.install && installResult.message) {
       console.log(`  detail: ${installResult.message}`)
     }
-    console.log(`- project integration state: ${projectIntegrationResult.status}`)
-    console.log(`  integration ready: ${projectIntegrationResult.state.integrationReady ? 'yes' : 'no'}`)
-    if (projectIntegrationResult.state.blockingReasons.length > 0) {
-      for (const reason of projectIntegrationResult.state.blockingReasons) {
-        console.log(`  blocker: ${reason}`)
-      }
-    }
+    console.log(
+      `- apply state file: ${shouldWriteApplyState ? applyStatePath : `not-written (${installResult.status})`}`
+    )
     console.log(`- summary file: ${summaryPath}`)
+    if (mode === 'host-integration') {
+      console.log('- preview asset policy: global-skill-only')
+      console.log('- global preview start (from skill root): node scripts/start-preview-runtime.mjs')
+    }
+
+    if (options.install && installResult.status !== 'installed') {
+      throw new Error(
+        installResult.status === 'blocked'
+          ? installResult.message
+          : `Dependency install failed during apply. ${installResult.message}`
+      )
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
+    if (applyProgressPath) {
+      try {
+        await writeApplyProgress({
+          applyProgressPath,
+          skillVersion: applyProgressSkillVersion,
+          requestedMode: applyProgressRequestedMode,
+          stage: applyProgressStage || 'bootstrap-failed',
+          status: APPLY_PROGRESS_STATUS.FAILED,
+          startedAt: applyProgressStartedAt,
+          detail:
+            'hiui-design bootstrap did not complete, so apply-state was not finalized for this attempt.',
+          lastError: message,
+        })
+      } catch {}
+    }
     console.error(`bootstrap-target-project failed: ${message}`)
-    printUsage()
+    if (isCliUsageError(error)) {
+      printUsage()
+    }
     process.exit(1)
   }
 }

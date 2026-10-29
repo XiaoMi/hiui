@@ -1,5 +1,19 @@
-# Privacy
+# HiUI Design Privacy
 
-The public edition of this skill does not provide usage collection, telemetry transport, identity material, or reporting backend integrations.
+`hiui-design` 默认关闭使用统计，不会在默认配置下上传使用数据。
 
-This generated folder is limited to page-generation rules, templates, validation helpers, and public runtime assets. If a downstream project chooses to add telemetry, it must do so outside this repository, document the behavior locally, and keep it opt-in and disabled by default.
+## 默认行为
+
+- 默认不启用 `usage telemetry`（使用统计，当前语境里指把运行信息写成本地记录或上传）
+- 默认不读取仓库内置统计地址，也不依赖本机旧的用户统计配置
+- 默认不会因为统计缺失而阻断页面接入、生成或校验
+
+## 显式开启
+
+只有在显式设置 `HIUI_DESIGN_ENABLE_USAGE_STATS=1`（开启使用统计的环境变量，当前作用是允许本 skill 继续读取统计相关配置）后，才会继续读取其他统计环境变量并恢复统计能力。旧的 `HIUI_DESIGN_OPEN_ENABLE_USAGE_STATS=1`（旧环境变量名，当前只保留兼容作用）仍然有效。
+
+## 兼容说明
+
+- 当前脚本仍保留 `telemetry`（统计）相关参数名，主要是为了兼容旧调用链
+- 这些参数在默认关闭统计时不会触发上传
+- 若后续彻底移除统计接口，可再同步收敛脚本参数与文档

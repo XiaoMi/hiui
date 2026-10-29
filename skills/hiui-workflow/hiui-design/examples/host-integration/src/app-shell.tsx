@@ -1,85 +1,117 @@
-import React, { useMemo, useRef } from 'react'
-import { TypicalPageHostBridge } from './components/layout/typical-page-host'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { TypicalPageHostBridge } from "./components/layout/typical-page-host";
 import {
   LayoutContentProvider,
   type LayoutContentContextValue,
-} from './components/layout/layout-content-context'
-
-const STANDALONE_CONTENT_VIEWPORT_GUTTER = 16
+} from "./components/layout/layout-content-context";
+import "./host-reset.css";
 
 export function ExampleAppShell({
   title,
   children,
 }: React.PropsWithChildren<{ title: string }>) {
-  const headerRef = useRef<HTMLDivElement>(null)
-  const footerRef = useRef<HTMLDivElement>(null)
-  const titleTextRef = useRef(title)
+  const headerRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+  const titleTextRef = useRef(title);
+  const [headerNode, setHeaderNode] = useState<HTMLDivElement | null>(null);
+  const [footerNode, setFooterNode] = useState<HTMLDivElement | null>(null);
 
-  titleTextRef.current = title
+  useEffect(() => {
+    titleTextRef.current = title;
+  }, [title]);
+
+  const setHeaderSlotNode = useCallback((node: HTMLDivElement | null) => {
+    headerRef.current = node;
+    setHeaderNode(node);
+  }, []);
+
+  const setFooterSlotNode = useCallback((node: HTMLDivElement | null) => {
+    footerRef.current = node;
+    setFooterNode(node);
+  }, []);
 
   const ctxValue = useMemo<LayoutContentContextValue>(
     () => ({
+      headerNode,
       headerRef,
+      footerNode,
       footerRef,
+      titleText: title,
       titleTextRef,
     }),
-    [titleTextRef]
-  )
+    [footerNode, headerNode, title],
+  );
 
   return (
     <LayoutContentProvider value={ctxValue}>
       <TypicalPageHostBridge>
         <div
+          data-typical-page-host=""
           style={{
-            height: '100vh',
-            minHeight: '100vh',
-            background: '#f5f8fc',
-            display: 'flex',
-            flexDirection: 'column',
+            width: "100%",
+            minWidth: 0,
+            height: "100vh",
+            minHeight: "100vh",
+            background: "#f5f8fc",
+            display: "flex",
+            flexDirection: "column",
+            fontSize: 14,
+            lineHeight: "22px",
+            color: "#1a1d26",
           }}
         >
           <div
-            data-hiui5-region="header"
-            ref={headerRef}
+            ref={setHeaderSlotNode}
             style={{
-              flex: '0 0 auto',
-              width: '100%',
+              flex: "0 0 auto",
+              width: "100%",
               minWidth: 0,
               minHeight: 60,
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
+              fontSize: 14,
+              lineHeight: "22px",
+              color: "#1a1d26",
             }}
           />
           <div
             style={{
-              flex: '1 1 0%',
+              flex: "1 1 0%",
               minHeight: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-              paddingInline: STANDALONE_CONTENT_VIEWPORT_GUTTER,
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
             }}
           >
             <div
               style={{
-                flex: '1 1 0%',
+                flex: "1 1 0%",
                 minHeight: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
               }}
             >
               {children}
             </div>
           </div>
           <div
-            ref={footerRef}
+            ref={setFooterSlotNode}
             style={{
-              flex: '0 0 auto',
+              flex: "0 0 auto",
+              fontSize: 14,
+              lineHeight: "22px",
+              color: "#1a1d26",
             }}
           />
         </div>
       </TypicalPageHostBridge>
     </LayoutContentProvider>
-  )
+  );
 }

@@ -1,0 +1,319 @@
+.metricCard,
+.chartCard,
+.entityCard {
+  min-width: 0;
+}
+
+.metricCard {
+  align-items: stretch;
+  background: var(--hi-v5-color-white);
+  border: 1px solid var(--hi-v5-color-gray-200, #edeff2);
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 100px;
+  padding: 16px;
+}
+
+.metricCardInteractive {
+  cursor: pointer;
+}
+
+.metricCardInteractive:focus-visible {
+  outline: 2px solid var(--hi-v5-color-primary-300, var(--hi-v5-color-primary-500));
+  outline-offset: 2px;
+}
+
+.metricCardActive {
+  outline: 1px solid var(--hi-v5-color-primary-300, var(--hi-v5-color-primary-500));
+  outline-offset: 1px;
+}
+
+.chartHeader,
+.sectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.metricHeader,
+.metricValueRow {
+  display: flex;
+  min-width: 0;
+}
+
+.metricHeader {
+  align-items: flex-start;
+  gap: var(--hi-v5-spacing-2, 8px);
+  justify-content: flex-start;
+}
+
+.metricValueRow {
+  align-items: baseline;
+  gap: var(--hi-v5-spacing-2, 8px);
+  justify-content: flex-start;
+}
+
+.metricTitle {
+  color: var(--hi-v5-color-gray-800);
+  flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.metricStateHint {
+  color: var(--hi-v5-color-gray-500, var(--hi-v5-color-gray-600));
+  flex: 0 0 auto;
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: var(--hi-v5-text-lineheight-sm, 20px);
+  margin-left: auto;
+}
+
+.metricValue {
+  color: var(--hi-v5-color-gray-800);
+  flex-shrink: 0;
+  font-family: 'DIN Alternate', 'DIN', 'Helvetica Neue', var(--hi-v5-font-family, system-ui),
+    sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.metricNote {
+  color: var(--hi-v5-color-gray-600, var(--hi-v5-color-gray-800));
+  flex: 0 1 auto;
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: var(--hi-v5-text-lineheight-sm, 20px);
+}
+
+.metricVisual {
+  margin-top: var(--hi-v5-spacing-2, 8px);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.metricCardInteractive .metricValue,
+.metricCardInteractive .metricTitle,
+.metricCardInteractive .metricStateHint,
+.metricCardInteractive .metricNote {
+  text-align: left;
+}
+
+.chartCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.chartCardBody {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--hi-v5-spacing-3, 12px);
+  min-height: 0;
+  min-width: 0;
+}
+
+.chartHeader {
+  flex: 0 0 auto;
+  gap: var(--hi-v5-spacing-3, 12px);
+  min-height: 48px;
+}
+
+.chartTitleBlock,
+.sectionHeaderTitleBlock {
+  display: grid;
+  gap: var(--hi-v5-spacing-1, 4px);
+  min-width: 0;
+}
+
+.chartTitle {
+  color: var(--hi-v5-color-gray-800);
+  font-size: var(--hi-v5-text-size-lg, 16px);
+  font-weight: 600;
+  line-height: var(--hi-v5-text-lineheight-lg, 24px);
+}
+
+.chartSubtitle {
+  color: var(--hi-v5-color-gray-600, var(--hi-v5-color-gray-800));
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: var(--hi-v5-text-lineheight-sm, 20px);
+  margin: 0;
+}
+
+.chartHeaderExtra,
+.sectionHeaderExtra {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: var(--hi-v5-spacing-2, 8px);
+}
+
+.chartContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.sectionHeader {
+  gap: var(--hi-v5-spacing-3, 12px);
+  min-width: 0;
+}
+
+.sectionHeaderTitle {
+  color: var(--hi-v5-color-gray-800);
+  font-size: var(--hi-v5-text-size-lg, 16px);
+  font-weight: 600;
+  line-height: var(--hi-v5-text-lineheight-lg, 24px);
+  margin: 0;
+}
+
+.sectionHeaderSummary {
+  color: var(--hi-v5-color-gray-600, var(--hi-v5-color-gray-800));
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: var(--hi-v5-text-lineheight-sm, 20px);
+  margin: 0;
+}
+
+.entityCard {
+  height: 100%;
+}
+
+.entityCardBody {
+  display: grid;
+  gap: 14px;
+  min-height: 236px;
+  min-width: 0;
+  height: 100%;
+}
+
+.entityCardHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--hi-v5-spacing-3, 12px);
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.entityTitleBlock {
+  display: grid;
+  gap: var(--hi-v5-spacing-1, 4px);
+  min-width: 0;
+}
+
+.entityTitle {
+  color: var(--hi-v5-color-gray-800);
+  font-size: var(--hi-v5-text-size-xl, 18px);
+  font-weight: 600;
+  line-height: var(--hi-v5-text-lineheight-xl, 26px);
+  margin: 0;
+}
+
+.entityHighlight {
+  color: var(--hi-v5-color-primary-500, var(--hi-v5-color-gray-800));
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.entityTagGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hi-v5-spacing-2, 8px);
+  justify-content: flex-end;
+}
+
+.entityDescription {
+  color: var(--hi-v5-color-gray-600, var(--hi-v5-color-gray-800));
+  font-size: var(--hi-v5-text-size-md, 14px);
+  line-height: var(--hi-v5-text-lineheight-md, 22px);
+  margin: 0;
+}
+
+.entityFactList {
+  display: grid;
+  gap: var(--hi-v5-spacing-2, 8px);
+  margin: 0;
+}
+
+.entityFactItem {
+  align-items: center;
+  display: flex;
+  gap: var(--hi-v5-spacing-2, 8px);
+  justify-content: space-between;
+}
+
+.entityFactLabel {
+  color: var(--hi-v5-color-gray-600, var(--hi-v5-color-gray-800));
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: 18px;
+}
+
+.entityFactValue {
+  color: var(--hi-v5-color-gray-800);
+  font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace;
+  font-size: var(--hi-v5-text-size-sm, 12px);
+  line-height: 18px;
+  margin: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entityCardActions {
+  display: flex;
+  gap: var(--hi-v5-spacing-2, 8px);
+  margin-top: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.entityCard:hover .entityCardActions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .sectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chartHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chartHeaderExtra,
+  .sectionHeaderExtra {
+    flex-wrap: wrap;
+  }
+
+  .entityCardHeader {
+    flex-direction: column;
+  }
+
+  .entityCardActions {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+}

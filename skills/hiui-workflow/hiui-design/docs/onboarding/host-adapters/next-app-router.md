@@ -6,7 +6,8 @@
 
 ## 默认策略
 
-- 默认使用 `rules-only`
+- Next App Router 不属于原生兼容载体；`--mode auto` 默认会落到 `rules-only`
+- 若团队后续愿意补项目本地兼容桥，再单独评估是否值得显式切到 `host-integration`
 - 保留 Next App Router 的 layout 层级
 - 典型页页面按 client component 方式嵌入原有业务页面
 
@@ -21,7 +22,7 @@
 
 1. 在根或业务 layout 中预留 header / footer slot
 2. 在 client boundary 内提供 `TypicalPageHostProvider`
-3. 在允许的入口引入 `@hiui-design/typical-page-shells/styles.css`
+3. 在允许的入口引入本地运行时样式 `src/components/hiui-design-runtime/styles.css`
 4. 典型页组件所在页面标记为 client component
 
 ## 不要做的事

@@ -1,34 +1,36 @@
 import { useMemo } from 'react'
 import { Button, Message, Space } from '@hi-ui/hiui'
-import { DownloadOutlined } from '@hi-ui/icons'
-import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
-import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
+import { DownloadOutlined, PlusOutlined } from '@hi-ui/icons'
+import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { TypicalPageFieldMapProvider } from '../components/hiui-design-runtime'
 import {
   ProListPageProvider,
   queryFilterDatePickerOverlay,
   queryFilterPickerOverlay,
-} from '@hiui-design/typical-page-shells/pro-list-page'
+} from '../components/hiui-design-runtime/pro-list-page'
 import {
   StatListPageFrame,
-  StatOverviewGrid,
   proStatPageStyles,
   renderStatTableTextEllipsis,
-} from '@hiui-design/typical-page-shells/pro-stat-page'
-import { engineerOptions, getTableStatOverview, queryTableStatRows } from './typical-pages.mock'
+} from '../components/hiui-design-runtime/pro-stat-page'
+import { MetricOverviewGrid } from '../runtime/analytics-primitives'
+import {
+  engineerGroupOptions,
+  engineerOptions,
+  getTableStatList,
+  getTableStatOverview,
+  queryTableStatRows,
+} from './table-stat.mock'
 import {
   filterListByKeyword,
   getKeywordValue,
   getParamsWithoutKeyword,
   paginateList,
-} from './request-utils'
-import {
-  createManagedQueryDateRangeField,
-  createManagedQuerySelectField,
-} from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
-import { useTranslation } from '../../translation'
+} from './data-visualization/request-utils'
+import { useTranslation } from './page-localization'
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderEllipsis() {
+  renderEllipsis(this) {
     return this.renderCell((cellValue) => renderStatTableTextEllipsis(cellValue))
   },
 })
@@ -38,18 +40,26 @@ function TableStatInner() {
 
   const queryFields = useMemo(
     () => [
-      createManagedQuerySelectField({
-        field: 'engineerId',
-        label: t('工程师'),
-        data: engineerOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
-      createManagedQueryDateRangeField({
-        field: 'timeRange',
-        label: t('时间范围'),
+      F(t('工程师'), 'engineerId')
+        .Select({
+          data: engineerOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('时间范围'), 'timeRange').Date({
+        type: 'daterange',
         format: 'YYYY-MM-DD',
+        clearable: true,
         overlay: queryFilterDatePickerOverlay,
-      }),
+      }).val,
+      F(t('工程师组别'), 'engineerGroupIds')
+        .CheckSelect({
+          data: engineerGroupOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
     ],
     [t]
   )
@@ -66,6 +76,32 @@ function TableStatInner() {
       T(t('签收前取消量'), 'cancelBeforeSignCount').W(128).val,
       T(t('签收后取消量'), 'cancelAfterSignCount').W(128).val,
       T(t('取消重建量'), 'cancelRebuildCount').W(120).val,
+      T(t('操作'), '_actions')
+        .W(180)
+        .Control({ fixed: 'right' })
+        .renderCell((_, ctx) => {
+          const row = ctx.rawData as { engineerName: string }
+
+          return (
+            <Space size={8}>
+              <Button
+                type="primary"
+                appearance="link"
+                onClick={() => Message.open({ title: `${t('查看')} ${row.engineerName}${t('统计明细（示例）')}` })}
+              >
+                {t('查看')}
+              </Button>
+              <Button
+                type="primary"
+                appearance="link"
+                onClick={() => Message.open({ title: `${t('导出')} ${row.engineerName}${t('统计明细（示例）')}` })}
+              >
+                {t('导出')}
+              </Button>
+            </Space>
+          )
+        })
+        .val,
     ],
     [t]
   )
@@ -73,6 +109,7 @@ function TableStatInner() {
   const statRequest = useMemo(
     () => async () => {
       const response = await getTableStatOverview()
+
       return {
         list: response.list.map((item) => ({
           ...item,
@@ -90,9 +127,12 @@ function TableStatInner() {
       queryFields={queryFields}
       tableFields={tableFields}
       searchPlaceholder={t('工程师姓名')}
-      statSection={<StatOverviewGrid key={locale} request={statRequest} />}
+      statSection={<MetricOverviewGrid key={locale} request={statRequest} />}
       extra={
         <Space className={proStatPageStyles.headerExtra}>
+          <Button type="default" onClick={() => Message.open({ title: t('列表已刷新（示例）') })}>
+            {t('刷新')}
+          </Button>
           <Button
             type="default"
             appearance="line"
@@ -101,8 +141,12 @@ function TableStatInner() {
           >
             {t('导出')}
           </Button>
-          <Button type="default" onClick={() => Message.open({ title: t('列表已刷新（示例）') })}>
-            {t('刷新')}
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => Message.open({ title: t('新建统计任务（示例）') })}
+          >
+            {t('新建统计任务')}
           </Button>
         </Space>
       }
@@ -113,12 +157,13 @@ function TableStatInner() {
 export function TableStatPage() {
   const { locale, t } = useTranslation()
   const request = useMemo(
-    () => async (params: Parameters<typeof queryTableStatRows>[0]) => {
+    () => async (params: Parameters<typeof getTableStatList>[0]) => {
       const keyword = getKeywordValue(params)
       const nextParams = getParamsWithoutKeyword(params)
       const translatedList = queryTableStatRows(nextParams).map((row) => ({
         ...row,
         engineerName: t(row.engineerName),
+        timeRange: t(row.timeRange),
       }))
       const filteredList = filterListByKeyword(translatedList, keyword, [(row) => row.engineerName])
 
@@ -135,3 +180,5 @@ export function TableStatPage() {
     </ProListPageProvider>
   )
 }
+
+export default TableStatPage

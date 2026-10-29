@@ -41,7 +41,7 @@
 | `key-only` | 宿主项目已有 `t()` / `intl.get()` / `formatMessage()` 等写法 | 沿用宿主 key 风格和 formatter；只补当前页面必要 key 或沿用中文 key；不强制补齐 7 语言资源 |
 | `full` | 明确要求 i18n / 多语言 / 英文 / RTL / locale 验收，或正式国际化交付 | 执行本文全部硬门槛、默认支持语言、RTL、formatter 与文本膨胀验收 |
 
-`rules-only` 典型页快速路径默认使用 `none`；若目标项目已经统一使用翻译函数，则使用 `key-only`。`legacy-host-compatible` / `host-compatible` 默认跟随宿主既有文案与 i18n 风格。只有进入 `full` 时，本文件后续的硬门槛全部生效。
+已锁定 `rules-only` 或 `host-integration` mode 后，默认都不自动进入 `full`。普通典型页页面生成路径默认使用 `none`；若目标项目已经统一使用翻译函数，则使用 `key-only`。只有进入 `full` 时，本文件后续的硬门槛全部生效。
 
 ## full 模式默认支持语言
 
@@ -182,6 +182,9 @@
 
 ## full 模式默认实现策略
 
+- 页面生成链默认 `localizationMode=none`：不传 `--localization-mode` 时，不接项目本地国际化桥，只保留 locale-sensitive formatter（区域格式化能力，这里指日期、数字、货币等格式化）与宿主可证明的最小降级实现
+- 只有用户明确要求页面接国际化时，才显式传 `local-bridge` 或 `inherit-host`；其中 `inherit-host` 只用于目标项目已经证明存在宿主 i18n runtime 的场景
+
 ### 项目已有 i18n runtime
 
 - 优先复用目标项目已有 runtime / Provider / locale store
@@ -191,10 +194,10 @@
 
 ### 项目没有现成 i18n runtime
 
-- 可以默认接入 `react-intl-universal` 或等价 runtime
-- `setup-for-designers.mjs`、`apply-in-current-project.mjs` 与 `bootstrap-target-project.mjs` 默认不再自动补齐 `src/translation/*` 基线；只有显式传入 `--init-i18n` 或后续单独执行 `typical-page:i18n:init` 时才初始化
+- 可以按需接入 `react-intl-universal` 或等价 runtime
+- `setup-for-designers.mjs`、`apply-in-current-project.mjs` 与 `bootstrap-target-project.mjs` 默认不会自动补齐 `src/translation/*` 基线；只有目标项目明确要求接入本地国际化基线时，才显式传 `--init-i18n` 或后续单独执行 `typical-page:i18n:init`
 - 若目标项目尚未建立翻译目录，或后续需要重同步 locale 文件，可执行 `pnpm typical-page:i18n:init` 或 `npm run typical-page:i18n:init`
-- 默认语言资源可按下述结构组织：
+- 显式初始化后，语言资源可按下述结构组织：
 
 ```text
 src/translation/
@@ -211,9 +214,9 @@ src/translation/
 - 默认允许中文原文作为 key；新增翻译时保持同一风格
 - `typical-page:i18n:init` 默认会补或重同步 `index.ts`、`messages.ts`、`zh-CN/en-US` seed、其余 locale fallback 文件，以及本地 `i18n:sync`；生成的 bridge 兼容 React 16 / ES5 宿主，不要求 `useSyncExternalStore`
 - 同步出来的 `src/translation/demo-overrides.ts` 是目标项目自己的业务词条兜底位；`templates/i18n/src/translation/demo-overrides.ts` 只允许保留 hiui-design 内置示例页所需的通用演示词条。两者是“模板 seed -> 目标项目”的单向关系，禁止把当前项目的 `src/translation/**`、页面标题、mock 数据、队伍 / 商品 / 活动等业务词库反向写回 skill 模板。
-- 维护者同步或发布前必须通过 `scripts/check-i18n-template-boundary.mjs`。若该脚本报出 `business-term-in-i18n-template` 或 `custom-template-translation-override-constant`，先清理 `.local-context/hiui-design/templates/i18n/**`，再让 launch agent 同步全局与开源包。
+- 发布前必须确认模板侧没有混入项目专属业务词条；若发现业务词库已经回流到 `.local-context/hiui-design/templates/i18n/**`，先清理模板，再继续同步全局与开源包。
 - 若业务线后续已有统一翻译平台，可在不改页面结构契约的前提下替换 runtime
-- 这里的“自动补齐基线”只负责建立语言切换、locale store、formatter、RTL 与 fallback 规则，不负责自动翻译新业务文案；新增页面若引入新的标题、按钮、列头、placeholder、反馈文案或 mock 展示值，仍需同步补齐 locale 资源
+- 这里的“显式补齐基线”只负责建立语言切换、locale store、formatter、RTL 与 fallback 规则，不负责自动翻译新业务文案；新增页面若引入新的标题、按钮、列头、placeholder、反馈文案或 mock 展示值，仍需同步补齐 locale 资源
 
 ### 明确禁止
 

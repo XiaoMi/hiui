@@ -18,7 +18,7 @@ flowchart TD
     F -->|成功| D
     F -->|失败| G[收窄 code 走查 source=code]
     C -->|无 dev 脚本| G
-    E --> H[C docx → 完成自检]
+    E --> H[C docx → D closeout]
     G --> H
 ```
 
@@ -86,7 +86,7 @@ python3 {SKILL_DIR}/scripts/precheck_walkthrough.py "http://localhost:3000/..." 
 - 优先读取 `precheck_walkthrough.py` 返回的 `next_action` 与 `runtime_probe`
 - 至少能运行扫描脚本，或能手动识别核心页面与结构
 - 若项目不可读或结构无法判断，不进入完整交付
-- 若结构化判断结果显示仓库不是页面项目，不进入完整交付，交给统一完成判断判定层
+- 若结构化判断结果显示仓库不是页面项目，不进入完整交付，交给统一收口判定层
 
 ## 证据采集
 
@@ -121,7 +121,7 @@ python3 {SKILL_DIR}/scripts/scan-pages.py <项目路径>
 python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source code --scan-json <扫描结果JSON> --json
 ```
 
-优先读取返回里的 `next_action`，不要再靠中文消息自行判断是继续走查、补证据还是进入统一完成判断判定。
+优先读取返回里的 `next_action`，不要再靠中文消息自行判断是继续走查、补证据还是进入统一收口判定。
 
 重点保留：
 
@@ -144,14 +144,14 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source code --scan-json <�
 - `status=failed`
 - `failure_preset=code_not_page_project`
 
-则当前仓库不应继续按页面项目走查，应直接说明失败原因，并等待用户补充可执行输入。
+则当前仓库不应继续按页面项目走查，应交给 `scripts/closeout_walkthrough.py` 做统一失败收口。
 
 若 `check_evidence_gate.py` 已明确给出：
 
 - `status=failed`
 - `failure_preset=code_scan_failed`
 
-则说明当前扫描结果不足或扫描失败，且尚无可替代的手动证据，不应继续进入正式代码走查，应直接说明失败原因，并等待用户补充可执行输入。
+则说明当前扫描结果不足或扫描失败，且尚无可替代的手动证据，不应继续进入正式代码走查，应交给 `scripts/closeout_walkthrough.py` 做统一失败收口。
 
 ## 问题判断重点
 
@@ -187,6 +187,6 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source code --scan-json <�
 - 已生成本地 `.docx`
 - `--source` 与 `report.json.source` 一致（`url` 或 `code`）
 - 若结论主要来自代码推断，仍可记一次 `source=code` 使用，但报告中必须明确提示“建议结合实际页面确认”
-- 若当前只是还在补仓库信息、补页面入口或补扫描证据，属于 `needs_input`，暂不完成判断
-- 若已确认仓库不是页面项目、代码扫描失败且无法补足，应说明失败原因和下一步，不要输出完整报告
-- 具体完成判断按 `SKILL.md` 完成定义执行
+- 若当前只是还在补仓库信息、补页面入口或补扫描证据，属于 `needs_input`，暂不收口
+- 若已确认仓库不是页面项目、代码扫描失败且无法补足，或任务在固定失败出口终止，应执行 `failed` 收口，不要停留在模糊的未收口状态
+- 具体收口动作统一按 `docs/onboarding/gates.md` § 统一收口协议执行

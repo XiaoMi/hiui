@@ -5,6 +5,60 @@
   "generated_at": "2026-06-09T15:10:00+08:00",
   "scope": "packages/web + 下单流程",
   "tech_stack": "React + HiUI",
+  "business_context": {
+    "source": "inferred",
+    "product_goal": "帮助测试用户理解主操作点击后的业务结果和反馈状态。",
+    "primary_users": [
+      "测试用户"
+    ],
+    "core_tasks": [
+      "识别主按钮语义",
+      "确认主操作反馈"
+    ],
+    "assumptions": [
+      "fixture 基于代码推断，不代表真实线上业务"
+    ],
+    "missing_information": [
+      "缺少真实运行页面与后端提交结果"
+    ]
+  },
+  "core_flows": [
+    {
+      "name": "识别并触发主操作反馈",
+      "type": "页头主动作",
+      "goal": "确认用户能理解主按钮含义并获得结果反馈",
+      "steps": [
+        "进入 fixture 首页主操作区",
+        "识别主按钮业务含义",
+        "触发主按钮并观察反馈"
+      ],
+      "status": "inferred",
+      "execution": {
+        "status": "completed",
+        "executed_steps": [
+          {
+            "step": "进入 fixture 首页主操作区",
+            "result": "代码中存在首页主操作区结构"
+          },
+          {
+            "step": "识别主按钮业务含义",
+            "result": "主按钮文案可读但结果说明不足"
+          },
+          {
+            "step": "触发主按钮并观察反馈",
+            "result": "基于代码可确认反馈表达偏弱"
+          }
+        ],
+        "verification": "fixture 问题列表记录了主按钮反馈不足的结论",
+        "evidence": [
+          {
+            "type": "code_fixture_review",
+            "note": "通过 fixture 代码结构完成主流程推断验证"
+          }
+        ]
+      }
+    }
+  ],
   "summary": {
     "overall": "主流程可用，但关键操作提示不够清晰。",
     "key_points": [
@@ -12,20 +66,186 @@
     ],
     "improvement_direction": "先强化主操作反馈，再收敛说明文案。"
   },
+  "style_review": {
+    "framework": "hiui-design",
+    "summary": "整体样式比较克制，但主按钮和辅助说明的主次还可以再拉开。",
+    "priority_actions": [
+      "先强化首屏主按钮的视觉权重",
+      "统一说明文字与正文的灰度层级"
+    ],
+    "dimensions": [
+      {
+        "name": "信息层级",
+        "status": "issue",
+        "note": "主按钮和辅助说明权重接近",
+        "evidence": "主操作区需要停顿后才能辨认主要动作",
+        "linked_issue_index": 1
+      },
+      {
+        "name": "间距与对齐",
+        "status": "pass",
+        "note": "主要内容块边线对齐稳定",
+        "evidence": "fixture 页面主区与输入区布局规整"
+      },
+      {
+        "name": "文字可读性",
+        "status": "pass",
+        "note": "字号字重和说明文字层级可读",
+        "evidence": "fixture 文案长度较短且灰度层级可辨认"
+      },
+      {
+        "name": "色彩语义",
+        "status": "pass",
+        "note": "主色和辅助说明色没有明显语义冲突",
+        "evidence": "fixture 主按钮与辅助说明没有危险或成功色误用"
+      },
+      {
+        "name": "组件状态一致性",
+        "status": "issue",
+        "note": "主按钮反馈样式与结果说明不够统一",
+        "evidence": "主操作点击后的结果表达不足",
+        "linked_issue_index": 1
+      },
+      {
+        "name": "密度与版面稳定性",
+        "status": "pass",
+        "note": "页面密度较低且主体版面稳定",
+        "evidence": "fixture 主区仅包含少量输入和操作控件"
+      }
+    ],
+    "hiui_sections": [
+      {
+        "name": "全局视觉基线",
+        "status": "pass",
+        "severity": "P3",
+        "note": "主色、正文色和主白底关系没有脱离 HiUI 基线",
+        "evidence": "fixture 仍使用统一蓝色与白底主工作区"
+      },
+      {
+        "name": "跨页面共享结构",
+        "status": "pass",
+        "severity": "P3",
+        "note": "fixture 未发现第二套主工作区结构",
+        "evidence": "页面保持单一主操作区域和统一内容流"
+      },
+      {
+        "name": "页型规范",
+        "status": "pass",
+        "severity": "P3",
+        "note": "fixture 作为简单主操作页未偏离页型语法",
+        "evidence": "主操作区和说明区仍保持轻量页面结构"
+      },
+      {
+        "name": "组件语义",
+        "status": "issue",
+        "severity": "P1",
+        "note": "主按钮语义仍不够清楚，反馈样式也偏弱",
+        "evidence": "主操作点击后结果表达不足",
+        "linked_issue_index": 1
+      }
+    ],
+    "structure_scan": [
+      {
+        "name": "页头到首屏内容有没有接住",
+        "status": "pass",
+        "note": "页头下方能直接承接主操作区",
+        "evidence": "fixture 首页标题后立即进入主操作内容"
+      },
+      {
+        "name": "主白底外边距稳不稳",
+        "status": "pass",
+        "note": "主工作区外边距保持同一档位",
+        "evidence": "fixture 主区左右边线和内容区节奏稳定"
+      },
+      {
+        "name": "多列有没有收口",
+        "status": "n/a",
+        "note": "fixture 页面不是双列或三列结构",
+        "evidence": "当前测试页面仅包含单一主操作区域"
+      },
+      {
+        "name": "有没有大块无效空白",
+        "status": "pass",
+        "note": "页面没有明显割裂阅读流的大块空白",
+        "evidence": "fixture 主区内容连续且未出现长条空白"
+      }
+    ],
+    "trigger": "user_requested",
+    "detail_check_required": true,
+    "detail_check_reason": "user_requested",
+    "hiui_component_checks": [
+      {
+        "id": "HIUI-ACTION-PRIMARY-RIGHTMOST",
+        "name": "页头主按钮位于动作组最右端",
+        "status": "pass",
+        "note": "fixture 只有一个主按钮不存在顺序冲突",
+        "evidence": "代码中主操作区没有并列次级按钮"
+      },
+      {
+        "id": "HIUI-ACTION-GROUP-RIGHT-ALIGNED",
+        "name": "页头动作组靠右对齐",
+        "status": "pass",
+        "note": "fixture 主操作区对齐关系稳定",
+        "evidence": "代码结构保持单一主操作区域"
+      },
+      {
+        "id": "HIUI-TABLE-ROW-ACTION-LINK-BLUE",
+        "name": "表格行内操作使用蓝色 link 文本",
+        "status": "n/a",
+        "note": "fixture 没有表格行内操作",
+        "evidence": "代码结构未包含表格操作列"
+      },
+      {
+        "id": "HIUI-TABLE-ROW-ACTION-FIXED-RIGHT",
+        "name": "表格操作列固定在右侧",
+        "status": "n/a",
+        "note": "fixture 没有表格操作列",
+        "evidence": "代码结构未包含表格组件"
+      },
+      {
+        "id": "HIUI-DANGER-ACTION-CONFIRM",
+        "name": "危险操作具备二次确认或撤销路径",
+        "status": "n/a",
+        "note": "fixture 没有危险操作入口",
+        "evidence": "代码中未出现删除禁用等动作"
+      },
+      {
+        "id": "HIUI-FORM-FOOTER-ACTIONS",
+        "name": "表单底部操作主次清晰并靠右",
+        "status": "n/a",
+        "note": "fixture 没有表单底部操作区",
+        "evidence": "代码结构未包含表单页"
+      },
+      {
+        "id": "HIUI-MODAL-DRAWER-ACTION-SEMANTICS",
+        "name": "弹窗抽屉操作区符合主次与风险语义",
+        "status": "n/a",
+        "note": "fixture 没有弹窗或抽屉",
+        "evidence": "代码结构未包含 Modal 或 Drawer"
+      },
+      {
+        "id": "HIUI-DATA-VIS-THEME-SEMANTICS",
+        "name": "统计图表使用 HiUI 主题与状态语义",
+        "status": "n/a",
+        "note": "fixture 没有统计图表",
+        "evidence": "代码结构未包含图表或指标卡"
+      }
+    ]
+  },
   "checklist_coverage": {
     "UX-1.1": "pass: fixture 代码含 Home 页路由与主操作区结构",
-    "UX-1.2": "pass: fixture 页面信息密度未见明显过载",
+    "UX-1.2": "pass: fixture 页面信息密度未见明显过载，样式问题主要在主操作语义",
     "UX-1.3": "pass: fixture 仅单页示例未做跨页比对",
     "UX-1.4": "pass: fixture 主按钮与输入区在首屏可见",
     "UX-1.5": "pass: fixture 无异步提交 loading 场景",
-    "UX-1.6": "issue",
+    "UX-1.6": "pass: fixture 无真实提交动作，因此不验证运行时结果提示",
     "UX-1.7": "pass: fixture 页面无表格数值列展示",
     "UX-2.1": "pass: fixture 按钮文案为中文业务描述",
     "UX-2.2": "pass: fixture 无删除等危险操作入口",
     "UX-2.3": "pass: fixture 无虚假成功反馈逻辑",
     "UX-2.4": "pass: fixture 未包含弹窗 Esc 关闭验证",
-    "UX-2.5": "pass: fixture 单页无跨模块主操作比对",
-    "UX-3.1": "pass: fixture 样式结构简单未见明显审美问题",
+    "UX-2.5": "issue",
+    "UX-3.1": "pass: fixture 仅保留轻量样式层问题，整体视觉基线仍稳定",
     "UX-3.2": "pass: fixture 无敏感字段展示",
     "UX-3.3": "pass: fixture 流程简单无需额外引导",
     "UX-3.4": "n/a: fixture 为静态代码走查无运行时文案",
@@ -34,12 +254,12 @@
   "issues": [
     {
       "index": 1,
-      "severity": "P1",
-      "title": "主按钮缺少明确结果说明",
-      "category": "交互问题",
+      "severity": "P3",
+      "title": "主按钮与辅助说明视觉权重不符合样式规范",
+      "category": "样式问题",
       "location": "packages/web/src/pages/Home.tsx / 主操作区",
-      "description": "用户难以判断按钮点击后会直接提交还是仅保存草稿。",
-      "suggestion": "在主按钮附近补充结果说明，并强化点击后的状态反馈。",
+      "description": "主按钮与辅助说明的视觉权重接近，不符合主操作应更突出的样式规范。当前不阻断任务完成，但会降低页面主次稳定性。",
+      "suggestion": "提升主按钮视觉权重，压低辅助说明灰度或距离，使主操作在首屏更容易被识别。",
       "evidence_note": "基于代码推断，建议结合实际页面确认",
       "images": []
     }
@@ -50,5 +270,51 @@
       "无截图证据",
       "用于 smoke test"
     ]
+  },
+  "walkthrough_options": {
+    "style_review_required": true
+  },
+  "action_inventory": {
+    "header_actions": [
+      "触发主按钮并观察反馈"
+    ],
+    "row_actions": [],
+    "danger_actions": []
+  },
+  "element_inventory": {
+    "source": "code_fixture",
+    "evidence": "基于 fixture 代码结构完成页面元素盘点",
+    "items": {
+      "page_header_actions": {
+        "present": true,
+        "note": "fixture 存在主操作按钮区域",
+        "evidence": "代码中包含首页主操作区按钮"
+      },
+      "table_row_actions": {
+        "present": false,
+        "note": "fixture 没有表格行内动作",
+        "evidence": "代码结构未包含表格或行操作"
+      },
+      "danger_actions": {
+        "present": false,
+        "note": "fixture 没有删除禁用等危险动作",
+        "evidence": "代码结构仅包含普通主按钮"
+      },
+      "form_actions": {
+        "present": false,
+        "note": "fixture 没有新建编辑表单底部",
+        "evidence": "代码结构未包含表单提交区"
+      },
+      "modal_or_drawer_actions": {
+        "present": false,
+        "note": "fixture 没有弹窗或抽屉动作",
+        "evidence": "代码结构未包含 Modal 或 Drawer"
+      },
+      "data_visualization": {
+        "present": false,
+        "note": "fixture 没有统计图表或指标卡",
+        "evidence": "代码结构未包含图表统计组件"
+      }
+    }
   }
 }

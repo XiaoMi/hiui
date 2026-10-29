@@ -1,5 +1,0 @@
-{
-  "pageType": "feedback-status",
-  "requiredKeys": ["title", "panelTitle", "panelDescription"],
-  "optionalKeys": ["variant", "docLinkText", "secondaryActions", "primaryAction", "panelSecondaryAction"]
-}

@@ -1,50 +1,55 @@
-export function getReusableScripts(line = "") {
-  const lineSuffix = line ? ` --line ${line}` : "";
+import { getContextScriptPath } from './skill-identity.mjs'
 
-  return {
-    "typical-page:apply": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs"${lineSuffix}`,
-    "typical-page:apply:reference-assets": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode rules-only${lineSuffix}`,
-    "typical-page:apply:reference-assets:force": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode rules-only --force${lineSuffix}`,
-    "typical-page:apply:no-install": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --no-install${lineSuffix}`,
-    "typical-page:apply:host-assets": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode host-integration${lineSuffix}`,
-    "typical-page:apply:host-assets:force": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode host-integration --force${lineSuffix}`,
-    "typical-page:apply:legacy": `node ".local-context/hiui-design/scripts/apply-in-current-project.mjs" --mode legacy-host-compatible${lineSuffix}`,
-    "typical-page:doctor": `node ".local-context/hiui-design/scripts/typical-page-doctor.mjs"${lineSuffix}`,
-    "typical-page:capabilities": `node ".local-context/hiui-design/scripts/typical-page-capabilities.mjs"${lineSuffix}`,
-    "typical-page:list-assets": `node ".local-context/hiui-design/scripts/typical-page-list-assets.mjs"${lineSuffix}`,
-    "typical-page:inspect-asset": `node ".local-context/hiui-design/scripts/typical-page-inspect-asset.mjs"${lineSuffix}`,
-    "typical-page:add-asset": `node ".local-context/hiui-design/scripts/typical-page-add-asset.mjs"${lineSuffix}`,
-    "typical-page:diff-asset": `node ".local-context/hiui-design/scripts/typical-page-diff-asset.mjs"${lineSuffix}`,
-    "typical-page:update-asset": `node ".local-context/hiui-design/scripts/typical-page-update-asset.mjs"${lineSuffix}`,
-    "typical-page:plan-page-task": `node ".local-context/hiui-design/scripts/plan-page-task.mjs"${lineSuffix}`,
-    "typical-page:doctor:self-check": `node ".local-context/hiui-design/scripts/verify-typical-page-doctor-rules-only-regressions.mjs"${lineSuffix}`,
-    "typical-page:maintainer:self-check": `node ".local-context/hiui-design/scripts/verify-typical-page-maintainer-regressions.mjs"${lineSuffix}`,
-    "typical-page:doctor:gate": `node ".local-context/hiui-design/scripts/typical-page-doctor-gate.mjs"${lineSuffix}`,
-    "typical-page:contract-gate": `node ".local-context/hiui-design/scripts/typical-page-contract-gate.mjs"${lineSuffix}`,
-    "typical-page:archetype-gate": `node ".local-context/hiui-design/scripts/typical-page-archetype-gate.mjs"${lineSuffix}`,
-    "typical-page:source-gate": `node ".local-context/hiui-design/scripts/typical-page-source-gate.mjs"${lineSuffix}`,
-    "typical-page:slot-gate": `node ".local-context/hiui-design/scripts/typical-page-slot-gate.mjs"${lineSuffix}`,
-    "typical-page:source-gate:self-check": `node ".local-context/hiui-design/scripts/verify-managed-page-source-guard-regressions.mjs"${lineSuffix}`,
-    "typical-page:managed-chart-flow:self-check": `node ".local-context/hiui-design/scripts/verify-managed-chart-flow-regressions.mjs"${lineSuffix}`,
-    "typical-page:candidate-gate": `node ".local-context/hiui-design/scripts/typical-page-candidate-gate.mjs"${lineSuffix}`,
-    "typical-page:ci:gate": `node ".local-context/hiui-design/scripts/typical-page-ci-gate.mjs"${lineSuffix}`,
-    "typical-page:preflight": `node ".local-context/hiui-design/scripts/typical-page-preflight.mjs"${lineSuffix}`,
-    "typical-page:translation-map": `node ".local-context/hiui-design/scripts/generate-translation-map.mjs"${lineSuffix}`,
-    "typical-page:preview-ready": `node ".local-context/hiui-design/scripts/typical-page-preview-ready.mjs"${lineSuffix}`,
-    "typical-page:runtime-smoke": `node ".local-context/hiui-design/scripts/typical-page-runtime-smoke.mjs"${lineSuffix}`,
-    "typical-page:render-final-report": `node ".local-context/hiui-design/scripts/render-final-report.mjs"${lineSuffix}`,
-    "typical-page:start-page": `node ".local-context/hiui-design/scripts/typical-page-start-page.mjs"${lineSuffix}`,
-    "typical-page:write-contract": `node ".local-context/hiui-design/scripts/write-rules-only-page-contract.mjs"${lineSuffix}`,
-    "typical-page:finalize-page": `node ".local-context/hiui-design/scripts/finalize-rules-only-page.mjs"${lineSuffix}`,
-    "typical-page:init-archetypes": `node ".local-context/hiui-design/scripts/init-archetypes.mjs"${lineSuffix}`,
-    "typical-page:select-archetype": `node ".local-context/hiui-design/scripts/select-archetype.mjs"${lineSuffix}`,
-    "typical-page:i18n:init": `node ".local-context/hiui-design/scripts/init-i18n.mjs"${lineSuffix}`,
-    "typical-page:images:init": `node ".local-context/hiui-design/scripts/init-project-images.mjs"${lineSuffix}`,
-    "typical-page:designer-setup": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs"${lineSuffix}`,
-    "typical-page:designer-setup:reference-assets": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs" --mode rules-only${lineSuffix}`,
-    "typical-page:designer-setup:reference-assets:force": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs" --mode rules-only --force${lineSuffix}`,
-    "typical-page:designer-setup:host-assets": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs" --mode host-integration${lineSuffix}`,
-    "typical-page:designer-setup:host-assets:force": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs" --mode host-integration --force${lineSuffix}`,
-    "typical-page:designer-setup:legacy": `node ".local-context/hiui-design/scripts/setup-for-designers.mjs" --mode legacy-host-compatible${lineSuffix}`,
-  };
+export function getReusableScripts(line = '', options = {}) {
+  const {
+    includeManagedRuntimePatchScripts = true,
+    includeI18nInitScript = false,
+  } = options
+  const lineSuffix = line ? ` --line ${line}` : ''
+
+  const scripts = {
+    'typical-page:ensure': `node "${getContextScriptPath('ensure-in-current-project.mjs')}"${lineSuffix}`,
+    'typical-page:apply': `node "${getContextScriptPath('apply-in-current-project.mjs')}"${lineSuffix}`,
+    'typical-page:apply:no-install':
+      `node "${getContextScriptPath('apply-in-current-project.mjs')}" --no-install${lineSuffix}`,
+    'typical-page:legacy-react-compat':
+      `node "${getContextScriptPath('legacy-react-compat-autofix.mjs')}"${lineSuffix}`,
+    'typical-page:legacy-hiui5-bridge-autofix':
+      `node "${getContextScriptPath('legacy-hiui5-bridge-autofix.mjs')}"${lineSuffix}`,
+    'typical-page:legacy-mf-shared-contract-autofix':
+      `node "${getContextScriptPath('legacy-mf-shared-contract-autofix.mjs')}"${lineSuffix}`,
+    'typical-page:managed-mf-host-contract-autofix':
+      `node "${getContextScriptPath('managed-mf-host-contract-autofix.mjs')}"${lineSuffix}`,
+    'typical-page:doctor':
+      `node "${getContextScriptPath('typical-page-doctor.mjs')}"${lineSuffix}`,
+    'typical-page:preflight':
+      `node "${getContextScriptPath('typical-page-preflight.mjs')}"${lineSuffix}`,
+    'typical-page:brief':
+      `node "${getContextScriptPath('generation-brief.mjs')}"${lineSuffix}`,
+    'typical-page:generate:single':
+      `node "${getContextScriptPath('generate-page.mjs')}"${lineSuffix}`,
+    'typical-page:execute:non-typical':
+      `node "${getContextScriptPath('execute-non-typical-page-task.mjs')}"${lineSuffix}`,
+    'typical-page:generate':
+      `node "${getContextScriptPath('generate-page-from-brief.mjs')}"${lineSuffix}`,
+    'typical-page:integration-preflight':
+      `node "${getContextScriptPath('integration-preflight.mjs')}"${lineSuffix}`,
+    'typical-page:dependency-isolation-check':
+      `node "${getContextScriptPath('dependency-isolation-check.mjs')}"${lineSuffix}`,
+    'typical-page:designer-setup':
+      `node "${getContextScriptPath('setup-for-designers.mjs')}"${lineSuffix}`,
+  }
+
+  if (includeI18nInitScript) {
+    scripts['typical-page:i18n:init'] = `node "${getContextScriptPath('init-i18n.mjs')}"`
+  }
+
+  if (includeManagedRuntimePatchScripts) {
+    scripts['typical-page:runtime-patch'] =
+      `node "${getContextScriptPath('apply-runtime-patches.mjs')}"${lineSuffix}`
+    scripts['typical-page:react19-runtime-patch'] =
+      `node "${getContextScriptPath('apply-react19-runtime-patches.mjs')}"${lineSuffix}`
+  }
+
+  return scripts
 }

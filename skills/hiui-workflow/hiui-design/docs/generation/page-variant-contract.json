@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "description": "hiui-design 页面变体局部改造 contract。该文件不枚举页面调整类型，也不定义固定增强类型表；它只约束当基础典型页无法完整满足用户诉求时，如何把当前需求建模为相对基础模板的局部改造、如何生成，以及如何验收。design-restore 命中典型页但仍需贴稿偏离时，也必须沿用这份 contract，而不是退回自由手写页面。",
+  "decisionContract": {
+    "applicableGenerationPath": "family-default-or-template-default",
+    "applicableAdaptationMode": "local-adjustment",
+    "preconditions": [
+      "base page type must be explicit",
+      "page must preserve most characteristics of the base typical page",
+      "adjustment must stay inside controlled regions",
+      "adjustment must not rewrite shell ownership or primary workflow"
+    ],
+    "requiredBriefFields": [
+      "inputMode",
+      "pageType",
+      "retainedTypicalCharacteristics",
+      "userAdjustmentIntent",
+      "structureSummary",
+      "intentContract",
+      "allowedRegions",
+      "forbiddenRegions",
+      "insertPositionRule",
+      "componentCompositionPlan",
+      "visualOwnershipPlan",
+      "forbiddenPrimitiveSemantics",
+      "designSystemConstraints",
+      "layoutPreservationRule",
+      "adjustmentValidationRules"
+    ],
+    "fieldSemantics": {
+      "allowedRegions": "Describe the relative structural regions involved in the current request, not a pre-enumerated expansion dictionary.",
+      "forbiddenRegions": "Describe the structures or ownership relations that must remain untouched for the current request.",
+      "insertPositionRule": "Describe how the adjusted structure is positioned relative to the official base template.",
+      "structureSummary": "Summarize the stable primary regions, their responsibilities, the reading flow, and the interaction ownership preserved by this local adjustment.",
+      "intentContract": "Describe the mustHave and mustNotAdd structural facts that the generator and validators must preserve for the current request.",
+      "componentCompositionPlan": "Map each adjusted region or interaction concern to approved managed primitives, HiUI5 components, or typical-page public capabilities. Page-level freehand component invention is forbidden.",
+      "visualOwnershipPlan": "State which visual responsibilities are owned by managed primitives/components, which ones remain chart-theme-owned, and which page-local styles are limited to layout-only.",
+      "forbiddenPrimitiveSemantics": "List native tags or page-local pseudo components that must not be used as semantic substitutes in the adjusted region, such as raw button/span/div-based card, tag, badge, or action semantics."
+    },
+    "forbiddenEscapes": [
+      "rewrite base shell",
+      "create second main page structure",
+      "break header/whiteBody/mainScroll ownership",
+      "fallback to blank-page handwritten implementation",
+      "introduce non-HiUI5 base design tokens or visual component system"
+    ],
+    "generationRule": "Always start from the official base page template and only perform controlled local adjustments in allowed regions.",
+    "executionRule": "When the current contract can be mapped to a stable controlled-region anchor, the generator should automatically apply the local adjustment to the base template. When no stable anchor exists, generation must stop instead of falling back to freehand rewriting.",
+    "designSystemRule": "Adjusted regions must continue to prioritize HiUI5 and local-managed-runtime components, and must remain inside hiui-design visual/token constraints.",
+    "validationLayers": [
+      "base-page-type-validation",
+      "page-adjustment-contract-validation"
+    ],
+    "passCriteria": [
+      "result still clearly belongs to the base page type",
+      "adjustment stays inside allowed regions",
+      "base shell and ownership are preserved",
+      "template-outside regions are composed from managed primitives instead of page-local invented semantics",
+      "adjusted regions remain inside HiUI5 design constraints"
+    ]
+  }
+}

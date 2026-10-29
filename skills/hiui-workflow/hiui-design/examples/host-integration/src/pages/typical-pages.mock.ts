@@ -1,6 +1,6 @@
 import type { TreeDataItem } from '@hi-ui/tree'
 import type { GetDataSourceParamsType } from '@hi-ui/schema-core'
-import { toValues } from '@hiui-design/typical-page-shells/pro-list-page/hooks/use-fetch-list'
+import { toValues } from '../components/hiui-design-runtime/pro-list-page/hooks/use-fetch-list'
 
 type SelectOption = {
   id: string
@@ -19,6 +19,22 @@ function includesText(value: string | undefined, keyword: string) {
   return (value ?? '').toLowerCase().includes(keyword.toLowerCase())
 }
 
+function normalizeFilterValues(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => String(item ?? '').trim())
+      .filter(Boolean)
+  }
+
+  const normalized = String(value ?? '').trim()
+  return normalized ? [normalized] : []
+}
+
+function matchesMultiSelectValue(value: unknown, currentValue: string) {
+  const filterValues = normalizeFilterValues(value)
+  return filterValues.length === 0 || filterValues.includes(currentValue)
+}
+
 function buildPagedResponse<T>(list: T[], params: GetDataSourceParamsType): PagedResponse<T> {
   const current = params.pagination?.current ?? 1
   const pageSize = params.pagination?.pageSize ?? 20
@@ -32,7 +48,7 @@ function buildPagedResponse<T>(list: T[], params: GetDataSourceParamsType): Page
   }
 }
 
-function countTreeNodes<T extends { children?: T[] }>(list: T[]): number {
+export function countTreeNodes<T extends { children?: T[] }>(list: T[]): number {
   return list.reduce((count, item) => count + 1 + countTreeNodes(item.children ?? []), 0)
 }
 
@@ -41,9 +57,10 @@ type TableStatOverviewItem = {
   value: number
 }
 
-export type TableStatRow = {
+type TableStatRow = {
   id: string
   engineerName: string
+  engineerGroupId: string
   timeRange: string
   createCount: number
   signCount: number
@@ -67,6 +84,7 @@ const tableStatRows: TableStatRow[] = [
   {
     id: 'e-001',
     engineerName: '张晨',
+    engineerGroupId: 'door',
     timeRange: '2026-04-01 至 2026-04-07',
     createCount: 138,
     signCount: 126,
@@ -80,6 +98,7 @@ const tableStatRows: TableStatRow[] = [
   {
     id: 'e-002',
     engineerName: '李岩',
+    engineerGroupId: 'station',
     timeRange: '2026-04-01 至 2026-04-07',
     createCount: 122,
     signCount: 118,
@@ -93,6 +112,7 @@ const tableStatRows: TableStatRow[] = [
   {
     id: 'e-003',
     engineerName: '王硕',
+    engineerGroupId: 'quality',
     timeRange: '2026-04-01 至 2026-04-07',
     createCount: 114,
     signCount: 102,
@@ -111,25 +131,36 @@ export const engineerOptions: SelectOption[] = [
   { id: 'e-003', title: '王硕' },
 ]
 
+export const engineerGroupOptions: SelectOption[] = [
+  { id: 'door', title: '上门组' },
+  { id: 'station', title: '驻场组' },
+  { id: 'quality', title: '质检组' },
+]
+
 export async function getTableStatOverview() {
   return { list: tableStatOverview }
 }
 
 export function queryTableStatRows(params: GetDataSourceParamsType) {
-  const { engineerId, keyword } = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
+  const { engineerGroupIds, engineerId, keyword } = toValues(
+    (params.filters ?? []) as Required<GetDataSourceParamsType>['filters']
+  )
+  const normalizedKeyword = keyword != null ? String(keyword) : ''
 
   return tableStatRows.filter((row) => {
     const engineerMatched = !engineerId || row.id === engineerId
-    const keywordMatched = !keyword || includesText(row.engineerName, String(keyword))
-    return engineerMatched && keywordMatched
+    const engineerGroupMatched = matchesMultiSelectValue(engineerGroupIds, row.engineerGroupId)
+    const keywordMatched = !normalizedKeyword || includesText(row.engineerName, normalizedKeyword)
+    return engineerMatched && engineerGroupMatched && keywordMatched
   })
 }
 
 export async function getTableStatList(params: GetDataSourceParamsType) {
-  return buildPagedResponse(queryTableStatRows(params), params)
+  const list = queryTableStatRows(params)
+  return buildPagedResponse(list, params)
 }
 
-export type BasicUserRow = {
+type BasicUserRow = {
   id: string
   userName: string
   miTalkId: string
@@ -170,7 +201,7 @@ export const basicUserStatusOptions: SelectOption[] = [
   { id: 'training', title: '培训中' },
 ]
 
-const basicUserSeedRows: BasicUserRow[] = [
+const basicUserRows: BasicUserRow[] = [
   {
     id: 'user-001',
     userName: '张晨',
@@ -253,45 +284,30 @@ const basicUserSeedRows: BasicUserRow[] = [
   },
 ]
 
-const basicUserRows: BasicUserRow[] = Array.from({ length: 100 }, (_, index) => {
-  const source = basicUserSeedRows[index % basicUserSeedRows.length]
-  const sequence = index + 1
-  const sequenceText = String(sequence).padStart(3, '0')
-
-  return {
-    ...source,
-    id: `user-${sequenceText}`,
-    miTalkId: `${source.miTalkId}_${sequenceText}`,
-    phone: `139${String(sequence).padStart(8, '0')}`,
-    email: `user${sequenceText}@example.com`,
-    updatedAt: `2026-04-${String(18 - (index % 10)).padStart(2, '0')} ${String(
-      9 + (index % 9)
-    ).padStart(2, '0')}:${String((index * 7) % 60).padStart(2, '0')}`,
-  }
-})
-
 export function queryBasicTableRows(params: GetDataSourceParamsType) {
   const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
-  const keyword = values.keyword != null ? String(values.keyword) : ''
 
-  return basicUserRows.filter((row) => {
-    const keywordMatched =
+  return basicUserRows.filter(
+    (row) =>
+      (!values.roleId || row.roleId === values.roleId) &&
+      (!values.organizationId || row.organizationId === values.organizationId) &&
+      (!values.userStatus || row.userStatus === values.userStatus) &&
+      matchesMultiSelectValue(values.positionIds, row.positionId)
+  )
+}
+
+export async function getBasicTableList(params: GetDataSourceParamsType) {
+  const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
+  const keyword = values.keyword != null ? String(values.keyword) : ''
+  const list = queryBasicTableRows(params).filter(
+    (row) =>
       !keyword ||
       includesText(row.userName, keyword) ||
       includesText(row.miTalkId, keyword) ||
       includesText(row.phone, keyword)
+  )
 
-    return (
-      keywordMatched &&
-      (!values.roleId || row.roleId === values.roleId) &&
-        (!values.organizationId || row.organizationId === values.organizationId) &&
-        (!values.userStatus || row.userStatus === values.userStatus)
-    )
-  })
-}
-
-export async function getBasicTableList(params: GetDataSourceParamsType) {
-  return buildPagedResponse(queryBasicTableRows(params), params)
+  return buildPagedResponse(list, params)
 }
 
 export type OrgTreeTableRow = {
@@ -312,6 +328,11 @@ export const managerOptions: SelectOption[] = [
   { id: 'm-001', title: '张晨' },
   { id: 'm-002', title: '李岩' },
   { id: 'm-003', title: '王硕' },
+]
+
+export const departmentStatusOptions: SelectOption[] = [
+  { id: 'enabled', title: '启用' },
+  { id: 'disabled', title: '停用' },
 ]
 
 const orgTreeTableRows: OrgTreeTableRow[] = [
@@ -381,14 +402,20 @@ const orgTreeTableRows: OrgTreeTableRow[] = [
   },
 ]
 
-function filterOrgTreeRows(list: OrgTreeTableRow[], values: Record<string, unknown>) {
+function filterOrgTreeRows(
+  list: OrgTreeTableRow[],
+  values: Record<string, unknown>
+): OrgTreeTableRow[] {
   const keyword = values.keyword != null ? String(values.keyword) : ''
 
   return list.flatMap((item) => {
-    const children = item.children ? filterOrgTreeRows(item.children, values) : []
+    const children: OrgTreeTableRow[] = item.children
+      ? filterOrgTreeRows(item.children, values)
+      : []
     const selfMatched =
       (!values.managerId || item.managerId === values.managerId) &&
       (!values.organizationId || item.organizationId === values.organizationId) &&
+      matchesMultiSelectValue(values.deptStatuses, item.deptStatus) &&
       (!keyword ||
         includesText(item.departmentName, keyword) ||
         includesText(item.departmentDuty, keyword) ||
@@ -400,19 +427,21 @@ function filterOrgTreeRows(list: OrgTreeTableRow[], values: Record<string, unkno
   })
 }
 
-export function queryOrgTreeTableRows(params: GetDataSourceParamsType) {
-  const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
-  return filterOrgTreeRows(orgTreeTableRows, values)
-}
-
 export async function getOrgTreeTableList(params: GetDataSourceParamsType) {
-  const list = queryOrgTreeTableRows(params)
+  const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
+  const list = filterOrgTreeRows(orgTreeTableRows, values)
+
   return {
     list,
     total: countTreeNodes(list),
     current: params.pagination?.current ?? 1,
     pageSize: params.pagination?.pageSize ?? 20,
   }
+}
+
+export function queryOrgTreeTableRows(params: GetDataSourceParamsType) {
+  const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
+  return filterOrgTreeRows(orgTreeTableRows, values)
 }
 
 export const itemAttrOptions: SelectOption[] = [
@@ -425,6 +454,11 @@ export const conditionOptions: SelectOption[] = [
   { id: '全新', title: '全新' },
   { id: '良品', title: '良品' },
   { id: '残次', title: '残次' },
+]
+
+export const serialManagedOptions: SelectOption[] = [
+  { id: '是', title: '是' },
+  { id: '否', title: '否' },
 ]
 
 export const materialCategoryTree: TreeDataItem[] = [
@@ -525,46 +559,18 @@ const inventoryRows: InventoryRow[] = [
   },
 ]
 
-function collectCategoryIds(nodes: TreeDataItem[], targetId: string): string[] | null {
-  for (const node of nodes) {
-    const nodeId = node.id == null ? '' : String(node.id)
-    if (nodeId === targetId) {
-      return [nodeId, ...collectNestedCategoryIds(node.children ?? [])]
-    }
-
-    const childMatches = collectCategoryIds(node.children ?? [], targetId)
-    if (childMatches) return childMatches
-  }
-
-  return null
-}
-
-function collectNestedCategoryIds(nodes: TreeDataItem[]): string[] {
-  return nodes.flatMap((node) => {
-    const nodeId = node.id == null ? [] : [String(node.id)]
-    return [...nodeId, ...collectNestedCategoryIds(node.children ?? [])]
-  })
-}
-
 export function createInventoryRowQuery(getCategoryId: () => string | null) {
   return function queryInventoryRows(params: GetDataSourceParamsType) {
     const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
-    const keyword = values.keyword != null ? String(values.keyword) : ''
     const categoryId = getCategoryId()
-    const categoryIds =
-      categoryId == null ? null : new Set(collectCategoryIds(materialCategoryTree, categoryId) ?? [categoryId])
 
-    return inventoryRows.filter((item) => {
-      const keywordMatched =
-        !keyword || includesText(item.name, keyword) || includesText(item.code, keyword)
-
-      return (
-        keywordMatched &&
-        (!categoryIds || categoryIds.has(item.categoryId)) &&
+    return inventoryRows.filter(
+      (item) =>
+        (!categoryId || item.categoryId === categoryId) &&
         (!values.itemAttr || item.itemAttr === values.itemAttr) &&
-        (!values.conditionGrade || item.conditionGrade === values.conditionGrade)
-      )
-    })
+        (!values.conditionGrade || item.conditionGrade === values.conditionGrade) &&
+        matchesMultiSelectValue(values.serialManagedList, item.serialManaged)
+    )
   }
 }
 
@@ -572,7 +578,14 @@ export function createInventoryListRequest(getCategoryId: () => string | null) {
   const queryInventoryRows = createInventoryRowQuery(getCategoryId)
 
   return async function getInventoryList(params: GetDataSourceParamsType) {
-    return buildPagedResponse(queryInventoryRows(params), params)
+    const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])
+    const keyword = values.keyword != null ? String(values.keyword) : ''
+    const list = queryInventoryRows(params).filter(
+      (item) =>
+        !keyword || includesText(item.name, keyword) || includesText(item.code, keyword)
+    )
+
+    return buildPagedResponse(list, params)
   }
 }
 
@@ -631,7 +644,7 @@ export const purchaseChannelOptions: SelectOption[] = [
 ]
 
 export const userTagOptions: SelectOption[] = [
-  { id: 'vip', title: '多次来访' },
+  { id: 'vip', title: '高净值' },
   { id: 'member', title: '会员用户' },
   { id: 'new', title: '新用户' },
 ]
@@ -664,7 +677,7 @@ const workOrderEditDetail = {
   serviceOrg: 'bj-door',
   serviceEngineer: 'eng-001',
   acceptedAt: '2026-04-17 15:20:00',
-  description: '此处展示示例描述信息，可能会比较长，超出是内容换行展示',
+  description: '客户反馈设备夜间升级后无法开机，已做基础排查，需安排工程师上门进一步检测。',
 }
 
 export async function getWorkOrderEditDetail() {

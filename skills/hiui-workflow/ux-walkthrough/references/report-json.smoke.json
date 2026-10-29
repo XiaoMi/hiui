@@ -4,6 +4,46 @@
   "source": "code",
   "generated_at": "2026-06-12T10:00:00+08:00",
   "scope": "scripts/smoke_test.sh 自动化验证",
+  "business_context": {
+    "source": "inferred",
+    "product_goal": "验证体验走查报告的结构化产出链路。",
+    "primary_users": [
+      "skill 维护者"
+    ],
+    "core_tasks": [
+      "检查 report.json 字段完整性",
+      "验证 docx 生成能力"
+    ],
+    "assumptions": [
+      "这是 smoke test，不代表真实业务页面"
+    ],
+    "missing_information": [
+      "无真实业务用户和真实流程"
+    ]
+  },
+  "core_flows": [
+    {
+      "name": "验证报告结构化生成链路",
+      "type": "查询流程",
+      "goal": "确认 smoke report 可以通过结构化校验并生成 docx",
+      "steps": [
+        "读取 smoke report JSON",
+        "执行 docx 生成脚本",
+        "确认输出文件存在"
+      ],
+      "status": "confirmed",
+      "execution": {
+        "status": "completed",
+        "executed_steps": [
+          {"step": "读取 smoke report JSON", "result": "脚本能够读取结构化报告数据"},
+          {"step": "执行 docx 生成脚本", "result": "生成脚本进入完整门禁校验流程"},
+          {"step": "确认输出文件存在", "result": "测试断言确认 docx 文件已生成"}
+        ],
+        "verification": "smoke 测试会检查 generate_docx 返回 generated 且文件存在",
+        "evidence": [{"type": "script_smoke_test", "note": "通过自动化 smoke test 覆盖报告生成链路"}]
+      }
+    }
+  ],
   "summary": {
     "overall": "Smoke test 用例，无截图。",
     "key_points": [

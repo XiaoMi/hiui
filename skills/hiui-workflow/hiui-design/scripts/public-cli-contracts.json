@@ -1,1922 +1,516 @@
 {
-  "version": 1,
-  "description": "Machine-readable contract tiers for hiui-design scripts. Shipped machine-public entries must keep stable JSON fixtures.",
-  "tiers": {
-    "machine-public": [
-      {
-        "id": "plan-page-task",
-        "script": "scripts/plan-page-task.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--change",
-          "新增一个数据看板页面",
-          "--page-type",
-          "table-stat",
-          "--mode",
-          "rules-only",
-          "--target",
-          "<skillRoot>",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/plan-page-task.table-stat.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "version",
-          "contractVersion",
-          "taskLevel",
-          "deliveryLevel",
-          "mode",
-          "topology",
-          "intentUnits",
-          "pageUnits",
-          "pageType",
-          "isNonTypical",
-          "layoutOverlayRequired",
-          "layoutStrategy",
-          "layoutArchetype",
-          "visualBaselinePlan",
-          "visualizationRolePlan",
-          "writeScope",
-          "nonTypicalScope",
-          "mandatoryComponents",
-          "compositionGuardrails",
-          "strategyEvidence",
-          "ownershipPlan",
-          "fastPath",
-          "generationStrategy",
-          "generationRecipe",
-          "generationInputs",
-          "inlineChecks",
-          "deliveryChecks",
-          "deliverySummaryProfile",
-          "analyticsContractRequired",
-          "customizationLevel",
-          "fallbackGenerationAsset",
-          "primaryGenerationAsset",
-          "generationStrategyId",
-          "projectMode",
-          "extensionPolicy",
-          "pageComponent",
-          "i18nMode",
-          "pageTypeDocs",
-          "startFrom",
-          "requiredDocs",
-          "requiredCommands",
-          "formalAcceptanceCommands",
-          "conditionalCommands",
-          "contractFieldsNeeded",
-          "kickoffSkeleton",
-          "runtimeSmokePlan",
-          "usagePolicy",
-          "factsSource",
-          "targetPage",
-          "targetDeliverySemantics",
-          "currentExecutionState",
-          "executionDecisionSummary",
-          "canStartImplementation",
-          "blockingReasons",
-          "blockingIssues",
-          "formalAcceptanceActions",
-          "acceptanceReasons",
-          "acceptanceLevel",
-          "acceptanceProfile",
-          "requiredActions",
-          "status",
-          "suggestedPageTypes",
-          "decisionTracePath",
-          "finalReportContract",
-          "projectCapabilities"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "taskLevel"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "deliveryLevel"
-            ],
-            "fields": [
-              "id",
-              "label",
-              "source",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "mode"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "pageType"
-            ],
-            "fields": [
-              "id",
-              "label",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "topology"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "confidence",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "fastPath"
-            ],
-            "fields": [
-              "eligible",
-              "entry",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "generationStrategy"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "reason",
-              "normalizedId"
-            ]
-          },
-          {
-            "path": [
-              "generationRecipe"
-            ],
-            "fields": [
-              "startingPoint",
-              "assemblyOrder",
-              "requiredAssets",
-              "forbiddenMoves"
-            ]
-          },
-          {
-            "path": [
-              "generationInputs"
-            ],
-            "fields": [
-              "schemaVersion",
-              "requiredFacts",
-              "requiredDocs",
-              "docBundle",
-              "fastPathSummary",
-              "entryActions",
-              "startFrom",
-              "primaryGenerationAsset",
-              "pageComponent"
-            ]
-          },
-          {
-            "path": [
-              "generationInputs",
-              "docBundle"
-            ],
-            "fields": [
-              "schemaVersion",
-              "source",
-              "profile",
-              "bundleIds"
-            ]
-          },
-          {
-            "path": [
-              "generationInputs",
-              "fastPathSummary"
-            ],
-            "fields": [
-              "schemaVersion",
-              "eligible",
-              "executionMode",
-              "pageShellPolicy",
-              "queryFilterPolicy",
-              "upgradeSignals"
-            ]
-          },
-          {
-            "path": [
-              "targetDeliverySemantics"
-            ],
-            "fields": [
-              "schemaVersion",
-              "defaultAction",
-              "deliveryPath",
-              "shellImportPolicy",
-              "runtimeDeliveryPolicy",
-              "allowedEditBoundary",
-              "referenceAssetRole",
-              "doNotDo"
-            ]
-          },
-          {
-            "path": [
-              "writeScope"
-            ],
-            "fields": [
-              "schemaVersion",
-              "policy",
-              "allowedPaths",
-              "forbiddenPaths",
-              "hardBlockSharedAssetMutation",
-              "sharedAssetMutationPolicy"
-            ]
-          },
-          {
-            "path": [
-              "currentExecutionState"
-            ],
-            "fields": [
-              "schemaVersion",
-              "status",
-              "canStartImplementation",
-              "primaryAction",
-              "executablePath",
-              "currentPhase",
-              "allowedCommandSurface",
-              "nextCommand",
-              "nextPhase",
-              "queuedCommands",
-              "blockerCodes",
-              "targetDefaultAction",
-              "targetDeliveryPath"
-            ]
-          },
-          {
-            "path": [
-              "executionDecisionSummary"
-            ],
-            "fields": [
-              "defaultAction",
-              "deliveryPath",
-              "shellImportPolicy",
-              "runtimeDeliveryPolicy",
-              "allowedEditBoundary",
-              "referenceAssetRole",
-              "doNotDo"
-            ]
-          },
-          {
-            "path": [
-              "inlineChecks"
-            ],
-            "fields": [
-              "schemaVersion",
-              "recipeChecks",
-              "commandChecks"
-            ]
-          },
-          {
-            "path": [
-              "deliveryChecks"
-            ],
-            "fields": [
-              "schemaVersion",
-              "projectQuality",
-              "previewConfirmation",
-              "runtimeGovernance",
-              "formalAcceptance"
-            ]
-          },
-          {
-            "path": [
-              "extensionPolicy"
-            ],
-            "fields": [
-              "schemaVersion",
-              "source",
-              "status",
-              "defaultLevel",
-              "maxLightweightLevel",
-              "supportedLevels",
-              "rules"
-            ]
-          },
-          {
-            "path": [
-              "pageComponent"
-            ],
-            "fields": [
-              "schemaVersion",
-              "selected",
-              "componentId",
-              "pageTypeId",
-              "mode",
-              "source",
-              "reason",
-              "candidates"
-            ]
-          },
-          {
-            "path": [
-              "startFrom"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "templatePath",
-              "examplePath",
-              "hostArchetypePath",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "ownershipPlan"
-            ],
-            "fields": [
-              "ownershipMode",
-              "requiredRoles",
-              "targetHints"
-            ]
-          },
-          {
-            "path": [
-              "i18nMode"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "requiredDocs",
-              "0"
-            ],
-            "fields": [
-              "path",
-              "readMode",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "runtimeSmokePlan"
-            ],
-            "fields": [
-              "required",
-              "command"
-            ]
-          },
-          {
-            "path": [
-              "usagePolicy"
-            ],
-            "fields": [
-              "mode",
-              "source",
-              "requireNetworkAuthorization"
-            ]
-          },
-          {
-            "path": [
-              "requiredActions",
-              "0"
-            ],
-            "fields": [
-              "id",
-              "phase",
-              "tool",
-              "command",
-              "args",
-              "required",
-              "reason",
-              "produces",
-              "displayCommand"
-            ]
-          },
-          {
-            "path": [
-              "acceptanceReasons",
-              "0"
-            ],
-            "fields": [
-              "source",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "acceptanceProfile"
-            ],
-            "fields": [
-              "level",
-              "source",
-              "reason",
-              "formalRequired",
-              "defaultActions",
-              "finalReportSections"
-            ]
-          },
-          {
-            "path": [
-              "finalReportContract"
-            ],
-            "fields": [
-              "schemaVersion",
-              "sections",
-              "requiredStatusFields",
-              "statusFields",
-              "requiredEvidence",
-              "riskFields",
-              "rules"
-            ]
-          },
-          {
-            "path": [
-              "projectCapabilities"
-            ],
-            "fields": [
-              "schemaVersion",
-              "projectRootValid",
-              "mode",
-              "assets",
-              "missingCapabilities"
-            ]
-          },
-          {
-            "path": [
-              "primaryGenerationAsset"
-            ],
-            "fields": [
-              "type",
-              "id",
-              "status",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "fallbackGenerationAsset"
-            ],
-            "fields": [
-              "type",
-              "id",
-              "status",
-              "trigger",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "deliverySummaryProfile"
-            ],
-            "fields": [
-              "schemaVersion",
-              "id",
-              "defaultOutput",
-              "fullReportRequired",
-              "requiredFields",
-              "fullReportTriggers"
-            ]
-          }
-        ]
+  "schemaVersion": 1,
+  "name": "hiui-design-public-cli-contracts",
+  "version": "2.6.2",
+  "commands": {
+    "typical-page-preflight": {
+      "script": "scripts/typical-page-preflight.mjs",
+      "stability": "public",
+      "description": "Run the lightweight host-compatibility gate that opens or blocks the page-task generation gate before any page edits.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--json": "Print JSON output instead of a text summary."
       },
-      {
-        "id": "plan-page-task-formal",
-        "script": "scripts/plan-page-task.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--change",
-          "正式验收一个数据统计表页面，跑 source-gate doctor finalize",
-          "--page-type",
-          "table-stat",
-          "--mode",
-          "rules-only",
-          "--target",
-          "<skillRoot>",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/plan-page-task.table-stat-formal.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "version",
-          "contractVersion",
-          "taskLevel",
-          "deliveryLevel",
-          "mode",
-          "topology",
-          "intentUnits",
-          "pageUnits",
-          "pageType",
-          "isNonTypical",
-          "layoutOverlayRequired",
-          "fastPath",
-          "generationStrategy",
-          "generationRecipe",
-          "extensionPolicy",
-          "pageComponent",
-          "i18nMode",
-          "pageTypeDocs",
-          "startFrom",
-          "requiredDocs",
-          "requiredCommands",
-          "formalAcceptanceCommands",
-          "conditionalCommands",
-          "contractFieldsNeeded",
-          "kickoffSkeleton",
-          "runtimeSmokePlan",
-          "usagePolicy",
-          "factsSource",
-          "targetPage",
-          "targetDeliverySemantics",
-          "currentExecutionState",
-          "executionDecisionSummary",
-          "canStartImplementation",
-          "blockingReasons",
-          "blockingIssues",
-          "formalAcceptanceActions",
-          "acceptanceReasons",
-          "acceptanceLevel",
-          "acceptanceProfile",
-          "requiredActions",
-          "status",
-          "suggestedPageTypes",
-          "decisionTracePath",
-          "finalReportContract",
-          "projectCapabilities"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "taskLevel"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "deliveryLevel"
-            ],
-            "fields": [
-              "id",
-              "label",
-              "source",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "mode"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "pageType"
-            ],
-            "fields": [
-              "id",
-              "label",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "topology"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "confidence",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "fastPath"
-            ],
-            "fields": [
-              "eligible",
-              "entry",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "generationStrategy"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "generationRecipe"
-            ],
-            "fields": [
-              "startingPoint",
-              "assemblyOrder",
-              "requiredAssets",
-              "forbiddenMoves"
-            ]
-          },
-          {
-            "path": [
-              "targetDeliverySemantics"
-            ],
-            "fields": [
-              "schemaVersion",
-              "defaultAction",
-              "deliveryPath",
-              "shellImportPolicy",
-              "runtimeDeliveryPolicy",
-              "allowedEditBoundary",
-              "referenceAssetRole",
-              "doNotDo"
-            ]
-          },
-          {
-            "path": [
-              "currentExecutionState"
-            ],
-            "fields": [
-              "schemaVersion",
-              "status",
-              "canStartImplementation",
-              "primaryAction",
-              "executablePath",
-              "currentPhase",
-              "allowedCommandSurface",
-              "nextCommand",
-              "nextPhase",
-              "queuedCommands",
-              "blockerCodes",
-              "targetDefaultAction",
-              "targetDeliveryPath"
-            ]
-          },
-          {
-            "path": [
-              "executionDecisionSummary"
-            ],
-            "fields": [
-              "defaultAction",
-              "deliveryPath",
-              "shellImportPolicy",
-              "runtimeDeliveryPolicy",
-              "allowedEditBoundary",
-              "referenceAssetRole",
-              "doNotDo"
-            ]
-          },
-          {
-            "path": [
-              "extensionPolicy"
-            ],
-            "fields": [
-              "schemaVersion",
-              "source",
-              "status",
-              "defaultLevel",
-              "maxLightweightLevel",
-              "supportedLevels",
-              "rules"
-            ]
-          },
-          {
-            "path": [
-              "pageComponent"
-            ],
-            "fields": [
-              "schemaVersion",
-              "selected",
-              "componentId",
-              "pageTypeId",
-              "mode",
-              "source",
-              "reason",
-              "candidates"
-            ]
-          },
-          {
-            "path": [
-              "startFrom"
-            ],
-            "fields": [
-              "id",
-              "source",
-              "templatePath",
-              "examplePath",
-              "hostArchetypePath",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "i18nMode"
-            ],
-            "fields": [
-              "id",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "requiredDocs",
-              "0"
-            ],
-            "fields": [
-              "path",
-              "readMode",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "runtimeSmokePlan"
-            ],
-            "fields": [
-              "required",
-              "command"
-            ]
-          },
-          {
-            "path": [
-              "usagePolicy"
-            ],
-            "fields": [
-              "mode",
-              "source",
-              "requireNetworkAuthorization"
-            ]
-          },
-          {
-            "path": [
-              "requiredActions",
-              "0"
-            ],
-            "fields": [
-              "id",
-              "phase",
-              "tool",
-              "command",
-              "args",
-              "required",
-              "reason",
-              "produces",
-              "displayCommand"
-            ]
-          },
-          {
-            "path": [
-              "acceptanceReasons",
-              "0"
-            ],
-            "fields": [
-              "source",
-              "reason"
-            ]
-          },
-          {
-            "path": [
-              "acceptanceProfile"
-            ],
-            "fields": [
-              "level",
-              "source",
-              "reason",
-              "formalRequired",
-              "defaultActions",
-              "finalReportSections"
-            ]
-          },
-          {
-            "path": [
-              "finalReportContract"
-            ],
-            "fields": [
-              "schemaVersion",
-              "sections",
-              "requiredStatusFields",
-              "statusFields",
-              "requiredEvidence",
-              "riskFields",
-              "rules"
-            ]
-          },
-          {
-            "path": [
-              "projectCapabilities"
-            ],
-            "fields": [
-              "schemaVersion",
-              "projectRootValid",
-              "mode",
-              "assets",
-              "missingCapabilities"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "typical-page-capabilities",
-        "script": "scripts/typical-page-capabilities.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/capabilities.skill-root.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "projectRoot",
-          "projectRootValid",
-          "mode",
-          "versions",
-          "assets",
-          "routing",
-          "i18n",
-          "managedPages",
-          "governance",
-          "missingCapabilities"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "mode"
-            ],
-            "fields": [
-              "id",
-              "locked",
-              "source"
-            ]
-          },
-          {
-            "path": [
-              "assets"
-            ],
-            "fields": [
-              "molds",
-              "adapters",
-              "regions"
-            ]
-          },
-          {
-            "path": [
-              "routing"
-            ],
-            "fields": [
-              "type",
-              "businessPageRoot",
-              "status"
-            ]
-          },
-          {
-            "path": [
-              "i18n"
-            ],
-            "fields": [
-              "mode",
-              "status",
-              "source"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-project-capabilities.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-list-assets-molds",
-        "script": "scripts/typical-page-list-assets.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "molds",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/list-assets.molds.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "target",
-          "items"
-        ],
-        "requiredNestedFields": [],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-list-assets-page-components",
-        "script": "scripts/typical-page-list-assets.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "page-components",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/list-assets.page-components.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "target",
-          "items"
-        ],
-        "requiredNestedFields": [],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-inspect-asset-mold-table-basic",
-        "script": "scripts/typical-page-inspect-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "mold",
-          "--id",
-          "table-basic",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.table-basic.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "assetId",
-          "moldId",
-          "designSummary",
-          "machineRules"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "designSummary"
-            ],
-            "fields": [
-              "pageType",
-              "suitableFor",
-              "structure",
-              "editableAreas",
-              "lockedAreas",
-              "risks"
-            ]
-          },
-          {
-            "path": [
-              "machineRules"
-            ],
-            "fields": [
-              "requiredRegions",
-              "lockedRegions",
-              "editableSlots",
-              "requiredValidation"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-inspect-asset-page-component-legacy-table-basic",
-        "script": "scripts/typical-page-inspect-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "page-component",
-          "--id",
-          "legacy-table-basic-page.v1",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.legacy-table-basic-page.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "assetId",
-          "componentId",
-          "pageTypeId",
-          "baseMoldId",
-          "mode",
-          "designSummary",
-          "machineRules"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "designSummary"
-            ],
-            "fields": [
-              "purpose",
-              "structureSource",
-              "editableAreas",
-              "lockedAreas",
-              "controlledExtensions",
-              "risks"
-            ]
-          },
-          {
-            "path": [
-              "machineRules"
-            ],
-            "fields": [
-              "implementationKind",
-              "status",
-              "certificationStatus",
-              "fallbackPolicy",
-              "inheritedLockedRegions",
-              "inheritedEditableSlots",
-              "requiredValidation"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-add-asset-mold-table-basic-dry-run",
-        "script": "scripts/typical-page-add-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "mold",
-          "--id",
-          "table-basic",
-          "--dry-run",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/add-asset.table-basic-dry-run.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "status",
-          "target",
-          "asset",
-          "sideEffects",
-          "plannedFiles",
-          "blockingReasons",
-          "requiredConfirmations",
-          "suggestedRequiredAction"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id",
-              "moldId"
-            ]
-          },
-          {
-            "path": [
-              "sideEffects"
-            ],
-            "fields": [
-              "writesBusinessSource",
-              "overwritesExistingFiles",
-              "changesRoutes",
-              "changesGlobalTemplates"
-            ]
-          },
-          {
-            "path": [
-              "suggestedRequiredAction"
-            ],
-            "fields": [
-              "id",
-              "dryRunOnly"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-add-preview.v1 and status=preview",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "dry-run only; repeated runs do not change project or skill files",
-        "sideEffects": "none in v1.0 because --dry-run is required"
-      },
-      {
-        "id": "typical-page-list-assets-adapters",
-        "script": "scripts/typical-page-list-assets.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "adapters",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/list-assets.adapters.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "target",
-          "items"
-        ],
-        "requiredNestedFields": [],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-catalog.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-inspect-asset-adapter-layout-search-table",
-        "script": "scripts/typical-page-inspect-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "adapter",
-          "--id",
-          "layout-search-table-adapter",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/inspect-asset.layout-search-table-adapter.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "assetType",
-          "assetId",
-          "designSummary",
-          "machineRules"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "designSummary"
-            ],
-            "fields": [
-              "name",
-              "suitableFor",
-              "editableAreas",
-              "lockedAreas",
-              "risks"
-            ]
-          },
-          {
-            "path": [
-              "machineRules"
-            ],
-            "fields": [
-              "supportedModes",
-              "allowedResponsibilities",
-              "forbiddenResponsibilities",
-              "requiredValidation"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-inspection.v1",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-add-asset-adapter-layout-search-table-dry-run",
-        "script": "scripts/typical-page-add-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "adapter",
-          "--id",
-          "layout-search-table-adapter",
-          "--dry-run",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/add-asset.layout-search-table-adapter-dry-run.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "status",
-          "target",
-          "asset",
-          "sideEffects",
-          "plannedFiles",
-          "blockingReasons",
-          "requiredConfirmations",
-          "suggestedRequiredAction"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id"
-            ]
-          },
-          {
-            "path": [
-              "sideEffects"
-            ],
-            "fields": [
-              "writesBusinessSource",
-              "overwritesExistingFiles",
-              "changesRoutes",
-              "changesGlobalTemplates"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-add-preview.v1 and status=preview",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "dry-run only; repeated runs do not change project or skill files",
-        "sideEffects": "none in v1.1 because --dry-run is required"
-      },
-      {
-        "id": "typical-page-diff-asset-mold-table-basic",
-        "script": "scripts/typical-page-diff-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "mold",
-          "--id",
-          "table-basic",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/diff-asset.table-basic.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "target",
-          "asset",
-          "status",
-          "riskLevel",
-          "changes",
-          "blockingReasons",
-          "evidence"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id"
-            ]
-          },
-          {
-            "path": [
-              "evidence"
-            ],
-            "fields": [
-              "sourcePath",
-              "sourceDigest",
-              "assetDigest",
-              "comparison"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and status=preview",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-diff-asset-adapter-layout-search-table",
-        "script": "scripts/typical-page-diff-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "adapter",
-          "--id",
-          "layout-search-table-adapter",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/diff-asset.layout-search-table-adapter.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "target",
-          "asset",
-          "status",
-          "riskLevel",
-          "changes",
-          "blockingReasons",
-          "evidence"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id"
-            ]
-          },
-          {
-            "path": [
-              "evidence"
-            ],
-            "fields": [
-              "sourcePath",
-              "sourceDigest",
-              "assetDigest",
-              "comparison"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and status=preview",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "read-only; repeated runs do not change project or skill files",
-        "sideEffects": "none"
-      },
-      {
-        "id": "typical-page-update-asset-mold-table-basic-dry-run",
-        "script": "scripts/typical-page-update-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "mold",
-          "--id",
-          "table-basic",
-          "--dry-run",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/update-asset.table-basic-dry-run.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "target",
-          "asset",
-          "status",
-          "riskLevel",
-          "changes",
-          "blockingReasons",
-          "updatePreview",
-          "evidence"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id"
-            ]
-          },
-          {
-            "path": [
-              "updatePreview"
-            ],
-            "fields": [
-              "dryRunOnly",
-              "writesBusinessSource",
-              "overwritesExistingFiles",
-              "changesRoutes",
-              "changesGlobalTemplates",
-              "forceSupported"
-            ]
-          },
-          {
-            "path": [
-              "evidence"
-            ],
-            "fields": [
-              "sourcePath",
-              "sourceDigest",
-              "assetDigest",
-              "comparison"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and updatePreview.dryRunOnly=true",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "dry-run only; repeated runs do not change project or skill files",
-        "sideEffects": "none in v1.2 because --dry-run is required"
-      },
-      {
-        "id": "typical-page-update-asset-adapter-layout-search-table-dry-run",
-        "script": "scripts/typical-page-update-asset.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--skill-root",
-          "<skillRoot>",
-          "--type",
-          "adapter",
-          "--id",
-          "layout-search-table-adapter",
-          "--dry-run",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/update-asset.layout-search-table-adapter-dry-run.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "target",
-          "asset",
-          "status",
-          "riskLevel",
-          "changes",
-          "blockingReasons",
-          "updatePreview",
-          "evidence"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "asset"
-            ],
-            "fields": [
-              "type",
-              "id"
-            ]
-          },
-          {
-            "path": [
-              "updatePreview"
-            ],
-            "fields": [
-              "dryRunOnly",
-              "writesBusinessSource",
-              "overwritesExistingFiles",
-              "changesRoutes",
-              "changesGlobalTemplates",
-              "forceSupported"
-            ]
-          },
-          {
-            "path": [
-              "evidence"
-            ],
-            "fields": [
-              "sourcePath",
-              "sourceDigest",
-              "assetDigest",
-              "comparison"
-            ]
-          }
-        ],
-        "successSignal": "exit code 0 and schemaVersion=hiui-asset-diff.v1 and updatePreview.dryRunOnly=true",
-        "failureSignal": "exit code 1 and status=invalid",
-        "idempotency": "dry-run only; repeated runs do not change project or skill files",
-        "sideEffects": "none in v1.2 because --dry-run is required"
-      },
-      {
-        "id": "typical-page-preflight",
-        "script": "scripts/typical-page-preflight.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--page",
-          "src/pages/orders/index.tsx",
-          "--contract-fixture",
-          "quality-pass",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/preflight.quality-pass.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "status",
-          "preflightStage",
-          "readyForImplementation",
-          "readyForDelivery",
-          "deferredChecks",
-          "page",
-          "pageType",
-          "checks",
-          "blockingReasons",
-          "blockingIssues",
-          "suggestedActions",
-          "pageTypeId",
-          "pageTypeLabel",
-          "workflowStatus",
-          "preflightStatus",
-          "runtimeSmokeRequired",
-          "runtimeSmokeStatus",
-          "warnings",
-          "failures"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "semanticContract"
-            ],
-            "fields": [
-              "queryFilterRegionRole",
-              "dimensionSwitchControl",
-              "listShellComposition",
-              "spacingOwnership",
-              "areaChartFill"
-            ]
-          },
-          {
-            "path": [
-              "checks",
-              "0"
-            ],
-            "fields": [
-              "id",
-              "status",
-              "severity",
-              "message",
-              "suggestedActionIds"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "typical-page-translation-map",
-        "script": "scripts/generate-translation-map.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--page",
-          "src/pages/orders/index.tsx",
-          "--contract-fixture",
-          "quality-pass",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/translation-map.quality-pass.json",
-        "requiredTopLevelFields": [
-          "status",
-          "outputPath",
-          "translationMap"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "translationMap"
-            ],
-            "fields": [
-              "schemaVersion",
-              "generatedBy",
-              "generatedAt",
-              "page",
-              "pageType",
-              "mode",
-              "reason",
-              "sourceHash",
-              "previousSourceHash",
-              "stale",
-              "staleReason",
-              "invalidatesWhen",
-              "mappings"
-            ]
-          },
-          {
-            "path": [
-              "translationMap",
-              "mappings",
-              "0"
-            ],
-            "fields": [
-              "kind",
-              "source",
-              "target"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "typical-page-runtime-smoke",
-        "script": "scripts/typical-page-runtime-smoke.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--url",
-          "http://runtime-smoke.fixture.invalid/visual-missing",
-          "--profile",
-          "visual",
-          "--viewport",
-          "390x844",
-          "--contract-fixture",
-          "visual-missing",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/runtime-smoke.visual-missing.json",
-        "expectedExitCode": 1,
-        "requiredTopLevelFields": [
-          "status",
-          "profile",
-          "page",
-          "pageType",
-          "url",
-          "sourceSnapshotHash",
-          "viewports",
-          "checks",
-          "visualEvidence",
-          "artifacts"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "visualEvidence"
-            ],
-            "fields": [
-              "required",
-              "status",
-              "baselinePolicy",
-              "screenshotDir",
-              "screenshots"
-            ]
-          },
-          {
-            "path": [
-              "artifacts"
-            ],
-            "fields": [
-              "markdownReportPath",
-              "jsonReportPath",
-              "screenshots"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "typical-page-preview-ready",
-        "script": "scripts/typical-page-preview-ready.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--page",
-          "src/pages/orders/index.tsx",
-          "--contract-fixture",
-          "quality-pass"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/preview-ready.quality-pass.json",
-        "requiredTopLevelFields": [
-          "ok",
-          "previewReady",
-          "checks",
-          "normalizedPagePath",
-          "pageTypeId",
-          "qualityChecks",
-          "qualityVerified",
-          "requiredRegions",
-          "runtimeSmokeRequired",
-          "runtimeSmokeRequirementReason",
-          "sourceSnapshotHash",
-          "usedStaticFallback"
-        ],
-        "requiredNestedFields": []
-      },
-      {
-        "id": "typical-page-final-report",
-        "script": "scripts/render-final-report.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--contract-fixture",
-          "quality-pass",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/final-report.quality-pass.json",
-        "requiredTopLevelFields": [
-          "schemaVersion",
-          "contractSchemaVersion",
-          "sections",
-          "statuses",
-          "preflightExecution",
-          "evidence",
-          "risks",
-          "source"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "statuses"
-            ],
-            "fields": [
-              "pageStatus",
-              "preflightStatus",
-              "formalAcceptanceStatus"
-            ]
-          },
-          {
-            "path": [
-              "preflightExecution"
-            ],
-            "fields": [
-              "preflightStage",
-              "readyForImplementation",
-              "readyForDelivery",
-              "deferredChecks"
-            ]
-          },
-          {
-            "path": [
-              "evidence"
-            ],
-            "fields": [
-              "executedActions",
-              "changedFiles",
-              "validationCommands"
-            ]
-          },
-          {
-            "path": [
-              "risks"
-            ],
-            "fields": [
-              "blockingIssues",
-              "warnings",
-              "nextActions"
-            ]
-          },
-          {
-            "path": [
-              "source"
-            ],
-            "fields": [
-              "planSchemaVersion",
-              "preflightSchemaVersion",
-              "preflightStage"
-            ]
-          }
-        ]
-      },
-      {
-        "id": "typical-page-start-page",
-        "script": "scripts/typical-page-start-page.mjs",
-        "status": "shipped",
-        "jsonContract": "shipped",
-        "command": [
-          "--target",
-          "<skillRoot>",
-          "--page-type",
-          "table-basic",
-          "--mode",
-          "rules-only",
-          "--page",
-          "src/pages/orders/index.tsx",
-          "--archetype",
-          "src/pages/orders/host-archetype.tsx",
-          "--contract-fixture",
-          "table-basic-started",
-          "--json"
-        ],
-        "fixture": "scripts/tests/fixtures/public-cli/start-page.table-basic-started.json",
-        "requiredTopLevelFields": [
-          "status",
-          "artifactRole",
-          "pageType",
-          "mode",
-          "topology",
-          "layoutStrategy",
-          "layoutArchetype",
-          "nonTypicalScope",
-          "mandatoryComponents",
-          "compositionGuardrails",
-          "strategyEvidence",
-          "runtimeSmokePlan",
-          "requestedPagePath",
-          "pagePath",
-          "examplePath",
-          "hostArchetypePath",
-          "requiredRegions",
-          "requiredOwnershipRoles",
-          "requiredCapabilities",
-          "localBypasses",
-          "scaffoldArtifacts",
-          "executionDecisionSummary",
-          "contract",
-          "nextSteps"
-        ],
-        "requiredNestedFields": [
-          {
-            "path": [
-              "pageType"
-            ],
-            "fields": [
-              "id",
-              "label"
-            ]
-          },
-          {
-            "path": [
-              "executionDecisionSummary"
-            ],
-            "fields": [
-              "defaultAction",
-              "deliveryPath",
-              "shellImportPolicy",
-              "runtimeDeliveryMode",
-              "allowedEditBoundary",
-              "doNotDo"
-            ]
-          },
-          {
-            "path": [
-              "contract"
-            ],
-            "fields": [
-              "jsonPath",
-              "markdownPath",
-              "workflow",
-              "strictTemplateRequired",
-              "templateStatus",
-              "archetypeTemplatePath"
-            ]
-          },
-          {
-            "path": [
-              "contract",
-              "workflow"
-            ],
-            "fields": [
-              "status",
-              "deliveryStatus",
-              "preflightStatus",
-              "sourceGateStatus",
-              "doctorStatus",
-              "runtimeSmokeStatus",
-              "sourceSnapshotHash"
-            ]
-          }
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-typical-page-preflight.v1",
+        "requiredFields": ["status", "targetRoot", "integrationReadiness"],
+        "optionalFields": [
+          "hostCompatibility",
+          "publicViewport",
+          "publicShell",
+          "formalHostCompatibility",
+          "executionReadiness",
+          "generationReadiness",
+          "pageTypeCapabilityReport",
+          "aiGenerationReadyContext",
+          "aiGenerationReadyContext.readyToExecute",
+          "runtimeExecutionHints",
+          "runtimeExecutionHints.status",
+          "runtimeExecutionHints.environmentReady",
+          "runtimeExecutionHints.projectReadyToExecute",
+          "legacyReactCompatibilityClosure",
+          "pageTaskGate",
+          "completionStandard",
+          "integrationComplete",
+          "userVisibleState",
+          "reason",
+          "nextCommand",
+          "requiredManualActions",
+          "recommendedSteps"
         ]
       }
-    ],
-    "human-cli": [
-      "setup-for-designers",
-      "apply-in-current-project",
-      "typical-page-doctor"
-    ],
-    "maintainer-only": [
-      "release-skill-archive",
-      "sync-global-skill",
-      "manage-usage-service"
-    ]
+    },
+    "legacy-react-compat-autofix": {
+      "script": "scripts/legacy-react-compat-autofix.mjs",
+      "stability": "public",
+      "description": "Autofix missing react-dom/client compatibility branches for eligible high-risk legacy React 16/17 hosts, and also patch react/jsx-runtime for React 16 hosts, when exactly one Vite, Rspack, or Webpack config file is present and no conflicting local shim files exist.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-legacy-react-compat-autofix.v1",
+        "requiredFields": ["status", "targetRoot", "reason"],
+        "optionalFields": [
+          "configPath",
+          "configKind",
+          "details",
+          "changes",
+          "writtenFiles",
+          "pageTaskReadiness",
+          "nextCommand"
+        ],
+        "statusValues": ["patched", "already-compatible", "blocked"]
+      }
+    },
+    "legacy-hiui5-bridge-autofix": {
+      "script": "scripts/legacy-hiui5-bridge-autofix.mjs",
+      "stability": "public",
+      "description": "Autofix the managed scoped HiUI5 replacement bridge for eligible existing-system legacy Webpack/Rspack hosts by wiring the official bridge helper into exactly one object-style CommonJS config and appending the scoped replacement plugins.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-legacy-hiui5-bridge-autofix.v1",
+        "requiredFields": ["status", "targetRoot", "reason"],
+        "optionalFields": [
+          "configPath",
+          "configKind",
+          "details",
+          "changes",
+          "writtenFiles",
+          "pageTaskReadiness",
+          "nextCommand"
+        ],
+        "statusValues": ["patched", "already-compatible", "blocked"]
+      }
+    },
+    "legacy-mf-shared-contract-autofix": {
+      "script": "scripts/legacy-mf-shared-contract-autofix.mjs",
+      "stability": "public",
+      "description": "Autofix the legacy existing-system Module Federation host shared contract by rewiring hiui5 onto the @hi-ui/hiui share key and forcing non-singleton version selection when scoped HiUI5 bridge wiring coexists with an old @hi-ui/hiui shared singleton.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-legacy-mf-shared-contract-autofix.v1",
+        "requiredFields": ["status", "targetRoot", "reason"],
+        "optionalFields": [
+          "configPath",
+          "details",
+          "changes",
+          "writtenFiles",
+          "pageTaskReadiness",
+          "nextCommand"
+        ],
+        "statusValues": ["patched", "already-compatible", "blocked"]
+      }
+    },
+    "managed-mf-host-contract-autofix": {
+      "script": "scripts/managed-mf-host-contract-autofix.mjs",
+      "stability": "public",
+      "description": "Materialize the minimal managed Module Federation host contract for eligible existing-system direct-expose projects by writing app-frame.tsx, app-frame-core.tsx, host-reset.css, hiui-managed-host.contract.json, and the page-local managed mf-entry without overwriting conflicting project-local content.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--page-type": "Required HiUI page type id such as table-basic or table-stat. Only page types currently marked with preWriteAction=materialize-managed-mf-host-contract qualify.",
+        "--dest": "Required target business page directory relative to the target project.",
+        "--title": "Required business page title used to rebuild the generation brief and publish-entry plan.",
+        "--route-path": "Optional business route leaf reused when rebuilding the generation brief.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--line": "Optional business-line overlay id.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-managed-mf-host-contract-autofix.v1",
+        "requiredFields": ["status", "targetRoot", "reason"],
+        "optionalFields": [
+          "details",
+          "changes",
+          "writtenFiles",
+          "pageTaskReadiness",
+          "nextCommand"
+        ],
+        "statusValues": ["patched", "already-compatible", "blocked"]
+      }
+    },
+    "integration-preflight": {
+      "script": "scripts/integration-preflight.mjs",
+      "stability": "public",
+      "description": "Verify static formal-entry code registration and distinguish pass, pass-with-runtime-pending, and blocked when remote runtime verification is pending or failed. On Camora hosts it also includes a derived camoraRuntimeClosure diagnosis under runtimeVerification evidence without changing the public pass/pass-with-runtime-pending/blocked contract.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--page-type": "Optional HiUI page type id such as table-stat. When input-mode is figma-design-restore and confirmed-design-restore-input already yields an unambiguous routing decision, the checker may infer page-type automatically unless --page-family is used instead.",
+        "--page-family": "Optional page family id. Use non-typical-page when the formal-entry proof must follow the validated non-typical workflow instead of a standard page type. When input-mode is figma-design-restore and confirmed-design-restore-input already yields an unambiguous family decision, the checker may infer page-family automatically.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--input-mode": "Optional input evidence mode. Supports page-prompt, prototype-screenshot, figma-design-restore, and legacy-system-reconstruction. design-screenshot-restore remains reserved for the second-stage degraded lane and is not publicly open yet.",
+        "--dest": "Required target business page directory relative to the target project.",
+        "--title": "Required business page title used for route and entry evidence checks.",
+        "--detail-sections-json": "Optional detail-page section contract JSON or path. Supported for full-page-detail parity with generation-brief when the preflight needs the same brief context.",
+        "--route-path": "Optional explicit business route path. When omitted and --expose-name is present, the checker infers @common/<ExposeName>.",
+        "--expose-name": "Optional Module Federation expose name. Required when formal entry proof depends on MF public path.",
+        "--expected-expose-target": "Optional explicit Module Federation source path override. Use it when the real expose points to a managed publish entry such as mf-entry instead of the generated business directory root.",
+        "--entry-file": "Optional existing business entry file relative to the target project. Required when proving a legacy addPage/openNewPage trigger.",
+        "--confirmed-generation-input-json": "Optional confirmed generation input JSON or path for prototype-screenshot mode.",
+        "--confirmed-design-restore-input-json": "Optional confirmed design-restore input JSON or path. Required when input-mode is figma-design-restore.",
+        "--non-typical-conversation-output-json": "Optional non-typical conversation output JSON payload. Required when --page-family non-typical-page needs the validated family decision package to rebuild brief context.",
+        "--telemetry-prompt": "Optional raw prompt text. When --related-page-path is omitted, integration-preflight may reuse it to auto-detect the parent page before rebuilding the brief. Prefer --telemetry-prompt-file when the original request contains quotes or newlines.",
+        "--telemetry-prompt-file": "Optional file path that contains the verbatim original user prompt. Preferred over --telemetry-prompt and also usable for parent-page auto-detection when --related-page-path is omitted.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui5-integration-preflight.v1",
+        "requiredFields": ["status", "targetRoot", "checks"],
+        "optionalFields": [
+          "integrationReadiness",
+          "pageTaskGate",
+          "routePath",
+          "expectedExposeName",
+          "expectedExposeTarget",
+          "remoteDebugContract",
+          "runtimeSourceStatus",
+          "checks.runtimeVerification.evidence.camoraRuntimeClosure",
+          "requiredManualActions",
+          "riskPolicy"
+        ],
+        "statusValues": ["pass", "pass-with-runtime-pending", "blocked"]
+      }
+    },
+    "page-relation-safe-fix": {
+      "script": "scripts/page-relation-safe-fix.mjs",
+      "stability": "public",
+      "description": "Safely repair a page that should remain a same-module subview by backfilling page-relation facts into hiui-pagegen metadata and removing managed publish-entry residue only when the current host contract no longer requires it.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--dest": "Required target business page directory relative to the target project.",
+        "--page-type": "Optional page type id used to recompute the page-relation decision when the persisted metadata is incomplete.",
+        "--title": "Optional business page title used only for reporting context.",
+        "--related-page-path": "Optional parent page path. Use it when the persisted metadata is missing related-page evidence but the page should be repaired as a module-internal subview.",
+        "--related-page-source": "Optional related-page evidence source label, such as module-parent-entry-evidence. Use it to persist how the parent-page relationship was proven.",
+        "--route-path": "Optional explicit route path. When provided, the fixer will refuse to downgrade the page to a same-module subview.",
+        "--expose-name": "Optional explicit expose name. When provided, the fixer will refuse to downgrade the page to a same-module subview.",
+        "--line": "Optional original prompt text used to strengthen the same-module-subview inference.",
+        "--dry-run": "Preview the repair result without writing files.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-page-relation-safe-fix.v1",
+        "requiredFields": ["status", "targetRoot", "dest", "reason"],
+        "optionalFields": [
+          "pageRelationDecision",
+          "metaPath",
+          "deletedFiles",
+          "writtenFiles",
+          "candidatePublishEntries",
+          "dryRun",
+          "nextCommand"
+        ],
+        "statusValues": ["patched", "dry-run", "already-consistent", "blocked"]
+      }
+    },
+    "verify-remote-runtime-source": {
+      "script": "scripts/verify-remote-runtime-source.mjs",
+      "stability": "public",
+      "description": "Read the host remote debug profile, fetch the local remoteEntry.js, validate the requested expose, and write REMOTE_RUNTIME_SOURCE_STATUS.json. The output records fact-level runtime observations for Camora/proxy debugging, but does not infer stale-bundle conclusions by itself.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--expose-name": "Required expose name. Accepts AttendanceManagement or ./AttendanceManagement.",
+        "--remote-entry-url": "Optional explicit local remoteEntry.js URL. Use it when automatic URL derivation from localOrigin or Camora proxy rules is unstable.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-remote-runtime-source-status.v2",
+        "requiredFields": ["status", "remoteEntryUrl", "exposeName", "checks"],
+        "optionalFields": [
+          "mode",
+          "evidence",
+          "observation",
+          "updatedAt",
+          "updatedBy"
+        ],
+        "statusValues": ["pass", "fail", "not-run"]
+      }
+    },
+    "plan-page-task": {
+      "script": "scripts/plan-page-task.mjs",
+      "stability": "public",
+      "description": "Generate the S1 machine plan consumed by hiui-page-workflow before any page edits. The JSON payload exposes planner gate state, requiredDocs entries with readMode/reason, and the requiredActions/formalAcceptanceActions orchestration surface alongside compatibility command summaries.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--page-type": "Optional HiUI page type id, such as table-basic, table-stat, tree-table, tree-split, drawer-form, drawer-detail, full-page-edit, full-page-detail, data-visualization, or feedback-status. When input-mode is figma-design-restore and confirmed-design-restore-input already yields an unambiguous routing decision, the planner may infer page-type automatically.",
+        "--page-family": "Optional page family id. Use non-typical-page when the task should follow the validated non-typical workflow. When input-mode is figma-design-restore and confirmed-design-restore-input already yields an unambiguous family decision, the planner may infer page-family automatically.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--input-mode": "Optional input evidence mode. Supports page-prompt, prototype-screenshot, figma-design-restore, and legacy-system-reconstruction. design-screenshot-restore remains reserved for the second-stage degraded lane and is not publicly open yet.",
+        "--localization-mode": "Optional page-generation localization mode. Supports none, inherit-host, and local-bridge. Default is none, so pages do not connect any project-local localization bridge unless this field is requested explicitly.",
+        "--dest": "Optional target business page directory relative to the target project.",
+        "--title": "Optional business page title used for planning and default path inference.",
+        "--route-path": "Optional business route leaf used for planning and registration hints.",
+        "--detail-sections-json": "Optional detail-page section contract JSON or path.",
+        "--feedback-variant-id": "Optional feedback-status variant id.",
+        "--page-adjustment-contract": "Optional pageAdjustmentContract JSON or file path.",
+        "--confirmed-generation-input-json": "Optional confirmed generation input JSON or path.",
+        "--confirmed-design-restore-input-json": "Optional confirmed design-restore input JSON or path. Required when input-mode is figma-design-restore.",
+        "--legacy-reconstruction-input-json": "Optional legacy reconstruction input JSON or path.",
+        "--navigation-mount-contract": "Optional explicit existing-system navigation mount contract JSON or file path. Use it when auto-detection cannot prove the target mount point. Supported variants: existing navigation registry with routeRegistryPath/menuRegistryPath/formalShellPath, or legacy business entry with validated entryPath/entryKind plus optional entryRoutePath/entryTitle/entryName and optional backRoutePath/backTitle/backName for precise second-level back behavior.",
+        "--migration-invariant-contract-json": "Optional migration invariant contract JSON or path.",
+        "--analytics-refactor-contract-json": "Optional analytics refactor contract JSON or path.",
+        "--task-level": "Optional explicit override for taskLevel. Supports minor-edit, managed-page-change, and new-page-or-rearchitecture.",
+        "--session-id": "Optional page-generation session id created by open-page-generation-session.mjs. Use it when the planner must append its timing data to an existing end-to-end session trace instead of opening a new one.",
+        "--telemetry-prompt": "Optional raw prompt text used only for usage stats closeout. Prefer --telemetry-prompt-file when the original user request contains quotes or newlines.",
+        "--telemetry-prompt-file": "Optional file path that contains the verbatim original user prompt used for usage stats closeout. Preferred over --telemetry-prompt.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-plan-page-task.v1",
+        "requiredFields": [
+          "targetRoot",
+          "skillRoot",
+          "mode",
+          "topology",
+          "pageType",
+          "pageUnits",
+          "taskLevel",
+          "startFrom",
+          "requiredDocs",
+          "plan",
+          "facts",
+          "canStartImplementation",
+          "currentExecutionState",
+          "requiredActions",
+          "blockingReasons",
+          "requiredCommands",
+          "formalAcceptanceActions",
+          "formalAcceptanceCommands"
+        ],
+        "optionalFields": [
+          "localizationMode",
+          "readinessGate",
+          "allowedActions",
+          "forbiddenActions",
+          "nextStepCommand",
+          "resumeAfterEnsureCommand",
+          "deliverySummaryProfile",
+          "acceptanceProfile",
+          "notes"
+        ]
+      }
+    },
+    "generate-page": {
+      "script": "scripts/generate-page.mjs",
+      "stability": "public",
+      "description": "Official single-entry closure for standard typical page generation. It internally builds the generation brief, materializes a reusable brief JSON snapshot, runs generate-page-from-brief, always executes the post-write light typical-page-slot-gate by default, and only appends an acceptance-tier project check when --validation-profile acceptance is requested.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--page-type": "Optional HiUI page type id, such as table-basic, table-stat, tree-table, tree-split, drawer-form, drawer-detail, full-page-edit, full-page-detail, data-visualization, or feedback-status. When input-mode is figma-design-restore and confirmed-design-restore-input already yields an unambiguous routing decision, the executor may infer page-type automatically.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--input-mode": "Optional input evidence mode. Supports page-prompt, prototype-screenshot, figma-design-restore, and legacy-system-reconstruction.",
+        "--localization-mode": "Optional page-generation localization mode. Supports none, inherit-host, and local-bridge. Default is none.",
+        "--dest": "Required target business page directory relative to the target project.",
+        "--related-page-path": "Optional existing business page file relative to the target project. Used only as directory evidence when the generated page should inherit a proven business page root.",
+        "--title": "Optional business page title used for slot replacement, path inference, and navigation labels.",
+        "--route-path": "Optional business route leaf used for navigation and acceptance hints.",
+        "--expose-name": "Optional Module Federation expose name passed through to generate-page-from-brief for primaryPageLink inference.",
+        "--test-base-url": "Optional test environment base URL passed through to generate-page-from-brief for Camora or proxy-host direct links.",
+        "--detail-sections-json": "Optional detail-page section contract JSON or path.",
+        "--feedback-variant-id": "Optional feedback-status variant id.",
+        "--page-adjustment-contract": "Optional pageAdjustmentContract JSON or file path.",
+        "--confirmed-generation-input-json": "Optional confirmed generation input JSON or path.",
+        "--confirmed-design-restore-input-json": "Optional confirmed design-restore input JSON or path.",
+        "--navigation-mount-contract": "Optional explicit existing-system navigation mount contract JSON or file path.",
+        "--non-typical-conversation-output-json": "Reserved for page-family workflows; standard generate-page currently fail-closes and asks callers to use execute-non-typical-page-task.mjs for non-typical-page.",
+        "--legacy-reconstruction-input-json": "Optional legacy reconstruction input JSON or path.",
+        "--migration-invariant-contract-json": "Optional migration invariant contract JSON or path.",
+        "--analytics-refactor-contract-json": "Optional analytics refactor contract JSON or path.",
+        "--session-id": "Optional page-generation session id. Use it when an upper-layer workflow already opened a session and wants the single-entry closure to append to the same PAGE_GEN_SESSION_TRACE.json.",
+        "--brief-output": "Optional output path for the reusable brief JSON snapshot. When omitted, generate-page writes GENERATION_BRIEF.json next to the current session trace.",
+        "--validation-profile": "Optional validation tier. Supports light and acceptance. Default is light, which stops after typical-page-slot-gate. acceptance keeps the same light gate and then appends a managed project engineering check.",
+        "--project-check-profile": "Optional project-check strategy used only when --validation-profile acceptance is active. Supports auto, typecheck-only, and none. auto prefers local tsc --noEmit and adds isolated vite build only when the launcher Node satisfies the project Node policy.",
+        "--project-check-command": "Optional explicit shell command that overrides the managed acceptance project-check selection. Use it only when the project must validate with a custom engineering command.",
+        "--force": "Allow managed overwrite of generated target files where generate-page-from-brief already permits it.",
+        "--dry-run": "Keep the workflow read-only. generate-page still builds the brief and runs the generator plan, but skips post-write light validation because no files are written.",
+        "--telemetry-prompt": "Optional raw prompt text used only for usage stats closeout. Prefer --telemetry-prompt-file when the original user request contains quotes or newlines.",
+        "--telemetry-prompt-file": "Optional file path that contains the verbatim original user prompt used for usage stats closeout.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-generate-page.v1",
+        "requiredFields": [
+          "schema",
+          "status",
+          "executionStage",
+          "targetRoot",
+          "mode",
+          "pageSelector",
+          "briefFilePath",
+          "sessionTrace",
+          "brief",
+          "generation",
+          "lightValidation",
+          "acceptanceValidation"
+        ],
+        "optionalFields": ["validationProfile", "reason"],
+        "statusValues": [
+          "pass",
+          "planned",
+          "blocked-before-write",
+          "blocked-after-write"
+        ],
+        "fieldNotes": {
+          "lightValidation": "Always records the post-write slot gate when files are written. In --dry-run it remains skipped because no files are created.",
+          "validationProfile": "Echoes the effective validation tier. light is the default write path; acceptance adds a second engineering validation layer after lightValidation passes.",
+          "acceptanceValidation": "Present for every run. In light mode it returns status=skipped; in acceptance mode it reports the managed project-check result, selected checks, command, and failure details when blocked."
+        }
+      }
+    },
+    "open-page-generation-session": {
+      "script": "scripts/open-page-generation-session.mjs",
+      "stability": "public",
+      "description": "Open a reusable page-generation session trace before the upper-layer workflow starts, so upstream model time and downstream hiui-design script time can be written into the same session.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--session-id": "Optional explicit session id. When omitted, the script creates a new page-generation session id.",
+        "--source": "Optional upstream workflow source label written into the session summary.",
+        "--page-type": "Optional HiUI page type id used only for early summary context.",
+        "--page-family": "Optional page family id used only for early summary context.",
+        "--title": "Optional business page title used only for early summary context.",
+        "--route-path": "Optional route leaf used only for early summary context.",
+        "--dest": "Optional target business page directory used only for early summary context.",
+        "--mode": "Optional integration mode used only for early summary context.",
+        "--input-mode": "Optional input evidence mode used only for early summary context.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-page-generation-session-open-result.v1",
+        "requiredFields": [
+          "targetRoot",
+          "sessionId",
+          "tracePath",
+          "sessionTrace"
+        ],
+        "optionalFields": ["nextStep"]
+      }
+    },
+    "record-page-generation-session-stage": {
+      "script": "scripts/record-page-generation-session-stage.mjs",
+      "stability": "public",
+      "description": "Append an upper-layer workflow stage, such as upstream-first-code-ready or upstream-done, into an existing page-generation session trace.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--session-id": "Required page-generation session id to append to.",
+        "--source": "Optional upstream workflow source label written into the event.",
+        "--stage": "Required stage name. Recommended upper-layer stages are upstream-first-code-ready, upstream-repair-round-complete, and upstream-done.",
+        "--status": "Optional stage status. Defaults to success.",
+        "--started-at-ms": "Optional stage start timestamp in epoch milliseconds.",
+        "--finished-at-ms": "Optional stage end timestamp in epoch milliseconds.",
+        "--started-at": "Optional stage start timestamp in ISO string form.",
+        "--finished-at": "Optional stage end timestamp in ISO string form.",
+        "--details-json": "Optional JSON payload attached to the stage event, such as {\"round\":1}.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-page-generation-session-stage-record.v1",
+        "requiredFields": [
+          "targetRoot",
+          "sessionId",
+          "stage",
+          "status",
+          "tracePath",
+          "sessionTrace"
+        ],
+        "optionalFields": []
+      }
+    },
+    "report-page-generation-session-trace": {
+      "script": "scripts/report-page-generation-session-trace.mjs",
+      "stability": "public",
+      "description": "Read the latest or a specified page-generation session trace and summarize engineering-chain timing, plus upstream workflow timing when the caller has recorded those stages.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--session-id": "Optional session id. When omitted, the latest available session is selected.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-page-generation-session-trace-report.v1",
+        "requiredFields": [
+          "coverage",
+          "coverageNote",
+          "workspaceRoot",
+          "tracePath",
+          "sessionId",
+          "currentStage",
+          "currentStatus",
+          "summary",
+          "stageDurationsMs",
+          "elapsedMs"
+        ],
+        "optionalFields": ["upstreamWorkflow"]
+      }
+    },
+    "execute-non-typical-page-task": {
+      "script": "scripts/execute-non-typical-page-task.mjs",
+      "stability": "public",
+      "description": "Execute the validated-v1 non-typical page closure for upper-layer callers: plan, family generation, light sanity, and conditional legacy Module Federation formal-acceptance checks.",
+      "arguments": {
+        "--target": "Optional target project root. Defaults to the current working directory.",
+        "--page-family": "Optional page family id. Only non-typical-page is supported by this public executor.",
+        "--mode": "Optional install mode. Supports auto, rules-only, and host-integration.",
+        "--input-mode": "Optional input evidence mode. Supports page-prompt, prototype-screenshot, and figma-design-restore for the validated non-typical v1 scope. design-screenshot-restore remains reserved for the second-stage degraded lane and is not publicly open yet.",
+        "--dest": "Required target business page directory relative to the target project.",
+        "--title": "Required business page title used for planning and generation.",
+        "--route-path": "Optional business route leaf used when the generated page also needs a formal route hint.",
+        "--expose-name": "Optional Module Federation expose name used by conditional legacy MF acceptance. Required when the generated page must be formally accepted through a direct expose and route-path cannot prove @common/<ExposeName>.",
+        "--entry-file": "Optional existing business entry file used by conditional legacy MF acceptance. Required when the executor needs integration-preflight evidence for a legacy direct-expose publish path.",
+        "--remote-entry-url": "Optional explicit local remoteEntry.js URL forwarded only to verify-remote-runtime-source during conditional legacy MF acceptance.",
+        "--confirmed-generation-input-json": "Optional confirmed generation input JSON or path.",
+        "--confirmed-design-restore-input-json": "Optional confirmed design-restore input JSON or path. Required when input-mode is figma-design-restore.",
+        "--non-typical-conversation-output-json": "Optional non-typical conversation output JSON payload. Required unless confirmed-generation-input-json already embeds it.",
+        "--navigation-mount-contract": "Optional explicit existing-system navigation mount contract JSON or file path. Use it when auto-detection cannot prove the target mount point. Supported variants: existing navigation registry with routeRegistryPath/menuRegistryPath/formalShellPath, or legacy business entry with validated entryPath/entryKind plus optional entryRoutePath/entryTitle/entryName and optional backRoutePath/backTitle/backName for precise second-level back behavior.",
+        "--telemetry-prompt": "Optional raw prompt text used only for usage stats closeout. Prefer --telemetry-prompt-file when the original user request contains quotes or newlines.",
+        "--telemetry-prompt-file": "Optional file path that contains the verbatim original user prompt used for usage stats closeout. Preferred over --telemetry-prompt.",
+        "--force": "Overwrite existing generated files only after review.",
+        "--json": "Print JSON output instead of a text summary."
+      },
+      "jsonOutput": {
+        "schemaVersion": 1,
+        "schema": "hiui-design-execute-non-typical-page-task.v1",
+        "requiredFields": [
+          "status",
+          "executionStage",
+          "targetRoot",
+          "pageSelector",
+          "pageFamily",
+          "readinessGate",
+          "requiredCommandIds"
+        ],
+        "optionalFields": [
+          "workflowId",
+          "coordinationPatternId",
+          "nextStepCommand",
+          "executedCommandIds",
+          "generation",
+          "lightSanity",
+          "integrationPreflight",
+          "runtimeVerification",
+          "blockedBy",
+          "reason",
+          "planSnapshot"
+        ]
+      }
+    }
   }
 }

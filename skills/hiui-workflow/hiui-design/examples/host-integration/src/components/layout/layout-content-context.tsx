@@ -1,8 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from 'react'
 
 export type LayoutContentContextValue = {
+  headerNode: HTMLDivElement | null
   headerRef: React.RefObject<HTMLDivElement | null>
+  footerNode: HTMLDivElement | null
   footerRef: React.RefObject<HTMLDivElement | null>
+  titleText: string
   titleTextRef: React.RefObject<string>
 }
 
