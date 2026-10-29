@@ -1,7 +1,0 @@
-{
-  "escapes": [
-    "Render charts outside the main white-body workspace.",
-    "Split stats/charts/table into independent page containers.",
-    "Collapse chart-section into a generic body region."
-  ]
-}

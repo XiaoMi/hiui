@@ -1,0 +1,75 @@
+.editPageRoot {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #f5f8fc;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 60px;
+  padding: 0 !important;
+  background: #f5f8fc;
+
+  :global(.hi-v5-page-header__content) {
+    flex: 1;
+    min-width: 0;
+    gap: 40px;
+  }
+}
+
+.whiteBody {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px 12px 0 0;
+
+  :global(.pro-edit-page) {
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+  }
+}
+
+.formScrollContent {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+  padding: 8px 20px 24px;
+}
+
+.productTypeTabs {
+  min-width: 0;
+  padding-top: 4px;
+
+  :global(.hi-v5-tabs__content) {
+    display: none;
+  }
+}
+
+.detailTableSection {
+  min-width: 0;
+  padding-bottom: 24px;
+}
+
+.detailTableControl {
+  width: 100%;
+  min-width: 0;
+}

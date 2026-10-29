@@ -14,31 +14,41 @@
 
 生成页面时，优先按下面顺序：
 
-1. 先读本文件，建立“部门内部页面气质”和生成边界
-2. 再看 `page-type-map.md`，判断是否命中已有页型
-3. 若命中典型页快速路径，直接复制固定模板 / 示例 / 宿主 archetype 并替换业务槽位
-4. 再读 `layout-anti-patterns.md`，把跨页型的布局误区排除掉
-5. 若当前项目走 `rules-only`，继续读 `rules-only-component-matrix.md`，把页壳、页头、筛选、主体、分页/底栏映射到明确组件语义
-6. 命中已有页型：继续读 `figma-page-rules.md` 和对应专章
-7. 未命中已有页型：按本文件原则，选择**最接近的固定页壳 / 示例页**起步，再做最小偏移
-8. 只有用户明确要求多语言 / i18n / 英文 / RTL / locale 验收，或任务是正式国际化验收时，才读 `i18n-baseline.md`
+1. 先读 `design-system-first.md`，建立组件 / 设计系统边界
+2. 再读本文件，建立“部门内部页面气质”和生成边界
+3. 再看 `page-type-map.md`，判断是否命中已有页型
+4. 命中已有页型：继续读 `figma-page-rules.md` 和对应专章
+5. 未命中已有页型：按本文件原则，选择**最接近的固定页壳 / runtime 对照页 / 规则专章**起步，再做最小偏移
 
-## 硬门槛升级
+## design-restore 硬顺序
 
-- 本文件不再只是“气质建议”。除文档中明确写出的豁免口外，本文件里所有页面生成相关的视觉、框架、交互约束都按硬门槛执行
-- 本文件中的“优先”“默认”“沿用”表示默认必须满足的生成基线，不再表示可自由降级的实现偏好
-- 若与页型专章冲突，以页型专章为准；但两者都按硬门槛执行，不存在“原则层可以放松、专章层才算硬”的解释空间
+当输入已经进入 `design-restore` 链时，固定再加一层顺序，不允许跳步：
+
+1. 先把 `restoreDecisionPackage` 收口成稳定区域判断
+2. 再判断这些区域能否命中已有局部模式、已有页型或现有 family/type 主链
+3. 再优先映射到 HiUI5 与 `local-managed-runtime/*` 的受管组件 / 页壳
+4. 标准典型页若仍需贴稿偏离，只能进入 `pageAdjustmentContract`
+5. 非典型页若仍需贴稿偏离，只能进入 `restorePrimitivePlan`
+6. 只有前面都无法直接覆盖时，才允许在 HiUI5 容器组合内做轻度扩展
+7. 若连这一步都找不到稳定承接方式，必须停止，不写近似整页实现
+
+这条顺序的目标，是阻止“先自由拼整页，再回头解释为什么像设计稿”的旧路径。
 
 ## 总原则
 
-### 1. 先复用壳层，再替换业务槽位
+### 1. 先复用壳层，再决定是换槽位还是走独立能力链
 
-- 优先复用现有固定页壳、共享布局和示例页
-- 先找最接近的页壳起步，再替换标题、筛选项、字段、表格列、请求和路由
+- 优先复用现有固定页壳、共享布局、runtime 对照页和规则专章
+- 先找最接近的页壳、runtime 对照页和规则专章，再替换标题、筛选项、字段、表格列、请求和路由
+- `rules-only` 项目也必须从官方页型规则和 runtime 对照页起步；不要从目标项目旧页面反推页面结构
 - 不要从空白文件重新发明结构
-- 若 doctor 已提示当前项目命中旧宿主桥接接入模式，优先复用目标项目自己已经跑通的页面基座，例如 `PageTable` / `page-table-v5` / schema 化搜索面板；桥接接入不等于可以自由手拼页面，也不改变普通典型页在 host contract 与 HiuiLegacyPage runtime ready 时优先轻量契约主链
-- 但这条建议的优先级低于页型专章的强结构约束；若页型专章要求保留更完整的示例节奏，例如 `table-stat` / `data-visualization` / `full-page-edit` / `full-page-detail`，则先满足页型专章，再决定宿主基座是否还能承接
-- 对 `asp-fwt-common-front` 这类旧宿主，还要额外读取 `docs/business-lines/after-sales/asp-fwt-common-front.md`
+- 生成前必须先形成单页生成 brief；brief 必须来自 `page-types.manifest.json`、命中页型专章和最近官方母版，而不是来自旧项目页面的视觉结构
+- 标准典型页下，AI 只允许替换业务槽位：标题、路由、查询字段、表格列、表单字段、详情字段、请求函数、mock 数据、按钮文案和跳转目标
+- 命中 `data-visualization` 这类独立能力页时，不走“替换业务槽位”默认链路；必须按 `generationWorkflow` 固定页头与 `whiteBody`，内容区域按规范整体生成
+- 命中 `data-visualization` 时，`summarySection` 可独立使用摘要卡 grid；正式 `chartSection` 必须维持一种基础 grid mode，主图通过同一 grid 中的 span 强调，指标卡迷你图可选
+- 已有图表若与业务问题匹配，可从官方数据可视化示例中按图表级别选择性复用；不要把整页布局连同示例数据一起搬进业务页
+- AI 不允许改写固定页壳、provider 包裹、单一 `PageHeader` / `whiteBody` / footer owner、滚动链、默认 spacing 和 HiUI5 默认视觉语法
+- 如果业务需求无法装进当前母版，先重新判页型或记录明确例外；不要在错误母版上继续 patch 样式
 
 ### 2. 新页型也必须继承当前仓库的页面气质
 
@@ -46,9 +56,7 @@
 - 页头、白底主区、筛选节奏、表格节奏、表单节奏、抽屉节奏要沿用现有基线
 - 没有明确设计依据时，不要自己发明新的卡片边框、阴影、标题层级、按钮区位置和滚动关系
 - 若需要补 HiUI 5 的颜色、字阶、按钮、输入框、表格默认值，回看 `hiui5-visual-baseline.md`，不要在每个页型专章里重复展开一遍
-- 若需要补用户可见文案、日期/金额 formatter、RTL 方向与文本膨胀规则，先判断 `i18nMode`；只有 `full` 模式回看 `i18n-baseline.md`，不要在每个页型专章里重复发明一套 i18n 口径
 - 视觉基线默认保持“白底主体 + 灰底外槽 + 蓝色主交互”的稳定关系，不要把新页型做成彩色卡片墙或重装饰 dashboard
-- 默认禁止把业务页面做成渐变卡、渐变横幅或渐变背景主区；没有明确设计依据时，层级只通过纯色背景、描边、文字和留白建立
 - 字体与字重默认沿用 HiUI 5 的 `400 / 500 / 600` 层级，不要无依据把标题和操作文字升级到 `700`
 
 ### 3. 保持固定页壳关系稳定
@@ -56,7 +64,10 @@
 - 页头、主内容区、筛选区、表格区、底栏、抽屉 body 的层级关系优先沿用已有壳层
 - 不要把固定页壳拆掉后再用普通 `Card` 或灰底容器重搭一遍
 - 不要让页面退化成“宿主灰底 + 单张白卡”的通用后台样式
+- 若本次任务要补项目首个正式业务导航壳，优先把 `examples/host-integration/src/app-frame-core.tsx` 当成官方宿主母版直接业务化复用。`examples/host-integration/src/app-frame.tsx` 只是 preview wrapper，不要把它的 prompt overlay 逻辑一并带进正式壳。正式业务壳认证只认受管 host import：`local-managed-runtime/host`；`hiuiDesignFormalShell='official-managed-host-shell-wrapper'` 这类 marker 只能作为辅证，不能单独认证一份手写壳。不要自己重组 `Layout/Sider/SideMenu/FloatMenuContainer`，不要只抄菜单数据再重写宿主高度链
 - 不要只借一个壳组件名，例如 `TablePageFrame` / `ProEditPage`，却继续沿用项目里原有 dashboard/list 皮肤去包裹它；典型页一旦落地，内容区节奏应以典型页壳为主，而不是以旧页面皮肤为主
+- 不要手拼裸 `PageHeader + QueryFilter + Table` 来模拟典型列表页；列表、统计、树表和左树右表必须优先保留对应官方母版的页壳链
+- 不要把生成后 doctor 当作主修复手段；doctor 只兜底依赖、导入、样式、旧 token、路由和页型关键壳层是否明显错误
 
 ### 4. 单一滚动链优先
 
@@ -64,60 +75,6 @@
 - 需要滚动时优先交给现有壳层和表体 `maxHeight`
 - 不要在外层额外叠一层 `overflow-y: auto` 去掩盖布局问题
 - 需要固定底栏 / 吸底操作区的全页编辑，宿主内容列 -> 路由出口 -> 页面根 -> `ProEditPage` 必须保持连续 `flex + min-height: 0` 高度链；否则底栏会退回普通文档流，无法吸底
-
-### 4.1 单一内容槽拥有者
-
-- 主工作区里与“外槽留白 / 主白底主体 / 内容区内边距 / 主滚动”相关的责任，必须明确落到**唯一一层**容器上
-- 如果宿主 archetype 的 content slot 已经自带 `padding`、白底、圆角或滚动语义，生成页只能二选一：
-  - 直接把该 slot 当作主白底主体继续承接
-  - 或先把该 slot 的相关样式局部归零，再让页面自己的 `white-body` 成为唯一拥有者
-- 不允许同时出现“宿主 content slot 有一层内边距”+“页面根再补一层内边距”+“内层 `white-body` 再补一层留白”的重复翻译
-- 不要把示例页的“灰底外槽 -> 单一白底主体”关系翻译成“宿主 content slot + 内层白卡 + 再内层 section padding”的三层工作区
-- 若在 DevTools 中看到宿主 content slot、页面根、`white-body` 三层同时持有 `padding / background / border-radius / overflow`，应先判定为结构翻译失败，而不是继续补样式
-- 未明确 `content-slot owner / white-body owner / outer-padding owner / main-scroll owner` 前，不要开始写页面容器样式
-- 若需求中的 `20px`、`16px`、`12px` 来源于局部 region（如卡片 body、筛选区、表格区、详情块 body），默认只能写在该 region owner 上；不要晋升成页面根 `workspace` 或 `container` 的壳层 `padding`
-- 看到自己准备新增 `workspace`、`container`、`shell`、`body` 一类外层 wrapper 时，先回答：它是否正在重复承接宿主 content slot 已拥有的责任；若答案不确定，默认不要新增这一层
-- 典型失败信号：region spacing 被提升成 shell spacing，例如为了复刻卡片 body `20px`，在页面根额外写 `padding: 0 20px`，内层白底主体或 section 又继续保留自己的 `padding`
-
-### 4.2 自然高度优先
-
-- 多列工作区、卡片列、图表列、详情侧栏默认都应保持自然高度收口
-- 不要依赖 `grid` / `flex` 默认 `stretch` 做跨列等高
-- 不要把“标题下方大面积空白”“图表上方空带”“Descriptions 下方空白”误判成普通 spacing 问题
-- 一旦页面开始使用多层 `grid` / `flex`，先回看 `layout-anti-patterns.md`，不要直接补 `padding`、`min-height` 或额外滚动容器
-
-### 4.3 region spacing 不得提升为 shell padding
-
-- region 内 spacing 只服务对应 region，不服务页面壳层
-- 卡片 body、筛选区、表格区、详情块 body、分组块 body 的 `padding` 默认都属于局部 region token，不得被翻译成页面根或 `white-body` 的统一横向缩进
-- 若页面根已经出现 `padding-left/right`，必须先回答它承担的是 `outer-padding` 还是某个具体 region；若回答不清，按错误实现处理
-- 非典型页面若没有明确选择 `page-white-body-owner` 模板，默认禁止页面根新增横向 `padding`
-
-### 4.4 表格先适配父容器，横向滚动只留在表格内部
-
-- 所有表格默认先适配外部容器宽度；不允许让表格把 `page body`、`white-body`、`split workspace`、`right pane` 或其它父容器横向撑破
-- 默认禁止把表格页、右侧表格区或 split 右栏写成“依赖死宽度才能成立”的结构；表格页和右栏默认先满足 `min-inline-size: 0`
-- 若当前宽度下表格内容确实装不下，横向滚动只能发生在表格内部 wrapper；不要把横向滚动提升到页面主体、白底主体、split workspace 或整栏容器
-- 不要把“字段多”“列多”“固定列多”当作外层容器横向溢出的理由；字段预算不足时，先调整列预算、字段管理和表格内部横向滚动 owner
-- 对 split master-detail，右栏默认保持弹性列；未经明确批准，不要写 `minmax(820px/960px, 1fr)` 这类先把 split 容器撑破的硬下限
-
-### 4.5 左右布局默认双滚动 owner
-
-- 只要页面属于“左列表/树/卡片 + 右侧详情/表格”的 split 布局，默认就进入“双栏独立滚动”模式
-- `page root` 与 `split workspace` 默认保持 `overflow: hidden`；左栏和右栏分别承担各自的纵向滚动
-- 左栏和右栏默认 `overflow-y: auto`、`overflow-x: hidden`；不要让 pane 自身承担横向滚动
-- 右栏里的表格默认属于右栏滚动链的一部分；除非页型专章明确要求，否则不要再额外制造第二层纵向滚动表体
-- 若实际 DOM 结果不是“左栏能独立滚、右栏能独立滚、表格不额外制造纵向滚动”，按结构失败处理，不视为普通样式微调
-
-### 4.6 `context-main-split` 高频误区先判失败
-
-- 看到 `context-main-split + ProDetailPage/ProEditPage` 时，先判为壳层选择失败，不要继续补样式
-- 看到业务页自己手写 `workspace / leftPane / rightPane / splitHandle` 时，先回查是否复用了受管 split carrier，不要默认把它当成“只是差几条 CSS”
-- 看到“外层多一圈 16px/20px 留白”时，先怀疑 ownership 失败，不要先补局部 CSS
-- 看到“左右双栏一起滚”时，先怀疑 `page root / workspace` 抢走了 scroll owner，不要先给 pane 再套一层 `overflow`
-- 看到“右栏留白不对”时，先检查是否把右侧详情区 inset 错写成 page shell padding，不要立刻新包 `detailBody / contentBody / sectionBody`
-- 看到“右栏 header 里有主按钮”时，先回查 `page-level actions owner`，不要继续在 pane header 上堆操作
-- 只要修复动作开始出现“再包一层 wrapper”“再补一个 overflow”“再补一圈统一 padding”，默认说明当前修的是表象，不是骨架
 
 ### 5. 结构优先于装饰
 
@@ -128,15 +85,14 @@
 ### 6. 禁止继承旧视觉残留
 
 - 不要继续沿用 `hi-v4-*` 类名、`--hi-v4-*` 变量或带旧版本指向的历史示例文案
+- hiui-design 生成页的 HiUI 视觉组件来源必须是 HiUI5。不要在生成页中从旧 `@hi-ui/*` 3.x/4.x 包拿 `Table`、`Input`、`Select`、`DatePicker`、`Button`、`Tag` 等视觉组件；不要用旧组件局部补齐官方 shell 缺口
+- 生成页源码默认只允许调用 `local-managed-runtime/*` 页壳、`@hi-ui/schema-*` schema 适配层、`@hi-ui/icons` 图标和已声明的 HiUI5 alias；`QueryFilter` 的样式与默认值由页壳内部托管，官方母版可以依赖 `@hi-ui/query-filter`，生成后的业务页应继承这层适配而不是自己再手写一层 QueryFilter 适配逻辑；不要直接从 `@hi-ui/button/table/input/select/date-picker/...` 等视觉包取组件
+- `@hi-ui/schema-*` 的 4.x 是 schema 桥接层，不是旧视觉层授权。只要 schema 桥接继续解析到视觉组件，这些视觉 peer 也必须解析到 HiUI5
 - 若参考模板或旧项目代码时发现这类残留，优先替换为 HiUI 5 对应结构或删除历史演示内容
 - 新项目接入后若出现样式失真，先排查是否把旧模板选择器一并复制进了项目
-
-### 7. 旧宿主和样式污染先修基线，再写业务
-
-- 对已有系统、旧宿主或样式历史较重的项目，生成业务页前必须先完成一次 `host style contamination audit`
-- 这次排查至少覆盖：宿主 `content slot` ownership、宿主页头默认 `margin-bottom` / 标题字号、`hi-v4-*` / `--hi-v4-*` 残留、`:global(.hi-v5-*)` / 深层选择器 / 内部 className 覆写、壳包样式资源是否真实生效
-- 若多个页型同时出现白底消失、标题错位、筛选区失真、sticky footer 失效、分页露灰底等问题，优先判断为宿主 / 样式基线失败；不要逐页补样式
-- 宿主 / 样式污染未收口前，不要继续写业务字段、业务列、业务文案或 mock 数据
+- 旧页面只能提供业务事实、接口事实和路由事实，不能提供组件选型、视觉节奏或布局皮肤
+- 旧项目即使已经完成样式隔离，也不能把旧页面的 `hi-v4-*` 选择器、旧 QueryFilter 适配层、旧 Table 选择器作为新页面实现依据
+- 若生成页面需要迁移旧业务逻辑，必须只迁移业务字段、接口参数、权限判断和跳转事实，不迁移旧视觉结构
 
 ## 结构原则
 
@@ -144,8 +100,8 @@
 
 - 菜单标题与 `PageHeader title` 保持一致
 - 页面级标题字重默认沿用现有基线
-- 有返回路径的全页场景，优先保留 `onBack`
-- 页头标题、返回、操作按钮、语言切换器与任何补充文案都必须接受 locale 切换；不要让语言切换器挤压主操作区
+- 非抽屉整页只要挂到正式导航注册表或正式业务壳里，默认不要保留 `onBack`
+- 只有从列表、业务按钮或旧入口二级进入的整页流程，才保留 `onBack`
 
 ### 主白底内容区
 
@@ -165,27 +121,26 @@
 - 宽控件默认整行
 - 分组时优先沿用现有一级/二级分组语法，不发明新的标题层级
 - 新类型编辑页若字段规模或流程复杂度明显超出抽屉边界，优先切到全页壳，而不是继续塞进抽屉
+- 命中 `full-page-edit` 时，表单根必须继续走 `local-managed-runtime/pro-edit-page` 提供的 `Form` bridge；不要改回裸 `SchemaForm`、`mapToDumb` 或本地兼容 wrapper
+- 命中 `drawer-form` 时，当前公开能力仍以官方模板中的 `TypicalPageFieldMapProvider + SchemaForm` 认证子树为准；业务生成应保留这段实现面，只替换字段、默认值、标题、触发器和提交逻辑，不要拆成 `Card + Form` 或另一套本地表单桥。仅当宿主命中 hiui-design 受管的高风险 legacy MF 兼容分支时，才允许把 `TypicalPageFieldMapProvider` 的 import 精确切到本地最小 shim，但认证子树本身不变
+- 如果运行时出现 `FormField must pass a valid element as children`，优先收口到官方模板锁区和壳包公开能力，不要在业务页里继续扩张 `SchemaForm` 的自由实现面
+- 如果运行时出现 `Accessing element.ref was removed in React 19`、`findDOMNode` 或同类告警，优先判断为依赖基线兼容问题；不要通过页面源码替换受管壳、降级组件或局部 DOM 包裹来“消音”
+- React 19 项目先检查 `package.json` 是否仍保留 `typical-page:runtime-patch` 与 `postinstall -> apply-runtime-patches.mjs`，再确认已重新安装依赖或显式执行过 runtime patch；不要把 `.local-context` 已同步误当成运行时补丁已经生效
+- 如果项目同时保留 `@hi-ui/*` 与 `hiui5-*` 隔离 alias，React 19 兼容基线必须同时覆盖两套安装路径；不要只修 `@hi-ui/*` 后就回到页面层规避
 
 ## 详情原则
 
-- 下列详情原则默认按硬门槛执行；命中 `drawer-detail` / `full-page-detail` 时，不允许把这些约束降级成“实现偏好”
 - 只读详情优先沿用现有 `Descriptions` / 分组详情表达方式
-- 详情字段默认直接使用 `placement: 'vertical'` 的 `Descriptions` / `SchemaDescriptionsBridge`，但关键对齐不变量要显式写在 props 边界；不要额外覆写 label / `th` CSS 骨架
 - 长文本优先独占整行，不要为了凑多列破坏阅读
 - 新类型详情页如果只是信息结构变化，应优先在现有抽屉详情或分组详情语法里变形
-- 抽屉详情与全页详情的分档、列数、返回语义、媒体归属、白底主体收口方式都属于结构契约，不是装饰细节
 
 ## 表格与筛选原则
 
 - 列表类页面优先延续“筛选 + 表格 + 分页”结构
 - 多关键词检索优先收口为 1 个 `SearchInput`
-- 所有表格类页面的筛选默认必须使用真实 `QueryFilter`，不要回退到 schema 搜索壳或手写筛选栏
-- 所有表格类页面默认开启 `resizable` 与字段管理；只有明确冲突场景才允许关闭
 - 表格默认节奏、文本省略、状态列表达、分页位置优先沿用现有共享规则
-- 列标题、搜索占位、字段管理项、分页文案与行操作文案默认先按 `i18nMode` 处理；`full` 模式才要求 i18n 资源与文本膨胀，不要把中文窄列宽与短按钮直接硬搬到非中文场景
+- 列表类页面若使用 `TablePageFrame`、`StatListPageFrame`、`ProListPageProvider` 或 `SchemaTable`，生成前必须确认 `SchemaTable -> @hi-ui/table` 和 `schema-fields -> @hi-ui/input/select/date-picker` 均解析到 HiUI5；否则先修运行时适配，不要继续写页面
 - 如果新增页型本质上仍是列表变体，优先从普通表格、树形表格、左树右表、数据统计表中选最近的一种做基底
-- 旧宿主桥接接入模式下，也应把真实 `QueryFilter` 挂进宿主列表页封装；不要因为宿主封装、外部样式或桥接限制而退回 schema 搜索壳或裸 `Search + Select + Table`
-- `rules-only` 模式下，先用 `rules-only-component-matrix.md` 明确标题区、筛选区、表格区、分页区、底栏分别落在哪个组件语义或宿主基座，再开始写业务字段和列定义
 
 ## 统计原则
 
@@ -209,14 +164,13 @@
    - 列表
    - 统计
    - 树/主从结构
-2. 选择最接近的现有页壳和示例页起步
+2. 选择最接近的现有页壳、runtime 对照页和规则专章
 3. 只允许做“最小偏移”：
    - 调整信息区块顺序
    - 增减局部卡片或分组
    - 调整字段和表格槽位
    - 在不破坏整体节奏的前提下增加特定业务区块
 4. 生成后用 `figma-reference.md` 的跨页自检回看是否仍属于当前体系
-5. 若同一根因修复后复测仍失败 2 次，回到 `mode / page type / example path / host archetype path` 重新判定；不要继续沿当前错误壳层做局部补样式
 
 ## 禁止
 
@@ -228,5 +182,5 @@
 ## 判断结果
 
 - 命中已有页型：已有专章优先，原则层只作为补充
-- 未命中已有页型：原则层优先，选最近页壳与示例页生成
+- 未命中已有页型：原则层优先，选最近页壳、runtime 对照页与规则专章生成
 - 若新类型页面已经反复出现且规则稳定，再考虑新增一个正式页型专章，而不是长期把它留在“临时特例”

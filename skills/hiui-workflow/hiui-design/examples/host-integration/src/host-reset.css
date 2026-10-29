@@ -1,0 +1,167 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+[data-typical-page-host] {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  text-align: start;
+  --hi-v5-font-family: var(
+    --hiui-design-font-family,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif
+  );
+  font-family: var(
+    --hiui-design-font-family,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif
+  );
+  /* Pin common HiUI text tokens locally so root rem pollution cannot rescale page headers and buttons. */
+  --hi-v5-text-size-sm: var(--hiui-design-text-size-sm, 12px);
+  --hi-v5-text-size-md: var(
+    --hiui-design-text-size-md,
+    var(--hiui-design-font-size, 14px)
+  );
+  --hi-v5-text-size-lg: var(--hiui-design-text-size-lg, 16px);
+  --hi-v5-text-size-xl: var(--hiui-design-text-size-xl, 18px);
+  --hi-v5-text-size-xxl: var(--hiui-design-text-size-xxl, 24px);
+  --hi-v5-text-lineheight-sm: var(--hiui-design-text-lineheight-sm, 20px);
+  --hi-v5-text-lineheight-md: var(
+    --hiui-design-text-lineheight-md,
+    var(--hiui-design-line-height, 22px)
+  );
+  --hi-v5-text-lineheight-lg: var(--hiui-design-text-lineheight-lg, 24px);
+  --hi-v5-text-lineheight-xl: var(--hiui-design-text-lineheight-xl, 26px);
+  --hi-v5-text-lineheight-xxl: var(--hiui-design-text-lineheight-xxl, 32px);
+  --hi-v4-text-size-md: var(
+    --hiui-design-text-size-md,
+    var(--hiui-design-font-size, 14px)
+  );
+  font-size: var(--hiui-design-font-size, 14px);
+  line-height: var(--hiui-design-line-height, 22px);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: #1a1d26;
+}
+
+/* Re-establish the local typography baseline so host global font rules do not leak in. */
+[data-typical-page-host] :where(
+  a,
+  caption,
+  code,
+  dd,
+  dt,
+  em,
+  li,
+  p,
+  pre,
+  small,
+  strong,
+  table,
+  td,
+  th
+) {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: inherit;
+}
+
+[data-typical-page-host] :where(
+  .hi-v5-descriptions,
+  .hi-v5-drawer,
+  .hi-v5-form,
+  .hi-v5-group-menu,
+  .hi-v5-layout,
+  .hi-v5-page-header,
+  .hi-v5-query-filter,
+  .hi-v5-side-menu,
+  .hi-v5-table,
+  .hi-v5-tag,
+  .pro-detail-page,
+  .pro-edit-page,
+  .pro-list-page,
+  .pro-stat-page,
+  .pro-table-page,
+  .pro-tree-split-page
+) {
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+[data-typical-page-host] :where(.hi-v5-form-label__content) {
+  align-items: flex-start;
+}
+
+[data-typical-page-host] :where(.hi-v5-form-label__content__text) {
+  display: flex;
+  min-height: calc(var(--hi-v5-height-6, 24px) - 2px);
+  color: var(--hi-v5-color-gray-800, #1a1d26);
+  font-family: inherit;
+  font-size: var(--hi-v5-text-size-md, 0.875rem);
+  line-height: var(--hi-v5-text-lineheight-md, 1.375rem);
+}
+
+[data-typical-page-host] :where(.hi-v5-form-label--placement-top > .hi-v5-form-label__content > .hi-v5-form-label__content__text) {
+  margin-block-end: var(--hi-v5-spacing-3, 6px);
+}
+
+[data-typical-page-host] :where(.hi-v4-form-label--placement-top) {
+  align-items: stretch !important;
+}
+
+[data-typical-page-host] :where(.hi-v4-form-label__text) {
+  color: var(--hi-v4-color-gray-800, #1f2937);
+  font-family: inherit;
+  font-size: var(--hi-v4-text-size-md, 0.875rem);
+  line-height: var(--hi-v4-height-8, 32px);
+}
+
+[data-typical-page-host] :where(.hi-v4-form-label--placement-top > .hi-v4-form-label__text) {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  min-height: 22px;
+  line-height: 22px;
+  margin-bottom: var(--hi-v4-spacing-4, 8px);
+}
+
+[data-typical-page-host] :where(.hi-v4-form-label--placement-top > .hi-v4-form-label__text > .hi-v5-ellipsis-tooltip) {
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  vertical-align: top;
+  line-height: inherit;
+}
+
+[data-typical-page-host] :where(.hi-v4-form-label--required > .hi-v4-form-label__text::before) {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  line-height: inherit;
+}
+
+[data-typical-page-host],
+[data-typical-page-host] * {
+  box-sizing: border-box;
+}

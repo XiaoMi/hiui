@@ -1,37 +1,35 @@
 import { useMemo } from 'react'
 import { Button, Message, Space } from '@hi-ui/hiui'
 import { DownloadOutlined, PlusOutlined } from '@hi-ui/icons'
-import { extendDsl, ReadonlyFieldCreator } from '@hi-ui/schema-core'
-import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
+import { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'
+import { TypicalPageFieldMapProvider } from '../components/hiui-design-runtime'
 import {
   ProListPageProvider,
   queryFilterPickerOverlay,
-} from '@hiui-design/typical-page-shells/pro-list-page'
+} from '../components/hiui-design-runtime/pro-list-page'
 import {
   TablePageFrame,
   proTablePageStyles,
   renderTableTextEllipsis,
   renderTreeTableTextEllipsis,
-} from '@hiui-design/typical-page-shells/pro-table-page'
+} from '../components/hiui-design-runtime/pro-table-page'
 import {
   basicUserOrganizationOptions,
+  countTreeNodes,
+  departmentStatusOptions,
+  getOrgTreeTableList,
   managerOptions,
   queryOrgTreeTableRows,
   type OrgTreeTableRow,
 } from './typical-pages.mock'
-import {
-  countTreeNodes,
-  getKeywordValue,
-  getParamsWithoutKeyword,
-} from './request-utils'
-import { createManagedQuerySelectField } from '@/typical-page-reuse/query-filter/managed-query-filter-fields'
-import { useTranslation } from '../../translation'
+import { getKeywordValue, getParamsWithoutKeyword } from './data-visualization/request-utils'
+import { useTranslation } from './page-localization'
 
 const T = extendDsl(ReadonlyFieldCreator, {
-  renderTreeName() {
+  renderTreeName(this) {
     return this.renderCell((cellValue) => renderTreeTableTextEllipsis(cellValue))
   },
-  renderEllipsis() {
+  renderEllipsis(this) {
     return this.renderCell((cellValue) => renderTableTextEllipsis(cellValue))
   },
 })
@@ -41,18 +39,27 @@ function TreeTableInner() {
 
   const queryFields = useMemo(
     () => [
-      createManagedQuerySelectField({
-        field: 'managerId',
-        label: t('负责人'),
-        data: managerOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
-      createManagedQuerySelectField({
-        field: 'organizationId',
-        label: t('所属机构'),
-        data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
-        overlay: queryFilterPickerOverlay,
-      }),
+      F(t('负责人'), 'managerId')
+        .Select({
+          data: managerOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('所属机构'), 'organizationId')
+        .Select({
+          data: basicUserOrganizationOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
+      F(t('部门状态'), 'deptStatuses')
+        .CheckSelect({
+          data: departmentStatusOptions.map((option) => ({ ...option, title: t(option.title) })),
+          clearable: true,
+          overlay: queryFilterPickerOverlay,
+        })
+        .val,
     ],
     [t]
   )
@@ -67,15 +74,14 @@ function TreeTableInner() {
         .val,
       T(t('部门状态'), 'deptStatus')
         .W(100)
-        .renderCell((cellValue) => renderTableTextEllipsis(t(cellValue === 'enabled' ? '启用' : '停用')))
+        .renderCell((cellValue) =>
+          renderTableTextEllipsis(t(cellValue === 'enabled' ? '启用' : '停用'))
+        )
         .val,
       T(t('部门职责'), 'departmentDuty').W(220).renderEllipsis().val,
       T(t('负责人'), 'managerName').W(110).renderEllipsis().val,
       T(t('成员数量'), 'memberCount').W(96).val,
-      T(t('所属机构'), 'organizationTitle')
-        .W(160)
-        .renderCell((cellValue) => renderTableTextEllipsis(t(String(cellValue ?? ''))))
-        .val,
+      T(t('所属机构'), 'organizationTitle').W(160).renderEllipsis().val,
       T(t('部门描述'), 'departmentDesc').W(260).renderEllipsis().val,
       T(t('操作'), '_actions')
         .W(180)
@@ -88,18 +94,14 @@ function TreeTableInner() {
               <Button
                 type="primary"
                 appearance="link"
-                onClick={() => Message.open({ title: `${t('编辑')} ${t(row.departmentName)}` })}
+                onClick={() => Message.open({ title: `${t('编辑')} ${row.departmentName}` })}
               >
                 {t('编辑')}
               </Button>
               <Button
                 type="primary"
                 appearance="link"
-                onClick={() =>
-                  Message.open({
-                    title: t('新增子部门到 {name}', { name: t(row.departmentName) }),
-                  })
-                }
+                onClick={() => Message.open({ title: t('新增子部门到 {name}', { name: row.departmentName }) })}
               >
                 {t('子部门')}
               </Button>
@@ -145,36 +147,38 @@ function TreeTableInner() {
 export function TreeTablePage() {
   const { locale, t } = useTranslation()
   const request = useMemo(
-    () => async (params: Parameters<typeof queryOrgTreeTableRows>[0]) => {
+    () => async (params: Parameters<typeof getOrgTreeTableList>[0]) => {
       const keyword = getKeywordValue(params)
       const nextParams = getParamsWithoutKeyword(params)
 
-      const translateNode = (node: OrgTreeTableRow): OrgTreeTableRow => ({
-        ...node,
-        departmentDesc: t(node.departmentDesc),
-        departmentDuty: t(node.departmentDuty),
-        departmentName: t(node.departmentName),
-        managerName: t(node.managerName),
-        organizationTitle: t(node.organizationTitle),
-        children: node.children?.map(translateNode),
+      const translateNode = (row: OrgTreeTableRow): OrgTreeTableRow => ({
+        ...row,
+        departmentDesc: t(row.departmentDesc),
+        departmentDuty: t(row.departmentDuty),
+        departmentName: t(row.departmentName),
+        deptStatus: row.deptStatus,
+        managerName: t(row.managerName),
+        organizationTitle: t(row.organizationTitle),
+        children: row.children?.map(translateNode),
       })
 
-      const translatedList = queryOrgTreeTableRows(nextParams).map(translateNode)
       const filterTreeByKeyword = (list: OrgTreeTableRow[]): OrgTreeTableRow[] =>
-        list.flatMap((node) => {
-          const children = filterTreeByKeyword(node.children ?? [])
+        list.flatMap((row) => {
+          const children = filterTreeByKeyword(row.children ?? [])
           const selfMatched =
             keyword === '' ||
-            [node.departmentName, node.departmentDuty, node.departmentDesc].some((value) =>
+            [row.departmentName, row.departmentDuty, row.departmentDesc].some((value) =>
               String(value ?? '')
                 .toLowerCase()
                 .includes(keyword)
             )
 
-          if (selfMatched) return [{ ...node, children }]
-          if (children.length > 0) return [{ ...node, children }]
+          if (selfMatched) return [{ ...row, children }]
+          if (children.length > 0) return [{ ...row, children }]
           return []
         })
+
+      const translatedList = queryOrgTreeTableRows(nextParams).map(translateNode)
       const filteredList = filterTreeByKeyword(translatedList)
 
       return {
@@ -195,3 +199,5 @@ export function TreeTablePage() {
     </ProListPageProvider>
   )
 }
+
+export default TreeTablePage

@@ -1,0 +1,712 @@
+{
+  "schema": "hiui-design-dependency-isolation-check.v1",
+  "reportIntent": "Validate that hiui-design runtime dependencies remain isolated, pinned, and compatible before page generation.",
+  "targetRoot": "/Users/guorui/Documents/ChatGPT/New project",
+  "skillRoot": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design",
+  "status": "pass",
+  "expectedSourcePackageSpec": "file:.local-context/hiui-design/vendor/runtime-source-package-0.1.1.tgz",
+  "sourcePackageName": "@example/runtime-source-package",
+  "sourcePackageVersion": "0.1.1",
+  "localRuntimeRoot": "src/components/hiui-design-runtime",
+  "checks": [
+    {
+      "id": "managed-local-runtime-dependency-contract",
+      "ok": true,
+      "severity": "error",
+      "summary": "managed local runtime dependency contract exists",
+      "detail": "../../work/git/hiui/skills/hiui-workflow/hiui-design/docs/onboarding/managed-local-runtime-dependencies.json declares 18 managed runtime dependencies",
+      "evidence": {
+        "managedRuntimeContractPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/docs/onboarding/managed-local-runtime-dependencies.json"
+      }
+    },
+    {
+      "id": "managed-local-runtime-source-package-snapshot",
+      "ok": true,
+      "severity": "error",
+      "summary": "managed local runtime embedded source snapshot is optional in the open-skill distribution",
+      "detail": "@example/runtime-source-package@0.1.1 (../../work/git/hiui/skills/hiui-workflow/hiui-design/vendor/runtime-source-package.package.json, ../../work/git/hiui/skills/hiui-workflow/hiui-design/vendor/runtime-source-package-0.1.1.tgz)",
+      "evidence": {
+        "sourcePackageName": "@example/runtime-source-package",
+        "sourcePackageVersion": "0.1.1",
+        "embeddedSourceSnapshotPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/vendor/runtime-source-package.package.json",
+        "sourcePackageTarballPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/vendor/runtime-source-package-0.1.1.tgz",
+        "embeddedSourceSnapshotDeclared": true
+      }
+    },
+    {
+      "id": "shared-runtime-direct-dependencies",
+      "ok": true,
+      "severity": "error",
+      "summary": "shared runtime direct dependencies imported by the app entry are declared and resolvable",
+      "detail": "App entry imports shared runtime direct dependencies, and package.json plus installed modules satisfy the contract: @hi-ui/patch-for-react.",
+      "evidence": {
+        "entryFilePath": "/Users/guorui/Documents/ChatGPT/New project/src/main.jsx",
+        "expectedDependencies": {
+          "@hi-ui/patch-for-react": "5.0.0"
+        },
+        "packageJsonPath": "/Users/guorui/Documents/ChatGPT/New project/package.json",
+        "packageJsonExists": true,
+        "nodeModulesPresent": true,
+        "resolutionChecked": true,
+        "missingDeclared": [],
+        "versionDrifts": [],
+        "unresolved": [],
+        "resolved": [
+          "@hi-ui/patch-for-react"
+        ],
+        "declaredOk": true,
+        "resolvableOk": true
+      }
+    },
+    {
+      "id": "managed-local-runtime-materialized",
+      "ok": true,
+      "severity": "error",
+      "summary": "managed local runtime assets are materialized in the target project",
+      "detail": "src/components/hiui-design-runtime/index.js",
+      "evidence": {
+        "localRuntimeRoot": "src/components/hiui-design-runtime",
+        "localRuntimeEntryPath": "src/components/hiui-design-runtime/index.js",
+        "managedRuntimeSourceRoot": "../../work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime",
+        "pendingMaterializationAllowed": true
+      }
+    },
+    {
+      "id": "lockfile-present",
+      "ok": true,
+      "severity": "error",
+      "summary": "package manager lockfile exists for dependency isolation validation",
+      "detail": "package-lock.json",
+      "evidence": {
+        "lockfiles": [
+          "package-lock.json"
+        ]
+      }
+    },
+    {
+      "id": "peer-dependencies-compatible-with-managed-runtime-contract",
+      "ok": true,
+      "severity": "error",
+      "summary": "managed local runtime dependencies stay within the managed runtime contract without breaking legacy root packages",
+      "detail": "direct=18, isolated=23",
+      "evidence": {
+        "peerDrifts": [],
+        "isolatedPeerResolutions": [
+          {
+            "depName": "@hi-ui/button",
+            "declared": "(missing)",
+            "aliasName": "hiui5-button",
+            "aliasSpec": "npm:@hi-ui/button@5.0.0-experimental.1",
+            "resolved": "5.0.0-experimental.1",
+            "expected": "5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/cascader",
+            "declared": "(missing)",
+            "aliasName": "hiui5-cascader",
+            "aliasSpec": "npm:@hi-ui/cascader@>=5.0.0-experimental.3",
+            "resolved": ">=5.0.0-experimental.3",
+            "expected": ">=5.0.0-experimental.3",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/check-cascader",
+            "declared": "(missing)",
+            "aliasName": "hiui5-check-cascader",
+            "aliasSpec": "npm:@hi-ui/check-cascader@>=5.0.0-experimental.2",
+            "resolved": ">=5.0.0-experimental.2",
+            "expected": ">=5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/check-select",
+            "declared": "(missing)",
+            "aliasName": "hiui5-check-select",
+            "aliasSpec": "npm:@hi-ui/check-select@>=5.0.0-experimental.5",
+            "resolved": ">=5.0.0-experimental.5",
+            "expected": ">=5.0.0-experimental.5",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/checkbox",
+            "declared": "(missing)",
+            "aliasName": "hiui5-checkbox",
+            "aliasSpec": "npm:@hi-ui/checkbox@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/counter",
+            "declared": "(missing)",
+            "aliasName": "hiui5-counter",
+            "aliasSpec": "npm:@hi-ui/counter@>=5.0.0-experimental.2",
+            "resolved": ">=5.0.0-experimental.2",
+            "expected": ">=5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/date-picker",
+            "declared": "(missing)",
+            "aliasName": "hiui5-date-picker",
+            "aliasSpec": "npm:@hi-ui/date-picker@5.0.0-experimental.3",
+            "resolved": "5.0.0-experimental.3",
+            "expected": "5.0.0-experimental.3",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/descriptions",
+            "declared": "5.0.0-experimental.1",
+            "aliasName": "hiui5-descriptions",
+            "aliasSpec": "npm:@hi-ui/descriptions@5.0.0-canary.8",
+            "resolved": "5.0.0-canary.8",
+            "expected": "5.0.0-canary.8",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/drawer",
+            "declared": "(missing)",
+            "aliasName": "hiui5-drawer",
+            "aliasSpec": "npm:@hi-ui/drawer@5.0.0-experimental.1",
+            "resolved": "5.0.0-experimental.1",
+            "expected": "5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/form",
+            "declared": "(missing)",
+            "aliasName": "hiui5-form",
+            "aliasSpec": "npm:@hi-ui/form@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/input",
+            "declared": "(missing)",
+            "aliasName": "hiui5-input",
+            "aliasSpec": "npm:@hi-ui/input@5.0.0-experimental.2",
+            "resolved": "5.0.0-experimental.2",
+            "expected": "5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/message",
+            "declared": "(missing)",
+            "aliasName": "hiui5-message",
+            "aliasSpec": "npm:@hi-ui/message@5.0.0-experimental.1",
+            "resolved": "5.0.0-experimental.1",
+            "expected": "5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/number-input",
+            "declared": "(missing)",
+            "aliasName": "hiui5-number-input",
+            "aliasSpec": "npm:@hi-ui/number-input@>=5.0.0-experimental.2",
+            "resolved": ">=5.0.0-experimental.2",
+            "expected": ">=5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/page-header",
+            "declared": "(missing)",
+            "aliasName": "hiui5-page-header",
+            "aliasSpec": "npm:@hi-ui/page-header@5.0.0-experimental.1",
+            "resolved": "5.0.0-experimental.1",
+            "expected": "5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/preview",
+            "declared": "(missing)",
+            "aliasName": "hiui5-preview",
+            "aliasSpec": "npm:@hi-ui/preview@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/radio",
+            "declared": "(missing)",
+            "aliasName": "hiui5-radio",
+            "aliasSpec": "npm:@hi-ui/radio@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/select",
+            "declared": "(missing)",
+            "aliasName": "hiui5-select",
+            "aliasSpec": "npm:@hi-ui/select@5.0.0-experimental.2",
+            "resolved": "5.0.0-experimental.2",
+            "expected": "5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/switch",
+            "declared": "(missing)",
+            "aliasName": "hiui5-switch",
+            "aliasSpec": "npm:@hi-ui/switch@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/table",
+            "declared": "(missing)",
+            "aliasName": "hiui5-table",
+            "aliasSpec": "npm:@hi-ui/table@5.0.0-experimental.4",
+            "resolved": "5.0.0-experimental.4",
+            "expected": "5.0.0-experimental.4",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/tabs",
+            "declared": "(missing)",
+            "aliasName": "hiui5-tabs",
+            "aliasSpec": "npm:@hi-ui/tabs@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/tag",
+            "declared": "(missing)",
+            "aliasName": "hiui5-tag",
+            "aliasSpec": "npm:@hi-ui/tag@5.0.0-experimental.2",
+            "resolved": "5.0.0-experimental.2",
+            "expected": "5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/tree-select",
+            "declared": "(missing)",
+            "aliasName": "hiui5-tree-select",
+            "aliasSpec": "npm:@hi-ui/tree-select@>=5.0.0-experimental.2",
+            "resolved": ">=5.0.0-experimental.2",
+            "expected": ">=5.0.0-experimental.2",
+            "compatibility": "version-contract-compatible"
+          },
+          {
+            "depName": "@hi-ui/upload",
+            "declared": "(missing)",
+            "aliasName": "hiui5-upload",
+            "aliasSpec": "npm:@hi-ui/upload@>=5.0.0-experimental.1",
+            "resolved": ">=5.0.0-experimental.1",
+            "expected": ">=5.0.0-experimental.1",
+            "compatibility": "version-contract-compatible"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hiui-runtime-graph-uses-hiui5-only",
+      "ok": true,
+      "severity": "error",
+      "summary": "all @hi-ui visual packages reachable from hiui-design shells resolve to HiUI5 only",
+      "detail": "59 reachable @hi-ui package(s) satisfy the HiUI runtime major rule",
+      "evidence": {
+        "violations": [],
+        "validated": [
+          {
+            "depName": "@hi-ui/button",
+            "expectedMajor": 5,
+            "via": "hiui5-button",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/card",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/card"
+          },
+          {
+            "depName": "@hi-ui/cascader",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/cascader"
+          },
+          {
+            "depName": "@hi-ui/check-cascader",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/check-cascader"
+          },
+          {
+            "depName": "@hi-ui/check-select",
+            "expectedMajor": 5,
+            "resolved": "5.0.1",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/check-select"
+          },
+          {
+            "depName": "@hi-ui/check-tree-select",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/check-tree-select"
+          },
+          {
+            "depName": "@hi-ui/checkbox",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/checkbox"
+          },
+          {
+            "depName": "@hi-ui/classname",
+            "expectedMajor": 5,
+            "resolved": "5.0.0-experimental.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/classname"
+          },
+          {
+            "depName": "@hi-ui/core",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/core"
+          },
+          {
+            "depName": "@hi-ui/counter",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/counter"
+          },
+          {
+            "depName": "@hi-ui/date-picker",
+            "expectedMajor": 5,
+            "via": "hiui5-date-picker",
+            "version": "5.0.0-experimental.3"
+          },
+          {
+            "depName": "@hi-ui/drawer",
+            "expectedMajor": 5,
+            "via": "hiui5-drawer",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/dumb-wrapper",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/dumb-wrapper"
+          },
+          {
+            "depName": "@hi-ui/ellipsis-tooltip",
+            "expectedMajor": 5,
+            "via": "hiui5-ellipsis-tooltip",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/empty-state",
+            "expectedMajor": 5,
+            "via": "hiui5-empty-state",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/env",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/env"
+          },
+          {
+            "depName": "@hi-ui/form",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/form"
+          },
+          {
+            "depName": "@hi-ui/group",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.4",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-form/node_modules/@hi-ui/group"
+          },
+          {
+            "depName": "@hi-ui/hiui",
+            "expectedMajor": 5,
+            "via": "hiui5",
+            "version": "5.0.0-experimental.6"
+          },
+          {
+            "depName": "@hi-ui/icons",
+            "expectedMajor": 5,
+            "resolved": "5.0.0-experimental.1",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/icons"
+          },
+          {
+            "depName": "@hi-ui/input",
+            "expectedMajor": 5,
+            "via": "hiui5-input",
+            "version": "5.0.0-experimental.2"
+          },
+          {
+            "depName": "@hi-ui/loading",
+            "expectedMajor": 5,
+            "via": "hiui5-loading",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/message",
+            "expectedMajor": 5,
+            "via": "hiui5-message",
+            "version": "5.0.0-experimental.1"
+          },
+          {
+            "depName": "@hi-ui/number-input",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/number-input"
+          },
+          {
+            "depName": "@hi-ui/number-range",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/number-range"
+          },
+          {
+            "depName": "@hi-ui/preview",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/preview"
+          },
+          {
+            "depName": "@hi-ui/query-filter",
+            "expectedMajor": 5,
+            "resolved": "5.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/query-filter"
+          },
+          {
+            "depName": "@hi-ui/radio",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/radio"
+          },
+          {
+            "depName": "@hi-ui/rating",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/rating"
+          },
+          {
+            "depName": "@hi-ui/schema-action-trigger",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.7",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-action-trigger"
+          },
+          {
+            "depName": "@hi-ui/schema-auto-grid",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-auto-grid"
+          },
+          {
+            "depName": "@hi-ui/schema-core",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.10",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-core"
+          },
+          {
+            "depName": "@hi-ui/schema-descriptions",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.4",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-descriptions"
+          },
+          {
+            "depName": "@hi-ui/schema-editable-table",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.8",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-editable-table"
+          },
+          {
+            "depName": "@hi-ui/schema-fields",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.12",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-fields"
+          },
+          {
+            "depName": "@hi-ui/schema-form",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.4",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-form"
+          },
+          {
+            "depName": "@hi-ui/schema-group",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.7",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-group"
+          },
+          {
+            "depName": "@hi-ui/schema-hooks",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-hooks"
+          },
+          {
+            "depName": "@hi-ui/schema-interrupt-injector",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-interrupt-injector"
+          },
+          {
+            "depName": "@hi-ui/schema-option-injector",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.9",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-fields/node_modules/@hi-ui/schema-option-injector"
+          },
+          {
+            "depName": "@hi-ui/schema-table",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.4",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-table"
+          },
+          {
+            "depName": "@hi-ui/schema-table-extensions",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-table-extensions"
+          },
+          {
+            "depName": "@hi-ui/schema-utils",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.6",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/schema-utils"
+          },
+          {
+            "depName": "@hi-ui/select",
+            "expectedMajor": 5,
+            "via": "hiui5-select",
+            "version": "5.0.0-experimental.2"
+          },
+          {
+            "depName": "@hi-ui/slider",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/slider"
+          },
+          {
+            "depName": "@hi-ui/space",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/space"
+          },
+          {
+            "depName": "@hi-ui/style-inject",
+            "expectedMajor": 4,
+            "resolved": "4.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/style-inject"
+          },
+          {
+            "depName": "@hi-ui/switch",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/switch"
+          },
+          {
+            "depName": "@hi-ui/table",
+            "expectedMajor": 5,
+            "via": "hiui5-table",
+            "version": "5.0.0-experimental.4"
+          },
+          {
+            "depName": "@hi-ui/tabs",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/tabs"
+          },
+          {
+            "depName": "@hi-ui/tag",
+            "expectedMajor": 5,
+            "via": "hiui5-tag",
+            "version": "5.0.0-experimental.2"
+          },
+          {
+            "depName": "@hi-ui/textarea",
+            "expectedMajor": 5,
+            "via": "hiui5-textarea",
+            "version": "5.0.0-experimental.3"
+          },
+          {
+            "depName": "@hi-ui/time-picker",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/time-picker"
+          },
+          {
+            "depName": "@hi-ui/tooltip",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/tooltip"
+          },
+          {
+            "depName": "@hi-ui/tree-select",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/tree-select"
+          },
+          {
+            "depName": "@hi-ui/upload",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/upload"
+          },
+          {
+            "depName": "@hi-ui/use-merge-semantic",
+            "expectedMajor": 5,
+            "resolved": "5.0.0",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/use-merge-semantic"
+          },
+          {
+            "depName": "@hi-ui/use-ref-state",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/use-ref-state"
+          },
+          {
+            "depName": "@hi-ui/use-subscription",
+            "expectedMajor": 4,
+            "resolved": "4.0.0-experimental.2",
+            "packageRoot": "/Users/guorui/Documents/ChatGPT/New project/node_modules/@hi-ui/use-subscription"
+          }
+        ]
+      }
+    },
+    {
+      "id": "schema-peer-isolation-alias",
+      "ok": true,
+      "severity": "error",
+      "summary": "legacy project build keeps HiUI5 schema peer packages isolated through the configured replacement bridge",
+      "detail": "no legacy rspack/webpack build config detected; Vite projects rely on package isolation and schema-types aliasing instead",
+      "evidence": {
+        "rspackBasePath": "/Users/guorui/Documents/ChatGPT/New project/build/rspack.base.conf.js",
+        "bridgeConfigPath": "",
+        "bridgeConfigRelativePath": ""
+      }
+    },
+    {
+      "id": "no-private-source-package-import-paths",
+      "ok": true,
+      "severity": "error",
+      "summary": "project source does not bypass dependency isolation with private source-package import paths",
+      "detail": "no private source-package import paths found",
+      "evidence": {
+        "privateImportViolations": []
+      }
+    }
+  ],
+  "failed": [],
+  "summary": {
+    "totalChecks": 9,
+    "passedChecks": 9,
+    "failedChecks": 0,
+    "failedCheckIds": []
+  },
+  "decision": {
+    "canContinue": true,
+    "nextAction": "Dependency isolation is healthy. You can continue with hiui-design page generation and runtime verification."
+  },
+  "riskPolicy": {
+    "browserFreeByDefault": true,
+    "doesNotInstallDependencies": true,
+    "doesNotModifyLockfile": true
+  },
+  "reportPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/DEPENDENCY_ISOLATION_REPORT.json",
+  "markdownReportPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/DEPENDENCY_ISOLATION_REPORT.md"
+}

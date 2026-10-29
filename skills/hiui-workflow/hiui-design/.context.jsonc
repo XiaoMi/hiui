@@ -1,0 +1,141 @@
+{
+  "name": "hiui-design",
+  "version": "2.6.2",
+  "description": "面向开源发布的 hiui-design 技能包，用于生成和维护 HiUI 典型页面能力包。",
+  "contextType": "skills",
+  "files": [
+    {
+      "path": "SKILL.md"
+    },
+    {
+      "path": "docs/README.md"
+    },
+    {
+      "path": "docs/onboarding/install-and-host.md"
+    },
+    {
+      "path": "docs/onboarding/integration-modes.md"
+    },
+    {
+      "path": "docs/onboarding/host-profiles.md"
+    },
+    {
+      "path": "docs/onboarding/navigation-layering.md"
+    },
+    {
+      "path": "docs/onboarding/one-click.md"
+    },
+    {
+      "path": "docs/generation/ai-page-generation-guidance.md"
+    },
+    {
+      "path": "docs/generation/generation-principles.md"
+    },
+    {
+      "path": "docs/generation/page-type-map.md"
+    },
+    {
+      "path": "docs/generation/figma-page-rules.md"
+    },
+    {
+      "path": "docs/generation/figma-page-rules-appendix.md"
+    },
+    {
+      "path": "docs/generation/figma-reference.md"
+    },
+    {
+      "path": "docs/generation/figma-pages/README.md"
+    },
+    {
+      "path": "docs/generation/page-types.manifest.json"
+    },
+    {
+      "path": "docs/validation/checklist.md"
+    },
+    {
+      "path": "docs/hiui-v5-quick-reference.md"
+    },
+    {
+      "path": "manifests/README.md"
+    },
+    {
+      "path": "scripts/README.md"
+    },
+    {
+      "path": "docs/onboarding/managed-local-runtime-dependencies.json"
+    },
+    {
+      "path": "vendor/typical-page-shells-package.json"
+    }
+  ],
+  "links": [
+    {
+      "dir": ".",
+      "target": "hiui-design"
+    }
+  ],
+  "lastUpdated": "2026-08-13T22:40:00.000Z",
+  "hostImportPolicy": {
+    "scope": "new hiui-design generated business pages in the target project",
+    "hiui5Components": "hiui5",
+    "typicalPageShells": "local-managed-runtime",
+    "icons": "@hi-ui/icons",
+    "schemaDsl": "@hi-ui/schema-core",
+    "allowedVisualImportSources": [
+      "hiui5",
+      "local-managed-runtime",
+      "local-managed-runtime/pro-list-page",
+      "local-managed-runtime/pro-stat-page",
+      "local-managed-runtime/pro-table-page",
+      "local-managed-runtime/pro-detail-page",
+      "local-managed-runtime/pro-edit-page",
+      "local-managed-runtime/pro-form-drawer",
+      "local-managed-runtime/pro-detail-drawer",
+      "local-managed-runtime/pro-tree-split-page",
+      "local-managed-runtime/host",
+      "@hi-ui/icons",
+      "@hi-ui/schema-core"
+    ],
+    "templateInternalAllowedVisualImportSources": [
+      "@hi-ui/query-filter"
+    ],
+    "forbiddenNewVisualImports": [
+      "@hi-ui/hiui",
+      "@hi-ui/tag",
+      "@hi-ui/button",
+      "@hi-ui/table",
+      "@hi-ui/pagination",
+      "@hi-ui/input",
+      "@hi-ui/select",
+      "@hi-ui/date-picker"
+    ],
+    "notes": [
+      "The host keeps @hi-ui/hiui at v3, while hiui5 aliases @hi-ui/hiui v5.",
+      "Existing legacy imports are not migrated by this policy; the policy applies to new hiui-design generated visual code.",
+      "local-managed-runtime means the managed project-local page-shell runtime materialized into components/hiui-design-runtime."
+    ]
+  },
+  "generationTargetPolicy": {
+    "scope": "new hiui-design generated business pages in the target project",
+    "defaultBusinessPageDir": "src/pages",
+    "forbiddenOutputRoots": [
+      "src/typical-page-preview"
+    ],
+    "previewReferencePolicy": "reference-only",
+    "routeIsolationPolicy": "preview-must-not-enter-formal-route-tree",
+    "notes": [
+      "Pages generated through hiui-design are business pages by default.",
+      "Preview assets are runtime references for smoke, doctor, and structure contrast only; they are never valid business output targets."
+    ]
+  },
+  "generationGuidance": {
+    "guidanceDoc": "docs/generation/ai-page-generation-guidance.md",
+    "defaultFlow": "coverage-first-light-flow",
+    "enforceDangerousProps": true,
+    "enforceForbiddenSlots": true,
+    "enforceVisualTokens": true,
+    "enforceSemanticComponents": true,
+    "enforceImportSourcePolicy": true,
+    "historyMode": "warning-for-existing-pages, enforce-for-new-hiui-design-generated-pages"
+  }
+}

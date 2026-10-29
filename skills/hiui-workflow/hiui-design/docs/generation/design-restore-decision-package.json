@@ -1,0 +1,43 @@
+{
+  "schema": "hiui-design-design-restore-decision-package.v1",
+  "description": "Structured pre-generation decision package for design-restore inputs.",
+  "requiredFields": [
+    "pageGoal",
+    "layoutIntent",
+    "regionDecisionTable"
+  ],
+  "regionDecisionTableItem": {
+    "requiredFields": [
+      "regionId",
+      "regionType",
+      "priority",
+      "mustMatch",
+      "preferredHiuiStrategy",
+      "allowedAdaptationLevel",
+      "riskLevel"
+    ],
+    "optionalFields": [
+      "recognizedControls",
+      "layoutRelations",
+      "mustKeepAssets",
+      "riskNotes"
+    ]
+  },
+  "allowedAdaptationLevels": [
+    "none",
+    "props-only",
+    "wrapper-only",
+    "light-extension"
+  ],
+  "allowedRiskLevels": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "notes": [
+    "This package is produced before code generation.",
+    "When upstream only provides mustMatchRegions and confirmation, design-restore-intake may materialize a minimum regionDecisionTable before brief creation.",
+    "It is not a page template catalog.",
+    "Each region must be constrained back to HiUI5 or approved shell primitives."
+  ]
+}

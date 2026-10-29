@@ -1,141 +1,1145 @@
 {
-  "version": 1,
-  "rulesVersion": "1.2.2",
-  "rulesLastUpdated": "2026-08-04",
-  "principlesDoc": "rules/generation-rules.md",
-  "routerDoc": "rules/page-type-map.md",
+  "version": 2,
+  "principlesDoc": "docs/generation/generation-principles.md",
+  "routerDoc": "docs/generation/page-type-map.md",
   "registryDoc": "docs/generation/figma-page-rules.md",
-  "nonTypicalPageLayout": {
-    "docEntry": "docs/generation/non-typical-pages.md",
-    "strategies": [
-      {
-        "id": "linear-stack",
-        "label": "线性堆叠",
-        "whenToUse": "一级分组较少，阅读路径单线"
+  "managedLocalRuntimeImplementationMap": {
+    "purpose": "Authoritative symbol-to-file mapping for the managed local runtime materialized into target projects.",
+    "logicalImportRoot": "local-managed-runtime",
+    "materializedRoot": "src/components/hiui-design-runtime",
+    "entries": {
+      "TypicalPageFieldMapProvider": {
+        "logicalSource": "local-managed-runtime",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/schema-field-map/field-map.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/schema-field-map/field-map.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed schema field-map bridge provider reused by list, stat, tree-split, and drawer-form page shells."
       },
-      {
-        "id": "parallel-sections",
-        "label": "并列分区",
-        "whenToUse": "一级分组较多，多数分组处于同一层级"
+      "StatListPageFrame": {
+        "logicalSource": "local-managed-runtime/pro-stat-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-stat-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-stat-page/entry.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-stat-page/entry.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed stat-list shell for table-stat and data-visualization page types."
       },
-      {
-        "id": "primary-secondary",
-        "label": "主辅分栏",
-        "whenToUse": "一级分组较多，存在明显主信息与辅助信息分层"
+      "TablePageFrame": {
+        "logicalSource": "local-managed-runtime/pro-table-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-table-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-table-page/entry.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-table-page/entry.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed table shell for basic-table and tree-table page types."
+      },
+      "TreeSplitPageFrame": {
+        "logicalSource": "local-managed-runtime/pro-tree-split-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-tree-split-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-tree-split-page/entry.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-tree-split-page/entry.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed split-layout shell for tree-split page types."
+      },
+      "ProFormDrawer": {
+        "logicalSource": "local-managed-runtime/pro-form-drawer",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-form-drawer/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-form-drawer/entry.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-form-drawer/entry.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed drawer-form shell and footer-action boundary for drawer-form page types."
+      },
+      "ProDetailDrawer": {
+        "logicalSource": "local-managed-runtime/pro-detail-drawer",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-detail-drawer/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-detail-drawer/entry.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-detail-drawer/entry.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed drawer-detail shell for drawer-detail page types."
+      },
+      "ProEditPage": {
+        "logicalSource": "local-managed-runtime/pro-edit-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-edit-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-edit-page/ProEditPage.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-edit-page/ProEditPage.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed full-page-edit shell with the approved form bridge and sticky-footer layout chain."
+      },
+      "Form": {
+        "logicalSource": "local-managed-runtime/pro-edit-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-edit-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-edit-page/bridge/form.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-edit-page/bridge/form.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed form bridge required by full-page-edit so generated pages do not fall back to ad hoc SchemaForm wrappers."
+      },
+      "ProDetailPage": {
+        "logicalSource": "local-managed-runtime/pro-detail-page",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/pro-detail-page/index.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/pro-detail-page/ProDetailPage.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/pro-detail-page/ProDetailPage.js",
+        "materializedBy": "generate-page-from-brief.mjs",
+        "role": "Managed full-page-detail shell for grouped readonly detail pages."
+      },
+      "TypicalPageHostProvider": {
+        "logicalSource": "local-managed-runtime/host",
+        "targetProjectPublicEntry": "src/components/hiui-design-runtime/host.js",
+        "targetProjectImplementationPath": "src/components/hiui-design-runtime/typical-page-host/index.js",
+        "sourceRuntimePath": "examples/host-integration/src/components/hiui-design-runtime/typical-page-host/index.js",
+        "materializedBy": "bootstrap-target-project.mjs + generate-page-from-brief.mjs",
+        "role": "Managed host bridge provider for formal shells and legacy shared header/footer portal compatibility."
       }
-    ],
-    "archetypes": [
-      {
-        "id": "context-main-split",
-        "label": "左上下文右主任务",
-        "whenToUse": "左侧负责选择 / 缩小范围 / 建立上下文，右侧负责主任务区的稳定双栏页面",
-        "compatibleStrategies": [
-          "primary-secondary"
-        ],
-        "pageLevelActionsOwner": "PageHeader extra",
-        "leftPaneRole": "选择 / 缩小范围 / 建立上下文",
-        "rightPaneRole": "主任务区",
-        "defaultOwners": {
-          "contentSlot": "host-slot",
-          "whiteBody": "white-body",
-          "outerPadding": "none",
-          "mainScroll": "page-root"
-        },
-        "requiredFacts": [
-          "left pane role",
-          "right pane role",
-          "page-level actions owner",
-          "split pane contract"
-        ],
-        "requiredSourceMarkers": [
-          "hiui-design non-typical: true",
-          "hiui-design layout strategy: ...",
-          "hiui-design layout archetype: context-main-split"
-        ],
-        "requiredRuntimeMarkers": [
-          "data-hiui5-layout-group=\"context-main-split\"",
-          "data-hiui5-region=\"left-context\"",
-          "data-hiui5-region=\"right-main\""
-        ]
-      }
+    }
+  },
+  "sharedGenerationContracts": {
+    "singleDimensionPrimarySwitch": {
+      "appliesTo": "all-page-types-when-primary-switch-is-single-dimension",
+      "defaultComponent": "hiui5: Radio",
+      "preferredPresentation": "button-group",
+      "allowedSemanticFallbacks": [
+        "status-tabs",
+        "step-tabs"
+      ],
+      "forbiddenPresentations": [
+        "plain-button-list",
+        "custom-segmented-div"
+      ]
+    },
+    "sharedChartUsage": {
+      "appliesTo": "all-pages-with-charts",
+      "themeSource": [
+        "docs/generation/figma-pages/data-visualization.md",
+        "examples/host-integration/src/pages/data-visualization/chart-theme.ts"
+      ],
+      "requiredVisualContracts": [
+        "use-shared-chart-theme-source",
+        "use-managed-chart-card-boundary",
+        "preserve-chart-title-hierarchy",
+        "preserve-chart-container-rhythm",
+        "preserve-shared-metric-card-baseline"
+      ],
+      "chartArchetypeContracts": {
+        "areaTrend": {
+          "appliesTo": "all-pages-using-area-trend-charts",
+          "requiredWrapper": "withHiuiResponsiveChart",
+          "requiredThemeSource": "local-chart-theme-area-trend-contract",
+          "requiredLineStyle": {
+            "path": "line.style",
+            "lineWidth": 2
+          },
+          "requiredFillStyle": {
+            "path": "style",
+            "fill": "approved-hiui-gradient-or-token-fill",
+            "fillOpacity": 0.2
+          },
+          "forbiddenConfigPatterns": [
+            "shapeField:'smooth'",
+            "areaStyle.fillOpacity-without-approved-style.fill",
+            "raw-area-config-without-theme-wrapper"
+          ]
+        }
+      },
+      "fullPageLayoutRequiredWhen": [
+        "page-type-is-data-visualization",
+        "charts-are-the-primary-information-carrier"
+      ],
+      "pageLevelSubtitleVisibility": "hidden-by-default",
+      "groupLevelSubtitleVisibility": "hidden-by-default",
+      "chartLevelSubtitleVisibility": "hidden-by-default"
+    },
+    "defaultSectionCopy": {
+      "appliesTo": "all-page-types",
+      "pageSubtitleVisibility": "hidden-by-default",
+      "groupSubtitleVisibility": "hidden-by-default",
+      "chartSubtitleVisibility": "hidden-by-default",
+      "sectionSummaryVisibility": "hidden-by-default",
+      "allowAuxiliaryCopyOnlyWhen": [
+        "explicit-user-request",
+        "explicit-statistical-caliber-note",
+        "explicit-reading-guidance"
+      ]
+    }
+  },
+  "defaultSharedGenerationContractRefs": [
+    "singleDimensionPrimarySwitch",
+    "defaultSectionCopy"
+  ],
+  "conditionalSharedGenerationContractRefs": {
+    "pageContainsChart": [
+      "sharedChartUsage"
     ]
   },
   "pageTypes": [
     {
       "id": "table-stat",
       "label": "数据统计表",
+      "pageFamily": "typical-page",
       "kind": "list",
       "whenToUse": "指标卡 + 筛选 + 表格 + 分页",
       "registrySummary": "保持“指标卡 + 筛选 + 表格 + 分页”一体白卡，不要退化成普通列表页",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51257:107076",
       "shell": "StatListPageFrame",
-      "examplePath": "src/typical-page-reuse/pages/table-stat.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/table-stat.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/table-stat.tsx",
       "smokePath": "table/common/table-stat",
       "smokeGroup": "table",
       "smokePriority": "primary",
-      "archetypeSmokeBaseline": true,
-      "archetypeSmokePriority": "required",
       "docEntry": "docs/generation/figma-pages/table-stat.md",
       "sharedDocs": [
         "docs/generation/figma-pages/table-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/table-stat.tsx",
+        "requiredShell": "StatListPageFrame",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-list-page",
+            "symbols": [
+              "ProListPageProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-stat-page",
+            "symbols": [
+              "StatListPageFrame",
+              "proStatPageStyles"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder",
+          "statSection",
+          "extra"
+        ],
+        "businessSlots": [
+          "title",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder",
+          "overviewRequest",
+          "listRequest",
+          "headerActions",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "StatListPageFrame shell chain",
+          "ProListPageProvider + TypicalPageFieldMapProvider provider order",
+          "QueryFilter contained/no-label defaults",
+          "table white-card height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "withQueryFilterFieldDefaults",
+          "showLabel={true}",
+          "PageHeader + QueryFilter + Table",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:StatListPageFrame",
+          "required-symbol:MetricOverviewGrid",
+          "required-symbol:proStatPageStyles.headerExtra",
+          "required-provider:ProListPageProvider",
+          "required-provider:TypicalPageFieldMapProvider",
+          "forbidden-legacy-hiui4",
+          "forbidden-inline-query-filter-label",
+          "forbidden-private-shell-import",
+          "required-root-flex-chain",
+          "required-white-body-fill-contract",
+          "forbidden-business-notice-ui",
+          "required-stat-section-owner"
+        ],
+        "generationNotes": [
+          "必须从数据统计表母版起步，不要从普通表格母版降级生成",
+          "指标卡、筛选、表格和分页必须保持一体白卡主体",
+          "标题右侧操作必须使用 proStatPageStyles.headerExtra 节奏"
+        ],
+        "minimumGenerationContract": {
+          "sectionSequence": [
+            "pageHeader",
+            "statSection",
+            "queryFilter",
+            "table",
+            "pagination"
+          ],
+          "surfaceContract": [
+            "指标卡、筛选、表格和分页必须处于同一个连续 whiteBody 阅读流，不要拆成多块独立页面容器",
+            "内容主体沿用典型页外层节奏，左右保留 16px 外侧留白，指标区、筛选区、表格区之间保持稳定垂直间距",
+            "指标区应保持横向 card/grid 编排，不要退化成纵向堆叠文本或自由拼接的小卡片"
+          ],
+          "visualInvariants": [
+            "statSection 继续由 StatOverviewGrid 承接，不自造第二套指标卡视觉语法",
+            "标题右侧操作继续使用 proStatPageStyles.headerExtra 节奏",
+            "筛选与表格继续共享典型页白色主体，不额外再拆第二层白卡"
+          ],
+          "pitfallAlerts": [
+            "不要把数据统计表降级成普通 table-basic",
+            "不要把指标卡移到 whiteBody 外或拆成多个互不连续的区域",
+            "不要用页面本地 root/body 全局样式补页面间距或背景"
+          ]
+        },
+        "baseStylePath": null,
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "queryFields",
+            "tableFields",
+            "searchPlaceholder",
+            "statSection",
+            "extra",
+            "tableProps"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "customWhiteBody",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children",
+            "renderCard"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "statSectionPolicy": "StatOverviewGrid grid contract + shared MetricCard visual contract, or manifest-registered stat component only"
+        },
+        "regionOwnershipContract": {
+          "headerOwner": "StatListPageFrame",
+          "whiteBodyOwner": "StatListPageFrame",
+          "statRowOwner": "StatOverviewGrid (grid) + shared MetricCard contract",
+          "filterOwner": "StatListPageFrame",
+          "tableContainerOwner": "StatListPageFrame",
+          "mainScrollOwner": "StatListPageFrame",
+          "outerPaddingOwner": "shell-or-host-explicit"
+        },
+        "managedCoverage": {
+          "header": {
+            "owner": "StatListPageFrame",
+            "policy": "covered-by-template"
+          },
+          "whiteBody": {
+            "owner": "StatListPageFrame",
+            "policy": "covered-by-template"
+          },
+          "stat-section": {
+            "owner": "StatOverviewGrid (grid) + src/runtime/analytics-primitives: MetricOverviewGrid / MetricCard",
+            "policy": "covered-by-template"
+          },
+          "query-filter": {
+            "owner": "StatListPageFrame + queryFields",
+            "policy": "covered-by-template"
+          },
+          "table": {
+            "owner": "StatListPageFrame + tableFields",
+            "policy": "covered-by-template"
+          },
+          "pagination": {
+            "owner": "ProListPageProvider + StatListPageFrame",
+            "policy": "covered-by-template"
+          }
+        },
+        "slotReplacementPolicy": {
+          "title": "copy-only plain page title; do not replace header carrier",
+          "queryFields": "schema field replacement only; QueryFilter owner stays inside StatListPageFrame",
+          "tableFields": "schema table field replacement only; table owner stays inside StatListPageFrame",
+          "searchPlaceholder": "copy-only search placeholder text",
+          "statSection": "StatOverviewGrid grid with managed MetricOverviewGrid / MetricCard visual contract only, unless using a manifest-registered stat component",
+          "extra": "header actions with hiui5 Button + Space and proStatPageStyles.headerExtra rhythm",
+          "tableProps": "fieldKey and pagination options only; do not replace pagination owner"
+        },
+        "uncoveredUiTriggers": [
+          "renderCard",
+          "children",
+          "customWhiteBody",
+          "customMainScroll",
+          "className:statCard",
+          "className:metricCard",
+          "className:statusBadge",
+          "className:tag",
+          "className:badge",
+          "className:chip",
+          "span-or-div-status-label",
+          "third-party-ui-component",
+          "page-local-visual-token",
+          "extra-info-strip",
+          "complex-composite-cell-with-status-or-badge"
+        ],
+        "defaultComponentDecisions": {
+          "stat-section": "local-managed-runtime/pro-stat-page: StatOverviewGrid grid + src/runtime/analytics-primitives: MetricOverviewGrid / MetricCard",
+          "headerActions": "hiui5: Button + Space",
+          "statusIndicator": "hiui5: Tag",
+          "tableText": "local-managed-runtime/pro-stat-page: renderStatTableTextEllipsis",
+          "querySelect": "local-managed-runtime/pro-list-page: queryFilterPickerOverlay",
+          "queryDate": "local-managed-runtime/pro-list-page: queryFilterDatePickerOverlay",
+          "icons": "@hi-ui/icons"
+        },
+        "defaultTokenDecisions": {
+          "statCards": "covered-by-component-token: StatOverviewGrid grid + src/runtime/analytics-primitives MetricCard",
+          "queryFilter": "covered-by-component-token: StatListPageFrame + QueryFilter",
+          "table": "covered-by-component-token: StatListPageFrame + Table",
+          "pagination": "covered-by-component-token: StatListPageFrame + ProListPageProvider",
+          "buttons": "covered-by-component-token: hiui5 Button",
+          "tags": "covered-by-component-token: hiui5 Tag",
+          "localStyles": "layout-only by default; visual tokens require hiui5-visual-baseline.md or page-type doc evidence"
+        },
+        "localStyleAllowlist": [
+          "display",
+          "flex",
+          "flex-direction",
+          "flex-wrap",
+          "align-items",
+          "justify-content",
+          "width",
+          "min-width",
+          "max-width",
+          "height",
+          "min-height",
+          "max-height",
+          "overflow",
+          "overflow-x",
+          "overflow-y",
+          "text-overflow",
+          "white-space",
+          "word-break",
+          "margin",
+          "margin-top",
+          "margin-right",
+          "margin-bottom",
+          "margin-left",
+          "padding"
+        ],
+        "importPolicyRef": ".local-context/hiui-design/.context.jsonc#hostImportPolicy",
+        "generationGuidanceRef": "docs/generation/ai-page-generation-guidance.md"
+      },
+      "aiDefaultUseCases": [
+        "带指标卡的数据列表",
+        "运营汇总列表",
+        "指标看板型列表",
+        "带总量/待处理/趋势概览的管理列表"
+      ],
+      "aiDecisionHints": [
+        "页面顶部有指标卡或统计概览",
+        "指标区是信息架构的一部分，不只是按钮或标签",
+        "下方仍包含筛选、表格和分页"
+      ],
+      "aiAntiPatterns": [
+        "只有普通筛选和表格时不要使用",
+        "图表是主信息载体时不要使用，需转数据可视化或补 manifest"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/table-stat.tsx",
+      "globalPreviewRoute": "/table/common/table-stat"
     },
     {
       "id": "data-visualization",
       "label": "数据可视化",
-      "kind": "analytics",
-      "whenToUse": "指标卡 + 多图表 + 明细表",
-      "registrySummary": "保持“指标卡 + 多图表 + 明细表”一体白底工作区，不退化成普通统计表或自由拼图表墙",
+      "pageFamily": "analytics-page",
+      "kind": "list",
+      "whenToUse": "图表是主信息载体；是否带明细表取决于业务是否需要记录下钻、复核或后续操作承接",
+      "registrySummary": "保持“指标卡 + 多图表 + 可选明细表”单白底分析工作区，不要退化成统计表或无序图表墙",
       "fileKey": null,
       "nodeId": null,
       "shell": "StatListPageFrame",
-      "examplePath": "src/typical-page-reuse/pages/data-visualization.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/data-visualization.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/data-visualization/index.tsx",
       "smokePath": "chart/common/data-visualization",
       "smokeGroup": "chart",
       "smokePriority": "primary",
-      "archetypeSmokeBaseline": true,
-      "archetypeSmokePriority": "required",
       "docEntry": "docs/generation/figma-pages/data-visualization.md",
       "sharedDocs": [
         "docs/generation/figma-pages/table-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "sharedGenerationContractRefs": [
+          "singleDimensionPrimarySwitch",
+          "sharedChartUsage",
+          "defaultSectionCopy"
+        ],
+        "baseTemplatePath": "examples/host-integration/src/pages/data-visualization/index.tsx",
+        "requiredShell": "StatListPageFrame",
+        "singleDimensionPrimarySwitchContract": {
+          "inherits": "sharedGenerationContracts.singleDimensionPrimarySwitch",
+          "defaultComponent": "hiui5: Radio",
+          "preferredPresentation": "button-group",
+          "fallbackAllowedWhen": [
+            "status-tabs",
+            "step-tabs"
+          ]
+        },
+        "chartUsageContract": {
+          "inherits": "sharedGenerationContracts.sharedChartUsage",
+          "visualScope": "full-analytics-page-and-all-chart-cards",
+          "requiresFullAnalyticsLayout": true
+        },
+        "titleCopyContract": {
+          "inherits": "sharedGenerationContracts.defaultSectionCopy",
+          "pageSubtitleVisibility": "hidden-by-default",
+          "groupSubtitleVisibility": "hidden-by-default",
+          "chartSubtitleVisibility": "hidden-by-default",
+          "sectionSummaryVisibility": "hidden-by-default"
+        },
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-list-page",
+            "symbols": [
+              "ProListPageProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-stat-page",
+            "symbols": [
+              "StatListPageFrame",
+              "renderStatTableTextEllipsis"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "queryFields",
+          "searchPlaceholder",
+          "statSection"
+        ],
+        "businessSlots": [
+          "title",
+          "queryFields",
+          "searchPlaceholder",
+          "statSection",
+          "tableFields",
+          "tableProps",
+          "listRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "StatListPageFrame shell chain",
+          "ProListPageProvider + TypicalPageFieldMapProvider provider order",
+          "single analytics white-body workspace",
+          "optional detail-table tail inside analytics reading flow",
+          "chart theme + shell rhythm contract"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "withQueryFilterFieldDefaults",
+          "showLabel={true}",
+          "PageHeader + QueryFilter + Table",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:StatListPageFrame",
+          "required-provider:ProListPageProvider",
+          "required-provider:TypicalPageFieldMapProvider",
+          "forbidden-legacy-hiui4",
+          "forbidden-inline-query-filter-label",
+          "forbidden-private-shell-import",
+          "required-root-flex-chain",
+          "required-analytics-single-workspace",
+          "required-data-visualization-golden-path",
+          "forbidden-data-visualization-placeholder-residue",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "必须从数据可视化官方示例页起步，不要从 table-stat 或空白文件降级生成",
+          "指标卡与图表区必须位于同一个 whiteBody 工作区；若业务包含明细表，它也必须留在同一个工作区中",
+          "默认走数据可视化 Golden Path：summaryMetrics + chartCards + optional detailRows + chart-theme.ts + 统一 MetricCard/ChartCard；优先复用项目共享运行时 src/runtime/analytics-primitives，不在业务页本地重写同名卡片实现",
+          "图表主题、色板和图表容器节奏默认复用 chart-theme.ts，不要回退到图表库默认皮肤",
+          "只要页面包含图表，就必须遵守 sharedChartUsage 与对应 chartArchetypeContracts；data-visualization 只是图表主导页，不是共享图表合同的唯一适用范围",
+          "summarySection 可独立使用摘要 grid；正式 chartSection 需保持一种基础 grid mode，主图通过同一 grid 中的 span / 主次权重强调，指标卡迷你图可选",
+          "共享 MetricCard / ChartCard 的描边、圆角、内边距、内容区节奏属于受管运行时合同；页面本地样式默认只允许布局辅助，不得再对共享卡片追加 min-height、border、background、padding 等局部视觉覆写",
+          "若业务需要分析阅读流尾部的明细表，并且表格前还要展示分组标题或操作区，该收口间距属于受管工作区阅读节奏，不得只靠 detail header 内部 gap 假装修复"
+        ],
+        "generationWorkflow": {
+          "kind": "analytics-spec-driven",
+          "defaultFlow": "keep-shell-and-white-body-generate-content-by-spec",
+          "replaceBusinessSlotsByDefault": false,
+          "generatorMode": "rule-driven-golden-path",
+          "contentGenerationMode": "rule-driven-golden-path-generation",
+          "defaultAuthoringPath": "data-visualization-golden-path",
+          "requiredModuleSet": [
+            "index.tsx",
+            "chart-theme.ts",
+            "index.module.scss"
+          ],
+          "fixedRegions": [
+            "header",
+            "whiteBody"
+          ],
+          "referenceModules": [
+            "examples/host-integration/src/pages/data-visualization/index.tsx",
+            "examples/host-integration/src/pages/data-visualization/chart-theme.ts",
+            "examples/host-integration/src/pages/data-visualization/mock.ts",
+            "examples/host-integration/src/pages/data-visualization/request-utils.ts"
+          ],
+          "description": "数据可视化页走规则驱动分析页链路：只固定页头与 whiteBody 背景区域，内容工作区按规范生成；已有图表允许从官方示例中按图表级别选择性复制并替换业务内容，不复制整页。",
+          "manualRefactorOwners": [
+            "queryFields",
+            "searchPlaceholder",
+            "summarySection",
+            "chartSection",
+            "detailTable",
+            "statSection",
+            "tableFields",
+            "tableProps",
+            "listRequest",
+            "mockData"
+          ],
+          "sectionLayoutSemantics": {
+            "summarySection": {
+              "gridIndependence": "allowed",
+              "metricCardMiniChart": "optional",
+              "defaultMetricContent": "title-and-primary-value"
+            },
+            "chartSection": {
+              "desktopBaseColumns": 3,
+              "allowedChartSpans": [
+                1,
+                2
+              ],
+              "baseGridMode": "single-per-formal-chart-section",
+              "primaryChartEmphasis": "same-grid-span-or-priority",
+              "mixedRowGridModes": "forbidden",
+              "avoidLastRowHoles": true,
+              "rowFillPolicy": "full-rows-at-desktop",
+              "remainderResolutionOrder": [
+                "merge-secondary",
+                "remove-weak-chart",
+                "switch-archetype",
+                "adjust-span"
+              ],
+              "cardStretchPolicy": "fill-grid-cell",
+              "chartCardContentPolicy": "header-fixed-body-flex-1",
+              "chartCanvasMinHeight": 280
+            }
+          },
+          "chartReusePolicy": "existing-chart-blocks-may-be-selectively-copied",
+          "stopAutoReplacementReason": "data-visualization 只固定页头与 whiteBody；内容区域必须按布局、色彩、组件规范规则生成，不能按整页模板或通用 slot-replacement 链路自动替换。"
+        },
+        "baseStylePath": "examples/host-integration/src/pages/data-visualization/index.module.scss",
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "dynamicRequestRequiresExplicitMapper": true,
+          "listRequestMustReturnPaginatedList": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "queryFields",
+            "searchPlaceholder",
+            "statSection",
+            "tableFields",
+            "tableProps",
+            "listRequest",
+            "mockData"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "customWhiteBody",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "childrenPolicy": "must preserve a single whiteBody workspace for metrics, charts, and any optional detail-table tail"
+        },
+        "regionOwnershipContract": {
+          "headerOwner": "StatListPageFrame",
+          "whiteBodyOwner": "StatListPageFrame",
+          "filterOwner": "StatListPageFrame",
+          "statSectionOwner": "statSection slot inside StatListPageFrame",
+          "chartWorkspaceOwner": "statSection slot inside StatListPageFrame",
+          "tableContainerOwner": "StatListPageFrame",
+          "mainScrollOwner": "StatListPageFrame"
+        },
+        "managedCoverage": {
+          "header": {
+            "owner": "StatListPageFrame",
+            "policy": "covered-by-template"
+          },
+          "whiteBody": {
+            "owner": "StatListPageFrame",
+            "policy": "covered-by-template"
+          },
+          "stat-section": {
+            "owner": "StatListPageFrame + statSection slot",
+            "policy": "business-slot-inside-managed-whiteBody"
+          },
+          "query-filter": {
+            "owner": "StatListPageFrame + queryFields",
+            "policy": "covered-by-template"
+          },
+          "table": {
+            "owner": "StatListPageFrame + tableFields",
+            "policy": "covered-by-template"
+          },
+          "pagination": {
+            "owner": "ProListPageProvider + StatListPageFrame",
+            "policy": "covered-by-template"
+          }
+        },
+        "slotReplacementPolicy": {
+          "title": "controlled refactor surface only; do not treat as generic auto-replace slot",
+          "queryFields": "refactor global control fields inside the shell-owned QueryFilter; do not hand-build a second query area",
+          "searchPlaceholder": "controlled refactor surface only; keep it aligned with the analytics control bar",
+          "statSection": "manual refactor owner for metrics and charts inside the managed analytics workspace; do not create a second whiteBody",
+          "tableFields": "manual refactor owner for the optional detail-table tail; when the business needs that tail, keep it inside the same reading flow, and treat the pre-table title/action gap as a managed reading-rhythm contract instead of a page-local fake spacer",
+          "tableProps": "optional detail table layout and pagination tuning only; do not replace the managed table owner",
+          "listRequest": "manual refactor owner for the optional detail table request and its filters/pagination mapper",
+          "mockData": "manual refactor owner for chart datasets, metrics, and any optional detail list baseline data"
+        },
+        "uncoveredUiTriggers": [
+          "children",
+          "customWhiteBody",
+          "customMainScroll",
+          "third-party-ui-component",
+          "page-local-visual-token",
+          "extra-info-strip",
+          "second-white-body",
+          "fake-chart",
+          "chart-theme-override",
+          "chart-wall-without-reading-order"
+        ],
+        "defaultComponentDecisions": {
+          "stat-section": "@ant-design/charts + local chart-theme.ts + business metric/chart sections",
+          "detailTable": "local-managed-runtime/pro-stat-page: renderStatTableTextEllipsis when the business requires a detail table",
+          "querySelect": "local-managed-runtime/pro-list-page: queryFilterPickerOverlay",
+          "queryDate": "local-managed-runtime/pro-list-page: queryFilterDatePickerOverlay",
+          "icons": "@hi-ui/icons",
+          "terminalCardRegion": "src/runtime/analytics-primitives: EntityActionCard + SectionHeader",
+          "cardActions": "hiui5: Button",
+          "cardTags": "hiui5: Tag"
+        },
+        "defaultTokenDecisions": {
+          "analyticsWorkspace": "covered-by-template: StatListPageFrame whiteBody",
+          "charts": "covered-by-local-theme: chart-theme.ts",
+          "queryFilter": "covered-by-component-token: StatListPageFrame + QueryFilter",
+          "detailTable": "covered-by-component-token: StatListPageFrame + Table when a detail table is present",
+          "terminalCardRegion": "covered-by-component-token: src/runtime/analytics-primitives EntityActionCard + hiui5 Button/Tag",
+          "localStyles": "layout-only by default; visual tokens require chart-theme.ts or hiui5-visual-baseline.md evidence"
+        },
+        "localStyleAllowlist": [
+          "display",
+          "flex",
+          "flex-direction",
+          "flex-wrap",
+          "align-items",
+          "justify-content",
+          "width",
+          "min-width",
+          "max-width",
+          "height",
+          "min-height",
+          "max-height",
+          "overflow",
+          "overflow-x",
+          "overflow-y",
+          "text-overflow",
+          "white-space",
+          "word-break",
+          "margin",
+          "margin-top",
+          "margin-right",
+          "margin-bottom",
+          "margin-left",
+          "padding",
+          "padding-top",
+          "padding-right",
+          "padding-bottom",
+          "padding-left",
+          "gap",
+          "row-gap",
+          "column-gap",
+          "grid-template-columns",
+          "position"
+        ],
+        "importPolicyRef": ".local-context/hiui-design/.context.jsonc#hostImportPolicy",
+        "generationGuidanceRef": "docs/generation/ai-page-generation-guidance.md"
+      },
+      "aiDefaultUseCases": [
+        "经营分析看板",
+        "服务质量分析页",
+        "趋势与分布洞察页",
+        "监控与排行分析页"
+      ],
+      "aiDecisionHints": [
+        "图表承担主要阅读与判断任务",
+        "页面主体是“指标卡 + 多图表”，是否追加明细表取决于业务是否需要下钻记录",
+        "若存在明细表，它只是分析收口，不是页面主角"
+      ],
+      "aiAntiPatterns": [
+        "仍然是指标卡 + 筛选 + 表格 + 分页时不要使用，应转 table-stat",
+        "只有局部图表卡片点缀的列表页不要使用"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/data-visualization/index.tsx",
+      "globalPreviewRoute": "/chart/common/data-visualization"
     },
     {
       "id": "table-basic",
       "label": "普通表格",
+      "pageFamily": "typical-page",
       "kind": "list",
       "whenToUse": "常规筛选 + 表格 + 分页",
       "registrySummary": "延续“筛选 + 表格 + 分页”白卡结构，默认文本列省略并补 Tooltip",
       "fileKey": null,
       "nodeId": null,
       "shell": "TablePageFrame",
-      "examplePath": "src/typical-page-reuse/pages/basic-table.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/basic-table.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/basic-table.tsx",
       "smokePath": "table/common/basic",
       "smokeGroup": "table",
       "smokePriority": "secondary",
-      "docEntry": "docs/generation/figma-pages/table-shared.md",
+      "docEntry": "docs/generation/figma-pages/basic-table.md",
       "sharedDocs": [
         "docs/generation/figma-pages/table-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/basic-table.tsx",
+        "requiredShell": "TablePageFrame",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-table-page",
+            "symbols": [
+              "TablePageFrame",
+              "proTablePageStyles"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder",
+          "extra"
+        ],
+        "businessSlots": [
+          "title",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder",
+          "listRequest",
+          "headerActions",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "TablePageFrame shell chain",
+          "ProListPageProvider + TypicalPageFieldMapProvider provider order",
+          "QueryFilter contained/no-label defaults",
+          "table white-card height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "withQueryFilterFieldDefaults",
+          "showLabel={true}",
+          "PageHeader + QueryFilter + Table",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:TablePageFrame",
+          "required-provider:ProListPageProvider",
+          "required-provider:TypicalPageFieldMapProvider",
+          "required-symbol:proTablePageStyles.headerExtra",
+          "forbidden-legacy-hiui4",
+          "forbidden-inline-query-filter-label",
+          "forbidden-private-shell-import",
+          "forbidden-frame-children:TablePageFrame",
+          "required-root-flex-chain",
+          "required-white-body-fill-contract",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "常规列表不要误判为数据统计表",
+          "筛选、表格和分页必须保持同一白卡主体",
+          "标题右侧操作必须使用 proTablePageStyles.headerExtra 节奏"
+        ],
+        "minimumGenerationContract": {
+          "sectionSequence": [
+            "pageHeader",
+            "queryFilter",
+            "table",
+            "pagination"
+          ],
+          "surfaceContract": [
+            "筛选、表格和分页必须位于同一个 whiteBody 阅读流，不要拆成多个互不连续的页面块",
+            "内容主体沿用典型页外层节奏，左右保留 16px 外侧留白，筛选区与表格区之间保持稳定垂直间距",
+            "不要额外引入指标区、左树区或第二栏工作区"
+          ],
+          "visualInvariants": [
+            "标题右侧操作继续使用 proTablePageStyles.headerExtra 节奏",
+            "TablePageFrame 继续承接标题、白底主体和分页节奏，不自造第二层白卡",
+            "筛选区与表格区保持表格共享样式语法，不额外改写壳层留白"
+          ],
+          "pitfallAlerts": [
+            "有指标卡时应改判 table-stat",
+            "有独立左树时应改判 tree-split",
+            "不要把筛选区、表格区分别塞进两个独立页面容器"
+          ]
+        },
+        "baseStylePath": null,
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "queryFields",
+            "tableFields",
+            "searchPlaceholder",
+            "extra",
+            "tableProps"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "customWhiteBody",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "frameChildrenPolicy": "forbidden-for-business-content"
+        },
+        "regionOwnershipContract": {
+          "headerOwner": "TablePageFrame",
+          "whiteBodyOwner": "TablePageFrame",
+          "filterOwner": "TablePageFrame",
+          "tableContainerOwner": "TablePageFrame",
+          "mainScrollOwner": "TablePageFrame",
+          "outerPaddingOwner": "shell-or-host-explicit"
+        }
+      },
+      "aiDefaultUseCases": [
+        "文件管理",
+        "用户管理",
+        "配置列表",
+        "审批记录",
+        "资源台账",
+        "订单列表",
+        "操作日志"
+      ],
+      "aiDecisionHints": [
+        "常规筛选 + 表格 + 分页",
+        "主任务是查询、浏览、批量或行内操作",
+        "无独立左树、无表格内层级树、无顶部指标卡"
+      ],
+      "aiAntiPatterns": [
+        "有指标卡时优先 table-stat",
+        "有左树时优先 tree-split",
+        "表格内树展开时优先 tree-table",
+        "多分组详情或多字段编辑不要降级成表格"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/basic-table.tsx",
+      "globalPreviewRoute": "/table/common/basic"
     },
     {
       "id": "tree-table",
       "label": "树形表格",
+      "pageFamily": "typical-page",
       "kind": "list",
       "whenToUse": "树在表格首列内展开",
       "registrySummary": "树在表格首列内展开，分页保留",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51257:107314",
       "shell": "TablePageFrame",
-      "examplePath": "src/typical-page-reuse/pages/tree-table.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/tree-table.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/tree-table.tsx",
       "smokePath": "table/common/tree",
       "smokeGroup": "table",
       "smokePriority": "secondary",
@@ -143,19 +1147,194 @@
       "sharedDocs": [
         "docs/generation/figma-pages/table-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/tree-table.tsx",
+        "requiredShell": "TablePageFrame",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-table-page",
+            "symbols": [
+              "TablePageFrame"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder"
+        ],
+        "businessSlots": [
+          "title",
+          "queryFields",
+          "treeColumn",
+          "tableFields",
+          "listRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "TablePageFrame shell chain",
+          "tree expansion in first table column",
+          "table pagination",
+          "table white-card height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "withQueryFilterFieldDefaults",
+          "showLabel={true}",
+          "TreeSplitPageFrame",
+          "PageHeader + QueryFilter + Table",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:TablePageFrame",
+          "required-provider:ProListPageProvider",
+          "required-provider:TypicalPageFieldMapProvider",
+          "required-tree-column",
+          "forbidden-tree-split-shell",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "forbidden-frame-children:TablePageFrame",
+          "required-tree-first-column",
+          "required-root-flex-chain",
+          "required-white-body-fill-contract"
+        ],
+        "generationNotes": [
+          "树形表格的树在表格首列内展开，不要生成成左树右表",
+          "分页必须保留",
+          "不要拆成左右两个独立区域"
+        ],
+        "baseStylePath": null,
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "queryFields",
+            "treeColumn",
+            "tableFields",
+            "searchPlaceholder",
+            "extra",
+            "tableProps"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "leftPane",
+            "customWhiteBody",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "treeColumnPolicy": "tree expansion must stay in the first table column"
+        },
+        "regionOwnershipContract": {
+          "headerOwner": "TablePageFrame",
+          "whiteBodyOwner": "TablePageFrame",
+          "treeColumnOwner": "tableFields.firstColumn",
+          "filterOwner": "TablePageFrame",
+          "tableContainerOwner": "TablePageFrame",
+          "mainScrollOwner": "TablePageFrame",
+          "outerPaddingOwner": "shell-or-host-explicit"
+        }
+      },
+      "aiDefaultUseCases": [
+        "组织树表",
+        "类目层级表",
+        "权限资源树表",
+        "区域层级表"
+      ],
+      "aiDecisionHints": [
+        "树结构在表格首列或行内展开",
+        "树节点和表格数据属于同一张表"
+      ],
+      "aiAntiPatterns": [
+        "左侧独立树控制右侧区域时不要使用，应使用 tree-split"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/tree-table.tsx",
+      "globalPreviewRoute": "/table/common/tree"
     },
     {
       "id": "tree-split",
       "label": "左树右表",
+      "pageFamily": "typical-page",
       "kind": "master-detail",
       "whenToUse": "左侧树，右侧筛选和表格",
       "registrySummary": "左树右表必须在同一个 split frame 内，不要拆成两个独立页面",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51257:107202",
       "shell": "TreeSplitPageFrame",
-      "examplePath": "src/typical-page-reuse/pages/inventory-split.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/inventory-split.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/inventory-split.tsx",
       "smokePath": "table/common/split",
       "smokeGroup": "table",
       "smokePriority": "secondary",
@@ -163,19 +1342,229 @@
       "sharedDocs": [
         "docs/generation/figma-pages/table-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/inventory-split.tsx",
+        "requiredShell": "TreeSplitPageFrame",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-list-page",
+            "symbols": [
+              "ProListPageProvider"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-tree-split-page",
+            "symbols": [
+              "TreeSplitPageFrame"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "tree",
+          "queryFields",
+          "tableFields",
+          "searchPlaceholder"
+        ],
+        "businessSlots": [
+          "title",
+          "treeData",
+          "queryFields",
+          "tableFields",
+          "listRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "TreeSplitPageFrame shell chain",
+          "left tree and right table in one split frame",
+          "right list QueryFilter + Table + Pagination chain",
+          "split page height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "withQueryFilterFieldDefaults",
+          "showLabel={true}",
+          "PageHeader + QueryFilter + Table",
+          "two independent pages",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:TreeSplitPageFrame",
+          "required-provider:ProListPageProvider",
+          "required-provider:TypicalPageFieldMapProvider",
+          "required-left-tree-slot",
+          "required-right-table-slot",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "forbidden-frame-children:TreeSplitPageFrame",
+          "required-left-pane-boundary",
+          "required-split-region-owner",
+          "required-root-flex-chain",
+          "required-white-body-fill-contract"
+        ],
+        "generationNotes": [
+          "左树右表必须在一个 split frame 内完成",
+          "不要把左树和右表拆成两个独立页面",
+          "右侧仍遵守表格共享规则"
+        ],
+        "minimumGenerationContract": {
+          "sectionSequence": [
+            "pageHeader",
+            "leftTreePane",
+            "rightQueryFilter",
+            "rightTable",
+            "rightPagination"
+          ],
+          "surfaceContract": [
+            "左树与右侧查询表格必须处于同一个 split frame，不要生成成两个独立页面再并排拼接",
+            "右侧内容区继续保持单一 whiteBody 阅读流，筛选、表格、分页按垂直阅读顺序串联",
+            "内容主体沿用典型页外层节奏，左右保留 16px 外侧留白；左树与右表之间的分隔与间距交给 split shell 管理"
+          ],
+          "visualInvariants": [
+            "leftPane 只承接树区域，不承接整页 header、whiteBody 或独立页面壳",
+            "右侧表格区域继续沿用表格共享样式节奏，不再自造另一套白卡或滚动容器",
+            "左右区域的高度链必须由 TreeSplitPageFrame 连续承接"
+          ],
+          "pitfallAlerts": [
+            "不要把 leftPane 渲染成第二个页面壳",
+            "不要把右侧再拆成独立页面后与左树拼接",
+            "如果树是在表格首列内展开，应改判 tree-table"
+          ]
+        },
+        "baseStylePath": "examples/host-integration/src/pages/inventory-split.module.scss",
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "leftPane",
+            "treeData",
+            "queryFields",
+            "tableFields",
+            "searchPlaceholder",
+            "extra",
+            "tableProps"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "twoIndependentPages",
+            "customWhiteBody",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children",
+            "leftPane"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "leftPanePolicy": "leftPane only owns the left tree region, not a full page shell"
+        },
+        "regionOwnershipContract": {
+          "headerOwner": "TreeSplitPageFrame",
+          "whiteBodyOwner": "TreeSplitPageFrame",
+          "leftPaneOwner": "TreeSplitPageFrame.leftPane",
+          "splitterOwner": "TreeSplitPageFrame",
+          "rightFilterOwner": "TreeSplitPageFrame",
+          "rightTableOwner": "TreeSplitPageFrame",
+          "mainScrollOwner": "TreeSplitPageFrame",
+          "outerPaddingOwner": "shell-or-host-explicit"
+        }
+      },
+      "aiDefaultUseCases": [
+        "左组织树右人员列表",
+        "左类目右商品列表",
+        "左区域右工单列表",
+        "左仓库树右库存列表"
+      ],
+      "aiDecisionHints": [
+        "页面左右分区",
+        "左侧树控制右侧筛选、表格或详情区域"
+      ],
+      "aiAntiPatterns": [
+        "只有表格内树形列时不要使用，应使用 tree-table"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/inventory-split.tsx",
+      "globalPreviewRoute": "/table/common/split"
     },
     {
       "id": "drawer-form",
       "label": "抽屉表单",
+      "pageFamily": "typical-page",
       "kind": "form",
       "whenToUse": "字段较少，抽屉内完成编辑",
       "registrySummary": "字段数 <=16 时使用，正文分档和组规只看专章",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51728:128145",
       "shell": "ProFormDrawer",
-      "examplePath": "src/typical-page-reuse/pages/drawer-form.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/drawer-form.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/drawer-form.tsx",
       "smokePath": "form/typical/drawer",
       "smokeGroup": "drawer",
       "smokePriority": "primary",
@@ -183,85 +1572,1024 @@
       "sharedDocs": [
         "docs/generation/figma-pages/forms-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/drawer-form.tsx",
+        "requiredShell": "ProFormDrawer",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime/pro-form-drawer",
+            "symbols": [
+              "ProFormDrawer"
+            ]
+          },
+          {
+            "source": "local-managed-runtime",
+            "symbols": [
+              "TypicalPageFieldMapProvider"
+            ]
+          },
+          {
+            "source": "@hi-ui/schema-form",
+            "symbols": [
+              "SchemaForm"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "trigger",
+          "schema",
+          "initialValues",
+          "submit"
+        ],
+        "businessSlots": [
+          "title",
+          "trigger",
+          "formFields",
+          "initialValues",
+          "submitRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "ProFormDrawer shell chain",
+          "drawer root className",
+          "drawer footer rhythm",
+          "TypicalPageFieldMapProvider + SchemaForm certified subtree",
+          "SchemaForm formProps/gridProps contract",
+          "<=16 editable field boundary"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "Drawer.Footer",
+          "Card + Form + footer",
+          "field count > 16",
+          "min-height: 100vh"
+        ],
+        "lightSanityChecks": [
+          "required-shell:ProFormDrawer",
+          "required-provider:TypicalPageFieldMapProvider",
+          "required-drawer-certified-schema-subtree",
+          "required-drawer-root-class",
+          "required-drawer-footer",
+          "field-count-max:16",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "required-drawer-footer-owner",
+          "forbidden-drawer-card-body",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "字段数 <=16 时使用抽屉表单",
+          "字段数 >16 时切换全页编辑，不要硬塞抽屉",
+          "抽屉底栏样式由官方母版承接，不要自写 footer",
+          "抽屉 body 必须继续保留官方模板中的 TypicalPageFieldMapProvider + SchemaForm 认证子树，只替换字段、默认值和提交逻辑",
+          "不要把官方 SchemaForm 子树替换成 Card + Form、本地兼容 wrapper 或另一套自拼表单桥"
+        ],
+        "baseStylePath": null,
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": false,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "not-applicable",
+          "sharedHeaderRestorePolicy": "not-applicable",
+          "sharedHeaderConflictScope": "drawer-shell-only",
+          "hostEscalationRule": "drawer-shell-owned",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": false,
+          "mountRegionFillPolicy": "drawer-owned",
+          "pageRootFillOwner": "drawer-shell",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "trigger",
+            "formFields",
+            "initialValues",
+            "submitRequest",
+            "mockData",
+            "footer"
+          ],
+          "forbiddenSlots": [
+            "Drawer.Footer",
+            "customDrawerFooter",
+            "cardFormShell",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children",
+            "footer"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "drawerChildrenPolicy": "children must be the certified form body and approved footer only",
+          "fieldCountPolicy": "<=16 editable fields, otherwise use full-page-edit"
+        },
+        "regionOwnershipContract": {
+          "drawerRootOwner": "ProFormDrawer",
+          "drawerBodyOwner": "ProFormDrawer",
+          "drawerFooterOwner": "ProDrawerFooterActions",
+          "formOwner": "schema-form"
+        }
+      },
+      "aiDefaultUseCases": [
+        "新建",
+        "编辑",
+        "审批",
+        "驳回",
+        "分配",
+        "转派",
+        "确认"
+      ],
+      "aiDecisionHints": [
+        "可编辑字段 <= 16",
+        "流程短，需要保留当前列表上下文"
+      ],
+      "aiAntiPatterns": [
+        "字段多、流程长、需要分组或底部操作区时不要使用，应转 full-page-edit"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/drawer-form.tsx",
+      "globalPreviewRoute": "/form/typical/drawer"
     },
     {
       "id": "drawer-detail",
       "label": "抽屉详情",
+      "pageFamily": "typical-page",
       "kind": "detail",
       "whenToUse": "字段较少，抽屉内只读详情",
       "registrySummary": "只读描述项 <=16 时使用，宽度和双列规则只看专章",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51728:131344",
       "shell": "ProDetailDrawer",
-      "examplePath": "src/typical-page-reuse/pages/drawer-detail.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/drawer-detail.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/drawer-detail.tsx",
       "smokePath": "detail/typical/drawer",
       "smokeGroup": "drawer",
       "smokePriority": "secondary",
       "docEntry": "docs/generation/figma-pages/drawer-detail.md",
       "sharedDocs": [],
-      "requiredStartFromExample": true
-    },
-    {
-      "id": "feedback-status",
-      "label": "异常反馈页",
-      "kind": "feedback",
-      "whenToUse": "空状态、加载失败、无权限、建设中、网络异常等反馈场景",
-      "registrySummary": "保持“页头 + 单一白底反馈面板 + 居中反馈内容”结构，不误用表格、表单或详情壳层",
-      "fileKey": null,
-      "nodeId": null,
-      "shell": "FeedbackStatePanel",
-      "examplePath": "src/typical-page-reuse/pages/empty-state.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/empty-state.tsx",
-      "smokePath": "feedback/empty-state",
-      "smokeGroup": "feedback",
-      "smokePriority": "primary",
-      "docEntry": "docs/generation/figma-pages/feedback.md",
-      "sharedDocs": [],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/drawer-detail.tsx",
+        "requiredShell": "ProDetailDrawer",
+        "requiredImports": [
+          {
+            "source": "local-managed-runtime/pro-detail-drawer",
+            "symbols": [
+              "ProDetailDrawer"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "trigger",
+          "sections",
+          "request"
+        ],
+        "businessSlots": [
+          "title",
+          "trigger",
+          "detailFields",
+          "detailRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "ProDetailDrawer shell chain",
+          "drawer root className",
+          "<=16 readonly field boundary",
+          "drawer detail spacing"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "Card + Descriptions",
+          "field count > 16",
+          "min-height: 100vh"
+        ],
+        "lightSanityChecks": [
+          "required-shell:ProDetailDrawer",
+          "required-drawer-root-class",
+          "field-count-max:16",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "required-detail-drawer-body-owner",
+          "forbidden-drawer-card-detail",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "只读描述项 <=16 时使用抽屉详情",
+          "只读描述项 >16 时切换全页详情",
+          "不要用普通 Card + Descriptions 重搭抽屉详情"
+        ],
+        "baseStylePath": null,
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": false,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "not-applicable",
+          "sharedHeaderRestorePolicy": "not-applicable",
+          "sharedHeaderConflictScope": "drawer-shell-only",
+          "hostEscalationRule": "drawer-shell-owned",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": false,
+          "mountRegionFillPolicy": "drawer-owned",
+          "pageRootFillOwner": "drawer-shell",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": false
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "trigger",
+            "detailFields",
+            "detailRequest",
+            "mockData"
+          ],
+          "forbiddenSlots": [
+            "cardDescriptionsShell",
+            "multiGroupMainDetail",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children",
+            "bodyClassName"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "fieldCountPolicy": "<=16 readonly fields, otherwise use full-page-detail"
+        },
+        "regionOwnershipContract": {
+          "drawerRootOwner": "ProDetailDrawer",
+          "drawerBodyOwner": "ProDetailDrawerBody",
+          "detailContentOwner": "ProDetailDrawerBody"
+        }
+      },
+      "aiDefaultUseCases": [
+        "记录详情",
+        "审批详情",
+        "日志详情",
+        "操作详情"
+      ],
+      "aiDecisionHints": [
+        "只读字段 <= 16",
+        "详情用于辅助列表判断，不是主流程页面"
+      ],
+      "aiAntiPatterns": [
+        "多分组详情或主流程详情页不要使用，应转 full-page-detail"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/drawer-detail.tsx",
+      "globalPreviewRoute": "/detail/typical/drawer"
     },
     {
       "id": "full-page-edit",
       "label": "全页编辑",
+      "pageFamily": "typical-page",
       "kind": "form",
-      "whenToUse": "主流程为整页表单，需要底部操作区",
-      "registrySummary": "主流程走全页，不走抽屉；头部、滚动区、底栏必须继续留在固定页壳里",
+      "whenToUse": "主流程为整页表单，需要底部操作区；存在结构化子记录时可追加受管明细表",
+      "registrySummary": "主流程走全页，不走抽屉；头部、滚动区、底栏必须继续留在固定页壳里；可选明细表仍属于同一表单阅读流",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "51257:102808",
       "shell": "ProEditPage",
-      "examplePath": "src/typical-page-reuse/pages/full-page-edit.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/full-page-edit.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/full-page-edit.tsx",
       "smokePath": "form/typical/edit",
       "smokeGroup": "full-page",
       "smokePriority": "primary",
-      "archetypeSmokeBaseline": true,
-      "archetypeSmokePriority": "required",
       "docEntry": "docs/generation/figma-pages/edit.md",
       "sharedDocs": [
         "docs/generation/figma-pages/forms-shared.md"
       ],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/full-page-edit.tsx",
+        "requiredShell": "ProEditPage",
+        "requiredImports": [
+          {
+            "source": "@hi-ui/hiui",
+            "symbols": [
+              "PageHeader"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-edit-page",
+            "symbols": [
+              "Form",
+              "ProEditPage",
+              "proEditPageShellStyles"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "formScrollBody",
+          "inlineEditFooter",
+          "schema",
+          "submit"
+        ],
+        "businessSlots": [
+          "title",
+          "onBack",
+          "formFields",
+          "groups",
+          "detailTable",
+          "initialValues",
+          "submitRequest",
+          "draftRequest",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "ProEditPage shell chain",
+          "self-contained PageHeader",
+          "formScrollBody and inlineEditFooter sibling order",
+          "continuous flex + min-height:0 height chain",
+          "three-column 40px gutter"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "Card + Form + footer",
+          "PageFooterPortal",
+          "TypicalPageFooterPortal",
+          "min-height: 100vh",
+          "overflow-y: auto",
+          "padding: '20px 20px 0'"
+        ],
+        "lightSanityChecks": [
+          "required-shell:ProEditPage",
+          "required-symbol:PageHeader",
+          "required-symbol:proEditPageShellStyles.formScrollBody",
+          "required-symbol:proEditPageShellStyles.inlineEditFooter",
+          "forbidden-footer-portal",
+          "forbidden-extra-form-root-padding",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "required-edit-header-before-shell",
+          "required-edit-page-structure-order",
+          "required-root-flex-chain",
+          "required-edit-footer-owner",
+          "required-edit-form-bridge",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "全页编辑必须从 full-page-edit.tsx 起步",
+          "挂到正式导航注册表或正式业务壳时，默认移除 PageHeader onBack",
+          "只有从列表、业务按钮或旧入口二级进入的全页编辑，才保留 PageHeader onBack",
+          "inlineEditFooter 必须是 formScrollBody 的同级兄弟，不能放进滚动区",
+          "字段较少但有主流程编辑语义时也优先保留全页壳，不退回普通 Card 表单",
+          "表单根只能使用 pro-edit-page 公开的 Form bridge，不得退回 SchemaForm、mapToDumb 或本地兼容 wrapper",
+          "若业务包含结构化子记录，可在一级分组流中追加可选 detailTable；无需求时默认不渲染该分组",
+          "detailTable 仍属于 groups 驱动的表单阅读流；标题、右侧轻操作与表格收口间距必须沿用一级分组节奏，不得额外手写第二层标题或独立分割线",
+          "行内编辑型 detailTable 优先复用 hiui5 Input、Select、DatePicker 等受管控件，并沿用 queryFilterPickerOverlay / queryFilterDatePickerOverlay 处理浮层"
+        ],
+        "baseStylePath": "examples/host-integration/src/pages/full-page-edit.module.scss",
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": true
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "onBack",
+            "formFields",
+            "groups",
+            "detailTable",
+            "initialValues",
+            "submitRequest",
+            "draftRequest",
+            "mockData",
+            "headerExtra"
+          ],
+          "forbiddenSlots": [
+            "Card + Form + footer",
+            "customFooterPortal",
+            "customMainScroll",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "childrenPolicy": "must preserve self-contained PageHeader, formScrollBody, inlineEditFooter order; optional detailTable must stay inside the same group-driven reading flow"
+        },
+        "regionOwnershipContract": {
+          "pageRootOwner": "ProEditPage",
+          "headerOwner": "PageHeader",
+          "formScrollOwner": "proEditPageShellStyles.formScrollBody",
+          "footerOwner": "proEditPageShellStyles.inlineEditFooter",
+          "mainScrollOwner": "proEditPageShellStyles.formScrollBody",
+          "detailTableOwner": "groups flow inside proEditPageShellStyles.formScrollBody"
+        }
+      },
+      "aiDefaultUseCases": [
+        "规则配置",
+        "复杂申请",
+        "资料维护",
+        "流程配置",
+        "多分组编辑"
+      ],
+      "aiDecisionHints": [
+        "可编辑字段 > 16",
+        "需要整页承载、分组、底部操作区或较长流程"
+      ],
+      "aiAntiPatterns": [
+        "少字段即时操作不要使用，应转 drawer-form"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/full-page-edit.tsx",
+      "globalPreviewRoute": "/form/typical/edit"
     },
     {
       "id": "full-page-detail",
       "label": "全页详情",
+      "pageFamily": "typical-page",
       "kind": "detail",
       "whenToUse": "多分组只读详情页",
       "registrySummary": "分组白卡无描边，块间距和长文本占整行等正文只看专章",
       "fileKey": "jlYnxIW1FFGG8fK1sVcL5C",
       "nodeId": "52409:60782",
       "shell": "ProDetailPage",
-      "examplePath": "src/typical-page-reuse/pages/full-page-detail.tsx",
-      "assetExamplePath": "examples/host-integration/src/pages/full-page-detail.tsx",
+      "runtimeExamplePath": "examples/host-integration/src/pages/full-page-detail.tsx",
       "smokePath": "detail/typical/page",
       "smokeGroup": "full-page",
       "smokePriority": "secondary",
-      "archetypeSmokeBaseline": true,
-      "archetypeSmokePriority": "required",
       "docEntry": "docs/generation/figma-pages/detail-group.md",
       "sharedDocs": [],
-      "requiredStartFromExample": true
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/full-page-detail.tsx",
+        "requiredShell": "ProDetailPage",
+        "requiredImports": [
+          {
+            "source": "@hi-ui/hiui",
+            "symbols": [
+              "PageHeader"
+            ]
+          },
+          {
+            "source": "local-managed-runtime/pro-detail-page",
+            "symbols": [
+              "ProDetailPage"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "sections",
+          "request"
+        ],
+        "businessSlots": [
+          "title",
+          "onBack",
+          "sections",
+          "request",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "compatibilityAliases": {
+          "sections": [
+            "detailFields",
+            "groups"
+          ],
+          "request": [
+            "detailRequest"
+          ]
+        },
+        "sectionTypeContract": {
+          "primaryModel": "sections",
+          "compatibilityInputPolicy": "detailFields/groups/detailRequest may be read as transition aliases, but new generation must model full-page-detail as sections + request",
+          "allowedSectionKinds": [
+            {
+              "id": "description-group",
+              "role": "primary-detail-section",
+              "required": true,
+              "description": "Primary readonly detail group rendered through SchemaDescriptionsBridge and Descriptions fields."
+            },
+            {
+              "id": "summary-cards",
+              "role": "supporting-summary-section",
+              "required": false,
+              "description": "Supporting summary cards rendered inside SchemaGroup rhythm for compact metric-style or lifecycle summary content."
+            },
+            {
+              "id": "data-table",
+              "role": "supporting-table-section",
+              "required": false,
+              "description": "Supporting readonly table section for records, logs, or sub-list evidence that should stay inside the detail reading flow."
+            }
+          ],
+          "sectionOrderingPolicy": [
+            "description-group remains the primary reading anchor",
+            "supporting summary-cards or data-table sections must stay inside the grouped detail flow",
+            "data-table sections must not replace the primary description-group section"
+          ]
+        },
+        "lockedRegions": [
+          "ProDetailPage shell chain",
+          "self-contained PageHeader",
+          "grouped white-card detail rhythm",
+          "continuous flex + min-height:0 height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "Card + Descriptions",
+          "min-height: 100vh",
+          "overflow-y: auto",
+          "duplicate PageHeader"
+        ],
+        "lightSanityChecks": [
+          "required-shell:ProDetailPage",
+          "required-symbol:PageHeader",
+          "required-grouped-detail-sections",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "required-detail-page-region-owner",
+          "required-root-flex-chain",
+          "forbidden-duplicate-page-header",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "只读描述项 >16 时使用全页详情",
+          "挂到正式导航注册表或正式业务壳时，默认移除 PageHeader onBack",
+          "只有从列表、业务按钮或旧入口二级进入的全页详情，才保留 PageHeader onBack",
+          "分组白卡不要新增描边或阴影",
+          "不要用普通 Card + Descriptions 重搭全页详情",
+          "详情页主模型统一为 sections + request；卡片摘要和表格只作为受管 supporting sections 扩展"
+        ],
+        "baseStylePath": "examples/host-integration/src/pages/full-page-detail.module.scss",
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": true,
+          "proDetailPageMustStayInsideWhiteBodyWhenLegacyCarrier": true
+        },
+        "dataShapeContract": {
+          "schemaGroupDataIndexMustExistInRequestResult": true,
+          "dynamicRequestRequiresExplicitMapper": true,
+          "requiredTopLevelGroupKeys": [
+            "basicInfo",
+            "customerInfo",
+            "serviceInfo"
+          ],
+          "schemaGroupDataIndexMustMapToNestedObject": true,
+          "sectionsRequestMustProvideDataBySectionDataKey": true,
+          "summaryCardsSectionMustMapToArrayLikeData": true,
+          "dataTableSectionMustMapToArrayLikeRows": true
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [
+            "hi-v4-descriptions",
+            "hi-v5-descriptions"
+          ],
+          "selectorMustMatchResolvedRuntimeClass": true,
+          "requiredDescriptionLabelAlignment": {
+            "placement": "vertical",
+            "labelPlacement": "left",
+            "matchSelectors": [
+              ".schema-descriptions.hi-v4-descriptions--placement-vertical.hi-v4-descriptions--label-placement-left .hi-v4-descriptions-row > th",
+              ".schema-descriptions.hi-v5-descriptions--placement-vertical.hi-v5-descriptions--label-placement-left .hi-v5-descriptions-row > th"
+            ]
+          }
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier",
+            "dataShapeContract is satisfied or an explicit mapper is generated"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "onBack",
+            "sections",
+            "request",
+            "mockData",
+            "headerExtra"
+          ],
+          "compatibilityAllowedSlots": [
+            "detailFields",
+            "groups",
+            "detailRequest"
+          ],
+          "forbiddenSlots": [
+            "duplicatePageHeader",
+            "customWhiteBody",
+            "cardDescriptionsShell",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "childrenPolicy": "must preserve self-contained PageHeader and grouped detail body ownership",
+          "sectionKindPolicy": {
+            "primarySectionKinds": [
+              "description-group"
+            ],
+            "supportingSectionKinds": [
+              "summary-cards",
+              "data-table"
+            ],
+            "forbiddenBehaviors": [
+              "supporting sections replacing the primary descriptions flow",
+              "supporting sections escaping SchemaGroup rhythm",
+              "custom white-body or secondary main-scroll ownership"
+            ]
+          }
+        },
+        "regionOwnershipContract": {
+          "pageRootOwner": "ProDetailPage",
+          "headerOwner": "PageHeader",
+          "whiteBodyOwner": "ProDetailPage",
+          "detailGroupOwner": "SchemaGroup",
+          "mainScrollOwner": "ProDetailPage"
+        }
+      },
+      "aiDefaultUseCases": [
+        "工单详情",
+        "订单详情",
+        "客户详情",
+        "审批单详情",
+        "服务单详情"
+      ],
+      "aiDecisionHints": [
+        "多分组只读详情",
+        "页面是用户完成判断或后续操作的主页面"
+      ],
+      "aiAntiPatterns": [
+        "少量字段辅助查看不要使用，应转 drawer-detail"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/full-page-detail.tsx",
+      "globalPreviewRoute": "/detail/typical/page"
+    },
+    {
+      "id": "feedback-status",
+      "label": "异常反馈页",
+      "pageFamily": "typical-page",
+      "kind": "feedback",
+      "whenToUse": "页面主内容是空状态、失败、无权限或建设中反馈",
+      "registrySummary": "保持“页头 + 单白底反馈面板 + EmptyState”结构，不要退化成自由公告页",
+      "fileKey": null,
+      "nodeId": null,
+      "shell": "FeedbackStatusPage",
+      "runtimeExamplePath": "examples/host-integration/src/pages/feedback-status/index.tsx",
+      "smokePath": "feedback/empty-state",
+      "smokeGroup": "feedback",
+      "smokePriority": "secondary",
+      "docEntry": "docs/generation/figma-pages/feedback-status.md",
+      "sharedDocs": [],
+      "generationContract": {
+        "baseTemplatePath": "examples/host-integration/src/pages/feedback-status/index.tsx",
+        "requiredShell": "FeedbackStatusPage",
+        "requiredImports": [
+          {
+            "source": "@hi-ui/hiui",
+            "symbols": [
+              "EmptyState",
+              "PageHeader"
+            ]
+          }
+        ],
+        "requiredSlots": [
+          "title",
+          "description",
+          "primaryAction"
+        ],
+        "businessSlots": [
+          "title",
+          "description",
+          "primaryAction",
+          "secondaryActions",
+          "headerActions",
+          "indicator",
+          "variantId",
+          "mockData"
+        ],
+        "moduleExportContract": {
+          "routeMountable": true,
+          "namedPageExportRequired": true,
+          "defaultExportRequired": true,
+          "namedPageExportPattern": "*Page",
+          "reason": "Business routes currently mount generated pages through default imports, while framework helpers also rely on a stable named *Page export."
+        },
+        "lockedRegions": [
+          "FeedbackStatusPage shell chain",
+          "self-contained PageHeader",
+          "single white-body feedback panel",
+          "continuous flex + min-height:0 height chain"
+        ],
+        "forbiddenTokens": [
+          "hi-v4-",
+          "--hi-v4-",
+          "min-height: 100vh",
+          "overflow-y: auto"
+        ],
+        "lightSanityChecks": [
+          "required-shell:FeedbackStatusPage",
+          "required-symbol:PageHeader",
+          "required-symbol:EmptyState",
+          "required-root-flex-chain",
+          "required-white-body-fill-contract",
+          "forbidden-feedback-white-body-padding",
+          "forbidden-legacy-hiui4",
+          "forbidden-private-shell-import",
+          "forbidden-duplicate-page-header",
+          "forbidden-business-notice-ui"
+        ],
+        "generationNotes": [
+          "异常反馈页必须保持单一白底反馈面板，不要拆成多张业务白卡",
+          "页头由页面自身的 PageHeader 承载，反馈主体只承载 EmptyState、说明文案和操作按钮",
+          "7 个反馈变体共用同一页型，不要拆成 7 个独立典型页"
+        ],
+        "baseStylePath": "examples/host-integration/src/pages/feedback-status/index.module.scss",
+        "hostCapabilityContract": {
+          "requiresTypicalPageHostProvider": false,
+          "requiresHeaderPortalCarrier": false,
+          "requiresContinuousHeightChain": true,
+          "headerOwnership": "self-contained",
+          "sharedHeaderConflictPolicy": "auto-hide-while-mounted",
+          "sharedHeaderRestorePolicy": "restore-on-unmount",
+          "sharedHeaderConflictScope": "new-generated-pages-only",
+          "hostEscalationRule": "block-only-when-mount-region-not-stretchable",
+          "compatibleHostHeaderSlotPolicies": [
+            "no-header-slot",
+            "collapses-when-empty"
+          ],
+          "isolatedModuleFederationEntryRequiresSelfContainedStyles": true
+        },
+        "layoutContract": {
+          "rootMustAvoidViewportHeightHack": true,
+          "requiresFlexMinHeightChain": true,
+          "whiteBodyMustFillRemainingHeight": true,
+          "mountRegionFillPolicy": "fill-available-content-region",
+          "pageRootFillOwner": "page-owned-support-file",
+          "forbiddenFallbacks": [
+            "min-height:100vh",
+            "height:100vh",
+            "extra-gray-wrapper",
+            "second-white-body",
+            "page-type-whitelist-host-patch"
+          ],
+          "pageHeaderMustBeOutsideWhiteBody": true
+        },
+        "dataShapeContract": {
+          "dynamicRequestRequiresExplicitMapper": false
+        },
+        "domClassContract": {
+          "sourceForbiddenTokens": [
+            "hi-v4-",
+            "--hi-v4-"
+          ],
+          "runtimeCompatibilityTokens": [],
+          "selectorMustMatchResolvedRuntimeClass": true
+        },
+        "fallbackPolicy": {
+          "directCopyWhen": [
+            "baseTemplatePath exists",
+            "baseStylePath is copied when present",
+            "hostCapabilityContract is satisfied or page type does not require a host carrier"
+          ],
+          "blockedWhen": [
+            "required template file is missing",
+            "required style file declared by baseStylePath is missing",
+            "existing destination files would be overwritten without --force"
+          ]
+        },
+        "slotBoundaryContract": {
+          "allowedSlots": [
+            "title",
+            "description",
+            "primaryAction",
+            "secondaryActions",
+            "headerActions",
+            "indicator",
+            "variantId",
+            "mockData"
+          ],
+          "forbiddenSlots": [
+            "children",
+            "customWhiteBody",
+            "customMainScroll",
+            "duplicatePageHeader",
+            "persistentBusinessNotice"
+          ],
+          "dangerousProps": [
+            "children"
+          ],
+          "businessNoticePolicy": "message-or-meta-only",
+          "childrenPolicy": "must preserve a single centered feedback panel inside one whiteBody"
+        },
+        "regionOwnershipContract": {
+          "pageRootOwner": "FeedbackStatusPage",
+          "headerOwner": "PageHeader",
+          "whiteBodyOwner": "FeedbackStatusPage",
+          "feedbackPanelOwner": "EmptyState",
+          "mainScrollOwner": "FeedbackStatusPage"
+        }
+      },
+      "aiDefaultUseCases": [
+        "暂无数据",
+        "加载失败",
+        "页面不存在",
+        "暂无权限",
+        "页面建设中",
+        "网络异常",
+        "未连接内网"
+      ],
+      "aiDecisionHints": [
+        "页面主任务是反馈当前状态，而不是浏览表格、填写表单或查看详情",
+        "主体内容围绕一个 EmptyState 反馈面板展开",
+        "页面需要主操作、次要操作或返回类动作承接"
+      ],
+      "aiAntiPatterns": [
+        "不要误判成详情页、列表页或通用公告页",
+        "不要把多个状态说明堆成多张白卡",
+        "不要为了不同插图拆成多个独立页型"
+      ],
+      "aiFirstTemplateChoice": "examples/host-integration/src/pages/feedback-status/index.tsx",
+      "globalPreviewRoute": "/feedback/empty-state"
     }
   ]
 }

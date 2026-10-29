@@ -1,8 +1,7 @@
-import { useMemo } from 'react'
-import { Message, PageHeader, Space } from '@hi-ui/hiui'
+import React from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { Button, DatePicker, Input, Message, PageHeader, Select, Space, Table } from '@hi-ui/hiui'
 import { F, GS } from '@hi-ui/schema-core'
-import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
-import { useNavigate } from 'react-router-dom'
 import {
   CancelButton,
   Form,
@@ -11,7 +10,11 @@ import {
   StashButton,
   SubmitButton,
   proEditPageShellStyles,
-} from '@hiui-design/typical-page-shells/pro-edit-page'
+} from '../components/hiui-design-runtime/pro-edit-page'
+import {
+  queryFilterDatePickerOverlay,
+  queryFilterPickerOverlay,
+} from '../components/hiui-design-runtime'
 import {
   getWorkOrderEditDetail,
   purchaseChannelOptions,
@@ -24,7 +27,37 @@ import {
   ticketTypeOptions,
   userTagOptions,
 } from './typical-pages.mock'
-import { useTranslation } from '../../translation'
+import { resolveNextProductSequence } from './full-page-edit.helpers'
+import { useTranslation } from './page-localization'
+import styles from './full-page-edit.module.scss'
+
+type FullPageEditPageProps = Record<string, unknown> & {
+  detailTablePreset?: FullPageEditDetailTablePreset
+  onBack?: () => void
+}
+
+type ProductDetailRow = {
+  id: string
+  imeiOrSn: string
+  productCode: string
+  productName: string
+  relatedOrder: string
+  warrantyEnd: string
+  warrantyStart: string
+}
+
+type ProductOrderOption = {
+  id: string
+  title: string
+}
+
+export type FullPageEditDetailTablePreset = {
+  initialRows?: ProductDetailRow[]
+  orderOptions?: ProductOrderOption[]
+  visible?: boolean
+}
+
+type ProductEditableField = 'imeiOrSn' | 'relatedOrder' | 'warrantyStart' | 'warrantyEnd'
 
 const dateProps = {
   format: 'YYYY-MM-DD',
@@ -37,10 +70,179 @@ const dateTimeProps = {
   clearable: true,
 } as const
 
-function FullPageEditInner() {
-  const navigate = useNavigate()
-  const { locale, t } = useTranslation()
+function createProductDetailDraft(index: number, orderOptions: ProductOrderOption[]): ProductDetailRow {
+  return {
+    id: `product-${index}`,
+    productName: `新增商品 ${index}`,
+    productCode: `SKU-${String(20260000 + index).slice(-8)}`,
+    imeiOrSn: `SN-${String(68000000 + index).slice(-8)}`,
+    relatedOrder: orderOptions[0]?.id || '',
+    warrantyStart: '2026-04-18',
+    warrantyEnd: '2027-04-17',
+  }
+}
 
+function openRuntimeMessage(type: 'success' | 'warning' | 'info', title: string) {
+  const messageApi = Message as unknown as {
+    open?: (options: { type?: 'success' | 'warning' | 'info'; title: string }) => void
+  }
+
+  if (typeof messageApi.open === 'function') {
+    messageApi.open({ type, title })
+    return
+  }
+
+  if (typeof window !== 'undefined' && typeof window.alert === 'function') {
+    window.alert(title)
+    return
+  }
+
+  console[type === 'warning' ? 'warn' : 'info'](title)
+}
+
+function buildFallbackBackHandler(onBack?: () => void) {
+  return () => {
+    if (typeof onBack === 'function') {
+      onBack()
+      return
+    }
+
+    if (typeof window === 'undefined') return
+    if (window.history.length > 1) {
+      window.history.back()
+      return
+    }
+    window.close()
+  }
+}
+
+function FullPageEditInner({ detailTablePreset, onBack }: FullPageEditPageProps) {
+  const { locale, t } = useTranslation()
+  const productOrderOptions = useMemo(
+    () => detailTablePreset?.orderOptions?.map((option) => ({ ...option })) || [],
+    [detailTablePreset]
+  )
+  const initialProductRows = useMemo(
+    () => detailTablePreset?.initialRows?.map((row) => ({ ...row })) || [],
+    [detailTablePreset]
+  )
+  const nextProductSequenceRef = useRef(resolveNextProductSequence(initialProductRows))
+  const [productRows, setProductRows] = useState<ProductDetailRow[]>(() => initialProductRows)
+  const handleBack = useMemo(() => buildFallbackBackHandler(onBack), [onBack])
+  const handleSubmitSuccess = useMemo(
+    () => () => {
+      openRuntimeMessage('success', t('工单已提交（示例）'))
+      if (typeof onBack === 'function') {
+        onBack()
+      }
+    },
+    [onBack, t]
+  )
+  const updateProductRow = (rowId: string, field: ProductEditableField, value: string) => {
+    setProductRows((current) =>
+      current.map((item) => (item.id === rowId ? { ...item, [field]: value } : item))
+    )
+  }
+  const showProductSection = Boolean(detailTablePreset?.visible) || productRows.length > 0
+  const productColumns = useMemo(
+    () => [
+      {
+        title: t('商品名称'),
+        dataKey: 'productName',
+        width: 180,
+      },
+      {
+        title: t('商品编码'),
+        dataKey: 'productCode',
+        width: 160,
+      },
+      {
+        title: t('IMEI/SN'),
+        dataKey: 'imeiOrSn',
+        width: 160,
+        render: (value: unknown, row: ProductDetailRow) => (
+          <Input
+            className={styles.detailTableControl}
+            clearable
+            placeholder={t('请输入 IMEI/SN')}
+            value={typeof value === 'string' ? value : ''}
+            onChange={(_evt, nextValue) => updateProductRow(row.id, 'imeiOrSn', nextValue)}
+          />
+        ),
+      },
+      {
+        title: t('关联订单'),
+        dataKey: 'relatedOrder',
+        width: 170,
+        render: (value: unknown, row: ProductDetailRow) => (
+          <Select
+            className={styles.detailTableControl}
+            clearable
+            data={productOrderOptions.map((option) => ({ ...option, title: option.title }))}
+            overlay={queryFilterPickerOverlay}
+            placeholder={t('请选择关联订单')}
+            value={typeof value === 'string' ? value : ''}
+            onChange={(selectedId) => updateProductRow(row.id, 'relatedOrder', String(selectedId ?? ''))}
+          />
+        ),
+      },
+      {
+        title: t('三包开始日期'),
+        dataKey: 'warrantyStart',
+        width: 150,
+        render: (value: unknown, row: ProductDetailRow) => (
+          <DatePicker
+            className={styles.detailTableControl}
+            clearable
+            format="YYYY-MM-DD"
+            overlay={queryFilterDatePickerOverlay}
+            placeholder={t('请选择日期')}
+            value={typeof value === 'string' ? value : null}
+            onChange={(_date, dateStr) =>
+              updateProductRow(row.id, 'warrantyStart', typeof dateStr === 'string' ? dateStr : '')
+            }
+          />
+        ),
+      },
+      {
+        title: t('三包结束日期'),
+        dataKey: 'warrantyEnd',
+        width: 150,
+        render: (value: unknown, row: ProductDetailRow) => (
+          <DatePicker
+            className={styles.detailTableControl}
+            clearable
+            format="YYYY-MM-DD"
+            overlay={queryFilterDatePickerOverlay}
+            placeholder={t('请选择日期')}
+            value={typeof value === 'string' ? value : null}
+            onChange={(_date, dateStr) =>
+              updateProductRow(row.id, 'warrantyEnd', typeof dateStr === 'string' ? dateStr : '')
+            }
+          />
+        ),
+      },
+      {
+        title: t('操作'),
+        dataKey: 'operation',
+        width: 96,
+        fixed: 'right' as const,
+        render: (_unusedValue: unknown, row: ProductDetailRow) => (
+          <Button
+            appearance="link"
+            type="primary"
+            onClick={() => {
+              setProductRows((current) => current.filter((item) => item.id !== row.id))
+              openRuntimeMessage('info', t('已删除商品：{name}', { name: row.productName }))
+            }}
+          >
+            {t('删除')}
+          </Button>
+        ),
+      },
+    ],
+    [t]
+  )
   const groups = useMemo(
     () => [
       GS(t('基础信息'))
@@ -80,6 +282,54 @@ function FullPageEditInner() {
         ])
         .CardProps({ size: 'lg' })
         .val,
+      ...(showProductSection
+        ? [
+            (() => {
+              const productGroup = GS(t('商品信息'))
+                .Custom({
+                  render: () => (
+                    <div className={styles.detailTableSection}>
+                      <Table
+                        bordered={false}
+                        columns={productColumns}
+                        data={productRows}
+                        emptyContent={t('暂无商品信息')}
+                        fieldKey="id"
+                        fixedToColumn={{ right: 'operation' }}
+                        setting={false}
+                        showColMenu={false}
+                        sticky={false}
+                      />
+                    </div>
+                  ),
+                })
+                .Actions([
+                  <Button
+                    key="add-product"
+                    appearance="link"
+                    type="primary"
+                    onClick={() => {
+                      const nextProductSequence = nextProductSequenceRef.current
+                      nextProductSequenceRef.current += 1
+                      setProductRows((current) => [
+                        ...current,
+                        createProductDetailDraft(nextProductSequence, productOrderOptions),
+                      ])
+                      openRuntimeMessage('success', t('已添加商品'))
+                    }}
+                  >
+                    {t('添加商品')}
+                  </Button>,
+                ])
+                .CardProps({
+                  size: 'lg',
+                })
+                .val
+
+              return productGroup
+            })(),
+          ]
+        : []),
       GS(t('服务信息'))
         .Simple()
         .Fields([
@@ -95,53 +345,56 @@ function FullPageEditInner() {
         .CardProps({ size: 'lg' })
         .val,
     ],
-    [t]
+    [detailTablePreset?.visible, productColumns, productOrderOptions, productRows, showProductSection, t]
   )
 
   return (
-    <ProEditPage
-      key={locale}
-      groups={groups}
-      onCancel={() => Message.open({ title: t('已取消编辑（示例）') })}
-      onSubmitSuccess={() => Message.open({ type: 'success', title: t('工单已提交（示例）') })}
-      onStashSuccess={() => Message.open({ type: 'success', title: t('草稿已保存（示例）') })}
-    >
-      <TypicalPageHeaderPortal>
-        <PageHeader
-          title={t('全页编辑')}
-          onBack={() => navigate(-1)}
-        />
-      </TypicalPageHeaderPortal>
+    <div className={styles.editPageRoot}>
+      <PageHeader
+        className={styles.pageHeader}
+        title={t('全页编辑')}
+        onBack={handleBack}
+      />
 
-      <div className={proEditPageShellStyles.formScrollBody}>
-        <Form
-          initialValues={{
-            status: 'pending',
-            ticketType: 'repair',
-            serviceMethod: 'door',
-            userTags: [],
-          }}
-          formProps={{ labelPlacement: 'top' }}
-          borderedGroups={false}
-          gridProps={{
-            columnCount: 3,
-            gutter: 40,
-          }}
-        />
-      </div>
+      <div className={styles.whiteBody}>
+        <ProEditPage
+          key={locale}
+          groups={groups}
+          onCancel={handleBack}
+          onSubmitSuccess={handleSubmitSuccess}
+          onStashSuccess={() => openRuntimeMessage('success', t('草稿已保存（示例）'))}
+        >
+          <div className={proEditPageShellStyles.formScrollBody}>
+            <Form
+              initialValues={{
+                status: 'pending',
+                ticketType: 'repair',
+                serviceMethod: 'door',
+                userTags: [],
+              }}
+              formProps={{ labelPlacement: 'top' }}
+              borderedGroups={false}
+              gridProps={{
+                columnCount: 3,
+                gutter: 40,
+              }}
+            />
+          </div>
 
-      <div className={proEditPageShellStyles.inlineEditFooter}>
-        <Space>
-          <CancelButton />
-          <StashButton />
-          <SubmitButton>{t('提交')}</SubmitButton>
-        </Space>
+          <div className={proEditPageShellStyles.inlineEditFooter}>
+            <Space>
+              <CancelButton />
+              <StashButton />
+              <SubmitButton>{t('提交')}</SubmitButton>
+            </Space>
+          </div>
+        </ProEditPage>
       </div>
-    </ProEditPage>
+    </div>
   )
 }
 
-export function FullPageEditPage() {
+export function FullPageEditPage({ detailTablePreset, onBack }: FullPageEditPageProps) {
   const { locale, t } = useTranslation()
   const detailRequest = useMemo(
     () => async () => {
@@ -149,10 +402,10 @@ export function FullPageEditPage() {
 
       return {
         ...response,
+        description: t(response.description),
         relatedProduct: t(response.relatedProduct),
         userName: t(response.userName),
         visitReason: t(response.visitReason),
-        description: t(response.description),
       }
     },
     [t]
@@ -165,7 +418,9 @@ export function FullPageEditPage() {
       submitRequest={submitExampleWorkOrder}
       stashRequest={stashExampleWorkOrder}
     >
-      <FullPageEditInner />
+      <FullPageEditInner detailTablePreset={detailTablePreset} onBack={onBack} />
     </ProEditPageProvider>
   )
 }
+
+export default FullPageEditPage

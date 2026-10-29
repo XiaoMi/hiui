@@ -2,79 +2,187 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { createHash } from 'node:crypto'
 import { spawnSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
+import {
+  readApplyState,
+  resolveApplyStatePath,
+} from './lib/apply-state.mjs'
 import { detectHostProfile } from './lib/detect-host-profile.mjs'
 import { writeHostAdapterSnippet } from './lib/host-adapter-advice.mjs'
+import { resolveAutoInstallMode } from './lib/install-mode-resolution.mjs'
 import { loadPageTypeManifest } from './lib/load-page-type-manifest.mjs'
-import { inspectManagedPageRegistry } from './lib/managed-page-artifacts.mjs'
+import { validateMinimumGenerationContract } from './lib/minimum-generation-contract.mjs'
+import { inspectNodeRuntimePolicy } from './lib/node-runtime-policy.mjs'
+import { syncPageTaskStatusFromDoctor } from './lib/page-task-gate.mjs'
 import {
-  inspectManagedAnalyticsSharedShellUsage,
-  validateManagedPageSource,
-} from './lib/managed-page-source-guard.mjs'
-import { isSpecBelowMajor, isVersionRangeAtLeast } from './lib/semver-range-compat.mjs'
+  formatViewportRootIssueDetail,
+  inspectViewportRootStyles,
+} from './lib/root-viewport-style.mjs'
+import {
+  formatInstallModeUsage,
+  getInstallModeErrorMessage,
+  isRecognizedInstallMode,
+} from './lib/mode-contract.mjs'
+import { collectPageSourceSanityViolations } from './lib/page-template-sanity.mjs'
+import { hasScopedHiui5BridgeMarkers } from './lib/legacy-hiui5-bridge-signals.mjs'
+import { getManagedLocalRuntimeRoot } from './lib/managed-local-runtime-contract.mjs'
+import {
+  loadManagedLocalRuntimeDependencyContract,
+  resolveManagedLocalRuntimeEmbeddedSourceSnapshot,
+  resolveManagedLocalRuntimeEmbeddedSourceSnapshotFiles,
+} from './lib/managed-local-runtime-dependencies.mjs'
+import { inspectManagedHostContract } from './lib/managed-host-contract.mjs'
+import { inspectInstalledReact19RuntimePatchCoverage as inspectInstalledReact19RuntimePatchCoverageShared } from './lib/react19-runtime-patch-health.mjs'
+import { verifyStyleDeliveryDecision } from './lib/style-delivery-decision.mjs'
 import { getReusableScripts } from './lib/reusable-script-entries.mjs'
-import { RULES_ONLY_REFERENCE_PAGES_GLOB } from './lib/reference-assets.mjs'
 import {
-  getManagedPageRuntimeSmokeRequirement,
-  getRequiredRegionsForPageType,
-  getRequiredOwnershipRolesForPageType,
-  loadRulesOnlyPageContracts,
-  reconcileManagedPageRuntimeSmokeWorkflow,
-  validateRulesOnlyPageContract,
-} from './lib/rules-only-page-contracts.mjs'
+  SKILL_CONTEXT_DIR,
+  SKILL_PUBLIC_NAME,
+  getContextOutputPath,
+  getContextScriptPath,
+  resolveProjectContextPath,
+  toContextVendorFileSpec,
+} from './lib/skill-identity.mjs'
+import { getIsolatedAliasCompatibility } from './lib/isolated-alias-compat.mjs'
+import { ensureProjectNodeRuntime, resolveComparablePath } from './lib/project-node-launcher.mjs'
 import {
-  buildLegacyRuntimeGuardIssues,
-  collectLegacyHiUiEsImports,
-  inspectInstalledRootRuntime,
-  summarizeLegacyImportHits,
-} from './lib/legacy-runtime-guard.mjs'
-import {
-  isAuditedModeOverride as isInstallModeAuditedOverride,
-  resolveRecommendedMode as resolveInstallRecommendedMode,
-} from './lib/install-mode-policy.mjs'
-import {
-  RUNTIME_SEAL_RELATIVE_PATH,
-  verifyCanonicalShellBinding,
-  verifyPrimitiveRegionFallback,
-  verifyRuntimeSeal,
-} from './lib/legacy-runtime-provenance.mjs'
-import {
-  RUNTIME_PROVIDER_CONTRACT_RELATIVE_PATH,
-  readRuntimeProviderContract,
-  verifyRuntimeProviderContract,
-} from './lib/legacy-runtime-provider-policy.mjs'
+  describeSharedRuntimeDirectDependencyInspection,
+  inspectDeclaredSharedRuntimeDirectDependencies,
+  loadSharedRuntimeDirectDependencySnapshot,
+  selectEntryImportedSharedRuntimeDirectDependencies,
+} from './lib/shared-runtime-direct-dependencies.mjs'
+import { isVersionCompatible } from './lib/version-compatibility.mjs'
+import { finalizeUsageSession, startUsageSession } from './lib/usage-telemetry.mjs'
+
+const skillRequire = createRequire(import.meta.url)
+const { HIUI5_ISOLATED_PEER_ALIASES } = skillRequire('./lib/hiui5-peer-contract.cjs')
+
+const LAYOUT_CONTRACT_CHECK_IDS = new Set([
+  'formal-host-provider-bridge-for-package-shells',
+  'formal-host-outlet-height-chain-contract',
+  'formal-host-height-chain-for-official-shells',
+  'formal-host-content-gutter-contract',
+  'formal-host-shared-header-slot-collapse',
+  'root-viewport-style-contract',
+  'public-shell-viewport-compatibility',
+])
+
+function normalizeRelativePath(value) {
+  return String(value || '')
+    .replace(/\\/g, '/')
+    .replace(/^\.\//, '')
+    .trim()
+}
+
+function stripJsonComments(source) {
+  let output = ''
+  let inString = false
+  let quote = ''
+  let escaped = false
+
+  for (let index = 0; index < source.length; index += 1) {
+    const char = source[index]
+    const next = source[index + 1]
+
+    if (inString) {
+      output += char
+      if (escaped) {
+        escaped = false
+      } else if (char === '\\') {
+        escaped = true
+      } else if (char === quote) {
+        inString = false
+        quote = ''
+      }
+      continue
+    }
+
+    if (char === '"' || char === "'") {
+      inString = true
+      quote = char
+      output += char
+      continue
+    }
+
+    if (char === '/' && next === '/') {
+      while (index < source.length && source[index] !== '\n') index += 1
+      output += '\n'
+      continue
+    }
+
+    if (char === '/' && next === '*') {
+      index += 2
+      while (index < source.length && !(source[index] === '*' && source[index + 1] === '/')) {
+        if (source[index] === '\n') output += '\n'
+        index += 1
+      }
+      index += 1
+      continue
+    }
+
+    output += char
+  }
+
+  return output
+}
 
 function printUsage() {
   console.log(`Usage:
-  node ".local-context/hiui-design/scripts/typical-page-doctor.mjs" [--target <project-root>] [--mode <auto|rules-only|host-integration|legacy-host-compatible>] [--line <line-id>] [--dest <relative-dir>] [--json]
+  node "${getContextScriptPath('typical-page-doctor.mjs')}" [--target <project-root>] [--mode <${formatInstallModeUsage()}>] [--line <line-id>] [--telemetry-prompt <text>] [--telemetry-prompt-file <path>] [--json]
 
 Default behavior:
   - target project: current working directory
   - mode: auto
-  - host-integration output dir: src/typical-page-reuse
-  - rules-only report dir: .local-context/hiui-design/outputs
+  - auto mode reuses recorded appliedMode when it exists; otherwise it follows the same compatibility-bridge check used by bootstrap
+  - preview examples stay in the packaged preview runtime; doctor treats project-local preview assets or preview routes as legacy leftovers to remove
+  - doctor reports default to ${getContextOutputPath()}
+  - usage stats can capture the verbatim original user prompt via --telemetry-prompt-file (preferred) or --telemetry-prompt
 `)
 }
 
 function parseArgs(argv) {
   const options = {
-    dest: 'src/typical-page-reuse',
     json: false,
     line: '',
     mode: 'auto',
+    telemetryPrompt: '',
+    telemetryPromptFile: '',
     target: process.cwd(),
   }
+  const removedPreviewArgs = new Set(['--dest'])
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i]
+
+    if (arg === '--') {
+      continue
+    }
 
     if (arg === '--json') {
       options.json = true
       continue
     }
 
-    if (arg === '--target' || arg === '--dest' || arg === '--mode' || arg === '--line') {
+    if (arg === '--telemetry-prompt' || arg === '--telemetry-prompt-file') {
+      const value = argv[i + 1]
+      if (!value || value.startsWith('--')) {
+        throw new Error(`Missing value for ${arg}`)
+      }
+      options[arg === '--telemetry-prompt' ? 'telemetryPrompt' : 'telemetryPromptFile'] = value
+      i += 1
+      continue
+    }
+
+    if (removedPreviewArgs.has(arg)) {
+      throw new Error(
+        `${arg} is no longer supported. Preview examples now stay in the packaged preview runtime and are not materialized into target projects.`
+      )
+    }
+
+    if (arg === '--target' || arg === '--mode' || arg === '--line') {
       const value = argv[i + 1]
       if (!value || value.startsWith('--')) {
         throw new Error(`Missing value for ${arg}`)
@@ -92,55 +200,20 @@ function parseArgs(argv) {
     throw new Error(`Unknown argument: ${arg}`)
   }
 
+  if (!isRecognizedInstallMode(options.mode)) {
+    throw new Error(getInstallModeErrorMessage())
+  }
+
   return options
 }
 
-const pathExistsCache = new Map()
-const textFileCache = new Map()
-const sourceFileListCache = new Map()
-const textFileListCache = new Map()
-const DEFAULT_TEXT_SCAN_SKIP_DIRS = new Set([
-  '.git',
-  '.idea',
-  '.next',
-  '.nuxt',
-  '.output',
-  '.turbo',
-  'coverage',
-  'dist',
-  'node_modules',
-  'outputs',
-  'vendor',
-])
-const CONTENT_TEXT_FILE_PATTERN = /\.[cm]?[jt]sx?$|\.s?css$/i
-const SCRIPT_TEXT_FILE_PATTERN = /\.[cm]?[jt]sx?$/i
-const STYLE_FILE_PATTERN = /\.s?css$/i
-
 async function pathExists(targetPath) {
-  if (!targetPath) return false
-  if (pathExistsCache.has(targetPath)) {
-    return pathExistsCache.get(targetPath)
+  try {
+    await fs.access(targetPath)
+    return true
+  } catch {
+    return false
   }
-
-  const pending = fs
-    .access(targetPath)
-    .then(() => true)
-    .catch(() => false)
-  pathExistsCache.set(targetPath, pending)
-  return pending
-}
-
-async function readTextCached(targetPath) {
-  if (textFileCache.has(targetPath)) {
-    return textFileCache.get(targetPath)
-  }
-
-  const pending = fs.readFile(targetPath, 'utf8').catch((error) => {
-    textFileCache.delete(targetPath)
-    throw error
-  })
-  textFileCache.set(targetPath, pending)
-  return pending
 }
 
 async function ensureDir(targetDir) {
@@ -149,243 +222,191 @@ async function ensureDir(targetDir) {
 
 async function readTextIfExists(targetPath) {
   if (!(await pathExists(targetPath))) return ''
-  return readTextCached(targetPath)
+  return fs.readFile(targetPath, 'utf8')
 }
 
 async function readJsonIfExists(targetPath) {
   if (!(await pathExists(targetPath))) return null
-  return JSON.parse(await readTextCached(targetPath))
+  return JSON.parse(await fs.readFile(targetPath, 'utf8'))
 }
 
-async function collectManagedContractPageTypes(targetRoot) {
-  const contractsDir = path.join(targetRoot, '.local-context', 'hiui-design', 'outputs', 'page-contracts')
-  const entries = await fs.readdir(contractsDir).catch(() => [])
-  const pageTypes = new Set()
-  for (const entry of entries) {
-    if (!entry.endsWith('.json')) continue
-    const contract = await readJsonIfExists(path.join(contractsDir, entry))
-    const pageType = String(contract?.pageTypeId || contract?.pageType || '').trim()
-    if (pageType) pageTypes.add(pageType)
-  }
-  return [...pageTypes].sort()
+function normalizeString(value) {
+  return String(value || '').trim()
 }
 
-async function verifyLegacyDoctorRuntimeFacts(targetRoot) {
-  const runtimeSeal = await verifyRuntimeSeal({ targetRoot })
-  const runtimeProviderContract = await readRuntimeProviderContract({ targetRoot })
-  const pageTypes = await collectManagedContractPageTypes(targetRoot)
-  const shellBindingResults = []
-  const primitiveFallbackResults = []
-  for (const pageType of pageTypes) {
-    shellBindingResults.push(await verifyCanonicalShellBinding({ targetRoot, pageType }))
-    primitiveFallbackResults.push(await verifyPrimitiveRegionFallback({ targetRoot, pageType }))
+function normalizeImportSpecifier(value) {
+  return String(value || '').trim().replace(/\\/g, '/')
+}
+
+function hasLegacyRuntimeSourcePackageToken(value = '') {
+  return normalizeImportSpecifier(value).includes('runtime-source-package')
+}
+
+function isPackageFamilyImport(specifier = '', packageName = '') {
+  const normalizedSpecifier = normalizeImportSpecifier(specifier)
+  const normalizedPackageName = normalizeImportSpecifier(packageName)
+  if (!normalizedSpecifier) return false
+  if (!normalizedPackageName) {
+    return hasLegacyRuntimeSourcePackageToken(normalizedSpecifier)
   }
-  const shellBindingIssues = shellBindingResults.flatMap((result) => result.issues || [])
-  const primitiveFallbackIssues = primitiveFallbackResults.flatMap((result) => result.issues || [])
-  const runtimeProviderResults = []
-  if (runtimeProviderContract) {
-    for (const pageType of pageTypes) {
-      runtimeProviderResults.push(await verifyRuntimeProviderContract({ targetRoot, pageType }))
-    }
+
+  return (
+    normalizedSpecifier === normalizedPackageName ||
+    normalizedSpecifier.startsWith(`${normalizedPackageName}/`)
+  )
+}
+
+function isPackagePrivateDistImport(specifier = '', packageName = '') {
+  const normalizedSpecifier = normalizeImportSpecifier(specifier)
+  const normalizedPackageName = normalizeImportSpecifier(packageName)
+  if (!normalizedSpecifier) return false
+  if (!normalizedPackageName) {
+    return hasLegacyRuntimeSourcePackageToken(normalizedSpecifier) && normalizedSpecifier.includes('/dist/')
   }
-  const runtimeProviderIssues = runtimeProviderResults.flatMap((result) => result.issues || [])
+  return normalizedSpecifier.includes(`${normalizedPackageName}/dist/`)
+}
+
+function hasManagedLocalRuntimeStyleImport(source = '') {
+  return /import\s+['"][^'"]*hiui-design-runtime\/styles\.css['"]/.test(String(source || ''))
+}
+
+function hasManagedLocalRuntimePath(specifier = '') {
+  const normalizedSpecifier = normalizeImportSpecifier(specifier)
+  return normalizedSpecifier.includes(`${getManagedLocalRuntimeRoot()}/`)
+}
+
+function isWorkspaceSourceImport(specifier = '') {
+  const normalizedSpecifier = normalizeImportSpecifier(specifier)
+  return normalizedSpecifier.includes('/packages/') && normalizedSpecifier.includes('/src/')
+}
+
+async function hashFileIfExists(targetPath) {
+  if (!(await pathExists(targetPath))) return 'missing'
+
+  try {
+    const content = await fs.readFile(targetPath)
+    return createHash('sha256').update(content).digest('hex')
+  } catch {
+    return 'unknown'
+  }
+}
+
+async function collectReportSnapshot(targetRoot) {
+  const packageJsonPath = path.join(targetRoot, 'package.json')
+  const lockfileCandidates = [
+    'pnpm-lock.yaml',
+    'package-lock.json',
+    'yarn.lock',
+    'bun.lock',
+    'bun.lockb',
+  ]
+  let lockfile = 'missing'
+  let lockfileHash = 'missing'
+
+  for (const candidate of lockfileCandidates) {
+    const lockfilePath = path.join(targetRoot, candidate)
+    if (!(await pathExists(lockfilePath))) continue
+    lockfile = candidate
+    lockfileHash = await hashFileIfExists(lockfilePath)
+    break
+  }
+
   return {
-    runtimeSeal,
-    runtimeProviderContract,
-    pageTypes,
-    shellBinding: {
-      ok: pageTypes.length === 0 || shellBindingIssues.length === 0,
-      issues: shellBindingIssues,
-    },
-    primitiveFallback: {
-      ok: pageTypes.length === 0 || primitiveFallbackIssues.length === 0,
-      issues: primitiveFallbackIssues,
-    },
-    runtimeProvider: {
-      ok: !runtimeProviderContract || runtimeProviderIssues.length === 0,
-      issues: runtimeProviderIssues,
-    },
+    generatedAt: new Date().toISOString(),
+    packageJson: 'package.json',
+    packageJsonHash: await hashFileIfExists(packageJsonPath),
+    lockfile,
+    lockfileHash,
+    note:
+      'This report is a project-level historical snapshot; re-run doctor after package.json, lockfile, manifest, source, or generated-page metadata changes.',
   }
 }
 
-async function detectLegacyHostRuntimeMode(targetRoot, pkg) {
-  const reasons = []
-  const dependencies = {
-    ...(pkg?.dependencies ?? {}),
-    ...(pkg?.devDependencies ?? {}),
-    ...(pkg?.peerDependencies ?? {}),
-  }
+function getRuntimeExamplePath(pageType) {
+  return pageType.runtimeExamplePath || pageType?.generationContract?.baseTemplatePath || ''
+}
 
-  const reactSpec = dependencies.react ?? ''
-  const reactDomSpec = dependencies['react-dom'] ?? ''
-  const ahooksSpec = dependencies.ahooks ?? ''
-  const hiuiSpec = dependencies['@hi-ui/hiui'] ?? ''
-  const hiui5AliasSpec = dependencies.hiui5 ?? ''
-
-  if (isSpecBelowMajor(reactSpec, 18)) {
-    reasons.push(`react is pinned to ${reactSpec}`)
-  }
-
-  if (isSpecBelowMajor(reactDomSpec, 18)) {
-    reasons.push(`react-dom is pinned to ${reactDomSpec}`)
-  }
-
-  if (isSpecBelowMajor(ahooksSpec, 3)) {
-    reasons.push(`ahooks is pinned to ${ahooksSpec}`)
-  }
-
-  if (hiui5AliasSpec && isSpecBelowMajor(hiuiSpec, 5)) {
-    reasons.push(
-      `the host keeps legacy @hi-ui/hiui ${hiuiSpec} while exposing a separate hiui5 alias ${hiui5AliasSpec}`
-    )
-  }
-
-  const buildConfigCandidates = [
-    path.join(targetRoot, 'build', 'rspack.base.conf.js'),
-    path.join(targetRoot, 'build', 'webpack.base.conf.js'),
-    path.join(targetRoot, 'build', 'webpack.common.js'),
+async function detectMaterializedPreviewAssets(outputRoot) {
+  const markers = [
+    path.join(outputRoot, 'README.md'),
+    path.join(outputRoot, 'routes', 'config.tsx'),
+    path.join(outputRoot, 'app-frame.tsx'),
   ]
 
-  for (const buildConfigPath of buildConfigCandidates) {
-    const raw = await readTextIfExists(buildConfigPath)
-    if (!raw) continue
-
-    const usesLegacyFederationRuntime =
-      raw.includes('ModuleFederationPlugin') &&
-      raw.includes('shared:') &&
-      raw.includes('singleton: true') &&
-      (raw.includes("react$': reactPath") ||
-        raw.includes('"react$": reactPath') ||
-        raw.includes("'react-dom$': reactDomPath") ||
-        raw.includes('"react-dom$": reactDomPath'))
-
-    if (usesLegacyFederationRuntime) {
-      reasons.push(
-        `build config ${path.relative(targetRoot, buildConfigPath)} aliases and shares react/react-dom as a singleton host runtime`
-      )
-      break
+  for (const marker of markers) {
+    if (await pathExists(marker)) {
+      return true
     }
   }
 
-  return {
-    incompatible: reasons.length > 0,
-    reasons,
-  }
+  return false
 }
 
 async function loadShellPackageSnapshot(skillRoot) {
-  const embeddedPackageJsonPath = path.join(skillRoot, 'vendor', 'typical-page-shells-package.json')
-  const fallbackPackageJsonPath = path.resolve(
+  const managedRuntimeContract = await loadManagedLocalRuntimeDependencyContract(skillRoot).catch(() => null)
+  const { snapshotPackageJsonPath } = resolveManagedLocalRuntimeEmbeddedSourceSnapshotFiles(
     skillRoot,
-    '..',
-    '..',
-    'packages',
-    'typical-page-shells',
-    'package.json'
+    managedRuntimeContract
   )
-  const packageJsonPath = (await pathExists(embeddedPackageJsonPath))
-    ? embeddedPackageJsonPath
-    : fallbackPackageJsonPath
-  return readJsonIfExists(packageJsonPath)
+
+  if (!snapshotPackageJsonPath || !(await pathExists(snapshotPackageJsonPath))) {
+    return null
+  }
+
+  return readJsonIfExists(snapshotPackageJsonPath)
 }
 
-async function resolveEmbeddedShellsSpec(skillRoot, version) {
-  if (!version) return ''
+async function resolveEmbeddedShellsSpec(skillRoot, managedRuntimeContract) {
+  const { tarball = '', tarballPath = '' } = resolveManagedLocalRuntimeEmbeddedSourceSnapshotFiles(
+    skillRoot,
+    managedRuntimeContract
+  )
 
-  const filename = `hiui-design-typical-page-shells-${version}.tgz`
-  const embeddedTarballPath = path.join(skillRoot, 'vendor', filename)
-
-  if (!(await pathExists(embeddedTarballPath))) {
+  if (!tarball || !tarballPath || !(await pathExists(tarballPath))) {
     return ''
   }
 
-  return `file:.local-context/hiui-design/vendor/${filename}`
+  return toContextVendorFileSpec(path.basename(tarball))
 }
 
-async function resolveEmbeddedShellTarballPath(skillRoot, version) {
-  if (!version) return ''
+async function resolveEmbeddedShellTarballPath(skillRoot, managedRuntimeContract) {
+  const { tarballPath = '' } = resolveManagedLocalRuntimeEmbeddedSourceSnapshotFiles(
+    skillRoot,
+    managedRuntimeContract
+  )
 
-  const filename = `hiui-design-typical-page-shells-${version}.tgz`
-  const embeddedTarballPath = path.join(skillRoot, 'vendor', filename)
-
-  return (await pathExists(embeddedTarballPath)) ? embeddedTarballPath : ''
+  return tarballPath && (await pathExists(tarballPath)) ? tarballPath : ''
 }
 
 async function loadHostIntegrationDependencySnapshot(skillRoot) {
   const referencePath = path.join(skillRoot, 'docs', 'onboarding', 'host-integration-dependencies.json')
   const reference = await readJsonIfExists(referencePath)
+  return reference?.dependencies ?? {}
+}
+
+async function loadSkillVersion(skillRoot) {
+  const manifestPath = path.join(skillRoot, 'skill.manifest.json')
+  const manifest = await readJsonIfExists(manifestPath)
+  const manifestVersion = String(manifest?.version || '').trim()
+  if (manifestVersion) {
+    return {
+      versionPath: manifestPath,
+      version: manifestVersion,
+    }
+  }
+
+  const contextPath = path.join(skillRoot, '.context.jsonc')
+  const raw = await fs.readFile(contextPath, 'utf8')
+  const context = JSON.parse(stripJsonComments(raw))
+
   return {
-    ...(reference?.dependencies ?? {}),
-    ...(reference?.devDependencies ?? {}),
+    versionPath: contextPath,
+    version: String(context?.version || '').trim(),
   }
 }
 
 function pushCheck(checks, { id, ok, severity, summary, detail }) {
   checks.push({ id, ok, severity, summary, detail })
-}
-
-function isExternalComponentBypassFailure(message) {
-  return [
-    'directly imports external UI packages',
-    'contract.adapterContract.localBypasses does not declare',
-    'declares localBypasses package',
-    'tokenBridgePath',
-    'adapterPath',
-    'page-level owner/header markers',
-  ].some((fragment) => String(message || '').includes(fragment))
-}
-
-function isManagedChartGovernanceFailure(message) {
-  return [
-    'chart-section',
-    'chart stack',
-    'chart-like content',
-    'approved chart wrapper',
-    '@ant-design/charts',
-    'withHiuiResponsiveChart',
-    'withHiuiMiniChart',
-    'adaptive chart-body',
-    'renders charts without the shared HiUI chart baseline',
-  ].some((fragment) => String(message || '').includes(fragment))
-}
-
-function contractDeclaresManagedChartGovernance(entry) {
-  const pageTypeId = String(entry?.contract?.pageTypeId || '').trim()
-  if (pageTypeId === 'data-visualization') {
-    return true
-  }
-
-  return Array.isArray(entry?.contract?.regionMapping)
-    ? entry.contract.regionMapping.some(
-        (item) => String(item?.region || '').trim().toLowerCase() === 'chart-section'
-      )
-    : false
-}
-
-function formatRulesOnlyContractRepairDetail(invalidContracts, reason) {
-  if (invalidContracts.length === 0) {
-    return ''
-  }
-
-  return `Fix the rules-only managed page contracts first. ${reason}`
-}
-
-function formatRulesOnlyIssuesOrSuccess({
-  invalidContracts,
-  invalidReason,
-  issues,
-  successDetail,
-}) {
-  const invalidDetail = formatRulesOnlyContractRepairDetail(invalidContracts, invalidReason)
-  if (invalidDetail) {
-    return invalidDetail
-  }
-
-  if (issues.length > 0) {
-    return issues.join(' | ')
-  }
-
-  return successDetail
 }
 
 function overallStatusFromChecks(checks) {
@@ -396,10 +417,6 @@ function overallStatusFromChecks(checks) {
   const hasWarnings = checks.some((item) => !item.ok && item.severity === 'warn')
   if (hasWarnings) return 'warn'
   return 'pass'
-}
-
-function isCurrentPageReady(status) {
-  return status === 'pass'
 }
 
 async function loadManifest(skillRoot, line = '') {
@@ -423,96 +440,51 @@ function isAcceptableShellSpec(spec, version, embeddedShellsSpec = '') {
   return false
 }
 
-async function inspectManagedDataVisualizationSharedShells(entries, targetRoot) {
-  const warnings = []
-  let inspectedCount = 0
+function formatNodeRuntimeExpectationDetail(expectation) {
+  return `${expectation.source} ${expectation.spec}${
+    expectation.secondarySpec ? ` (package.json engines.node=${expectation.secondarySpec})` : ''
+  }`
+}
 
-  for (const entry of entries) {
-    if (entry?.contract?.pageTypeId !== 'data-visualization') {
-      continue
-    }
+function formatDoctorNodeRuntimeHardFailureDetail(nodeRuntimePolicy) {
+  const { expectation, resolvedRuntime, effectiveNodeVersion } = nodeRuntimePolicy
 
-    const generatedPagePath = String(entry.contract.generatedPagePath || '').trim()
-    if (!generatedPagePath) {
-      continue
-    }
-
-    const absPath = path.join(targetRoot, generatedPagePath)
-    const raw = await readTextIfExists(absPath)
-    if (!raw) {
-      continue
-    }
-
-    inspectedCount += 1
-    const pathLabel = path.relative(targetRoot, absPath) || generatedPagePath
-    const shellUsage = inspectManagedAnalyticsSharedShellUsage({
-      entryFilePath: absPath,
-      targetRoot,
-    })
-    const usesFixedFrame = shellUsage.usesFixedFrame
-    const usesSharedDashboardPrimitives = shellUsage.usesSharedDashboardPrimitives
-    const rebuildsHeaderLocally =
-      /\bHostPageHeaderPortal\b/.test(raw) ||
-      /\bTypicalPageHeaderPortal\b/.test(raw) ||
-      /\bPageHeader\b/.test(raw)
-    const rebuildsShellLocally =
-      /(?:pageStyles|styles)\.(?:pageRoot|whiteBody|controlBar|sectionCard|tableShell|riskCard|recordCard)\b/.test(
-        raw
-      ) ||
-      /data-hiui5-region="white-body"[\s\S]{0,240}style=\{/.test(raw)
-
-    if (usesFixedFrame) {
-      continue
-    }
-
-    if (!usesSharedDashboardPrimitives && (rebuildsHeaderLocally || rebuildsShellLocally)) {
-      warnings.push(
-        `${pathLabel} still rebuilds the dashboard shell locally. Start from FixedDashboardPageFrame and shared data-visualization primitives instead of keeping page-level PageHeader / white-body / control-strip / chart-card / table-shell wrappers.`
-      )
-      continue
-    }
-
-    if (!usesSharedDashboardPrimitives) {
-      warnings.push(
-        `${pathLabel} does not expose the fixed dashboard shared-shell path. Data-visualization pages should either mount FixedDashboardPageFrame directly or clearly reuse the shared dashboard primitives instead of free-form shell assembly.`
-      )
-    }
+  if (resolvedRuntime.source === 'project-node-policy-conflict') {
+    return `Fix the local runtime before attributing build noise to ${SKILL_PUBLIC_NAME}. ${nodeRuntimePolicy.detail}`
   }
 
-  return {
-    inspectedCount,
-    warnings,
-  }
+  const summary =
+    `Resolved target Node ${effectiveNodeVersion} via ${resolvedRuntime.source} does not satisfy ` +
+    `${formatNodeRuntimeExpectationDetail(expectation)}.`
+  const extraDetail =
+    !resolvedRuntime.reliable && resolvedRuntime.detail && resolvedRuntime.detail !== nodeRuntimePolicy.detail
+      ? ` ${resolvedRuntime.detail}`
+      : ''
+
+  return `Fix the local runtime before attributing build noise to ${SKILL_PUBLIC_NAME}. ${summary}${extraDetail}`
 }
 
 function collectManagedDependencyVersionDrift({
   pkg,
-  shellPackage,
+  managedRuntimeDependencies,
   embeddedShellsSpec,
   hostIntegrationDependencies,
   mode,
 }) {
   const drifts = []
-  const shellSpec = findDependency(pkg, '@hiui-design/typical-page-shells')
 
-  if (!isAcceptableShellSpec(shellSpec, shellPackage.version, embeddedShellsSpec)) {
-    drifts.push({
-      depName: '@hiui-design/typical-page-shells',
-      actual: shellSpec || '(missing)',
-      expected: embeddedShellsSpec
-        ? `${shellPackage.version}, ${embeddedShellsSpec}, or a link: local package spec`
-        : `${shellPackage.version} or a link: local package spec`,
-    })
-  }
-
-  for (const [depName, expected] of Object.entries(shellPackage.peerDependencies ?? {})) {
+  for (const [depName, expected] of Object.entries(managedRuntimeDependencies ?? {})) {
     const actual = findDependency(pkg, depName)
-    const isReactRuntimeDep = depName === 'react' || depName === 'react-dom'
-    const compatible = isReactRuntimeDep
-      ? isVersionRangeAtLeast(actual, expected)
-      : actual === expected
-
-    if (!compatible) {
+    const aliasName = HIUI5_ISOLATED_PEER_ALIASES[depName]
+    const aliasSpec = aliasName ? findDependency(pkg, aliasName) : ''
+    const aliasCompatibility = aliasName
+      ? getIsolatedAliasCompatibility({
+          actualSpec: aliasSpec,
+          expectedSourceDepName: depName,
+          expectedVersion: expected,
+        })
+      : { compatible: false }
+    if (!isVersionCompatible(actual, expected) && !aliasCompatibility.compatible) {
       drifts.push({ depName, actual: actual || '(missing)', expected })
     }
   }
@@ -533,7 +505,7 @@ function analyzeQueryFilterBridge(raw) {
   const reasons = []
 
   if (!raw) {
-    reasons.push('missing QueryFilter bridge content')
+    reasons.push('missing QueryFilter adaptation content')
     return reasons
   }
 
@@ -551,6 +523,37 @@ function analyzeQueryFilterBridge(raw) {
 
   if (/appearance:\s*['"]filled['"]/.test(raw)) {
     reasons.push('forces QueryFilter field appearance to filled')
+  }
+
+  if (/children:\s*['"]重置['"]/.test(raw)) {
+    reasons.push('injects a permanent reset button instead of the official all-filter clear action')
+  }
+
+  if (!/children:\s*['"]清空['"]/.test(raw)) {
+    reasons.push('does not provide the official clear action for active filters')
+  }
+
+  if (!/\b(?:filteredCount|m)\s*>\s*0\b/.test(raw)) {
+    reasons.push('does not gate the clear action on active filters')
+  }
+
+  return reasons
+}
+
+function analyzeQueryFilterPackage(raw) {
+  const reasons = []
+
+  if (!raw) {
+    reasons.push('missing @hi-ui/query-filter FilterForm content')
+    return reasons
+  }
+
+  const forwardsGap =
+    /columnGap:\s*gap\s*\+\s*["']px["']/.test(raw) &&
+    /rowGap:\s*gap\s*\+\s*["']px["']/.test(raw)
+
+  if (!forwardsGap) {
+    reasons.push('does not forward QueryFilter gap to the inner flex layout')
   }
 
   return reasons
@@ -579,6 +582,16 @@ async function inspectQueryFilterBridgeFile(filePath) {
   }
 }
 
+async function inspectQueryFilterPackageFile(filePath) {
+  const raw = await readTextIfExists(filePath)
+  return {
+    exists: Boolean(raw),
+    filePath,
+    raw,
+    reasons: analyzeQueryFilterPackage(raw),
+  }
+}
+
 async function inspectQueryFilterBridgeTarball(tarballPath) {
   const raw = readTarEntry(tarballPath, 'package/dist/pro-list-page/bridge/query-filter.js')
   return {
@@ -587,6 +600,148 @@ async function inspectQueryFilterBridgeTarball(tarballPath) {
     raw,
     reasons: analyzeQueryFilterBridge(raw),
   }
+}
+
+const REACT19_RUNTIME_PATCH_REACT_RESIZE_DETECTOR_PACKAGE_PATHS = [
+  ['@hi-ui', 'tag-input'],
+  ['@hi-ui', 'textarea'],
+  ['hiui5-tag-input'],
+  ['hiui5-textarea'],
+]
+
+const REACT19_RUNTIME_PATCH_RC_RESIZE_OBSERVER_PACKAGE_PATHS = [
+  ['@hi-ui', 'table'],
+  ['@hi-ui', 'virtual-list'],
+  ['@hi-ui', 'check-cascader'],
+  ['hiui5-table'],
+  ['hiui5-check-cascader'],
+]
+
+function buildReact19RuntimePatchDetectorTargets(targetRoot) {
+  return REACT19_RUNTIME_PATCH_REACT_RESIZE_DETECTOR_PACKAGE_PATHS.flatMap((packagePath) => {
+    const packageRoot = path.join(targetRoot, 'node_modules', ...packagePath)
+    return [
+      path.join(packageRoot, 'node_modules', 'react-resize-detector', 'build', 'index.esm.js'),
+      path.join(packageRoot, 'node_modules', 'react-resize-detector', 'build', 'index.js'),
+      path.join(packageRoot, 'node_modules', 'react-resize-detector', 'build', 'withPolyfill.js'),
+    ]
+  })
+}
+
+function buildReact19RuntimePatchObserverTargets(targetRoot) {
+  const baseTargets = REACT19_RUNTIME_PATCH_RC_RESIZE_OBSERVER_PACKAGE_PATHS.flatMap((packagePath) => {
+    const packageRoot = path.join(targetRoot, 'node_modules', ...packagePath)
+    return [
+      path.join(packageRoot, 'lib', 'esm', 'node_modules', 'rc-resize-observer', 'es', 'index.js'),
+      path.join(packageRoot, 'lib', 'cjs', 'node_modules', 'rc-resize-observer', 'es', 'index.js'),
+    ]
+  })
+
+  const nestedCheckCascaderTargets = [
+    ['@hi-ui', 'check-cascader'],
+    ['hiui5-check-cascader'],
+  ].flatMap((packagePath) => {
+    const packageRoot = path.join(targetRoot, 'node_modules', ...packagePath)
+    return [
+      path.join(
+        packageRoot,
+        'lib',
+        'esm',
+        'ui',
+        'virtual-list',
+        'lib',
+        'esm',
+        'node_modules',
+        'rc-resize-observer',
+        'es',
+        'index.js'
+      ),
+      path.join(
+        packageRoot,
+        'lib',
+        'cjs',
+        'ui',
+        'virtual-list',
+        'lib',
+        'esm',
+        'node_modules',
+        'rc-resize-observer',
+        'es',
+        'index.js'
+      ),
+    ]
+  })
+
+  return [...baseTargets, ...nestedCheckCascaderTargets]
+}
+
+function analyzeReact19RuntimePatchDetector(raw) {
+  const source = String(raw || '')
+  if (!source.includes('findDOMNode(')) return []
+
+  const hasGuard =
+    source.includes("typeof findDOMNode === 'function' ? findDOMNode(_this) : null;") ||
+    source.includes("typeof ReactDOM.findDOMNode === 'function' ? ReactDOM.findDOMNode(_this) : null;") ||
+    source.includes("typeof reactDom.findDOMNode === 'function' ? reactDom.findDOMNode(_this) : null;")
+
+  return hasGuard ? [] : ['findDOMNode access is not guarded for React 19']
+}
+
+function analyzeReact19RuntimePatchObserver(raw) {
+  const source = String(raw || '')
+  if (!source.includes('childNode.ref')) return []
+  return source.includes('childNode && childNode.props ? childNode.props.ref : undefined;')
+    ? []
+    : ['element.ref still reads childNode.ref directly under React 19']
+}
+
+async function inspectReact19ManagedRuntimePatchWiring({ targetRoot, hostProfile, pkg }) {
+  const reactMajor = Number(hostProfile?.reactMajor || 0)
+  if (reactMajor < 19) {
+    return {
+      required: false,
+      ok: true,
+      detail:
+        reactMajor > 0
+          ? `Detected React ${reactMajor}; managed React 19 runtime patch wiring is not required.`
+          : 'React major version could not be resolved; managed React 19 runtime patch wiring is not required.',
+      missing: [],
+    }
+  }
+
+  const scripts = pkg?.scripts || {}
+  const runtimePatchCommand = String(scripts['typical-page:runtime-patch'] || '').trim()
+  const postinstallCommand = String(scripts.postinstall || '').trim()
+  const runtimePatchScriptRelativePath = getContextScriptPath('apply-runtime-patches.mjs')
+  const runtimePatchScriptPath = path.join(targetRoot, runtimePatchScriptRelativePath)
+  const missing = []
+
+  if (!runtimePatchCommand.includes('apply-runtime-patches.mjs')) {
+    missing.push('package.json scripts.typical-page:runtime-patch')
+  }
+  if (!postinstallCommand.includes('apply-runtime-patches.mjs')) {
+    missing.push('package.json scripts.postinstall')
+  }
+  if (!(await pathExists(runtimePatchScriptPath))) {
+    missing.push(runtimePatchScriptRelativePath)
+  }
+
+  return {
+    required: true,
+    ok: missing.length === 0,
+    missing,
+    detail:
+      missing.length === 0
+        ? `React 19 host keeps the managed runtime patch wiring through package.json scripts.typical-page:runtime-patch, scripts.postinstall, and ${runtimePatchScriptRelativePath}.`
+        : `React 19 host is missing managed runtime patch wiring: ${missing.join(', ')}. Re-run apply-in-current-project or setup-for-designers, reinstall dependencies so postinstall can apply the managed patches, then rerun doctor.`,
+  }
+}
+
+async function inspectInstalledReact19RuntimePatchCoverage({ targetRoot, hostProfile }) {
+  return inspectInstalledReact19RuntimePatchCoverageShared({
+    targetRoot,
+    reactMajor: Number(hostProfile?.reactMajor || 0),
+  })
 }
 
 async function detectAppEntryFile(targetRoot) {
@@ -599,6 +754,10 @@ async function detectAppEntryFile(targetRoot) {
     'src/index.ts',
     'src/index.jsx',
     'src/index.js',
+    'src/application.tsx',
+    'src/application.ts',
+    'src/application.jsx',
+    'src/application.js',
     'src/app.tsx',
     'src/app.ts',
     'pages/_app.tsx',
@@ -613,25 +772,136 @@ async function detectAppEntryFile(targetRoot) {
 
   for (const candidate of candidates) {
     const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) return absPath
+    if (!(await pathExists(absPath))) continue
+
+    const raw = await readTextIfExists(absPath)
+    if (raw.trim()) return absPath
   }
 
   return ''
 }
 
-async function detectStarterRootStyleFile(targetRoot) {
-  const candidates = ['src/index.css', 'src/main.css', 'src/app.css', 'src/App.css']
+const LEGACY_BUILD_CONFIG_CANDIDATES = [
+  'build/rspack.base.conf.js',
+  'build/rspack.base.conf.ts',
+  'build/rspack.dev.conf.js',
+  'build/rspack.prod.conf.js',
+  'rspack.config.js',
+  'rspack.config.ts',
+  'webpack.config.js',
+  'webpack.config.ts',
+  'build/webpack.base.conf.js',
+  'build/webpack.base.conf.ts',
+  'vite.config.ts',
+  'vite.config.tsx',
+  'vite.config.mts',
+  'vite.config.js',
+  'vite.config.jsx',
+  'vite.config.mjs',
+  'vite.config.cjs',
+  'vite.config.cts',
+]
 
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) return absPath
+const REACT_DOM_CLIENT_SHIM_CANDIDATES = [
+  'src/shims/react-dom-client.ts',
+  'src/shims/react-dom-client.tsx',
+  'src/shims/react-dom-client.js',
+  'src/shims/react-dom-client.jsx',
+]
+const REACT_JSX_RUNTIME_SHIM_CANDIDATES = [
+  'src/shims/react-jsx-runtime.ts',
+  'src/shims/react-jsx-runtime.tsx',
+  'src/shims/react-jsx-runtime.js',
+  'src/shims/react-jsx-runtime.jsx',
+]
+
+async function inspectReactDomClientCompatibility({ targetRoot, hostProfile }) {
+  const reactMajor = Number(hostProfile?.reactMajor || 0)
+  const needsCompatBranch =
+    reactMajor > 0 && reactMajor < 18 && hostProfile?.riskLevel === 'high'
+  const aliasConfigMatches = []
+
+  for (const candidate of LEGACY_BUILD_CONFIG_CANDIDATES) {
+    const absolutePath = path.join(targetRoot, candidate)
+    const raw = await readTextIfExists(absolutePath)
+    if (!raw.includes('react-dom/client')) continue
+    aliasConfigMatches.push(absolutePath)
   }
 
-  return ''
+  let shimPath = ''
+  for (const candidate of REACT_DOM_CLIENT_SHIM_CANDIDATES) {
+    const absolutePath = path.join(targetRoot, candidate)
+    if (await pathExists(absolutePath)) {
+      shimPath = absolutePath
+      break
+    }
+  }
+
+  const shimRaw = shimPath ? await readTextIfExists(shimPath) : ''
+  const shimLooksCompatible =
+    Boolean(shimRaw) &&
+    shimRaw.includes('ReactDOM.render') &&
+    shimRaw.includes('unmountComponentAtNode')
+
+  return {
+    reactMajor,
+    needsCompatBranch,
+    aliasConfigMatches,
+    shimPath,
+    shimLooksCompatible,
+    ok: !needsCompatBranch || (aliasConfigMatches.length > 0 && shimLooksCompatible),
+  }
+}
+
+async function inspectReactJsxRuntimeCompatibility({ targetRoot, hostProfile }) {
+  const reactMajor = Number(hostProfile?.reactMajor || 0)
+  const needsCompatBranch =
+    reactMajor > 0 && reactMajor < 17 && hostProfile?.riskLevel === 'high'
+  const aliasConfigMatches = []
+
+  for (const candidate of LEGACY_BUILD_CONFIG_CANDIDATES) {
+    const absolutePath = path.join(targetRoot, candidate)
+    const raw = await readTextIfExists(absolutePath)
+    if (!raw.includes('react/jsx-runtime') && !raw.includes('react/jsx-dev-runtime')) continue
+    aliasConfigMatches.push(absolutePath)
+  }
+
+  let shimPath = ''
+  for (const candidate of REACT_JSX_RUNTIME_SHIM_CANDIDATES) {
+    const absolutePath = path.join(targetRoot, candidate)
+    if (await pathExists(absolutePath)) {
+      shimPath = absolutePath
+      break
+    }
+  }
+
+  const shimRaw = shimPath ? await readTextIfExists(shimPath) : ''
+  const shimLooksCompatible =
+    Boolean(shimRaw) &&
+    shimRaw.includes('React.createElement') &&
+    shimRaw.includes('Fragment') &&
+    shimRaw.includes('export function jsx')
+
+  return {
+    reactMajor,
+    needsCompatBranch,
+    aliasConfigMatches,
+    shimPath,
+    shimLooksCompatible,
+    ok: !needsCompatBranch || (aliasConfigMatches.length > 0 && shimLooksCompatible),
+  }
+}
+
+function buildLegacyReactCompatAutofixHint() {
+  return 'If the project has exactly one supported Vite/Rspack config and no conflicting local shims, run typical-page:legacy-react-compat; otherwise patch the compatibility branch manually.'
 }
 
 async function detectRouteFile(targetRoot) {
   const candidates = [
+    'src/App.tsx',
+    'src/App.ts',
+    'src/App.jsx',
+    'src/App.js',
     'src/routes.tsx',
     'src/routes.ts',
     'src/routes.jsx',
@@ -644,14 +914,6 @@ async function detectRouteFile(targetRoot) {
     'src/router/routes.ts',
     'src/router/index.tsx',
     'src/router/index.ts',
-    'src/App.tsx',
-    'src/App.ts',
-    'src/App.jsx',
-    'src/App.js',
-    'App.tsx',
-    'App.ts',
-    'App.jsx',
-    'App.js',
   ]
 
   for (const candidate of candidates) {
@@ -660,109 +922,20 @@ async function detectRouteFile(targetRoot) {
   }
 
   return ''
-}
-
-async function detectExistingHostShellEntry(targetRoot) {
-  const candidates = [
-    'src/components/layout/main-content.tsx',
-    'src/components/layout/main-content.ts',
-    'src/components/layout/main-content.jsx',
-    'src/components/layout/main-content.js',
-    'src/layouts/index.tsx',
-    'src/layouts/index.ts',
-    'src/layouts/index.jsx',
-    'src/layouts/index.js',
-    'src/app.tsx',
-    'src/app.ts',
-    'app/layout.tsx',
-    'app/layout.ts',
-    'src/app/layout.tsx',
-    'src/app/layout.ts',
-  ]
-
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (!(await pathExists(absPath))) continue
-
-    const raw = await readTextIfExists(absPath)
-    const looksLikeHostShell =
-      raw.includes('TypicalPageHostProvider') ||
-      raw.includes('PageHeaderPortal') ||
-      raw.includes("role='page-header'") ||
-      raw.includes('role="page-header"')
-
-    if (looksLikeHostShell) {
-      return absPath
-    }
-  }
-
-  return ''
-}
-
-async function detectTopLevelAppFile(targetRoot) {
-  const candidates = [
-    'src/App.tsx',
-    'src/App.ts',
-    'src/App.jsx',
-    'src/App.js',
-    'App.tsx',
-    'App.ts',
-    'App.jsx',
-    'App.js',
-  ]
-
-  for (const candidate of candidates) {
-    const absPath = path.join(targetRoot, candidate)
-    if (await pathExists(absPath)) return absPath
-  }
-
-  return ''
-}
-
-function detectLegacyStandaloneWorkspaceShell(appRaw) {
-  if (!appRaw) return false
-
-  const importsExampleAppShell =
-    appRaw.includes('ExampleAppShell') && appRaw.includes('typical-page-reuse/app-shell')
-  const createsTypicalPageRoutes = appRaw.includes('createTypicalPageReuseRoutes')
-  const ownsRouter = appRaw.includes('HashRouter') || appRaw.includes('BrowserRouter')
-  const ownsWorkspaceNav =
-    appRaw.includes('NavLink') ||
-    appRaw.includes('TypicalPageWorkspace') ||
-    appRaw.includes('app-sidebar') ||
-    appRaw.includes('app-nav')
-  const reusesAppFrame = appRaw.includes('TypicalPageAppFrame')
-
-  return (
-    importsExampleAppShell &&
-    createsTypicalPageRoutes &&
-    ownsRouter &&
-    ownsWorkspaceNav &&
-    !reusesAppFrame
-  )
-}
-
-function detectTopLevelTypicalPageAppFrameMount(appRaw) {
-  if (!appRaw) return false
-
-  return (
-    appRaw.includes('TypicalPageAppFrame') &&
-    (appRaw.includes('useRoutes(') || /<TypicalPageAppFrame\b/.test(appRaw))
-  )
 }
 
 async function detectTypicalPageSourceRepo(targetRoot) {
   const markers = [
     path.join(targetRoot, 'packages', 'typical-page-shells', 'package.json'),
-    path.join(
+    resolveProjectContextPath(targetRoot, 'examples', 'host-integration', 'README.md'),
+    resolveProjectContextPath(
       targetRoot,
-      '.local-context',
-      'hiui-design',
       'examples',
       'host-integration',
-      'README.md'
+      'src',
+      'routes',
+      'config.tsx'
     ),
-    path.join(targetRoot, 'src', 'typical-page-reuse', 'routes', 'config.tsx'),
   ]
 
   for (const marker of markers) {
@@ -775,654 +948,20 @@ async function detectTypicalPageSourceRepo(targetRoot) {
 function detectTypicalPageRouteMountInSource(routeRaw) {
   if (!routeRaw) return false
 
-  const importsTypicalReuseRoutes =
-    routeRaw.includes('typicalPageReuseRoutes') &&
-    routeRaw.includes('typical-page-reuse/routes/config')
+  const importsTypicalPreviewRoutes =
+    routeRaw.includes('typicalPagePreviewRoutes') &&
+    routeRaw.includes('typical-page-preview/routes/config')
 
-  if (!importsTypicalReuseRoutes) return false
+  if (!importsTypicalPreviewRoutes) return false
 
   return (
-    routeRaw.includes('...typicalPageReuseRoutes') ||
-    routeRaw.includes('children: typicalPageReuseRoutes') ||
-    routeRaw.includes('children={typicalPageReuseRoutes}') ||
-    routeRaw.includes('routes: typicalPageReuseRoutes') ||
-    routeRaw.includes('routes={typicalPageReuseRoutes}') ||
-    routeRaw.includes('element: typicalPageReuseRoutes')
+    routeRaw.includes('...typicalPagePreviewRoutes') ||
+    routeRaw.includes('children: typicalPagePreviewRoutes') ||
+    routeRaw.includes('children={typicalPagePreviewRoutes}') ||
+    routeRaw.includes('routes: typicalPagePreviewRoutes') ||
+    routeRaw.includes('routes={typicalPagePreviewRoutes}') ||
+    routeRaw.includes('element: typicalPagePreviewRoutes')
   )
-}
-
-function detectExampleTopLevelIcon(raw) {
-  if (!raw) return false
-
-  const singleQuoteIndex = raw.indexOf("title: '示例'")
-  const doubleQuoteIndex = raw.indexOf('title: "示例"')
-  const exampleTitleIndex =
-    singleQuoteIndex >= 0 && doubleQuoteIndex >= 0
-      ? Math.min(singleQuoteIndex, doubleQuoteIndex)
-      : Math.max(singleQuoteIndex, doubleQuoteIndex)
-
-  if (exampleTitleIndex < 0) return false
-
-  const exampleSegment = raw.slice(exampleTitleIndex, exampleTitleIndex + 1200)
-  const hasExampleIcon = /icon\s*:\s*</.test(exampleSegment)
-  const mountsTypicalPageRoutes =
-    exampleSegment.includes('children: typicalPageReuseRoutes') ||
-    exampleSegment.includes('children={typicalPageReuseRoutes}') ||
-    exampleSegment.includes('...typicalPageReuseRoutes')
-
-  return hasExampleIcon && mountsTypicalPageRoutes
-}
-
-function findMatchingToken(source, startIndex, openToken, closeToken) {
-  if (startIndex < 0 || source[startIndex] !== openToken) {
-    return -1
-  }
-
-  let depth = 0
-  let quote = null
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-
-  for (let index = startIndex; index < source.length; index += 1) {
-    const char = source[index]
-    const nextChar = source[index + 1]
-
-    if (lineComment) {
-      if (char === '\n') {
-        lineComment = false
-      }
-      continue
-    }
-
-    if (blockComment) {
-      if (char === '*' && nextChar === '/') {
-        blockComment = false
-        index += 1
-      }
-      continue
-    }
-
-    if (quote) {
-      if (escaped) {
-        escaped = false
-        continue
-      }
-
-      if (char === '\\') {
-        escaped = true
-        continue
-      }
-
-      if (char === quote) {
-        quote = null
-      }
-      continue
-    }
-
-    if (char === '/' && nextChar === '/') {
-      lineComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '/' && nextChar === '*') {
-      blockComment = true
-      index += 1
-      continue
-    }
-
-    if (char === "'" || char === '"' || char === '`') {
-      quote = char
-      continue
-    }
-
-    if (char === openToken) {
-      depth += 1
-      continue
-    }
-
-    if (char !== closeToken) continue
-
-    depth -= 1
-    if (depth === 0) {
-      return index
-    }
-  }
-
-  return -1
-}
-
-function collectTopLevelMenuGroupsMissingIcons(raw, routesIdentifier) {
-  if (!raw || !routesIdentifier) return []
-
-  const assignmentPattern = new RegExp(
-    `(?:const|let|var|export\\s+const)\\s+${routesIdentifier}\\s*=\\s*\\[`,
-    'm'
-  )
-  const match = assignmentPattern.exec(raw)
-  if (!match) return []
-
-  const arrayStartIndex = raw.indexOf('[', match.index)
-  if (arrayStartIndex < 0) return []
-
-  const arrayEndIndex = findMatchingToken(raw, arrayStartIndex, '[', ']')
-  if (arrayEndIndex < 0) return []
-
-  const arraySource = raw.slice(arrayStartIndex + 1, arrayEndIndex)
-  const missing = []
-  let braceDepth = 0
-  let objectStart = -1
-  let quote = null
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-
-  for (let index = 0; index < arraySource.length; index += 1) {
-    const char = arraySource[index]
-    const nextChar = arraySource[index + 1]
-
-    if (lineComment) {
-      if (char === '\n') lineComment = false
-      continue
-    }
-
-    if (blockComment) {
-      if (char === '*' && nextChar === '/') {
-        blockComment = false
-        index += 1
-      }
-      continue
-    }
-
-    if (quote) {
-      if (escaped) {
-        escaped = false
-        continue
-      }
-
-      if (char === '\\') {
-        escaped = true
-        continue
-      }
-
-      if (char === quote) {
-        quote = null
-      }
-      continue
-    }
-
-    if (char === '/' && nextChar === '/') {
-      lineComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '/' && nextChar === '*') {
-      blockComment = true
-      index += 1
-      continue
-    }
-
-    if (char === "'" || char === '"' || char === '`') {
-      quote = char
-      continue
-    }
-
-    if (char === '{') {
-      if (braceDepth === 0) {
-        objectStart = index
-      }
-      braceDepth += 1
-      continue
-    }
-
-    if (char !== '}') continue
-
-    braceDepth -= 1
-    if (braceDepth !== 0 || objectStart < 0) continue
-
-    const objectSource = arraySource.slice(objectStart, index + 1)
-    const titleMatch =
-      /title\s*:\s*'([^']+)'/.exec(objectSource) ||
-      /title\s*:\s*"([^"]+)"/.exec(objectSource)
-    const title = titleMatch?.[1]?.trim()
-    const showInMenuFalse = /showInMenu\s*:\s*false/.test(objectSource)
-    const hasChildren = /children\s*:/.test(objectSource)
-    const hasIcon = /icon\s*:\s*</.test(objectSource)
-
-    if (title && !showInMenuFalse && hasChildren && !hasIcon) {
-      missing.push(title)
-    }
-
-    objectStart = -1
-  }
-
-  return missing
-}
-
-function splitTopLevelExpressionItems(source) {
-  const items = []
-  let startIndex = 0
-  let depth = 0
-  let quote = null
-  let escaped = false
-  let lineComment = false
-  let blockComment = false
-
-  for (let index = 0; index < source.length; index += 1) {
-    const char = source[index]
-    const nextChar = source[index + 1]
-
-    if (lineComment) {
-      if (char === '\n') lineComment = false
-      continue
-    }
-
-    if (blockComment) {
-      if (char === '*' && nextChar === '/') {
-        blockComment = false
-        index += 1
-      }
-      continue
-    }
-
-    if (quote) {
-      if (escaped) {
-        escaped = false
-        continue
-      }
-
-      if (char === '\\') {
-        escaped = true
-        continue
-      }
-
-      if (char === quote) quote = null
-      continue
-    }
-
-    if (char === '/' && nextChar === '/') {
-      lineComment = true
-      index += 1
-      continue
-    }
-
-    if (char === '/' && nextChar === '*') {
-      blockComment = true
-      index += 1
-      continue
-    }
-
-    if (char === "'" || char === '"' || char === '`') {
-      quote = char
-      continue
-    }
-
-    if (char === '[' || char === '{' || char === '(' || char === '<') {
-      depth += 1
-      continue
-    }
-
-    if (char === ']' || char === '}' || char === ')' || char === '>') {
-      depth = Math.max(0, depth - 1)
-      continue
-    }
-
-    if (char !== ',' || depth !== 0) continue
-
-    const item = source.slice(startIndex, index).trim()
-    if (item) items.push(item)
-    startIndex = index + 1
-  }
-
-  const tail = source.slice(startIndex).trim()
-  if (tail) items.push(tail)
-  return items
-}
-
-function collectRouteObjectSourcesFromExpression(raw, expression, seen = new Set()) {
-  const normalized = unwrapExpression(expression)
-  if (!normalized) return []
-
-  if (normalized.startsWith('[') && normalized.endsWith(']')) {
-    return splitTopLevelExpressionItems(normalized.slice(1, -1)).flatMap((item) =>
-      collectRouteObjectSourcesFromExpression(raw, item, seen)
-    )
-  }
-
-  if (normalized.startsWith('{') && normalized.endsWith('}')) {
-    return [normalized]
-  }
-
-  if (/^[A-Za-z_$][\w$]*$/.test(normalized)) {
-    if (seen.has(normalized)) return []
-    seen.add(normalized)
-
-    const initializer = readIdentifierInitializer(raw, normalized)
-    return initializer
-      ? collectRouteObjectSourcesFromExpression(raw, initializer, seen)
-      : []
-  }
-
-  return []
-}
-
-function collectTopLevelMenuIconSemanticIssues(raw) {
-  if (!raw) return []
-
-  const routesExpression = extractTypicalPageAppFrameRoutesExpression(raw)
-  const routeObjectSources = collectRouteObjectSourcesFromExpression(raw, routesExpression)
-  const entries = []
-
-  for (const source of routeObjectSources) {
-    const titleMatch =
-      /title\s*:\s*'([^']+)'/.exec(source) || /title\s*:\s*"([^"]+)"/.exec(source)
-    const title = titleMatch?.[1]?.trim()
-    const showInMenuFalse = /showInMenu\s*:\s*false/.test(source)
-    const hasChildren = /children\s*:/.test(source)
-    if (!title || showInMenuFalse || !hasChildren) continue
-
-    const iconMatch = /icon\s*:\s*<\s*([A-Z][A-Za-z0-9_$]*)\b/.exec(source)
-    entries.push({
-      title,
-      iconName: iconMatch?.[1] || '',
-    })
-  }
-
-  const issues = []
-  for (const entry of entries) {
-    if (!entry.iconName) {
-      issues.push(`${entry.title} has no first-level icon`)
-      continue
-    }
-
-    if (/Outlined$/.test(entry.iconName)) {
-      issues.push(`${entry.title} uses line icon ${entry.iconName}; first-level menu icons should use Filled variants`)
-    }
-
-    if (entry.title !== '示例' && entry.iconName === 'AppStoreFilled') {
-      issues.push(`${entry.title} uses AppStoreFilled, which is reserved for the 示例 gallery; choose a semantic business/project icon`)
-    }
-  }
-
-  const iconOwners = new Map()
-  for (const entry of entries) {
-    if (!entry.iconName) continue
-    iconOwners.set(entry.iconName, [...(iconOwners.get(entry.iconName) || []), entry.title])
-  }
-
-  for (const [iconName, titles] of iconOwners) {
-    if (titles.length <= 1) continue
-    issues.push(`${titles.join(' / ')} share ${iconName}; first-level menu icons should distinguish navigation domains`)
-  }
-
-  return issues
-}
-
-function detectRoutesIdentifierUsedByAppFrame(appRaw) {
-  if (!appRaw) return ''
-
-  const explicitPropMatch = /<TypicalPageAppFrame[^>]*\broutes=\{([A-Za-z_$][\w$]*)\}/.exec(appRaw)
-  if (explicitPropMatch) return explicitPropMatch[1]
-
-  const directPropMatch = /routes:\s*([A-Za-z_$][\w$]*)/.exec(appRaw)
-  return directPropMatch?.[1] || ''
-}
-
-function detectTypicalPageRoutesImportIdentifier(raw) {
-  if (!raw) return ''
-
-  const match = /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"][^'"]*typical-page-reuse\/routes\/config(?:\.[^'"]+)?['"]/.exec(raw)
-  return match?.[1] || ''
-}
-
-function extractTypicalPageAppFrameRoutesExpression(raw) {
-  if (!raw) return ''
-
-  const tagMatch = /<TypicalPageAppFrame\b/.exec(raw)
-  if (!tagMatch) return ''
-
-  const tagEnd = raw.indexOf('>', tagMatch.index)
-  const searchEnd = tagEnd >= 0 ? tagEnd : raw.length
-  const routesIndex = raw.indexOf('routes={', tagMatch.index)
-  if (routesIndex < 0 || routesIndex > searchEnd) return ''
-
-  const openIndex = raw.indexOf('{', routesIndex)
-  if (openIndex < 0) return ''
-
-  const closeIndex = findMatchingToken(raw, openIndex, '{', '}')
-  if (closeIndex < 0) return ''
-
-  return raw.slice(openIndex + 1, closeIndex).trim()
-}
-
-function readIdentifierInitializer(raw, identifier) {
-  if (!raw || !identifier) return ''
-
-  const declarationPattern = new RegExp(
-    `(?:const|let|var)\\s+${identifier}\\s*=\\s*`,
-    'm'
-  )
-  const match = declarationPattern.exec(raw)
-  if (!match) return ''
-
-  let startIndex = match.index + match[0].length
-  while (/\s/.test(raw[startIndex] || '')) {
-    startIndex += 1
-  }
-
-  const firstChar = raw[startIndex]
-  if (firstChar === '[' || firstChar === '{') {
-    const endIndex = findMatchingToken(raw, startIndex, firstChar, firstChar === '[' ? ']' : '}')
-    return endIndex > startIndex ? raw.slice(startIndex, endIndex + 1).trim() : ''
-  }
-
-  const endMatch = /[\n;]/.exec(raw.slice(startIndex))
-  const endIndex = endMatch ? startIndex + endMatch.index : raw.length
-  return raw.slice(startIndex, endIndex).trim().replace(/,$/, '').trim()
-}
-
-function unwrapExpression(expression) {
-  let current = String(expression || '').trim()
-
-  while (current.startsWith('(') && current.endsWith(')')) {
-    const closeIndex = findMatchingToken(current, 0, '(', ')')
-    if (closeIndex !== current.length - 1) break
-    current = current.slice(1, -1).trim()
-  }
-
-  return current
-}
-
-function containsExampleGalleryWrapper(source, typicalRoutesIdentifier) {
-  if (!source || !typicalRoutesIdentifier) return false
-
-  const hasExampleTitle = /title\s*:\s*['"]示例['"]/.test(source)
-  const hasTypicalRoutesChildren = new RegExp(
-    `children\\s*:\\s*${typicalRoutesIdentifier}\\b`
-  ).test(source)
-
-  return hasExampleTitle && hasTypicalRoutesChildren
-}
-
-function expressionUsesExampleGalleryWrapper(raw, expression, typicalRoutesIdentifier, seen = new Set()) {
-  const normalized = unwrapExpression(expression)
-  if (!normalized || !typicalRoutesIdentifier) return false
-  if (normalized === typicalRoutesIdentifier) return false
-  if (containsExampleGalleryWrapper(normalized, typicalRoutesIdentifier)) return true
-
-  const identifiers = normalized.match(/\b[A-Za-z_$][\w$]*\b/g) || []
-  for (const identifier of identifiers) {
-    if (identifier === typicalRoutesIdentifier || seen.has(identifier)) continue
-    seen.add(identifier)
-
-    const initializer = readIdentifierInitializer(raw, identifier)
-    if (!initializer) continue
-    if (containsExampleGalleryWrapper(initializer, typicalRoutesIdentifier)) return true
-    if (expressionUsesExampleGalleryWrapper(raw, initializer, typicalRoutesIdentifier, seen)) {
-      return true
-    }
-  }
-
-  return false
-}
-
-function analyzeHostRouteMenuSource(raw) {
-  if (!raw || !detectTopLevelTypicalPageAppFrameMount(raw)) {
-    return {
-      ok: true,
-      detail: 'No TypicalPageAppFrame mount was detected.',
-    }
-  }
-
-  const importedTypicalRoutesIdentifier = detectTypicalPageRoutesImportIdentifier(raw)
-  if (!importedTypicalRoutesIdentifier && !raw.includes('typicalPageReuseRoutes')) {
-    return {
-      ok: true,
-      detail:
-        'TypicalPageAppFrame is mounted, but no synced typical-page gallery route import was detected in App.*.',
-    }
-  }
-
-  const typicalRoutesIdentifier = importedTypicalRoutesIdentifier || 'typicalPageReuseRoutes'
-  const routesExpression = extractTypicalPageAppFrameRoutesExpression(raw)
-
-  if (!routesExpression) {
-    return {
-      ok: false,
-      detail:
-        'TypicalPageAppFrame is mounted, but its routes prop could not be statically verified. Pass the host-level 示例 route group into routes instead of a separate or opaque menu tree.',
-    }
-  }
-
-  if (unwrapExpression(routesExpression) === typicalRoutesIdentifier) {
-    return {
-      ok: false,
-      detail: `TypicalPageAppFrame receives bare ${typicalRoutesIdentifier}, so 表格 / 图表 / 表单 / 详情 / 异常 become first-level menus. Wrap it in a top-level 示例 route and pass that same wrapper to TypicalPageAppFrame routes.`,
-    }
-  }
-
-  if (
-    routesExpression.includes(typicalRoutesIdentifier) &&
-    !expressionUsesExampleGalleryWrapper(raw, routesExpression, typicalRoutesIdentifier)
-  ) {
-    return {
-      ok: false,
-      detail: `TypicalPageAppFrame routes references ${typicalRoutesIdentifier} without a verified top-level 示例 wrapper. The route tree and menu tree must share the same host-level gallery route.`,
-    }
-  }
-
-  if (!expressionUsesExampleGalleryWrapper(raw, routesExpression, typicalRoutesIdentifier)) {
-    return {
-      ok: false,
-      detail:
-        'TypicalPageAppFrame routes does not expose a statically verifiable top-level 示例 route group. Keep one host-level gallery route object as the source of truth for both useRoutes() and the app-frame menu.',
-    }
-  }
-
-  return {
-    ok: true,
-    detail:
-      'TypicalPageAppFrame routes uses a host-level 示例 gallery route, so synced typical-page categories remain second-level menu groups.',
-  }
-}
-
-function detectWrapInShellByDefault(routeConfigRaw) {
-  if (!routeConfigRaw) return false
-
-  return (
-    routeConfigRaw.includes('element: renderInShell(') ||
-    /export\s+default\s+createTypicalPageReuseRoutes\(\s*\{\s*wrapInShell\s*:\s*true\s*\}\s*\)/s.test(
-      routeConfigRaw
-    ) ||
-    (/export\s+default\s+routes/.test(routeConfigRaw) && routeConfigRaw.includes('ExampleAppShell'))
-  )
-}
-
-function isPathInside(parentPath, childPath) {
-  const relativePath = path.relative(parentPath, childPath)
-  return Boolean(relativePath) && !relativePath.startsWith('..') && !path.isAbsolute(relativePath)
-}
-
-function collectExampleGalleryBusinessRouteViolations({
-  outputRoot,
-  routeConfigPath,
-  routeConfigRaw,
-  targetRoot,
-}) {
-  if (!routeConfigRaw || !routeConfigPath || !outputRoot) return []
-
-  const routeConfigDir = path.dirname(routeConfigPath)
-  const outputRootAbs = path.resolve(outputRoot)
-  const violations = []
-  const importPattern = /\bimport\s*\(\s*['"]([^'"]+)['"]\s*\)/g
-
-  for (const match of routeConfigRaw.matchAll(importPattern)) {
-    const specifier = String(match[1] || '').trim()
-    if (!specifier.startsWith('.')) continue
-
-    const resolvedPath = path.resolve(routeConfigDir, specifier)
-    if (isPathInside(outputRootAbs, resolvedPath)) continue
-
-    violations.push(
-      `${path.relative(targetRoot, routeConfigPath)} imports "${specifier}" outside ${path.relative(
-        targetRoot,
-        outputRootAbs
-      )}`
-    )
-  }
-
-  return violations
-}
-
-function detectNestedBusinessHostShell(raw) {
-  if (!raw) return false
-
-  const importsExampleAppShell =
-    /\bExampleAppShell\b/.test(raw) && /(?:^|\n)\s*import[\s\S]*?from\s+['"][^'"]*app-shell['"]/.test(raw)
-  const importsLayoutContentProvider =
-    /\bLayoutContentProvider\b/.test(raw) &&
-    /(?:^|\n)\s*import[\s\S]*?from\s+['"][^'"]*layout-content-context['"]/.test(raw)
-  const importsTypicalPageHostBridge =
-    /\bTypicalPageHostBridge\b/.test(raw) &&
-    /(?:^|\n)\s*import[\s\S]*?from\s+['"][^'"]*typical-page-host['"]/.test(raw)
-  const importsTypicalPageHostProvider = /\bTypicalPageHostProvider\b/.test(raw)
-
-  return (
-    importsExampleAppShell ||
-    (importsLayoutContentProvider && importsTypicalPageHostBridge) ||
-    importsTypicalPageHostProvider
-  )
-}
-
-async function collectBusinessHostShellConsumers(targetRoot, outputRoot) {
-  const candidateRoots = ['src', 'app', 'pages']
-  const files = []
-  const seen = new Set()
-
-  for (const candidateRoot of candidateRoots) {
-    const absRoot = path.join(targetRoot, candidateRoot)
-    if (!(await pathExists(absRoot))) continue
-
-    for (const filePath of await collectSourceFiles(absRoot)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  const outputRootWithSep = outputRoot.endsWith(path.sep) ? outputRoot : `${outputRoot}${path.sep}`
-  const offenders = []
-
-  for (const filePath of files) {
-    if (filePath === outputRoot || filePath.startsWith(outputRootWithSep)) continue
-    const raw = await readTextIfExists(filePath)
-    if (!detectNestedBusinessHostShell(raw)) continue
-    offenders.push(filePath)
-  }
-
-  return offenders
 }
 
 async function detectViteConfigFile(targetRoot) {
@@ -1447,35 +986,23 @@ async function detectViteConfigFile(targetRoot) {
 
 async function collectSourceFiles(rootDir) {
   if (!(await pathExists(rootDir))) return []
-  const cacheKey = rootDir
-  if (sourceFileListCache.has(cacheKey)) {
-    return sourceFileListCache.get(cacheKey)
-  }
 
-  const pending = (async () => {
-    const entries = await fs.readdir(rootDir, { withFileTypes: true })
-    const files = []
+  const entries = await fs.readdir(rootDir, { withFileTypes: true })
+  const files = []
 
-    for (const entry of entries) {
-      const absPath = path.join(rootDir, entry.name)
-      if (entry.isDirectory()) {
-        files.push(...(await collectSourceFiles(absPath)))
-        continue
-      }
-
-      if (entry.isFile() && /\.[cm]?[jt]sx?$/.test(entry.name)) {
-        files.push(absPath)
-      }
+  for (const entry of entries) {
+    const absPath = path.join(rootDir, entry.name)
+    if (entry.isDirectory()) {
+      files.push(...(await collectSourceFiles(absPath)))
+      continue
     }
 
-    return files
-  })().catch((error) => {
-    sourceFileListCache.delete(cacheKey)
-    throw error
-  })
+    if (entry.isFile() && /\.[cm]?[jt]sx?$/.test(entry.name)) {
+      files.push(absPath)
+    }
+  }
 
-  sourceFileListCache.set(cacheKey, pending)
-  return pending
+  return files
 }
 
 async function readImportedStyleSources(sourceFilePath, sourceRaw) {
@@ -1487,1066 +1014,31 @@ async function readImportedStyleSources(sourceFilePath, sourceRaw) {
   for (const specifier of localStyleSpecifiers) {
     const absPath = path.resolve(path.dirname(sourceFilePath), specifier)
     if (!(await pathExists(absPath))) continue
-    contents.push(await readTextCached(absPath))
+    contents.push(await fs.readFile(absPath, 'utf8'))
   }
 
   return contents.join('\n')
 }
 
-function extractLocalStyleImportBindings(sourceFilePath, sourceRaw) {
-  const bindings = []
-  const seen = new Set()
-  const pattern = /import\s+([A-Za-z_$][\w$]*)\s+from\s+['"]([^'"]+\.(?:css|scss))['"]/g
-
-  for (const match of sourceRaw.matchAll(pattern)) {
-    const binding = match[1]
-    const specifier = match[2]
-    if (!binding || !specifier || !specifier.startsWith('.')) continue
-    const absPath = path.resolve(path.dirname(sourceFilePath), specifier)
-    const key = `${binding}::${absPath}`
-    if (seen.has(key)) continue
-    seen.add(key)
-    bindings.push({ absPath, binding })
-  }
-
-  return bindings
-}
-
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-function collectNeedleSnippets(raw, needle, radius = 240) {
-  if (!raw || !needle) return []
-
-  const snippets = []
-  const pattern = new RegExp(escapeRegExp(needle), 'gi')
-
-  for (const match of raw.matchAll(pattern)) {
-    const index = match.index ?? -1
-    if (index < 0) continue
-    snippets.push(raw.slice(Math.max(0, index - radius), Math.min(raw.length, index + needle.length + radius)))
-    if (snippets.length >= 4) break
-  }
-
-  return snippets
-}
-
-function hasClearedDescriptionsLabelWidth(sourceRaw) {
-  return (
-    /labelWidth\s*=\s*\{\s*(?:null|undefined)\s*\}/.test(sourceRaw) ||
-    /labelWidth\s*:\s*(?:null|undefined)/.test(sourceRaw)
-  )
-}
-
-function usesSchemaDescriptionsBridge(sourceRaw) {
-  return /\bSchemaDescriptionsBridge\b/.test(sourceRaw)
-}
-
-function hasTopAndHorizontalTwentySignal(snippet) {
-  return (
-    hasTwentyPxInsetSignal(snippet) ||
-    (hasPaddingTopTwentySignal(snippet) &&
-      hasPaddingLeftTwentySignal(snippet) &&
-      hasPaddingRightTwentySignal(snippet))
-  )
-}
-
-function hasWorkspaceChromeSignal(snippet) {
-  return /(padding(?:-[a-z]+)?\s*:|background(?:-color)?\s*:|border-radius\s*:|overflow(?:-[xy])?\s*:)/i.test(
-    snippet
-  )
-}
-
-function hasPaddingSignal(snippet) {
-  return /padding(?:-[a-z]+)?\s*:/i.test(snippet)
-}
-
-function hasOverflowSignal(snippet) {
-  return /overflow(?:-[xy])?\s*:/i.test(snippet)
-}
-
-function hasScrollableOverflowSignal(snippet) {
-  return /overflow(?:-[xy])?\s*:\s*(auto|scroll)/i.test(snippet)
-}
-
-function hasBackgroundOrRadiusSignal(snippet) {
-  return /(background(?:-color)?\s*:|border-radius\s*:)/i.test(snippet)
-}
-
-function hasTwentyPxInsetSignal(snippet) {
-  return (
-    /padding\s*:\s*20px(?:\s+20px(?:\s+0(?:px)?)?)?/i.test(snippet) ||
-    (/padding-top\s*:\s*20px/i.test(snippet) &&
-      /padding-left\s*:\s*20px/i.test(snippet) &&
-      /padding-right\s*:\s*20px/i.test(snippet))
-  )
-}
-
-function hasPaddingTopTwentySignal(snippet) {
-  return (
-    /padding-top\s*:\s*20px/i.test(snippet) ||
-    /padding\s*:\s*20px(?:\s+\d+(?:px)?(?:\s+\d+(?:px)?(?:\s+\d+(?:px)?)?)?)?/i.test(snippet)
-  )
-}
-
-function hasPaddingLeftTwentySignal(snippet) {
-  return (
-    /padding-left\s*:\s*20px/i.test(snippet) ||
-    /padding\s*:\s*20px(?:\s+\d+(?:px)?){0,2}\s+20px/i.test(snippet) ||
-    /padding\s*:\s*20px\s+20px/i.test(snippet)
-  )
-}
-
-function hasPaddingRightTwentySignal(snippet) {
-  return (
-    /padding-right\s*:\s*20px/i.test(snippet) ||
-    /padding\s*:\s*\d+(?:px)?\s+20px(?:\s+\d+(?:px)?(?:\s+\d+(?:px)?)?)?/i.test(snippet) ||
-    /padding\s*:\s*20px\s+20px/i.test(snippet)
-  )
-}
-
-function hasHorizontalTableShellInsetSignal(snippet) {
-  return (
-    /(padding-inline|padding-left|padding-right)\s*:\s*(?:16|20)px\b/i.test(snippet) ||
-    /padding\s*:\s*(?:0\s+)?(?:16|20)px(?:\s+(?:16|20)px){0,3}\s*;/i.test(snippet)
-  )
-}
-
-function hasHorizontalShellInsetSignal(snippet) {
-  return (
-    /(padding-inline|padding-left|padding-right)\s*:\s*(?:16|20)px\b/i.test(snippet) ||
-    /padding\s*:\s*(?:16|20)px(?:\s+(?:16|20)px){0,3}\s*;/i.test(snippet) ||
-    /padding\s*:\s*\d+(?:px)?\s+(?:16|20)px(?:\s+\d+(?:px)?(?:\s+(?:16|20)px)?)?\s*;/i.test(snippet)
-  )
-}
-
-function normalizeOwnershipTargetText(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, ' ')
-}
-
-function targetLooksLikeHostSlot(value) {
-  return /(宿主|content slot|layout__content|ss-v1-layout__content|layout content|内容槽)/i.test(
-    value
-  )
-}
-
-function targetLooksLikePageSurface(value) {
-  return /(white[- ]?body|白底|page surface|页面根|主体容器|主工作区容器)/i.test(value)
-}
-
-function collectWorkspaceSurfaceSnippets(raw, needles) {
-  return needles.flatMap((needle) => collectNeedleSnippets(raw, needle))
-}
-
-function countStyleClassRef(sourceRaw, className) {
-  if (!sourceRaw || !className) return 0
-
-  const patterns = [
-    new RegExp(`styles\\.${escapeRegExp(className)}\\b`, 'g'),
-    new RegExp(`['"]${escapeRegExp(className)}['"]`, 'g'),
-  ]
-
-  return patterns.reduce(
-    (total, pattern) => total + Array.from(sourceRaw.matchAll(pattern)).length,
-    0
-  )
-}
-
-function portalPageHeaderHasExtra(sourceRaw) {
-  const portalPattern =
-    /<(PageHeaderPortal|TypicalPageHeaderPortal|HostPageHeaderPortal)\b[^>]*>([\s\S]*?)<\/(?:PageHeaderPortal|TypicalPageHeaderPortal|HostPageHeaderPortal)>/g
-
-  return (
-    /\bheaderExtra\s*=/.test(sourceRaw) ||
-    Array.from(sourceRaw.matchAll(portalPattern)).some((match) =>
-      /<PageHeader\b[\s\S]{0,1600}\bextra\s*=/.test(String(match[2] || ''))
-    )
-  )
-}
-
-async function inspectRulesOnlyWorkspaceOwnership({
-  contract,
-  legacyHostCompatible,
-  targetRoot,
-}) {
-  const warnings = []
-  const requiredOwnershipRoles = getRequiredOwnershipRolesForPageType(contract.pageTypeId)
-
-  if (contract.pageTypeId !== 'tree-split' && !requiredOwnershipRoles.includes('white-body')) {
-    return warnings
-  }
-
-  if (!contract.generatedPagePath) {
-    return warnings
-  }
-
-  const generatedPageAbsPath = path.join(targetRoot, contract.generatedPagePath)
-  const sourceRaw = await readTextIfExists(generatedPageAbsPath)
-  if (!sourceRaw) {
-    return warnings
-  }
-
-  const importedStyleRaw = await readImportedStyleSources(generatedPageAbsPath, sourceRaw)
-  const hostSlotSnippets = collectNeedleSnippets(importedStyleRaw, 'ss-v1-layout__content')
-  const whiteBodyStyleSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.whiteBody',
-    '.white-body',
-  ])
-  const genericWorkspaceShellSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.workspace',
-    '.container',
-    '.shell',
-    '.pageBody',
-    '.page-body',
-    '.pageContainer',
-    '.page-container',
-    '.contentBody',
-    '.content-body',
-    '.mainContent',
-    '.main-content',
-  ])
-  const splitWorkspaceStyleSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.splitWorkspace',
-    '.split-workspace',
-    '.mainSplit',
-    '.main-split',
-    '.splitContainer',
-    '.split-container',
-    '.leftColumn',
-    '.left-column',
-    '.rightColumn',
-    '.right-column',
-    '.leftPane',
-    '.left-pane',
-    '.rightPane',
-    '.right-pane',
-    '.leftTree',
-    '.left-tree',
-    '.rightList',
-    '.right-list',
-  ])
-  const formScrollBodyStyleSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.formScrollBody',
-    '.form-scroll-body',
-  ])
-  const sectionSurfaceSnippets =
-    /styles\.(section|sectionRoot|sectionCard)\b/.test(sourceRaw) || /<Section\b/.test(sourceRaw)
-      ? collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-          '.section',
-          '.sectionRoot',
-          '.section-root',
-          '.sectionCard',
-          '.section-card',
-        ])
-      : []
-
-  const hostSlotOwnsWorkspaceChrome = hostSlotSnippets.some(hasWorkspaceChromeSignal)
-  const hostSlotAddsPadding = hostSlotSnippets.some(hasPaddingSignal)
-  const pageSurfaceOwnsWorkspaceChrome = whiteBodyStyleSnippets.some(hasWorkspaceChromeSignal)
-  const genericWorkspaceAddsTwentyPxInset = genericWorkspaceShellSnippets.some(
-    (snippet) => hasPaddingLeftTwentySignal(snippet) && hasPaddingRightTwentySignal(snippet)
-  )
-  const sourceMentionsLocalWhiteBody =
-    /styles\.whiteBody/.test(sourceRaw) ||
-    /['"`]whiteBody['"`]/.test(sourceRaw) ||
-    /white-body/.test(sourceRaw) ||
-    whiteBodyStyleSnippets.length > 0
-  const sourceMentionsGenericWorkspaceShell =
-    /styles\.(workspace|container|shell|pageBody|pageContainer|contentBody|mainContent)\b/.test(
-      sourceRaw
-    ) || genericWorkspaceShellSnippets.length > 0
-  const sourceUsesGenericLayoutShell =
-    /<Layout\b/.test(sourceRaw) || /\bLayout\b/.test(sourceRaw.split('\n').slice(0, 40).join('\n'))
-  const sourceMentionsSplitWorkspace =
-    /styles\.(splitWorkspace|mainSplit|splitContainer|leftColumn|rightColumn|leftPane|rightPane|leftTree|rightList)\b/.test(
-      sourceRaw
-    ) || /leftPane=/.test(sourceRaw)
-  const splitWorkspaceOwnsWorkspaceChrome = splitWorkspaceStyleSnippets.some(hasWorkspaceChromeSignal)
-  const sourceMentionsFormScrollBody =
-    /styles\.formScrollBody\b/.test(sourceRaw) ||
-    /formScrollBody/.test(sourceRaw) ||
-    formScrollBodyStyleSnippets.length > 0
-  const formScrollBodyOwnsScroll = formScrollBodyStyleSnippets.some(hasOverflowSignal)
-  const formScrollBodyAddsPadding = formScrollBodyStyleSnippets.some(hasPaddingSignal)
-  const sectionCardsOwnWorkspaceSurface = sectionSurfaceSnippets.some(hasBackgroundOrRadiusSignal)
-  const localSectionCardsKeepInset = sectionSurfaceSnippets.some(
-    (snippet) => hasBackgroundOrRadiusSignal(snippet) && hasPaddingSignal(snippet)
-  )
-  const localWhiteBodyKeepsInset = whiteBodyStyleSnippets.some(
-    (snippet) => hasBackgroundOrRadiusSignal(snippet) && hasPaddingSignal(snippet)
-  )
-  const sourceMentionsInlineFooter =
-    /styles\.(inlineEditFooter|footerActions)\b/.test(sourceRaw) || /footer=/.test(sourceRaw)
-  const sourceMentionsTableRegion =
-    /data-hiui5-region\s*=\s*["']table["']/.test(sourceRaw) ||
-    /styles\.(tablePanel|tableShell|tableWorkspace|tableContainer|tableWrapper|tableRegion)\b/.test(
-      sourceRaw
-    )
-  const tableShellSnippets = sourceMentionsTableRegion
-    ? collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-        '.tablePanel',
-        '.table-panel',
-        '.tableShell',
-        '.table-shell',
-        '.tableWorkspace',
-        '.table-workspace',
-        '.tableContainer',
-        '.table-container',
-        '.tableWrapper',
-        '.table-wrapper',
-        '.tableRegion',
-        '.table-region',
-      ])
-    : []
-  const tableShellKeepsHorizontalInset = tableShellSnippets.some(hasHorizontalTableShellInsetSignal)
-
-  const ownershipByRole = new Map(
-    Array.isArray(contract.ownershipMapping)
-      ? contract.ownershipMapping.map((item) => [
-          String(item?.role || '').trim().toLowerCase(),
-          normalizeOwnershipTargetText(item?.target),
-        ])
-      : []
-  )
-  const outerPaddingOwner = ownershipByRole.get('outer-padding') || ''
-  const pageSurfaceOwner = ownershipByRole.get('white-body') || ''
-  const contentSlotOwner = ownershipByRole.get('content-slot') || ''
-  const hostSlotDeclaredAsOwner =
-    targetLooksLikeHostSlot(contentSlotOwner) || targetLooksLikeHostSlot(outerPaddingOwner)
-  const pageSurfaceDeclaredAsOwner =
-    targetLooksLikePageSurface(pageSurfaceOwner) || targetLooksLikePageSurface(outerPaddingOwner)
-
-  const pathLabel = path.relative(targetRoot, generatedPageAbsPath)
-  if (
-    sourceMentionsGenericWorkspaceShell &&
-    genericWorkspaceAddsTwentyPxInset &&
-    (localSectionCardsKeepInset || localWhiteBodyKeepsInset)
-  ) {
-    const detailParts = [
-      `${pathLabel} promotes local region spacing into a generic workspace shell`,
-      `ownershipMode=${contract.ownershipMode || '(missing)'}`,
-      'a workspace/container wrapper keeps 20px horizontal shell padding',
-    ]
-
-    if (localWhiteBodyKeepsInset) {
-      detailParts.push('local white-body still keeps its own surface and inset')
-    }
-
-    if (localSectionCardsKeepInset) {
-      detailParts.push('local section/card wrappers still keep surfaced body spacing')
-    }
-
-    if (targetLooksLikeHostSlot(outerPaddingOwner) || targetLooksLikeHostSlot(contentSlotOwner)) {
-      detailParts.push('contract already assigns outer/content ownership to the host slot')
-    }
-
-    if (targetLooksLikePageSurface(pageSurfaceOwner)) {
-      detailParts.push('contract also declares a page-surface owner for the main white body')
-    }
-
-    if (legacyHostCompatible) {
-      detailParts.push('legacy host compatibility does not justify reintroducing a second page-level shell')
-    }
-
-    warnings.push(
-      `${detailParts.join('; ')}. This is the "region spacing promoted to shell padding" anti-pattern: keep outer-padding on exactly one owner, and keep 20px/16px spacing on the local white-body or section body instead of the generic workspace wrapper.`
-    )
-  }
-
-  if (hostSlotOwnsWorkspaceChrome && sourceMentionsLocalWhiteBody && pageSurfaceOwnsWorkspaceChrome) {
-    const detailParts = [
-      `${pathLabel} styles the host content slot and a local white-body shell at the same time`,
-      `ownershipMode=${contract.ownershipMode || '(missing)'}`,
-    ]
-
-    if (hostSlotAddsPadding) {
-      detailParts.push('host content slot still carries outer padding')
-    }
-
-    if (sourceUsesGenericLayoutShell) {
-      detailParts.push('page also mounts a generic Layout shell')
-    }
-
-    if (hostSlotDeclaredAsOwner && pageSurfaceDeclaredAsOwner) {
-      detailParts.push('contract text itself still points both host slot and page surface at outer ownership')
-    } else if (contract.ownershipMode === 'page-surface-owns-workspace') {
-      detailParts.push('page-surface takeover mode requires locally zeroing host-slot padding/background/overflow')
-    } else if (contract.ownershipMode === 'host-slot-owns-workspace') {
-      detailParts.push('host-slot ownership mode should not recreate a second white-body workspace shell')
-    }
-
-    warnings.push(
-      `${detailParts.join('; ')}. Keep a single owner for content-slot / white-body / outer-padding / main-scroll.`
-    )
-  }
-
-  if (contract.pageTypeId === 'tree-split') {
-    const splitWorkspaceDeclaredAsOwner = targetLooksLikePageSurface(outerPaddingOwner)
-
-    if (hostSlotOwnsWorkspaceChrome && sourceMentionsSplitWorkspace && splitWorkspaceOwnsWorkspaceChrome) {
-      const detailParts = [
-        `${pathLabel} styles the host content slot and a local split workspace shell at the same time`,
-        `ownershipMode=${contract.ownershipMode || '(missing)'}`,
-      ]
-
-      if (hostSlotAddsPadding) {
-        detailParts.push('host content slot still carries outer padding')
-      }
-
-      if (sourceUsesGenericLayoutShell) {
-        detailParts.push('page also mounts a generic Layout shell')
-      }
-
-      if (hostSlotDeclaredAsOwner && splitWorkspaceDeclaredAsOwner) {
-        detailParts.push('contract text still points both host slot and split workspace at outer ownership')
-      } else if (contract.ownershipMode === 'page-surface-owns-workspace') {
-        detailParts.push('split-workspace takeover mode requires locally zeroing host-slot padding/background/overflow')
-      } else if (contract.ownershipMode === 'host-slot-owns-workspace') {
-        detailParts.push('host-slot ownership mode should not recreate a second split workspace surface')
-      }
-
-      warnings.push(
-        `${detailParts.join('; ')}. Keep a single owner for content-slot / outer-padding / main-scroll in tree-split pages.`
-      )
-    }
-  }
-
-  if (contract.pageTypeId === 'full-page-edit') {
-    const likelyLocalEditWorkspace =
-      sourceMentionsLocalWhiteBody ||
-      sourceMentionsFormScrollBody ||
-      sectionCardsOwnWorkspaceSurface ||
-      /styles\.(pageBody|pageContainer|contentBody)\b/.test(sourceRaw)
-
-    if (hostSlotOwnsWorkspaceChrome && likelyLocalEditWorkspace) {
-      const detailParts = [
-        `${pathLabel} keeps host-slot workspace chrome while recreating a local full-page-edit workspace`,
-        `ownershipMode=${contract.ownershipMode || '(missing)'}`,
-      ]
-
-      if (hostSlotAddsPadding) {
-        detailParts.push('host content slot still carries outer padding')
-      }
-
-      if (sourceMentionsFormScrollBody && formScrollBodyOwnsScroll) {
-        detailParts.push('local formScrollBody also owns vertical scrolling')
-      }
-
-      if (formScrollBodyAddsPadding) {
-        detailParts.push('formScrollBody adds root padding')
-      }
-
-      if (sectionCardsOwnWorkspaceSurface) {
-        detailParts.push('local section/card wrappers also paint white surfaces or radius')
-      }
-
-      if (sourceMentionsInlineFooter) {
-        detailParts.push('footer behavior now depends on mixed outer ownership')
-      }
-
-      if (sourceUsesGenericLayoutShell) {
-        detailParts.push('page also mounts a generic Layout shell')
-      }
-
-      if (hostSlotDeclaredAsOwner && pageSurfaceDeclaredAsOwner) {
-        detailParts.push('contract text itself still points both host slot and page surface at outer ownership')
-      } else if (contract.ownershipMode === 'page-surface-owns-workspace') {
-        detailParts.push('page-surface takeover mode requires locally zeroing host-slot padding/background/overflow before formScrollBody becomes the main scroll')
-      } else if (contract.ownershipMode === 'host-slot-owns-workspace') {
-        detailParts.push('host-slot ownership mode should not recreate a second white-body/form workspace inside the page')
-      }
-
-      warnings.push(
-        `${detailParts.join('; ')}. Keep a single owner for content-slot / white-body / outer-padding / main-scroll in full-page-edit pages.`
-      )
-    }
-  }
-
-  if (sourceMentionsTableRegion && tableShellKeepsHorizontalInset) {
-    warnings.push(
-      `${pathLabel} wraps the managed table region in a generic shell that still keeps 16px/20px horizontal padding. This is the "table region shell padding" anti-pattern: keep table-area spacing on the true table header/body region, not on an extra tablePanel/tableShell/tableWorkspace wrapper.`
-    )
-  }
-
-  return warnings
-}
-
-async function inspectSourceMarkedNonTypicalPages(targetRoot) {
-  const srcRoot = path.join(targetRoot, 'src')
-  const warnings = []
-  const sourceFiles = await collectSourceFiles(srcRoot)
-  let inspectedCount = 0
-
-  for (const sourceFilePath of sourceFiles) {
-    const sourceRaw = await readTextCached(sourceFilePath)
-    const looksLikeImplicitContextMainSplit =
-      (/\bProDetailPage\b/.test(sourceRaw) || /\bProEditPage\b/.test(sourceRaw)) &&
-      /styles\.leftPane\b/.test(sourceRaw) &&
-      /styles\.rightPane\b/.test(sourceRaw)
-    const declaresNonTypical =
-      /hiui-design non-typical:\s*true/.test(sourceRaw) ||
-      /data-hiui5-layout-strategy\s*=/.test(sourceRaw)
-
-    if (!declaresNonTypical && !looksLikeImplicitContextMainSplit) {
-      continue
-    }
-
-    inspectedCount += 1
-    const importedStyleRaw = await readImportedStyleSources(sourceFilePath, sourceRaw)
-    const pathLabel = path.relative(targetRoot, sourceFilePath)
-
-    const missingOwnerMarkers = [
-      'data-hiui5-owner-content-slot',
-      'data-hiui5-owner-outer-padding',
-      'data-hiui5-owner-main-scroll',
-      'data-hiui5-owner-white-body',
-    ].filter(
-      (attrName) =>
-        !new RegExp(`${escapeRegExp(attrName)}\\s*=`).test(sourceRaw) &&
-        !new RegExp(`['"]${escapeRegExp(attrName)}['"]\\s*:`).test(sourceRaw)
-    )
-    const declaresContextMainSplit =
-      looksLikeImplicitContextMainSplit ||
-      /hiui-design layout archetype:\s*context-main-split/i.test(sourceRaw) ||
-      /data-hiui5-layout-group\s*=\s*["']context-main-split["']/.test(sourceRaw)
-    const missingContextMainSplitMarkers = declaresContextMainSplit
-      ? [
-          'hiui-design layout archetype: context-main-split',
-          'data-hiui5-layout-group="context-main-split"',
-          'data-hiui5-region="left-context"',
-          'data-hiui5-region="right-main"',
-        ].filter((marker) => !sourceRaw.includes(marker))
-      : []
-
-    if (missingOwnerMarkers.length > 0) {
-      warnings.push(
-        `${pathLabel} declares a non-typical layout but is missing runtime owner markers: ${missingOwnerMarkers.join(', ')}. Non-typical pages must expose machine-checkable ownership for content-slot / outer-padding / main-scroll / white-body.`
-      )
-    }
-
-    if (looksLikeImplicitContextMainSplit && !declaresNonTypical) {
-      warnings.push(
-        `${pathLabel} looks like a split master-detail page implemented on ProDetailPage/ProEditPage with local leftPane/rightPane wrappers, but source does not declare the non-typical/context-main-split markers first. Do not bypass the fixed generation flow: lock the split shell carrier, add the layout markers, and then implement pane content.`
-      )
-    }
-
-    if (missingContextMainSplitMarkers.length > 0) {
-      warnings.push(
-        `${pathLabel} declares layout archetype context-main-split but is missing required source/runtime markers: ${missingContextMainSplitMarkers.join(', ')}. Context-main-split pages must expose the archetype marker plus left-context/right-main runtime regions.`
-      )
-    }
-
-    if (!importedStyleRaw) {
-      continue
-    }
-
-    const genericWorkspaceShellSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-      '.pageRoot',
-      '.page-root',
-      '.workspace',
-      '.container',
-      '.shell',
-      '.pageBody',
-      '.page-body',
-      '.pageContainer',
-      '.page-container',
-      '.contentBody',
-      '.content-body',
-      '.mainContent',
-      '.main-content',
-    ])
-    const whiteBodyStyleSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-      '.whiteBody',
-      '.white-body',
-    ])
-    const splitContentInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-      '.tablePane',
-      '.table-pane',
-      '.tableRegion',
-      '.table-region',
-      '.tableContent',
-      '.table-content',
-      '.tableBody',
-      '.table-body',
-      '.detailTable',
-      '.detail-table',
-      '.rightScroll',
-      '.right-scroll',
-      '.detailScroll',
-      '.detail-scroll',
-      '.paneBody',
-      '.pane-body',
-    ])
-    const sectionSurfaceSnippets =
-      /styles\.(section|sectionRoot|sectionCard)\b/.test(sourceRaw) || /<Section\b/.test(sourceRaw)
-        ? collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-            '.section',
-            '.sectionRoot',
-            '.section-root',
-            '.sectionCard',
-            '.section-card',
-          ])
-        : []
-    const sourceMentionsTableRegion =
-      /data-hiui5-region\s*=\s*["']table["']/.test(sourceRaw) ||
-      /styles\.(tablePanel|tableShell|tableWorkspace|tableContainer|tableWrapper|tableRegion)\b/.test(
-        sourceRaw
-      )
-    const tableShellSnippets = sourceMentionsTableRegion
-      ? collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-          '.tablePanel',
-          '.table-panel',
-          '.tableShell',
-          '.table-shell',
-          '.tableWorkspace',
-          '.table-workspace',
-          '.tableContainer',
-          '.table-container',
-          '.tableWrapper',
-          '.table-wrapper',
-          '.tableRegion',
-          '.table-region',
-        ])
-      : []
-
-    const genericWorkspaceAddsTwentyPxInset = genericWorkspaceShellSnippets.some(
-      (snippet) => hasPaddingLeftTwentySignal(snippet) && hasPaddingRightTwentySignal(snippet)
-    )
-    const genericWorkspaceAddsShellInset = genericWorkspaceShellSnippets.some(hasHorizontalShellInsetSignal)
-    const genericWorkspaceOwnsScrollableOverflow = genericWorkspaceShellSnippets.some(
-      hasScrollableOverflowSignal
-    )
-    const localWhiteBodyOwnsSurface = whiteBodyStyleSnippets.some(hasBackgroundOrRadiusSignal)
-    const localWhiteBodyKeepsInset = whiteBodyStyleSnippets.some(
-      (snippet) => hasBackgroundOrRadiusSignal(snippet) && hasPaddingSignal(snippet)
-    )
-    const localSectionCardsKeepInset = sectionSurfaceSnippets.some(
-      (snippet) => hasBackgroundOrRadiusSignal(snippet) && hasPaddingSignal(snippet)
-    )
-    const tableShellKeepsHorizontalInset = tableShellSnippets.some(hasHorizontalTableShellInsetSignal)
-    const declaresSplitMasterDetail =
-      /data-hiui5-layout-group\s*=\s*["']split-master-detail["']/.test(sourceRaw) ||
-      /data-hiui5-layout-group\s*=\s*["']context-main-split["']/.test(sourceRaw) ||
-      /hiui-design split pane contract:/i.test(sourceRaw)
-    const hostSlotOwnsContentSlot =
-      /data-hiui5-owner-content-slot\s*=\s*["']host-slot["']/.test(sourceRaw) ||
-      /hiui-design content-slot owner:\s*host-slot/i.test(sourceRaw)
-    const duplicatedQueryShells = [
-      'leftQuery',
-      'queryRegion',
-      'filterRegion',
-      'leftFilter',
-      'leftSearch',
-      'searchRegion',
-    ].filter((className) => countStyleClassRef(sourceRaw, className) > 1)
-    const pageHeaderHasExtra = portalPageHeaderHasExtra(sourceRaw)
-    const mountsManagedDashboardShell =
-      /<(FixedDashboardPageFrame|ManagedWorkbenchPageFrame)\b/.test(sourceRaw)
-    const hasSplitShellCarrierMarker =
-      /hiui-design shell-carrier:/i.test(sourceRaw) ||
-      /hiui-design shell-inheritance:/i.test(sourceRaw) ||
-      /data-hiui5-shell-carrier\s*=/.test(sourceRaw) ||
-      /data-hiui5-shell-inheritance\s*=/.test(sourceRaw)
-    const mountsRealContextMainSplitShell =
-      /\bContextMainSplitScaffold\b/.test(sourceRaw) || /\bTreeSplitPageFrame\b/.test(sourceRaw)
-    const usesManualContextMainSplitShell =
-      /styles\.(workspace|splitWorkspace|mainSplit|splitContainer|leftPane|rightPane|splitHandle|splitter)\b/.test(
-        sourceRaw
-      ) || /\b(leftPaneWidth|handleResizeStart|onResizeStart)\b/.test(sourceRaw)
-    const usesProDetailPageShell =
-      /\bProDetailPage\b/.test(sourceRaw) && /<ProDetailPage\b/.test(sourceRaw)
-    const usesProEditPageShell =
-      /\bProEditPage\b/.test(sourceRaw) && /<ProEditPage\b/.test(sourceRaw)
-    const rightPaneActionsOutsideHeader =
-      /<Space\b[^>]*className=\{styles\.(rightActions|detailActions|paneActions|headerActions)\}[\s\S]{0,600}<Button\b/.test(
-        sourceRaw
-      ) ||
-      /<div\b[^>]*className=\{styles\.(rightHeader|detailHeader|paneHeader)\}[\s\S]{0,1200}<Button\b/.test(
-        sourceRaw
-      )
-    const splitContentKeepsHorizontalInset =
-      splitContentInsetSnippets.some(hasHorizontalTableShellInsetSignal) || tableShellKeepsHorizontalInset
-    const overridesManagedShellGeometry =
-      /<(FixedDashboardPageFrame|ManagedWorkbenchPageFrame)\b[\s\S]{0,1200}\b(pageRootStyle|whiteBodyStyle)\s*=/.test(
-        sourceRaw
-      ) ||
-      /pageRootProps\s*=\s*\{\{[\s\S]{0,600}\bstyle\s*:/.test(sourceRaw) ||
-      /whiteBodyProps\s*=\s*\{\{[\s\S]{0,600}\bstyle\s*:/.test(sourceRaw)
-
-    if (
-      genericWorkspaceAddsTwentyPxInset &&
-      (localWhiteBodyKeepsInset || localSectionCardsKeepInset)
-    ) {
-      const detailParts = [
-        `${pathLabel} promotes local region spacing into a generic workspace shell`,
-        'a workspace/container wrapper keeps 20px horizontal shell padding',
-      ]
-
-      if (localWhiteBodyKeepsInset) {
-        detailParts.push('local white-body still keeps its own surface and inset')
-      }
-
-      if (localSectionCardsKeepInset) {
-        detailParts.push('local section/card wrappers still keep surfaced body spacing')
-      }
-
-      warnings.push(
-        `${detailParts.join('; ')}. This is the "region spacing promoted to shell padding" anti-pattern. Keep 20px/16px spacing on the local white-body or section body, not on the generic workspace wrapper.`
-      )
-    }
-
-    if (hostSlotOwnsContentSlot && genericWorkspaceAddsTwentyPxInset && localWhiteBodyOwnsSurface) {
-      warnings.push(
-        `${pathLabel} keeps host-slot as the content-slot owner but still adds a 20px generic page-root/workspace inset around a local white-body surface. In host-integrated non-typical pages, do not rebuild a second outer shell around the white-body unless the contract has explicitly zeroed the host slot first.`
-      )
-    }
-
-    if (declaresContextMainSplit && genericWorkspaceOwnsScrollableOverflow) {
-      warnings.push(
-        `${pathLabel} lets a generic page-root/workspace wrapper own scrollable overflow in a context-main-split layout. In split pages, page root and split workspace must stay overflow-hidden; only left-context and right-main may own vertical scrolling.`
-      )
-    }
-
-    if (declaresContextMainSplit && hostSlotOwnsContentSlot && genericWorkspaceAddsShellInset) {
-      warnings.push(
-        `${pathLabel} keeps host-slot as the content-slot owner but still adds 16px/20px horizontal inset on a generic page-root/workspace wrapper. Context-main-split pages must not promote pane-local spacing into an outer shell padding layer.`
-      )
-    }
-
-    if (declaresContextMainSplit && (usesProDetailPageShell || usesProEditPageShell)) {
-      warnings.push(
-        `${pathLabel} mounts ${usesProDetailPageShell ? 'ProDetailPage' : 'ProEditPage'} as the top-level shell while declaring context-main-split. Complex right-pane detail content does not justify replacing the governed split carrier. Keep context-main-split on TreeSplitPageFrame, ContextMainSplitScaffold, or an approved host-translated split helper, then customize business content inside right-main.`
-      )
-    }
-
-    if (
-      declaresContextMainSplit &&
-      !mountsRealContextMainSplitShell &&
-      usesManualContextMainSplitShell &&
-      !hasSplitShellCarrierMarker
-    ) {
-      warnings.push(
-        `${pathLabel} hand-builds a split-looking workspace/leftPane/rightPane shell without any governed split carrier evidence. Context-main-split pages must either mount TreeSplitPageFrame/ContextMainSplitScaffold directly or expose shell-inheritance + shell-carrier markers for the host-translated split helper before business JSX starts.`
-      )
-    } else if (
-      declaresContextMainSplit &&
-      !mountsRealContextMainSplitShell &&
-      !hasSplitShellCarrierMarker
-    ) {
-      warnings.push(
-        `${pathLabel} declares context-main-split but source does not mount a governed split carrier and does not expose shell-inheritance/shell-carrier markers. split pane selectors alone do not prove split-shell reuse.`
-      )
-    }
-
-    if (sourceMentionsTableRegion && tableShellKeepsHorizontalInset) {
-      warnings.push(
-        `${pathLabel} wraps the managed table region in a generic shell that still keeps 16px/20px horizontal padding. Non-typical pages must not reintroduce table region shell padding; keep the inset on the true table header/body region instead.`
-      )
-    }
-
-    if (declaresSplitMasterDetail && /\bQueryFilter\b/.test(sourceRaw) && duplicatedQueryShells.length > 0) {
-      warnings.push(
-        `${pathLabel} repeats split-pane query shell wrappers (${duplicatedQueryShells.join(', ')}). Left-side search/filter regions must keep a single spacing owner instead of nesting duplicate leftQuery/filterRegion containers around QueryFilter and the list shell.`
-      )
-    }
-
-    if (declaresSplitMasterDetail && !splitContentKeepsHorizontalInset) {
-      warnings.push(
-        `${pathLabel} leaves the right-side detail/table content flush against the pane edge. Split master-detail pages must keep 12px-20px horizontal inset on the true detail/table content owner instead of letting the table stick to the pane border.`
-      )
-    }
-
-    if (declaresSplitMasterDetail && rightPaneActionsOutsideHeader && !pageHeaderHasExtra) {
-      warnings.push(
-        `${pathLabel} places likely page-level actions inside the split pane instead of PageHeader extra. In left-list/right-detail pages, page-level primary/secondary actions must stay in the header action slot; the pane header should only carry contextual detail title/meta.`
-      )
-    }
-
-    if (mountsManagedDashboardShell && overridesManagedShellGeometry) {
-      warnings.push(
-        `${pathLabel} overrides shared-shell geometry through FixedDashboardPageFrame/ManagedWorkbenchPageFrame props. Non-typical pages may reorganize first-level groups, but must not use pageRootStyle, whiteBodyStyle, or style-bearing pageRootProps/whiteBodyProps to rewrite shared shell padding, white-body spacing, or scroll ownership. If geometry must differ, add or switch to a shared shell variant instead of patching the page.`
-      )
-    }
-  }
-
-  return { inspectedCount, warnings }
-}
-
-async function inspectRulesOnlyComponentSemanticDrift({
-  contract,
-  legacyHostCompatible,
-  targetRoot,
-}) {
-  const warnings = []
-
-  if (
-    !legacyHostCompatible ||
-    !['full-page-edit', 'full-page-detail'].includes(contract.pageTypeId) ||
-    !contract.generatedPagePath
-  ) {
-    return warnings
-  }
-
-  const generatedPageAbsPath = path.join(targetRoot, contract.generatedPagePath)
-  const sourceRaw = await readTextIfExists(generatedPageAbsPath)
-  if (!sourceRaw) {
-    return warnings
-  }
-
-  const importedStyleRaw = await readImportedStyleSources(generatedPageAbsPath, sourceRaw)
-  const pathLabel = path.relative(targetRoot, generatedPageAbsPath)
-  const usesGenericLayoutShell =
-    /<Layout\b/.test(sourceRaw) || /\bLayout\b/.test(sourceRaw.split('\n').slice(0, 40).join('\n'))
-  const usesLayoutFooterSlot = usesGenericLayoutShell && /footer=\{/.test(sourceRaw)
-  const hasOnBack = /\bonBack\s*=/.test(sourceRaw)
-  const usesTitleExtra = /titleExtra=\{/.test(sourceRaw) || /extra=\{/.test(sourceRaw)
-  const hasBackIntent = /ArrowLeftOutlined/.test(sourceRaw) || /返回列表|返回\b/.test(sourceRaw)
-  const usesBackIntentAsRightAction = !hasOnBack && usesTitleExtra && hasBackIntent
-  const uploadUsesCustomContent =
-    /<Upload[\s\S]{0,400}\bcontent=\{/.test(sourceRaw) || /\bcontent=\{uploadContent\}/.test(sourceRaw)
-  const uploadTriggerHasExtraIcon = uploadUsesCustomContent && /UploadOutlined/.test(sourceRaw)
-  const sectionSurfaceSnippets =
-    /styles\.section\b/.test(sourceRaw) || /<Section\b/.test(sourceRaw)
-      ? collectWorkspaceSurfaceSnippets(importedStyleRaw, ['.section'])
-      : []
-  const sectionCardsOwnSurface = sectionSurfaceSnippets.some(hasBackgroundOrRadiusSignal)
-  const footerActionSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.footerActions',
-    '.footer-actions',
-    '.inlineEditFooter',
-  ])
-  const footerActionsRightAligned = footerActionSnippets.some((snippet) =>
-    /justify-content\s*:\s*flex-end/i.test(snippet)
-  )
-  const detailSurfaceSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.heroCard',
-    '.hero-card',
-    '.fieldCard',
-    '.field-card',
-    '.mediaCard',
-    '.media-card',
-  ])
-  const detailCardsOwnSurface = detailSurfaceSnippets.some(hasBackgroundOrRadiusSignal)
-  const detailRootInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.detailBody',
-    '.detail-body',
-    '.pageBody',
-    '.page-body',
-  ])
-  const detailBodyRootAddsTwentyPxInset = detailRootInsetSnippets.some(hasTwentyPxInsetSignal)
-  const summaryInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.summarySection',
-    '.summary-section',
-    '.summaryBlock',
-    '.summary-block',
-    '.heroSection',
-    '.hero-section',
-    '.identitySection',
-    '.identity-section',
-  ])
-  const topSummaryKeepsTwentyPxInset = summaryInsetSnippets.some(hasTwentyPxInsetSignal)
-  const contentGridInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.contentGrid',
-    '.content-grid',
-    '.detailLayout',
-    '.detail-layout',
-    '.detailMain',
-    '.detail-main',
-  ])
-  const contentGridAddsLeftInset = contentGridInsetSnippets.some(hasPaddingLeftTwentySignal)
-  const contentGridKeepsRightInset = contentGridInsetSnippets.some(hasPaddingRightTwentySignal)
-  const chartSectionInsetSnippets = collectWorkspaceSurfaceSnippets(importedStyleRaw, [
-    '.chartSection',
-    '.chart-section',
-    '.chartAside',
-    '.chart-aside',
-  ])
-  const chartSectionKeepsRightInset = chartSectionInsetSnippets.some(hasPaddingRightTwentySignal)
-  const sourceMentionsTopSummaryBlock =
-    /styles\.(summarySection|summaryBlock|heroSection|identitySection)\b/.test(sourceRaw) ||
-    /\b(summarySection|summaryBlock|heroSection|identitySection)\b/.test(sourceRaw)
-  const sourceMentionsContentGrid =
-    /styles\.(contentGrid|detailLayout|detailMain)\b/.test(sourceRaw) ||
-    /\b(contentGrid|detailLayout|detailMain)\b/.test(sourceRaw)
-  const sourceMentionsChartSection =
-    /data-hiui5-region\s*=\s*["']chart-section["']/.test(sourceRaw) ||
-    /styles\.(chartSection|chartPanel)\b/.test(sourceRaw) ||
-    /\b(chartSection|chartPanel)\b/.test(sourceRaw)
-  const sourceMentionsBarLikeChart =
-    /\b<Column\b/.test(sourceRaw) ||
-    /\b<Bar\b/.test(sourceRaw) ||
-    /\bchartType\s*=\s*["']column["']/.test(sourceRaw) ||
-    /\bchartType\s*=\s*["']bar["']/.test(sourceRaw)
-  const sourceMentionsPlotInsetGuard =
-    /\bpaddingOuter\b/.test(sourceRaw) ||
-    /\binsetRight\b/.test(sourceRaw) ||
-    /\binsetLeft\b/.test(sourceRaw) ||
-    /\bpaddingRight\b/.test(sourceRaw) ||
-    /\bwithHiuiColumnLikeChart\b/.test(sourceRaw) ||
-    /\bcreateHiuiColumnLikeScale\b/.test(sourceRaw) ||
-    /\bcreateHiuiColumnLikeColorScale\b/.test(sourceRaw) ||
-    /\bwithHiuiBarLikePlotInset\b/.test(sourceRaw) ||
-    /\bwithHiuiBarLikeChart\b/.test(sourceRaw) ||
-    /\bcreateHiuiBarLikeScale\b/.test(sourceRaw) ||
-    /\bcreateHiuiBarLikeColorScale\b/.test(sourceRaw)
-  const sourceMentionsDescriptions =
-    /\bDescriptions\b/.test(sourceRaw) ||
-    /SchemaDescriptionsBridge/.test(sourceRaw) ||
-    /schema-descriptions/.test(sourceRaw) ||
-    /descriptionsProps/.test(sourceRaw)
-  const sourceMentionsHandRolledDetailGrid =
-    /styles\.(fieldGrid|fieldCard|fieldLabel|fieldValue|mediaGrid|mediaCard)\b/.test(sourceRaw) ||
-    /\bfield(Grid|Card|Label|Value)\b/.test(sourceRaw)
-  const sourceMentionsHeroCard =
-    /styles\.(heroCard|hero-card)\b/.test(sourceRaw) || /\bheroCard\b/.test(sourceRaw)
-  const sourceUsesInlineMockImage =
-    /data:image\//.test(sourceRaw) || /\bcreateMockImage\b/.test(sourceRaw)
-
-  if (contract.pageTypeId === 'full-page-edit') {
-    if (usesBackIntentAsRightAction) {
-      warnings.push(
-        `${pathLabel} moves the back affordance into titleExtra/right actions instead of a leading onBack action. In full-page-edit, the return path belongs to the header-leading slot, not the right toolbar.`
-      )
-    }
-
-    if (usesLayoutFooterSlot) {
-      warnings.push(
-        `${pathLabel} mounts full-page-edit actions through a generic Layout footer slot. Reuse the archetype's sticky footer region instead of Layout.footer, otherwise action alignment and bottom-dock behavior drift in legacy hosts.`
-      )
-    }
-
-    if (footerActionSnippets.length > 0 && !footerActionsRightAligned) {
-      warnings.push(
-        `${pathLabel} defines a footer action area that is not right-aligned. Full-page-edit footer actions must stay on the right edge of the footer region.`
-      )
-    }
-
-    if (sectionCardsOwnSurface) {
-      warnings.push(
-        `${pathLabel} paints local section wrappers as white/radius cards. If the archetype expects one flat white-body, do not translate sections into separate surface cards.`
-      )
-    }
-
-    if (uploadTriggerHasExtraIcon) {
-      warnings.push(
-        `${pathLabel} customizes Upload trigger content with UploadOutlined while also using the host Upload component. Do not add a second upload icon when the host trigger already renders one.`
-      )
-    }
-  }
-
-  if (contract.pageTypeId === 'full-page-detail') {
-    if (usesBackIntentAsRightAction) {
-      warnings.push(
-        `${pathLabel} moves the back affordance into titleExtra/right actions instead of a leading onBack action. In full-page-detail, the return path belongs to the header-leading slot, not the right toolbar.`
-      )
-    }
-
-    if (sourceMentionsHeroCard) {
-      warnings.push(
-        `${pathLabel} introduces a heroCard-style summary surface ahead of the detail groups. Full-page-detail should keep identity information inside the grouped detail-body unless an explicit design deviation was recorded.`
-      )
-    }
-
-    if (sourceMentionsHandRolledDetailGrid && !sourceMentionsDescriptions) {
-      warnings.push(
-        `${pathLabel} hand-rolls detail presentation with fieldGrid/fieldCard-style markup but does not reference Descriptions semantics. Translate the packaged full-page-detail example into the host archetype instead of rebuilding a custom detail grid.`
-      )
-    } else if (sourceMentionsHandRolledDetailGrid) {
-      warnings.push(
-        `${pathLabel} mixes hand-rolled fieldGrid/fieldCard-style detail markup into a full-page-detail page. Keep grouped Descriptions as the primary field expression instead of introducing a second detail syntax.`
-      )
-    }
-
-    if (detailCardsOwnSurface) {
-      warnings.push(
-        `${pathLabel} paints local hero/field/media wrappers as independent white or gray cards. Full-page-detail should keep one detail-body surface and avoid inventing extra summary or media card layers.`
-      )
-    }
-
-    if (detailBodyRootAddsTwentyPxInset) {
-      warnings.push(
-        `${pathLabel} applies 20px inset on detail-body/pageBody root. In full-page-detail, top inset for summary/identity/chart supplements must live inside the top summary container, not on the detail-body root, otherwise downstream grouped details pick up a second spacing layer.`
-      )
-    }
-
-    if (sourceMentionsTopSummaryBlock && !topSummaryKeepsTwentyPxInset) {
-      warnings.push(
-        `${pathLabel} adds a custom top summary/identity block but that block does not own the required 20px top and horizontal inset. The first visible content inside full-page-detail must not touch the white-body top edge or side edges, and that inset must be implemented inside the top summary container itself.`
-      )
-    }
-
-    if (sourceMentionsDescriptions && sourceMentionsContentGrid && contentGridAddsLeftInset) {
-      warnings.push(
-        `${pathLabel} adds left-side 20px padding on the shared content grid while the detail column already relies on grouped card body padding. In full-page-detail, do not stack grid-level left inset on top of the grouped detail card inset, otherwise the detail content drifts inward by a second spacing layer.`
-      )
-    }
-
-    if (sourceMentionsChartSection && !(contentGridKeepsRightInset || chartSectionKeepsRightInset)) {
-      warnings.push(
-        `${pathLabel} introduces chart-section content but neither the shared content grid nor the chart column owns the required 20px right-side inset. In full-page-detail, bordered chart panels and white supplementary surfaces must not touch the white-body right edge.`
-      )
-    }
-
-    if (sourceMentionsChartSection && sourceMentionsBarLikeChart && !sourceMentionsPlotInsetGuard) {
-      warnings.push(
-        `${pathLabel} renders bar/column charts inside chart-section but does not declare any internal plot-edge guard such as x.paddingOuter, insetRight/insetLeft, or equivalent chart padding. In full-page-detail, chart cards must prevent the plot area itself from touching the card's inner right edge.`
-      )
-    }
-
-    if (sourceUsesInlineMockImage) {
-      warnings.push(
-        `${pathLabel} embeds inline mock images via data:image or createMockImage-style helpers. Full-page-detail media blocks should use lightweight thumbnails or real resources instead of large inline image payloads.`
-      )
-    }
-  }
-
-  return warnings
-}
-
-async function collectTextFiles(rootDir, pattern, options = {}) {
+async function collectTextFiles(rootDir, pattern) {
   if (!(await pathExists(rootDir))) return []
-  const skipDirs = new Set([
-    ...DEFAULT_TEXT_SCAN_SKIP_DIRS,
-    ...(options.skipDirs ?? []),
-  ])
-  const cacheKey = `${rootDir}::${pattern.source}::${pattern.flags}::${[...skipDirs]
-    .sort()
-    .join(',')}`
-  if (textFileListCache.has(cacheKey)) {
-    return textFileListCache.get(cacheKey)
-  }
 
-  const pending = (async () => {
-    const entries = await fs.readdir(rootDir, { withFileTypes: true })
-    const files = []
+  const entries = await fs.readdir(rootDir, { withFileTypes: true })
+  const files = []
 
-    for (const entry of entries) {
-      const absPath = path.join(rootDir, entry.name)
-      if (entry.isDirectory()) {
-        if (skipDirs.has(entry.name)) {
-          continue
-        }
-        files.push(...(await collectTextFiles(absPath, pattern, { skipDirs })))
-        continue
-      }
-
-      if (entry.isFile() && pattern.test(entry.name)) {
-        files.push(absPath)
-      }
+  for (const entry of entries) {
+    const absPath = path.join(rootDir, entry.name)
+    if (entry.isDirectory()) {
+      files.push(...(await collectTextFiles(absPath, pattern)))
+      continue
     }
 
-    return files
-  })().catch((error) => {
-    textFileListCache.delete(cacheKey)
-    throw error
-  })
+    if (entry.isFile() && pattern.test(entry.name)) {
+      files.push(absPath)
+    }
+  }
 
-  textFileListCache.set(cacheKey, pending)
-  return pending
+  return files
 }
 
 function extractImportSpecifiers(source) {
@@ -2597,34 +1089,13 @@ function collectDeclaredDependencies(pkg) {
   ])
 }
 
-async function collectTsNoCheckDirectives(rootDir) {
-  const files = await collectTextFiles(rootDir, SCRIPT_TEXT_FILE_PATTERN)
-  const violations = []
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    if (raw.includes('@ts-nocheck')) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-function summarizeTsNoCheckViolations(targetRoot, violations) {
-  return violations
-    .slice(0, 10)
-    .map((filePath) => path.relative(targetRoot, filePath))
-    .join(', ')
-}
-
 async function collectUndeclaredImports({ rootDir, pkg }) {
   const files = await collectSourceFiles(rootDir)
   const declaredDependencies = collectDeclaredDependencies(pkg)
   const missingImports = []
 
   for (const filePath of files) {
-    const raw = await readTextCached(filePath)
+    const raw = await fs.readFile(filePath, 'utf8')
     for (const specifier of extractImportSpecifiers(raw)) {
       const depName = normalizePackageName(specifier)
       if (!depName || declaredDependencies.has(depName)) continue
@@ -2659,58 +1130,77 @@ function summarizeMissingImports(targetRoot, missingImports) {
   return `${depList.join(', ')}. Examples: ${exampleLines.join('; ')}`
 }
 
-async function collectTypicalPageSourceSignals(rootDir) {
+async function collectTypicalPageSourceSignals(rootDir, { legacySourcePackageName = '' } = {}) {
   const files = await collectSourceFiles(rootDir)
   const signals = {
     usesShells: [],
-    auxiliaryShellUses: [],
-    directShellUses: [],
+    legacySourcePackageImports: [],
     privateImportViolations: [],
     tableHeaderExtraViolations: [],
     localHostAdapterImports: [],
     staleQueryFilterBridgeViolations: [],
     queryFilterShowLabelViolations: [],
+    formalHeaderPortalCarrierFiles: [],
+    formalTypicalPageHostBridgeFiles: [],
+    formalOfficialShellHeightContractFiles: [],
+    formalContentOutletHeightContractFiles: [],
+    formalContentGutterFiles: [],
   }
 
   for (const filePath of files) {
-    const raw = await readTextCached(filePath)
+    const raw = await fs.readFile(filePath, 'utf8')
+    const importedStyleRaw = await readImportedStyleSources(filePath, raw)
+    const formalContractRaw = `${raw}\n${importedStyleRaw}`
     const specifiers = extractImportSpecifiers(raw)
-    const normalizedFilePath = filePath.split(path.sep).join('/')
-    const isHostIntegrationExampleFile = normalizedFilePath.includes('/src/typical-page-reuse/')
-    const isLegacyRuntimeBoundaryFile = normalizedFilePath.includes('/src/hiui-runtime/')
-    const isAuxiliaryReferenceFile =
-      isHostIntegrationExampleFile ||
-      isLegacyRuntimeBoundaryFile ||
-      /(^|\/)__codex_hiui_reference__\.[cm]?[jt]sx?$/.test(normalizedFilePath)
-    const usesShells = specifiers.some(
-      (specifier) =>
-        specifier === '@hiui-design/typical-page-shells' ||
-        specifier.startsWith('@hiui-design/typical-page-shells/')
+    const usesShells = specifiers.some((specifier) => hasManagedLocalRuntimePath(specifier))
+    const usesLegacyShellPackage = specifiers.some(
+      (specifier) => isPackageFamilyImport(specifier, legacySourcePackageName)
     )
     const usesPrivateShellImport = specifiers.some(
       (specifier) =>
         specifier.includes('/node_modules/') ||
         specifier.includes('.pnpm/') ||
-        specifier.includes('packages/typical-page-shells/src/') ||
-        specifier.includes('@hiui-design/typical-page-shells/dist/') ||
+        isWorkspaceSourceImport(specifier) ||
+        isPackagePrivateDistImport(specifier, legacySourcePackageName) ||
         specifier.endsWith('/dist/index.js') ||
         specifier.endsWith('/dist/index.mjs')
     )
 
     if (usesShells || usesPrivateShellImport) {
       signals.usesShells.push(filePath)
-      if (isAuxiliaryReferenceFile) {
-        signals.auxiliaryShellUses.push(filePath)
-      } else {
-        signals.directShellUses.push(filePath)
-      }
+    }
+
+    if (usesLegacyShellPackage) {
+      signals.legacySourcePackageImports.push(filePath)
     }
 
     const usesLocalHostAdapter = specifiers.some(
       (specifier) =>
+        specifier.includes('hiui-design-runtime/host') ||
         specifier.endsWith('/typical-page-host') ||
         specifier.includes('components/typical-page-host')
     )
+    const isHostIntegrationExampleFile = filePath.includes(`${path.sep}typical-page-preview${path.sep}`)
+    const formalContractRelativePath = path.relative(rootDir, filePath).replace(/\\/g, '/')
+    if (!isHostIntegrationExampleFile && isLikelyFormalHostContractPath(formalContractRelativePath)) {
+      const formalHostContract = inspectFormalHostContractSource(formalContractRaw)
+      if (formalHostContract.hasHeaderPortalCarrier) {
+        signals.formalHeaderPortalCarrierFiles.push(filePath)
+      }
+      if (formalHostContract.hasTypicalPageHostBridge) {
+        signals.formalTypicalPageHostBridgeFiles.push(filePath)
+      }
+      if (formalHostContract.hasOfficialShellHeightContract) {
+        signals.formalOfficialShellHeightContractFiles.push(filePath)
+      }
+      if (formalHostContract.hasContentOutletHeightContract) {
+        signals.formalContentOutletHeightContractFiles.push(filePath)
+      }
+      if (formalHostContract.hasContentGutterContract) {
+        signals.formalContentGutterFiles.push(filePath)
+      }
+    }
+
     if (usesLocalHostAdapter && !isHostIntegrationExampleFile) {
       signals.localHostAdapterImports.push(filePath)
     }
@@ -2722,8 +1212,8 @@ async function collectTypicalPageSourceSignals(rootDir) {
           (specifier) =>
         specifier.includes('/node_modules/') ||
         specifier.includes('.pnpm/') ||
-        specifier.includes('packages/typical-page-shells/src/') ||
-        specifier.includes('@hiui-design/typical-page-shells/dist/') ||
+        isWorkspaceSourceImport(specifier) ||
+        isPackagePrivateDistImport(specifier, legacySourcePackageName) ||
         specifier.endsWith('/dist/index.js') ||
         specifier.endsWith('/dist/index.mjs')
         ),
@@ -2752,12 +1242,14 @@ async function collectTypicalPageSourceSignals(rootDir) {
       }
     }
 
-    const usesPublicProListQueryFilter = specifiers.some(
-      (specifier) =>
-        specifier === '@hiui-design/typical-page-shells/pro-list-page' ||
-        specifier.startsWith('@hiui-design/typical-page-shells/pro-list-page')
-    )
-    if (usesPublicProListQueryFilter && /<QueryFilter\b[\s\S]{0,320}showLabel=\{true\}/.test(raw)) {
+    const usesManagedProListQueryFilter = specifiers.some((specifier) => {
+      const normalizedSpecifier = normalizeImportSpecifier(specifier)
+      return (
+        isPackageFamilyImport(normalizedSpecifier, `${legacySourcePackageName}/pro-list-page`) ||
+        normalizedSpecifier.includes(`${getManagedLocalRuntimeRoot()}/pro-list-page`)
+      )
+    })
+    if (usesManagedProListQueryFilter && /<QueryFilter\b[\s\S]{0,320}showLabel=\{true\}/.test(raw)) {
       signals.queryFilterShowLabelViolations.push(filePath)
     }
 
@@ -2769,6 +1261,66 @@ async function collectTypicalPageSourceSignals(rootDir) {
     if (usesTableFrame && hasExtraSpace && !hasHeaderExtraClass) {
       signals.tableHeaderExtraViolations.push(filePath)
     }
+  }
+
+  return signals
+}
+
+function appendManagedHostContractSignalFiles(targetRoot, targetList, relativePaths = []) {
+  if (!Array.isArray(targetList) || !Array.isArray(relativePaths)) return
+
+  for (const relativePath of relativePaths) {
+    if (typeof relativePath !== 'string' || relativePath.length === 0) continue
+    const absolutePath = path.resolve(targetRoot, relativePath)
+    if (!targetList.includes(absolutePath)) {
+      targetList.push(absolutePath)
+    }
+  }
+}
+
+function mergeManagedHostContractSignals(targetRoot, signals, managedHostContract) {
+  if (!managedHostContract || managedHostContract.status !== 'valid') return signals
+
+  const facts = managedHostContract.facts || {}
+
+  if (facts.hasHeaderPortalCarrier) {
+    appendManagedHostContractSignalFiles(
+      targetRoot,
+      signals.formalHeaderPortalCarrierFiles,
+      facts.headerPortalCarrierFiles
+    )
+  }
+
+  if (facts.hasTypicalPageHostBridge) {
+    appendManagedHostContractSignalFiles(
+      targetRoot,
+      signals.formalTypicalPageHostBridgeFiles,
+      facts.typicalPageHostBridgeFiles
+    )
+  }
+
+  if (facts.hasOfficialShellHeightContract) {
+    appendManagedHostContractSignalFiles(
+      targetRoot,
+      signals.formalOfficialShellHeightContractFiles,
+      facts.officialShellHeightContractFiles
+    )
+  }
+
+  if (facts.hasContentOutletHeightContract) {
+    appendManagedHostContractSignalFiles(
+      targetRoot,
+      signals.formalContentOutletHeightContractFiles,
+      facts.contentOutletHeightContractFiles
+    )
+  }
+
+  if (facts.hasContentGutterContract) {
+    appendManagedHostContractSignalFiles(
+      targetRoot,
+      signals.formalContentGutterFiles,
+      facts.contentGutterFiles
+    )
   }
 
   return signals
@@ -2792,138 +1344,120 @@ function summarizeQueryFilterBridgeViolations(targetRoot, violations) {
     .join('; ')
 }
 
-function countMatches(source, pattern) {
-  return [...source.matchAll(pattern)].length
+const OFFICIAL_SHELL_ROOT_CLASS_TOKENS = [
+  'pro-table-page',
+  'pro-stat-page',
+  'pro-tree-split-page',
+  'pro-detail-page',
+  'pro-edit-page',
+]
+
+function isLikelyFormalHostContractPath(relativePath = '') {
+  const normalizedPath = relativePath.replace(/\\/g, '/').toLowerCase()
+  const fileName = path.posix.basename(normalizedPath)
+
+  return (
+    normalizedPath.startsWith('components/layout/') ||
+    normalizedPath.includes('/components/layout/') ||
+    normalizedPath.startsWith('business-layout/') ||
+    normalizedPath.includes('/business-layout/') ||
+    normalizedPath.startsWith('business-shell/') ||
+    normalizedPath.includes('/business-shell/') ||
+    normalizedPath.startsWith('layouts/') ||
+    normalizedPath.includes('/layouts/') ||
+    normalizedPath.startsWith('layout/') ||
+    normalizedPath.includes('/layout/') ||
+    /(?:^|\/)(?:app|application|main-content|app-frame|app-shell|layout|shell|frame)(?:\.module)?\.(?:[cm]?[jt]sx?|s?css)$/i.test(fileName)
+  )
 }
 
-function collectMissingTokens(source, tokens) {
-  return tokens.filter((token) => !source.includes(token))
+function hasFlexMinHeightOverflowContract(source = '') {
+  const hasFlexDisplay = /display\s*:\s*['"]?flex['"]?/i.test(source)
+  const hasColumnDirection =
+    /flex-direction\s*:\s*column/i.test(source) ||
+    /(?:^|[^\w$])['"]?flexDirection['"]?\s*:\s*['"]?column['"]?/i.test(source)
+  const hasStretchFlex =
+    /flex\s*:\s*1\s+1\s+0%/i.test(source) ||
+    /flex\s*:\s*['"]1\s+1\s+0%['"]/i.test(source) ||
+    /(?:^|[^\w$])['"]?flex['"]?\s*:\s*(?:['"]1['"]|1)\s*(?:[,;}]|$)/i.test(source)
+  const hasZeroMinHeight =
+    /min-height\s*:\s*0(?:\b|;|\n)/i.test(source) ||
+    /(?:^|[^\w$])['"]?minHeight['"]?\s*:\s*(?:['"]0['"]|0)\s*(?:[,;}]|$)/i.test(source)
+  const hasHiddenOverflow = /overflow\s*:\s*['"]?hidden['"]?/i.test(source)
+
+  return hasFlexDisplay && hasColumnDirection && hasStretchFlex && hasZeroMinHeight && hasHiddenOverflow
 }
 
-async function collectSchemaFormCheckSelectViolations(rootDir) {
-  const files = await collectSourceFiles(rootDir)
-  const violations = []
+function detectContentOutletPath(source = '', referencesOfficialShellRoot = false) {
+  const markers = [
+    'styles.mainContentOutlet',
+    'mainContentOutlet',
+    'styles.outlet',
+    'data-hiui-main-content-outlet',
+    'data-hiui-content-outlet',
+    'hostOutlet',
+  ]
 
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    const usesRawSchemaForm =
-      raw.includes("from '@hi-ui/schema-form'") || raw.includes('from "@hi-ui/schema-form"')
-    const usesCheckSelect = raw.includes('.CheckSelect(')
-    const usesTypicalFieldMapProvider =
-      raw.includes('TypicalPageFieldMapProvider') &&
-      (raw.includes("from '@hiui-design/typical-page-shells'") ||
-        raw.includes('from "@hiui-design/typical-page-shells"'))
-
-    if (usesRawSchemaForm && usesCheckSelect && !usesTypicalFieldMapProvider) {
-      violations.push(filePath)
-    }
+  for (const marker of markers) {
+    if (source.includes(marker)) return marker
   }
 
-  return violations
+  return referencesOfficialShellRoot ? 'official-shell-root' : ''
 }
 
-function getBusinessUiScanRoots({ targetRoot, hostOutputRoot }) {
-  return [...new Set([
-    path.join(targetRoot, 'src'),
-    path.join(targetRoot, 'app'),
-    path.join(targetRoot, 'pages'),
-    hostOutputRoot,
-    path.join(targetRoot, '.local-context', 'hiui-design', 'reference', 'host-integration', 'src'),
-  ])]
+function detectRightViewportGutterPx(source = '', contentOutletPath = '') {
+  if (!contentOutletPath) return 0
+
+  const hasManagedMainMarginGutterEvidence =
+    (/margin-inline-end\s*:\s*16px/i.test(source) ||
+      /margin-right\s*:\s*16px/i.test(source) ||
+      /marginInlineEnd\s*:\s*(?:['"]16px['"]|16)\b/i.test(source) ||
+      (/HOST_CONTENT_VIEWPORT_GUTTER\s*=\s*16\b/i.test(source) &&
+        /marginInlineEnd\s*:\s*HOST_CONTENT_VIEWPORT_GUTTER\b/i.test(source)))
+
+  const hasGutterEvidence = [
+    /padding-right\s*:\s*16px/i,
+    /padding-inline(?:-end)?\s*:\s*16px/i,
+    /padding\s*:\s*16px(?:\s+16px(?:\s+16px\s+16px)?)?/i,
+    /padding\s*:\s*0\s+16px(?:\s+0\s+16px)?/i,
+    /paddingRight\s*:\s*(?:['"]16px['"]|16)\b/i,
+    /paddingInline(?:End)?\s*:\s*(?:['"]16px['"]|16)\b/i,
+    /padding\s*:\s*['"][^'"]*\b16px\b[^'"]*['"]/i,
+  ].some((pattern) => pattern.test(source))
+
+  return hasGutterEvidence || hasManagedMainMarginGutterEvidence ? 16 : 0
 }
 
-async function collectProDetailProviderViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
+function inspectFormalHostContractSource(source = '') {
+  const hasHeaderPortalCarrier =
+    source.includes('PageHeaderPortal') ||
+    source.includes('TypicalPageHeaderPortal') ||
+    source.includes('role="page-header"') ||
+    source.includes("role='page-header'") ||
+    source.includes('headerRef')
+  const hasTypicalPageHostBridge =
+    (source.includes('TypicalPageHostProvider') &&
+      (source.includes('headerPortal=') || source.includes('headerPortal:'))) ||
+    source.includes('TypicalPageHostBridge')
+  const referencesOfficialShellRoot = OFFICIAL_SHELL_ROOT_CLASS_TOKENS.some((token) =>
+    source.includes(token)
+  )
+  const contentOutletPath = detectContentOutletPath(source, referencesOfficialShellRoot)
+  const hasHostHeightChainContract = hasFlexMinHeightOverflowContract(source)
+  const hasGenericOutletChildContract =
+    Boolean(contentOutletPath) && source.includes('> *') && hasHostHeightChainContract
+  const rightViewportGutterPx = detectRightViewportGutterPx(source, contentOutletPath)
+  return {
+    hasHeaderPortalCarrier,
+    hasTypicalPageHostBridge,
+    hasOfficialShellHeightContract:
+      (referencesOfficialShellRoot && hasHostHeightChainContract) ||
+      hasGenericOutletChildContract,
+    hasContentOutletHeightContract:
+      (contentOutletPath === 'official-shell-root' && hasHostHeightChainContract) ||
+      hasGenericOutletChildContract,
+    hasContentGutterContract: rightViewportGutterPx >= 16,
   }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    if (
-      /src[\\/]+typical-page-reuse[\\/]+components[\\/]+managed-page[\\/]+managed-.*shell\.[cm]?[jt]sx?$/.test(
-        filePath
-      )
-    ) {
-      continue
-    }
-    const usesProDetailPage = /\bProDetailPage\b/.test(raw) && /<ProDetailPage\b/.test(raw)
-    const usesProDetailContextDependents =
-      /\buseProDetailPageContext\b/.test(raw) ||
-      /\bProDetailPageContent\b/.test(raw) ||
-      /\bProDetailPageHeader\b/.test(raw)
-
-    if (!usesProDetailPage || !usesProDetailContextDependents) continue
-
-    const hasProviderSignal =
-      /\bProDetailPageProvider\b/.test(raw) ||
-      /\buseProDetailPageContext\b/.test(raw)
-
-    if (!hasProviderSignal) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-async function collectProEditProviderViolations(rootDirs) {
-  const files = []
-  const seen = new Set()
-  const fileNamePattern = /\.[cm]?[jt]sx?$/i
-  const violations = []
-
-  for (const rootDir of rootDirs) {
-    for (const filePath of await collectTextFiles(rootDir, fileNamePattern)) {
-      if (seen.has(filePath)) continue
-      seen.add(filePath)
-      files.push(filePath)
-    }
-  }
-
-  for (const filePath of files) {
-    const raw = await readTextCached(filePath)
-    if (
-      /src[\\/]+typical-page-reuse[\\/]+components[\\/]+managed-page[\\/]+managed-.*shell\.[cm]?[jt]sx?$/.test(
-        filePath
-      )
-    ) {
-      continue
-    }
-    const usesProEditPage = /\bProEditPage\b/.test(raw) && /<ProEditPage\b/.test(raw)
-    const usesProEditContextDependents =
-      /<Form\b/.test(raw) ||
-      /<(CancelButton|StashButton|SubmitButton)\b/.test(raw) ||
-      /\buseProEditPageContext\b/.test(raw)
-
-    if (!usesProEditPage || !usesProEditContextDependents) continue
-
-    const hasProviderSignal =
-      /\bProEditPageProvider\b/.test(raw) ||
-      /\buseProEditPageContext\b/.test(raw)
-
-    if (!hasProviderSignal) {
-      violations.push(filePath)
-    }
-  }
-
-  return violations
-}
-
-function summarizeProDetailProviderViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
-}
-
-function summarizeProEditProviderViolations(targetRoot, filePaths) {
-  return filePaths.slice(0, 6).map((filePath) => path.relative(targetRoot, filePath)).join('; ')
 }
 
 function summarizeChecks(checks) {
@@ -2933,6 +1467,121 @@ function summarizeChecks(checks) {
     hardFailures: checks.filter((item) => !item.ok && item.severity === 'error').length,
     manualSteps: checks.filter((item) => !item.ok && item.severity === 'manual').length,
     warnings: checks.filter((item) => !item.ok && item.severity === 'warn').length,
+  }
+}
+
+function summarizeOutstandingChecks(checks) {
+  if (!Array.isArray(checks) || checks.length === 0) {
+    return ''
+  }
+
+  const summaries = checks
+    .map((item) => String(item?.summary || '').trim())
+    .filter(Boolean)
+
+  if (summaries.length === 0) {
+    return ''
+  }
+
+  if (summaries.length <= 2) {
+    return summaries.join('; ')
+  }
+
+  return `${summaries.slice(0, 2).join('; ')}; plus ${summaries.length - 2} more`
+}
+
+function formatAssessmentStatusLabel(status) {
+  return String(status || '').trim().toUpperCase() || 'UNKNOWN'
+}
+
+function summarizeDoctorAssessment({ checks, overallStatus, hostProfile }) {
+  const layoutChecks = checks.filter((item) => LAYOUT_CONTRACT_CHECK_IDS.has(item.id))
+  const layoutFailedChecks = layoutChecks.filter((item) => !item.ok)
+  const runtimeChecks = checks.filter((item) => !LAYOUT_CONTRACT_CHECK_IDS.has(item.id))
+  const runtimeFailedChecks = runtimeChecks.filter((item) => !item.ok)
+  const runtimeBaselineStatus = overallStatusFromChecks(runtimeChecks)
+
+  let layoutContractStatus = 'pass'
+  if (layoutFailedChecks.some((item) => item.severity === 'error' || item.severity === 'manual')) {
+    layoutContractStatus = 'blocked'
+  } else if (layoutFailedChecks.some((item) => item.severity === 'warn')) {
+    layoutContractStatus = 'warn'
+  } else if (hostProfile?.riskLevel === 'high') {
+    layoutContractStatus = 'partial'
+  }
+
+  const runtimeOutstandingSummary = summarizeOutstandingChecks(runtimeFailedChecks)
+  const layoutOutstandingSummary = summarizeOutstandingChecks(layoutFailedChecks)
+
+  let runtimeBaselineSummary = 'Managed runtime baseline and generation wiring checks passed.'
+  if (runtimeBaselineStatus === 'warn') {
+    runtimeBaselineSummary = runtimeOutstandingSummary
+      ? `Managed runtime baseline is mostly in place, but warning items remain: ${runtimeOutstandingSummary}.`
+      : 'Managed runtime baseline is mostly in place, but warning items remain.'
+  } else if (runtimeBaselineStatus === 'manual') {
+    runtimeBaselineSummary = runtimeOutstandingSummary
+      ? `Managed runtime baseline still needs manual integration evidence: ${runtimeOutstandingSummary}.`
+      : 'Managed runtime baseline still needs manual integration evidence.'
+  } else if (runtimeBaselineStatus === 'fail') {
+    runtimeBaselineSummary = runtimeOutstandingSummary
+      ? `Managed runtime baseline is not ready yet: ${runtimeOutstandingSummary}.`
+      : 'Managed runtime baseline is not ready yet.'
+  }
+
+  let layoutContractSummary = 'Host layout contract checks passed for the current host shape.'
+  if (layoutContractStatus === 'warn') {
+    layoutContractSummary = layoutOutstandingSummary
+      ? `Host layout contract has warning-level gaps: ${layoutOutstandingSummary}.`
+      : 'Host layout contract has warning-level gaps.'
+  } else if (layoutContractStatus === 'blocked') {
+    layoutContractSummary = layoutOutstandingSummary
+      ? `Host layout contract is not proven yet: ${layoutOutstandingSummary}.`
+      : 'Host layout contract is not proven yet.'
+  } else if (layoutContractStatus === 'partial') {
+    layoutContractSummary =
+      'No blocking layout-contract failure was found in this run, but high-risk legacy hosts are still treated as runtime-baseline pass with partial layout certification, not a full layout-contract pass.'
+  }
+
+  let decision =
+    'Runtime baseline passed and the current host layout contract checks also passed.'
+  if (overallStatus === 'pass' && layoutContractStatus === 'partial') {
+    decision =
+      'Runtime baseline passed. Layout contract has no blocking findings in this run, but it is still only partially certified for this high-risk legacy host.'
+  } else if (overallStatus === 'warn') {
+    decision =
+      layoutContractStatus === 'pass'
+        ? 'Runtime baseline is basically ready and layout contract checks passed, but warning items should be cleared before large-scale page generation.'
+        : 'Runtime baseline is basically ready, but layout contract or compatibility follow-up is still required before large-scale page generation.'
+  } else if (overallStatus === 'manual') {
+    decision =
+      runtimeBaselineStatus === 'pass' && layoutContractStatus === 'blocked'
+        ? 'Managed runtime baseline passed, but the host layout contract still needs manual proof before page generation should begin.'
+        : 'Manual route or host integration work is still required before page generation should begin.'
+  } else if (overallStatus === 'fail') {
+    if (runtimeBaselineStatus === 'pass' && layoutContractStatus === 'blocked') {
+      decision =
+        'Managed runtime baseline passed, but the host layout contract failed. Fix the blocking layout checks before generating non-drawer pages.'
+    } else if (runtimeBaselineStatus !== 'pass' && layoutContractStatus === 'pass') {
+      decision =
+        'Host layout contract checks passed, but the managed runtime baseline failed. Fix the runtime baseline before page generation.'
+    } else {
+      decision =
+        'Do not continue with new hiui-design page generation or integration work yet. Fix the hard failures first.'
+    }
+  }
+
+  return {
+    runtimeBaseline: {
+      status: runtimeBaselineStatus,
+      failedCheckIds: runtimeFailedChecks.map((item) => item.id),
+      summary: runtimeBaselineSummary,
+    },
+    layoutContract: {
+      status: layoutContractStatus,
+      failedCheckIds: layoutFailedChecks.map((item) => item.id),
+      summary: layoutContractSummary,
+    },
+    decision,
   }
 }
 
@@ -2986,34 +1635,48 @@ async function writeDoctorReport({
   status,
   checks,
   summary,
+  assessment,
   line,
   manifestPath,
   mode,
-  recommendedMode,
+  modeSource,
   hostProfile,
   hostAdapterSnippetPath,
+  reportSnapshot,
 }) {
   const reportPath = path.join(outputRoot, 'DOCTOR_REPORT.md')
-  const currentPageReady = isCurrentPageReady(status)
   const lines = [
-    '# Typical Page Reuse Doctor Report',
+    '# HiUI Design Doctor Report',
     '',
+    `- scope: project-level ${SKILL_PUBLIC_NAME} health check`,
+    `- report intent: validate whether the current project is ready for ${SKILL_PUBLIC_NAME} page generation, integration, and runtime verification`,
     `- target root: ${targetRoot}`,
     `- mode: ${mode}`,
+    `- mode source: ${modeSource}`,
     `- project type: ${hostProfile.projectType}`,
     `- detected framework: ${hostProfile.framework}`,
-    `- recommended strategy: ${hostProfile.strategy}`,
-    `- recommended mode: ${recommendedMode}`,
+    `- recommended project strategy: ${hostProfile.strategy}`,
+    `- host risk level: ${hostProfile.riskLevel || 'low'}`,
+    `- host risk tags: ${hostProfile.riskTags?.length ? hostProfile.riskTags.join(', ') : 'none'}`,
     ...(line ? [`- business line: ${line}`] : []),
     ...(hostProfile.adapterDoc
       ? [`- framework adapter guide: ${resolveAdapterGuideLabel(outputRoot, hostProfile.adapterDoc)}`]
       : []),
     ...(hostAdapterSnippetPath ? [`- host adapter snippet: ${hostAdapterSnippetPath}`] : []),
     `- overall status: ${status}`,
-    `- current-page delivery ready: ${currentPageReady ? 'yes' : 'no'}`,
+    `- runtime baseline status: ${assessment.runtimeBaseline.status}`,
+    `- layout contract status: ${assessment.layoutContract.status}`,
     `- manifest: ${manifestPath}`,
     `- checks passed: ${summary.passed}`,
     `- checks failed: ${summary.failed}`,
+    '',
+    '## Snapshot',
+    `- generatedAt: ${reportSnapshot.generatedAt}`,
+    `- packageJson: ${reportSnapshot.packageJson}`,
+    `- packageJsonHash: ${reportSnapshot.packageJsonHash}`,
+    `- lockfile: ${reportSnapshot.lockfile}`,
+    `- lockfileHash: ${reportSnapshot.lockfileHash}`,
+    `- note: ${reportSnapshot.note}`,
     '',
     '## Checks',
   ]
@@ -3027,23 +1690,16 @@ async function writeDoctorReport({
   }
 
   lines.push('', '## Decision')
-
-  if (status === 'pass') {
-    lines.push('- This project is ready to generate pages following the Figma typical-page rules.')
-  } else if (status === 'warn') {
-    lines.push(
-      '- Warnings remain. Treat the current page as not delivery-ready until every warning is cleared or explicitly proven to be unrelated historical debt outside the current page.'
-    )
-  } else if (status === 'manual') {
-    lines.push(
-      '- Manual route or host integration work is still blocking delivery. Do not mark the current page complete until those manual steps are finished and doctor returns PASS.'
-    )
-  } else {
-    lines.push('- Do not continue generating business pages yet. Fix the hard failures first.')
-  }
+  lines.push(
+    `- runtime baseline: ${formatAssessmentStatusLabel(assessment.runtimeBaseline.status)}. ${assessment.runtimeBaseline.summary}`
+  )
+  lines.push(
+    `- layout contract: ${formatAssessmentStatusLabel(assessment.layoutContract.status)}. ${assessment.layoutContract.summary}`
+  )
+  lines.push(`- overall decision: ${assessment.decision}`)
 
   await ensureDir(path.dirname(reportPath))
-  await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
+  await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
   return reportPath
 }
 
@@ -3055,128 +1711,814 @@ function getPrimarySmokeCases(manifest) {
   return getSmokeCases(manifest).filter((pageType) => pageType.smokePriority === 'primary')
 }
 
-function getArchetypeSmokeBaselineCases(manifest) {
-  return getSmokeCases(manifest).filter((pageType) => pageType.archetypeSmokeBaseline === true)
+async function collectGenerationContractViolations({ manifest, skillRoot }) {
+  const requiredKeys = [
+    'baseTemplatePath',
+    'requiredShell',
+    'requiredImports',
+    'requiredSlots',
+    'businessSlots',
+    'lockedRegions',
+    'forbiddenTokens',
+    'lightSanityChecks',
+    'generationNotes',
+    'hostCapabilityContract',
+    'layoutContract',
+    'dataShapeContract',
+    'domClassContract',
+    'fallbackPolicy',
+  ]
+  const violations = []
+
+  for (const pageType of manifest.pageTypes ?? []) {
+    const contract = pageType.generationContract
+    if (!contract) {
+      violations.push(`${pageType.id}: missing generationContract`)
+      continue
+    }
+
+    for (const key of requiredKeys) {
+      const value = contract[key]
+      if (!value || (Array.isArray(value) && value.length === 0)) {
+        violations.push(`${pageType.id}: missing ${key}`)
+      }
+    }
+
+    if (contract.requiredShell && contract.requiredShell !== pageType.shell) {
+      violations.push(`${pageType.id}: requiredShell ${contract.requiredShell} does not match shell ${pageType.shell}`)
+    }
+
+    if (
+      contract.baseTemplatePath &&
+      !contract.baseTemplatePath.startsWith('examples/host-integration/src/pages/')
+    ) {
+      violations.push(`${pageType.id}: baseTemplatePath must point to examples/host-integration/src/pages/`)
+    }
+
+    if (contract.baseTemplatePath) {
+      const templatePath = path.join(skillRoot, contract.baseTemplatePath)
+      if (!(await pathExists(templatePath))) {
+        violations.push(`${pageType.id}: missing base template ${contract.baseTemplatePath}`)
+      }
+    }
+
+    if (contract.baseStylePath !== null && typeof contract.baseStylePath !== 'string') {
+      violations.push(`${pageType.id}: baseStylePath must be a string or null`)
+    }
+
+    if (typeof contract.baseStylePath === 'string') {
+      if (!contract.baseStylePath.startsWith('examples/host-integration/src/pages/')) {
+        violations.push(`${pageType.id}: baseStylePath must point to examples/host-integration/src/pages/`)
+      }
+
+      const stylePath = path.join(skillRoot, contract.baseStylePath)
+      if (!(await pathExists(stylePath))) {
+        violations.push(`${pageType.id}: missing base style ${contract.baseStylePath}`)
+      }
+    }
+
+    if (contract.layoutContract?.requiresFlexMinHeightChain !== true) {
+      violations.push(`${pageType.id}: layoutContract.requiresFlexMinHeightChain must be true`)
+    }
+
+    const requiresSchemaGroupDataIndexMapping =
+      contract.requiredImports?.some((requiredImport) =>
+        (requiredImport.symbols ?? []).some(
+          (symbol) => symbol === 'SchemaGroup' || symbol === 'GroupMapProvider'
+        )
+      ) || contract.lightSanityChecks?.includes('required-grouped-detail-sections')
+    if (requiresSchemaGroupDataIndexMapping && contract.dataShapeContract?.schemaGroupDataIndexMustExistInRequestResult !== true) {
+      violations.push(`${pageType.id}: dataShapeContract must require SchemaGroup dataIndex mapping`)
+    }
+
+    if (contract.domClassContract?.selectorMustMatchResolvedRuntimeClass !== true) {
+      violations.push(`${pageType.id}: domClassContract.selectorMustMatchResolvedRuntimeClass must be true`)
+    }
+
+    violations.push(
+      ...validateMinimumGenerationContract({
+        pageTypeId: pageType.id,
+        contract: contract.minimumGenerationContract,
+      })
+    )
+
+    if (
+      Array.isArray(contract.lightSanityChecks) &&
+      !contract.lightSanityChecks.includes(`required-shell:${pageType.shell}`)
+    ) {
+      violations.push(`${pageType.id}: lightSanityChecks missing required-shell:${pageType.shell}`)
+    }
+  }
+
+  return violations
 }
 
-function mapArchetypeSmokeBaselineSpecEntries(baselineSpec) {
-  return new Map(
-    Array.isArray(baselineSpec?.baselines)
-      ? baselineSpec.baselines
-          .filter((item) => item?.pageTypeId)
-          .map((item) => [item.pageTypeId, item])
-      : []
+async function collectTemplateSanityViolations({ manifest, skillRoot }) {
+  const violations = []
+
+  for (const pageType of manifest.pageTypes ?? []) {
+    const contract = pageType.generationContract
+    if (!contract?.baseTemplatePath) continue
+
+    const templatePath = path.join(skillRoot, contract.baseTemplatePath)
+    const source = await readTextIfExists(templatePath)
+    if (!source) {
+      violations.push(`${pageType.id}: missing readable template ${contract.baseTemplatePath}`)
+      continue
+    }
+
+    const styleSource =
+      typeof contract.baseStylePath === 'string' && contract.baseStylePath
+        ? await readTextIfExists(path.join(skillRoot, contract.baseStylePath))
+        : ''
+    violations.push(
+      ...collectPageSourceSanityViolations({
+        pageType,
+        contract,
+        source,
+        styleSource,
+        sourceLabel: 'template',
+      })
+    )
+  }
+
+  return violations
+}
+
+function extractSchemaGroupDataIndexes(source) {
+  const indexes = []
+  const pattern = /\bG\(\s*['"][^'"]+['"]\s*,\s*['"]([^'"]+)['"]\s*\)/g
+  let match = pattern.exec(source)
+
+  while (match) {
+    indexes.push(match[1])
+    match = pattern.exec(source)
+  }
+
+  return [...new Set(indexes)]
+}
+
+function extractStyleImport(source) {
+  const match = source.match(/import\s+\w+\s+from\s+['"](\.\.?\/[^'"]+\.module\.(?:scss|css|less))['"]/)
+  return match?.[1] ?? ''
+}
+
+async function resolveSourceImportFile(sourceFilePath, importPath) {
+  if (!importPath) return ''
+  const basePath = path.resolve(path.dirname(sourceFilePath), importPath)
+  const candidates = [basePath, `${basePath}.scss`, `${basePath}.css`, `${basePath}.less`]
+
+  for (const candidate of candidates) {
+    if (await pathExists(candidate)) return candidate
+  }
+
+  return basePath
+}
+
+function extractModuleFederationExposes(source) {
+  const exposes = []
+  const exposesBlock = source.match(/exposes\s*:\s*\{([\s\S]*?)\n\s*\}/)
+  if (!exposesBlock) return exposes
+
+  const entryPattern = /['"](\.\/[^'"]+)['"]\s*:\s*['"]([^'"]+)['"]/g
+  let match = entryPattern.exec(exposesBlock[1])
+
+  while (match) {
+    exposes.push({ publicName: match[1], sourcePath: match[2] })
+    match = entryPattern.exec(exposesBlock[1])
+  }
+
+  return exposes
+}
+
+function extractModuleFederationSharedEntries(source) {
+  const entries = []
+  const sharedBlock = source.match(/shared\s*:\s*\{([\s\S]*?)\n\s*\}/)
+  if (!sharedBlock) return entries
+
+  const entryPattern = /(['"]?)(@?[\w./-]+)\1\s*:\s*\{([^{}]*)\}/g
+  let match = entryPattern.exec(sharedBlock[1])
+
+  while (match) {
+    const depName = String(match[2] || '').trim()
+    const rawOptions = String(match[3] || '')
+    if (!depName) {
+      match = entryPattern.exec(sharedBlock[1])
+      continue
+    }
+
+    const requiredVersionMatch = rawOptions.match(
+      /\brequiredVersion\s*:\s*(['"])(.*?)\1/
+    )
+
+    entries.push({
+      depName,
+      singleton: /\bsingleton\s*:\s*true\b/.test(rawOptions),
+      eager: /\beager\s*:\s*true\b/.test(rawOptions),
+      requiredVersion: requiredVersionMatch?.[2] || '',
+      rawOptions: rawOptions.trim(),
+    })
+    match = entryPattern.exec(sharedBlock[1])
+  }
+
+  return entries
+}
+
+function shouldInspectLegacyMfSharedRuntimeContract(hostProfile = {}) {
+  const projectType = normalizeString(hostProfile?.projectType)
+  const framework = normalizeString(hostProfile?.framework)
+  const legacyReactRuntime = hostProfile?.legacyReactRuntime === true
+  const hiuiFacts = hostProfile?.hiuiFacts || {}
+
+  return (
+    projectType === 'existing-system' &&
+    ['rspack-module-federation', 'webpack-module-federation'].includes(framework) &&
+    (legacyReactRuntime === true ||
+      hiuiFacts.hasLegacyRuntimePackages === true ||
+      hiuiFacts.hasMixedRuntimePackages === true)
   )
 }
 
-function getRequiredArchetypeBaselineIds(baselineSpec) {
-  if (Array.isArray(baselineSpec?.requiredPageTypes) && baselineSpec.requiredPageTypes.length > 0) {
-    return baselineSpec.requiredPageTypes
-      .map((item) => String(item || '').trim())
-      .filter(Boolean)
+async function inspectLegacyMfSharedRuntimeContract({ targetRoot, hostProfile, pkg }) {
+  if (!shouldInspectLegacyMfSharedRuntimeContract(hostProfile)) {
+    return {
+      inScope: false,
+      ok: true,
+      detail:
+        'Legacy Module Federation shared-runtime repair only applies to existing-system legacy MF hosts; greenfield or non-MF projects should stay on the standard host/runtime path.',
+    }
   }
 
-  return ['table-stat', 'full-page-edit', 'full-page-detail']
+  const configCandidates = [
+    'build/rspack.base.conf.js',
+    'build/webpack.base.conf.js',
+    'rspack.config.js',
+    'webpack.config.js',
+  ]
+  const findings = []
+
+  for (const relativePath of configCandidates) {
+    const configPath = path.join(targetRoot, relativePath)
+    const raw = await readTextIfExists(configPath)
+    if (!raw) continue
+
+    const sharedEntries = extractModuleFederationSharedEntries(raw)
+    const scopedBridgeDetected = hasScopedHiui5BridgeMarkers(raw)
+
+    findings.push({
+      configPath: relativePath,
+      scopedBridgeDetected,
+      sharedEntries,
+    })
+  }
+
+  if (findings.length === 0) {
+    return {
+      inScope: true,
+      ok: true,
+      detail:
+        'No Rspack/Webpack Module Federation config file was found for legacy shared-runtime inspection. Keep this repair path scoped to existing-system legacy MF hosts only.',
+    }
+  }
+
+  const declaredLegacyHiuiSpec = findDependency(pkg, '@hi-ui/hiui')
+  const declaredLegacyHiuiRuntime =
+    Boolean(declaredLegacyHiuiSpec) &&
+    !isVersionCompatible(declaredLegacyHiuiSpec, '>=5.0.0-experimental.0')
+  const riskyFindings = findings.filter((finding) => {
+    const sharedSingletons = new Map(
+      finding.sharedEntries.map((entry) => [entry.depName, entry.singleton === true])
+    )
+    return finding.scopedBridgeDetected && sharedSingletons.get('@hi-ui/hiui') === true
+  })
+
+  if (riskyFindings.length === 0 || !declaredLegacyHiuiRuntime) {
+    return {
+      inScope: true,
+      ok: true,
+      detail:
+        'No legacy MF shared-singleton hijack signature was detected. Keep host shared-contract repair scoped to existing-system legacy Module Federation projects instead of applying it globally.',
+    }
+  }
+
+  const riskyDetails = riskyFindings
+    .map((finding) => {
+      const sharedDepNames = finding.sharedEntries
+        .filter((entry) => entry.singleton)
+        .map((entry) => entry.depName)
+      return `${finding.configPath} shares [${sharedDepNames.join(', ')}] while scoped HiUI5 bridge wiring is present`
+    })
+    .join('; ')
+  const reactSharedSingletonDetected = riskyFindings.some((finding) =>
+    finding.sharedEntries.some(
+      (entry) =>
+        entry.singleton === true &&
+        (entry.depName === 'react' || entry.depName === 'react-dom')
+    )
+  )
+
+  return {
+    inScope: true,
+    ok: false,
+    detail:
+      `Legacy existing-system Module Federation host risk detected: package.json still declares @hi-ui/hiui=${declaredLegacyHiuiSpec}, but the build also keeps a scoped HiUI5 replacement bridge plus a shared singleton for @hi-ui/hiui. ${riskyDetails}. ` +
+      (reactSharedSingletonDetected
+        ? 'React/ReactDOM are also shared as singletons on this legacy carrier, so runtime warnings can stack with the HiUI mismatch.'
+        : '') +
+      ' Repair the host shared contract in this legacy project only; do not generalize this repair to greenfield or non-Module-Federation projects, and do not keep patching business-page source to chase the symptom.',
+  }
 }
 
-function getBaselineViewportLabel(baseline) {
-  if (!baseline?.viewport) return '--'
-  const { width, height } = baseline.viewport
-  if (!width || !height) return '--'
-  return `${width}x${height}`
+async function resolveModuleFederationExposeFiles(targetRoot) {
+  const configCandidates = [
+    'build/rspack.base.conf.js',
+    'build/webpack.base.conf.js',
+    'rspack.config.js',
+    'webpack.config.js',
+  ]
+  const exposes = []
+
+  for (const relativePath of configCandidates) {
+    const configPath = path.join(targetRoot, relativePath)
+    const raw = await readTextIfExists(configPath)
+    if (!raw) continue
+
+    for (const expose of extractModuleFederationExposes(raw)) {
+      const basePath = path.resolve(targetRoot, expose.sourcePath)
+      const candidates = [
+        `${basePath}.tsx`,
+        `${basePath}.ts`,
+        `${basePath}.jsx`,
+        `${basePath}.js`,
+        path.join(basePath, 'index.tsx'),
+        path.join(basePath, 'index.ts'),
+        path.join(basePath, 'index.jsx'),
+        path.join(basePath, 'index.js'),
+        basePath,
+      ]
+      const resolvedPath = candidates.find((candidate) => fsSyncPathExists(candidate)) || basePath
+      exposes.push({ ...expose, configPath, resolvedPath })
+    }
+  }
+
+  return exposes
 }
 
-function getBaselineRouteSuggestion(pageType, baseline) {
-  return baseline?.routeSuggestion || pageType.smokePath || '--'
+function fsSyncPathExists(targetPath) {
+  try {
+    return Boolean(targetPath) && requireFsAccessSync(targetPath)
+  } catch {
+    return false
+  }
 }
 
-function getBaselineExamplePath(pageType, baseline) {
-  return baseline?.examplePath || pageType.assetExamplePath || pageType.examplePath || '--'
+function requireFsAccessSync(targetPath) {
+  try {
+    // Keep sync access local and tiny to avoid making every expose resolver async-heavy.
+    const stat = spawnSync('test', ['-e', targetPath], { stdio: 'ignore' })
+    return (stat.status ?? 1) === 0
+  } catch {
+    return false
+  }
 }
 
-function validateArchetypeSmokeBaselineSpecEntry(entry) {
-  const issues = []
-
-  if (!entry || typeof entry !== 'object') {
-    issues.push('entry is missing')
-    return issues
-  }
-
-  if (!entry.screenshotKey || typeof entry.screenshotKey !== 'string') {
-    issues.push('missing screenshotKey')
-  }
-
-  if (
-    !entry.viewport ||
-    !Number.isFinite(entry.viewport.width) ||
-    !Number.isFinite(entry.viewport.height)
-  ) {
-    issues.push('missing viewport width/height')
-  }
-
-  if (!entry.routeSuggestion || typeof entry.routeSuggestion !== 'string') {
-    issues.push('missing routeSuggestion')
-  }
-
-  if (!entry.examplePath || typeof entry.examplePath !== 'string') {
-    issues.push('missing examplePath')
-  }
-
-  if (!Array.isArray(entry.assertions) || entry.assertions.length === 0) {
-    issues.push('missing assertions')
-  }
-
-  return issues
+function isFullPageDetailSource(source, { legacySourcePackageName = '' } = {}) {
+  return (
+    (source.includes(`${legacySourcePackageName}/pro-detail-page`) ||
+      source.includes('hiui-design-runtime/pro-detail-page')) &&
+    source.includes('ProDetailPage') &&
+    source.includes('<PageHeader') &&
+    source.includes('SchemaGroup') &&
+    source.includes('SchemaDescriptionsBridge')
+  )
 }
 
-async function detectDoctorMode({
-  requestedMode,
-  targetRoot,
-  outputRoot,
-  recommendedMode,
-  isTypicalPageSourceRepo = false,
-}) {
-  if (requestedMode !== 'auto') return requestedMode
+function checkFullPageDetailLayoutSource(source) {
+  const hasWhiteBody = source.includes('styles.whiteBody') || source.includes('className={styles.whiteBody}')
+  const headerIndex = source.indexOf('<PageHeader')
+  const whiteBodyIndex = source.indexOf('styles.whiteBody')
+  const proDetailIndex = source.indexOf('<ProDetailPage')
+  const schemaGroupIndex = source.indexOf('<SchemaGroup')
 
-  const localSkillRoot = path.join(targetRoot, '.local-context', 'hiui-design')
-  if (
-    !isTypicalPageSourceRepo &&
-    recommendedMode &&
-    recommendedMode !== 'host-integration' &&
-    (await pathExists(localSkillRoot))
-  ) {
-    return recommendedMode
+  return {
+    hasPageHeader: headerIndex >= 0,
+    hasWhiteBody,
+    pageHeaderBeforeWhiteBody: headerIndex >= 0 && whiteBodyIndex >= 0 && headerIndex < whiteBodyIndex,
+    proDetailBeforeSchemaGroup: proDetailIndex >= 0 && schemaGroupIndex >= 0 && proDetailIndex < schemaGroupIndex,
+  }
+}
+
+function checkFullPageDetailStyle(styleSource) {
+  return {
+    hasWhiteBodyClass: /\.whiteBody\s*\{/.test(styleSource),
+    whiteBodyFlexFill: /\.whiteBody\s*\{[\s\S]*flex\s*:\s*1\s+1\s+0%/.test(styleSource),
+    hasMinHeightZero: /min-height\s*:\s*0/.test(styleSource),
+    hasWhiteBackground: /background(?:-color)?\s*:\s*(?:#fff|white)/.test(styleSource),
+    hasV5DescriptionLabelAlignment:
+      styleSource.includes('hi-v5-descriptions--placement-vertical') && styleSource.includes('text-align: left'),
+  }
+}
+
+async function collectPageContractFindings({ targetRoot, legacySourcePackageName = '' }) {
+  const sourceRoot = path.join(targetRoot, 'src')
+  const sourceFiles = (await pathExists(sourceRoot)) ? await collectSourceFiles(sourceRoot) : []
+  const findings = []
+
+  for (const filePath of sourceFiles) {
+    const source = await fs.readFile(filePath, 'utf8')
+    if (!isFullPageDetailSource(source, { legacySourcePackageName })) continue
+
+    const styleImport = extractStyleImport(source)
+    const stylePath = await resolveSourceImportFile(filePath, styleImport)
+    const styleSource = await readTextIfExists(stylePath)
+    const groupDataIndexes = extractSchemaGroupDataIndexes(source)
+    const missingInlineGroupDataMappers = groupDataIndexes.filter((dataIndex) => {
+      const mapperPattern = new RegExp(`\\b${dataIndex}\\s*:`)
+      return !mapperPattern.test(source)
+    })
+
+    findings.push({
+      pageType: 'full-page-detail',
+      filePath,
+      stylePath,
+      styleExists: Boolean(styleSource),
+      styleImport,
+      groupDataIndexes,
+      missingInlineGroupDataMappers,
+      layout: checkFullPageDetailLayoutSource(source),
+      style: checkFullPageDetailStyle(styleSource),
+    })
   }
 
-  const hostMarkers = [
-    path.join(outputRoot, 'routes', 'config.tsx'),
-    path.join(outputRoot, 'pages', 'full-page-edit.tsx'),
-    path.join(outputRoot, 'app-shell.tsx'),
+  return findings
+}
+
+function summarizePageContractFindings(targetRoot, findings) {
+  if (findings.length === 0) return 'No full-page detail source files were found under src.'
+  return findings
+    .map((finding) => {
+      const issues = []
+      if (!finding.styleExists) issues.push('missing module style file')
+      if (!finding.layout.hasWhiteBody) issues.push('missing whiteBody carrier')
+      if (!finding.layout.pageHeaderBeforeWhiteBody) issues.push('PageHeader is not before whiteBody')
+      if (!finding.style.whiteBodyFlexFill) issues.push('whiteBody does not flex-fill')
+      if (!finding.style.hasV5DescriptionLabelAlignment) {
+        issues.push('HiUI5 description label alignment selector missing')
+      }
+      if (finding.missingInlineGroupDataMappers.length > 0) {
+        issues.push(`missing explicit group data mapper for ${finding.missingInlineGroupDataMappers.join(', ')}`)
+      }
+
+      return `${path.relative(targetRoot, finding.filePath)}: ${issues.length ? issues.join('; ') : 'contract ok'}`
+    })
+    .join(' | ')
+}
+
+async function writePageContractReport({ outputRoot, targetRoot, findings }) {
+  const reportPath = path.join(outputRoot, 'PAGE_CONTRACT_REPORT.md')
+  const lines = [
+    '# HiUI5 Page Contract Report',
+    '',
+    `- target root: ${targetRoot}`,
+    `- checked full-page detail files: ${findings.length}`,
+    '',
   ]
 
-  for (const marker of hostMarkers) {
-    if (await pathExists(marker)) return 'host-integration'
+  for (const finding of findings) {
+    lines.push(`## ${path.relative(targetRoot, finding.filePath)}`, '')
+    lines.push(`- pageType: ${finding.pageType}`)
+    lines.push(`- stylePath: ${finding.stylePath ? path.relative(targetRoot, finding.stylePath) : '—'}`)
+    lines.push(`- styleExists: ${finding.styleExists}`)
+    lines.push(`- groupDataIndexes: ${finding.groupDataIndexes.join(', ') || '—'}`)
+    lines.push(`- missingInlineGroupDataMappers: ${finding.missingInlineGroupDataMappers.join(', ') || '—'}`)
+    lines.push('', '### Layout', '')
+    for (const [key, value] of Object.entries(finding.layout)) {
+      lines.push(`- ${key}: ${value}`)
+    }
+    lines.push('', '### Style', '')
+    for (const [key, value] of Object.entries(finding.style)) {
+      lines.push(`- ${key}: ${value}`)
+    }
+    lines.push('')
   }
 
-  if (await pathExists(localSkillRoot)) {
-    return 'rules-only'
-  }
-
-  return 'host-integration'
+  await ensureDir(path.dirname(reportPath))
+  await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
+  return reportPath
 }
 
-function isReferenceOnlyMode(mode) {
-  return mode === 'rules-only' || mode === 'legacy-host-compatible'
+async function collectFilesNamed(rootDir, fileName) {
+  if (!(await pathExists(rootDir))) return []
+
+  const entries = await fs.readdir(rootDir, { withFileTypes: true })
+  const files = []
+
+  for (const entry of entries) {
+    const absPath = path.join(rootDir, entry.name)
+    if (entry.isDirectory()) {
+      files.push(...(await collectFilesNamed(absPath, fileName)))
+      continue
+    }
+
+    if (entry.isFile() && entry.name === fileName) {
+      files.push(absPath)
+    }
+  }
+
+  return files
 }
 
-function resolveDoctorMode({ requestedMode, legacyHostRuntime }) {
-  if (
-    legacyHostRuntime?.incompatible &&
-    (requestedMode === 'rules-only' || requestedMode === 'host-integration')
-  ) {
-    return 'legacy-host-compatible'
+async function resolveExistingModulePath(basePath) {
+  if (!basePath) return ''
+
+  const hasExplicitExtension = /\.[cm]?[jt]sx?$/.test(basePath)
+  const candidates = hasExplicitExtension
+    ? [basePath]
+    : [
+        basePath,
+        `${basePath}.tsx`,
+        `${basePath}.ts`,
+        `${basePath}.jsx`,
+        `${basePath}.js`,
+        path.join(basePath, 'index.tsx'),
+        path.join(basePath, 'index.ts'),
+        path.join(basePath, 'index.jsx'),
+        path.join(basePath, 'index.js'),
+      ]
+
+  for (const candidate of candidates) {
+    if (await pathExists(candidate)) return candidate
   }
-  return requestedMode
+
+  return ''
+}
+
+async function resolveManagedMfPublishEntryPath({ targetRoot, pageDir, managedMfPublishEntry = {} }) {
+  const configuredRelativePath = normalizeString(managedMfPublishEntry?.path)
+  if (configuredRelativePath) {
+    const configuredPath = await resolveExistingModulePath(path.join(targetRoot, configuredRelativePath))
+    if (configuredPath) return configuredPath
+  }
+
+  for (const candidate of ['mf-entry', 'publish-entry']) {
+    const resolvedCandidate = await resolveExistingModulePath(path.join(pageDir, candidate))
+    if (resolvedCandidate) return resolvedCandidate
+  }
+
+  return ''
+}
+
+async function collectMfPublishEntryContractFindings({ targetRoot, mode, hostProfile }) {
+  const rulesOnlyExistingSystem =
+    mode === 'rules-only' && normalizeString(hostProfile?.projectType) === 'existing-system'
+  if (!rulesOnlyExistingSystem) {
+    return {
+      inScope: false,
+      reason:
+        'Managed Module Federation publish-entry delivery checks only run for rules-only existing-system projects.',
+      findings: [],
+    }
+  }
+
+  const moduleFederationExposes = await resolveModuleFederationExposeFiles(targetRoot)
+  if (moduleFederationExposes.length === 0) {
+    return {
+      inScope: false,
+      reason:
+        'Managed Module Federation publish-entry delivery checks are not required because no Module Federation direct-expose contracts were found.',
+      findings: [],
+    }
+  }
+
+  const metaFiles = await collectFilesNamed(path.join(targetRoot, 'src'), 'hiui-pagegen.meta.json')
+  const findings = []
+
+  for (const metaFile of metaFiles) {
+    const metadata = await readJsonIfExists(metaFile)
+    if (!metadata || typeof metadata !== 'object') continue
+
+    const pageRelationDecision = metadata.pageRelationDecision || {}
+    const navigationMountAction = metadata.navigationMountAction || {}
+    const managedMfPublishEntry = metadata.managedMfPublishEntry || {}
+    const targetEntryKind = normalizeString(
+      navigationMountAction.targetEntryKind || managedMfPublishEntry.targetEntryKind
+    )
+    const isSameModuleSubview =
+      normalizeString(pageRelationDecision.kind) === 'same-module-subview'
+    const publishDeliveryKind = normalizeString(metadata.publishDeliveryDecision?.kind)
+    const requiresManagedPublishEntry =
+      publishDeliveryKind === 'managed-mf-publish-entry' ||
+      (!isSameModuleSubview &&
+        (managedMfPublishEntry.required === true ||
+        normalizeString(navigationMountAction.action) === 'materialize-mf-publish-entry' ||
+        targetEntryKind === 'module-federation-exposes' ||
+        targetEntryKind === 'module-federation-expose'))
+
+    if (!requiresManagedPublishEntry) continue
+
+    const pageDir = path.dirname(metaFile)
+    const pageModulePath = await resolveExistingModulePath(path.join(pageDir, 'index'))
+    const managedPublishEntryPath = await resolveManagedMfPublishEntryPath({
+      targetRoot,
+      pageDir,
+      managedMfPublishEntry,
+    })
+    const managedPublishEntrySource = await readTextIfExists(managedPublishEntryPath)
+    const directExposeEntries = pageModulePath
+      ? moduleFederationExposes.filter(
+          (item) => path.resolve(item.resolvedPath) === path.resolve(pageModulePath)
+        )
+      : []
+    const publishEntryExposeEntries = managedPublishEntryPath
+      ? moduleFederationExposes.filter(
+          (item) => path.resolve(item.resolvedPath) === path.resolve(managedPublishEntryPath)
+        )
+      : []
+
+    findings.push({
+      metaFile,
+      pageDir,
+      pageModulePath,
+      pageModuleExists: Boolean(pageModulePath),
+      managedPublishEntryPath,
+      managedPublishEntryExists: Boolean(managedPublishEntryPath),
+      managedPublishEntryImportsShellStyles: /hiui-design-runtime\/styles\.css/.test(
+        managedPublishEntrySource
+      ),
+      directExposeEntries,
+      publishEntryExposeEntries,
+      expectedShellStyleImport:
+        normalizeString(managedMfPublishEntry.expectedShellStyleImport) ||
+        `${getManagedLocalRuntimeRoot()}/styles.css`,
+    })
+  }
+
+  return {
+    inScope: true,
+    reason:
+      findings.length === 0
+        ? 'No hiui-design generated pages currently require the managed Module Federation publish-entry delivery contract.'
+        : 'Doctor verified whether rules-only direct-expose pages publish shell styles through managed Module Federation publish entries.',
+    findings,
+  }
+}
+
+function summarizeMfPublishEntryContractFindings(targetRoot, findings) {
+  if (findings.length === 0) {
+    return 'No hiui-design generated pages currently require the managed Module Federation publish-entry delivery contract.'
+  }
+
+  return findings
+    .map((finding) => {
+      const issues = []
+      if (!finding.pageModuleExists) issues.push('generated page module is missing')
+      if (finding.directExposeEntries.length > 0) {
+        issues.push(
+          `direct expose still targets generated page module (${finding.directExposeEntries
+            .map((item) => item.publicName)
+            .join(', ')})`
+        )
+      }
+      if (!finding.managedPublishEntryExists) {
+        issues.push('managed publish entry file is missing')
+      }
+      if (finding.managedPublishEntryExists && !finding.managedPublishEntryImportsShellStyles) {
+        issues.push('managed publish entry does not import shell styles')
+      }
+      if (finding.publishEntryExposeEntries.length === 0) {
+        issues.push('no expose currently points to the managed publish entry')
+      }
+
+      return `${path.relative(targetRoot, finding.metaFile)}: ${issues.length ? issues.join('; ') : 'contract ok'}`
+    })
+    .join(' | ')
+}
+
+async function collectSameModuleSubviewStyleDeliveryFindings({ targetRoot }) {
+  const metaFiles = await collectFilesNamed(path.join(targetRoot, 'src'), 'hiui-pagegen.meta.json')
+  const findings = []
+
+  for (const metaFile of metaFiles) {
+    const metadata = await readJsonIfExists(metaFile)
+    if (!metadata || typeof metadata !== 'object') continue
+
+    const pageRelationKind = normalizeString(metadata.pageRelationDecision?.kind)
+    if (pageRelationKind !== 'same-module-subview') continue
+
+    const styleDeliveryDecision = metadata.styleDeliveryDecision || null
+    const verification = await verifyStyleDeliveryDecision({
+      targetRoot,
+      styleDeliveryDecision,
+    })
+
+    findings.push({
+      metaFile,
+      pageRelationKind,
+      publishDeliveryDecision: metadata.publishDeliveryDecision || {},
+      styleDeliveryDecision,
+      mfExposeTargetPath: normalizeRelativePath(metadata.mfExposeTargetPath || ''),
+      mfExposeUsesManagedPublishEntry: metadata.mfExposeUsesManagedPublishEntry === true,
+      verification,
+    })
+  }
+
+  return {
+    inScope: findings.length > 0,
+    reason:
+      findings.length === 0
+        ? 'No persisted same-module-subview hiui-design pages were found for style-delivery contract checks.'
+        : 'Doctor verified whether persisted same-module-subview pages still satisfy their declared style-delivery owner.',
+    findings,
+  }
+}
+
+function summarizeSameModuleSubviewStyleDeliveryFindings(targetRoot, findings) {
+  if (findings.length === 0) {
+    return 'No persisted same-module-subview hiui-design pages were found for style-delivery contract checks.'
+  }
+
+  return findings
+    .map((finding) => {
+      const owner = normalizeString(finding.styleDeliveryDecision?.owner) || 'missing-owner'
+      const entryPath =
+        normalizeString(finding.styleDeliveryDecision?.effectiveEntryPath) || 'missing-entry'
+      return `${path.relative(targetRoot, finding.metaFile)}: ${
+        finding.verification.ok
+          ? `contract ok (${owner} -> ${entryPath})`
+          : `${finding.verification.reason || 'style-delivery contract failed'} (${owner} -> ${entryPath})`
+      }`
+    })
+    .join(' | ')
+}
+
+async function collectSameModuleSubviewManagedPublishBypassFindings({ targetRoot }) {
+  const metaFiles = await collectFilesNamed(path.join(targetRoot, 'src'), 'hiui-pagegen.meta.json')
+  const findings = []
+
+  for (const metaFile of metaFiles) {
+    const metadata = await readJsonIfExists(metaFile)
+    if (!metadata || typeof metadata !== 'object') continue
+
+    if (normalizeString(metadata.pageRelationDecision?.kind) !== 'same-module-subview') continue
+    if (normalizeString(metadata.publishDeliveryDecision?.kind) !== 'managed-mf-publish-entry') continue
+
+    const pageDir = path.dirname(metaFile)
+    const pageModulePath = await resolveExistingModulePath(path.join(pageDir, 'index'))
+    const normalizedPageModulePath = pageModulePath
+      ? normalizeRelativePath(path.relative(targetRoot, pageModulePath))
+      : ''
+    const normalizedExposeTargetPath = normalizeRelativePath(metadata.mfExposeTargetPath || '')
+    const styleOwner = normalizeString(metadata.styleDeliveryDecision?.owner)
+    const exposeTargetsGeneratedPage =
+      Boolean(normalizedExposeTargetPath) &&
+      Boolean(normalizedPageModulePath) &&
+      normalizeRelativePath(normalizedExposeTargetPath) === normalizeRelativePath(normalizedPageModulePath)
+
+    findings.push({
+      metaFile,
+      styleOwner,
+      pageModulePath: normalizedPageModulePath,
+      mfExposeTargetPath: normalizedExposeTargetPath,
+      mfExposeUsesManagedPublishEntry: metadata.mfExposeUsesManagedPublishEntry === true,
+      exposeTargetsGeneratedPage,
+      violated:
+        styleOwner === 'page-local-fallback' &&
+        exposeTargetsGeneratedPage &&
+        metadata.mfExposeUsesManagedPublishEntry !== true,
+    })
+  }
+
+  return {
+    inScope: findings.length > 0,
+    reason:
+      findings.length === 0
+        ? 'No same-module-subview pages currently declare managed publish delivery.'
+        : 'Doctor verified whether same-module-subview pages that require managed publish delivery still bypass the host shell through page-local direct exposes.',
+    findings,
+  }
+}
+
+function summarizeSameModuleSubviewManagedPublishBypassFindings(targetRoot, findings) {
+  if (findings.length === 0) {
+    return 'No same-module-subview pages currently declare managed publish delivery.'
+  }
+
+  return findings
+    .map((finding) => {
+      const issues = []
+      if (finding.styleOwner === 'page-local-fallback') {
+        issues.push('styleDeliveryDecision still falls back to page-local-fallback')
+      }
+      if (finding.exposeTargetsGeneratedPage) {
+        issues.push(`Module Federation expose still targets generated page module (${finding.mfExposeTargetPath || 'unknown'})`)
+      }
+      if (finding.mfExposeUsesManagedPublishEntry !== true) {
+        issues.push('managed publish entry is not the active expose target')
+      }
+
+      return `${path.relative(targetRoot, finding.metaFile)}: ${issues.length ? issues.join('; ') : 'contract ok'}`
+    })
+    .join(' | ')
 }
 
 function getSmokeExpectations(pageType) {
@@ -3187,18 +2529,6 @@ function getSmokeExpectations(pageType) {
         '数据统计表时指标卡仍是白卡描边，不是裸文本',
         '表格高度可以收口，不出现整页双滚动',
       ]
-    case 'chart':
-      return [
-        '页头、指标卡、多图表区和明细表仍在同一白底工作区',
-        '图表主题、颜色和坐标轴没有回退成库默认样式',
-        '图表区与明细表之间没有双滚动和额外主白卡层',
-      ]
-    case 'feedback':
-      return [
-        '页头、白底反馈面板和居中反馈内容关系正常',
-        '反馈图示资源正常加载，不回退成破图或纯文本占位',
-        '主次操作仍收口在反馈面板内，不误用表格或表单壳',
-      ]
     case 'drawer':
       return [
         '抽屉标题、body、footer 节奏正常',
@@ -3207,7 +2537,7 @@ function getSmokeExpectations(pageType) {
       ]
     case 'full-page':
       return [
-        'PageHeader 正确挂到宿主 header 区，不在内容区重复渲染',
+        '页面保持单一 PageHeader；若宿主存在共享 header slot，其空态不会保留额外空白',
         '主白底、滚动区、底栏关系正常',
         '不要退化成宿主灰底上的单张白卡页面',
       ]
@@ -3216,54 +2546,11 @@ function getSmokeExpectations(pageType) {
   }
 }
 
-function getArchetypeBaselineExpectations(pageType) {
-  switch (pageType.id) {
-    case 'table-stat':
-      return [
-        '指标卡必须是真实白卡区，不退化成 tabs、摘要文本或普通标题计数。',
-        '筛选区必须保持 QueryFilter 语义，不能退回手写 Input/Select/DatePicker flex 行。',
-        '分页必须留在同一个白底主体内部，不能掉到宿主灰底外。',
-      ]
-    case 'full-page-edit':
-      return [
-        '页头、单一白底工作区、表单滚动区、底部操作区必须是同一个全页编辑壳层。',
-        '不要退化成宿主灰底上的单张白卡 + 自由 footer。',
-        '字段栅格、返回链路和 footer 吸底关系要先在这个基线页上锁定，再生成业务编辑页。',
-      ]
-    case 'full-page-detail':
-      return [
-        '页头必须保持 60px 垂直居中，标题维持 18px / 600，不能漂到内容区里或出现额外 header 间距。',
-        "详情字段必须保持 Descriptions 的 vertical + 3 columns；detail-shell 需显式冻结 `labelPlacement: 'left'`，SchemaDescriptionsBridge 还要清空隐藏 `labelWidth`，不要再靠默认值碰巧成立。",
-        '分组详情必须仍在单一白底主体内，不拆成多层白卡或独立摘要卡。',
-      ]
-    default:
-      return getSmokeExpectations(pageType)
-  }
-}
-
 function resolveAdapterGuideLabel(outputRoot, adapterDoc) {
   const base = outputRoot.includes(`${path.sep}.local-context${path.sep}`)
     ? '.'
-    : '.local-context/hiui-design'
+    : SKILL_CONTEXT_DIR
   return `${base}/${adapterDoc}`.replace(/\\/g, '/')
-}
-
-function sanitizePortableReportLine(line, targetRoot) {
-  if (typeof line !== 'string' || !line) return line
-
-  const normalizedRoot = String(targetRoot || '').replace(/[\\/]+$/, '')
-  let result = line
-
-  if (normalizedRoot) {
-    result = result.split(`${normalizedRoot}${path.sep}`).join('')
-    result = result.split(normalizedRoot).join('.')
-  }
-
-  return result.replace(/\\/g, '/')
-}
-
-function renderPortableReport(lines, targetRoot) {
-  return `${lines.map((line) => sanitizePortableReportLine(line, targetRoot)).join('\n')}\n`
 }
 
 async function writeSmokeReport({
@@ -3272,16 +2559,11 @@ async function writeSmokeReport({
   manifest,
   doctorStatus,
   mode,
-  baselineSpecPath = '',
-  baselineSpec = null,
 }) {
   const reportPath = path.join(outputRoot, 'SMOKE_REPORT.md')
-  const archetypeBaselineCases = getArchetypeSmokeBaselineCases(manifest)
-  const baselineSpecEntries = mapArchetypeSmokeBaselineSpecEntries(baselineSpec)
-  if (isReferenceOnlyMode(mode)) {
-    const isLegacyCompatibilityMode = mode === 'legacy-host-compatible'
+  if (mode === 'rules-only') {
     const lines = [
-      '# Typical Page Reuse Smoke Report',
+      '# Typical Page Preview Smoke Report',
       '',
       `- target root: ${targetRoot}`,
       `- doctor status before smoke: ${doctorStatus}`,
@@ -3289,101 +2571,52 @@ async function writeSmokeReport({
       '',
       '## Purpose',
       '',
-      '- Reference-only modes do not sync a route gallery, template pages, or host bridge files into the target project source tree.',
-      `- A local reference-only example set should be available at \`${RULES_ONLY_REFERENCE_PAGES_GLOB}\`. Use it to lock a single page baseline before generating the real business page.`,
-      ...(isLegacyCompatibilityMode
-        ? [
-            '- Legacy-host-compatible mode also forbids mounting the standard typical-page runtime directly in the current host. Generate against the local host abstractions only.',
-          ]
-        : []),
+      '- Rules-only mode does not sync a route gallery, template pages, or host bridge files into the target project.',
       '- Smoke verification should happen on the actual business page after it is generated inside the target project’s own structure.',
-      ...(baselineSpecPath ? [`- Screenshot baseline spec: \`${baselineSpecPath}\``] : []),
-      '',
-      '## Required archetype baselines to lock first',
-      '',
-      '| Page | Page type | Example file | Suggested viewport | Screenshot key | Why it is mandatory |',
-      '| --- | --- | --- | --- | --- | --- |',
-      ...archetypeBaselineCases.map(
-        (pageType) => {
-          const baseline = baselineSpecEntries.get(pageType.id)
-          const viewport = getBaselineViewportLabel(baseline)
-          const screenshotKey = baseline?.screenshotKey || '--'
-
-          return `| ${pageType.label} | \`${pageType.id}\` | \`${getBaselineExamplePath(pageType, baseline)}\` | \`${viewport}\` | \`${screenshotKey}\` | ${pageType.shell} archetype is a required visual baseline before generating same-type business pages |`
-        }
-      ),
       '',
       '## What To Check After Page Generation',
       '',
       '1. Start the target project dev server.',
-      '2. Before bulk generation, open or recreate the required archetype baseline pages above and lock their visual structure first.',
-      '3. Open the real generated page in the target project route tree.',
-      '4. Verify the page still matches the selected typical-page shell, spacing rhythm, and right-aligned action areas.',
-      '5. If the page imports `@hiui-design/typical-page-shells`, confirm styles.css and the Vite `@hi-ui/schema-types` alias have been handled in the target project.',
+      '2. Open the real generated page in the target project route tree.',
+      '3. Verify the page still matches the selected typical-page shell, spacing rhythm, and right-aligned action areas.',
+      '4. If the page imports the managed local runtime, confirm the local styles.css import and the Vite `@hi-ui/schema-types` alias have been handled in the target project.',
       '',
     ]
 
-    lines.push('## Required baseline pass criteria', '')
-    for (const pageType of archetypeBaselineCases) {
-      lines.push(`### ${pageType.label}`)
-      for (const item of getArchetypeBaselineExpectations(pageType)) {
-        lines.push(`- ${item}`)
-      }
-      const baseline = baselineSpecEntries.get(pageType.id)
-      lines.push(`- example file: \`${getBaselineExamplePath(pageType, baseline)}\``)
-      lines.push(`- suggested viewport: \`${getBaselineViewportLabel(baseline)}\``)
-      if (baseline?.screenshotKey) {
-        lines.push(`- screenshot key: \`${baseline.screenshotKey}\``)
-      }
-      lines.push('')
-    }
-
     await ensureDir(path.dirname(reportPath))
-    await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
+    await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
     return reportPath
   }
 
   const primaryCases = getPrimarySmokeCases(manifest)
   const lines = [
-    '# Typical Page Reuse Smoke Report',
+    '# Typical Page Preview Smoke Report',
     '',
     `- target root: ${targetRoot}`,
     `- doctor status before smoke: ${doctorStatus}`,
     '',
     '## Purpose',
     '',
-    '- This report lists the minimum typical-page examples that should be opened before generating business pages.',
+    '- This report lists the minimum official preview examples that should be opened through the packaged preview runtime before generating business pages.',
     '- The goal is not to verify every route. The goal is to verify that the target project can still render the core shells close to the Figma typical-page baseline.',
     '',
     '## Recommended smoke sequence',
     '',
     '1. Run `pnpm typical-page:doctor` or `npm run typical-page:doctor` first.',
-    '2. Start the target project dev server.',
-    '3. Open the primary smoke pages below through the route gallery that mounts `src/typical-page-reuse/routes/config.tsx`.',
+    '2. From the packaged skill root, start the preview runtime with `node scripts/start-preview-runtime.mjs`.',
+    '3. Open the primary smoke pages below through the packaged preview runtime routes; do not materialize `src/typical-page-preview/**` into target projects.',
     '4. If multiple smoke pages fail at the same time, stop business-page generation and fix host integration or style loading first.',
     '',
-    ...(baselineSpecPath ? [`- Screenshot baseline spec: \`${baselineSpecPath}\``, ''] : []),
     '## Primary smoke pages',
     '',
-    '| Group | Page | Relative route suggestion | Example file |',
+    '| Group | Page | Preview route | Official example file |',
     '| --- | --- | --- | --- |',
   ]
 
   for (const pageType of primaryCases) {
+    const runtimeExamplePath = getRuntimeExamplePath(pageType)
     lines.push(
-      `| ${pageType.smokeGroup} | ${pageType.label} | \`${pageType.smokePath}\` | \`${pageType.examplePath}\` |`
-    )
-  }
-
-  lines.push('', '## Required archetype baselines', '')
-  lines.push('| Page | Page type | Relative route suggestion | Example file | Suggested viewport | Screenshot key |')
-  lines.push('| --- | --- | --- | --- | --- | --- |')
-  for (const pageType of archetypeBaselineCases) {
-    const baseline = baselineSpecEntries.get(pageType.id)
-    const viewport = getBaselineViewportLabel(baseline)
-    const screenshotKey = baseline?.screenshotKey || '--'
-    lines.push(
-      `| ${pageType.label} | \`${pageType.id}\` | \`${getBaselineRouteSuggestion(pageType, baseline)}\` | \`${getBaselineExamplePath(pageType, baseline)}\` | \`${viewport}\` | \`${screenshotKey}\` |`
+      `| ${pageType.smokeGroup} | ${pageType.label} | \`${pageType.smokePath}\` | \`${runtimeExamplePath}\` |`
     )
   }
 
@@ -3397,507 +2630,52 @@ async function writeSmokeReport({
     }
   }
 
-  lines.push('', '## Required archetype baseline criteria')
-  for (const pageType of archetypeBaselineCases) {
-    lines.push('')
-    lines.push(`### ${pageType.label}`)
-    for (const item of getArchetypeBaselineExpectations(pageType)) {
-      lines.push(`- ${item}`)
-    }
-    const baseline = baselineSpecEntries.get(pageType.id)
-    lines.push(`- example file: \`${getBaselineExamplePath(pageType, baseline)}\``)
-    lines.push(`- relative route suggestion: \`${getBaselineRouteSuggestion(pageType, baseline)}\``)
-    lines.push(`- suggested viewport: \`${getBaselineViewportLabel(baseline)}\``)
-    if (baseline?.screenshotKey) {
-      lines.push(`- screenshot key: \`${baseline.screenshotKey}\``)
-    }
-  }
-
   lines.push('', '## Stop rules', '')
   lines.push('- If the table smoke page fails, first suspect style resources or the host height chain.')
   lines.push('- If the drawer smoke page fails, first suspect default Drawer styles overriding the packaged shell styles.')
   lines.push('- If the full-page smoke page fails, first suspect host header/footer portals or page-shell mounting order.')
-  lines.push('- If any required archetype baseline page is visually off, do not continue generating the same page type in business pages.')
   lines.push('- If two or more primary smoke pages fail together, do not continue generating business pages.')
 
   await ensureDir(path.dirname(reportPath))
-  await fs.writeFile(reportPath, renderPortableReport(lines, targetRoot), 'utf8')
+  await fs.writeFile(reportPath, `${lines.join('\n')}\n`, 'utf8')
   return reportPath
 }
 
-async function analyzeRulesOnlyManagedPageFacts({
-  baselineSpec,
-  legacyCompatibilityMode,
-  manifest,
-  managedPageRegistryInspection,
-  pageContractsResult,
-  targetRoot,
-}) {
-  const registryJsonExists = await pathExists(managedPageRegistryInspection.registryJsonPath)
-  const registryMarkdownExists = await pathExists(managedPageRegistryInspection.registryMarkdownPath)
-  const managedPageCoverageIssues = [
-    ...managedPageRegistryInspection.brokenContracts,
-    ...managedPageRegistryInspection.duplicateContractTargets,
-    ...managedPageRegistryInspection.contractsWithoutSourceFiles,
-    ...managedPageRegistryInspection.sourceWithoutContracts,
-    ...managedPageRegistryInspection.contractsWithoutSourceMarkers,
-  ]
-  const managedPageRegistryIssues = [
-    ...(managedPageRegistryInspection.contracts.length > 0 && !registryJsonExists
-      ? [`${path.relative(targetRoot, managedPageRegistryInspection.registryJsonPath)} is missing`]
-      : []),
-    ...(managedPageRegistryInspection.contracts.length > 0 && !registryMarkdownExists
-      ? [`${path.relative(targetRoot, managedPageRegistryInspection.registryMarkdownPath)} is missing`]
-      : []),
-    ...(managedPageRegistryInspection.registryLoadError
-      ? [
-          `${path.relative(targetRoot, managedPageRegistryInspection.registryJsonPath)} could not be parsed: ${managedPageRegistryInspection.registryLoadError}`,
-        ]
-      : []),
-    ...managedPageRegistryInspection.missingRegistryEntries,
-    ...managedPageRegistryInspection.mismatchedRegistryEntries,
-    ...managedPageRegistryInspection.unexpectedRegistryEntries,
-  ]
-  const validContracts = []
-  const invalidContracts = []
-  const contractWarnings = []
-  const runtimeSmokeWarnings = []
-  const runtimeSmokeRequiredContracts = []
-  const ownershipWarnings = []
-  const semanticWarnings = []
-  const sourceGuardFailures = []
-  const externalComponentBypassFailures = []
-  const managedChartGovernanceFailures = []
-
-  for (const entry of pageContractsResult.contracts) {
-    if (entry.error || !entry.contract) {
-      invalidContracts.push(
-        `${path.relative(targetRoot, entry.filePath)} -> ${entry.error || 'invalid json'}`
-      )
-      continue
-    }
-
-    const validation = validateRulesOnlyPageContract({
-      contract: entry.contract,
-      manifest,
-      targetRoot,
-      baselineSpec,
-    })
-
-    if (validation.errors.length > 0) {
-      invalidContracts.push(
-        `${path.relative(targetRoot, entry.filePath)} -> ${validation.errors.join('; ')}`
-      )
-      continue
-    }
-
-    validContracts.push(entry)
-    const visibleWarnings = validation.warnings.filter((item) => !item.startsWith('generated:'))
-    if (visibleWarnings.length > 0) {
-      contractWarnings.push(
-        `${path.relative(targetRoot, entry.filePath)} -> ${visibleWarnings.join('; ')}`
-      )
-    }
-
-    const sourceOwnershipWarnings = await inspectRulesOnlyWorkspaceOwnership({
-      contract: entry.contract,
-      legacyHostCompatible: legacyCompatibilityMode,
-      targetRoot,
-    })
-
-    if (sourceOwnershipWarnings.length > 0) {
-      ownershipWarnings.push(...sourceOwnershipWarnings)
-    }
-
-    const sourceSemanticWarnings = await inspectRulesOnlyComponentSemanticDrift({
-      contract: entry.contract,
-      legacyHostCompatible: legacyCompatibilityMode,
-      targetRoot,
-    })
-
-    if (sourceSemanticWarnings.length > 0) {
-      semanticWarnings.push(...sourceSemanticWarnings)
-    }
-
-    const sourceGuardErrors = validateManagedPageSource({
-      contract: entry.contract,
-      generatedPagePath: entry.contract.generatedPagePath,
-      targetRoot,
-    })
-
-    if (sourceGuardErrors.length > 0) {
-      sourceGuardFailures.push(...sourceGuardErrors)
-      externalComponentBypassFailures.push(
-        ...sourceGuardErrors.filter((item) => isExternalComponentBypassFailure(item))
-      )
-      managedChartGovernanceFailures.push(
-        ...sourceGuardErrors.filter((item) => isManagedChartGovernanceFailure(item))
-      )
-    }
-
-    const sourceSnapshotHash = String(entry.contract?.workflow?.sourceSnapshotHash || '').trim()
-    const runtimeSmokeRequirement = getManagedPageRuntimeSmokeRequirement(entry.contract)
-    const runtimeSmokeWorkflow = reconcileManagedPageRuntimeSmokeWorkflow(
-      entry.contract,
-      entry.contract?.workflow || {},
-      sourceSnapshotHash
-    )
-    if (runtimeSmokeRequirement.required) {
-      runtimeSmokeRequiredContracts.push(path.relative(targetRoot, entry.filePath))
-    }
-    if (runtimeSmokeRequirement.required && runtimeSmokeWorkflow.runtimeSmokeStatus !== 'pass') {
-      runtimeSmokeWarnings.push(
-        `${path.relative(targetRoot, entry.filePath)} -> runtime smoke is required (${runtimeSmokeRequirement.reason}) but current status is ${runtimeSmokeWorkflow.runtimeSmokeStatus || '(missing)'}. Run typical-page:runtime-smoke against the current page snapshot before treating this page as complete.`
-      )
-    }
-  }
-
-  const dataVisualizationSharedShellInspection = await inspectManagedDataVisualizationSharedShells(
-    validContracts,
-    targetRoot
-  )
-
-  const playwrightPackagePath = path.join(targetRoot, 'node_modules', 'playwright', 'package.json')
-  const hasPlaywrightForRuntimeSmoke = await pathExists(playwrightPackagePath)
-
-  return {
-    contractWarnings,
-    dataVisualizationSharedShellInspection,
-    externalComponentBypassFailures,
-    hasPlaywrightForRuntimeSmoke,
-    invalidContracts,
-    managedChartGovernanceFailures,
-    managedPageCoverageIssues,
-    managedPageRegistryIssues,
-    ownershipWarnings,
-    playwrightPackagePath,
-    runtimeSmokeRequiredContracts,
-    runtimeSmokeWarnings,
-    semanticWarnings,
-    sourceGuardFailures,
-    validContracts,
-  }
-}
-
-async function appendRulesOnlyManagedPageChecks({
-  baselineSpec,
-  checks,
-  legacyCompatibilityMode,
-  manifest,
-  managedPageRegistryInspection,
-  mode,
-  nonTypicalSourceOwnership,
-  pageContractsResult,
-  referenceOnlyMode,
-  targetRoot,
-}) {
-  if (mode !== 'rules-only') {
-    const hasManagedArtifacts =
-      pageContractsResult.contracts.length > 0 ||
-      managedPageRegistryInspection.contracts.length > 0 ||
-      managedPageRegistryInspection.sourcePaths.length > 0 ||
-      managedPageRegistryInspection.brokenContracts.length > 0 ||
-      managedPageRegistryInspection.duplicateContractTargets.length > 0 ||
-      managedPageRegistryInspection.contractsWithoutSourceFiles.length > 0 ||
-      managedPageRegistryInspection.sourceWithoutContracts.length > 0 ||
-      managedPageRegistryInspection.contractsWithoutSourceMarkers.length > 0
-    pushCheck(checks, {
-      id: hasManagedArtifacts ? 'managed-page-artifact-contamination' : 'rules-only-managed-checks-skipped',
-      ok: true,
-      severity: 'warn',
-      summary: hasManagedArtifacts
-        ? 'non-rules-only integration ignores rules-only managed page artifacts as stale or out-of-scope evidence'
-        : 'rules-only managed page checks are skipped outside rules-only mode',
-      detail: `${mode} uses its own integration gates and does not run rules-only managed source guards as completion checks.`,
-    })
-    return
-  }
-
-  const facts = await analyzeRulesOnlyManagedPageFacts({
-    baselineSpec,
-    legacyCompatibilityMode,
-    manifest,
-    managedPageRegistryInspection,
-    pageContractsResult,
-    targetRoot,
-  })
-  const {
-    contractWarnings,
-    dataVisualizationSharedShellInspection,
-    externalComponentBypassFailures,
-    hasPlaywrightForRuntimeSmoke,
-    invalidContracts,
-    managedChartGovernanceFailures,
-    managedPageCoverageIssues,
-    managedPageRegistryIssues,
-    ownershipWarnings,
-    playwrightPackagePath,
-    runtimeSmokeRequiredContracts,
-    runtimeSmokeWarnings,
-    semanticWarnings,
-    sourceGuardFailures,
-    validContracts,
-  } = facts
-
-  if (referenceOnlyMode) {
-    pushCheck(checks, {
-      id: 'rules-only-no-host-sync',
-      ok: true,
-      severity: 'warn',
-      summary: 'reference-only modes keep route/gallery assets out of src while still providing local reference examples',
-      detail: `No src/typical-page-reuse gallery, routes, or host bridge files are required. Generate new pages directly in the target project’s existing structure and use ${RULES_ONLY_REFERENCE_PAGES_GLOB} as the default local reference template set. If that directory is missing, fall back to .local-context/hiui-design/examples/host-integration/src/pages/*. In legacy-host-compatible, this reference set is only a local baseline/fallback; ordinary typical pages use host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots.`,
-    })
-  }
-
-  pushCheck(checks, {
-    id: 'rules-only-page-contracts',
-    ok: invalidContracts.length === 0,
-    severity: invalidContracts.length > 0 ? 'error' : 'warn',
-    summary: 'rules-only managed page contracts satisfy the packaged example/archetype/region structural guard',
-    detail:
-      invalidContracts.length > 0
-        ? invalidContracts.join(' | ')
-        : validContracts.length > 0
-          ? `${validContracts.length} contract(s) found under ${path.relative(targetRoot, pageContractsResult.contractsDir)}`
-          : `No rules-only managed page contracts found yet under ${path.relative(targetRoot, pageContractsResult.contractsDir)}. Start one with \`typical-page:start-page\`, then close delivery with \`typical-page:finalize-page\`.`,
-  })
-  pushCheck(checks, {
-    id: 'rules-only-managed-page-coverage',
-    ok: managedPageCoverageIssues.length === 0,
-    severity: managedPageCoverageIssues.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only source markers, managed contracts, and current page files stay in one-to-one coverage instead of drifting apart at project level',
-    detail:
-      managedPageCoverageIssues.length > 0
-        ? managedPageCoverageIssues.join(' | ')
-        : managedPageRegistryInspection.sourcePaths.length > 0 ||
-            managedPageRegistryInspection.contracts.length > 0
-          ? `Detected ${managedPageRegistryInspection.sourcePaths.length} source-marked managed page(s) and ${managedPageRegistryInspection.contracts.length} contract target(s); every managed page source is covered by one contract and every contract still points to a live source file.`
-          : `No source-marked managed pages or rules-only contracts were found yet under ${path.relative(targetRoot, managedPageRegistryInspection.contractsDir)}. When the first managed page starts, keep source markers, contract registration, and finalize output in sync from the same command flow.`,
-  })
-  pushCheck(checks, {
-    id: 'rules-only-managed-page-registry',
-    ok: managedPageRegistryIssues.length === 0,
-    severity: managedPageRegistryIssues.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only managed page registry stays synced with contracts so project-level delivery state is machine-readable beyond a single page',
-    detail:
-      managedPageRegistryIssues.length > 0
-        ? managedPageRegistryIssues.join(' | ')
-        : managedPageRegistryInspection.contracts.length > 0
-          ? `${path.relative(targetRoot, managedPageRegistryInspection.registryJsonPath)} and ${path.relative(targetRoot, managedPageRegistryInspection.registryMarkdownPath)} are synced to ${managedPageRegistryInspection.contracts.length} managed contract(s).`
-          : 'No managed page registry is required yet because no rules-only contracts have been written.',
-  })
-  pushCheck(checks, {
-    id: 'rules-only-example-parity-review',
-    ok: validContracts.length > 0,
-    severity: 'warn',
-    summary: 'rules-only generation must be reviewed against the packaged example-parity contract before it is treated as aligned',
-    detail:
-      validContracts.length > 0
-        ? `Verified ${validContracts.length} contract(s). Continue reviewing them against .local-context/hiui-design/docs/generation/rules-only-example-alignment.md before treating the generated pages as aligned.`
-        : 'Before large-scale rules-only business page generation, review .local-context/hiui-design/docs/generation/rules-only-example-alignment.md and confirm each generated page can name a single example page, a single host archetype, and a one-to-one region mapping. Rules-only generation should translate the example shell into the host, not re-invent a visually similar page.',
-  })
-  pushCheck(checks, {
-    id: 'rules-only-structural-guard',
-    ok: invalidContracts.length === 0,
-    severity: invalidContracts.length > 0 ? 'error' : 'warn',
-    summary:
-      'all rules-only managed page types must keep page-type-specific core regions instead of collapsing them into a generic main/body container',
-    detail:
-      invalidContracts.length > 0
-        ? invalidContracts.join(' | ')
-        : contractWarnings.length > 0
-          ? contractWarnings.join(' | ')
-          : `Required regions are enforced per page type. Examples: table-basic=${getRequiredRegionsForPageType('table-basic').join(', ')}; table-stat=${getRequiredRegionsForPageType('table-stat').join(', ')}; full-page-edit=${getRequiredRegionsForPageType('full-page-edit').join(', ')}.`,
-  })
-  pushCheck(checks, {
-    id: 'rules-only-workspace-ownership',
-    ok: invalidContracts.length === 0 && ownershipWarnings.length === 0,
-    severity: invalidContracts.length > 0 || ownershipWarnings.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only managed pages keep a single owner for content slot, page surface, outer padding, and main scroll',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'ownership mapping is mandatory before the single-owner guard can be trusted.',
-      issues: ownershipWarnings,
-      successDetail: `Ownership mapping is enforced for white-body-based page types: ${getRequiredOwnershipRolesForPageType('table-stat').join(', ')}.`,
-    }),
-  })
-
-  if (referenceOnlyMode || nonTypicalSourceOwnership.inspectedCount > 0) {
-    pushCheck(checks, {
-      id: 'non-typical-shell-ownership',
-      ok: nonTypicalSourceOwnership.warnings.length === 0,
-      severity: nonTypicalSourceOwnership.warnings.length > 0 ? 'error' : 'warn',
-      summary:
-        'source-marked non-typical pages keep complete owner markers, layout archetype markers, split-pane spacing owners, and header action ownership aligned',
-      detail:
-        nonTypicalSourceOwnership.warnings.length > 0
-          ? nonTypicalSourceOwnership.warnings.join(' | ')
-          : nonTypicalSourceOwnership.inspectedCount > 0
-            ? `Validated ${nonTypicalSourceOwnership.inspectedCount} non-typical source file(s) with layout markers; no shell-ownership, archetype-marker, split-pane spacing, or header-action drift was detected.`
-            : 'No source-marked non-typical pages were found under src/. Add the non-typical source contract markers before treating ad-hoc layouts as validated.',
-    })
-  }
-
-  pushCheck(checks, {
-    id: 'rules-only-component-semantic-guard',
-    ok: invalidContracts.length === 0 && semanticWarnings.length === 0,
-    severity: invalidContracts.length > 0 || semanticWarnings.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only full-page pages keep header, white-body, detail/form body, media, and footer semantics aligned with the packaged archetype',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'semantic drift review depends on the page type and archetype mapping being complete.',
-      issues: semanticWarnings,
-      successDetail: 'No full-page semantic drift was detected in the generated rules-only pages.',
-    }),
-  })
-  pushCheck(checks, {
-    id: 'rules-only-managed-source-guard',
-    ok: invalidContracts.length === 0 && sourceGuardFailures.length === 0,
-    severity: invalidContracts.length > 0 || sourceGuardFailures.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only managed pages keep the exact source contract, chart governance, and example-level shell semantics enforced by source-gate',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'source-level example alignment depends on complete page type / archetype / region mapping.',
-      issues: sourceGuardFailures,
-      successDetail:
-        'All managed rules-only pages pass the same source-level contract guard that typical-page:source-gate enforces in CI, including global chart-stack rules for any inserted chart.',
-    }),
-  })
-  const managedChartContractCount = validContracts.filter((entry) =>
-    contractDeclaresManagedChartGovernance(entry)
-  ).length
-  pushCheck(checks, {
-    id: 'rules-only-managed-chart-governance',
-    ok: invalidContracts.length === 0 && managedChartGovernanceFailures.length === 0,
-    severity:
-      invalidContracts.length > 0 || managedChartGovernanceFailures.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only managed pages keep global HiUI chart governance: any inserted chart stays on the approved chart stack, and only independent analysis blocks declare chart-section',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'managed chart governance depends on a complete page-type / region contract and the same source-level guard used in CI.',
-      issues: managedChartGovernanceFailures,
-      successDetail:
-        managedChartContractCount > 0
-          ? `Validated ${managedChartContractCount} managed page contract(s) that already declare chart-section or use the data-visualization page type; no chart-stack or chart-section drift was detected.`
-          : 'No current managed page contract declares chart-section or uses the data-visualization page type yet. When charts are added later, any inserted chart still has to follow the HiUI chart stack, and only independent analysis blocks should be promoted into chart-section.',
-    }),
-  })
-  pushCheck(checks, {
-    id: 'external-component-token-bridge',
-    ok: invalidContracts.length === 0 && externalComponentBypassFailures.length === 0,
-    severity:
-      invalidContracts.length > 0 || externalComponentBypassFailures.length > 0 ? 'error' : 'warn',
-    summary:
-      'rules-only pages keep third-party UI packages behind declared local bypass adapters and HiUI token bridges instead of leaking library defaults into the page shell',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'external-component bypass review depends on a valid adapterContract and machine-checkable localBypasses metadata.',
-      issues: externalComponentBypassFailures,
-      successDetail:
-        'No external-component bypass drift was detected. Any approved third-party UI capability stays behind a declared adapter path, token bridge path, and local containment boundary.',
-    }),
-  })
-  pushCheck(checks, {
-    id: 'rules-only-fixed-dashboard-shell-reuse',
-    ok:
-      invalidContracts.length === 0 &&
-      dataVisualizationSharedShellInspection.warnings.length === 0,
-    severity:
-      invalidContracts.length > 0 || dataVisualizationSharedShellInspection.warnings.length > 0
-        ? 'error'
-        : 'warn',
-    summary:
-      'rules-only data-visualization pages keep the fixed dashboard shell on shared helpers instead of rebuilding header, white-body, and table/chart shells locally',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'Shared dashboard shell reuse depends on a complete page-type / region / ownership contract.',
-      issues: dataVisualizationSharedShellInspection.warnings,
-      successDetail:
-        dataVisualizationSharedShellInspection.inspectedCount > 0
-          ? `Validated ${dataVisualizationSharedShellInspection.inspectedCount} managed data-visualization page(s); the dashboard shell stays on FixedDashboardPageFrame or the shared dashboard primitives instead of page-local wrappers.`
-          : 'No managed data-visualization page contract was found yet. Once one exists, keep the fixed dashboard shell in shared helpers and let the page file fill only business regions.',
-    }),
-  })
-  pushCheck(checks, {
-    id: 'rules-only-runtime-smoke-closure',
-    ok: invalidContracts.length === 0 && runtimeSmokeWarnings.length === 0,
-    severity: invalidContracts.length > 0 || runtimeSmokeWarnings.length > 0 ? 'warn' : 'warn',
-    summary:
-      'rules-only pages that depend on browser-level scroll continuity keep a current runtime-smoke pass bound to the same source snapshot',
-    detail: formatRulesOnlyIssuesOrSuccess({
-      invalidContracts,
-      invalidReason:
-        'runtime-smoke enforcement depends on complete page-type and scroll-strategy facts.',
-      issues: runtimeSmokeWarnings,
-      successDetail:
-        'No managed page currently requires runtime smoke, or every required page already has a passing runtime-smoke result on the current source snapshot.',
-    }),
-  })
-  pushCheck(checks, {
-    id: 'runtime-smoke-playwright-installed',
-    ok:
-      invalidContracts.length === 0 &&
-      (runtimeSmokeRequiredContracts.length === 0 || hasPlaywrightForRuntimeSmoke),
-    severity:
-      invalidContracts.length > 0 ||
-      (runtimeSmokeRequiredContracts.length > 0 && !hasPlaywrightForRuntimeSmoke)
-        ? 'warn'
-        : 'warn',
-    summary:
-      'managed pages that require browser-level runtime smoke also keep playwright installed in the workspace',
-    detail:
-      formatRulesOnlyContractRepairDetail(
-        invalidContracts,
-        'playwright availability is only meaningful once the managed-page contracts can tell whether runtime smoke is required.'
-      ) ||
-      (runtimeSmokeRequiredContracts.length === 0
-        ? 'No current managed page contract requires runtime smoke, so a local playwright install is not required yet.'
-        : hasPlaywrightForRuntimeSmoke
-          ? playwrightPackagePath
-          : `Runtime smoke is required by: ${runtimeSmokeRequiredContracts.join(', ')}. Install playwright in this workspace before running typical-page:runtime-smoke or finalize-page on those source snapshots.`),
-  })
-}
-
-async function main() {
-  try {
-    const options = parseArgs(process.argv.slice(2))
-    const scriptDir = path.dirname(fileURLToPath(import.meta.url))
+async function main(options) {
+  const scriptDir = path.dirname(fileURLToPath(import.meta.url))
     const skillRoot = path.resolve(scriptDir, '..')
     const targetRoot = path.resolve(options.target)
-    const hostOutputRoot = path.join(targetRoot, options.dest)
+    const hostOutputRoot = path.join(targetRoot, 'src', 'typical-page-preview')
     const hostProfile = await detectHostProfile(targetRoot, {
-      ignoreRelativePaths: [options.dest],
+      ignoreRelativePaths: ['src/typical-page-preview'],
     })
+    const modeResolution = await resolveAutoInstallMode({
+      requestedMode: options.mode,
+      targetRoot,
+    })
+    if (!modeResolution.mode) {
+      throw new Error(
+        `Install mode resolution returned no mode for ${targetRoot}. This indicates an internal bug in resolveAutoInstallMode().`
+      )
+    }
+    const mode = modeResolution.mode
     const isTypicalPageSourceRepo = await detectTypicalPageSourceRepo(targetRoot)
     const { manifest, manifestPath, lineId } = await loadManifest(skillRoot, options.line)
-    const baselineSpecPath = path.join(
-      skillRoot,
-      'docs',
-      'validation',
-      'archetype-smoke-baselines.json'
+    const { versionPath, version: skillVersion } = await loadSkillVersion(skillRoot)
+    const managedRuntimeDependencyContract =
+      await loadManagedLocalRuntimeDependencyContract(skillRoot).catch(() => null)
+    const legacySourcePackageName = normalizeImportSpecifier(
+      resolveManagedLocalRuntimeEmbeddedSourceSnapshot(managedRuntimeDependencyContract).name
     )
-    const baselineSpec = await readJsonIfExists(baselineSpecPath)
-    const requiredArchetypeBaselineIds = getRequiredArchetypeBaselineIds(baselineSpec)
-    const baselineSpecEntries = mapArchetypeSmokeBaselineSpecEntries(baselineSpec)
     const shellPackage = await loadShellPackageSnapshot(skillRoot)
-    const embeddedShellsSpec = shellPackage
-      ? await resolveEmbeddedShellsSpec(skillRoot, shellPackage.version)
-      : ''
-    const embeddedShellTarballPath = shellPackage
-      ? await resolveEmbeddedShellTarballPath(skillRoot, shellPackage.version)
-      : ''
+    const embeddedShellsSpec = await resolveEmbeddedShellsSpec(
+      skillRoot,
+      managedRuntimeDependencyContract
+    )
+    const embeddedShellTarballPath = await resolveEmbeddedShellTarballPath(
+      skillRoot,
+      managedRuntimeDependencyContract
+    )
     const hostIntegrationDependencies = await loadHostIntegrationDependencySnapshot(skillRoot)
     const checks = []
 
@@ -3907,6 +2685,16 @@ async function main() {
 
     const packageJsonPath = path.join(targetRoot, 'package.json')
     const pkg = await readJsonIfExists(packageJsonPath)
+    const applyStatePath = resolveApplyStatePath(targetRoot)
+    const applyState = await readApplyState(applyStatePath)
+    const hasLegacyMaterializedPreviewAssets = await detectMaterializedPreviewAssets(hostOutputRoot)
+    const outputRoot =
+      resolveProjectContextPath(
+        targetRoot,
+        'outputs',
+        mode === 'host-integration' ? 'host-integration-guidance' : 'doctor'
+      )
+    const appliedSkillVersion = String(applyState?.appliedSkillVersion || '').trim()
     pushCheck(checks, {
       id: 'package-json',
       ok: Boolean(pkg),
@@ -3914,112 +2702,94 @@ async function main() {
       summary: 'package.json exists',
       detail: pkg ? packageJsonPath : `Missing ${packageJsonPath}`,
     })
-    const legacyHostRuntime = pkg ? await detectLegacyHostRuntimeMode(targetRoot, pkg) : null
-    const legacyHiUiEsImports = await collectLegacyHiUiEsImports(path.join(targetRoot, 'src'))
-    const installedRootRuntime = pkg
-      ? await inspectInstalledRootRuntime({ targetRoot, pkg })
-      : { installedPackages: {}, driftItems: [] }
-    const legacyRuntimeGuardIssues = buildLegacyRuntimeGuardIssues({
-      legacyHostRuntime,
-      installedRootRuntime,
-      legacyHiUiEsImports,
+    pushCheck(checks, {
+      id: `${SKILL_PUBLIC_NAME}-apply-version-sync`,
+      ok: Boolean(skillVersion) && appliedSkillVersion === skillVersion,
+      severity: 'warn',
+      summary: `current ${SKILL_PUBLIC_NAME} version matches the last recorded apply version`,
+      detail: !skillVersion
+        ? `Missing version in ${versionPath}`
+        : !applyState
+          ? `Missing ${applyStatePath}; re-run pnpm typical-page:apply or npm run typical-page:apply to record ${SKILL_PUBLIC_NAME} ${skillVersion}`
+          : !appliedSkillVersion
+            ? `Missing appliedSkillVersion in ${applyStatePath}; re-run pnpm typical-page:apply or npm run typical-page:apply`
+            : appliedSkillVersion === skillVersion
+            ? `${appliedSkillVersion} (${applyStatePath})`
+            : `Recorded apply version ${appliedSkillVersion} does not match current ${SKILL_PUBLIC_NAME} ${skillVersion} (${versionPath}); re-run pnpm typical-page:apply or npm run typical-page:apply`,
     })
-    const recommendedMode = resolveInstallRecommendedMode({
-      hostProfile,
-      legacyHostRuntime,
+    pushCheck(checks, {
+      id: 'preview-remains-global-skill-only',
+      ok: mode !== 'host-integration' || !hasLegacyMaterializedPreviewAssets,
+      severity: mode === 'host-integration' ? 'error' : 'warn',
+      summary: 'preview examples stay in the packaged preview runtime instead of being materialized into the target project',
+      detail:
+        mode !== 'host-integration'
+          ? `Install mode is ${mode}; project-local preview assets are not part of the contract.`
+          : hasLegacyMaterializedPreviewAssets
+            ? `Legacy project-local preview assets were detected under ${hostOutputRoot}. Remove src/typical-page-preview/** and use the packaged preview runtime instead.`
+            : 'No project-local preview assets were detected. Official examples should be opened from the packaged preview runtime.',
     })
-    const requestedMode = await detectDoctorMode({
-      requestedMode: options.mode,
-      targetRoot,
-      outputRoot: hostOutputRoot,
-      recommendedMode,
-      isTypicalPageSourceRepo,
+    const nodeRuntimePolicy = await inspectNodeRuntimePolicy(targetRoot)
+    const resolvedNodeRuntime = nodeRuntimePolicy.resolvedRuntime
+    const isProjectLocalDoctorRun =
+      (await resolveComparablePath(targetRoot)) === (await resolveComparablePath(process.cwd()))
+    const treatNodeMismatchAsHardFailure =
+      nodeRuntimePolicy.expectation.required && isProjectLocalDoctorRun
+    pushCheck(checks, {
+      id: 'node-runtime-compatibility',
+      ok:
+        !nodeRuntimePolicy.expectation.required ||
+        nodeRuntimePolicy.compatible ||
+        !treatNodeMismatchAsHardFailure,
+      severity: !nodeRuntimePolicy.expectation.required
+        ? 'warn'
+        : treatNodeMismatchAsHardFailure
+          ? 'error'
+          : 'warn',
+      summary: 'current Node runtime matches the project engine before hiui-design integration proceeds',
+      detail:
+        !nodeRuntimePolicy.expectation.required
+          ? nodeRuntimePolicy.detail
+          : nodeRuntimePolicy.compatible
+            ? nodeRuntimePolicy.detail
+            : treatNodeMismatchAsHardFailure
+              ? formatDoctorNodeRuntimeHardFailureDetail(nodeRuntimePolicy)
+              : `${nodeRuntimePolicy.detail} Because this run is targeting another project root, keep this as a warning and rerun doctor from the target project runtime before treating it as a blocking integration failure.`,
     })
-    const mode = resolveDoctorMode({
-      requestedMode,
-      legacyHostRuntime,
+    const shouldExpectLauncherAlignment =
+      isProjectLocalDoctorRun && nodeRuntimePolicy.expectation.type === 'explicit-version'
+    const launcherAligned =
+      resolvedNodeRuntime.nodeVersion === nodeRuntimePolicy.launcherNode || !resolvedNodeRuntime.reliable
+    pushCheck(checks, {
+      id: 'node-runtime-launcher-drift',
+      ok: !shouldExpectLauncherAlignment || launcherAligned,
+      severity: shouldExpectLauncherAlignment ? 'error' : 'warn',
+      summary: shouldExpectLauncherAlignment
+        ? 'launcher Node stays aligned with the explicit project runtime after doctor entry handoff'
+        : 'launcher Node and target project runtime are aligned when doctor is run externally',
+      detail:
+        !resolvedNodeRuntime.reliable
+          ? resolvedNodeRuntime.detail
+          : launcherAligned
+            ? `Launcher Node ${nodeRuntimePolicy.launcherNode} matches the resolved ${resolvedNodeRuntime.packageManager} runtime.`
+            : shouldExpectLauncherAlignment
+              ? `Launcher Node ${nodeRuntimePolicy.launcherNode} differs from resolved target runtime ${resolvedNodeRuntime.nodeVersion} even though this local doctor run should already have been re-executed under ${nodeRuntimePolicy.expectation.source} ${nodeRuntimePolicy.expectation.spec}. This indicates a runtime handoff gap in the doctor entry or one of its child launch paths.`
+              : `Launcher Node ${nodeRuntimePolicy.launcherNode} differs from resolved target runtime ${resolvedNodeRuntime.nodeVersion}. External doctor runs should prefer the target project's package manager runtime.`,
     })
-    const projectModeLockPath = path.join(
-      targetRoot,
-      '.local-context',
-      'hiui-design',
-      'outputs',
-      'project-mode.json'
-    )
-    const projectModeLock = await readJsonIfExists(projectModeLockPath)
-    const auditedModeOverride = isInstallModeAuditedOverride({
-      projectModeLock,
-      mode,
-      recommendedMode,
-    })
-    const legacyCompatibilityMode = mode === 'legacy-host-compatible'
-    const legacyHostRuntimeReasons = legacyHostRuntime?.reasons?.length
-      ? legacyHostRuntime.reasons
-      : ['legacy-host-compatible mode is explicitly selected']
-    const referenceOnlyMode = isReferenceOnlyMode(mode)
-    const outputRoot =
-      referenceOnlyMode ? path.join(skillRoot, 'outputs') : hostOutputRoot
-    const pageContractsResult = await loadRulesOnlyPageContracts(targetRoot)
-    const managedPageRegistryInspection = inspectManagedPageRegistry(targetRoot)
-    const hasRulesOnlyManagedArtifacts =
-      pageContractsResult.contracts.length > 0 ||
-      managedPageRegistryInspection.contracts.length > 0 ||
-      managedPageRegistryInspection.sourcePaths.length > 0 ||
-      managedPageRegistryInspection.brokenContracts.length > 0 ||
-      managedPageRegistryInspection.duplicateContractTargets.length > 0 ||
-      managedPageRegistryInspection.contractsWithoutSourceFiles.length > 0 ||
-      managedPageRegistryInspection.sourceWithoutContracts.length > 0 ||
-      managedPageRegistryInspection.contractsWithoutSourceMarkers.length > 0
-    const businessUiScanRoots = getBusinessUiScanRoots({ targetRoot, hostOutputRoot })
-    const archetypeSmokeBaselines = getArchetypeSmokeBaselineCases(manifest)
-    const proDetailProviderViolations = await collectProDetailProviderViolations(
-      businessUiScanRoots
-    )
-    const proEditProviderViolations = await collectProEditProviderViolations(businessUiScanRoots)
-    const nonTypicalSourceOwnership = await inspectSourceMarkedNonTypicalPages(targetRoot)
-    const topLevelAppFileForMenuIcons = await detectTopLevelAppFile(targetRoot)
-    const topLevelAppRawForMenuIcons = await readTextIfExists(topLevelAppFileForMenuIcons)
-    const mountsTopLevelAppFrameForMenuIcons =
-      detectTopLevelTypicalPageAppFrameMount(topLevelAppRawForMenuIcons)
-    const topLevelMenuIconSemanticIssues = mountsTopLevelAppFrameForMenuIcons
-      ? collectTopLevelMenuIconSemanticIssues(topLevelAppRawForMenuIcons)
-      : []
-    const syncedRouteConfigPath = path.join(hostOutputRoot, 'routes', 'config.tsx')
-    const syncedRouteConfigRaw = await readTextIfExists(syncedRouteConfigPath)
-    const exampleGalleryBusinessRouteViolations =
-      collectExampleGalleryBusinessRouteViolations({
-        outputRoot: hostOutputRoot,
-        routeConfigPath: syncedRouteConfigPath,
-        routeConfigRaw: syncedRouteConfigRaw,
-        targetRoot,
-      })
 
-    const runtimeCompatibilityLockPath = path.join(
-      targetRoot,
-      '.local-context',
-      'hiui-design',
-      'outputs',
-      'runtime-compatibility-lock.json'
+    const targetManagedLocalRuntimeRoot = path.join(targetRoot, 'src', getManagedLocalRuntimeRoot())
+    const targetManagedLocalRuntimeEntryPath = path.join(targetManagedLocalRuntimeRoot, 'index.js')
+    const targetManagedLocalRuntimeQueryFilterBridgePath = path.join(
+      targetManagedLocalRuntimeRoot,
+      'pro-list-page',
+      'bridge',
+      'query-filter.js'
     )
-    const runtimeCompatibilityLock = await readJsonIfExists(runtimeCompatibilityLockPath)
-    const runtimeCompatibilityShellStatus = String(runtimeCompatibilityLock?.shell?.status || '').trim()
-    const runtimeCompatibilityShellVariant = String(runtimeCompatibilityLock?.shell?.runtimeVariant || '').trim()
-    const runtimeCompatibilityBlockingReasons = Array.isArray(runtimeCompatibilityLock?.shell?.blockingReasons)
-      ? runtimeCompatibilityLock.shell.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
-      : []
-    const runtimePeerResolutionStatus = String(runtimeCompatibilityLock?.peerResolution?.status || '').trim()
-    const runtimePeerResolutionBlockingReasons = Array.isArray(runtimeCompatibilityLock?.peerResolution?.blockingReasons)
-      ? runtimeCompatibilityLock.peerResolution.blockingReasons.map((reason) => String(reason || '').trim()).filter(Boolean)
-      : []
-    const legacyDoctorRuntimeFacts = legacyCompatibilityMode
-      ? await verifyLegacyDoctorRuntimeFacts(targetRoot)
-      : null
-    const depSpec = pkg ? findDependency(pkg, '@hiui-design/typical-page-shells') : ''
     const managedDependencyDrifts =
-      pkg && shellPackage
+      pkg && managedRuntimeDependencyContract
         ? collectManagedDependencyVersionDrift({
             pkg,
-            shellPackage,
+            managedRuntimeDependencies: managedRuntimeDependencyContract.dependencies,
             embeddedShellsSpec,
             hostIntegrationDependencies,
             mode,
@@ -4029,28 +2799,177 @@ async function main() {
       id: 'host-profile',
       ok: true,
       severity: 'warn',
-      summary: 'target project host profile is detected before choosing an integration strategy',
-      detail: `${hostProfile.projectType} / ${hostProfile.framework} / ${hostProfile.runtime} / ${hostProfile.routing}`,
+      summary: 'target project host profile is detected for adapter guidance and risk context',
+      detail: `${hostProfile.projectType} / ${hostProfile.framework} / ${hostProfile.runtime} / ${hostProfile.routing} / risk=${hostProfile.riskLevel || 'low'}${hostProfile.riskTags?.length ? ` (${hostProfile.riskTags.join(', ')})` : ''}`,
     })
     pushCheck(checks, {
-      id: 'recommended-install-strategy',
-      ok:
-        mode === recommendedMode ||
-        auditedModeOverride ||
-        (isTypicalPageSourceRepo && mode === 'host-integration'),
-      severity:
-        mode === recommendedMode || auditedModeOverride || (isTypicalPageSourceRepo && mode === 'host-integration')
-          ? 'warn'
-          : 'error',
-      summary: 'the chosen install mode matches the detected target project type',
+      id: 'legacy-host-risk-surfaced',
+      ok: true,
+      severity: 'warn',
+      summary: 'legacy host risk is surfaced explicitly instead of being flattened into a generic ready/pass signal',
       detail:
-        mode === recommendedMode
-          ? `${mode} matches the detected target project profile. ${hostProfile.reason}`
-          : auditedModeOverride
-            ? `Detected profile recommends ${recommendedMode}, but current doctor mode is ${mode}; audited override is recorded in .local-context/hiui-design/outputs/project-mode.json. Reason: ${projectModeLock.overrideReason}. ${hostProfile.reason}`
-          : isTypicalPageSourceRepo && mode === 'host-integration'
-            ? `This repository is the source repo for typical-page shells and intentionally keeps the host-integration gallery for smoke verification. External target projects with the same detected profile should still prefer ${recommendedMode}. ${hostProfile.reason}`
-            : `Detected profile recommends ${recommendedMode}, but current doctor mode is ${mode}. This mode mismatch is a hard onboarding failure unless .local-context/hiui-design/outputs/project-mode.json records modeSelectionStatus=overridden with a non-empty overrideReason. ${hostProfile.reason}`,
+        hostProfile.riskLevel === 'high'
+          ? `High-risk legacy host detected. ${hostProfile.reason}`
+          : hostProfile.riskLevel === 'medium'
+            ? `Medium-risk compatibility host detected. ${hostProfile.reason}`
+            : 'No elevated legacy-host risk traits were detected beyond the standard adapter guidance path.',
+    })
+    const legacyMfSharedRuntimeContract = await inspectLegacyMfSharedRuntimeContract({
+      targetRoot,
+      hostProfile,
+      pkg,
+    })
+    pushCheck(checks, {
+      id: 'legacy-mf-shared-runtime-contract',
+      ok: legacyMfSharedRuntimeContract.ok,
+      severity: 'warn',
+      summary:
+        'legacy existing-system Module Federation hosts keep the old shared singleton contract from hijacking isolated HiUI5 typical-page runtimes',
+      detail: legacyMfSharedRuntimeContract.detail,
+    })
+    pushCheck(checks, {
+      id: 'mode-resolution',
+      ok: true,
+      severity: 'warn',
+      summary: 'doctor mode is derived from explicit input, recorded evidence, or the compatibility-bridge probe',
+      detail:
+        modeResolution.source === 'explicit'
+          ? `Doctor ran with explicit --mode ${mode}.`
+          : modeResolution.source === 'apply-state'
+            ? `Doctor reused appliedMode ${mode} from ${applyStatePath}.`
+            : modeResolution.source === 'environment-probe'
+              ? `Doctor resolved ${mode} by checking whether the target requires a project-local compatibility bridge. ${modeResolution.reason || ''}`.trim()
+              : `Doctor resolved mode ${mode} from source ${modeResolution.source}.`,
+    })
+    const generationContractViolations = await collectGenerationContractViolations({
+      manifest,
+      skillRoot,
+    })
+    pushCheck(checks, {
+      id: 'page-type-generation-contracts',
+      ok: generationContractViolations.length === 0,
+      severity: 'error',
+      summary:
+        'every registered page type has a machine-readable generation contract before AI writes code',
+      detail:
+        generationContractViolations.length === 0
+          ? `${manifest.pageTypes.length} page types have generationContract, official base templates, required shell checks, business slots, forbidden tokens, and light sanity checks`
+          : generationContractViolations.slice(0, 20).join('; '),
+    })
+    const templateSanityViolations = await collectTemplateSanityViolations({
+      manifest,
+      skillRoot,
+    })
+    pushCheck(checks, {
+      id: 'page-type-template-sanity',
+      ok: templateSanityViolations.length === 0,
+      severity: 'error',
+      summary: 'each official page template satisfies its page-specific component contract',
+      detail:
+        templateSanityViolations.length === 0
+          ? `${manifest.pageTypes.length} official templates satisfy their required imports, shell components, providers, page-specific slots, forbidden tokens, and field-count gates`
+          : templateSanityViolations.slice(0, 30).join('; '),
+    })
+    const pageContractFindings = await collectPageContractFindings({
+      targetRoot,
+      legacySourcePackageName,
+    })
+    const pageContractViolations = pageContractFindings.filter((finding) => {
+      const layoutOk =
+        finding.layout.hasPageHeader &&
+        finding.layout.hasWhiteBody &&
+        finding.layout.pageHeaderBeforeWhiteBody &&
+        finding.layout.proDetailBeforeSchemaGroup
+      const styleOk =
+        finding.styleExists &&
+        finding.style.hasWhiteBodyClass &&
+        finding.style.whiteBodyFlexFill &&
+        finding.style.hasMinHeightZero &&
+        finding.style.hasWhiteBackground &&
+        finding.style.hasV5DescriptionLabelAlignment
+      const dataShapeOk = finding.missingInlineGroupDataMappers.length === 0
+      return !(layoutOk && styleOk && dataShapeOk)
+    })
+
+    pushCheck(checks, {
+      id: 'page-contract-full-page-detail',
+      ok: pageContractViolations.length === 0,
+      severity: 'error',
+      summary: 'generated full-page detail pages keep the complete official template contract',
+      detail:
+        pageContractViolations.length === 0
+          ? summarizePageContractFindings(targetRoot, pageContractFindings)
+          : summarizePageContractFindings(targetRoot, pageContractViolations),
+    })
+    const mfPublishEntryContract = await collectMfPublishEntryContractFindings({
+      targetRoot,
+      mode,
+      hostProfile,
+    })
+    const mfPublishEntryViolations = mfPublishEntryContract.findings.filter((finding) => {
+      return (
+        !finding.pageModuleExists ||
+        finding.directExposeEntries.length > 0 ||
+        !finding.managedPublishEntryExists ||
+        !finding.managedPublishEntryImportsShellStyles ||
+        finding.publishEntryExposeEntries.length === 0
+      )
+    })
+    pushCheck(checks, {
+      id: 'rules-only-mf-publish-entry-contract',
+      ok: !mfPublishEntryContract.inScope || mfPublishEntryViolations.length === 0,
+      severity: 'error',
+      summary:
+        'rules-only direct-expose pages deliver shell styles through managed Module Federation publish entries',
+      detail: !mfPublishEntryContract.inScope
+        ? mfPublishEntryContract.reason
+        : mfPublishEntryViolations.length === 0
+          ? summarizeMfPublishEntryContractFindings(targetRoot, mfPublishEntryContract.findings)
+          : summarizeMfPublishEntryContractFindings(targetRoot, mfPublishEntryViolations),
+    })
+    const sameModuleSubviewStyleDeliveryContract =
+      await collectSameModuleSubviewStyleDeliveryFindings({
+        targetRoot,
+      })
+    const sameModuleSubviewManagedPublishBypassContract =
+      await collectSameModuleSubviewManagedPublishBypassFindings({
+        targetRoot,
+      })
+    const sameModuleSubviewStyleDeliveryViolations =
+      sameModuleSubviewStyleDeliveryContract.findings.filter(
+        (finding) => !finding.verification.ok
+      )
+    pushCheck(checks, {
+      id: 'same-module-subview-style-delivery-contract',
+      ok:
+        !sameModuleSubviewStyleDeliveryContract.inScope ||
+        sameModuleSubviewStyleDeliveryViolations.length === 0,
+      severity: 'error',
+      summary:
+        'same-module-subview pages keep an explicit style-delivery owner and that owner really imports the managed runtime styles',
+      detail: !sameModuleSubviewStyleDeliveryContract.inScope
+        ? sameModuleSubviewStyleDeliveryContract.reason
+        : sameModuleSubviewStyleDeliveryViolations.length === 0
+          ? summarizeSameModuleSubviewStyleDeliveryFindings(
+              targetRoot,
+              sameModuleSubviewStyleDeliveryContract.findings
+            )
+          : summarizeSameModuleSubviewStyleDeliveryFindings(
+              targetRoot,
+              sameModuleSubviewStyleDeliveryViolations
+            ),
+    })
+    pushCheck(checks, {
+      id: 'mode-profile-compatibility',
+      ok: mode === 'rules-only' || mode === 'host-integration',
+      severity: 'warn',
+      summary: 'the chosen install mode remains compatible with the detected host profile constraints',
+      detail:
+        mode === 'host-integration'
+          ? `host-integration is acceptable when the target project keeps preview examples in the packaged preview runtime and does not retain project-local preview routes or galleries. ${hostProfile.reason}`
+          : mode === 'rules-only'
+            ? `rules-only keeps the existing host in place while reusing generation rules and shell runtime contracts. ${hostProfile.reason}`
+            : `Current doctor mode ${mode} is not recognized as compatible with the detected host profile. ${hostProfile.reason}`,
     })
     pushCheck(checks, {
       id: 'framework-adapter-guide',
@@ -4060,64 +2979,6 @@ async function main() {
       detail: hostProfile.adapterDoc
         ? `${hostProfile.adapterDoc}${hostProfile.adapterEntryHints.length > 0 ? `; candidate entry files: ${hostProfile.adapterEntryHints.join(', ')}` : ''}`
         : 'No framework-specific adapter guide is required for the detected host profile',
-    })
-    pushCheck(checks, {
-      id: 'no-business-pages-in-example-gallery',
-      ok: exampleGalleryBusinessRouteViolations.length === 0,
-      severity: 'error',
-      summary:
-        'synced typical-page gallery routes stay demo-only and do not import real business pages',
-      detail:
-        exampleGalleryBusinessRouteViolations.length === 0
-          ? syncedRouteConfigRaw
-            ? `${path.relative(targetRoot, syncedRouteConfigPath)} only imports pages inside ${path.relative(
-                targetRoot,
-                hostOutputRoot
-              )}; register generated business pages in the host route tree instead.`
-            : `No synced gallery route config found at ${path.relative(
-                targetRoot,
-                syncedRouteConfigPath
-              )}; reference-only hosts should register generated pages only in their real route tree.`
-          : `${exampleGalleryBusinessRouteViolations.join(
-              '; '
-            )}. The synced gallery is smoke/reference infrastructure, not the business menu registry. Move generated pages into the host route tree, and keep src/typical-page-reuse/routes/config.tsx limited to pages under src/typical-page-reuse/.`,
-    })
-    pushCheck(checks, {
-      id: 'top-level-menu-icon-semantics',
-      ok: !mountsTopLevelAppFrameForMenuIcons || topLevelMenuIconSemanticIssues.length === 0,
-      severity: mountsTopLevelAppFrameForMenuIcons ? 'error' : 'manual',
-      summary:
-        'top-level menu icons are semantic, distinct, and not reused as generic placeholders',
-      detail:
-        !mountsTopLevelAppFrameForMenuIcons
-          ? topLevelAppFileForMenuIcons
-            ? `${topLevelAppFileForMenuIcons} does not mount TypicalPageAppFrame, so semantic menu icons must be verified in the project-specific host shell.`
-            : 'No top-level App file was detected, so semantic menu icons cannot be verified.'
-          : topLevelMenuIconSemanticIssues.length === 0
-            ? `${topLevelAppFileForMenuIcons} uses distinct semantic Filled icons for first-level route groups.`
-            : `${topLevelMenuIconSemanticIssues.join('; ')}. Pick @hi-ui/icons Filled variants that match each first-level domain, for example BusinessCardFilled for 业务, FolderOpenFilled for 项目, and AppStoreFilled for 示例.`,
-    })
-    pushCheck(checks, {
-      id: 'pro-detail-provider-chain',
-      ok: proDetailProviderViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business pages using ProDetailPage also keep the required ProDetailPageProvider or equivalent detail context chain',
-      detail:
-        proDetailProviderViolations.length === 0
-          ? 'All ProDetailPage business pages keep an explicit provider/context chain in source.'
-          : summarizeProDetailProviderViolations(targetRoot, proDetailProviderViolations),
-    })
-    pushCheck(checks, {
-      id: 'pro-edit-provider-chain',
-      ok: proEditProviderViolations.length === 0,
-      severity: 'error',
-      summary:
-        'business pages using ProEditPage with Form/edit actions also keep the required ProEditPageProvider or equivalent edit context chain',
-      detail:
-        proEditProviderViolations.length === 0
-          ? 'All ProEditPage business pages keep an explicit provider/context chain in source.'
-          : summarizeProEditProviderViolations(targetRoot, proEditProviderViolations),
     })
     const frameworkHostEntryRequirement = getFrameworkHostEntryRequirement(hostProfile, targetRoot)
     if (frameworkHostEntryRequirement.required) {
@@ -4130,221 +2991,101 @@ async function main() {
       })
     }
 
-    if (legacyCompatibilityMode) {
-      pushCheck(checks, {
-        id: 'legacy-runtime-compatibility-lock',
-        ok: Boolean(runtimeCompatibilityLock),
-        severity: 'error',
-        summary: 'legacy runtime compatibility lock exists for shell/runtime selection',
-        detail: runtimeCompatibilityLock
-          ? runtimeCompatibilityLockPath
-          : 'Missing .local-context/hiui-design/outputs/runtime-compatibility-lock.json. Re-run typical-page:apply:legacy so shell runtime selection is recorded before page generation.',
-      })
-      pushCheck(checks, {
-        id: 'legacy-runtime-seal',
-        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeSeal?.seal),
-        severity: 'error',
-        summary: 'legacy runtime seal exists as a reviewable generated runtime fact',
-        detail: legacyDoctorRuntimeFacts?.runtimeSeal?.seal
-          ? RUNTIME_SEAL_RELATIVE_PATH
-          : `Missing ${RUNTIME_SEAL_RELATIVE_PATH}. Re-run typical-page:apply:legacy so generated runtime provenance can be reviewed and committed.`,
-      })
-      pushCheck(checks, {
-        id: 'legacy-runtime-core-provenance',
-        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeSeal?.ok),
-        severity: 'error',
-        summary: 'sealed legacy runtime core files match the runtime seal hashes',
-        detail: legacyDoctorRuntimeFacts?.runtimeSeal?.ok
-          ? `Runtime core provenance is valid for ${RUNTIME_SEAL_RELATIVE_PATH}.`
-          : (legacyDoctorRuntimeFacts?.runtimeSeal?.issues || []).map((issue) => issue.message || issue.code).join('; ') || 'Runtime seal could not be verified.',
-      })
-      pushCheck(checks, {
-        id: 'legacy-canonical-shell-binding',
-        ok: Boolean(legacyDoctorRuntimeFacts?.shellBinding?.ok && legacyDoctorRuntimeFacts?.primitiveFallback?.ok),
-        severity: 'error',
-        summary: 'legacy runtime page types keep canonical shell binding instead of primitive fallback',
-        detail: legacyDoctorRuntimeFacts?.pageTypes?.length
-          ? legacyDoctorRuntimeFacts.shellBinding.ok && legacyDoctorRuntimeFacts.primitiveFallback.ok
-            ? `Validated canonical shell binding for page types: ${legacyDoctorRuntimeFacts.pageTypes.join(', ')}.`
-            : [
-                ...(legacyDoctorRuntimeFacts.shellBinding.issues || []),
-                ...(legacyDoctorRuntimeFacts.primitiveFallback.issues || []),
-              ].map((issue) => issue.message || issue.code).join('; ')
-          : 'No generated page contract pageType was found; doctor verified runtime seal but skipped pageType-specific shell binding.',
-      })
-      pushCheck(checks, {
-        id: 'legacy-peer-export-resolution',
-        ok: runtimePeerResolutionStatus === 'ready' || runtimePeerResolutionStatus === 'unknown',
-        severity: runtimePeerResolutionStatus === 'unknown' ? 'warn' : 'error',
-        summary: 'legacy runtime peer dependencies and critical shell exports are resolved before generation',
-        detail: runtimePeerResolutionStatus === 'ready'
-          ? 'runtime-compatibility-lock peerResolution is ready.'
-          : runtimePeerResolutionStatus === 'unknown'
-            ? 'runtime-compatibility-lock peerResolution is unknown; install dependencies and rerun typical-page:apply:legacy before delivery acceptance.'
-            : runtimePeerResolutionBlockingReasons.join('; ') || 'runtime-compatibility-lock peerResolution is blocked or missing.',
-      })
-      pushCheck(checks, {
-        id: 'legacy-runtime-provider-contract',
-        ok: Boolean(legacyDoctorRuntimeFacts?.runtimeProvider?.ok),
-        severity: 'error',
-        summary: 'project runtime adapter contract is valid when official shell runtime is replaced',
-        detail: legacyDoctorRuntimeFacts?.runtimeProviderContract
-          ? legacyDoctorRuntimeFacts.runtimeProvider.ok
-            ? `${RUNTIME_PROVIDER_CONTRACT_RELATIVE_PATH} is valid for page types: ${legacyDoctorRuntimeFacts.pageTypes.join(', ') || 'none'}.`
-            : legacyDoctorRuntimeFacts.runtimeProvider.issues.map((issue) => issue.message || issue.code).join('; ')
-          : 'No project runtime adapter contract declared; official shell runtime path remains active.',
-      })
-      pushCheck(checks, {
-        id: 'legacy-shell-runtime-compatibility',
-        ok: runtimeCompatibilityShellStatus === 'ready',
-        severity: 'error',
-        summary: 'legacy shell runtime variant is compatible with the target React runtime',
-        detail: runtimeCompatibilityShellStatus === 'ready'
-          ? `${runtimeCompatibilityShellVariant || 'unknown'} shell runtime is ready`
-          : runtimeCompatibilityBlockingReasons.length > 0
-            ? runtimeCompatibilityBlockingReasons.join('; ')
-            : `Shell runtime compatibility status is ${runtimeCompatibilityShellStatus || 'missing'}`,
-      })
-    }
-
     pushCheck(checks, {
       id: 'shells-declared',
-      ok: legacyCompatibilityMode || Boolean(depSpec),
-      severity: legacyCompatibilityMode || mode === 'host-integration' ? 'error' : 'warn',
-      summary: '@hiui-design/typical-page-shells is declared',
-        detail: legacyCompatibilityMode
-        ? depSpec
-          ? `Legacy lightweight contract mode (legacy-host-compatible) is active. @hiui-design/typical-page-shells is declared as ${depSpec}. src/hiui-runtime is the only allowed production consumer; business pages must continue through HiuiLegacyPage typed slots.`
-          : 'Legacy lightweight contract mode (legacy-host-compatible) can proceed without declaring @hiui-design/typical-page-shells in the legacy host package.json when the project stays on host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots.'
-        : depSpec
-        ? `Declared version/range: ${depSpec}`
+      ok: await pathExists(targetManagedLocalRuntimeEntryPath),
+      severity: mode === 'host-integration' ? 'error' : 'warn',
+      summary: 'managed local runtime assets are materialized in src/components/hiui-design-runtime',
+      detail: (await pathExists(targetManagedLocalRuntimeEntryPath))
+        ? targetManagedLocalRuntimeRoot
         : mode === 'host-integration'
-          ? 'Dependency is not declared in package.json'
-          : 'Reference-only mode allows this before the first page is generated, but the dependency should be declared before using @hiui-design/typical-page-shells in project code',
+          ? 'Managed local runtime assets were not materialized under src/components/hiui-design-runtime'
+          : 'Rules-only mode requires the managed local runtime assets before generating business pages.',
     })
     pushCheck(checks, {
       id: 'managed-dependency-versions',
-      ok: managedDependencyDrifts.length === 0 || legacyCompatibilityMode,
-      severity: legacyCompatibilityMode ? 'warn' : 'error',
+      ok: managedDependencyDrifts.length === 0,
+      severity: 'error',
       summary:
-        'typical-page managed dependencies match the verified snapshot instead of floating on loose experimental ranges',
-      detail: legacyCompatibilityMode
-        ? `Legacy lightweight contract mode (legacy-host-compatible) is active. The standard typical-page dependency snapshot is intentionally not required in this host main tree. Detected legacy runtime reasons: ${legacyHostRuntimeReasons.join(
-            '; '
-          )}`
-        : managedDependencyDrifts.length === 0
-          ? 'package.json managed deps match the current snapshot'
+        'typical-page managed dependencies satisfy docs/onboarding/managed-local-runtime-dependencies.json, while compatible isolated aliases may remain on an equivalent prerelease channel',
+      detail:
+        managedDependencyDrifts.length === 0
+          ? 'package.json managed deps satisfy docs/onboarding/managed-local-runtime-dependencies.json'
           : managedDependencyDrifts
               .slice(0, 10)
               .map((item) => `${item.depName}: ${item.actual} -> ${item.expected}`)
               .join('; '),
     })
-    pushCheck(checks, {
-      id: 'legacy-hiui-es-imports',
-      ok: legacyHiUiEsImports.length === 0 || legacyCompatibilityMode,
-      severity: legacyCompatibilityMode ? 'warn' : 'manual',
-      summary:
-        'legacy @hi-ui/hiui/es root imports are inventoried before compatibility generation continues',
-      detail:
-        legacyHiUiEsImports.length === 0
-          ? 'No current source file imports @hi-ui/hiui/es*'
-          : legacyCompatibilityMode
-            ? `Legacy host compatibility mode stays active because the repository still contains ${legacyHiUiEsImports.length} @hi-ui/hiui/es* consumers. Any root-package upgrade must preserve that ABI or be isolated away from the host runtime. Examples: ${summarizeLegacyImportHits(targetRoot, legacyHiUiEsImports)}`
-            : `Source still imports @hi-ui/hiui/es* even though this project was not classified as a legacy host. Examples: ${summarizeLegacyImportHits(targetRoot, legacyHiUiEsImports)}`,
-    })
-    pushCheck(checks, {
-      id: 'installed-root-runtime-drift',
-      ok: legacyRuntimeGuardIssues.length === 0,
-      severity: 'error',
-      summary:
-        'installed root runtime still matches the compatibility contract for legacy host projects',
-      detail:
-        legacyRuntimeGuardIssues.length === 0
-          ? 'No installed root-runtime drift or legacy ABI break was detected in node_modules.'
-          : legacyRuntimeGuardIssues.map((item) => item.detail).join(' ; '),
-    })
 
-    const installedPackagePath = path.join(
+    const installedQueryFilterFormPath = path.join(
       targetRoot,
       'node_modules',
-      '@hiui-design',
-      'typical-page-shells',
-      'package.json'
-    )
-    const installedQueryFilterBridgePath = path.join(
-      targetRoot,
-      'node_modules',
-      '@hiui-design',
-      'typical-page-shells',
-      'dist',
-      'pro-list-page',
-      'bridge',
-      'query-filter.js'
+      '@hi-ui',
+      'query-filter',
+      'lib',
+      'esm',
+      'FilterForm',
+      'index.js'
     )
     const targetEmbeddedShellTarballPath = shellPackage
-      ? path.join(
-          targetRoot,
-          '.local-context',
-          'hiui-design',
-          'vendor',
-          `hiui-design-typical-page-shells-${shellPackage.version}.tgz`
-        )
+      ? resolveProjectContextPath(targetRoot, 'vendor', `runtime-source-package-${shellPackage.version}.tgz`)
       : ''
-    const targetSourceRoot = path.join(targetRoot, 'src')
-    const targetSourceSignals = await collectTypicalPageSourceSignals(targetSourceRoot)
-    const auxiliaryShellUsageOnly =
-      targetSourceSignals.directShellUses.length === 0 &&
-      targetSourceSignals.auxiliaryShellUses.length > 0
-    const compatibilityGenerationOnly =
-      legacyCompatibilityMode && targetSourceSignals.directShellUses.length === 0
     pushCheck(checks, {
       id: 'shells-installed',
-      ok: legacyCompatibilityMode || (await pathExists(installedPackagePath)),
-      severity: legacyCompatibilityMode ? 'error' : 'warn',
-      summary: '@hiui-design/typical-page-shells appears to be installed',
-      detail: legacyCompatibilityMode
-        ? (await pathExists(installedPackagePath))
-          ? installedPackagePath
-          : 'Legacy lightweight contract mode (legacy-host-compatible) does not require installing @hiui-design/typical-page-shells in the legacy host main tree unless the project later isolates and mounts the standard shell runtime.'
-        : (await pathExists(installedPackagePath))
-        ? installedPackagePath
-        : 'node_modules copy was not found; run your package manager install if this project has not installed dependencies yet',
+      ok: await pathExists(targetManagedLocalRuntimeEntryPath),
+      severity: 'warn',
+      summary: 'managed local runtime assets exist in the target project source tree',
+      detail: (await pathExists(targetManagedLocalRuntimeEntryPath))
+        ? targetManagedLocalRuntimeRoot
+        : 'Managed local runtime files were not found under src/components/hiui-design-runtime.',
     })
 
     if (targetEmbeddedShellTarballPath) {
       const vendoredShellTarball = await inspectQueryFilterBridgeTarball(targetEmbeddedShellTarballPath)
       pushCheck(checks, {
         id: 'vendored-shells-query-filter-defaults',
-        ok:
-          compatibilityGenerationOnly ||
-          (vendoredShellTarball.exists && vendoredShellTarball.reasons.length === 0),
-        severity: compatibilityGenerationOnly ? 'warn' : 'error',
+        ok: vendoredShellTarball.exists && vendoredShellTarball.reasons.length === 0,
+        severity: 'error',
         summary:
-          'vendored typical-page-shells tarball keeps the HiUI5 QueryFilter contained/no-label defaults',
+          'optional embedded runtime-source-package tarball keeps the HiUI5 QueryFilter contained/no-label defaults and official all-filter clear behavior',
         detail:
-          compatibilityGenerationOnly
-            ? 'Legacy lightweight contract mode (legacy-host-compatible) does not require carrying the vendored typical-page-shells tarball unless this project later isolates and mounts the standard shell runtime.'
-            : !vendoredShellTarball.exists
-            ? `Expected vendored tarball was not found at ${targetEmbeddedShellTarballPath}`
+          !vendoredShellTarball.exists
+            ? `Expected optional embedded tarball was not found at ${targetEmbeddedShellTarballPath}`
             : vendoredShellTarball.reasons.length === 0
               ? path.relative(targetRoot, vendoredShellTarball.filePath)
               : `${path.relative(targetRoot, vendoredShellTarball.filePath)} -> ${vendoredShellTarball.reasons.join('; ')}`,
       })
     }
 
-    const installedShellBridge = await inspectQueryFilterBridgeFile(installedQueryFilterBridgePath)
+    const installedShellBridge = await inspectQueryFilterBridgeFile(
+      targetManagedLocalRuntimeQueryFilterBridgePath
+    )
     pushCheck(checks, {
       id: 'installed-shells-query-filter-defaults',
       ok: !installedShellBridge.exists || installedShellBridge.reasons.length === 0,
       severity: 'error',
       summary:
-        'installed typical-page-shells runtime keeps the HiUI5 QueryFilter contained/no-label defaults',
+        'managed local runtime keeps the HiUI5 QueryFilter contained/no-label defaults and official all-filter clear behavior',
       detail:
         !installedShellBridge.exists
-          ? 'Installed QueryFilter bridge was not found; run dependency install after syncing package.json or the vendored tgz'
+          ? 'Managed local runtime QueryFilter bridge was not found; re-run bootstrap or regenerate the managed local runtime assets.'
           : installedShellBridge.reasons.length === 0
             ? path.relative(targetRoot, installedShellBridge.filePath)
-            : `${path.relative(targetRoot, installedShellBridge.filePath)} -> ${installedShellBridge.reasons.join('; ')}. Re-run designer setup or package-manager install after updating .local-context.`,
+            : `${path.relative(targetRoot, installedShellBridge.filePath)} -> ${installedShellBridge.reasons.join('; ')}. Re-run bootstrap or refresh the managed local runtime assets after updating .local-context.`,
+    })
+
+    const installedQueryFilterForm = await inspectQueryFilterPackageFile(installedQueryFilterFormPath)
+    pushCheck(checks, {
+      id: 'installed-query-filter-gap-forwarding',
+      ok: !installedQueryFilterForm.exists || installedQueryFilterForm.reasons.length === 0,
+      severity: 'error',
+      summary: '@hi-ui/query-filter forwards its own 8px gap to the rendered flex layout',
+      detail:
+        !installedQueryFilterForm.exists
+          ? 'Installed @hi-ui/query-filter FilterForm was not found; run dependency install before visual acceptance'
+          : installedQueryFilterForm.reasons.length === 0
+            ? path.relative(targetRoot, installedQueryFilterForm.filePath)
+            : `${path.relative(targetRoot, installedQueryFilterForm.filePath)} -> ${installedQueryFilterForm.reasons.join('; ')}. Do not patch page CSS or @hi-ui/form globally; patch @hi-ui/query-filter or upgrade to a fixed package.`,
     })
 
     const entryFile = await detectAppEntryFile(targetRoot)
@@ -4357,115 +3098,298 @@ async function main() {
     })
 
     const entryRaw = entryFile ? await readTextIfExists(entryFile) : ''
-    const hasStyleImport =
-      entryRaw.includes(`import '@hiui-design/typical-page-shells/styles.css'`) ||
-      entryRaw.includes('import "@hiui-design/typical-page-shells/styles.css"')
-    pushCheck(checks, {
-      id: 'standard-typical-page-runtime',
-      ok: !legacyCompatibilityMode || compatibilityGenerationOnly,
-      severity: compatibilityGenerationOnly ? 'warn' : 'error',
-      summary:
-        'target project runtime is compatible with the standard hiui-design shell set or has been downgraded to compatibility generation only',
-      detail:
-        !legacyCompatibilityMode
-          ? 'No legacy host-compatible runtime downgrade was detected'
-          : compatibilityGenerationOnly
-            ? `Detected a legacy host-compatible runtime: ${legacyHostRuntimeReasons.join(
-                '; '
-              )}. This host should stay on the legacy lightweight contract path: ordinary typical pages must use host-contract, compiled PageSpec, HiuiLegacyPage runtime, and typed page slots; the legacy host main tree must not be treated as a generic direct mount for the standard @hiui-design/typical-page-shells runtime.${auxiliaryShellUsageOnly ? ` Auxiliary gallery/reference imports remain allowed here and do not count as direct-shell business usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}` : ''} Continue with the compatibility generation path: read .local-context/hiui-design/docs/generation/legacy-host-compatibility.md and rules/typical-page-contracts/<pageType>.json, finish project-level typical-page:apply:legacy first (it runs typical-page:legacy:init internally), then run page-level typical-page:light-plan and typical-page:legacy:new|rewrite --plan only after project integration state is ready.`
-            : `Detected a legacy host-compatible runtime: ${legacyHostRuntimeReasons.join(
-                '; '
-              )}. This project already imports standard typical-page shell components, so it cannot stay on the downgraded host runtime. Either isolate a dedicated modern runtime entry/remote, or remove the standard shell imports and regenerate via legacy lightweight contract mode (legacy-host-compatible).`,
+    const hasStyleImport = hasManagedLocalRuntimeStyleImport(entryRaw)
+    const hasReactCompatImport =
+      entryRaw.includes(`import '@hi-ui/patch-for-react'`) ||
+      entryRaw.includes('import "@hi-ui/patch-for-react"')
+    const react19ManagedRuntimePatchWiring = await inspectReact19ManagedRuntimePatchWiring({
+      targetRoot,
+      hostProfile,
+      pkg,
+    })
+    const installedReact19RuntimePatchCoverage = await inspectInstalledReact19RuntimePatchCoverage({
+      targetRoot,
+      hostProfile,
+    })
+    const reactDomClientCompatibility = await inspectReactDomClientCompatibility({
+      targetRoot,
+      hostProfile,
+    })
+    const reactJsxRuntimeCompatibility = await inspectReactJsxRuntimeCompatibility({
+      targetRoot,
+      hostProfile,
+    })
+    const targetSourceRoot = path.join(targetRoot, 'src')
+    const managedHostContract = await inspectManagedHostContract(targetRoot)
+    const targetSourceSignals = mergeManagedHostContractSignals(
+      targetRoot,
+      await collectTypicalPageSourceSignals(targetSourceRoot, { legacySourcePackageName }),
+      managedHostContract
+    )
+    const sharedRuntimeDependencyContract = await loadSharedRuntimeDirectDependencySnapshot(skillRoot)
+    const requiredSharedRuntimeDirectDependencies = selectEntryImportedSharedRuntimeDirectDependencies({
+      entrySource: entryRaw,
+      dependencyMap: sharedRuntimeDependencyContract,
+    })
+    const sharedRuntimeDependencyInspection = await inspectDeclaredSharedRuntimeDirectDependencies({
+      targetRoot,
+      pkg,
+      expectedDependencies: requiredSharedRuntimeDirectDependencies,
     })
     pushCheck(checks, {
       id: 'styles-import',
-      ok: compatibilityGenerationOnly || hasStyleImport,
-      severity: compatibilityGenerationOnly ? 'warn' : mode === 'host-integration' ? 'error' : 'warn',
-      summary: 'typical-page shell styles are imported once in the app entry',
-      detail: compatibilityGenerationOnly
-        ? 'Legacy lightweight contract mode (legacy-host-compatible) does not require @hiui-design/typical-page-shells/styles.css unless the project later isolates and mounts the standard shell runtime.'
-        : hasStyleImport
+      ok: hasStyleImport,
+      severity: 'error',
+      summary: 'managed local runtime styles are imported once in the app entry',
+      detail: hasStyleImport
         ? entryFile
         : mode === 'host-integration'
-          ? 'Missing `import \'@hiui-design/typical-page-shells/styles.css\'` in the detected app entry'
-          : 'Reference-only mode does not force this yet, but once generated pages import `@hiui-design/typical-page-shells` you should add `import \'@hiui-design/typical-page-shells/styles.css\'` in the app entry',
+          ? 'Missing managed local runtime styles.css import in the detected app entry'
+          : 'Rules-only mode also relies on the managed local runtime baseline. Add the local hiui-design runtime styles.css import in the detected app entry before generating business pages.',
     })
 
     pushCheck(checks, {
-      id: 'no-private-shell-import-paths',
+      id: 'react-compat-import',
+      ok: hasReactCompatImport,
+      severity: 'error',
+      summary: 'React compatibility patch is imported once in the app entry',
+      detail: hasReactCompatImport
+        ? entryFile
+        : mode === 'host-integration'
+          ? 'Missing `import \'@hi-ui/patch-for-react\'` in the detected app entry'
+          : 'Rules-only mode also uses the managed local runtime compatibility baseline. Add `import \'@hi-ui/patch-for-react\'` in the detected app entry before generating business pages.',
+    })
+    pushCheck(checks, {
+      id: 'shared-runtime-direct-dependencies',
+      ok:
+        sharedRuntimeDependencyInspection.declaredOk &&
+        sharedRuntimeDependencyInspection.resolvableOk,
+      severity: 'error',
+      summary:
+        'shared runtime direct dependencies imported by the app entry are declared and resolvable',
+      detail: describeSharedRuntimeDirectDependencyInspection(sharedRuntimeDependencyInspection),
+    })
+    pushCheck(checks, {
+      id: 'react19-managed-runtime-patch-wiring',
+      ok: react19ManagedRuntimePatchWiring.ok,
+      severity: react19ManagedRuntimePatchWiring.required ? 'error' : 'warn',
+      summary: 'React 19 hosts keep the managed runtime patch wiring active in package.json and .local-context',
+      detail: react19ManagedRuntimePatchWiring.detail,
+    })
+    pushCheck(checks, {
+      id: 'installed-react19-runtime-patch-coverage',
+      ok: installedReact19RuntimePatchCoverage.ok,
+      severity: installedReact19RuntimePatchCoverage.required ? 'error' : 'warn',
+      summary:
+        'installed React 19 runtime hotspots are patched across @hi-ui and compatible hiui5 alias packages',
+      detail: installedReact19RuntimePatchCoverage.detail,
+    })
+    pushCheck(checks, {
+      id: 'react-dom-client-legacy-host-branch',
+      ok: reactDomClientCompatibility.ok,
+      severity: reactDomClientCompatibility.needsCompatBranch ? 'error' : 'warn',
+      summary: 'legacy React hosts expose an explicit react-dom/client compatibility branch before typical-page shells run',
+      detail: !reactDomClientCompatibility.needsCompatBranch
+        ? `Detected React ${reactDomClientCompatibility.reactMajor || 'unknown'}; an explicit react-dom/client shim branch is not required.`
+        : reactDomClientCompatibility.ok
+          ? `Legacy React ${reactDomClientCompatibility.reactMajor} host keeps react-dom/client compatibility via ${reactDomClientCompatibility.aliasConfigMatches.map((filePath) => path.relative(targetRoot, filePath)).join(', ')} and ${path.relative(targetRoot, reactDomClientCompatibility.shimPath)}.`
+          : reactDomClientCompatibility.aliasConfigMatches.length === 0
+            ? `Legacy React ${reactDomClientCompatibility.reactMajor} host is missing a build alias or resolver branch for react-dom/client. ${buildLegacyReactCompatAutofixHint()}`
+            : !reactDomClientCompatibility.shimPath
+              ? `Legacy React ${reactDomClientCompatibility.reactMajor} host references react-dom/client in ${reactDomClientCompatibility.aliasConfigMatches.map((filePath) => path.relative(targetRoot, filePath)).join(', ')}, but no shim file was found under src/shims/react-dom-client.*. ${buildLegacyReactCompatAutofixHint()}`
+              : `Legacy React ${reactDomClientCompatibility.reactMajor} host has ${path.relative(targetRoot, reactDomClientCompatibility.shimPath)}, but it does not look like a render/unmount compatibility shim.`,
+    })
+    pushCheck(checks, {
+      id: 'react-jsx-runtime-legacy-host-branch',
+      ok: reactJsxRuntimeCompatibility.ok,
+      severity: reactJsxRuntimeCompatibility.needsCompatBranch ? 'error' : 'warn',
+      summary: 'legacy React 16 hosts expose an explicit react/jsx-runtime compatibility branch before typical-page shells run',
+      detail: !reactJsxRuntimeCompatibility.needsCompatBranch
+        ? `Detected React ${reactJsxRuntimeCompatibility.reactMajor || 'unknown'} or a non-legacy host path; an explicit react/jsx-runtime shim branch is not required.`
+        : reactJsxRuntimeCompatibility.ok
+          ? `Legacy React ${reactJsxRuntimeCompatibility.reactMajor} host keeps react/jsx-runtime compatibility via ${reactJsxRuntimeCompatibility.aliasConfigMatches.map((filePath) => path.relative(targetRoot, filePath)).join(', ')} and ${path.relative(targetRoot, reactJsxRuntimeCompatibility.shimPath)}.`
+          : reactJsxRuntimeCompatibility.aliasConfigMatches.length === 0
+            ? `Legacy React ${reactJsxRuntimeCompatibility.reactMajor} host is missing a build alias or resolver branch for react/jsx-runtime. ${buildLegacyReactCompatAutofixHint()}`
+            : !reactJsxRuntimeCompatibility.shimPath
+              ? `Legacy React ${reactJsxRuntimeCompatibility.reactMajor} host references react/jsx-runtime in ${reactJsxRuntimeCompatibility.aliasConfigMatches.map((filePath) => path.relative(targetRoot, filePath)).join(', ')}, but no shim file was found under src/shims/react-jsx-runtime.*. ${buildLegacyReactCompatAutofixHint()}`
+              : `Legacy React ${reactJsxRuntimeCompatibility.reactMajor} host has ${path.relative(targetRoot, reactJsxRuntimeCompatibility.shimPath)}, but it does not look like a jsx/jsxs compatibility shim.`,
+    })
+
+    pushCheck(checks, {
+      id: 'no-legacy-source-package-imports',
+      ok: targetSourceSignals.legacySourcePackageImports.length === 0,
+      severity: 'error',
+      summary: 'project source no longer imports the managed local runtime source-package family',
+      detail:
+        targetSourceSignals.legacySourcePackageImports.length === 0
+          ? `No legacy source-package import${legacySourcePackageName ? ` from ${legacySourcePackageName}` : ''} was detected in the current project source.`
+          : `Replace legacy source-package imports${legacySourcePackageName ? ` from ${legacySourcePackageName}` : ''} with src/components/hiui-design-runtime entrypoints before continuing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.legacySourcePackageImports)}`,
+    })
+
+    pushCheck(checks, {
+      id: 'no-private-source-package-import-paths',
       ok: targetSourceSignals.privateImportViolations.length === 0,
       severity: 'error',
-      summary: 'project source does not import typical-page shells through node_modules, .pnpm, or dist private paths',
+      summary: 'project source does not import managed runtime source-package code through node_modules, .pnpm, or dist private paths',
       detail:
         targetSourceSignals.privateImportViolations.length === 0
-          ? `${targetSourceRoot} uses only package import paths`
-          : `Use package imports such as @hiui-design/typical-page-shells or its public subpaths instead of private install paths or workspace source paths. Examples: ${summarizePrivateImportViolations(targetRoot, targetSourceSignals.privateImportViolations)}`,
+          ? `${targetSourceRoot} uses only managed local runtime imports or public package import paths`
+          : `Use managed local runtime imports or public package entrypoints instead of private install paths or workspace source paths. Examples: ${summarizePrivateImportViolations(targetRoot, targetSourceSignals.privateImportViolations)}`,
     })
 
     pushCheck(checks, {
       id: 'no-stale-query-filter-bridge',
       ok: targetSourceSignals.staleQueryFilterBridgeViolations.length === 0,
       severity: 'error',
-      summary: 'project source does not keep an outdated QueryFilter bridge that overrides HiUI5 defaults',
+      summary: 'project source does not keep an outdated QueryFilter adaptation layer that overrides HiUI5 defaults',
       detail:
         targetSourceSignals.staleQueryFilterBridgeViolations.length === 0
-          ? 'No copied bridge was found that forces QueryFilter field appearance or reintroduces the legacy defaults helper'
-          : `Sync these files back to the public package bridge before continuing: ${summarizeQueryFilterBridgeViolations(targetRoot, targetSourceSignals.staleQueryFilterBridgeViolations)}`,
+          ? 'No copied adaptation layer was found that forces QueryFilter field appearance or reintroduces the legacy defaults helper'
+          : `Sync these files back to the public package adaptation layer before continuing: ${summarizeQueryFilterBridgeViolations(targetRoot, targetSourceSignals.staleQueryFilterBridgeViolations)}`,
     })
 
     pushCheck(checks, {
       id: 'inline-query-filter-show-label-default',
       ok: targetSourceSignals.queryFilterShowLabelViolations.length === 0,
       severity: 'error',
-      summary: 'public package QueryFilter is not forced back to showLabel={true} in list-page usage',
+      summary: 'managed list-page QueryFilter is not forced back to showLabel={true} in project source',
       detail:
         targetSourceSignals.queryFilterShowLabelViolations.length === 0
-          ? 'No list-page source forces public QueryFilter back to the old external-label layout'
+          ? 'No managed list-page source forces QueryFilter back to the old external-label layout'
           : `Remove explicit showLabel={true} from: ${summarizePathList(targetRoot, targetSourceSignals.queryFilterShowLabelViolations)}`,
     })
 
     pushCheck(checks, {
       id: 'shells-declared-when-used',
-      ok: targetSourceSignals.directShellUses.length === 0 || Boolean(depSpec),
+      ok: targetSourceSignals.usesShells.length === 0 || await pathExists(targetManagedLocalRuntimeEntryPath),
       severity: 'error',
-      summary: 'once project source uses typical-page shells, package.json also declares @hiui-design/typical-page-shells',
+      summary: 'once project source uses runtime shells, managed local runtime assets are present in src/components/hiui-design-runtime',
       detail:
-        targetSourceSignals.directShellUses.length === 0 || Boolean(depSpec)
-          ? targetSourceSignals.directShellUses.length === 0
-            ? auxiliaryShellUsageOnly
-              ? `Only auxiliary gallery/reference files import typical-page shell components, so package.json declaration is not forced by business-page usage. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}`
-              : 'No current business source file imports typical-page shell components yet'
-            : `Shell package declared and used by: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`
-          : `Business source files already import typical-page shell components but package.json does not declare @hiui-design/typical-page-shells. Examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
+        targetSourceSignals.usesShells.length === 0 || await pathExists(targetManagedLocalRuntimeEntryPath)
+          ? targetSourceSignals.usesShells.length === 0
+            ? 'No current source file imports managed local runtime shells yet'
+            : `Managed local runtime assets are present and used by: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`
+          : `Source files already import managed local runtime shells but src/components/hiui-design-runtime is missing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`,
     })
 
     pushCheck(checks, {
       id: 'styles-import-when-shells-used',
-      ok: targetSourceSignals.directShellUses.length === 0 || hasStyleImport,
+      ok: targetSourceSignals.usesShells.length === 0 || hasStyleImport,
       severity: 'error',
-      summary: 'once project source uses typical-page shells, styles.css is already imported in the app entry',
+      summary: 'once project source uses managed local runtime shells, styles.css is already imported in the app entry',
       detail:
-        targetSourceSignals.directShellUses.length === 0 || hasStyleImport
-          ? targetSourceSignals.directShellUses.length === 0
-            ? auxiliaryShellUsageOnly
-              ? `Only auxiliary gallery/reference files import typical-page shell components, so app-entry styles import is not yet required for business delivery. Examples: ${summarizePathList(targetRoot, targetSourceSignals.auxiliaryShellUses)}`
-              : 'No current business source file imports typical-page shell components yet'
+        targetSourceSignals.usesShells.length === 0 || hasStyleImport
+          ? targetSourceSignals.usesShells.length === 0
+            ? 'No current source file imports managed local runtime shells yet'
             : entryFile
-          : `Business source files already use typical-page shell components, so add \`import '@hiui-design/typical-page-shells/styles.css'\` in the app entry before continuing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
+          : `Source files already use managed local runtime shells, so add the local hiui-design runtime styles.css import in the app entry before continuing. Examples: ${summarizePathList(targetRoot, targetSourceSignals.usesShells)}`,
     })
 
     pushCheck(checks, {
       id: 'single-host-adapter-path-family',
       ok:
         targetSourceSignals.localHostAdapterImports.length === 0 ||
-        targetSourceSignals.directShellUses.length === 0,
+        targetSourceSignals.legacySourcePackageImports.length === 0,
       severity: 'error',
-      summary: 'host provider and page shells do not mix local host-adapter paths with package imports',
+      summary: 'host provider and page shells do not mix local host-adapter paths with legacy source-package imports',
       detail:
         targetSourceSignals.localHostAdapterImports.length === 0 ||
-        targetSourceSignals.directShellUses.length === 0
-          ? 'No mixed local-host-adapter and package shell import pattern was detected'
-          : `Do not mix local host adapter paths with @hiui-design/typical-page-shells imports in business delivery code. Keep both provider and consumer on the package path family. Local adapter examples: ${summarizePathList(targetRoot, targetSourceSignals.localHostAdapterImports)}; package import examples: ${summarizePathList(targetRoot, targetSourceSignals.directShellUses)}`,
+        targetSourceSignals.legacySourcePackageImports.length === 0
+          ? 'No mixed local-host-adapter and legacy source-package import pattern was detected'
+          : `Do not mix local host adapter paths with legacy source-package imports${legacySourcePackageName ? ` from ${legacySourcePackageName}` : ''}. Local adapter examples: ${summarizePathList(targetRoot, targetSourceSignals.localHostAdapterImports)}; legacy package import examples: ${summarizePathList(targetRoot, targetSourceSignals.legacySourcePackageImports)}`,
+    })
+
+    const hasFormalHeaderPortalCarrier = targetSourceSignals.formalHeaderPortalCarrierFiles.length > 0
+    pushCheck(checks, {
+      id: 'formal-host-provider-bridge-for-package-shells',
+      ok:
+        !hasFormalHeaderPortalCarrier ||
+        targetSourceSignals.formalTypicalPageHostBridgeFiles.length > 0,
+      severity: 'warn',
+      summary: 'formal host bridge for shared header/footer carriers is recorded as compatibility evidence only',
+      detail:
+        !hasFormalHeaderPortalCarrier || targetSourceSignals.formalTypicalPageHostBridgeFiles.length > 0
+          ? hasFormalHeaderPortalCarrier
+            ? `Formal host bridge found in: ${summarizePathList(targetRoot, targetSourceSignals.formalTypicalPageHostBridgeFiles)}`
+            : 'No formal host page-header carrier was detected outside preview assets'
+          : `Formal host has a shared page-header carrier (${summarizePathList(targetRoot, targetSourceSignals.formalHeaderPortalCarrierFiles)}), but no TypicalPageHostProvider headerPortal bridge was found outside preview assets. This no longer blocks self-contained standard pages, but any host-level shared carrier should remain explicitly governed as a compatibility bridge.`,
+    })
+
+    pushCheck(checks, {
+      id: 'formal-host-outlet-height-chain-contract',
+      ok:
+        !hasFormalHeaderPortalCarrier ||
+        targetSourceSignals.formalContentOutletHeightContractFiles.length > 0 ||
+        targetSourceSignals.formalOfficialShellHeightContractFiles.length > 0,
+      severity: 'error',
+      summary: 'formal host shared content outlet preserves the flex/min-height/overflow contract required by non-drawer pages',
+      detail:
+        !hasFormalHeaderPortalCarrier ||
+        targetSourceSignals.formalContentOutletHeightContractFiles.length > 0 ||
+        targetSourceSignals.formalOfficialShellHeightContractFiles.length > 0
+          ? hasFormalHeaderPortalCarrier
+            ? `Formal host outlet height-chain contract found in: ${summarizePathList(
+                targetRoot,
+                targetSourceSignals.formalContentOutletHeightContractFiles.length > 0
+                  ? targetSourceSignals.formalContentOutletHeightContractFiles
+                  : targetSourceSignals.formalOfficialShellHeightContractFiles
+              )}`
+            : 'No formal host page-header carrier was detected outside preview assets'
+          : `Formal host has a page-header carrier (${summarizePathList(targetRoot, targetSourceSignals.formalHeaderPortalCarrierFiles)}), but no shared content-outlet flex/min-height/overflow contract was found. Non-drawer pages can shrink to content height and expose blank space below the white body.`,
+    })
+
+    pushCheck(checks, {
+      id: 'formal-host-height-chain-for-official-shells',
+      ok:
+        !hasFormalHeaderPortalCarrier ||
+        targetSourceSignals.formalOfficialShellHeightContractFiles.length > 0,
+      severity: 'error',
+      summary: 'formal host gives official typical-page shells a continuous flex/min-height height chain',
+      detail:
+        !hasFormalHeaderPortalCarrier || targetSourceSignals.formalOfficialShellHeightContractFiles.length > 0
+          ? hasFormalHeaderPortalCarrier
+            ? `Formal host height-chain contract found in: ${summarizePathList(targetRoot, targetSourceSignals.formalOfficialShellHeightContractFiles)}`
+            : 'No formal host page-header carrier was detected outside preview assets'
+          : `Formal host has a page-header carrier (${summarizePathList(targetRoot, targetSourceSignals.formalHeaderPortalCarrierFiles)}), but no host-level flex/min-height/overflow contract for official shell roots (${OFFICIAL_SHELL_ROOT_CLASS_TOKENS.join(', ')}) was found. Official table/stat/tree/detail pages can shrink to content height and expose blank space below the white body.`,
+    })
+
+    pushCheck(checks, {
+      id: 'formal-host-content-gutter-contract',
+      ok:
+        !hasFormalHeaderPortalCarrier || targetSourceSignals.formalContentGutterFiles.length > 0,
+      severity: 'error',
+      summary: 'formal host shared content outlet keeps the required 16px viewport gutter for non-drawer pages',
+      detail:
+        !hasFormalHeaderPortalCarrier || targetSourceSignals.formalContentGutterFiles.length > 0
+          ? hasFormalHeaderPortalCarrier
+            ? `Formal host content gutter contract found in: ${summarizePathList(targetRoot, targetSourceSignals.formalContentGutterFiles)}`
+            : 'No formal host page-header carrier was detected outside preview assets'
+          : `Formal host has a shared content area (${summarizePathList(targetRoot, targetSourceSignals.formalHeaderPortalCarrierFiles)}), but no proven 16px shared content-outlet gutter was found. Non-drawer pages can lose the required viewport breathing room and let the white content area stick to the right edge.`,
+    })
+    const sameModuleSubviewManagedPublishBypassViolations =
+      sameModuleSubviewManagedPublishBypassContract.findings.filter((finding) => finding.violated)
+    pushCheck(checks, {
+      id: 'same-module-subview-managed-publish-entry-bypass',
+      ok:
+        !sameModuleSubviewManagedPublishBypassContract.inScope ||
+        targetSourceSignals.formalContentGutterFiles.length === 0 ||
+        sameModuleSubviewManagedPublishBypassViolations.length === 0,
+      severity: 'error',
+      summary:
+        'same-module-subview pages that require managed publish delivery must not bypass the host shell through page-local direct exposes when the formal host declares the 16px content gutter contract',
+      detail: !sameModuleSubviewManagedPublishBypassContract.inScope
+        ? sameModuleSubviewManagedPublishBypassContract.reason
+        : targetSourceSignals.formalContentGutterFiles.length === 0
+          ? 'Formal host content gutter contract is not proven, so the publish-bypass contradiction check is informational only in this run.'
+          : sameModuleSubviewManagedPublishBypassViolations.length === 0
+            ? summarizeSameModuleSubviewManagedPublishBypassFindings(
+                targetRoot,
+                sameModuleSubviewManagedPublishBypassContract.findings
+              )
+            : summarizeSameModuleSubviewManagedPublishBypassFindings(
+                targetRoot,
+                sameModuleSubviewManagedPublishBypassViolations
+              ),
     })
 
     pushCheck(checks, {
@@ -4478,59 +3402,13 @@ async function main() {
           ? 'No TablePageFrame page was found with an unclassified header action group'
           : `Add proTablePageStyles.headerExtra or proStatPageStyles.headerExtra to the title action container in: ${summarizePathList(targetRoot, targetSourceSignals.tableHeaderExtraViolations)}`,
     })
-    pushCheck(checks, {
-      id: 'non-typical-split-shell-reuse',
-      ok: nonTypicalSourceOwnership.warnings.length === 0,
-      severity: nonTypicalSourceOwnership.warnings.length > 0 ? 'error' : 'warn',
-      summary:
-        'non-typical split pages keep explicit layout facts and governed split-shell reuse instead of hand-built split lookalikes',
-      detail:
-        nonTypicalSourceOwnership.warnings.length > 0
-          ? nonTypicalSourceOwnership.warnings.join(' | ')
-          : nonTypicalSourceOwnership.inspectedCount > 0
-            ? `Validated ${nonTypicalSourceOwnership.inspectedCount} non-typical or implicit split source file(s); no context-main-split shell drift was detected.`
-            : 'No source-marked non-typical pages or implicit context-main-split candidates were found under src.',
-    })
-
-    const coveredArchetypeBaselineIds = new Set(archetypeSmokeBaselines.map((item) => item.id))
-    const missingArchetypeBaselineIds = requiredArchetypeBaselineIds.filter(
-      (item) => !coveredArchetypeBaselineIds.has(item)
-    )
-    pushCheck(checks, {
-      id: 'archetype-smoke-baselines',
-      ok: missingArchetypeBaselineIds.length === 0,
-      severity: 'error',
-      summary: `manifest marks required archetype smoke baselines for ${requiredArchetypeBaselineIds.join(', ')}`,
-      detail:
-        missingArchetypeBaselineIds.length === 0
-          ? archetypeSmokeBaselines.map((item) => item.id).join(', ')
-          : `Missing required archetype smoke baselines: ${missingArchetypeBaselineIds.join(', ')}`,
-    })
-
-    const malformedArchetypeBaselineSpecs = requiredArchetypeBaselineIds
-      .map((pageTypeId) => {
-        const entry = baselineSpecEntries.get(pageTypeId)
-        const issues = validateArchetypeSmokeBaselineSpecEntry(entry)
-        return issues.length > 0 ? `${pageTypeId}: ${issues.join(', ')}` : ''
-      })
-      .filter(Boolean)
-    pushCheck(checks, {
-      id: 'archetype-smoke-baseline-spec',
-      ok: malformedArchetypeBaselineSpecs.length === 0,
-      severity: 'error',
-      summary: 'required archetype smoke baselines have machine-readable screenshot specs',
-      detail:
-        malformedArchetypeBaselineSpecs.length === 0
-          ? `${baselineSpecPath} covers ${requiredArchetypeBaselineIds.join(', ')}`
-          : malformedArchetypeBaselineSpecs.join(' | '),
-    })
 
     const viteConfigPath = await detectViteConfigFile(targetRoot)
-    if (referenceOnlyMode && viteConfigPath) {
+    if (viteConfigPath) {
       const viteRaw = await readTextIfExists(viteConfigPath)
       const hasSchemaTypesAlias = viteRaw.includes('@hi-ui/schema-types')
-      const schemaTypesShimPath = path.join(
-        skillRoot,
+      const schemaTypesShimPath = resolveProjectContextPath(
+        targetRoot,
         'examples',
         'host-integration',
         'src',
@@ -4541,652 +3419,61 @@ async function main() {
       pushCheck(checks, {
         id: 'vite-schema-types-alias',
         ok: hasSchemaTypesAlias,
-        severity: 'warn',
-        summary: 'Vite config can alias @hi-ui/schema-types when typical-page shells are used later',
+        severity: 'error',
+        summary: 'Vite config aliases @hi-ui/schema-types for the managed local runtime baseline',
         detail: hasSchemaTypesAlias
           ? viteConfigPath
-          : `Reference-only modes do not patch Vite automatically. If generated pages later import shells that transitively touch @hi-ui/schema-types, add an alias in ${viteConfigPath} pointing to ${schemaTypesShimPath}`,
+          : `Add an alias in ${viteConfigPath} pointing @hi-ui/schema-types to ${schemaTypesShimPath} before generating business pages or opening the preview runtime.`,
       })
     }
 
-    if (referenceOnlyMode || hasRulesOnlyManagedArtifacts) {
-      await appendRulesOnlyManagedPageChecks({
-        baselineSpec,
-        checks,
-        legacyCompatibilityMode,
-        manifest,
-        managedPageRegistryInspection,
-        mode,
-        nonTypicalSourceOwnership,
-        pageContractsResult,
-        referenceOnlyMode,
-        targetRoot,
-      })
-    } else {
-      const expectedCoreFiles = [
-      path.join(outputRoot, 'README.md'),
-      path.join(outputRoot, 'CHECKLIST.md'),
-      path.join(outputRoot, 'routes', 'config.tsx'),
-      ]
-      const missingCoreFiles = []
-      for (const filePath of expectedCoreFiles) {
-        if (!(await pathExists(filePath))) missingCoreFiles.push(filePath)
-      }
+    if (mode === 'rules-only') {
       pushCheck(checks, {
-        id: 'core-files',
-        ok: missingCoreFiles.length === 0,
-        severity: 'error',
-        summary: 'synced typical-page core files exist',
+        id: 'rules-only-no-host-sync',
+        ok: true,
+        severity: 'warn',
+        summary: 'rules-only mode keeps template pages and host bridge files inside .local-context',
         detail:
-          missingCoreFiles.length === 0
-            ? outputRoot
-            : `Missing synced files: ${missingCoreFiles.join(', ')}`,
+          'No src/typical-page-preview gallery, routes, or host bridge files are required. Rules-only still keeps the managed local runtime baseline in the target project, so generate new pages directly in the existing structure and use the source template path from page-types.manifest.json as the default start point.',
+      })
+    } else if (mode === 'host-integration') {
+      pushCheck(checks, {
+        id: 'host-integration-global-preview-default',
+        ok: true,
+        severity: 'warn',
+        summary: 'host-integration keeps official preview examples in the packaged preview runtime',
+        detail:
+          'Use `node scripts/start-preview-runtime.mjs` from the packaged skill root for official preview examples. Do not keep project-local preview galleries, preview routes, or preview asset materialization commands in the target project.',
       })
 
-      const missingExamples = []
-      for (const pageType of manifest.pageTypes) {
-        const absExamplePath = path.join(targetRoot, pageType.examplePath)
-        if (!(await pathExists(absExamplePath))) {
-          missingExamples.push(pageType.examplePath)
-        }
-      }
+      const rootViewportStyleInspection = await inspectViewportRootStyles(targetRoot)
       pushCheck(checks, {
-        id: 'example-pages',
-        ok: missingExamples.length === 0,
+        id: 'root-viewport-style-contract',
+        ok: rootViewportStyleInspection.issues.length === 0,
         severity: 'error',
-        summary: 'all registered example pages exist in the target project',
+        summary: 'target project public shell lets the host shell fill the viewport instead of staying inside a boxed starter container',
         detail:
-          missingExamples.length === 0
-            ? `${manifest.pageTypes.length} example pages present`
-            : `Missing examples: ${missingExamples.join(', ')}`,
-      })
-
-      const primarySmokeCases = getPrimarySmokeCases(manifest)
-      const requiredSmokeGroups = ['table', 'chart', 'feedback', 'drawer', 'full-page']
-      const coveredSmokeGroups = new Set(primarySmokeCases.map((item) => item.smokeGroup))
-      const missingSmokeGroups = requiredSmokeGroups.filter((item) => !coveredSmokeGroups.has(item))
-      pushCheck(checks, {
-        id: 'smoke-groups',
-        ok: missingSmokeGroups.length === 0,
-        severity: 'error',
-        summary: 'manifest provides primary smoke cases for table, chart, feedback, drawer, and full-page baseline checks',
-        detail:
-          missingSmokeGroups.length === 0
-            ? primarySmokeCases.map((item) => `${item.smokeGroup}:${item.label}`).join(', ')
-            : `Missing primary smoke groups: ${missingSmokeGroups.join(', ')}`,
+          rootViewportStyleInspection.issues.length === 0
+            ? rootViewportStyleInspection.styleFiles.length > 0
+              ? 'No centered body layout, boxed root mount constraints, or greenfield starter-shell boxing were detected in the target project style files.'
+              : 'No src style files were found, and no centered body layout, boxed root mount constraints, or greenfield starter-shell boxing were detected.'
+            : `${formatViewportRootIssueDetail(targetRoot, rootViewportStyleInspection.issues)} Remove centered body/root starter constraints and greenfield starter-shell boxing; otherwise the official shell baseline can appear boxed even when preview stays global.`,
       })
 
       const routeFile = await detectRouteFile(targetRoot)
-      pushCheck(checks, {
-        id: 'route-file',
-        ok: Boolean(routeFile),
-        severity: 'manual',
-        summary: 'a route config file or app entry can be detected',
-        detail:
-          routeFile ||
-          'No common route config file or app entry was detected; route mount must be wired manually',
-      })
-
       const routeRaw = routeFile ? await readTextIfExists(routeFile) : ''
       const hasRouteMount = detectTypicalPageRouteMountInSource(routeRaw)
-      const routeSnippetPath = path.join(outputRoot, 'ROUTE_MOUNT_SNIPPET.md')
-      const routeSnippetRaw = await readTextIfExists(routeSnippetPath)
-      const routeSnippetExists = await pathExists(routeSnippetPath)
-      if (hostProfile.projectType === 'greenfield') {
-        pushCheck(checks, {
-          id: 'route-mounted',
-          ok: hasRouteMount,
-          severity: routeSnippetExists ? 'manual' : 'error',
-          summary: 'typical-page routes are mounted into the target project',
-          detail: hasRouteMount
-            ? routeFile
-            : routeSnippetExists
-              ? `Routes are not mounted yet; apply ${routeSnippetPath} manually`
-              : 'No route mount was detected and no manual route snippet was found',
-        })
-      } else {
-        const sourceRepoKeepsSmokeGallery = isTypicalPageSourceRepo && hasRouteMount
-        pushCheck(checks, {
-          id: 'route-mounted',
-          ok: sourceRepoKeepsSmokeGallery || !hasRouteMount,
-          severity: sourceRepoKeepsSmokeGallery ? 'warn' : hasRouteMount ? 'error' : routeSnippetExists ? 'manual' : 'manual',
-          summary: 'existing-system hosts should keep the smoke gallery out of the main route tree',
-          detail: sourceRepoKeepsSmokeGallery
-            ? `Detected typical-page smoke/gallery routes mounted in ${routeFile}. This is accepted because the current repository intentionally keeps the synced gallery in the main route tree for smoke verification; external existing-system targets should still keep these routes out of their production navigation by default.`
-            : hasRouteMount
-              ? `Detected typical-page smoke/gallery routes mounted in ${routeFile}. Existing systems should not merge these routes into the main navigation by default.`
-            : routeSnippetExists
-              ? `Auto route patch was intentionally skipped for the existing host. Review ${routeSnippetPath} before wiring any smoke route manually.`
-              : 'No typical-page route mount was detected in the main route tree; this is expected for existing systems.',
-        })
-      }
-
-      const mountedExampleRouteHasIcon = detectExampleTopLevelIcon(routeRaw)
-      const snippetExampleRouteHasIcon = detectExampleTopLevelIcon(routeSnippetRaw)
-      const shouldValidateMountedExampleIcon =
-        hostProfile.projectType === 'greenfield' && hasRouteMount
       pushCheck(checks, {
-        id: 'example-top-level-icon',
-        ok: shouldValidateMountedExampleIcon
-          ? mountedExampleRouteHasIcon
-          : snippetExampleRouteHasIcon,
-        severity: shouldValidateMountedExampleIcon
-          ? 'error'
-          : routeSnippetExists
-            ? 'manual'
-            : 'error',
-        summary:
-          'the top-level 示例 menu group keeps its own icon when mounting typical-page routes',
-        detail: shouldValidateMountedExampleIcon
-          ? mountedExampleRouteHasIcon
-            ? routeFile
-            : 'The mounted 示例 route group is missing its first-level icon. Keep the icon on the top-level 示例 node brought by host integration; do not move that fix onto second-level groups such as 表格 / 表单 / 详情.'
-          : routeSnippetExists
-            ? snippetExampleRouteHasIcon
-              ? routeSnippetPath
-              : `ROUTE_MOUNT_SNIPPET.md is missing the top-level 示例 icon contract: ${routeSnippetPath}`
-            : 'No mounted route or manual route snippet was found, so the top-level 示例 icon contract cannot be verified.',
+        id: 'no-project-local-preview-route-mount',
+        ok: !hasRouteMount,
+        severity: hasRouteMount ? 'error' : 'warn',
+        summary: 'target project does not mount project-local typical-page preview routes',
+        detail: hasRouteMount
+          ? `Detected a project-local preview route mount in ${routeFile}. Remove /__typical-preview style route trees and open official examples from the packaged preview runtime instead.`
+          : routeFile
+            ? `${routeFile} does not mount project-local typical-page preview routes.`
+            : 'No common route config file was detected, and no project-local typical-page preview route mount was proven.',
       })
-
-      const appFile = await detectTopLevelAppFile(targetRoot)
-      const appRaw = await readTextIfExists(appFile)
-      const usesLegacyStandaloneWorkspaceShell = detectLegacyStandaloneWorkspaceShell(appRaw)
-      const mountsTypicalPageAppFrame = detectTopLevelTypicalPageAppFrameMount(appRaw)
-      const appFrameRoutesIdentifier = detectRoutesIdentifierUsedByAppFrame(appRaw)
-      const hostRouteMenuSource = analyzeHostRouteMenuSource(appRaw)
-      const topLevelMenuGroupsMissingIcons =
-        routeFile && mountsTypicalPageAppFrame
-          ? collectTopLevelMenuGroupsMissingIcons(routeRaw, appFrameRoutesIdentifier)
-          : []
-      const shouldEnforceSingleHostOwner =
-        hostProfile.projectType === 'greenfield' && mode === 'host-integration'
-      pushCheck(checks, {
-        id: 'single-host-owner',
-        ok: !shouldEnforceSingleHostOwner || !usesLegacyStandaloneWorkspaceShell,
-        severity: 'error',
-        summary:
-          'greenfield host-integration keeps a single app-level host owner instead of an outdated standalone preview shell',
-        detail:
-          !shouldEnforceSingleHostOwner || !usesLegacyStandaloneWorkspaceShell
-            ? mountsTypicalPageAppFrame
-              ? `${appFile} mounts TypicalPageAppFrame as the top-level host shell`
-              : appFile
-                ? `${appFile} does not match the deprecated ExampleAppShell + custom sidebar workspace pattern`
-                : 'No top-level App file was detected, so the deprecated standalone workspace pattern was not found'
-            : `Detected the deprecated standalone preview shell in ${appFile}. Do not use ExampleAppShell + custom sidebar/nav as the top-level App workspace after syncing host-integration. That splits ownership of navigation, PageHeader portal, white page background, and outlet height chain, which leads to menu drift, the title rendering above the navigation, white bodies stopping before the bottom, and full-page edit footers losing sticky behavior. Replace the root shell with TypicalPageAppFrame and let app-frame.tsx own navigation, header/footer slots, route-title fallback, and the main outlet height chain.`,
-      })
-      pushCheck(checks, {
-        id: 'host-route-menu-source-of-truth',
-        ok: !mountsTypicalPageAppFrame || hostRouteMenuSource.ok,
-        severity: mountsTypicalPageAppFrame ? 'error' : 'manual',
-        summary:
-          'TypicalPageAppFrame uses the same host-level 示例 route group as the page routing tree',
-        detail: !mountsTypicalPageAppFrame
-          ? appFile
-            ? `${appFile} does not mount TypicalPageAppFrame, so route/menu source ownership must be verified in the project-specific host shell.`
-            : 'No top-level App file was detected, so route/menu source ownership cannot be verified.'
-          : hostRouteMenuSource.detail,
-      })
-      pushCheck(checks, {
-        id: 'top-level-menu-icons',
-        ok: !mountsTypicalPageAppFrame || topLevelMenuGroupsMissingIcons.length === 0,
-        severity: mountsTypicalPageAppFrame ? 'error' : 'manual',
-        summary:
-          'top-level business menu groups rendered by TypicalPageAppFrame keep explicit first-level icons',
-        detail:
-          !mountsTypicalPageAppFrame
-            ? appFile
-              ? `${appFile} does not mount TypicalPageAppFrame, so first-level menu icon ownership must be verified in the project-specific host shell.`
-              : 'No top-level App file was detected, so first-level menu icon ownership cannot be verified.'
-            : topLevelMenuGroupsMissingIcons.length === 0
-              ? routeFile
-              : `The following first-level menu groups are missing icons in ${routeFile}: ${topLevelMenuGroupsMissingIcons.join(', ')}. TypicalPageAppFrame only renders icons from first-level menu nodes, so add explicit icons on those business route groups instead of compensating on second-level children.`,
-      })
-
-      const existingHostShellEntry = await detectExistingHostShellEntry(targetRoot)
-      const syncedRouteConfigPath = path.join(outputRoot, 'routes', 'config.tsx')
-      const syncedRouteConfigRaw = await readTextIfExists(syncedRouteConfigPath)
-      const wrapsInShellByDefault = detectWrapInShellByDefault(syncedRouteConfigRaw)
-      pushCheck(checks, {
-        id: 'no-double-host-shell',
-        ok: !existingHostShellEntry || !wrapsInShellByDefault,
-        severity: 'error',
-        summary:
-          'typical-page route gallery does not wrap pages with a second example host when the target project already has a real host shell',
-        detail:
-          !existingHostShellEntry || !wrapsInShellByDefault
-            ? existingHostShellEntry
-              ? `${syncedRouteConfigPath} leaves shell wrapping opt-in and reuses the existing host shell at ${existingHostShellEntry}`
-              : 'No existing host shell entry was detected, so standalone example wrapping remains optional'
-            : `Detected an existing host shell at ${existingHostShellEntry}, but ${syncedRouteConfigPath} still wraps example pages with ExampleAppShell by default. This creates double header/footer containers in host-integration mode.`,
-      })
-
-      const nestedBusinessHostShellConsumers = mountsTypicalPageAppFrame
-        ? await collectBusinessHostShellConsumers(targetRoot, outputRoot)
-        : []
-      pushCheck(checks, {
-        id: 'no-business-route-double-host-shell',
-        ok: !mountsTypicalPageAppFrame || nestedBusinessHostShellConsumers.length === 0,
-        severity: mountsTypicalPageAppFrame ? 'error' : 'manual',
-        summary:
-          'business routes/pages do not rebuild a second host shell when TypicalPageAppFrame already owns header/footer slots',
-        detail:
-          !mountsTypicalPageAppFrame
-            ? appFile
-              ? `${appFile} does not mount TypicalPageAppFrame, so duplicate business host-shell ownership must be verified in the project-specific host.`
-              : 'No top-level App file was detected, so duplicate business host-shell ownership cannot be verified.'
-            : nestedBusinessHostShellConsumers.length === 0
-              ? `${appFile} is the single host shell owner and no business source outside ${outputRoot} imports ExampleAppShell or rebuilds LayoutContentProvider + TypicalPageHostBridge.`
-              : `Detected business source files that rebuild a second host shell even though ${appFile} already mounts TypicalPageAppFrame: ${nestedBusinessHostShellConsumers.join(', ')}. Do not wrap business routes/pages with ExampleAppShell or recreate LayoutContentProvider + TypicalPageHostBridge outside ${outputRoot}; otherwise an extra empty header slot is reserved and the page shows top whitespace / duplicate portal containers.`,
-      })
-
-      const hostFiles = [
-      path.join(outputRoot, 'app-frame.tsx'),
-      path.join(outputRoot, 'components', 'layout', 'layout-content-context.tsx'),
-      path.join(outputRoot, 'components', 'layout', 'page-header-portal.tsx'),
-      path.join(outputRoot, 'components', 'layout', 'typical-page-host.tsx'),
-      path.join(outputRoot, 'app-shell.tsx'),
-      ]
-      const missingHostFiles = []
-      for (const filePath of hostFiles) {
-        if (!(await pathExists(filePath))) missingHostFiles.push(filePath)
-      }
-      pushCheck(checks, {
-        id: 'host-assets',
-        ok: missingHostFiles.length === 0,
-        severity: 'error',
-        summary: 'host bridge assets exist',
-        detail:
-          missingHostFiles.length === 0
-            ? 'Layout bridge, portal bridge, and app shell example are present'
-            : `Missing host assets: ${missingHostFiles.join(', ')}`,
-      })
-
-      const fixedDashboardHelperFiles = [
-        path.join(outputRoot, 'components', 'managed-page', 'data-visualization-primitives.tsx'),
-        path.join(outputRoot, 'components', 'managed-page', 'fixed-dashboard-page-frame.tsx'),
-      ]
-      const missingFixedDashboardHelperFiles = []
-      for (const filePath of fixedDashboardHelperFiles) {
-        if (!(await pathExists(filePath))) missingFixedDashboardHelperFiles.push(filePath)
-      }
-      pushCheck(checks, {
-        id: 'fixed-dashboard-helper-assets',
-        ok: missingFixedDashboardHelperFiles.length === 0,
-        severity: 'error',
-        summary:
-          'host-integration exports the shared dashboard frame helpers used by data-visualization start-page generation',
-        detail:
-          missingFixedDashboardHelperFiles.length === 0
-            ? fixedDashboardHelperFiles.join(', ')
-            : `Missing shared dashboard frame helpers: ${missingFixedDashboardHelperFiles.join(', ')}. Keep the fixed dashboard frame and shared data-visualization primitives in the synced host assets so start-page can scaffold a reusable shell path instead of free-form page wrappers.`,
-      })
-
-      const fixedDashboardFramePath = path.join(
-        outputRoot,
-        'components',
-        'managed-page',
-        'fixed-dashboard-page-frame.tsx',
-      )
-      const fixedDashboardFrameRaw = await readTextIfExists(fixedDashboardFramePath)
-      const fixedDashboardRootInlinePaddingMatch = (fixedDashboardFrameRaw || '').match(
-        /\bdashboardPageRoot\b[\s\S]{0,260}\bpaddingInline\s*:\s*([^,\n}]+)/,
-      )
-      const fixedDashboardRootBlockEndPaddingMatch = (fixedDashboardFrameRaw || '').match(
-        /\bdashboardPageRoot\b[\s\S]{0,260}\bpaddingBlockEnd\s*:\s*([^,\n}]+)/,
-      )
-      const fixedDashboardRootAddsInlinePadding =
-        !!fixedDashboardRootInlinePaddingMatch &&
-        fixedDashboardRootInlinePaddingMatch[1].trim() !== '0'
-      const fixedDashboardRootAddsBlockEndPadding =
-        !!fixedDashboardRootBlockEndPaddingMatch &&
-        fixedDashboardRootBlockEndPaddingMatch[1].trim() !== '0'
-      pushCheck(checks, {
-        id: 'fixed-dashboard-root-spacing',
-        ok:
-          !fixedDashboardFrameRaw ||
-          (!fixedDashboardRootAddsInlinePadding && !fixedDashboardRootAddsBlockEndPadding),
-        severity: fixedDashboardFrameRaw ? 'error' : 'manual',
-        summary:
-          'shared fixed-dashboard shell keeps the page root flush instead of reintroducing outer inset above the white-body workspace',
-        detail:
-          !fixedDashboardFrameRaw
-            ? `Could not read ${fixedDashboardFramePath}, so fixed-dashboard shell spacing must be verified manually.`
-            : !fixedDashboardRootAddsInlinePadding && !fixedDashboardRootAddsBlockEndPadding
-              ? `${fixedDashboardFramePath} keeps dashboardPageRoot padding at zero; outer gutter must stay on the true host/content-slot owner instead of a second page-root wrapper.`
-              : `${fixedDashboardFramePath} still injects page-root inset through dashboardPageRoot (${[
-                    fixedDashboardRootAddsInlinePadding ? 'paddingInline' : '',
-                    fixedDashboardRootAddsBlockEndPadding ? 'paddingBlockEnd' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}). Do not keep a second outer padding layer above ManagedWhiteBodyWorkspace; otherwise host viewport gutter + page-root inset + white-body padding stack into a duplicated shell gap.`,
-      })
-
-      const missingImports = await collectUndeclaredImports({
-        rootDir: outputRoot,
-        pkg,
-      })
-      pushCheck(checks, {
-        id: 'host-import-dependencies',
-        ok: missingImports.length === 0,
-        severity: 'error',
-        summary: 'all non-relative imports used by synced typical-page files are declared in package.json',
-        detail:
-          missingImports.length === 0
-            ? `${outputRoot} imports are covered by package.json declarations`
-            : summarizeMissingImports(targetRoot, missingImports),
-      })
-
-      const tsNoCheckViolations = await collectTsNoCheckDirectives(outputRoot)
-      pushCheck(checks, {
-        id: 'no-ts-nocheck-in-synced-assets',
-        ok: tsNoCheckViolations.length === 0,
-        severity: 'error',
-        summary: 'synced typical-page assets do not rely on @ts-nocheck to pass strict TypeScript projects',
-        detail:
-          tsNoCheckViolations.length === 0
-            ? 'No @ts-nocheck directives were found in synced typical-page source files.'
-            : `Remove @ts-nocheck and fix types or isolate the gallery compile scope: ${summarizeTsNoCheckViolations(
-                targetRoot,
-                tsNoCheckViolations
-              )}`,
-      })
-
-      const schemaFormCheckSelectViolations = await collectSchemaFormCheckSelectViolations(outputRoot)
-      pushCheck(checks, {
-        id: 'schema-form-check-select-provider',
-        ok: schemaFormCheckSelectViolations.length === 0,
-        severity: 'error',
-        summary: 'raw SchemaForm pages that use CheckSelect also mount TypicalPageFieldMapProvider',
-        detail:
-          schemaFormCheckSelectViolations.length === 0
-            ? 'No raw SchemaForm + CheckSelect page is missing the typical-page field-map provider'
-            : `Wrap these files with TypicalPageFieldMapProvider: ${schemaFormCheckSelectViolations.join(', ')}`,
-      })
-
-      const appFramePath = path.join(outputRoot, 'app-frame.tsx')
-      const appFrameRaw = await readTextIfExists(appFramePath)
-      const appFramePortalContractTokens = [
-        'LayoutContentProvider',
-        'TypicalPageHostBridge',
-        'findRouteTitle(',
-        'const headerRef = React.useRef<HTMLDivElement>(null)',
-        'const footerRef = React.useRef<HTMLDivElement>(null)',
-        'const titleTextRef = React.useRef(pageTitle)',
-        'titleTextRef.current = pageTitle',
-        'ref={headerRef}',
-        'ref={footerRef}',
-      ]
-      const missingAppFramePortalTokens = collectMissingTokens(
-        appFrameRaw,
-        appFramePortalContractTokens
-      )
-      pushCheck(checks, {
-        id: 'app-frame-host-portal-contract',
-        ok: missingAppFramePortalTokens.length === 0,
-        severity: 'error',
-        summary:
-          'app-frame keeps real host header/footer slots plus route-title fallback for typical-page portals',
-        detail:
-          missingAppFramePortalTokens.length === 0
-            ? appFramePath
-            : `Keep the app-frame host contract intact. Missing tokens: ${missingAppFramePortalTokens.join(', ')}. If the route outlet renders directly without LayoutContentProvider + TypicalPageHostBridge + header/footer refs, full-page edit/detail headers fall back into the white page shell instead of the host header area.`,
-      })
-      const appFrameHeaderSlotCentered =
-        appFrameRaw.includes("headerSlot: {") &&
-        (appFrameRaw.includes("display: 'flex'") || appFrameRaw.includes('display: "flex"')) &&
-        (appFrameRaw.includes("alignItems: 'center'") || appFrameRaw.includes('alignItems: "center"'))
-      pushCheck(checks, {
-        id: 'app-frame-header-slot-center',
-        ok: appFrameHeaderSlotCentered,
-        severity: 'error',
-        summary:
-          'app-frame header slot keeps PageHeader vertically centered inside the shared 60px host header area',
-        detail: appFrameHeaderSlotCentered
-          ? appFramePath
-          : 'Keep app-frame headerSlot on a flex + alignItems:center contract. The host slot may center the PageHeader vertically, but page-header-portal.tsx must still avoid mutating the PageHeader root layout itself.',
-      })
-      const appFrameHasScrollableOutlet =
-        appFrameRaw.includes("overflow: 'auto'") ||
-        appFrameRaw.includes('overflow: "auto"') ||
-        appFrameRaw.includes('overflow: auto')
-      const appFrameStretchOutletContract =
-        (appFrameRaw.includes("display: 'flex'") ||
-          appFrameRaw.includes('display: "flex"') ||
-          appFrameRaw.includes('display: flex')) &&
-        (appFrameRaw.includes("flexDirection: 'column'") ||
-          appFrameRaw.includes('flexDirection: "column"') ||
-          appFrameRaw.includes('flex-direction: column')) &&
-        (appFrameRaw.includes("overflow: 'hidden'") ||
-          appFrameRaw.includes('overflow: "hidden"') ||
-          appFrameRaw.includes('overflow: hidden')) &&
-        appFrameRaw.includes('minHeight: 0')
-      pushCheck(checks, {
-        id: 'app-frame-outlet-contract',
-        ok: appFrameStretchOutletContract && !appFrameHasScrollableOutlet,
-        severity: 'error',
-        summary:
-          'route gallery app frame keeps the content outlet in a flex/hidden container so typical pages can stretch to the bottom',
-        detail:
-          appFrameStretchOutletContract && !appFrameHasScrollableOutlet
-            ? appFramePath
-            : 'Keep the route-gallery outlet on a flex column + overflow hidden contract. Do not make the outer app-frame content slot own vertical scrolling, otherwise table white bodies stop filling the bottom and full-page edit footers stop sticking.',
-      })
-      const appFrameKeepsRightViewportGutter =
-        /paddingInlineEnd:\s*(?:HOST_CONTENT_VIEWPORT_GUTTER|16)\b/.test(appFrameRaw) ||
-        /padding-inline-end\s*:\s*16px\b/.test(appFrameRaw)
-      const appFrameKeepsConditionalLeftViewportGutter =
-        /paddingInlineStart:\s*floatContainerCollapsed\s*\?\s*(?:HOST_CONTENT_VIEWPORT_GUTTER|16)\s*:\s*0\b/.test(
-          appFrameRaw
-        ) ||
-        /padding-inline-start\s*:\s*(?:var\([^)]+\)|16px)\s*;[\s\S]*data-float-menu-collapsed/i.test(
-          appFrameRaw
-        )
-      const appFrameZeroesInlinePadding = /paddingInline:\s*0\b/.test(appFrameRaw)
-      pushCheck(checks, {
-        id: 'app-frame-viewport-gutter-contract',
-        ok:
-          appFrameKeepsRightViewportGutter &&
-          appFrameKeepsConditionalLeftViewportGutter &&
-          !appFrameZeroesInlinePadding,
-        severity: 'error',
-        summary:
-          'app-frame keeps the required viewport gutter contract for host content',
-        detail:
-          appFrameKeepsRightViewportGutter &&
-          appFrameKeepsConditionalLeftViewportGutter &&
-          !appFrameZeroesInlinePadding
-            ? appFramePath
-            : 'Keep the host content gutter contract intact: main content must preserve the right-side 16px viewport gutter at all times, keep the left-side 16px gutter when the floating submenu is collapsed, and only collapse the left gutter when that submenu expands. Do not reset app-frame content padding back to `paddingInline: 0`.',
-      })
-      const rootStylePath = await detectStarterRootStyleFile(targetRoot)
-      const rootStyleRaw = rootStylePath ? await readTextIfExists(rootStylePath) : ''
-      const bodyLocksDocumentScroll =
-        /body\s*\{[\s\S]*overflow\s*:\s*hidden/i.test(rootStyleRaw) ||
-        /html\s*,\s*body\s*,\s*#root\s*\{[\s\S]*overflow\s*:\s*hidden/i.test(rootStyleRaw)
-      const rootLocksDocumentScroll =
-        /#root\s*\{[\s\S]*overflow\s*:\s*hidden/i.test(rootStyleRaw)
-      pushCheck(checks, {
-        id: 'host-root-scroll-lock',
-        ok: bodyLocksDocumentScroll && rootLocksDocumentScroll,
-        severity: 'error',
-        summary:
-          'starter root styles lock browser-level scrolling to the host app shell instead of letting the whole document scroll',
-        detail:
-          bodyLocksDocumentScroll && rootLocksDocumentScroll
-            ? rootStylePath || 'starter root style file'
-            : rootStylePath
-              ? `Add \`overflow: hidden\` to both \`body\` and \`#root\` in ${rootStylePath}, and keep the root height chain at 100%. Otherwise the browser document becomes the scroll owner, the left navigation stops at the viewport bottom, and dashboard pages scroll together with the whole page.`
-              : 'No starter root style file was detected. Host-integration examples need a root CSS file that locks document scrolling on body/#root and keeps the app shell at 100% height.',
-      })
-
-      const appShellPath = path.join(outputRoot, 'app-shell.tsx')
-      const appShellRaw = await readTextIfExists(appShellPath)
-      const appShellStyleRaw = appShellRaw ? await readImportedStyleSources(appShellPath, appShellRaw) : ''
-      const appShellContractRaw = `${appShellRaw}\n${appShellStyleRaw}`
-      const hasTypicalPageHostBridge = appShellRaw.includes('TypicalPageHostBridge')
-      const flexChainCount = countMatches(
-        appShellContractRaw,
-        /flex:\s*(?:['"]1 1 0%['"]|1 1 0%)/g
-      )
-      const minHeightChainCount = countMatches(
-        appShellContractRaw,
-        /minHeight:\s*0|min-height:\s*0/g
-      )
-      const overflowHiddenCount = countMatches(
-        appShellContractRaw,
-        /overflow:\s*(?:['"]hidden['"]|hidden)/g
-      )
-      const hasHeightChain =
-        flexChainCount >= 2 &&
-        minHeightChainCount >= 2 &&
-        overflowHiddenCount >= 2
-      pushCheck(checks, {
-        id: 'host-bridge-contract',
-        ok: hasTypicalPageHostBridge && hasHeightChain,
-        severity: 'error',
-        summary: 'the synced app shell example still shows the required host bridge and height chain contract',
-        detail:
-          hasTypicalPageHostBridge && hasHeightChain
-            ? appShellPath
-            : 'The synced app-shell example is missing TypicalPageHostBridge or the flex/min-height/overflow chain expected by typical pages',
-      })
-      const appShellKeepsViewportGutter =
-        /paddingInline:\s*(?:STANDALONE_CONTENT_VIEWPORT_GUTTER|16)\b/.test(appShellContractRaw) ||
-        /padding-inline\s*:\s*0\s+16px\b/.test(appShellContractRaw) ||
-        /padding-inline\s*:\s*16px\b/.test(appShellContractRaw)
-      pushCheck(checks, {
-        id: 'app-shell-viewport-gutter-contract',
-        ok: appShellKeepsViewportGutter,
-        severity: 'error',
-        summary:
-          'the synced app shell example keeps the default 16px viewport gutter around standalone content',
-        detail: appShellKeepsViewportGutter
-          ? appShellPath
-          : 'Keep a 16px viewport gutter on the standalone app-shell content column. Without that inset, host previews drift away from the reference shell and users tend to copy a zero-padding content slot back into real host app-frame integrations.',
-      })
-
-      const pageHeaderPortalPath = path.join(outputRoot, 'components', 'layout', 'page-header-portal.tsx')
-      const pageHeaderPortalRaw = await readTextIfExists(pageHeaderPortalPath)
-      const mutatesPageHeaderRootLayout =
-        pageHeaderPortalRaw.includes("display: 'flex'") ||
-        pageHeaderPortalRaw.includes('display: "flex"') ||
-        pageHeaderPortalRaw.includes("alignItems: 'center'") ||
-        pageHeaderPortalRaw.includes('alignItems: "center"')
-      const hasHeaderFullWidthContract =
-        (appShellContractRaw.includes("width: '100%'") ||
-          appShellContractRaw.includes('width: 100%')) &&
-        (appShellContractRaw.includes('minWidth: 0') ||
-          appShellContractRaw.includes('min-width: 0')) &&
-        pageHeaderPortalRaw.includes("width: '100%'") &&
-        pageHeaderPortalRaw.includes('minWidth: 0')
-      pushCheck(checks, {
-        id: 'header-full-width-contract',
-        ok: hasHeaderFullWidthContract && !mutatesPageHeaderRootLayout,
-        severity: 'error',
-        summary: 'host header slot keeps PageHeader stretched to full width so header actions can stay right-aligned',
-        detail:
-          hasHeaderFullWidthContract && !mutatesPageHeaderRootLayout
-            ? `${appShellPath}, ${pageHeaderPortalPath}`
-            : mutatesPageHeaderRootLayout
-              ? 'Do not force PageHeader root to display:flex or alignItems:center inside page-header-portal.tsx. Keep only width: 100% and minWidth: 0 so the internal content container can push extra actions to the right'
-              : 'Host app-shell and page-header portal must keep the header slot full width; otherwise PageHeader extra actions drift next to the title instead of aligning right',
-      })
-
-      const fullPageEditExamplePath = path.join(outputRoot, 'pages', 'full-page-edit.tsx')
-      const fullPageEditRaw = await readTextIfExists(fullPageEditExamplePath)
-      const hasFullPageEditHeaderPortal =
-        fullPageEditRaw.includes('TypicalPageHeaderPortal') ||
-        fullPageEditRaw.includes('HostPageHeaderPortal')
-      const hasFullPageEditProvider = fullPageEditRaw.includes('ProEditPageProvider')
-      const requiredFullPageEditShellTokens = [
-        'proEditPageShellStyles.formScrollBody',
-        'proEditPageShellStyles.inlineEditFooter',
-      ]
-      const hasRequiredFullPageEditShellChain =
-        hasFullPageEditHeaderPortal &&
-        requiredFullPageEditShellTokens.every((token) => fullPageEditRaw.includes(token))
-      const fullPageEditFormScrollIndex = fullPageEditRaw.indexOf(
-        'proEditPageShellStyles.formScrollBody'
-      )
-      const fullPageEditFooterIndex = fullPageEditRaw.indexOf(
-        'proEditPageShellStyles.inlineEditFooter'
-      )
-      const usesFooterPortalInFullPageEdit =
-        fullPageEditRaw.includes('PageFooterPortal') ||
-        fullPageEditRaw.includes('TypicalPageFooterPortal')
-      pushCheck(checks, {
-        id: 'full-page-edit-shell-chain',
-        ok:
-          hasRequiredFullPageEditShellChain &&
-          fullPageEditFormScrollIndex >= 0 &&
-          fullPageEditFooterIndex > fullPageEditFormScrollIndex &&
-          !usesFooterPortalInFullPageEdit,
-        severity: 'error',
-        summary:
-          'full-page edit example keeps the required shell chain so the action area can stay bottom-docked',
-        detail:
-          hasRequiredFullPageEditShellChain &&
-          fullPageEditFormScrollIndex >= 0 &&
-          fullPageEditFooterIndex > fullPageEditFormScrollIndex &&
-          !usesFooterPortalInFullPageEdit
-            ? fullPageEditExamplePath
-            : 'Keep HostPageHeaderPortal or TypicalPageHeaderPortal, formScrollBody, and inlineEditFooter in the same ProEditPage. inlineEditFooter must stay after formScrollBody and must not be remounted through a footer portal, otherwise the action area stops sticking to the bottom.',
-      })
-      pushCheck(checks, {
-        id: 'full-page-edit-provider-chain',
-        ok: hasFullPageEditProvider,
-        severity: 'error',
-        summary:
-          'full-page edit example keeps the required ProEditPageProvider context chain around the edit shell',
-        detail: hasFullPageEditProvider
-          ? fullPageEditExamplePath
-          : 'Keep ProEditPageProvider around the full-page-edit shell. Form, CancelButton, StashButton, and SubmitButton all rely on the edit-page context, and omitting the provider causes runtime white screens.',
-      })
-      const hasExtraFormScrollPadding =
-        fullPageEditRaw.includes("padding: '20px 20px 0'") ||
-        fullPageEditRaw.includes('style={formBodyStyle}') ||
-        /className=\{proEditPageShellStyles\.formScrollBody\}[\s\S]{0,80}style=/.test(fullPageEditRaw)
-      pushCheck(checks, {
-        id: 'full-page-edit-form-root-padding',
-        ok: !hasExtraFormScrollPadding,
-        severity: 'error',
-        summary: 'full-page edit example does not add extra root padding on formScrollBody',
-        detail: !hasExtraFormScrollPadding
-          ? fullPageEditExamplePath
-          : 'Remove extra padding from the formScrollBody root. Full-page edit spacing should come from the schema/card structure instead of wrapping the whole scroll body with 20px padding',
-      })
-
-      if (viteConfigPath) {
-      const viteRaw = await readTextIfExists(viteConfigPath)
-      const schemaTypesShimPath = path.join(outputRoot, 'shims', 'schema-types-empty.js')
-      const schemaTypesSnippetPath = path.join(outputRoot, 'VITE_ALIAS_SNIPPET.md')
-      const hasSchemaTypesAlias = viteRaw.includes('@hi-ui/schema-types')
-      const hasSchemaTypesShim = await pathExists(schemaTypesShimPath)
-      const hasSchemaTypesSnippet = await pathExists(schemaTypesSnippetPath)
-
-      pushCheck(checks, {
-        id: 'vite-schema-types-shim',
-        ok: hasSchemaTypesShim,
-        severity: 'error',
-        summary: 'Vite compatibility shim for @hi-ui/schema-types exists',
-        detail: hasSchemaTypesShim
-          ? schemaTypesShimPath
-          : `Missing Vite shim file: ${schemaTypesShimPath}`,
-      })
-
-        pushCheck(checks, {
-          id: 'vite-schema-types-alias',
-          ok: hasSchemaTypesAlias,
-          severity: 'error',
-          summary: 'Vite config aliases @hi-ui/schema-types to the synced empty shim',
-          detail: hasSchemaTypesAlias
-            ? viteConfigPath
-            : hasSchemaTypesSnippet
-              ? `Missing alias in ${viteConfigPath}; apply ${schemaTypesSnippetPath} before running Vite`
-              : `Missing alias in ${viteConfigPath}; add @hi-ui/schema-types -> ${schemaTypesShimPath}`,
-        })
-      }
     }
 
     if (isTypicalPageSourceRepo) {
@@ -5205,14 +3492,20 @@ async function main() {
       const embeddedShellTarball = embeddedShellTarballPath
         ? await inspectQueryFilterBridgeTarball(embeddedShellTarballPath)
         : { exists: false, filePath: '', raw: '', reasons: ['missing embedded shell tarball'] }
+      const embeddedSourceSnapshotDeclared = Boolean(shellPackage?.version) && Boolean(embeddedShellTarballPath)
 
       pushCheck(checks, {
         id: 'source-shell-package-version-sync',
-        ok: Boolean(sourceShellPackage?.version) && sourceShellPackage.version === shellPackage?.version,
-        severity: 'error',
-        summary: 'embedded shell package snapshot version matches packages/typical-page-shells/package.json',
+        ok:
+          !embeddedSourceSnapshotDeclared ||
+          (Boolean(sourceShellPackage?.version) && sourceShellPackage.version === shellPackage?.version),
+        severity: embeddedSourceSnapshotDeclared ? 'error' : 'warn',
+        summary:
+          'managed local runtime optional embedded snapshot version matches the source workspace package.json when provenance is bundled',
         detail:
-          sourceShellPackage?.version && sourceShellPackage.version === shellPackage?.version
+          !embeddedSourceSnapshotDeclared
+            ? 'No embedded source snapshot is declared in the skill contract, so version sync is informational only for this source workspace.'
+            : sourceShellPackage?.version && sourceShellPackage.version === shellPackage?.version
             ? `${sourceShellPackage.version}`
             : `source package version=${sourceShellPackage?.version ?? '(missing)'}; embedded snapshot version=${shellPackage?.version ?? '(missing)'}`,
       })
@@ -5222,7 +3515,7 @@ async function main() {
         ok: sourceShellBridge.exists && sourceShellBridge.reasons.length === 0,
         severity: 'error',
         summary:
-          'packages/typical-page-shells/dist QueryFilter bridge keeps the HiUI5 contained/no-label defaults',
+          'the source workspace dist output keeps the QueryFilter defaults expected by the managed local runtime baseline',
         detail:
           sourceShellBridge.exists
             ? sourceShellBridge.reasons.length === 0
@@ -5234,24 +3527,27 @@ async function main() {
       pushCheck(checks, {
         id: 'embedded-shell-snapshot-sync',
         ok:
-          embeddedShellTarball.exists &&
-          embeddedShellTarball.reasons.length === 0 &&
-          embeddedShellTarball.raw.trim() === sourceShellBridge.raw.trim(),
-        severity: 'error',
+          !embeddedSourceSnapshotDeclared ||
+          (embeddedShellTarball.exists &&
+            embeddedShellTarball.reasons.length === 0 &&
+            embeddedShellTarball.raw.trim() === sourceShellBridge.raw.trim()),
+        severity: embeddedSourceSnapshotDeclared ? 'error' : 'warn',
         summary:
-          'embedded vendor tgz is refreshed from the current packages/typical-page-shells dist bridge',
+          'managed local runtime embedded tgz stays aligned with the current source workspace dist bridge when provenance is bundled',
         detail:
-          !embeddedShellTarball.exists
+          !embeddedSourceSnapshotDeclared
+            ? 'No embedded source snapshot is declared in the skill contract, so tgz sync is informational only for this source workspace.'
+          : !embeddedShellTarball.exists
             ? `Missing embedded shell tarball at ${embeddedShellTarballPath || '(unknown path)'}`
             : embeddedShellTarball.reasons.length > 0
               ? `${path.relative(targetRoot, embeddedShellTarball.filePath)} -> ${embeddedShellTarball.reasons.join('; ')}`
               : embeddedShellTarball.raw.trim() === sourceShellBridge.raw.trim()
                 ? path.relative(targetRoot, embeddedShellTarball.filePath)
-                : `Embedded tgz bridge does not match ${path.relative(targetRoot, sourceShellBridge.filePath)}. Run pnpm sync:typical-page-shell-snapshot before distributing this skill.`,
+                : `Embedded tgz bridge does not match ${path.relative(targetRoot, sourceShellBridge.filePath)}. Refresh the embedded source snapshot before distributing this skill.`,
       })
     }
 
-    const expectedScripts = getReusableScripts(lineId, { mode })
+    const expectedScripts = getReusableScripts(lineId)
     const designerSetupScript =
       pkg?.scripts?.['typical-page:designer-setup'] === expectedScripts['typical-page:designer-setup']
     pushCheck(checks, {
@@ -5276,163 +3572,79 @@ async function main() {
         : `Expected \`${expectedScripts['typical-page:doctor']}\``,
     })
 
-    const legacyInitScript =
-      pkg?.scripts?.['typical-page:legacy:init'] === expectedScripts['typical-page:legacy:init']
-    pushCheck(checks, {
-      id: 'legacy-init-script',
-      ok: legacyInitScript,
-      severity: 'error',
-      summary: 'package.json exposes typical-page:legacy:init for legacy host contract bootstrap',
-      detail: legacyInitScript
-        ? 'Registered script matches the packaged legacy init entry'
-        : `Expected \`${expectedScripts['typical-page:legacy:init']}\``,
-    })
-
-    const legacyNewScript =
-      pkg?.scripts?.['typical-page:legacy:new'] === expectedScripts['typical-page:legacy:new']
-    pushCheck(checks, {
-      id: 'legacy-new-script',
-      ok: legacyNewScript,
-      severity: 'error',
-      summary: 'package.json exposes typical-page:legacy:new for contract-slot page creation',
-      detail: legacyNewScript
-        ? 'Registered script matches the packaged legacy new entry'
-        : `Expected \`${expectedScripts['typical-page:legacy:new']}\``,
-    })
-
-    const legacyRewriteScript =
-      pkg?.scripts?.['typical-page:legacy:rewrite'] === expectedScripts['typical-page:legacy:rewrite']
-    pushCheck(checks, {
-      id: 'legacy-rewrite-script',
-      ok: legacyRewriteScript,
-      severity: 'error',
-      summary: 'package.json exposes typical-page:legacy:rewrite for contract-slot page rewrites',
-      detail: legacyRewriteScript
-        ? 'Registered script matches the packaged legacy rewrite entry'
-        : `Expected \`${expectedScripts['typical-page:legacy:rewrite']}\``,
-    })
-
-    const legacyVerifyScript =
-      pkg?.scripts?.['typical-page:legacy:verify'] === expectedScripts['typical-page:legacy:verify']
-    pushCheck(checks, {
-      id: 'legacy-verify-script',
-      ok: legacyVerifyScript,
-      severity: 'error',
-      summary: 'package.json exposes typical-page:legacy:verify for troubleshooting-only runtime and slot conformance',
-      detail: legacyVerifyScript
-        ? 'Registered script matches the packaged legacy verify entry'
-        : `Expected \`${expectedScripts['typical-page:legacy:verify']}\``,
-    })
-
-    const doctorSelfCheckScript =
-      pkg?.scripts?.['typical-page:doctor:self-check'] ===
-      expectedScripts['typical-page:doctor:self-check']
-    pushCheck(checks, {
-      id: 'doctor-self-check-script',
-      ok: doctorSelfCheckScript,
-      severity: 'warn',
-      summary:
-        'package.json exposes typical-page:doctor:self-check for mixed-mode rules-only regression coverage',
-      detail: doctorSelfCheckScript
-        ? 'Registered script matches the packaged doctor regression self-check entry'
-        : `Expected \`${expectedScripts['typical-page:doctor:self-check']}\``,
-    })
-
-    const maintainerSelfCheckScript =
-      pkg?.scripts?.['typical-page:maintainer:self-check'] ===
-      expectedScripts['typical-page:maintainer:self-check']
-    pushCheck(checks, {
-      id: 'maintainer-self-check-script',
-      ok: maintainerSelfCheckScript,
-      severity: 'warn',
-      summary:
-        'package.json exposes typical-page:maintainer:self-check for bundled maintainer regression coverage',
-      detail: maintainerSelfCheckScript
-        ? 'Registered script matches the packaged maintainer regression bundle entry'
-        : `Expected \`${expectedScripts['typical-page:maintainer:self-check']}\``,
-    })
-
-    const writeContractScript =
-      pkg?.scripts?.['typical-page:write-contract'] === expectedScripts['typical-page:write-contract']
-    pushCheck(checks, {
-      id: 'write-contract-script',
-      ok: writeContractScript,
-      severity: 'warn',
-      summary: 'package.json exposes typical-page:write-contract as a maintenance-only contract writer',
-      detail: writeContractScript
-        ? 'Registered script matches the packaged maintenance writer entry'
-        : `Expected \`${expectedScripts['typical-page:write-contract']}\``,
-    })
-
-    const finalizePageScript =
-      pkg?.scripts?.['typical-page:finalize-page'] === expectedScripts['typical-page:finalize-page']
-    pushCheck(checks, {
-      id: 'finalize-page-script',
-      ok: finalizePageScript,
-      severity: 'warn',
-      summary: 'package.json exposes typical-page:finalize-page as the managed-page delivery gate',
-      detail: finalizePageScript
-        ? 'Registered script matches the packaged delivery gate entry'
-        : `Expected \`${expectedScripts['typical-page:finalize-page']}\``,
-    })
-
-    const preflightScript =
-      pkg?.scripts?.['typical-page:preflight'] === expectedScripts['typical-page:preflight']
-    pushCheck(checks, {
-      id: 'preflight-script',
-      ok: preflightScript,
-      severity: 'warn',
-      summary: 'package.json exposes typical-page:preflight for implementation blocking checks',
-      detail: preflightScript
-        ? 'Registered script matches the packaged preflight entry'
-        : `Expected \`${expectedScripts['typical-page:preflight']}\``,
-    })
-
-    const runtimeSmokeScript =
-      pkg?.scripts?.['typical-page:runtime-smoke'] === expectedScripts['typical-page:runtime-smoke']
-    pushCheck(checks, {
-      id: 'runtime-smoke-script',
-      ok: runtimeSmokeScript,
-      severity: 'warn',
-      summary: 'package.json exposes typical-page:runtime-smoke for browser-level managed-page validation',
-      detail: runtimeSmokeScript
-        ? 'Registered script matches the packaged runtime-smoke entry'
-        : `Expected \`${expectedScripts['typical-page:runtime-smoke']}\``,
-    })
-
+    const reportSnapshot = await collectReportSnapshot(targetRoot)
     const status = overallStatusFromChecks(checks)
-    const currentPageReady = isCurrentPageReady(status)
     const summary = summarizeChecks(checks)
+    const assessment = summarizeDoctorAssessment({
+      checks,
+      overallStatus: status,
+      hostProfile,
+    })
     const reportPath = path.join(outputRoot, 'DOCTOR_REPORT.md')
     const smokeReportPath = path.join(outputRoot, 'SMOKE_REPORT.md')
     const hostAdapterSnippetPath = path.join(outputRoot, 'HOST_ADAPTER_SNIPPET.md')
+    const pageContractReportPath = path.join(outputRoot, 'PAGE_CONTRACT_REPORT.md')
 
-    await writeHostAdapterSnippet({
-      outputRoot,
-      hostProfile,
-      recommendedModeOverride: recommendedMode,
-    })
-    await writeSmokeReport({
-      outputRoot,
+    if (!options.json) {
+      await writeHostAdapterSnippet({
+        outputRoot,
+        hostProfile,
+      })
+      await writeSmokeReport({
+        outputRoot,
+        targetRoot,
+        manifest,
+        doctorStatus: status,
+        mode,
+      })
+      await writePageContractReport({
+        outputRoot,
+        targetRoot,
+        findings: pageContractFindings,
+      })
+      await writeDoctorReport({
+        outputRoot,
+        targetRoot,
+        status,
+        checks,
+        summary,
+        assessment,
+        line: lineId,
+        manifestPath,
+        mode,
+        modeSource: modeResolution.source,
+        hostProfile,
+        hostAdapterSnippetPath,
+        reportSnapshot,
+      })
+    }
+
+    if (options.json) {
+      await writeDoctorReport({
+        outputRoot,
+        targetRoot,
+        status,
+        checks,
+        summary,
+        assessment,
+        line: lineId,
+        manifestPath,
+        mode,
+        modeSource: modeResolution.source,
+        hostProfile,
+        hostAdapterSnippetPath,
+        reportSnapshot,
+      })
+    }
+
+    const pageTaskGate = await syncPageTaskStatusFromDoctor({
       targetRoot,
-      manifest,
       doctorStatus: status,
+      doctorAssessment: assessment,
+      updatedBy: 'scripts/typical-page-doctor.mjs',
       mode,
-      baselineSpecPath,
-      baselineSpec,
-    })
-    await writeDoctorReport({
-      outputRoot,
-      targetRoot,
-      status,
-      checks,
-      summary,
-      line: lineId,
-      manifestPath,
-      mode,
-      recommendedMode,
+      reportSnapshot,
       hostProfile,
-      hostAdapterSnippetPath,
     })
 
     if (options.json) {
@@ -5440,20 +3652,28 @@ async function main() {
         JSON.stringify(
           {
             status,
-            currentPageReady,
             summary,
+            assessment,
             reportPath,
             smokeReportPath,
             hostAdapterSnippetPath,
+            pageContractReportPath,
             manifestPath,
-            baselineSpecPath,
+            reportSnapshot,
+            modeSource: modeResolution.source,
             checks,
+            pageContractFindings,
+            pageTaskGate,
           },
           null,
           2
         )
       )
-      return
+      return {
+        exitCode: 0,
+        reportMode: mode,
+        success: status !== 'fail',
+      }
     }
 
     console.log(`Typical Page Doctor: ${status.toUpperCase()}`)
@@ -5461,8 +3681,13 @@ async function main() {
     console.log(`- mode: ${mode}`)
     console.log(`- project type: ${hostProfile.projectType}`)
     console.log(`- framework: ${hostProfile.framework}`)
-    console.log(`- recommended mode: ${recommendedMode}`)
-    console.log(`- current-page delivery ready: ${currentPageReady ? 'yes' : 'no'}`)
+    console.log(`- host risk level: ${hostProfile.riskLevel || 'low'}`)
+    if (hostProfile.riskTags?.length) {
+      console.log(`- host risk tags: ${hostProfile.riskTags.join(', ')}`)
+    }
+    console.log(`- mode: ${mode}`)
+    console.log(`- mode source: ${modeResolution.source}`)
+    console.log(`- page task gate: ${pageTaskGate.transition}`)
     if (hostProfile.adapterDoc) {
       console.log(`- framework adapter guide: ${resolveAdapterGuideLabel(outputRoot, hostProfile.adapterDoc)}`)
     }
@@ -5472,8 +3697,15 @@ async function main() {
     console.log(`- host adapter snippet: ${hostAdapterSnippetPath}`)
     console.log(`- report: ${reportPath}`)
     console.log(`- smoke report: ${smokeReportPath}`)
+    console.log(`- page contract report: ${pageContractReportPath}`)
+    console.log(`- generatedAt: ${reportSnapshot.generatedAt}`)
+    console.log(`- packageJsonHash: ${reportSnapshot.packageJsonHash}`)
+    console.log(`- lockfile: ${reportSnapshot.lockfile}`)
+    console.log(`- lockfileHash: ${reportSnapshot.lockfileHash}`)
     console.log(`- passed: ${summary.passed}`)
     console.log(`- failed: ${summary.failed}`)
+    console.log(`- runtime baseline: ${formatAssessmentStatusLabel(assessment.runtimeBaseline.status)}`)
+    console.log(`- layout contract: ${formatAssessmentStatusLabel(assessment.layoutContract.status)}`)
     console.log('')
 
     for (const item of checks) {
@@ -5485,26 +3717,72 @@ async function main() {
     }
 
     console.log('')
-    if (status === 'pass') {
-      console.log('This project is ready to generate pages following the Figma typical-page rules.')
-    } else if (status === 'warn') {
-      console.log(
-        'Warnings remain. Treat the current page as not delivery-ready until every warning is cleared or proven unrelated to the current page.'
-      )
-    } else if (status === 'manual') {
-      console.log(
-        'Manual route or host integration work is still blocking delivery. Do not treat the current page as complete yet.'
-      )
-    } else {
-      console.log('Do not continue generating business pages yet. Fix the hard failures first.')
-      process.exit(1)
+    console.log(
+      `Runtime baseline: ${formatAssessmentStatusLabel(assessment.runtimeBaseline.status)}. ${assessment.runtimeBaseline.summary}`
+    )
+    console.log(
+      `Layout contract: ${formatAssessmentStatusLabel(assessment.layoutContract.status)}. ${assessment.layoutContract.summary}`
+    )
+    console.log(assessment.decision)
+    if (status === 'fail') {
+      return {
+        exitCode: 1,
+        reportMode: mode,
+        success: false,
+      }
     }
+
+    return {
+      exitCode: 0,
+      reportMode: mode,
+      success: status !== 'fail',
+    }
+}
+
+async function runCli() {
+  const rawArgs = process.argv.slice(2)
+  const options = parseArgs(rawArgs)
+  let usageSession = null
+  let reportMode = options.mode || 'auto'
+  let success = false
+  let exitCode = 1
+
+  try {
+    const targetRoot = path.resolve(options.target)
+    const scriptPath = fileURLToPath(import.meta.url)
+    const runtimeReset = await ensureProjectNodeRuntime({
+      targetRoot,
+      scriptPath,
+      scriptArgs: rawArgs,
+      preferLoginShell: true,
+    })
+    if (runtimeReset.reexecuted) {
+      process.exitCode = runtimeReset.exitCode ?? 0
+      return
+    }
+    usageSession = await startUsageSession({
+      prompt: options.telemetryPrompt,
+      promptFile: options.telemetryPromptFile,
+      reportMode,
+      source: 'typical-page-doctor',
+      targetRoot: options.target,
+    })
+    const result = await main(options)
+    reportMode = result.reportMode || reportMode
+    success = result.success === true
+    exitCode = Number.isInteger(result.exitCode) ? result.exitCode : 0
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     console.error(`typical-page-doctor failed: ${message}`)
     printUsage()
-    process.exit(1)
+  } finally {
+    await finalizeUsageSession(usageSession, {
+      reportMode,
+      success,
+    })
   }
+
+  process.exitCode = exitCode
 }
 
-await main()
+await runCli()

@@ -1,0 +1,1380 @@
+{
+  "status": "written",
+  "dryRun": false,
+  "mode": "host-integration",
+  "templatePass": {
+    "status": "pass",
+    "reasons": []
+  },
+  "engineeringPass": {
+    "status": "pass",
+    "reasons": []
+  },
+  "navigationFlowPass": {
+    "status": "pass",
+    "reasons": []
+  },
+  "businessSemanticPass": {
+    "status": "placeholder",
+    "reasons": [
+      "Current page is using page-type default business semantics. Writing can continue, but the generated fields and mock data should be reviewed before delivery.",
+      "placeholder business content was detected in index.tsx"
+    ],
+    "placeholderSignals": [
+      {
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/index.tsx",
+        "pattern": "\\bmock\\b"
+      }
+    ]
+  },
+  "technicalPass": {
+    "status": "pass",
+    "reasons": []
+  },
+  "businessPass": {
+    "status": "fail",
+    "reasons": [
+      "Current page is using page-type default business semantics. Writing can continue, but the generated fields and mock data should be reviewed before delivery.",
+      "placeholder business content was detected in index.tsx"
+    ]
+  },
+  "integrationReadiness": {
+    "status": "ready",
+    "ready": true,
+    "reason": "Project context is ready at /Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design.",
+    "contextRoot": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design",
+    "contextDirName": "hiui-design",
+    "checkedRoots": [
+      "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design"
+    ],
+    "missingMarkers": [],
+    "applyStatePath": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/outputs/HIUI_DESIGN_APPLY_STATE.json",
+    "applyProgressPath": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/outputs/HIUI_DESIGN_APPLY_PROGRESS.json",
+    "appliedMode": "host-integration",
+    "applyProgress": null,
+    "applyProgressParseError": "",
+    "compatibilityWarnings": [],
+    "hostCompatibility": {
+      "status": "ready",
+      "reason": "Host compatibility light gate passed. Page generation can proceed.",
+      "riskLevel": "medium",
+      "riskTags": [
+        "legacy-hiui-runtime",
+        "mixed-hiui-runtime"
+      ],
+      "hostProfile": {
+        "packageJsonPath": "/Users/guorui/Documents/ChatGPT/New project/package.json",
+        "pkg": {
+          "name": "new-project",
+          "private": true,
+          "version": "0.0.0",
+          "type": "module",
+          "scripts": {
+            "build": "vite build",
+            "dev": "vite",
+            "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+            "preview": "vite preview",
+            "typical-page:apply": "node \".local-context/hiui-design/scripts/apply-in-current-project.mjs\"",
+            "typical-page:apply:no-install": "node \".local-context/hiui-design/scripts/apply-in-current-project.mjs\" --no-install",
+            "typical-page:brief": "node \".local-context/hiui-design/scripts/generation-brief.mjs\"",
+            "typical-page:dependency-isolation-check": "node \".local-context/hiui-design/scripts/dependency-isolation-check.mjs\"",
+            "typical-page:designer-setup": "node \".local-context/hiui-design/scripts/setup-for-designers.mjs\"",
+            "typical-page:doctor": "node \".local-context/hiui-design/scripts/typical-page-doctor.mjs\"",
+            "typical-page:ensure": "node \".local-context/hiui-design/scripts/ensure-in-current-project.mjs\"",
+            "typical-page:execute:non-typical": "node \".local-context/hiui-design/scripts/execute-non-typical-page-task.mjs\"",
+            "typical-page:generate": "node \".local-context/hiui-design/scripts/generate-page-from-brief.mjs\"",
+            "typical-page:generate:single": "node \".local-context/hiui-design/scripts/generate-page.mjs\"",
+            "typical-page:integration-preflight": "node \".local-context/hiui-design/scripts/integration-preflight.mjs\"",
+            "typical-page:legacy-hiui5-bridge-autofix": "node \".local-context/hiui-design/scripts/legacy-hiui5-bridge-autofix.mjs\"",
+            "typical-page:legacy-mf-shared-contract-autofix": "node \".local-context/hiui-design/scripts/legacy-mf-shared-contract-autofix.mjs\"",
+            "typical-page:legacy-react-compat": "node \".local-context/hiui-design/scripts/legacy-react-compat-autofix.mjs\"",
+            "typical-page:managed-mf-host-contract-autofix": "node \".local-context/hiui-design/scripts/managed-mf-host-contract-autofix.mjs\"",
+            "typical-page:preflight": "node \".local-context/hiui-design/scripts/typical-page-preflight.mjs\""
+          },
+          "dependencies": {
+            "@ant-design/charts": "2.6.7",
+            "@hi-ui/avatar": "5.0.0-experimental.1",
+            "@hi-ui/classname": "5.0.0-experimental.0",
+            "@hi-ui/core": "5.0.0",
+            "@hi-ui/descriptions": "5.0.0-experimental.1",
+            "@hi-ui/ellipsis-tooltip": "5.0.0-experimental.1",
+            "@hi-ui/empty-state": "5.0.0-experimental.1",
+            "@hi-ui/hiui": "5.0.0-experimental.6",
+            "@hi-ui/icons": "5.0.0-experimental.1",
+            "@hi-ui/layout": "5.0.0-experimental.3",
+            "@hi-ui/loading": "5.0.0-experimental.1",
+            "@hi-ui/menu": "5.0.0-experimental.3",
+            "@hi-ui/patch-for-react": "5.0.0",
+            "@hi-ui/query-filter": "5.0.0-experimental.2",
+            "@hi-ui/schema-core": "4.0.0-experimental.10",
+            "@hi-ui/schema-fields": "4.0.0-experimental.12",
+            "@hi-ui/schema-form": "4.0.0-experimental.4",
+            "@hi-ui/schema-group": "4.0.0-experimental.7",
+            "@hi-ui/schema-table": "4.0.0-experimental.4",
+            "@hi-ui/textarea": "5.0.0-experimental.3",
+            "@hi-ui/tree": "5.0.0-experimental.4",
+            "@hi-ui/use-ref-state": "4.0.0-experimental.2",
+            "@hi-ui/use-subscription": "4.0.0-experimental.2",
+            "ahooks": "3.9.7",
+            "ahooks3": "npm:ahooks@3.9.7",
+            "hiui5": "npm:@hi-ui/hiui@5.0.0-experimental.6",
+            "hiui5-button": "npm:@hi-ui/button@5.0.0-experimental.1",
+            "hiui5-cascader": "npm:@hi-ui/cascader@>=5.0.0-experimental.3",
+            "hiui5-check-cascader": "npm:@hi-ui/check-cascader@>=5.0.0-experimental.2",
+            "hiui5-check-select": "npm:@hi-ui/check-select@>=5.0.0-experimental.5",
+            "hiui5-checkbox": "npm:@hi-ui/checkbox@>=5.0.0-experimental.1",
+            "hiui5-counter": "npm:@hi-ui/counter@>=5.0.0-experimental.2",
+            "hiui5-date-picker": "npm:@hi-ui/date-picker@5.0.0-experimental.3",
+            "hiui5-descriptions": "npm:@hi-ui/descriptions@5.0.0-canary.8",
+            "hiui5-drawer": "npm:@hi-ui/drawer@5.0.0-experimental.1",
+            "hiui5-ellipsis-tooltip": "npm:@hi-ui/ellipsis-tooltip@5.0.0-experimental.1",
+            "hiui5-empty-state": "npm:@hi-ui/empty-state@5.0.0-experimental.1",
+            "hiui5-form": "npm:@hi-ui/form@>=5.0.0-experimental.1",
+            "hiui5-input": "npm:@hi-ui/input@5.0.0-experimental.2",
+            "hiui5-loading": "npm:@hi-ui/loading@5.0.0-experimental.1",
+            "hiui5-message": "npm:@hi-ui/message@5.0.0-experimental.1",
+            "hiui5-number-input": "npm:@hi-ui/number-input@>=5.0.0-experimental.2",
+            "hiui5-page-header": "npm:@hi-ui/page-header@5.0.0-experimental.1",
+            "hiui5-preview": "npm:@hi-ui/preview@>=5.0.0-experimental.1",
+            "hiui5-radio": "npm:@hi-ui/radio@>=5.0.0-experimental.1",
+            "hiui5-select": "npm:@hi-ui/select@5.0.0-experimental.2",
+            "hiui5-switch": "npm:@hi-ui/switch@>=5.0.0-experimental.1",
+            "hiui5-table": "npm:@hi-ui/table@5.0.0-experimental.4",
+            "hiui5-tabs": "npm:@hi-ui/tabs@>=5.0.0-experimental.1",
+            "hiui5-tag": "npm:@hi-ui/tag@5.0.0-experimental.2",
+            "hiui5-textarea": "npm:@hi-ui/textarea@5.0.0-experimental.3",
+            "hiui5-tree-select": "npm:@hi-ui/tree-select@>=5.0.0-experimental.2",
+            "hiui5-upload": "npm:@hi-ui/upload@>=5.0.0-experimental.1",
+            "react": "^18.2.0",
+            "react-dom": "^18.2.0",
+            "react-router-dom": "6.30.3",
+            "sass-embedded": "^1.97.2"
+          },
+          "devDependencies": {
+            "@types/react": "^18.2.15",
+            "@types/react-dom": "^18.2.7",
+            "@vitejs/plugin-react": "^4.0.3",
+            "eslint": "^8.45.0",
+            "eslint-plugin-react": "^7.32.2",
+            "eslint-plugin-react-hooks": "^4.6.0",
+            "eslint-plugin-react-refresh": "^0.4.3",
+            "vite": "^4.4.5"
+          }
+        },
+        "projectType": "greenfield",
+        "framework": "react-vite-router",
+        "runtime": "vite-react",
+        "routing": "react-router",
+        "sourceCount": 2,
+        "existingStructureMarkers": [],
+        "existingStructureSummary": [],
+        "viteConfigPath": "/Users/guorui/Documents/ChatGPT/New project/vite.config.js",
+        "umiConfigPath": "",
+        "umiAppPath": "",
+        "umiLayoutPath": "",
+        "nextConfigPath": "",
+        "nextAppLayoutPath": "",
+        "nextPagesAppPath": "",
+        "rspackConfigPath": "",
+        "webpackConfigPath": "",
+        "hasMicroFrontend": false,
+        "hasModuleFederation": false,
+        "moduleFederationConfigPath": "",
+        "reactSpec": "^18.2.0",
+        "reactDomSpec": "^18.2.0",
+        "installedReactVersion": "18.3.1",
+        "installedReactDomVersion": "18.3.1",
+        "reactMajor": 18,
+        "legacyReactRuntime": false,
+        "reactDomClientAliasConfigPath": "",
+        "reactDomClientShimPath": "",
+        "hasReactDomClientCompatAlias": false,
+        "reactJsxRuntimeAliasConfigPath": "",
+        "reactJsxRuntimeShimPath": "",
+        "hasReactJsxRuntimeCompatAlias": false,
+        "hiuiFacts": {
+          "directDependencyCount": 22,
+          "legacyDirectCount": 7,
+          "modernDirectCount": 15,
+          "hasLegacyRuntimePackages": true,
+          "hasModernRuntimePackages": true,
+          "hasMixedRuntimePackages": true,
+          "sampleLegacyPackages": [
+            "@hi-ui/schema-core@4.0.0-experimental.10",
+            "@hi-ui/schema-fields@4.0.0-experimental.12",
+            "@hi-ui/schema-form@4.0.0-experimental.4",
+            "@hi-ui/schema-group@4.0.0-experimental.7",
+            "@hi-ui/schema-table@4.0.0-experimental.4"
+          ],
+          "sampleModernPackages": [
+            "@hi-ui/avatar@5.0.0-experimental.1",
+            "@hi-ui/classname@5.0.0-experimental.0",
+            "@hi-ui/core@5.0.0",
+            "@hi-ui/descriptions@5.0.0-experimental.1",
+            "@hi-ui/ellipsis-tooltip@5.0.0-experimental.1"
+          ]
+        },
+        "riskLevel": "medium",
+        "riskTags": [
+          "legacy-hiui-runtime",
+          "mixed-hiui-runtime"
+        ],
+        "strategy": "bring-shell",
+        "reason": "Target project looks like a greenfield React/Vite app. The managed host baseline and official source assets are usually easier to wire here, while official preview still stays in the packaged preview runtime; the install mode should still be chosen from explicit input or recorded appliedMode first, then fall back to the compatibility-bridge probe.",
+        "adapterDoc": "",
+        "adapterEntryHints": [],
+        "readmePath": "/Users/guorui/Documents/ChatGPT/New project/README.md",
+        "remoteOnlyRuntime": {
+          "enabled": false,
+          "rootPathMay404": false,
+          "readmePath": "README.md",
+          "localOrigins": [],
+          "remoteEntryFilenames": [],
+          "mentionsCamora": false,
+          "mentionsProxy": false,
+          "reason": "",
+          "verificationHints": []
+        },
+        "remoteDebugContract": {
+          "enabled": false,
+          "mode": "",
+          "readmePath": "README.md",
+          "localOrigins": [],
+          "localRuntimeUrls": [],
+          "localRuntimeSources": [],
+          "remoteEntryFilenames": [],
+          "camoraProxyRules": [],
+          "mentionsCamora": false,
+          "hasCamoraDebugHint": false,
+          "mentionsProxy": false,
+          "hasExplicitRuntimeDebugEvidence": false,
+          "runtimeSourceStatus": "not-applicable",
+          "reason": "",
+          "verificationHints": []
+        }
+      },
+      "checks": [
+        {
+          "id": "host-profile",
+          "status": "pass",
+          "detail": "Detected greenfield/react-vite-router with risk=medium."
+        },
+        {
+          "id": "node-runtime-compatibility",
+          "status": "pass",
+          "detail": "No project Node policy was declared. Launcher Node is 16.20.2."
+        },
+        {
+          "id": "shared-runtime-direct-dependencies",
+          "status": "pass",
+          "detail": "App entry imports shared runtime direct dependencies, and package.json plus installed modules satisfy the contract: @hi-ui/patch-for-react."
+        },
+        {
+          "id": "schema-types-alias",
+          "status": "pass",
+          "detail": "Detected @hi-ui/schema-types alias in vite.config.js."
+        },
+        {
+          "id": "react-patch-import",
+          "status": "pass",
+          "detail": "Detected @hi-ui/patch-for-react import in src/main.jsx."
+        },
+        {
+          "id": "react-dom-client-compat",
+          "status": "pass",
+          "detail": "Detected React 18, which satisfies the react-dom/client managed shell baseline."
+        },
+        {
+          "id": "legacy-hiui-import-density",
+          "status": "pass",
+          "detail": "Detected 0 files importing legacy @hi-ui/hiui/es entrypoints."
+        },
+        {
+          "id": "public-shell-viewport-compatibility",
+          "status": "pass",
+          "detail": "Public shell viewport compatibility looks ready through src/App.css, src/components/hiui-design-runtime/styles.css, src/index.css."
+        }
+      ],
+      "blockingChecks": [],
+      "warnings": [],
+      "nextAction": "allow-page-generation",
+      "legacyHiuiImportFiles": 0,
+      "legacyHiuiImportMatches": 0,
+      "legacyHiuiImportSamples": [],
+      "formalHostProfile": {
+        "layoutMode": "unknown",
+        "headerSlotPolicy": "no-header-slot",
+        "hostProviderBridge": true,
+        "continuousHeightChain": false,
+        "contentOutletPath": "official-shell-root",
+        "scrollOwner": "unknown",
+        "rightViewportGutterPx": 16,
+        "leftGapPxWhenMenuCollapsed": 16,
+        "evidenceFiles": [
+          "src/components/hiui-design-runtime/typical-page-host/index.js"
+        ]
+      },
+      "managedHostContract": {
+        "status": "missing",
+        "contractPath": "",
+        "contractRelativePath": "",
+        "contract": null,
+        "errors": [],
+        "reason": "No managed host contract file was found. Falling back to legacy source heuristics for formal host detection.",
+        "evidenceFiles": []
+      },
+      "publicShell": {
+        "status": "ready",
+        "reason": "Public shell viewport compatibility looks ready through src/App.css, src/components/hiui-design-runtime/styles.css, src/index.css.",
+        "entryFile": "src/main.jsx",
+        "styleFiles": [
+          "src/App.css",
+          "src/components/hiui-design-runtime/styles.css",
+          "src/index.css"
+        ],
+        "issueCount": 0,
+        "blockedBy": [],
+        "issues": []
+      }
+    }
+  },
+  "integrationPolicy": {
+    "gate": "ready-to-generate",
+    "pageTaskGateStatus": "ready-to-generate",
+    "pageTaskGateReason": "",
+    "pageTaskGateNextCommand": "",
+    "pageTaskGateNextRequiredAction": "",
+    "pageTaskGateStaleInputs": [],
+    "pageTaskGateCanAutoRecover": false,
+    "pageTaskGateContractSnapshotId": "",
+    "mustAutoEnsureOrStopWhenIntegrationMissing": false,
+    "mustStopWhenPageTaskGateClosed": false,
+    "forbidHostCompatibilityFallbackWhenIntegrationMissing": false,
+    "forbiddenIntegrationFallbacks": []
+  },
+  "ensureSummary": {
+    "attempted": false,
+    "command": "",
+    "projectLocalCommand": "",
+    "output": ""
+  },
+  "inputMode": {
+    "id": "page-prompt",
+    "label": "页面提示词",
+    "evidenceType": "structured-intent"
+  },
+  "confirmedDesignRestoreInput": null,
+  "confirmationPolicy": {
+    "mode": "",
+    "requiresChatConfirmation": false,
+    "confirmedPageFamily": "",
+    "confirmedPageType": "",
+    "finalPromptAvailable": false
+  },
+  "pageFamilyContract": {
+    "id": "typical-page",
+    "label": "典型页面",
+    "supportsBusinessSlotReplacement": true,
+    "supportsLocalAdjustment": true,
+    "supportedAdaptationModes": [
+      "family-default",
+      "local-adjustment"
+    ],
+    "independentWorkflowCategory": "rule-driven-workflow",
+    "legacyRefactorContractMode": "none",
+    "workflowManifestPath": "",
+    "archetypeManifestPath": "",
+    "coordinationPatternManifestPath": "",
+    "description": "Typical pages default to official-template business-slot replacement, and may use controlled local adjustment when the base shell still remains dominant."
+  },
+  "migrationInvariantContract": null,
+  "analyticsRefactorContract": null,
+  "analyticsRefactorViewModel": null,
+  "resolvedHostGenerationContract": {
+    "status": "ready",
+    "scope": "new-generated-pages-and-support-files-only",
+    "affectsExistingPages": false,
+    "visualImportMode": "hiui5-root",
+    "visualImportSource": "hiui5",
+    "visualSplitAliasMap": {},
+    "visualRewritePlan": {
+      "status": "not-needed",
+      "rootImportSource": "hiui5",
+      "rewrites": []
+    },
+    "fieldMapProviderMode": "official-shell-import",
+    "fieldMapProviderCompatibility": {
+      "enabled": false,
+      "strategy": "official-shell-import",
+      "reason": "Current host does not match the managed high-risk legacy Module Federation downgrade profile; keep the official shell import.",
+      "supportFile": null,
+      "evidence": []
+    },
+    "hookImportMode": "project-default",
+    "hookImportName": "usePersistFn",
+    "hookImportSource": "ahooks",
+    "hookRewritePlan": {
+      "status": "not-needed",
+      "supportFileImports": [
+        {
+          "symbolName": "usePersistFn",
+          "importKind": "named",
+          "importSource": "ahooks"
+        },
+        {
+          "symbolName": "TextArea",
+          "sourcePackage": "@hi-ui/textarea",
+          "importKind": "default",
+          "importSource": "@hi-ui/textarea"
+        }
+      ]
+    },
+    "highRiskLegacyModuleFederationHost": false,
+    "evidence": [
+      "react-vite-router",
+      "medium",
+      "legacy-hiui-runtime",
+      "mixed-hiui-runtime"
+    ],
+    "reasons": [
+      "Current host does not match the managed high-risk legacy Module Federation profile. Keep the clean-host default contract for new generated pages.",
+      "Existing legacy project pages remain untouched; the contract applies only to new hiui-design generated pages and generated local support files."
+    ]
+  },
+  "fieldMapProviderCompatibility": {
+    "enabled": false,
+    "strategy": "official-shell-import",
+    "reason": "Current host does not match the managed high-risk legacy Module Federation downgrade profile; keep the official shell import.",
+    "supportFile": null,
+    "evidence": []
+  },
+  "copyMode": "direct-copy",
+  "generationPath": {
+    "id": "standard-template-direct-output",
+    "label": "标准模板直出",
+    "category": "template-direct-output",
+    "reason": "The official template already covers the page shape, so generation can remain inside managed business-slot replacement."
+  },
+  "contentGenerationMode": "business-slot-replacement",
+  "templateUsageMode": "official-template-copy",
+  "workflow": {
+    "kind": "typical-template",
+    "defaultFlow": "official-template-copy-and-replace-business-slots",
+    "replaceBusinessSlotsByDefault": true,
+    "generatorMode": "direct-copy",
+    "contentGenerationMode": "business-slot-replacement",
+    "defaultAuthoringPath": "",
+    "templateUsageMode": "official-template-copy",
+    "requiredModuleSet": [],
+    "fixedRegions": [],
+    "referenceModules": [],
+    "description": "",
+    "manualRefactorOwners": [],
+    "sectionLayoutSemantics": {},
+    "chartLayoutPlanningRequired": false,
+    "chartReusePolicy": "",
+    "stopAutoReplacementReason": ""
+  },
+  "pageType": {
+    "id": "table-basic",
+    "label": "普通表格",
+    "pageFamily": "typical-page",
+    "kind": "list",
+    "whenToUse": "常规筛选 + 表格 + 分页",
+    "shell": "TablePageFrame",
+    "docEntry": "docs/generation/figma-pages/basic-table.md",
+    "sharedDocs": [
+      "docs/generation/figma-pages/table-shared.md"
+    ],
+    "smokePath": "table/common/basic"
+  },
+  "projectHostContract": {
+    "required": true,
+    "status": "ready",
+    "path": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/outputs/PROJECT_HOST_CONTRACT.json",
+    "schema": "hiui-design-project-host-contract.v1",
+    "hostFamily": "greenfield-first-shell",
+    "publishMechanism": "unknown",
+    "defaultBusinessPageDir": "",
+    "generatedAt": "2026-10-29T06:04:54.316Z",
+    "fingerprintSource": "host-evidence-files",
+    "fingerprintValue": "69b090796fe3eb76746677f979305dd07f24de9ec0e019dea86a9f2c03fa226f",
+    "evidenceFiles": [
+      "src/main.jsx",
+      "src/business-shell/app-frame.tsx",
+      "src/business-shell/routes.tsx"
+    ],
+    "executionContractKind": "greenfield-first-shell",
+    "executionContractConfirmationStatus": "ready-to-materialize",
+    "hostExecutionAdapterKind": "",
+    "formalNavigationReady": true,
+    "pageTaskGateStatus": "ready-to-generate",
+    "consumptionPolicy": "contract-first-no-main-path-rescan"
+  },
+  "outputTargetEvidence": {
+    "selectedSource": "generation-target-policy",
+    "rawDest": "src/pages/supplier-management",
+    "targetBusinessPathSource": "raw-dest",
+    "derivedDefaultBusinessPageDir": "src/pages",
+    "projectHostContractDefaultBusinessPageDir": "",
+    "navigationContractDerivedDir": "",
+    "relatedPagePath": "",
+    "relatedPageAccepted": false,
+    "relatedPageDir": "",
+    "relatedPageSource": "",
+    "relatedPageRejectedReasons": [],
+    "implicitFeatureBaseDir": "",
+    "policyDefaultBusinessPageDir": "src/pages"
+  },
+  "primaryPageLink": "",
+  "primaryBusinessPageLink": "",
+  "linkSource": "blocked-local-route",
+  "primaryPageLinkBlockedReason": "Local business route link requires an explicit localOrigin in README.md; do not default to localhost:5173.",
+  "primaryPageLinkRuntimeReadiness": "",
+  "primaryPageLinkCaveat": "",
+  "sourceTemplatePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/basic-table.tsx",
+  "sourceStylePath": "",
+  "navigationMountAction": {
+    "action": "create-formal-shell-and-mount-entry",
+    "targetShellPath": "src/business-shell/app-frame.tsx",
+    "targetRegistryPath": "src/business-shell/routes.tsx",
+    "appEntryPath": "src/main.jsx",
+    "pageRoutePath": "suppliers",
+    "menuTitle": "供应商管理",
+    "mustDoBeforePageCode": true,
+    "reason": "Create the first managed shell and registry, then mount that registry in the real app entry before writing page code.",
+    "entryMountStrategy": "replace-minimal-reactdom-entry-with-formal-business-shell-router"
+  },
+  "parentFlowPatchStatus": "not-applicable",
+  "manualPatchSuggestion": null,
+  "backNavigationStrategy": "",
+  "hostExecutionAdapter": null,
+  "styleDeliveryDecision": {
+    "owner": "project-entry",
+    "mode": "project-entry-shell",
+    "proofSource": [
+      "navigation-mount-action:app-entry-path"
+    ],
+    "styleImportPath": "src/components/hiui-design-runtime/styles.css",
+    "effectiveEntryPath": "src/main.jsx",
+    "verifiedBy": [
+      "project-entry-style-import"
+    ],
+    "reason": "The project app entry is the confirmed delivery owner for this flow, so it should carry the managed runtime styles once.",
+    "pageRelationKind": "publish-unit",
+    "hostExecutionAdapterKind": ""
+  },
+  "mfPublishEntryPath": "",
+  "mfPublishEntryManaged": false,
+  "mfPublishEntryShellStyles": false,
+  "mfExposeTargetPath": "",
+  "mfExposeUsesManagedPublishEntry": false,
+  "managedMfPublishEntry": {
+    "required": false,
+    "path": "",
+    "fileName": "",
+    "importsShellStyles": false,
+    "importsReactCompatPatch": false,
+    "appEntryPath": ""
+  },
+  "navigationExecution": {
+    "blocked": false,
+    "status": "ready",
+    "blockedBy": [],
+    "reason": "",
+    "requiresManualNavigationRegistration": false
+  },
+  "formalHostShell": {
+    "status": "materialize-official-formal-host-shell",
+    "materializationStrategy": "thin-wrapper-over-managed-local-runtime",
+    "targetShellPath": "src/business-shell/app-frame.tsx",
+    "targetRegistryPath": "src/business-shell/routes.tsx",
+    "files": [
+      {
+        "sourcePath": "hiui-design:generated-formal-business-app-frame",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "hiui-design:generated-formal-business-routes",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/routes.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/app-frame-core.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame-core.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/layout-content-context.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/layout-content-context.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-shell-localization.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-shell-localization.ts",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/typical-page-host.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/typical-page-host.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/route-base-path.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/route-base-path.ts",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-reset.css",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-reset.css",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/page-header-portal.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/page-header-portal.tsx",
+        "artifactClass": ""
+      },
+      {
+        "sourcePath": "hiui-design:generated-formal-business-app-entry",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/main.jsx",
+        "artifactClass": ""
+      }
+    ]
+  },
+  "destDir": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management",
+  "generatedAt": "2026-10-29T06:04:54.299Z",
+  "plannedFileCount": 136,
+  "writtenFileCount": 18,
+  "skippedIdenticalFileCount": 118,
+  "managedRuntimeFilesPlanned": 118,
+  "managedRuntimeFilesWritten": 0,
+  "managedRuntimeFilesSkippedAsIdentical": 118,
+  "managedRuntimeWrittenFileCount": 0,
+  "files": [
+    {
+      "sourcePath": "hiui-design:generated-formal-business-app-frame",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame.tsx",
+      "artifactClass": "page-support"
+    },
+    {
+      "sourcePath": "hiui-design:generated-formal-business-routes",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/routes.tsx",
+      "artifactClass": "page-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/app-frame-core.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame-core.tsx",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/layout-content-context.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/layout-content-context.tsx",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-shell-localization.ts",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-shell-localization.ts",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/typical-page-host.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/typical-page-host.tsx",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/route-base-path.ts",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/route-base-path.ts",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-reset.css",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-reset.css",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/page-header-portal.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/page-header-portal.tsx",
+      "artifactClass": "formal-host-support"
+    },
+    {
+      "sourcePath": "hiui-design:generated-formal-business-app-entry",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/main.jsx",
+      "artifactClass": "page-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/index.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/index.tsx",
+      "artifactClass": "page-owned-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/index.module.scss",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/index.module.scss",
+      "artifactClass": "page-owned-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/shared-header-node.ts",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/shared-header-node.ts",
+      "artifactClass": "page-owned-support"
+    },
+    {
+      "sourcePath": "hiui-design:generated-page-local-mock-module",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/mock.ts",
+      "artifactClass": "business-mock-data"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/basic-table.tsx",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/index.tsx",
+      "artifactClass": "business-page-source"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/data-visualization/request-utils.ts",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/data-visualization/request-utils.ts",
+      "artifactClass": "page-support"
+    },
+    {
+      "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/page-localization.ts",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-localization.ts",
+      "artifactClass": "page-localization-support"
+    },
+    {
+      "sourcePath": "hiui-design:generated-metadata",
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/hiui-pagegen.meta.json",
+      "artifactClass": "generation-meta"
+    }
+  ],
+  "generatedOutputSanity": {
+    "ok": true,
+    "violations": []
+  },
+  "preWriteDecisionSanity": {
+    "ok": true,
+    "violations": [],
+    "coverageDecision": {
+      "status": "legacy-contract-without-managed-coverage",
+      "pageType": "table-basic",
+      "matchedManifestPath": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/docs/generation/page-types.manifest.json",
+      "managedRegions": [],
+      "businessSlots": [
+        "title",
+        "queryFields",
+        "tableFields",
+        "searchPlaceholder",
+        "listRequest",
+        "headerActions",
+        "mockData"
+      ],
+      "coveredRegions": [],
+      "uncoveredUi": [],
+      "escapeHatches": [],
+      "unexpectedStructures": [],
+      "adjustmentHandling": "template-only",
+      "stopReason": "",
+      "approvedBypass": null,
+      "managedByTemplate": true,
+      "hasManagedCoverageContract": false,
+      "evidence": [
+        "baseTemplatePath:examples/host-integration/src/pages/basic-table.tsx",
+        "requiredShell:TablePageFrame"
+      ],
+      "pageTypeId": "table-basic",
+      "requiredDecisions": {
+        "componentDecision": false,
+        "tokenDecision": false
+      }
+    },
+    "pageAdjustmentDecision": {
+      "status": "not-requested",
+      "supported": true,
+      "source": "",
+      "contract": null,
+      "specPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/docs/generation/page-variant-contract.json",
+      "specVersion": 2,
+      "validation": {
+        "status": "not-requested",
+        "violations": []
+      }
+    },
+    "pageAdjustmentExecution": {
+      "status": "not-requested",
+      "mode": "not-requested",
+      "transformType": "none",
+      "supportedRegions": [],
+      "selectedRegion": "",
+      "message": "No pageAdjustmentContract was provided."
+    },
+    "navigationMountAction": {
+      "action": "create-formal-shell-and-mount-entry",
+      "targetShellPath": "src/business-shell/app-frame.tsx",
+      "targetRegistryPath": "src/business-shell/routes.tsx",
+      "appEntryPath": "src/main.jsx",
+      "pageRoutePath": "suppliers",
+      "menuTitle": "供应商管理",
+      "mustDoBeforePageCode": true,
+      "reason": "Create the first managed shell and registry, then mount that registry in the real app entry before writing page code.",
+      "entryMountStrategy": "replace-minimal-reactdom-entry-with-formal-business-shell-router"
+    },
+    "hostImportPolicy": {
+      "contextPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/.context.jsonc",
+      "hiui5Components": "hiui5",
+      "typicalPageShells": "local-managed-runtime",
+      "icons": "@hi-ui/icons",
+      "allowedVisualImportSources": [
+        "hiui5",
+        "local-managed-runtime",
+        "local-managed-runtime/pro-list-page",
+        "local-managed-runtime/pro-stat-page",
+        "local-managed-runtime/pro-table-page",
+        "local-managed-runtime/pro-detail-page",
+        "local-managed-runtime/pro-edit-page",
+        "local-managed-runtime/pro-form-drawer",
+        "local-managed-runtime/pro-detail-drawer",
+        "local-managed-runtime/pro-tree-split-page",
+        "local-managed-runtime/host",
+        "@hi-ui/icons",
+        "@hi-ui/schema-core"
+      ],
+      "templateInternalAllowedVisualImportSources": [
+        "@hi-ui/query-filter"
+      ],
+      "forbiddenNewVisualImports": [
+        "@hi-ui/hiui",
+        "@hi-ui/tag",
+        "@hi-ui/button",
+        "@hi-ui/table",
+        "@hi-ui/pagination",
+        "@hi-ui/input",
+        "@hi-ui/select",
+        "@hi-ui/date-picker"
+      ]
+    },
+    "resolvedHostGenerationContract": {
+      "status": "ready",
+      "scope": "new-generated-pages-and-support-files-only",
+      "affectsExistingPages": false,
+      "visualImportMode": "hiui5-root",
+      "visualImportSource": "hiui5",
+      "visualSplitAliasMap": {},
+      "visualRewritePlan": {
+        "status": "not-needed",
+        "rootImportSource": "hiui5",
+        "rewrites": []
+      },
+      "fieldMapProviderMode": "official-shell-import",
+      "fieldMapProviderCompatibility": {
+        "enabled": false,
+        "strategy": "official-shell-import",
+        "reason": "Current host does not match the managed high-risk legacy Module Federation downgrade profile; keep the official shell import.",
+        "supportFile": null,
+        "evidence": []
+      },
+      "hookImportMode": "project-default",
+      "hookImportName": "usePersistFn",
+      "hookImportSource": "ahooks",
+      "hookRewritePlan": {
+        "status": "not-needed",
+        "supportFileImports": [
+          {
+            "symbolName": "usePersistFn",
+            "importKind": "named",
+            "importSource": "ahooks"
+          },
+          {
+            "symbolName": "TextArea",
+            "sourcePackage": "@hi-ui/textarea",
+            "importKind": "default",
+            "importSource": "@hi-ui/textarea"
+          }
+        ]
+      },
+      "highRiskLegacyModuleFederationHost": false,
+      "evidence": [
+        "react-vite-router",
+        "medium",
+        "legacy-hiui-runtime",
+        "mixed-hiui-runtime"
+      ],
+      "reasons": [
+        "Current host does not match the managed high-risk legacy Module Federation profile. Keep the clean-host default contract for new generated pages.",
+        "Existing legacy project pages remain untouched; the contract applies only to new hiui-design generated pages and generated local support files."
+      ]
+    }
+  },
+  "dependencyIsolation": {
+    "status": "pass",
+    "checkedPackages": 59
+  },
+  "businessSlotSemanticReadiness": {
+    "status": "review-required",
+    "ready": true,
+    "blockedBy": [],
+    "warningBy": [
+      "page-type-default-fallback"
+    ],
+    "reason": "Current page is using page-type default business semantics. Writing can continue, but the generated fields and mock data should be reviewed before delivery.",
+    "recommendedAction": "review-generated-business-semantics",
+    "evidence": [
+      "page-type-default-fallback",
+      "title-derived-business-entity"
+    ],
+    "requiresReview": true
+  },
+  "businessPlaceholderSignals": [
+    {
+      "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/index.tsx",
+      "pattern": "\\bmock\\b"
+    }
+  ],
+  "artifactSummary": {
+    "totalFiles": 18,
+    "classes": [
+      "business-mock-data",
+      "business-page-source",
+      "formal-host-support",
+      "generation-meta",
+      "page-localization-support",
+      "page-owned-support",
+      "page-support"
+    ],
+    "countsByClass": {
+      "page-support": 4,
+      "formal-host-support": 7,
+      "page-owned-support": 3,
+      "business-mock-data": 1,
+      "business-page-source": 1,
+      "page-localization-support": 1,
+      "generation-meta": 1
+    },
+    "businessSemanticArtifactClasses": [
+      "business-page-source",
+      "business-mock-data"
+    ],
+    "businessSemanticArtifactCount": 2
+  },
+  "plannedArtifactSummary": {
+    "totalFiles": 136,
+    "classes": [
+      "business-mock-data",
+      "business-page-source",
+      "formal-host-support",
+      "generation-meta",
+      "managed-runtime",
+      "page-localization-support",
+      "page-owned-support",
+      "page-support"
+    ],
+    "countsByClass": {
+      "page-support": 4,
+      "formal-host-support": 7,
+      "page-owned-support": 3,
+      "business-mock-data": 1,
+      "business-page-source": 1,
+      "page-localization-support": 1,
+      "generation-meta": 1,
+      "managed-runtime": 118
+    },
+    "businessSemanticArtifactClasses": [
+      "business-page-source",
+      "business-mock-data"
+    ],
+    "businessSemanticArtifactCount": 2,
+    "countsByCategory": {
+      "managedRuntime": 118
+    }
+  },
+  "artifactWritePlan": {
+    "status": "all-artifacts-writable",
+    "canWrite": true,
+    "reason": "",
+    "blockedBy": [],
+    "writableFiles": [
+      {
+        "sourcePath": "hiui-design:generated-formal-business-app-frame",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame.tsx",
+        "content": "import { type ReactNode } from 'react'\nimport {\n  type AppRouteLike as CoreBusinessRouteObject,\n  type ShellOptions as CoreBusinessShellOptions,\n  TypicalPageAppFrameCore,\n} from \"./app-frame-core\"\nimport { businessShellOptions as defaultBusinessShellOptions } from \"./routes\"\n\nexport type BusinessRouteObject = CoreBusinessRouteObject\nexport type BusinessShellOptions = CoreBusinessShellOptions\n\nexport const hiuiDesignFormalShell = 'official-managed-host-shell-wrapper'\n\n// Keep the first formal business shell as a thin wrapper over the managed official host core.\nexport function TypicalPageAppFrame({\n  routes,\n  children,\n  shellOptions,\n}: {\n  routes: BusinessRouteObject[]\n  children: ReactNode\n  shellOptions?: BusinessShellOptions\n}) {\n  const mergedShellOptions: BusinessShellOptions = {\n    ...defaultBusinessShellOptions,\n    ...(shellOptions ?? {}),\n  }\n\n  return (\n    <TypicalPageAppFrameCore routes={routes} shellOptions={mergedShellOptions}>\n      {children}\n    </TypicalPageAppFrameCore>\n  )\n}\n\nexport function BusinessAppFrame(props: {\n  routes: BusinessRouteObject[]\n  children: ReactNode\n  shellOptions?: BusinessShellOptions\n}) {\n  return <TypicalPageAppFrame {...props} />\n}\n\nexport default BusinessAppFrame\n",
+        "artifactClass": "page-support"
+      },
+      {
+        "sourcePath": "hiui-design:generated-formal-business-routes",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/routes.tsx",
+        "content": "import { AppStoreFilled } from '@hi-ui/icons'\nimport { type ReactNode } from 'react'\nimport GeneratedBusinessPage from \"../pages/supplier-management\"\n\ntype BusinessRouteObject = {\n  title?: string\n  path?: string\n  icon?: ReactNode\n  showInMenu?: boolean\n  children?: BusinessRouteObject[]\n  element?: ReactNode\n}\n\ntype BusinessShellOptions = {\n  brandTitle?: string\n  profileName?: string\n  profileEmail?: string\n  routeBasePath?: string\n}\n\nconst BUSINESS_NAVIGATION_GROUP_TITLE = '业务导航'\nconst FIRST_GENERATED_BUSINESS_ROUTE_TITLE = \"供应商管理\"\nconst FIRST_GENERATED_BUSINESS_ROUTE_PATH = \"suppliers\"\n\nexport const businessShellOptions: BusinessShellOptions = {\n  brandTitle: \"业务工作台\",\n}\n\nexport const businessRoutes: BusinessRouteObject[] = [\n  {\n    title: BUSINESS_NAVIGATION_GROUP_TITLE,\n    icon: <AppStoreFilled />,\n    children: [\n      {\n        title: FIRST_GENERATED_BUSINESS_ROUTE_TITLE,\n        path: FIRST_GENERATED_BUSINESS_ROUTE_PATH,\n        element: <GeneratedBusinessPage />,\n      },\n    ],\n  },\n]\n\nexport const businessRouteChildren = businessRoutes.flatMap((route) => route.children ?? [])\nexport const businessLandingPath = `/${FIRST_GENERATED_BUSINESS_ROUTE_PATH}`\n\nexport default businessRoutes\n",
+        "artifactClass": "page-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/app-frame-core.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/app-frame-core.tsx",
+        "content": "import React from \"react\";\nimport ReactDOM from \"react-dom\";\nimport Avatar from \"@hi-ui/avatar\";\nimport { EllipsisTooltip, IconButton } from \"@hi-ui/hiui\";\nimport Layout, {\n  ActionItem,\n  AppListPopover,\n  FloatMenuContainer,\n  ProfilePopover,\n  SearchTrigger,\n  Sider,\n} from \"@hi-ui/layout\";\nimport { GroupMenu, SideMenu, useSideMenuCascade } from \"@hi-ui/menu\";\nimport {\n  FeedbackColorful,\n  MenuOutlined,\n  QuestionCircleFilled,\n} from \"@hi-ui/icons\";\nimport type { ReactNode } from \"react\";\nimport { matchPath, useLocation, useNavigate } from \"react-router-dom\";\nimport {\n  LayoutContentProvider,\n  type LayoutContentContextValue,\n} from \"./components/layout/layout-content-context\";\nimport { useHostShellLocalization } from \"./host-shell-localization\";\nimport { TypicalPageHostBridge } from \"./components/layout/typical-page-host\";\nimport { buildNavigationPath, stripRouteBasePath } from \"./route-base-path\";\nimport \"./host-reset.css\";\n\nexport type AppRouteLike = {\n  title?: string;\n  path?: string;\n  icon?: ReactNode;\n  showInMenu?: boolean;\n  children?: AppRouteLike[];\n  element?: ReactNode;\n};\n\nexport type ShellOptions = {\n  brandTitle?: string;\n  profileName?: string;\n  profileEmail?: string;\n  routeBasePath?: string;\n};\n\nexport const hiuiDesignHeaderSlotPolicy = \"collapses-when-empty\";\n\ntype MenuDataItem = {\n  id: string;\n  title: ReactNode;\n  icon?: ReactNode;\n  children?: MenuDataItem[];\n};\n\ntype RouteKey = string | number;\n\nconst APP_LIST_ITEMS = [\n  {\n    id: \"sales-system\",\n    titleKey: \"销售系统\",\n    iconBgColor: \"BLUE\",\n    icon: \"销\",\n  },\n  {\n    id: \"after-sales-system\",\n    titleKey: \"售后系统\",\n    iconBgColor: \"CYAN\",\n    icon: \"售\",\n  },\n  {\n    id: \"customer-service-system\",\n    titleKey: \"客服系统\",\n    iconBgColor: \"GREEN\",\n    icon: \"客\",\n  },\n] as const;\n\nfunction hasSharedHeaderSlotContent(node: HTMLDivElement | null) {\n  if (!node) return false;\n\n  return (\n    node.childElementCount > 0 ||\n    Array.from(node.childNodes).some((childNode) => {\n      if (childNode.nodeType === Node.TEXT_NODE) {\n        return Boolean(childNode.textContent?.trim());\n      }\n\n      return childNode.nodeType === Node.ELEMENT_NODE;\n    })\n  );\n}\n\nconst EXAMPLE_LOGO_SRC = [\n  \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAAB\",\n  \"AAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAMKADAAQAAAABAAAAMAAAAADbN2wMAAAIrUlEQVRoBc1afYxdRRWfc+99+2HbdUtQoKKN6WLLNjTSisB/YKkmkLJsyNYYtgkfbfwH\",\n  \"UoohxKjdVyBRawJG/zKxEk2NiR+FJUJNm1BJNKQJ4B9N69KuGiJ2kUYK+8ru2/fuvePvN3Pn9X3c+967u5uGae+bmTPnnPmdM2c+7twVtQzp1md0//lSdIfW\",\n  \"eqsotV4pPaSUrIbqVYn6EmgXQJtGfQr58U8N+Mdee0zml9o9+ltcuuH7evX8QjQKYHdrpbYprT+RS5PIHDo/Kkom+3r9yZPfFhiYP+U2YNOP9IqP5sJHlVaP\",\n  \"A/Qn83fZKiEiJQA5MKCCZ94oylwrRzalawO2/EwXPpyp7tZKvgfgV2erXEKLyAxGtLh5uHDwdzsk6kZTVwasL+o1kQoPI8Zv7kbpknlEXveD4J4z35X/dNLV\",\n  \"0YChYuUWeP0wvH5NJ2XL2o7R8Dw9enZfz4l2er12jdftDx/AivHqZQdPUHBYHMufh4rheDuMmSOwbn/4dSj5DZ5MnnaKl7NNxNs5XQwOpelMBXfdk5WbaT3A\",\n  \"96UJXXaaSBnhdFtaOLUYcP3Tem0lDE8A/FWXHWi7DjEnMLFvap7YDXOgWNReJaz+4WMHnoZhTkRh+MLYb7Vfb2eDAYdUdD82qC31DB+rstZfevN09aF6TLUQ\",\n  \"2ljUK8sqPENL6xnylLGjvoNVa9IT9ZKn/X/AVecojx1pTSzRuliru+DKEewn1+bR28CLUBpUwZDbsQPXCPBPLBY8gAOoTNw47D+XsYOeQT98jiAE9vztdPQA\",\n  \"DNkPQ9a4/rvO4eBZCR8D/9OUMSOw/od6VTgfvgsD8h3IqEDkRb8/GH/rCcGJs/vEPqP58BCMuLt7KcvJs1N/b7CWB0AzB+L5aPtiwAP9T8ZVMJoXPGFQhrKe\",\n  \"eD/NawCMXlVeiEYoZwzQSo/lVULP71TB3mJR4ryyjp+y9yn/UepytG5zYDYGSBI+72EEut600OE5hM2GxXg+DWASTlO55gTeJz49EFzpheXozjzgLQCZWC7w\",\n  \"1Gd1yUSacZk0zNfzs9E2T7T+ciZTSgO8/w5Xm5SmJZGok7rzKdG3cw7ckE9IJjOWynxqmritTplsIneqbvAwGdZ24qpv5yZVX1/Ocn7deggycmUeENxh8/Dn\",\n  \"4c2vW1ZjBNRgnk7c8SCPTLe8i9C9KsAK1HCg69TZ8LCaP5XCNFSslrAMrkxpaiFhsl6cLhbcnVFLex5CLvBU/OZp9fmMDtLsymBVqbw89GUJZNBLuQ0ovD23\",\n  \"IU2ZFjmYRk+jZfHyxJrGn03T9iyUzdDaosvx1laqUtP7/J/jbPRKWlsDDTyGt4FoK/a4ndKQSZLp3CMQ/LPyjbGxxrci6kdc655CMN7WCIAnD3mbMdk3LXu+\",\n  \"aW5rU5+qvQ+0YWpsquirTv/rf/eB+KvGBqX+/h2ZwUS+Y+jJaBd2+IfQvjHhOcWwoefTwJOH7wiQzfmiI8dl3USlxRtJp6lZ359w7Bf17srVV6w/cURmU5ly\",\n  \"Epd0mPOw+PIRBJPg9cY9HTBcfXH2/V/wEqADX8dm6khebHKtQIB6lNfznjVAlB/Yxxnj6MYwGkeokNK+KI39Wwdy7+9f/eDHGHZQF5cI/tcqoo78b2V492av\",\n  \"iQEs4AbU18qrM8RjPRkhDwbwMa9AoDFh1Xhk47YPnt8ylv+anWFzqFJ5PtbxI1Zb97+YRyV+U6CEZz2PAoHDuzSEoEmvz11ZETweMwowCOvRyHzpw5PXb5/d\",\n  \"dVtRd1wUuNp84VuVXdH7C1M6hucjTEE+ORKG/ID7ICKbnq1iBE10wKMYBfwjgTRLBUhTYfyA+PJFkMFDQzhhTI6mHoaW+rfve5Mq8F7Wvj/tDfbivh/4qgtr\",\n  \"4l61Tkl8FwwfwYp0re5lp5THg/8mJ3On1HytQs/iMov/lZ+Ecy2sSXfg0R5HomLXIX2NjjWPg2bmo67UZ2PRD2sdPaxVrKLZqlIFMHGkqvghf6/hUxIiJ51V\",\n  \"GuC2Bsyv9kkX3Z0Q+QJjAEsEy4x4jNakbLTbdpmLVGw6q+vkEnhqsWBs6dJvos8QeAVAo12qc5AjZeb48LF5ODhYf55PDLBhY2DVgTdo0IHpA1qjBfwkIWOs\",\n  \"rA8Beo4KXM6yUehyq9iQMNKahpCEUTCFEC1GJgFA3fXJXu7e0/w2CAPISCEqRQ5B5kac4NHiocb5of+L86LphOwoJGVGHov8SbpPCCQi1YhJ2QyxkUAbG50C\",\n  \"Mqcke70+2nwzTc7AZywDAQF6XN8N4ktI7BxAF/BY+TwD1ybuBy6ZEj2Z4LB4k4pjcjk9z0QhsrCO3LiKNMwzk7CEmwRH4d/us/sKqZ+aTAgRtG80QgRl1muT\",\n  \"N9ETvR0qXUbFeZ7ak77IQrIFwgakpM1Wmn4TnbYz12a0GFJNFp7H15ndWV9nKFmbxMbz0EHgtNkh4IoUVyWeP7Vgo9WtOonHW2Leibq8Hh/LNfCsgMmELYpu\",\n  \"RJMRQdMMAmL07FNBqucpzVTbic0mhgnqNjCuTnb3ldj/SD+oyvIXI2FcjRL6Zuy71IDLEdvlFDBeS5jMsJPGOj6z9vXcdPap9l8oyWkMMOed5BghxggYAo9g\",\n  \"gsd+j9r71z3BL/s/N/AVeGmv8r33jNfZDTXwB485K7lRqTOMLKnJAAZaYwjk4XkM7gxi8ZubbyzckjZh0/TI1sMhHGknsUUDnVyFxCvpWMaP72i8eN20U68I\",\n  \"Z0t7tOjH0eegwFDjtGRjc3MEhz2rLjHqUt3S7U4OSIgT8XA178uBgRU9+f/U4KsvRm6hsfGv8Ylf1HPQOnFshB8u0tMX79eD5dLFHXi52h6LbMVa229GwwFm\",\n  \"THMkWuoJ3ccfe4g+itVssq+vb/LkDxb5xx5f+2NUwunuHDYWbHD6JQ9nmSN35rujvHVM91/w5mCEvh3noc9gTK6Bx/GpCo+nerDplWLfuyCensZZaAp9HL+i\",\n  \"0HvstWeX/uc2/wdxg0rVYTe+FgAAAABJRU5ErkJggg==\",\n].join(\"\");\n\nconst HOST_CONTENT_VIEWPORT_GUTTER = 16;\ntype HostContentOutletStyle = React.CSSProperties & {\n  \"--hiui-content-inline-gutter\": string;\n};\n\nfunction resolveTranslatedTitle(\n  title: ReactNode | undefined,\n  translate: (key: string) => string,\n) {\n  if (typeof title !== \"string\") return title;\n  return translate(title);\n}\n\nfunction normalizeRoutePath(path: string | undefined) {\n  if (!path) return \"\";\n  if (path === \"/\") return \"/\";\n\n  return path.replace(/\\/+/g, \"/\").replace(/^\\/+|\\/+$/g, \"\");\n}\n\nfunction joinRoutePath(parentPath: string, routePath: string | undefined) {\n  const parent = normalizeRoutePath(parentPath);\n  const seg = normalizeRoutePath(routePath);\n\n  if (seg === \"/\") return parent || \"/\";\n  if (!parent || parent === \"/\") return seg || parent;\n  if (!seg) return parent;\n\n  return `${parent}/${seg}`;\n}\n\nfunction normalizeLocationPath(path: string) {\n  const normalized = normalizeRoutePath(path);\n\n  return normalized || \"/\";\n}\n\nfunction findRouteTitle(\n  routes: AppRouteLike[],\n  path: string,\n  parentPath = \"\",\n  translateTitle: (key: string) => string,\n): string | null {\n  const normalizedPath = normalizeLocationPath(path);\n  const pathname = normalizedPath === \"/\" ? \"/\" : `/${normalizedPath}`;\n\n  for (const route of routes) {\n    const currentPath = joinRoutePath(parentPath, route.path || \"\");\n    const routeTitle = resolveTranslatedTitle(route.title, translateTitle);\n\n    if (\n      currentPath === normalizedPath ||\n      (normalizedPath === \"/\" && currentPath === \"/\")\n    ) {\n      return typeof routeTitle === \"string\" ? routeTitle : null;\n    }\n\n    const pattern = currentPath === \"/\" ? \"/\" : `/${currentPath}`;\n    const matched =\n      currentPath && matchPath({ path: pattern, end: true }, pathname);\n    if (matched && typeof routeTitle === \"string\") {\n      return routeTitle;\n    }\n\n    if (route.children?.length) {\n      const childTitle = findRouteTitle(\n        route.children,\n        normalizedPath,\n        currentPath,\n        translateTitle,\n      );\n      if (childTitle) {\n        return childTitle;\n      }\n    }\n  }\n\n  return null;\n}\n\nfunction convertRoutesToMenuData(\n  routes: AppRouteLike[],\n  parentPath = \"\",\n  parentId = 0,\n  translateTitle: (key: string) => string,\n): MenuDataItem[] {\n  let currentId = parentId;\n\n  return routes\n    .map((route) => {\n      if (!route.title || route.showInMenu === false) return null;\n\n      const path = joinRoutePath(parentPath, route.path || \"\");\n      const id = path || `route-${currentId++}`;\n      const menuItem: MenuDataItem = {\n        id,\n        title: resolveTranslatedTitle(route.title, translateTitle),\n        ...(parentPath === \"\" && route.icon ? { icon: route.icon } : {}),\n      };\n\n      if (route.children?.length) {\n        menuItem.children = convertRoutesToMenuData(\n          route.children,\n          path,\n          currentId,\n          translateTitle,\n        );\n      }\n\n      return menuItem;\n    })\n    .filter(Boolean) as MenuDataItem[];\n}\n\nfunction collectMenuPathIds(routes: AppRouteLike[], parentPath = \"\"): string[] {\n  const ids: string[] = [];\n\n  for (const route of routes) {\n    if (!route.title || route.showInMenu === false) continue;\n\n    const currentPath = joinRoutePath(parentPath, route.path || \"\");\n    const id = currentPath || \"/\";\n    ids.push(id);\n\n    if (route.children?.length) {\n      ids.push(...collectMenuPathIds(route.children, currentPath));\n    }\n  }\n\n  return ids;\n}\n\nfunction findMenuActiveIdForPath(routes: AppRouteLike[], locationPath: string) {\n  const normalized = normalizeLocationPath(locationPath);\n  const allIds = collectMenuPathIds(routes);\n  const matches = allIds.filter((id) => {\n    if (normalized === id) return true;\n    if (id === \"/\") return false;\n    return normalized.startsWith(id.endsWith(\"/\") ? id : `${id}/`);\n  });\n\n  if (matches.length === 0) return normalized;\n\n  matches.sort((a, b) => b.length - a.length);\n  return matches[0]!;\n}\n\nfunction findPathById(\n  routes: AppRouteLike[],\n  id: string | number,\n  parentPath = \"\",\n): string | null {\n  for (const route of routes) {\n    const currentPath = joinRoutePath(parentPath, route.path || \"\");\n    const routeId = currentPath || `route-${routes.indexOf(route)}`;\n\n    if (routeId === id || String(routeId) === String(id)) {\n      return currentPath || \"/\";\n    }\n\n    if (route.children?.length) {\n      const childPath = findPathById(route.children, id, currentPath);\n      if (childPath) return childPath;\n    }\n  }\n\n  return null;\n}\n\nfunction findFirstLeafId(item: MenuDataItem): string | number {\n  let current: MenuDataItem = item;\n\n  while (current.children?.length) {\n    current = current.children[0]!;\n  }\n\n  return current.id;\n}\n\nconst styles = {\n  host: {\n    width: \"100%\",\n    minWidth: 0,\n    height: \"100vh\",\n    minHeight: \"100vh\",\n    display: \"flex\",\n    overflow: \"hidden\",\n  } as const,\n  root: {\n    width: \"100%\",\n    minWidth: 0,\n    height: \"100vh\",\n    minHeight: \"100vh\",\n    backgroundColor: \"#f5f8fc\",\n    overflow: \"hidden\",\n  } as const,\n  sider: {\n    backgroundColor: \"#edf2ff\",\n    display: \"flex\",\n    flexDirection: \"column\",\n    minHeight: 0,\n    overflow: \"hidden\",\n  } as const,\n  siderBody: {\n    flex: \"1 1 0%\",\n    minHeight: 0,\n    display: \"flex\",\n    flexDirection: \"column\",\n  } as const,\n  sideMenuWrapper: {\n    flex: \"1 1 0%\",\n    minHeight: 0,\n    overflow: \"hidden\",\n  } as const,\n  siderHeader: {\n    padding: 16,\n    display: \"flex\",\n    flexDirection: \"column\",\n    alignItems: \"stretch\",\n    gap: 12,\n  } as const,\n  siderHeaderTop: {\n    display: \"flex\",\n    alignItems: \"center\",\n    justifyContent: \"space-between\",\n  } as const,\n  siderHeaderLogo: {\n    display: \"flex\",\n    alignItems: \"center\",\n    gap: 8,\n  } as const,\n  logo: {\n    width: 28,\n    height: 28,\n    borderRadius: 6,\n    backgroundColor: \"rgb(124 135 166 / 12%)\",\n  } as const,\n  logoImg: {\n    width: 28,\n    height: 28,\n  } as const,\n  siderHeaderTitle: {\n    fontSize: 16,\n    lineHeight: \"24px\",\n    fontWeight: 500,\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  siderFooter: {\n    flex: \"0 0 auto\",\n    display: \"flex\",\n    flexDirection: \"column\",\n    margin: \"12px 8px\",\n    marginBlockStart: \"auto\",\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  profileHeader: {\n    display: \"flex\",\n    alignItems: \"center\",\n    gap: 8,\n  } as const,\n  profileHeaderMeta: {\n    display: \"flex\",\n    flexDirection: \"column\",\n    minWidth: 0,\n  } as const,\n  profileHeaderName: {\n    fontSize: 16,\n    fontWeight: 500,\n    color: \"#1a1d26\",\n    lineHeight: \"22px\",\n  } as const,\n  profileHeaderEmail: {\n    fontSize: 14,\n    color: \"#91959e\",\n    lineHeight: \"22px\",\n    fontWeight: 400,\n  } as const,\n  main: {\n    boxSizing: \"border-box\",\n    flex: \"1 1 0%\",\n    minWidth: 0,\n    minHeight: 0,\n    backgroundColor: \"#f5f8fc\",\n    display: \"flex\",\n    flexDirection: \"column\",\n    overflow: \"hidden\",\n  } as const,\n  headerSlot: {\n    flex: \"0 0 auto\",\n    width: \"100%\",\n    minWidth: 0,\n    minHeight: 60,\n    backgroundColor: \"#f5f8fc\",\n    display: \"flex\",\n    alignItems: \"center\",\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  headerSlotCollapsed: {\n    flex: \"0 0 auto\",\n    width: \"100%\",\n    minWidth: 0,\n    minHeight: 0,\n    height: 0,\n    overflow: \"hidden\",\n    pointerEvents: \"none\",\n  } as const,\n  outlet: {\n    flex: \"1 1 0%\",\n    minWidth: 0,\n    minHeight: 0,\n    display: \"flex\",\n    flexDirection: \"column\",\n    overflow: \"hidden\",\n  } as const,\n  overlayRoot: {\n    position: \"relative\",\n    width: 0,\n    height: 0,\n    minWidth: 0,\n    minHeight: 0,\n    overflow: \"visible\",\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  footerSlot: {\n    flex: \"0 0 auto\",\n    width: \"100%\",\n    minWidth: 0,\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  floatMenuPortalAnchor: {\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  profileFooter: {\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n  } as const,\n  profileTrigger: {\n    display: \"flex\",\n    alignItems: \"center\",\n    gap: 4,\n    height: 40,\n    fontSize: 14,\n    lineHeight: \"22px\",\n    letterSpacing: \"normal\",\n    color: \"#1a1d26\",\n    cursor: \"pointer\",\n  } as const,\n} satisfies Record<string, React.CSSProperties>;\n\nfunction getTimezoneLabel() {\n  const offsetInMinutes = -new Date().getTimezoneOffset();\n  const sign = offsetInMinutes >= 0 ? \"+\" : \"-\";\n  const absoluteMinutes = Math.abs(offsetInMinutes);\n  const hours = String(Math.floor(absoluteMinutes / 60)).padStart(2, \"0\");\n  const minutes = String(absoluteMinutes % 60).padStart(2, \"0\");\n\n  return `UTC${sign}${hours}:${minutes}`;\n}\n\ntype TypicalPageAppFrameCoreProps = {\n  routes: AppRouteLike[];\n  children: ReactNode;\n  shellOptions?: ShellOptions;\n  overlaySlot?: ReactNode;\n};\n\nexport function TypicalPageAppFrameCore({\n  routes,\n  children,\n  shellOptions,\n  overlaySlot,\n}: TypicalPageAppFrameCoreProps) {\n  const {\n    dir,\n    locale,\n    setLocale,\n    t,\n    localeSwitcherEnabled,\n    localeOptions,\n    languageFieldLabel,\n    userCenterLabel,\n  } = useHostShellLocalization();\n  const location = useLocation();\n  const navigate = useNavigate();\n  const layoutRef = React.useRef<HTMLDivElement>(null);\n  const siderRef = React.useRef<HTMLDivElement>(null);\n  const sideMenuRef = React.useRef<HTMLDivElement>(null);\n  const floatContainerRef = React.useRef<HTMLDivElement>(null);\n  const overlayRootRef = React.useRef<HTMLDivElement>(null);\n  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);\n  const timerRef2 = React.useRef<ReturnType<typeof setTimeout> | null>(null);\n  const [floatMenuPortalNode, setFloatMenuPortalNodeState] =\n    React.useState<HTMLDivElement | null>(null);\n\n  const currentPath = stripRouteBasePath(\n    location.pathname,\n    shellOptions?.routeBasePath,\n  );\n  const pageTitle = findRouteTitle(routes, currentPath || \"/\", \"\", t) || \"\";\n  const menuData = React.useMemo(\n    () => convertRoutesToMenuData(routes, \"\", 0, t),\n    [routes, t],\n  );\n  const headerRef = React.useRef<HTMLDivElement>(null);\n  const footerRef = React.useRef<HTMLDivElement>(null);\n  const titleTextRef = React.useRef(pageTitle);\n  titleTextRef.current = pageTitle;\n  const [headerNode, setHeaderNode] = React.useState<HTMLDivElement | null>(\n    null,\n  );\n  const [footerNode, setFooterNode] = React.useState<HTMLDivElement | null>(\n    null,\n  );\n  const [headerSlotOccupied, setHeaderSlotOccupied] = React.useState(false);\n  const [collapsed, setCollapsed] = React.useState(true);\n  React.useLayoutEffect(() => {\n    setHeaderNode(headerRef.current);\n    setFooterNode(footerRef.current);\n  }, []);\n  React.useEffect(() => {\n    if (!headerNode) {\n      setHeaderSlotOccupied(false);\n      return;\n    }\n\n    const syncHeaderSlotOccupied = () => {\n      setHeaderSlotOccupied(hasSharedHeaderSlotContent(headerNode));\n    };\n\n    syncHeaderSlotOccupied();\n\n    const observer = new MutationObserver(() => {\n      syncHeaderSlotOccupied();\n    });\n    observer.observe(headerNode, {\n      childList: true,\n      subtree: true,\n      characterData: true,\n    });\n\n    return () => {\n      observer.disconnect();\n    };\n  }, [headerNode]);\n  const layoutContentValue = React.useMemo<LayoutContentContextValue>(\n    () => ({\n      headerNode,\n      headerRef,\n      footerNode,\n      footerRef,\n      titleText: pageTitle,\n      titleTextRef,\n    }),\n    [footerNode, headerNode, pageTitle],\n  );\n  const [activeAppId, setActiveAppId] = React.useState<RouteKey>(\n    APP_LIST_ITEMS[0].id,\n  );\n  const [appListPopoverVisible, setAppListPopoverVisible] =\n    React.useState(false);\n  const [profileVisible, setProfileVisible] = React.useState(false);\n  const [activeMenuId, setActiveMenuId] = React.useState<RouteKey>(() =>\n    findMenuActiveIdForPath(routes, currentPath || \"/\"),\n  );\n  const [selectedMenuId, setSelectedMenuId] =\n    React.useState<RouteKey>(\"\");\n  const appListData = React.useMemo(\n    () =>\n      APP_LIST_ITEMS.map((item) => ({\n        id: item.id,\n        title: t(item.titleKey),\n        iconBgColor: item.iconBgColor,\n        icon: item.icon,\n      })),\n    [t],\n  );\n  const resolvedBrandTitle = shellOptions?.brandTitle ?? \"HiUI Pro\";\n  const resolvedProfileName = shellOptions?.profileName ?? t(\"示例管理员\");\n  const resolvedProfileEmail =\n    shellOptions?.profileEmail ?? \"admin@example.com\";\n\n  const { submenuData, activeParentId } = useSideMenuCascade({\n    data: menuData,\n    selectId: selectedMenuId,\n    activeId: activeMenuId,\n  });\n\n  React.useEffect(() => {\n    const path = stripRouteBasePath(\n      location.pathname,\n      shellOptions?.routeBasePath,\n    );\n    setActiveMenuId(findMenuActiveIdForPath(routes, path || \"/\"));\n  }, [location.pathname, routes, shellOptions?.routeBasePath]);\n\n  React.useEffect(() => {\n    if (activeParentId) {\n      setSelectedMenuId(activeParentId);\n    }\n  }, [activeParentId]);\n\n  const [floatContainerVisible, setFloatContainerVisible] = React.useState(\n    submenuData.length > 0,\n  );\n  const [floatContainerCollapsed, setFloatContainerCollapsed] = React.useState(\n    submenuData.length === 0,\n  );\n  const resolvedFloatContainerVisible =\n    submenuData.length > 0 && floatContainerVisible;\n  const resolvedFloatContainerCollapsed =\n    submenuData.length === 0 || floatContainerCollapsed;\n\n  React.useEffect(() => {\n    layoutRef.current?.setAttribute(\n      \"data-float-menu-collapsed\",\n      resolvedFloatContainerCollapsed.toString(),\n    );\n  }, [resolvedFloatContainerCollapsed]);\n\n  const setFloatMenuPortalNode = React.useCallback(\n    (node: HTMLDivElement | null) => {\n      setFloatMenuPortalNodeState(node);\n    },\n    [],\n  );\n\n  const mainStyle = React.useMemo(\n    () => ({\n      ...styles.main,\n      marginInlineEnd: HOST_CONTENT_VIEWPORT_GUTTER,\n      marginInlineStart: resolvedFloatContainerCollapsed\n        ? HOST_CONTENT_VIEWPORT_GUTTER\n        : 0,\n    }),\n    [resolvedFloatContainerCollapsed],\n  );\n  const contentOutletStyle = React.useMemo(\n    () =>\n      ({\n        ...styles.outlet,\n        \"--hiui-content-inline-gutter\": `${HOST_CONTENT_VIEWPORT_GUTTER}px`,\n      }) as HostContentOutletStyle,\n    [],\n  );\n  const resolveOverlayContainer = React.useCallback(\n    () => overlayRootRef.current,\n    [],\n  );\n  const headerSlotStyle = React.useMemo(\n    () =>\n      headerSlotOccupied ? styles.headerSlot : styles.headerSlotCollapsed,\n    [headerSlotOccupied],\n  );\n\n  const handleNavigate = (id: string | number) => {\n    const path = findPathById(routes, id);\n    if (path) navigate(buildNavigationPath(path, shellOptions?.routeBasePath));\n    setActiveMenuId(id);\n  };\n\n  const handleMenuSelect = (id: string | number, item: MenuDataItem) => {\n    setSelectedMenuId(id);\n\n    if (!item.children || item.children.length === 0) {\n      handleNavigate(id);\n      setFloatContainerVisible(false);\n      setFloatContainerCollapsed(true);\n      return;\n    }\n\n    const firstLeafId = findFirstLeafId(item);\n    handleNavigate(firstLeafId);\n    setFloatContainerVisible(true);\n    setFloatContainerCollapsed(false);\n  };\n\n  const profileSettings = React.useMemo(\n    () => ({\n      value: localeSwitcherEnabled ? { language: locale } : {},\n      data: [\n        {\n          id: \"timezone\",\n          title: t(\"时区\"),\n          subtitle: getTimezoneLabel(),\n        },\n        ...(localeSwitcherEnabled\n          ? [\n              {\n                id: \"language\",\n                title: languageFieldLabel,\n                subtitle:\n                  localeOptions.find((option) => option.id === locale)\n                    ?.nativeLabel ?? localeOptions[0]?.nativeLabel ?? \"\",\n                children: localeOptions.map((supportedLocale) => ({\n                  id: supportedLocale.id,\n                  title: supportedLocale.nativeLabel,\n                })),\n              },\n            ]\n          : []),\n      ],\n      onChange: (\n        _value: Record<string, RouteKey>,\n        targetItem: { id?: RouteKey },\n      ) => {\n        if (!localeSwitcherEnabled) return;\n        const nextLocale = String(targetItem.id ?? \"\");\n        if (localeOptions.some((option) => option.id === nextLocale)) {\n          setLocale(nextLocale);\n          setProfileVisible(false);\n        }\n      },\n    }),\n    [languageFieldLabel, locale, localeOptions, localeSwitcherEnabled, setLocale, t],\n  );\n\n  const appSwitcher = (\n    <AppListPopover\n      visible={appListPopoverVisible}\n      data={appListData}\n      activeId={activeAppId}\n      container={resolveOverlayContainer}\n      titleRender={(item) => (\n        <EllipsisTooltip>{item.title as string}</EllipsisTooltip>\n      )}\n      onItemClick={(item) => {\n        setActiveAppId(item.id);\n        setAppListPopoverVisible(false);\n      }}\n      onOutsideClick={() => setAppListPopoverVisible(false)}\n    >\n      <IconButton\n        style={\n          !collapsed ? { marginInlineStart: \"auto\" } : { margin: \"16px auto 0\" }\n        }\n        icon={<MenuOutlined size={18} />}\n        effectColor=\"rgba(124, 135, 166, 0.15)\"\n        effect\n        onClick={() => {\n          setAppListPopoverVisible(!appListPopoverVisible);\n        }}\n      />\n    </AppListPopover>\n  );\n\n  return (\n    <div data-typical-page-host=\"\" style={styles.host}>\n      <Layout ref={layoutRef} style={styles.root} translate=\"no\">\n        <Sider\n          ref={siderRef}\n          style={styles.sider}\n          collapsed={collapsed}\n          onCollapse={setCollapsed}\n        >\n          <div style={styles.siderBody}>\n            <div style={styles.siderHeader}>\n              <div style={styles.siderHeaderTop}>\n                <div style={styles.siderHeaderLogo}>\n                  <div style={styles.logo}>\n                    <img\n                      src={EXAMPLE_LOGO_SRC}\n                      alt=\"logo\"\n                      style={styles.logoImg}\n                    />\n                  </div>\n                  {collapsed ? null : (\n                    <div style={styles.siderHeaderTitle}>\n                      {resolvedBrandTitle}\n                    </div>\n                  )}\n                </div>\n                {collapsed ? null : appSwitcher}\n              </div>\n\n              {collapsed ? appSwitcher : null}\n            </div>\n\n            <SearchTrigger\n              mini={collapsed}\n              data={menuData}\n              onSelect={(id, item) => {\n                handleMenuSelect(id as string | number, item as MenuDataItem);\n              }}\n            />\n\n            <div style={styles.sideMenuWrapper}>\n              <SideMenu\n                ref={sideMenuRef}\n                mini={collapsed}\n                selectedId={selectedMenuId}\n                activeId={activeParentId}\n                data={menuData}\n                onClick={(_event, id, item) => {\n                  handleMenuSelect(id as string | number, item as MenuDataItem);\n                }}\n                onMouseEnter={(_event, id, item) => {\n                  timerRef2.current = setTimeout(() => {\n                    if (item.children && item.children.length > 0) {\n                      setSelectedMenuId(id);\n                      setFloatContainerVisible(true);\n                    } else if (\n                      (menuData.find(\n                        (menuItem) => menuItem.id === activeParentId,\n                      )?.children?.length || 0) > 0\n                    ) {\n                      setSelectedMenuId(activeParentId);\n                      if (resolvedFloatContainerCollapsed) {\n                        setFloatContainerVisible(false);\n                      }\n                    }\n                  }, 200);\n\n                  if (timerRef.current) {\n                    clearTimeout(timerRef.current);\n                  }\n                }}\n                onMouseLeave={(event, id) => {\n                  const relatedTarget = event.relatedTarget as Node | null;\n                  const isRelatedTargetNode = relatedTarget instanceof Node;\n                  const isOutside =\n                    !isRelatedTargetNode ||\n                    (!sideMenuRef.current?.contains(relatedTarget) &&\n                      !floatContainerRef.current?.contains(relatedTarget) &&\n                      !siderRef.current?.contains(relatedTarget));\n\n                  if (timerRef2.current) {\n                    clearTimeout(timerRef2.current);\n                  }\n\n                  if (isOutside) {\n                    if (\n                      (id !== activeParentId &&\n                        (menuData.find(\n                          (menuItem) => menuItem.id === activeParentId,\n                        )?.children?.length || 0) > 0) ||\n                      resolvedFloatContainerCollapsed\n                    ) {\n                      setSelectedMenuId(activeParentId);\n                    }\n                  }\n\n                  timerRef.current = setTimeout(() => {\n                    setFloatContainerVisible(false);\n                  }, 200);\n                }}\n              />\n            </div>\n\n            <div style={styles.siderFooter}>\n              <ActionItem icon={<QuestionCircleFilled />} mini={collapsed}>\n                {t(\"使用手册\")}\n              </ActionItem>\n              <ActionItem icon={<FeedbackColorful />} mini={collapsed}>\n                {t(\"反馈\")}\n              </ActionItem>\n\n              <ProfilePopover\n                visible={profileVisible}\n                placement={dir === \"rtl\" ? \"left-end\" : \"right-end\"}\n                header={\n                  <div style={styles.profileHeader}>\n                    <Avatar size=\"lg\" />\n                    <div style={styles.profileHeaderMeta}>\n                      <div style={styles.profileHeaderName}>\n                        {resolvedProfileName}\n                      </div>\n                      <div style={styles.profileHeaderEmail}>\n                        {resolvedProfileEmail}\n                      </div>\n                    </div>\n                  </div>\n                }\n                footer={\n                  <div\n                    style={styles.profileFooter}\n                    onClick={() => setProfileVisible(false)}\n                  >\n                    {t(\"退出登录\")}\n                  </div>\n                }\n                settings={profileSettings}\n                onClose={() => setProfileVisible(false)}\n              >\n                <div\n                  style={{\n                    ...styles.profileTrigger,\n                    marginLeft: collapsed ? 12 : 10,\n                  }}\n                  onClick={() => setProfileVisible(!profileVisible)}\n                >\n                  <Avatar size=\"xs\" />\n                  {collapsed ? null : <span>{userCenterLabel}</span>}\n                </div>\n              </ProfilePopover>\n            </div>\n          </div>\n        </Sider>\n\n        <div\n          ref={setFloatMenuPortalNode}\n          aria-hidden=\"true\"\n          style={styles.floatMenuPortalAnchor}\n        />\n\n        {floatMenuPortalNode\n          ? ReactDOM.createPortal(\n              <FloatMenuContainer\n                ref={floatContainerRef}\n                width={180}\n                visible={resolvedFloatContainerVisible}\n                collapsed={resolvedFloatContainerCollapsed}\n                onCollapse={(value) => {\n                  setFloatContainerCollapsed(value);\n                  setFloatContainerVisible(!value);\n                }}\n                onMouseEnter={() => {\n                  setFloatContainerVisible(true);\n                  if (timerRef.current) {\n                    clearTimeout(timerRef.current);\n                  }\n                }}\n                onMouseLeave={(event) => {\n                  timerRef.current = setTimeout(() => {\n                    setFloatContainerVisible(false);\n                  }, 200);\n\n                  const relatedTarget = event.relatedTarget as Node | null;\n                  const isRelatedTargetNode = relatedTarget instanceof Node;\n                  const isOutside =\n                    !isRelatedTargetNode ||\n                    (!sideMenuRef.current?.contains(relatedTarget) &&\n                      !floatContainerRef.current?.contains(relatedTarget) &&\n                      !siderRef.current?.contains(relatedTarget));\n\n                  if (isOutside) {\n                    if (\n                      (menuData.find(\n                        (menuItem) => menuItem.id === activeParentId,\n                      )?.children?.length || 0) > 0 ||\n                      resolvedFloatContainerCollapsed\n                    ) {\n                      setSelectedMenuId(activeParentId);\n                    }\n                  }\n                }}\n              >\n                <GroupMenu\n                  activeId={activeMenuId}\n                  data={submenuData}\n                  onClick={(_event, id) => {\n                    setSelectedMenuId(activeParentId);\n                    handleNavigate(id);\n                  }}\n                />\n              </FloatMenuContainer>,\n              floatMenuPortalNode,\n            )\n          : null}\n\n        <main role=\"content\" style={mainStyle}>\n          <LayoutContentProvider value={layoutContentValue}>\n            <TypicalPageHostBridge getOverlayContainer={resolveOverlayContainer}>\n              <div\n                ref={headerRef}\n                aria-hidden={!headerSlotOccupied}\n                data-hiui-page-header-slot=\"true\"\n                style={headerSlotStyle}\n              />\n              <div\n                data-hiui-main-content-outlet=\"true\"\n                style={contentOutletStyle}\n              >\n                {children}\n              </div>\n              <div\n                ref={overlayRootRef}\n                aria-hidden=\"true\"\n                data-hiui-overlay-root=\"true\"\n                style={styles.overlayRoot}\n              />\n              {overlaySlot ?? null}\n              <div ref={footerRef} style={styles.footerSlot} />\n            </TypicalPageHostBridge>\n          </LayoutContentProvider>\n        </main>\n      </Layout>\n    </div>\n  );\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/layout-content-context.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/layout-content-context.tsx",
+        "content": "/* eslint-disable react-refresh/only-export-components */\nimport React from 'react'\n\nexport type LayoutContentContextValue = {\n  headerNode: HTMLDivElement | null\n  headerRef: React.RefObject<HTMLDivElement | null>\n  footerNode: HTMLDivElement | null\n  footerRef: React.RefObject<HTMLDivElement | null>\n  titleText: string\n  titleTextRef: React.RefObject<string>\n}\n\nconst LayoutContentContext = React.createContext<LayoutContentContextValue | null>(null)\n\nexport function LayoutContentProvider({\n  value,\n  children,\n}: React.PropsWithChildren<{ value: LayoutContentContextValue }>) {\n  return <LayoutContentContext.Provider value={value}>{children}</LayoutContentContext.Provider>\n}\n\nexport function useLayoutContentContext() {\n  const value = React.useContext(LayoutContentContext)\n\n  if (!value) {\n    throw new Error('useLayoutContentContext must be used within LayoutContentProvider')\n  }\n\n  return value\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-shell-localization.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-shell-localization.ts",
+        "content": "import { useMemo } from 'react'\n// Localization is intentionally disabled for the formal host shell, so the locale switcher stays hidden and visible copy remains literal.\n\ntype TranslationParams = Record<string, string | number | boolean | null | undefined>\ntype LocaleDirection = 'ltr' | 'rtl'\ntype LocaleOption = { id: string; nativeLabel: string }\n\nconst DEFAULT_LOCALE = 'zh-CN'\n\nfunction resolveLocale() {\n  if (typeof document !== 'undefined') {\n    const documentLocale = String(document.documentElement.lang || '').trim()\n    if (documentLocale) return documentLocale\n  }\n  if (typeof navigator !== 'undefined') {\n    const navigatorLocale = String(navigator.language || '').trim()\n    if (navigatorLocale) return navigatorLocale\n  }\n  return DEFAULT_LOCALE\n}\n\nfunction resolveDirection(locale: string): LocaleDirection {\n  if (typeof document !== 'undefined') {\n    return document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr'\n  }\n  return String(locale || '').toLowerCase().startsWith('ar') ? 'rtl' : 'ltr'\n}\n\nfunction interpolate(template: string, params?: TranslationParams) {\n  if (!params) return template\n  return template.replace(/\\{(\\w+)\\}/g, (_, key: string) => {\n    const value = params[key]\n    return value == null ? '' : String(value)\n  })\n}\n\nexport function useHostShellLocalization() {\n  return useMemo(() => {\n    const locale = resolveLocale()\n    return {\n      dir: resolveDirection(locale),\n      locale,\n      setLocale: (nextLocale?: string) => String(nextLocale || locale),\n      t: (key: string, params?: TranslationParams) => interpolate(key, params),\n      localeSwitcherEnabled: false,\n      localeOptions: [] as LocaleOption[],\n      languageFieldLabel: 'Language',\n      userCenterLabel: '用户中心',\n    }\n  }, [])\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/typical-page-host.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/typical-page-host.tsx",
+        "content": "import React from 'react'\nimport { TypicalPageHostProvider } from '../../../components/hiui-design-runtime/host'\nimport { HostPageFooterPortal } from './page-header-portal'\n\ntype TypicalPageHostBridgeProps = React.PropsWithChildren<{\n  getOverlayContainer?: () => HTMLElement | null\n}>\n\nexport function TypicalPageHostBridge({\n  children,\n  getOverlayContainer,\n}: TypicalPageHostBridgeProps) {\n  return (\n    <TypicalPageHostProvider\n      footerPortal={HostPageFooterPortal}\n      getOverlayContainer={getOverlayContainer}\n    >\n      {children}\n    </TypicalPageHostProvider>\n  )\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/route-base-path.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/route-base-path.ts",
+        "content": "function normalizeRoutePath(path: string | undefined) {\n  if (!path) return ''\n  if (path === '/') return '/'\n\n  return String(path).replace(/\\/+/g, '/').replace(/^\\/+|\\/+$/g, '')\n}\n\nfunction normalizeLocationPath(path: string | undefined) {\n  const normalized = normalizeRoutePath(path)\n  return normalized || '/'\n}\n\nfunction joinRoutePath(parentPath: string | undefined, routePath: string | undefined) {\n  const parent = normalizeRoutePath(parentPath)\n  const seg = normalizeRoutePath(routePath)\n\n  if (seg === '/') return parent || '/'\n  if (!parent || parent === '/') return seg || parent\n  if (!seg) return parent\n\n  return `${parent}/${seg}`\n}\n\nexport function stripRouteBasePath(pathname: string | undefined, routeBasePath = '') {\n  const normalizedPath = normalizeLocationPath(pathname)\n  const normalizedBase = normalizeRoutePath(routeBasePath)\n\n  if (!normalizedBase || normalizedBase === '/') return normalizedPath\n  if (normalizedPath === normalizedBase) return '/'\n  if (normalizedPath.startsWith(`${normalizedBase}/`)) {\n    return normalizedPath.slice(normalizedBase.length + 1) || '/'\n  }\n\n  return normalizedPath\n}\n\nexport function buildNavigationPath(path: string | undefined, routeBasePath = '') {\n  const normalizedPath = normalizeLocationPath(path)\n  const normalizedBase = normalizeRoutePath(routeBasePath)\n\n  if (!normalizedBase || normalizedBase === '/') {\n    return normalizedPath === '/' ? '/' : `/${normalizedPath}`\n  }\n\n  if (normalizedPath === '/') {\n    return `/${normalizedBase}`\n  }\n\n  return `/${joinRoutePath(normalizedBase, normalizedPath)}`\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/host-reset.css",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/host-reset.css",
+        "content": "html,\nbody,\n#root {\n  width: 100%;\n  min-width: 0;\n  min-height: 100%;\n}\n\nbody {\n  margin: 0;\n}\n\n[data-typical-page-host] {\n  width: 100%;\n  min-width: 0;\n  min-height: 100vh;\n  text-align: start;\n  --hi-v5-font-family: var(\n    --hiui-design-font-family,\n    \"PingFang SC\",\n    \"Microsoft YaHei\",\n    sans-serif\n  );\n  font-family: var(\n    --hiui-design-font-family,\n    \"PingFang SC\",\n    \"Microsoft YaHei\",\n    sans-serif\n  );\n  /* Pin common HiUI text tokens locally so root rem pollution cannot rescale page headers and buttons. */\n  --hi-v5-text-size-sm: var(--hiui-design-text-size-sm, 12px);\n  --hi-v5-text-size-md: var(\n    --hiui-design-text-size-md,\n    var(--hiui-design-font-size, 14px)\n  );\n  --hi-v5-text-size-lg: var(--hiui-design-text-size-lg, 16px);\n  --hi-v5-text-size-xl: var(--hiui-design-text-size-xl, 18px);\n  --hi-v5-text-size-xxl: var(--hiui-design-text-size-xxl, 24px);\n  --hi-v5-text-lineheight-sm: var(--hiui-design-text-lineheight-sm, 20px);\n  --hi-v5-text-lineheight-md: var(\n    --hiui-design-text-lineheight-md,\n    var(--hiui-design-line-height, 22px)\n  );\n  --hi-v5-text-lineheight-lg: var(--hiui-design-text-lineheight-lg, 24px);\n  --hi-v5-text-lineheight-xl: var(--hiui-design-text-lineheight-xl, 26px);\n  --hi-v5-text-lineheight-xxl: var(--hiui-design-text-lineheight-xxl, 32px);\n  --hi-v4-text-size-md: var(\n    --hiui-design-text-size-md,\n    var(--hiui-design-font-size, 14px)\n  );\n  font-size: var(--hiui-design-font-size, 14px);\n  line-height: var(--hiui-design-line-height, 22px);\n  font-weight: 400;\n  letter-spacing: normal;\n  color: #1a1d26;\n}\n\n/* Re-establish the local typography baseline so host global font rules do not leak in. */\n[data-typical-page-host] :where(\n  a,\n  caption,\n  code,\n  dd,\n  dt,\n  em,\n  li,\n  p,\n  pre,\n  small,\n  strong,\n  table,\n  td,\n  th\n) {\n  color: inherit;\n  font-family: inherit;\n  font-size: inherit;\n  font-style: inherit;\n  font-weight: inherit;\n  letter-spacing: inherit;\n  line-height: inherit;\n  text-align: inherit;\n}\n\n[data-typical-page-host] :where(\n  .hi-v5-descriptions,\n  .hi-v5-drawer,\n  .hi-v5-form,\n  .hi-v5-group-menu,\n  .hi-v5-layout,\n  .hi-v5-page-header,\n  .hi-v5-query-filter,\n  .hi-v5-side-menu,\n  .hi-v5-table,\n  .hi-v5-tag,\n  .pro-detail-page,\n  .pro-edit-page,\n  .pro-list-page,\n  .pro-stat-page,\n  .pro-table-page,\n  .pro-tree-split-page\n) {\n  font-family: inherit;\n  font-size: inherit;\n  letter-spacing: inherit;\n  line-height: inherit;\n}\n\n[data-typical-page-host] :where(.hi-v5-form-label__content) {\n  align-items: flex-start;\n}\n\n[data-typical-page-host] :where(.hi-v5-form-label__content__text) {\n  display: flex;\n  min-height: calc(var(--hi-v5-height-6, 24px) - 2px);\n  color: var(--hi-v5-color-gray-800, #1a1d26);\n  font-family: inherit;\n  font-size: var(--hi-v5-text-size-md, 0.875rem);\n  line-height: var(--hi-v5-text-lineheight-md, 1.375rem);\n}\n\n[data-typical-page-host] :where(.hi-v5-form-label--placement-top > .hi-v5-form-label__content > .hi-v5-form-label__content__text) {\n  margin-block-end: var(--hi-v5-spacing-3, 6px);\n}\n\n[data-typical-page-host] :where(.hi-v4-form-label--placement-top) {\n  align-items: stretch !important;\n}\n\n[data-typical-page-host] :where(.hi-v4-form-label__text) {\n  color: var(--hi-v4-color-gray-800, #1f2937);\n  font-family: inherit;\n  font-size: var(--hi-v4-text-size-md, 0.875rem);\n  line-height: var(--hi-v4-height-8, 32px);\n}\n\n[data-typical-page-host] :where(.hi-v4-form-label--placement-top > .hi-v4-form-label__text) {\n  display: flex;\n  align-items: center;\n  width: 100%;\n  height: auto;\n  min-height: 22px;\n  line-height: 22px;\n  margin-bottom: var(--hi-v4-spacing-4, 8px);\n}\n\n[data-typical-page-host] :where(.hi-v4-form-label--placement-top > .hi-v4-form-label__text > .hi-v5-ellipsis-tooltip) {\n  display: inline-flex;\n  align-items: center;\n  flex: 1 1 auto;\n  min-width: 0;\n  max-width: 100%;\n  vertical-align: top;\n  line-height: inherit;\n}\n\n[data-typical-page-host] :where(.hi-v4-form-label--required > .hi-v4-form-label__text::before) {\n  display: inline-flex;\n  flex: 0 0 auto;\n  align-items: center;\n  line-height: inherit;\n}\n\n[data-typical-page-host],\n[data-typical-page-host] * {\n  box-sizing: border-box;\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/layout/page-header-portal.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/business-shell/components/layout/page-header-portal.tsx",
+        "content": "import React from \"react\";\nimport { createPortal } from \"react-dom\";\nimport { useLayoutContentContext } from \"./layout-content-context\";\n\ntype SlotPortalProps = {\n  children: React.ReactNode;\n};\n\nexport function HostPageFooterPortal({ children }: SlotPortalProps) {\n  const { footerNode } = useLayoutContentContext();\n\n  const element = children as React.ReactElement;\n  if (!React.isValidElement(element)) return null;\n  if (!footerNode) return null;\n\n  return createPortal(element, footerNode);\n}\n",
+        "isManagedFormalHostSupportAsset": true,
+        "artifactClass": "formal-host-support"
+      },
+      {
+        "sourcePath": "hiui-design:generated-formal-business-app-entry",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/main.jsx",
+        "content": "import React from 'react'\nimport ReactDOM from 'react-dom/client'\nimport { BrowserRouter, Navigate, Outlet, useRoutes } from 'react-router-dom'\nimport BusinessAppFrame from \"./business-shell/app-frame\"\nimport {\n  businessLandingPath,\n  businessRouteChildren,\n  businessRoutes,\n} from \"./business-shell/routes\"\nimport './index.css'\nimport '@hi-ui/patch-for-react'\nimport './components/hiui-design-runtime/styles.css'\nimport \"./components/hiui-design-runtime/styles.css\"\n\nfunction BusinessShellRoute() {\n  return (\n    <BusinessAppFrame routes={businessRoutes}>\n      <Outlet />\n    </BusinessAppFrame>\n  )\n}\n\nfunction BusinessAppRoot() {\n  return useRoutes([\n    {\n      path: '/',\n      element: <BusinessShellRoute />,\n      children: [\n        {\n          index: true,\n          element: <Navigate to={businessLandingPath} replace />,\n        },\n        ...businessRouteChildren,\n      ],\n    },\n  ])\n}\n\nconst container = document.getElementById('root')\n\nif (!container) {\n  throw new Error('Missing #root container for hiui-design formal business shell mount.')\n}\n\nReactDOM.createRoot(container).render(\n  <React.StrictMode>\n    <BrowserRouter>\n      <BusinessAppRoot />\n    </BrowserRouter>\n  </React.StrictMode>\n)\n",
+        "allowManagedOverwrite": true,
+        "artifactClass": "page-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/index.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/index.tsx",
+        "content": "import React from \"react\";\nimport styles from \"./index.module.scss\";\nimport { getDefaultSharedHeaderNode } from \"./shared-header-node\";\n\nexport type SharedHostHeaderSuppressCleanup = () => void;\n\nexport type SharedHostHeaderAdapter = {\n  getHeaderNode?: () => HTMLElement | null;\n  suppress?: (node: HTMLElement) => SharedHostHeaderSuppressCleanup | void;\n};\n\nexport type PageOwnedMountBoundaryProps = React.PropsWithChildren<{\n  adapter?: SharedHostHeaderAdapter;\n  suppressSharedHeader?: boolean;\n  className?: string;\n}>;\n\nconst useSafeLayoutEffect =\n  typeof window === \"undefined\" ? React.useEffect : React.useLayoutEffect;\nconst MIN_HOST_INLINE_GUTTER_PX = 16;\nconst MAX_HOST_GUTTER_PROBE_DEPTH = 6;\nconst HOST_INLINE_GUTTER_CONTRACT_VAR = \"--hiui-content-inline-gutter\";\nconst EXPLICIT_CONTENT_OUTLET_SELECTORS = [\n  '[data-hiui-main-content-outlet=\"true\"]',\n  '[data-hiui-managed-host-shell=\"true\"]',\n];\nconst LEGACY_CONTENT_OUTLET_SELECTORS = ['[role=\"content\"]', '[role=\"main-content\"]'];\n\nfunction getBoundaryViewportHeight() {\n  if (typeof window === \"undefined\") return 0;\n\n  const visualViewportHeight = Number(window.visualViewport?.height || 0);\n  if (visualViewportHeight > 0) {\n    return visualViewportHeight;\n  }\n\n  const innerHeight = Number(window.innerHeight || 0);\n  if (innerHeight > 0) {\n    return innerHeight;\n  }\n\n  return Number(document.documentElement?.clientHeight || 0);\n}\n\nfunction readPixelValue(rawValue: string | null | undefined) {\n  const nextValue = Number.parseFloat(String(rawValue || \"\"));\n  return Number.isFinite(nextValue) ? nextValue : 0;\n}\n\nfunction readElementInlineGutter(node: HTMLElement | null) {\n  if (\n    !node ||\n    typeof window === \"undefined\" ||\n    typeof window.getComputedStyle !== \"function\"\n  ) {\n    return 0;\n  }\n\n  const computedStyle = window.getComputedStyle(node);\n  const contractInlineGutter = readPixelValue(\n    computedStyle.getPropertyValue(HOST_INLINE_GUTTER_CONTRACT_VAR),\n  );\n  const paddingInlineEnd = readPixelValue(\n    computedStyle.paddingInlineEnd || computedStyle.paddingRight,\n  );\n  const marginInlineEnd = readPixelValue(\n    computedStyle.marginInlineEnd || computedStyle.marginRight,\n  );\n\n  return Math.max(contractInlineGutter, paddingInlineEnd, marginInlineEnd);\n}\n\nfunction findNearestManagedContentOutlet(boundaryNode: HTMLElement | null) {\n  if (!boundaryNode || typeof boundaryNode.closest !== \"function\") {\n    return null;\n  }\n\n  for (const selector of EXPLICIT_CONTENT_OUTLET_SELECTORS) {\n    const matchedNode = boundaryNode.closest(selector);\n    if (matchedNode instanceof HTMLElement) {\n      return matchedNode;\n    }\n  }\n\n  for (const selector of LEGACY_CONTENT_OUTLET_SELECTORS) {\n    const matchedNode = boundaryNode.closest(selector);\n    if (matchedNode instanceof HTMLElement) {\n      return matchedNode;\n    }\n  }\n\n  return null;\n}\n\nfunction hasSufficientHostInlineGutter(boundaryNode: HTMLElement | null) {\n  const managedContentOutlet = findNearestManagedContentOutlet(boundaryNode);\n  if (managedContentOutlet) {\n    return (\n      readElementInlineGutter(managedContentOutlet) >= MIN_HOST_INLINE_GUTTER_PX\n    );\n  }\n\n  let candidate = boundaryNode?.parentElement || null;\n  let depth = 0;\n\n  while (candidate && depth < MAX_HOST_GUTTER_PROBE_DEPTH) {\n    if (readElementInlineGutter(candidate) >= MIN_HOST_INLINE_GUTTER_PX) {\n      return true;\n    }\n\n    candidate = candidate.parentElement;\n    depth += 1;\n  }\n\n  return false;\n}\n\nfunction joinClassNames(...tokens: Array<string | undefined>) {\n  return tokens.filter(Boolean).join(\" \");\n}\n\nfunction defaultSuppressSharedHeader(\n  node: HTMLElement,\n): SharedHostHeaderSuppressCleanup {\n  const previous = {\n    ariaHidden: node.getAttribute(\"aria-hidden\"),\n    display: node.style.display,\n    height: node.style.height,\n    minHeight: node.style.minHeight,\n    overflow: node.style.overflow,\n    pointerEvents: node.style.pointerEvents,\n  };\n\n  node.setAttribute(\"aria-hidden\", \"true\");\n  node.setAttribute(\"data-page-owned-header-suppressed\", \"true\");\n  node.style.display = \"none\";\n  node.style.height = \"0\";\n  node.style.minHeight = \"0\";\n  node.style.overflow = \"hidden\";\n  node.style.pointerEvents = \"none\";\n\n  return () => {\n    if (previous.ariaHidden == null) {\n      node.removeAttribute(\"aria-hidden\");\n    } else {\n      node.setAttribute(\"aria-hidden\", previous.ariaHidden);\n    }\n    node.removeAttribute(\"data-page-owned-header-suppressed\");\n    node.style.display = previous.display;\n    node.style.height = previous.height;\n    node.style.minHeight = previous.minHeight;\n    node.style.overflow = previous.overflow;\n    node.style.pointerEvents = previous.pointerEvents;\n  };\n}\n\nexport function useSharedHostHeaderSuppression(\n  adapter?: SharedHostHeaderAdapter,\n  enabled = true,\n  boundaryRef?: React.RefObject<HTMLElement | null>,\n) {\n  useSafeLayoutEffect(() => {\n    if (!enabled) return undefined;\n\n    const resolvedAdapter = adapter || {\n      getHeaderNode: () =>\n        getDefaultSharedHeaderNode(boundaryRef?.current || null),\n      suppress: defaultSuppressSharedHeader,\n    };\n    const headerNode = resolvedAdapter.getHeaderNode?.();\n    if (!headerNode) return undefined;\n\n    const cleanup =\n      resolvedAdapter.suppress?.(headerNode) ||\n      defaultSuppressSharedHeader(headerNode);\n    return typeof cleanup === \"function\" ? cleanup : undefined;\n  }, [adapter, boundaryRef, enabled]);\n}\n\nexport function useMountRegionFill(className = \"\") {\n  return joinClassNames(styles.mountBoundary, className);\n}\n\nfunction writeMountBoundaryInlineGutter(boundaryNode: HTMLElement | null) {\n  if (!boundaryNode) return;\n\n  if (hasSufficientHostInlineGutter(boundaryNode)) {\n    boundaryNode.setAttribute(\"data-page-owned-inline-gutter-source\", \"host\");\n    boundaryNode.style.setProperty(\"--page-owned-inline-gutter\", \"0px\");\n    return;\n  }\n\n  boundaryNode.setAttribute(\"data-page-owned-inline-gutter-source\", \"fallback\");\n  boundaryNode.style.setProperty(\n    \"--page-owned-inline-gutter\",\n    `${MIN_HOST_INLINE_GUTTER_PX}px`,\n  );\n}\n\nfunction writeMountBoundaryViewportHeight(boundaryNode: HTMLElement | null) {\n  if (!boundaryNode) return;\n\n  const viewportHeight = getBoundaryViewportHeight();\n  if (!(viewportHeight > 0)) return;\n\n  const rect = boundaryNode.getBoundingClientRect();\n  const topOffset = Math.max(rect.top, 0);\n  const availableHeight = Math.max(0, Math.round(viewportHeight - topOffset));\n\n  if (availableHeight > 0) {\n    boundaryNode.style.setProperty(\n      \"--page-owned-available-height\",\n      `${availableHeight}px`,\n    );\n    return;\n  }\n\n  boundaryNode.style.removeProperty(\"--page-owned-available-height\");\n}\n\nexport function useMountBoundaryViewportHeight(\n  boundaryRef: React.RefObject<HTMLElement | null>,\n  enabled = true,\n) {\n  useSafeLayoutEffect(() => {\n    if (!enabled || typeof window === \"undefined\") return undefined;\n\n    const boundaryNode = boundaryRef.current;\n    if (!boundaryNode) return undefined;\n\n    let frameId = 0;\n    const scheduleUpdate = () => {\n      if (frameId) {\n        window.cancelAnimationFrame(frameId);\n      }\n\n      frameId = window.requestAnimationFrame(() => {\n        frameId = 0;\n        writeMountBoundaryViewportHeight(boundaryNode);\n        writeMountBoundaryInlineGutter(boundaryNode);\n      });\n    };\n\n    scheduleUpdate();\n\n    const resizeObserver =\n      typeof ResizeObserver === \"undefined\"\n        ? null\n        : new ResizeObserver(() => {\n            scheduleUpdate();\n          });\n    resizeObserver?.observe(boundaryNode);\n    if (boundaryNode.parentElement) {\n      resizeObserver?.observe(boundaryNode.parentElement);\n    }\n\n    const visualViewport = window.visualViewport;\n    const listenerOptions = false;\n    window.addEventListener(\"resize\", scheduleUpdate, listenerOptions);\n    window.addEventListener(\n      \"orientationchange\",\n      scheduleUpdate,\n      listenerOptions,\n    );\n    window.addEventListener(\"scroll\", scheduleUpdate, listenerOptions);\n    visualViewport?.addEventListener(\"resize\", scheduleUpdate, listenerOptions);\n    visualViewport?.addEventListener(\"scroll\", scheduleUpdate, listenerOptions);\n\n    return () => {\n      if (frameId) {\n        window.cancelAnimationFrame(frameId);\n      }\n\n      resizeObserver?.disconnect();\n      window.removeEventListener(\"resize\", scheduleUpdate, listenerOptions);\n      window.removeEventListener(\n        \"orientationchange\",\n        scheduleUpdate,\n        listenerOptions,\n      );\n      window.removeEventListener(\"scroll\", scheduleUpdate, listenerOptions);\n      visualViewport?.removeEventListener(\n        \"resize\",\n        scheduleUpdate,\n        listenerOptions,\n      );\n      visualViewport?.removeEventListener(\n        \"scroll\",\n        scheduleUpdate,\n        listenerOptions,\n      );\n      boundaryNode.style.removeProperty(\"--page-owned-available-height\");\n      boundaryNode.style.removeProperty(\"--page-owned-inline-gutter\");\n      boundaryNode.removeAttribute(\"data-page-owned-inline-gutter-source\");\n    };\n  }, [boundaryRef, enabled]);\n}\n\nexport function PageOwnedMountBoundary({\n  adapter,\n  suppressSharedHeader = true,\n  className,\n  children,\n}: PageOwnedMountBoundaryProps) {\n  const boundaryRef = React.useRef<HTMLDivElement>(null);\n  useSharedHostHeaderSuppression(adapter, suppressSharedHeader, boundaryRef);\n  useMountBoundaryViewportHeight(boundaryRef);\n  const boundaryClassName = useMountRegionFill(className);\n\n  return (\n    <div\n      ref={boundaryRef}\n      className={boundaryClassName}\n      data-page-owned-mount-boundary=\"true\"\n    >\n      {children}\n    </div>\n  );\n}\n",
+        "artifactClass": "page-owned-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/index.module.scss",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/index.module.scss",
+        "content": ".mountBoundary {\n  --page-owned-font-family: var(\n    --hiui-design-font-family,\n    \"PingFang SC\",\n    \"Microsoft YaHei\",\n    sans-serif\n  );\n  --page-owned-font-size: 14px;\n  --page-owned-line-height: 22px;\n  box-sizing: border-box;\n  display: flex;\n  flex: 1 1 0%;\n  flex-direction: column;\n  height: var(--page-owned-available-height, 100%);\n  max-height: var(--page-owned-available-height, 100%);\n  min-height: 0;\n  min-width: 0;\n  overflow: hidden;\n  padding-inline: var(--page-owned-inline-gutter, 0);\n  width: 100%;\n  color: #1a1d26;\n  font-family: var(--page-owned-font-family);\n  font-size: var(--page-owned-font-size);\n  font-weight: 400;\n  letter-spacing: normal;\n  line-height: var(--page-owned-line-height);\n  text-align: start;\n}\n\n.mountBoundary > * {\n  display: flex;\n  flex: 1 1 0%;\n  flex-direction: column;\n  height: 100%;\n  max-height: 100%;\n  min-height: 0;\n  min-width: 0;\n  overflow: hidden;\n  width: 100%;\n}\n\n.mountBoundary\n  :where(\n    a,\n    caption,\n    code,\n    dd,\n    dt,\n    em,\n    li,\n    p,\n    pre,\n    small,\n    strong,\n    table,\n    td,\n    th\n  ) {\n  color: inherit;\n  font-family: inherit;\n  font-size: inherit;\n  font-style: inherit;\n  font-weight: inherit;\n  letter-spacing: inherit;\n  line-height: inherit;\n  text-align: inherit;\n}\n\n.mountBoundary :global(.hi-v5-descriptions),\n.mountBoundary :global(.hi-v5-drawer),\n.mountBoundary :global(.hi-v5-form),\n.mountBoundary :global(.hi-v5-group-menu),\n.mountBoundary :global(.hi-v5-layout),\n.mountBoundary :global(.hi-v5-page-header),\n.mountBoundary :global(.hi-v5-query-filter),\n.mountBoundary :global(.hi-v5-side-menu),\n.mountBoundary :global(.hi-v5-table),\n.mountBoundary :global(.hi-v5-tag),\n.mountBoundary :global(.pro-detail-page),\n.mountBoundary :global(.pro-edit-page),\n.mountBoundary :global(.pro-list-page),\n.mountBoundary :global(.pro-stat-page),\n.mountBoundary :global(.pro-table-page),\n.mountBoundary :global(.pro-tree-split-page) {\n  font-family: inherit;\n  font-size: inherit;\n  letter-spacing: inherit;\n  line-height: inherit;\n}\n\n.mountBoundary :global(.hi-v5-form-label__content) {\n  align-items: flex-start;\n}\n\n.mountBoundary :global(.hi-v5-form-label__content__text) {\n  display: flex;\n  min-height: calc(var(--hi-v5-height-6, 24px) - 2px);\n  color: var(--hi-v5-color-gray-800, #1a1d26);\n  font-family: inherit;\n  font-size: var(--hi-v5-text-size-md, 0.875rem);\n  line-height: var(--hi-v5-text-lineheight-md, 1.375rem);\n}\n\n.mountBoundary\n  :global(\n    .hi-v5-form-label--placement-top\n      > .hi-v5-form-label__content\n      > .hi-v5-form-label__content__text\n  ) {\n  margin-block-end: var(--hi-v5-spacing-3, 6px);\n}\n\n.mountBoundary :global(.hi-v4-form-label--placement-top) {\n  align-items: stretch !important;\n}\n\n.mountBoundary :global(.hi-v4-form-label__text) {\n  color: var(--hi-v4-color-gray-800, #1f2937);\n  font-family: inherit;\n  font-size: var(--hi-v4-text-size-md, 0.875rem);\n  line-height: var(--hi-v4-height-8, 32px);\n}\n\n.mountBoundary\n  :global(.hi-v4-form-label--placement-top > .hi-v4-form-label__text) {\n  display: flex;\n  align-items: center;\n  width: 100%;\n  height: auto;\n  min-height: 22px;\n  line-height: 22px;\n  margin-bottom: var(--hi-v4-spacing-4, 8px);\n}\n\n.mountBoundary\n  :global(\n    .hi-v4-form-label--placement-top\n      > .hi-v4-form-label__text\n      > .hi-v5-ellipsis-tooltip\n  ) {\n  display: inline-flex;\n  align-items: center;\n  flex: 1 1 auto;\n  min-width: 0;\n  max-width: 100%;\n  vertical-align: top;\n  line-height: inherit;\n}\n\n.mountBoundary\n  :global(.hi-v4-form-label--required > .hi-v4-form-label__text::before) {\n  display: inline-flex;\n  flex: 0 0 auto;\n  align-items: center;\n  line-height: inherit;\n}\n",
+        "artifactClass": "page-owned-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/components/hiui-design-runtime/page-owned-mount-support/shared-header-node.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-owned-mount-support/shared-header-node.ts",
+        "content": "const EXPLICIT_SHARED_HEADER_SLOT_SELECTORS = [\n  '[data-hiui-page-header-slot=\"true\"]',\n  '[data-page-header-slot=\"true\"]',\n]\nconst LEGACY_SHARED_HEADER_SELECTOR = '[role=\"page-header\"]'\nconst PAGE_OWNED_BOUNDARY_SELECTOR = '[data-page-owned-mount-boundary=\"true\"]'\nconst CONTENT_OUTLET_SELECTORS = [\n  '[data-hiui-main-content-outlet=\"true\"]',\n  '[role=\"content\"]',\n  '[role=\"main-content\"]',\n]\n\nfunction readClassName(node: Element | null) {\n  return typeof node?.className === 'string' ? node.className : ''\n}\n\nfunction readTextContent(node: Node | null) {\n  return typeof node?.textContent === 'string' ? node.textContent.trim() : ''\n}\n\nfunction isInsidePageOwnedBoundary(node: Element, boundaryNode: HTMLElement | null) {\n  if (boundaryNode?.contains(node)) {\n    return true\n  }\n  if (typeof node.closest === 'function') {\n    return Boolean(node.closest(PAGE_OWNED_BOUNDARY_SELECTOR))\n  }\n  return false\n}\n\nfunction isSuppressedPageOwnedHeader(node: Element) {\n  return node.getAttribute('data-page-owned-header-suppressed') === 'true'\n}\n\nfunction isExternalLegacyPageHeader(node: Element, boundaryNode: HTMLElement | null) {\n  if (isSuppressedPageOwnedHeader(node)) return false\n  if (isInsidePageOwnedBoundary(node, boundaryNode)) return false\n  return true\n}\n\nfunction isHeaderCarrierNode(node: Element) {\n  const tagName = String(node.tagName || '').toLowerCase()\n  const role = String(node.getAttribute('role') || '').toLowerCase()\n  const className = readClassName(node)\n\n  return (\n    tagName === 'header' ||\n    role === 'banner' ||\n    /(^|[\\s_-])header([\\s_-]|$)/i.test(className)\n  )\n}\n\nfunction isEmptyHeaderCarrier(node: Element, boundaryNode: HTMLElement | null) {\n  if (!isHeaderCarrierNode(node)) return false\n  if (isInsidePageOwnedBoundary(node, boundaryNode)) return false\n  if (readTextContent(node) !== '') return false\n\n  for (const headerNode of Array.from(node.querySelectorAll(LEGACY_SHARED_HEADER_SELECTOR))) {\n    if (isExternalLegacyPageHeader(headerNode, boundaryNode)) {\n      return false\n    }\n  }\n\n  return true\n}\n\nfunction findLegacySharedHeaderCarrier(boundaryNode: HTMLElement | null) {\n  if (!boundaryNode || typeof boundaryNode.closest !== 'function') return null\n\n  const contentOutletNode = CONTENT_OUTLET_SELECTORS.reduce<HTMLElement | null>((matchedNode, selector) => {\n    if (matchedNode) return matchedNode\n    const nextNode = boundaryNode.closest(selector)\n    return nextNode instanceof HTMLElement ? nextNode : null\n  }, null)\n  if (!contentOutletNode) return null\n\n  for (\n    let candidate = contentOutletNode.previousElementSibling;\n    candidate;\n    candidate = candidate.previousElementSibling\n  ) {\n    if (candidate instanceof HTMLElement && isEmptyHeaderCarrier(candidate, boundaryNode)) {\n      return candidate\n    }\n  }\n\n  const contentParent = contentOutletNode.parentElement\n  if (!contentParent?.children) return null\n\n  for (const candidate of Array.from(contentParent.children)) {\n    if (candidate === contentOutletNode) break\n    if (candidate instanceof HTMLElement && isEmptyHeaderCarrier(candidate, boundaryNode)) {\n      return candidate\n    }\n  }\n\n  return null\n}\n\nexport function getDefaultSharedHeaderNode(\n  boundaryNode: HTMLElement | null = null,\n  doc: Pick<Document, 'querySelector' | 'querySelectorAll'> | null = globalThis.document\n): HTMLElement | null {\n  if (!doc || typeof doc.querySelector !== 'function') return null\n\n  for (const selector of EXPLICIT_SHARED_HEADER_SLOT_SELECTORS) {\n    const node = doc.querySelector(selector)\n    if (node instanceof HTMLElement) return node\n  }\n\n  if (typeof doc.querySelectorAll !== 'function') return null\n\n  for (const node of Array.from(doc.querySelectorAll(LEGACY_SHARED_HEADER_SELECTOR))) {\n    if (node instanceof HTMLElement && isExternalLegacyPageHeader(node, boundaryNode)) {\n      return node\n    }\n  }\n\n  return findLegacySharedHeaderCarrier(boundaryNode)\n}\n",
+        "artifactClass": "page-owned-support"
+      },
+      {
+        "sourcePath": "hiui-design:generated-page-local-mock-module",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/mock.ts",
+        "content": "import type { GetDataSourceParamsType } from '@hi-ui/schema-core'\nimport { toValues } from '../../components/hiui-design-runtime/pro-list-page/hooks/use-fetch-list'\n\ntype SelectOption = {\n  id: string\n  title: string\n}\n\ntype BasicTableRow = {\n  id: string\n  \"keyword\": string\n  \"cooperationStatus\": string\n  \"updatedAtRange\": string\n  \"supplierName\": string\n  \"supplierCode\": string\n  \"contactName\": string\n  \"contactPhone\": string\n  \"cooperationStatusText\": string\n  \"updatedAt\": string\n  \"actions\": string\n}\n\ntype PagedResponse<T> = {\n  list: T[]\n  total: number\n  current: number\n  pageSize: number\n}\n\nfunction includesText(value: string | undefined, keyword: string) {\n  if (!keyword) return true\n  return (value ?? '').toLowerCase().includes(keyword.toLowerCase())\n}\n\nfunction buildPagedResponse<T>(list: T[], params: GetDataSourceParamsType): PagedResponse<T> {\n  const current = params.pagination?.current ?? 1\n  const pageSize = params.pagination?.pageSize ?? 20\n  const start = (current - 1) * pageSize\n\n  return {\n    list: list.slice(start, start + pageSize),\n    total: list.length,\n    current,\n    pageSize,\n  }\n}\n\nexport const cooperationStatusOptions: SelectOption[] = [\n  {\n    \"id\": \"active\",\n    \"title\": \"合作中\"\n  },\n  {\n    \"id\": \"pending\",\n    \"title\": \"待准入\"\n  },\n  {\n    \"id\": \"paused\",\n    \"title\": \"暂停合作\"\n  },\n  {\n    \"id\": \"terminated\",\n    \"title\": \"终止合作\"\n  }\n]\n\nconst basicTableRows: BasicTableRow[] = [\n  {\n    \"id\": \"legacy-row-1\",\n    \"keyword\": \"供应商关键词1\",\n    \"cooperationStatus\": \"active\",\n    \"supplierName\": \"华东维保供应链\",\n    \"supplierCode\": \"ITEM-001\",\n    \"contactName\": \"王晨\",\n    \"contactPhone\": \"13800001201\",\n    \"cooperationStatusText\": \"合作中\",\n    \"updatedAt\": \"2026-10-11 10:10\",\n    \"actions\": \"查看\"\n  },\n  {\n    \"id\": \"legacy-row-2\",\n    \"keyword\": \"供应商关键词2\",\n    \"cooperationStatus\": \"pending\",\n    \"supplierName\": \"北京恒准配件服务\",\n    \"supplierCode\": \"ITEM-002\",\n    \"contactName\": \"李想\",\n    \"contactPhone\": \"13800001202\",\n    \"cooperationStatusText\": \"待准入\",\n    \"updatedAt\": \"2026-10-12 10:11\",\n    \"actions\": \"查看\"\n  },\n  {\n    \"id\": \"legacy-row-3\",\n    \"keyword\": \"供应商关键词3\",\n    \"cooperationStatus\": \"paused\",\n    \"supplierName\": \"深圳智联备件中心\",\n    \"supplierCode\": \"ITEM-003\",\n    \"contactName\": \"周宁\",\n    \"contactPhone\": \"13800001203\",\n    \"cooperationStatusText\": \"暂停合作\",\n    \"updatedAt\": \"2026-10-13 10:12\",\n    \"actions\": \"查看\"\n  },\n  {\n    \"id\": \"legacy-row-4\",\n    \"keyword\": \"供应商关键词4\",\n    \"cooperationStatus\": \"terminated\",\n    \"supplierName\": \"华东维保供应链\",\n    \"supplierCode\": \"ITEM-004\",\n    \"contactName\": \"王晨\",\n    \"contactPhone\": \"13800001204\",\n    \"cooperationStatusText\": \"终止合作\",\n    \"updatedAt\": \"2026-10-14 10:13\",\n    \"actions\": \"查看\"\n  },\n  {\n    \"id\": \"legacy-row-5\",\n    \"keyword\": \"供应商关键词5\",\n    \"cooperationStatus\": \"active\",\n    \"supplierName\": \"北京恒准配件服务\",\n    \"supplierCode\": \"ITEM-005\",\n    \"contactName\": \"李想\",\n    \"contactPhone\": \"13800001205\",\n    \"cooperationStatusText\": \"合作中\",\n    \"updatedAt\": \"2026-10-15 10:14\",\n    \"actions\": \"查看\"\n  },\n  {\n    \"id\": \"legacy-row-6\",\n    \"keyword\": \"供应商关键词6\",\n    \"cooperationStatus\": \"pending\",\n    \"supplierName\": \"深圳智联备件中心\",\n    \"supplierCode\": \"ITEM-006\",\n    \"contactName\": \"周宁\",\n    \"contactPhone\": \"13800001206\",\n    \"cooperationStatusText\": \"待准入\",\n    \"updatedAt\": \"2026-10-16 10:15\",\n    \"actions\": \"查看\"\n  }\n]\n\nfunction matchesFilter(row: BasicTableRow, key: string, value: unknown) {\n  if (value == null || value === '') return true\n  if (Array.isArray(value)) {\n    if (value.length === 0) return true\n    return true\n  }\n  return includesText(String(row[key] ?? ''), String(value))\n}\n\nexport function queryBasicTableRows(params: GetDataSourceParamsType) {\n  const values = toValues((params.filters ?? []) as Required<GetDataSourceParamsType>['filters'])\n  const keyword = values.keyword != null ? String(values.keyword) : ''\n\n  return basicTableRows.filter((row) => {\n    const keywordMatched = !keyword || [\"keyword\",\"supplierName\",\"supplierCode\",\"contactName\"].some((key) => includesText(String(row[key] ?? ''), keyword))\n    if (!keywordMatched) return false\n\n    return Object.entries(values).every(([key, value]) => {\n      if (key === 'keyword') return true\n      return matchesFilter(row, key, value)\n    })\n  })\n}\n\nexport async function getBasicTableList(params: GetDataSourceParamsType) {\n  const list = queryBasicTableRows(params)\n  return buildPagedResponse(list, params)\n}\n",
+        "artifactClass": "business-mock-data"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/basic-table.tsx",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/index.tsx",
+        "isPage": true,
+        "content": "import { useMemo } from 'react'\nimport { Button, Message, Space, Tag } from '@hi-ui/hiui'\nimport { DownloadOutlined } from '@hi-ui/icons'\nimport { extendDsl, F, ReadonlyFieldCreator } from '@hi-ui/schema-core'\nimport { TypicalPageFieldMapProvider } from '../../components/hiui-design-runtime'\nimport {\n  ProListPageProvider,\n  queryFilterPickerOverlay,\n  queryFilterDatePickerOverlay,\n} from '../../components/hiui-design-runtime/pro-list-page'\nimport {\n  TablePageFrame,\n  proTablePageStyles,\n  renderTableTextEllipsis,\n} from '../../components/hiui-design-runtime/pro-table-page'\nimport {\n  getBasicTableList,\n  cooperationStatusOptions,\n} from './mock'\nimport { useTranslation } from './page-localization'\nimport { PageOwnedMountBoundary } from './page-owned-mount-support'\n\nconst T = extendDsl(ReadonlyFieldCreator, {\n  renderEllipsis(this) {\n    return this.renderCell((cellValue) => renderTableTextEllipsis(cellValue))\n  },\n})\n\nfunction renderGeneratedTableStatusTag(cellValue) {\n  const normalizedValue = String(cellValue ?? '').trim()\n  if (!normalizedValue) return '—'\n  const tagType = /成功|完成|启用|正常|在岗|合作中|履约中|已签约/u.test(normalizedValue)\n    ? 'success'\n    : /失败|终止|停用|停岗|禁用|异常|流失/u.test(normalizedValue)\n      ? 'danger'\n      : /中|待|审核|进行|暂停|草稿|即将/u.test(normalizedValue)\n        ? 'warning'\n        : 'default'\n  return <Tag type={tagType} appearance=\"filled\">{normalizedValue}</Tag>\n}\n\nfunction BasicTableInner() {\n  const { locale, t } = useTranslation()\n\n  const queryFields = useMemo(\n    () => [\n      F(t(\"合作状态\"), \"cooperationStatus\")\n        .Select({\n          data: cooperationStatusOptions.map((option) => ({ ...option, title: t(option.title) })),\n          clearable: true,\n          overlay: queryFilterPickerOverlay,\n        })\n        .val,\n      F(t(\"更新时间\"), \"updatedAtRange\")\n        .Date({\n          type: 'daterange',\n          format: 'YYYY-MM-DD',\n          clearable: true,\n          overlay: queryFilterDatePickerOverlay,\n        })\n        .val\n    ],\n    [t]\n  )\n\n  const tableFields = useMemo(\n    () => [\n      T(t(\"供应商名称\"), \"supplierName\").W(160).renderEllipsis().val,\n      T(t(\"供应商编码\"), \"supplierCode\").W(160).renderEllipsis().val,\n      T(t(\"联系人\"), \"contactName\").W(160).renderEllipsis().val,\n      T(t(\"联系电话\"), \"contactPhone\").W(160).renderEllipsis().val,\n      T(t(\"合作状态\"), \"cooperationStatusText\")\n        .W(128)\n        .renderCell((cellValue) => renderGeneratedTableStatusTag(cellValue))\n        .val,\n      T(t(\"更新时间\"), \"updatedAt\").W(176).renderEllipsis().val,\n      T(t(\"操作\"), \"actions\").W(160).renderEllipsis().val\n    ],\n    [t]\n  )\n\n  return (\n      <TablePageFrame\n        key={locale}\n        title={t(\"供应商管理\")}\n        queryFields={queryFields}\n        tableFields={tableFields}\n        searchPlaceholder={t(\"供应商名称 / 供应商编码 / 联系人\")}\n        extra={\n        <Space className={proTablePageStyles.headerExtra}>\n\n        </Space>\n      }\n      />\n  )\n}\n\nexport function BasicTablePage() {\n  const request = useMemo(\n    () => async (params: Parameters<typeof getBasicTableList>[0]) => getBasicTableList(params),\n    []\n  )\n\n  return (\n    <PageOwnedMountBoundary>\n      <ProListPageProvider request={request}>\n        <TypicalPageFieldMapProvider>\n          <BasicTableInner />\n        </TypicalPageFieldMapProvider>\n      </ProListPageProvider>\n      \n    </PageOwnedMountBoundary>\n  )\n}\n\nexport default BasicTablePage\n",
+        "dependencyOwners": [],
+        "allowManagedOverwrite": false,
+        "artifactClass": "business-page-source"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/data-visualization/request-utils.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/data-visualization/request-utils.ts",
+        "isPage": false,
+        "content": "import type { GetDataSourceParamsType } from '@hi-ui/schema-core'\n\ntype DataSourceFilter = NonNullable<GetDataSourceParamsType['filters']>[number]\n\nexport type PagedResponse<T> = {\n  list: T[]\n  total: number\n  current: number\n  pageSize: number\n}\n\nexport function getKeywordValue(params: GetDataSourceParamsType) {\n  const keywordFilter = (params.filters ?? []).find(\n    (item: DataSourceFilter) => item.id === 'keyword'\n  )\n  return keywordFilter?.value != null ? String(keywordFilter.value).trim().toLowerCase() : ''\n}\n\nexport function getParamsWithoutKeyword(params: GetDataSourceParamsType): GetDataSourceParamsType {\n  return {\n    ...params,\n    filters: (params.filters ?? []).filter((item: DataSourceFilter) => item.id !== 'keyword'),\n  }\n}\n\nexport function filterListByKeyword<T>(\n  list: T[],\n  keyword: string,\n  selectors: Array<(item: T) => unknown>\n) {\n  if (!keyword) return list\n\n  return list.filter((item) =>\n    selectors.some((selector) =>\n      String(selector(item) ?? '')\n        .toLowerCase()\n        .includes(keyword)\n    )\n  )\n}\n\nexport function paginateList<T>(\n  list: T[],\n  params: GetDataSourceParamsType\n): PagedResponse<T> {\n  const current = params.pagination?.current ?? 1\n  const pageSize = params.pagination?.pageSize ?? 20\n  const start = (current - 1) * pageSize\n\n  return {\n    list: list.slice(start, start + pageSize),\n    total: list.length,\n    current,\n    pageSize,\n  }\n}\n",
+        "dependencyOwners": [
+          "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/basic-table.tsx"
+        ],
+        "allowManagedOverwrite": false,
+        "artifactClass": "page-support"
+      },
+      {
+        "sourcePath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/page-localization.ts",
+        "destPath": "/Users/guorui/Documents/ChatGPT/New project/src/pages/supplier-management/page-localization.ts",
+        "isPage": false,
+        "content": "import { useMemo } from 'react'\n// Localization is intentionally disabled for this generated page, so visible copy stays literal and only locale-sensitive formatting remains available.\n\ntype TranslationParams = Record<string, string | number | boolean | null | undefined>\ntype LocaleDirection = 'ltr' | 'rtl'\n\nconst DEFAULT_LOCALE = 'zh-CN'\nconst DEFAULT_TEXT_EXPANSION_MULTIPLIER = 1\n\nfunction resolveLocale() {\n  if (typeof document !== 'undefined') {\n    const documentLocale = String(document.documentElement.lang || '').trim()\n    if (documentLocale) return documentLocale\n  }\n  if (typeof navigator !== 'undefined') {\n    const navigatorLocale = String(navigator.language || '').trim()\n    if (navigatorLocale) return navigatorLocale\n  }\n  return DEFAULT_LOCALE\n}\n\nfunction resolveDirection(locale: string): LocaleDirection {\n  if (typeof document !== 'undefined') {\n    return document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr'\n  }\n  return String(locale || '').toLowerCase().startsWith('ar') ? 'rtl' : 'ltr'\n}\n\nfunction interpolate(template: string, params?: TranslationParams) {\n  if (!params) return template\n  return template.replace(/\\{(\\w+)\\}/g, (_, key: string) => {\n    const value = params[key]\n    return value == null ? '' : String(value)\n  })\n}\n\nfunction formatDateValue(value: string | number | Date, locale: string, options?: Intl.DateTimeFormatOptions) {\n  return new Intl.DateTimeFormat(locale, options).format(new Date(value))\n}\n\nfunction formatNumberValue(value: number, locale: string, options?: Intl.NumberFormatOptions) {\n  return new Intl.NumberFormat(locale, options).format(value)\n}\n\nfunction formatCurrencyValue(value: number, currency: string, locale: string, options?: Omit<Intl.NumberFormatOptions, 'style' | 'currency'>) {\n  return new Intl.NumberFormat(locale, {\n    style: 'currency',\n    currency,\n    ...options,\n  }).format(value)\n}\n\nfunction formatPercentValue(value: number, locale: string, options?: Omit<Intl.NumberFormatOptions, 'style'>) {\n  return new Intl.NumberFormat(locale, {\n    style: 'percent',\n    ...options,\n  }).format(value)\n}\n\nexport function useTranslation() {\n  return useMemo(() => {\n    const locale = resolveLocale()\n    const dir = resolveDirection(locale)\n    return {\n      locale,\n      dir,\n      t: (key: string, params?: TranslationParams) => interpolate(key, params),\n      formatDate: (value: string | number | Date, options?: Intl.DateTimeFormatOptions) =>\n        formatDateValue(value, locale, options),\n      formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>\n        formatNumberValue(value, locale, options),\n      formatCurrency: (value: number, currency: string, options?: Omit<Intl.NumberFormatOptions, 'style' | 'currency'>) =>\n        formatCurrencyValue(value, currency, locale, options),\n      formatPercent: (value: number, options?: Omit<Intl.NumberFormatOptions, 'style'>) =>\n        formatPercentValue(value, locale, options),\n      setLocale: (nextLocale?: string) => String(nextLocale || locale),\n      textExpansionMultiplier: DEFAULT_TEXT_EXPANSION_MULTIPLIER,\n    }\n  }, [])\n}\n",
+        "dependencyOwners": [
+          "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/examples/host-integration/src/pages/basic-table.tsx"
+        ],
+        "allowManagedOverwrite": false,
+        "artifactClass": "page-localization-support"
+      }
+    ],
+    "blockedFiles": [],
+    "writableArtifactSummary": {
+      "totalFiles": 17,
+      "classes": [
+        "business-mock-data",
+        "business-page-source",
+        "formal-host-support",
+        "page-localization-support",
+        "page-owned-support",
+        "page-support"
+      ],
+      "countsByClass": {
+        "page-support": 4,
+        "formal-host-support": 7,
+        "page-owned-support": 3,
+        "business-mock-data": 1,
+        "business-page-source": 1,
+        "page-localization-support": 1
+      },
+      "businessSemanticArtifactClasses": [
+        "business-page-source",
+        "business-mock-data"
+      ],
+      "businessSemanticArtifactCount": 2
+    },
+    "blockedArtifactSummary": {
+      "totalFiles": 0,
+      "classes": [],
+      "countsByClass": {},
+      "businessSemanticArtifactClasses": [
+        "business-page-source",
+        "business-mock-data"
+      ],
+      "businessSemanticArtifactCount": 0
+    }
+  },
+  "projectCheckSelection": {
+    "strategy": "business-artifacts-written",
+    "selectedProfile": "auto",
+    "shouldRun": true,
+    "reason": "Business-bearing page artifacts were written, so the next engineering verification should prefer the local auto project-check profile."
+  },
+  "readinessSummary": {
+    "generationReady": {
+      "status": "ready-with-review",
+      "reason": "Current page is using page-type default business semantics. Writing can continue, but the generated fields and mock data should be reviewed before delivery."
+    },
+    "engineeringReady": {
+      "status": "pending-project-check",
+      "reason": "Business-bearing page artifacts were written, so the next engineering verification should prefer the local auto project-check profile.",
+      "selectedProjectCheckProfile": "auto"
+    },
+    "runtimeReady": {
+      "status": "baseline-ready",
+      "reason": ""
+    }
+  },
+  "projectHostContractSettlement": {
+    "updated": true,
+    "reason": "project host contract settled from managed create-formal-shell-and-mount-entry write."
+  },
+  "pageTaskGateRefresh": {
+    "refreshed": false,
+    "reason": "navigation mount action create-formal-shell-and-mount-entry is not eligible for warm page-task refresh.",
+    "navigationMountAction": "create-formal-shell-and-mount-entry",
+    "writtenFiles": [
+      "src/business-shell/app-frame.tsx",
+      "src/business-shell/routes.tsx",
+      "src/business-shell/app-frame-core.tsx",
+      "src/business-shell/components/layout/layout-content-context.tsx",
+      "src/business-shell/host-shell-localization.ts",
+      "src/business-shell/components/layout/typical-page-host.tsx",
+      "src/business-shell/route-base-path.ts",
+      "src/business-shell/host-reset.css",
+      "src/business-shell/components/layout/page-header-portal.tsx",
+      "src/main.jsx",
+      "src/pages/supplier-management/page-owned-mount-support/index.tsx",
+      "src/pages/supplier-management/page-owned-mount-support/index.module.scss",
+      "src/pages/supplier-management/page-owned-mount-support/shared-header-node.ts",
+      "src/pages/supplier-management/mock.ts",
+      "src/pages/supplier-management/index.tsx",
+      "src/pages/supplier-management/data-visualization/request-utils.ts",
+      "src/pages/supplier-management/page-localization.ts",
+      "src/pages/supplier-management/hiui-pagegen.meta.json"
+    ],
+    "blockedWrittenFiles": [],
+    "pageTaskStatus": {
+      "schema": "hiui-design-project-page-task-status.v1",
+      "updatedAt": "2026-10-29T06:02:45.693Z",
+      "completionContract": {
+        "integrationCompleteWhen": "ready-to-generate",
+        "materializedOnlyWhen": "ensure-only"
+      },
+      "integrationComplete": true,
+      "userVisibleState": "integration-complete",
+      "nextStage": "ready-to-generate",
+      "lifecycleProfile": {
+        "phase": "ready-to-generate",
+        "nextGate": "page-generation",
+        "nextStage": "ready-to-generate",
+        "integrationReady": true,
+        "pageTaskReady": true,
+        "integrationComplete": true,
+        "userVisibleState": "integration-complete",
+        "integrationStatus": "ready",
+        "pageTaskReadiness": "ready-to-generate",
+        "applyProgressStatus": "",
+        "applyProgressStage": ""
+      },
+      "integrationReadiness": {
+        "ready": true,
+        "status": "ready",
+        "appliedMode": "host-integration",
+        "applyStatePath": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/outputs/HIUI_DESIGN_APPLY_STATE.json",
+        "applyProgressPath": "/Users/guorui/Documents/ChatGPT/New project/.local-context/hiui-design/outputs/HIUI_DESIGN_APPLY_PROGRESS.json",
+        "applyProgress": {
+          "status": "",
+          "stage": "",
+          "requestedMode": "",
+          "startedAt": "",
+          "updatedAt": "",
+          "detail": "",
+          "lastError": ""
+        },
+        "hostCompatibility": {
+          "status": "ready",
+          "reason": "Host compatibility light gate passed. Page generation can proceed.",
+          "riskLevel": "medium",
+          "riskTags": [
+            "legacy-hiui-runtime",
+            "mixed-hiui-runtime"
+          ],
+          "nextAction": "allow-page-generation",
+          "formalHostProfile": {
+            "layoutMode": "unknown",
+            "headerSlotPolicy": "no-header-slot",
+            "hostProviderBridge": true,
+            "continuousHeightChain": false,
+            "contentOutletPath": "official-shell-root",
+            "scrollOwner": "unknown",
+            "rightViewportGutterPx": 16,
+            "leftGapPxWhenMenuCollapsed": 16,
+            "evidenceFiles": [
+              "src/components/hiui-design-runtime/typical-page-host/index.js"
+            ]
+          },
+          "managedHostContract": {
+            "status": "missing",
+            "contractPath": "",
+            "contractRelativePath": "",
+            "reason": "No managed host contract file was found. Falling back to legacy source heuristics for formal host detection.",
+            "errors": [],
+            "evidenceFiles": []
+          },
+          "publicShell": {
+            "status": "ready",
+            "reason": "Public shell viewport compatibility looks ready through src/App.css, src/components/hiui-design-runtime/styles.css, src/index.css.",
+            "entryFile": "src/main.jsx",
+            "styleFiles": [
+              "src/App.css",
+              "src/components/hiui-design-runtime/styles.css",
+              "src/index.css"
+            ],
+            "blockedBy": [],
+            "projectEntryShellReady": true,
+            "projectEntryShellReason": "Public shell viewport compatibility looks ready through src/App.css, src/components/hiui-design-runtime/styles.css, src/index.css.",
+            "projectEntryShellBlockedBy": [],
+            "projectEntryShell": {
+              "status": "ready",
+              "reason": "Public shell viewport compatibility looks ready through src/App.css, src/components/hiui-design-runtime/styles.css, src/index.css.",
+              "entryFile": "src/main.jsx",
+              "styleFiles": [
+                "src/App.css",
+                "src/components/hiui-design-runtime/styles.css",
+                "src/index.css"
+              ],
+              "blockedBy": [],
+              "required": false,
+              "deliveryContract": "",
+              "targetEntryKind": "",
+              "targetEntryPath": "",
+              "expectedShellStyleImport": ""
+            },
+            "mfPublishEntryShellRequired": false,
+            "mfPublishEntryShellReady": false,
+            "mfPublishEntryShellReason": "Managed Module Federation publish-entry shell delivery is not required for the current project.",
+            "mfPublishEntryShellBlockedBy": [],
+            "mfPublishEntryShell": {
+              "status": "not-applicable",
+              "reason": "Managed Module Federation publish-entry shell delivery is not required for the current project.",
+              "entryFile": "",
+              "styleFiles": [],
+              "blockedBy": [],
+              "required": false,
+              "deliveryContract": "",
+              "targetEntryKind": "",
+              "targetEntryPath": "",
+              "expectedShellStyleImport": ""
+            }
+          }
+        }
+      },
+      "pageTaskReadiness": "ready-to-generate",
+      "reason": "typical-page preflight passed for host-integration mode. Project generation readiness is complete, including the official host-shell source required for the first formal business shell.",
+      "gateStatusReason": "typical-page preflight passed for host-integration mode. Project generation readiness is complete, including the official host-shell source required for the first formal business shell.",
+      "nextCommand": "",
+      "nextRequiredAction": "page-generation",
+      "staleInputs": [],
+      "canAutoRecover": false,
+      "contractSnapshotId": "751a92a92a249ec57fe860d9344c910697ce5b87f5cadaa5473dd85bada45db5",
+      "requiredManualActions": [],
+      "recommendedSteps": [],
+      "allowedActions": [],
+      "forbiddenActions": [],
+      "updatedBy": "scripts/typical-page-preflight.mjs",
+      "doctor": {
+        "lastRunAt": "",
+        "lastStatus": "not-run",
+        "assessment": {
+          "runtimeBaseline": {
+            "status": "",
+            "failedCheckIds": [],
+            "summary": ""
+          },
+          "layoutContract": {
+            "status": "",
+            "failedCheckIds": [],
+            "summary": ""
+          },
+          "decision": ""
+        }
+      },
+      "freshness": {
+        "packageJsonHash": "a1c560836176ed82b4ccb188b56df4813def099270d634d113124c3dbc345db8",
+        "lockfileHash": "9496ffbbfded702e2204ac0585dbf09e9c1ce20f689a32174957181c7a42d7ed",
+        "entryFileHash": "f47e4bbfb82c285f6c55f87d8350d34378d8f7d1efcc4d5838c352cd644b1acc",
+        "buildConfigHash": "a1e2275bad4455490d728ca92a145b2e149367e7a652f96ce5c9dd63a8564f19",
+        "contextHash": "948e92b467fce9e971d2c4ca7c51a093015022fc08de3ae0ca562a03ea3e5388",
+        "hostContractHash": "no-formal-host-contract",
+        "hostContractSource": "none",
+        "projectHostContractHash": "d3ae44204a8c84d11347b4e1ccea4b335f6dd0412544147beca429adc45cab82",
+        "projectHostContractFingerprintValue": "751a92a92a249ec57fe860d9344c910697ce5b87f5cadaa5473dd85bada45db5",
+        "projectHostContractFingerprintSource": "host-evidence-files",
+        "projectHostContractEvidenceHash": "751a92a92a249ec57fe860d9344c910697ce5b87f5cadaa5473dd85bada45db5"
+      }
+    },
+    "projectHostContract": null
+  },
+  "nextRequiredActions": [
+    "Replace remaining business slots with real fields, requests, and copy",
+    "Review the patched real app entry src/main.jsx and confirm it now mounts the generated formal business shell src/business-shell/app-frame.tsx and registry src/business-shell/routes.tsx.",
+    "Keep src/business-shell/app-frame.tsx as a thin wrapper over the local managed host core src/business-shell/app-frame-core.tsx and aligned with examples/host-integration/src/app-frame-core.tsx; keep the managed host import inside that local app-frame-core, and adjust menus and default shellOptions through src/business-shell/routes.tsx instead of rewriting the host shell.",
+    "Run npm run typical-page:preflight -- --json",
+    "Run the smallest target-project build or type check available"
+  ],
+  "reportSchema": "hiui-design-page-generation-report.v2",
+  "reportPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.table-basic.2026-10-29T06-04-54-299Z.70904.md",
+  "latestReportPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.latest.md",
+  "latestReportJsonPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.latest.json",
+  "reportArtifacts": {
+    "versionedMarkdownPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.table-basic.2026-10-29T06-04-54-299Z.70904.md",
+    "versionedJsonPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.table-basic.2026-10-29T06-04-54-299Z.70904.json",
+    "latestMarkdownPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.latest.md",
+    "latestJsonPath": "/Users/guorui/Documents/work/git/hiui/skills/hiui-workflow/hiui-design/outputs/PAGE_GENERATION_REPORT.latest.json"
+  }
+}

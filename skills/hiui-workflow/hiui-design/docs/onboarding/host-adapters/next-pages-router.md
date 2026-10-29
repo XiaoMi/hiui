@@ -6,7 +6,8 @@
 
 ## 默认策略
 
-- 默认使用 `rules-only`
+- Next Pages Router 不属于原生兼容载体；`--mode auto` 默认会落到 `rules-only`
+- 若团队后续愿意补项目本地兼容桥，再单独评估是否值得显式切到 `host-integration`
 - 保留 Pages Router 现有 `_app` / 页面路由结构
 - 典型页壳只作为页面层能力接入
 
@@ -19,7 +20,7 @@
 
 ## 最小接法
 
-1. 在 `_app` 或共享 layout 中引入 `@hiui-design/typical-page-shells/styles.css`
+1. 在 `_app` 或共享 layout 中引入本地运行时样式 `src/components/hiui-design-runtime/styles.css`
 2. 在共享 layout 中提供 header / footer slot
 3. 在共享 layout 中挂 `TypicalPageHostProvider`
 4. 业务页继续使用原有 pages 路由

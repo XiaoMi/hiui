@@ -1,0 +1,131 @@
+.pageRoot {
+  display: flex;
+  flex: 1 1 0%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pageRoot :global(.pro-stat-page) {
+  display: flex;
+  flex: 1 1 0%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pageRoot :global(.pro-stat-page > .pro-list-page) {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pageRoot :global(.pro-stat-page [class*='whiteBody']) {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.pageRoot :global(.pro-stat-page [class*='tableContainer']) {
+  flex: 0 0 auto !important;
+  min-height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 20px !important;
+}
+
+.pageRoot :global(.pro-stat-page .hi-v5-table-footer) {
+  position: static !important;
+}
+
+.workspace {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.summaryGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-width: 0;
+}
+
+.chartRows {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.chartRowFeatured,
+.chartRowStandard {
+  align-items: stretch;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.chartRowFeatured {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.chartRowStandard {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.chartRowFeaturedPrimary {
+  display: flex;
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.chartRowCell {
+  display: flex;
+  min-width: 0;
+}
+
+.chartRowFeaturedPrimary > *,
+.chartRowCell > * {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 280px;
+  min-width: 0;
+}
+
+.axisChartViewport {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+
+@media (max-width: 1200px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chartRowFeatured,
+  .chartRowStandard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .chartRowFeaturedPrimary {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .summaryGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chartRowFeatured,
+  .chartRowStandard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

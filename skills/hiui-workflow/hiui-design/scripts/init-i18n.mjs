@@ -5,8 +5,6 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const SUPPORTED_LOCALES = ['zh-CN', 'zh-TW', 'en-US', 'id-ID', 'th-TH', 'de-DE', 'ar-SA']
-const DEFAULT_LOCALE = 'zh-CN'
-const ENGLISH_BASELINE_LOCALE = 'en-US'
 
 function printUsage() {
   console.log(`Usage:
@@ -30,6 +28,10 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i]
 
+    if (arg === '--') {
+      continue
+    }
+
     if (arg === '--force') {
       options.force = true
       continue
@@ -46,6 +48,16 @@ function parseArgs(argv) {
         throw new Error('Missing value for --target')
       }
       options.target = path.resolve(value)
+      i += 1
+      continue
+    }
+
+    if (arg === '--line') {
+      const value = argv[i + 1]
+      if (!value || value.startsWith('--')) {
+        throw new Error('Missing value for --line')
+      }
+      // Compatibility no-op: older generated script entries may still append --line.
       i += 1
       continue
     }
@@ -219,7 +231,10 @@ async function main() {
       const indexPath = path.join(translationDir, 'index.ts')
       const wrapperPath = path.join(targetRoot, 'scripts', 'init-i18n.mjs')
 
-      if ((await copyTemplateFile({ from: indexTemplatePath, to: indexPath, force: options.force })) !== 'unchanged') {
+      if (
+        (await copyTemplateFile({ from: indexTemplatePath, to: indexPath, force: options.force })) !==
+        'unchanged'
+      ) {
         seededFiles.push(path.relative(targetRoot, indexPath))
       }
 
@@ -234,7 +249,13 @@ async function main() {
         seededFiles.push(path.relative(targetRoot, demoOverridesPath))
       }
 
-      if ((await copyTemplateFile({ from: wrapperTemplatePath, to: wrapperPath, force: options.force })) !== 'unchanged') {
+      if (
+        (await copyTemplateFile({
+          from: wrapperTemplatePath,
+          to: wrapperPath,
+          force: options.force,
+        })) !== 'unchanged'
+      ) {
         seededFiles.push(path.relative(targetRoot, wrapperPath))
       }
 
@@ -302,7 +323,9 @@ async function main() {
       if (packageResult.skippedScripts.length > 0) {
         console.log(`- preserved scripts: ${packageResult.skippedScripts.join(', ')}`)
       }
-      console.log('- next: run `pnpm i18n:sync` after editing locale files, or rerun this init script with `--force` if you want to refresh the baseline wrappers.')
+      console.log(
+        '- next: run `pnpm i18n:sync` after editing locale files, or rerun this init script with `--force` if you want to refresh the baseline wrappers.'
+      )
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)

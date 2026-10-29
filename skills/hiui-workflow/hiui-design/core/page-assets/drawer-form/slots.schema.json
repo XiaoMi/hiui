@@ -1,5 +1,0 @@
-{
-  "pageType": "drawer-form",
-  "requiredKeys": ["title", "drawerTitle", "sections"],
-  "optionalKeys": ["submitMessage", "cancelMessage"]
-}

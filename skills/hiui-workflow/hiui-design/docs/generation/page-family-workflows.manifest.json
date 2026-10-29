@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "schema": "hiui-design-page-family-workflows.v1",
+  "generatedFor": "execution-planning",
+  "notes": [
+    "This manifest is the single execution-readiness source of truth for family workflows.",
+    "Entries in this file do not imply generator execution is already enabled; runtime readiness is declared by plannerReady/briefReady/generatorReady.",
+    "For non-typical-page, supportedArchetypes means internal coordination-pattern vocabulary used by planner/brief contracts, not screenshot-derived page-template enumeration."
+  ],
+  "pageFamilies": [
+    {
+      "id": "non-typical-page",
+      "label": "非典型页面",
+      "status": "generator-ready-public-open",
+      "workflowId": "non-typical-rules-composition",
+      "briefMode": "nonTypicalExecutionBrief",
+      "generatorMode": "family-specific-generator",
+      "plannerReady": true,
+      "briefReady": true,
+      "generatorReady": true,
+      "legacyRefactorReady": false,
+      "supportedInputModes": [
+        "page-prompt",
+        "prototype-screenshot",
+        "figma-design-restore"
+      ],
+      "supportedIntegrationModes": [
+        "host-integration",
+        "rules-only"
+      ],
+      "supportedScenarios": [
+        "new-page-generation"
+      ],
+      "supportedArchetypes": [
+        "process-stage-sync",
+        "selection-detail-sync"
+      ],
+      "supportedCoordinationPatterns": [
+        "process-stage-sync",
+        "selection-detail-sync"
+      ],
+      "requiredDecisionFields": [
+        "classification.familyDecision",
+        "classification.recommendedRoute",
+        "nonTypicalDecisionPackage.pageGoal",
+        "nonTypicalDecisionPackage.pageHeaderPlan",
+        "nonTypicalDecisionPackage.pageHeaderPlan.hostConflictPolicy",
+        "nonTypicalDecisionPackage.pageHeaderPlan.restorePolicy",
+        "nonTypicalDecisionPackage.whiteBodyPlan",
+        "nonTypicalDecisionPackage.whiteBodyPlan.mountRegionFillPolicy",
+        "nonTypicalDecisionPackage.whiteBodyPlan.hostEscalationRule",
+        "nonTypicalDecisionPackage.regionPlan",
+        "nonTypicalDecisionPackage.coordinationModel",
+        "nonTypicalDecisionPackage.dataShape.chartUsage",
+        "nonTypicalDecisionPackage.dataShape.regionShapes",
+        "nonTypicalDecisionPackage.designSystemPlan"
+      ],
+      "designSystemPolicy": {
+        "preferredSources": [
+          "HiUI5",
+          "local-managed-runtime"
+        ],
+        "allowSecondVisualSystem": false,
+        "allowUnapprovedEscapesByDefault": false
+      },
+      "lightSanityChecks": [
+        "single-page-header",
+        "single-white-body-owner",
+        "single-primary-region",
+        "declared-region-data-shape",
+        "declared-stable-and-mutable-regions",
+        "declared-coordination-model",
+        "approved-design-system-only",
+        "no-unapproved-visual-token"
+      ],
+      "blockedConditions": [
+        "familyDecision is partial or no",
+        "workflow coordination pattern is not registered",
+        "classic table/form/detail still remains the primary carrier",
+        "legacy-system-reconstruction requested",
+        "third-party canvas or graph engine required",
+        "design system mapping cannot be traced back to HiUI5 or local-managed-runtime"
+      ],
+      "planningDocs": [
+        "docs/generation/shared-page-design-guidance.md",
+        "docs/generation/non-typical-design-principles.md",
+        "docs/generation/non-typical-ai-generation-guidance.md",
+        "docs/generation/non-typical-block-design-map.md",
+        "docs/generation/non-typical-few-shot-classification-pack.md",
+        "docs/generation/non-typical-conversation-output-template.md",
+        "docs/generation/non-typical-page-contract.json",
+        "docs/architecture/non-typical-page-execution-plan.md",
+        "docs/architecture/non-typical-page-readiness-checklist.md"
+      ]
+    }
+  ]
+}

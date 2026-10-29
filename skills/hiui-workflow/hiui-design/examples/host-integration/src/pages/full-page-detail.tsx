@@ -5,163 +5,339 @@ import { D, G } from '@hi-ui/schema-core'
 import { GroupMapProvider, SchemaGroup } from '@hi-ui/schema-group'
 import { SchemaDescriptionsBridge } from '@hi-ui/schema-group/descriptions'
 import { SchemaTableBridge } from '@hi-ui/schema-group/table'
-import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import {
   ProDetailPage,
   ProDetailPageProvider,
   useProDetailPageContext,
-} from '@hiui-design/typical-page-shells/pro-detail-page'
-import { useNavigate } from 'react-router-dom'
+} from '../components/hiui-design-runtime/pro-detail-page'
 import { getWorkOrderDetail } from './typical-pages.mock'
 import styles from './full-page-detail.module.scss'
-import { useTranslation } from '../../translation'
+import { useTranslation } from './page-localization'
 
 const detailGroupMap = {
   descriptions: SchemaDescriptionsBridge,
   table: SchemaTableBridge,
 }
 
-type WarrantyInfoItem = {
-  type: string
-  remainingDays: number
-  startAt: string
-  endAt: string
+type DetailFieldConfig = {
+  label: string
+  key: string
+  colSpan?: 1 | 2 | 3
 }
 
-function WarrantyInfoCards() {
-  const { detailData } = useProDetailPageContext()
-  const { t, formatNumber } = useTranslation()
-  const warrantyInfo = (detailData?.warrantyInfo ?? []) as WarrantyInfoItem[]
+type DetailDateFieldConfig = {
+  label: string
+  key: string
+}
 
-  return (
-    <div className={styles.warrantyGrid}>
-      {warrantyInfo.map((item) => (
-        <article className={styles.warrantyCard} key={item.type}>
-          <div className={styles.warrantyType}>{t(item.type)}</div>
-          <div className={styles.warrantyRemaining}>
-            <span className={styles.warrantyRemainingValue}>{formatNumber(item.remainingDays)}</span>
-            <span className={styles.warrantyRemainingUnit}>{t('天')}</span>
-          </div>
-          <div className={styles.warrantyMeta}>
-            <span>{t('剩余天数')}</span>
-          </div>
-          <dl className={styles.warrantyDates}>
-            <div>
-              <dt>{t('开始时间')}</dt>
-              <dd>{item.startAt}</dd>
+type DetailTableColumnConfig = {
+  label: string
+  key: string
+  width?: number
+}
+
+type DetailDescriptionSectionConfig = {
+  kind: 'description-group'
+  title: string
+  dataKey: string
+  fields: DetailFieldConfig[]
+}
+
+type DetailSummaryCardsSectionConfig = {
+  kind: 'summary-cards'
+  title: string
+  dataKey: string
+  cardTitleKey: string
+  metricValueKey: string
+  metricUnitText?: string
+  metaText?: string
+  dateFields?: DetailDateFieldConfig[]
+}
+
+type DetailDataTableSectionConfig = {
+  kind: 'data-table'
+  title: string
+  dataKey: string
+  columns: DetailTableColumnConfig[]
+}
+
+type DetailSectionConfig =
+  | DetailDescriptionSectionConfig
+  | DetailSummaryCardsSectionConfig
+  | DetailDataTableSectionConfig
+
+const detailSectionConfigs: DetailSectionConfig[] = [
+  // hiui5-pagegen:detail-sections:start
+  {
+    kind: 'description-group',
+    title: '基础信息',
+    dataKey: 'basicInfo',
+    fields: [
+      { label: '工单号', key: 'ticketNo' },
+      { label: '工单状态', key: 'status' },
+      { label: '工单类型', key: 'ticketType' },
+      { label: '服务方式', key: 'serviceMethod' },
+      { label: '关联商品', key: 'relatedProduct' },
+      { label: '购买渠道', key: 'purchaseChannel' },
+      { label: '来访原因', key: 'visitReason' },
+    ],
+  },
+  {
+    kind: 'summary-cards',
+    title: '三包信息',
+    dataKey: 'warrantyInfo',
+    cardTitleKey: 'type',
+    metricValueKey: 'remainingDays',
+    metricUnitText: '天',
+    metaText: '剩余天数',
+    dateFields: [
+      { label: '开始时间', key: 'startAt' },
+      { label: '截止时间', key: 'endAt' },
+    ],
+  },
+  {
+    kind: 'description-group',
+    title: '客户信息',
+    dataKey: 'customerInfo',
+    fields: [
+      { label: '用户姓名', key: 'userName' },
+      { label: '用户标签', key: 'userTags' },
+      { label: '用户电话', key: 'userPhone' },
+    ],
+  },
+  {
+    kind: 'description-group',
+    title: '服务信息',
+    dataKey: 'serviceInfo',
+    fields: [
+      { label: '服务机构', key: 'serviceOrg' },
+      { label: '服务工程师', key: 'serviceEngineer' },
+      { label: '受理时间', key: 'acceptedAt' },
+      { label: '问题描述', key: 'description', colSpan: 3 },
+    ],
+  },
+  {
+    kind: 'data-table',
+    title: '服务记录',
+    dataKey: 'serviceRecords',
+    columns: [
+      { label: '服务时间', key: 'serviceTime', width: 180 },
+      { label: '服务动作', key: 'serviceAction', width: 160 },
+      { label: '状态', key: 'status', width: 120 },
+      { label: '详情描述', key: 'detailDescription', width: 360 },
+    ],
+  },
+  // hiui5-pagegen:detail-sections:end
+]
+
+function renderSectionValue(record: Record<string, unknown>, key: string) {
+  const value = record?.[key]
+  return value === null || value === undefined || value === '' ? '--' : value
+}
+
+function buildDescriptionField(field: DetailFieldConfig, translate: (key: string) => string) {
+  const schemaField = D(translate(field.label), field.key)
+  if (field.colSpan) {
+    return schemaField.MWP({ colSpan: field.colSpan }).val
+  }
+
+  return schemaField.val
+}
+
+function buildTableField(column: DetailTableColumnConfig, translate: (key: string) => string) {
+  const schemaField =
+    typeof column.width === 'number'
+      ? D(translate(column.label), column.key).W(column.width)
+      : D(translate(column.label), column.key)
+
+  return schemaField.val
+}
+
+function createSummaryCardsRenderer(
+  section: DetailSummaryCardsSectionConfig,
+  translate: (key: string) => string,
+  formatNumber: (value: number) => string
+) {
+  return function SummaryCardsSection() {
+    const { detailData } = useProDetailPageContext()
+    const summaryCards = (detailData?.[section.dataKey] ?? []) as Array<Record<string, unknown>>
+
+    return (
+      <div className={styles.warrantyGrid}>
+        {summaryCards.map((item, index) => (
+          <article
+            className={styles.warrantyCard}
+            key={String(renderSectionValue(item, section.cardTitleKey) ?? index)}
+          >
+            <div className={styles.warrantyType}>{translate(String(renderSectionValue(item, section.cardTitleKey)))}</div>
+            <div className={styles.warrantyRemaining}>
+              <span className={styles.warrantyRemainingValue}>
+                {(() => {
+                  const metricValue = item?.[section.metricValueKey]
+                  return typeof metricValue === 'number' ? formatNumber(metricValue) : renderSectionValue(item, section.metricValueKey)
+                })()}
+              </span>
+              {section.metricUnitText ? (
+                <span className={styles.warrantyRemainingUnit}>{translate(section.metricUnitText)}</span>
+              ) : null}
             </div>
-            <div>
-              <dt>{t('截止时间')}</dt>
-              <dd>{item.endAt}</dd>
-            </div>
-          </dl>
-        </article>
-      ))}
-    </div>
-  )
+            {section.metaText ? <div className={styles.warrantyMeta}>{translate(section.metaText)}</div> : null}
+            {section.dateFields?.length ? (
+              <dl className={styles.warrantyDates}>
+                {section.dateFields.map((field) => (
+                  <div key={`${section.dataKey}-${field.key}`}>
+                    <dt>{translate(field.label)}</dt>
+                    <dd>{renderSectionValue(item, field.key)}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+          </article>
+        ))}
+      </div>
+    )
+  }
+}
+
+function buildDetailGroup(
+  section: DetailSectionConfig,
+  descriptionsProps: DescriptionsProps,
+  translate: (key: string) => string,
+  formatNumber: (value: number) => string
+) {
+  if (section.kind === 'description-group') {
+    return G(translate(section.title), section.dataKey)
+      .Descriptions({
+        fields: section.fields.map((field) => buildDescriptionField(field, translate)),
+        props: { descriptionsProps },
+      })
+      .CardProps({ size: 'lg' })
+      .val
+  }
+
+  if (section.kind === 'summary-cards') {
+    return G(translate(section.title), section.dataKey)
+      .Custom({
+        render: createSummaryCardsRenderer(section, translate, formatNumber),
+      })
+      .CardProps({ size: 'lg' })
+      .val
+  }
+
+  return G(translate(section.title), section.dataKey)
+    .Table({
+      fields: section.columns.map((column) => buildTableField(column, translate)),
+      props: {
+        className: styles.serviceRecordTable,
+        tableProps: {
+          bordered: false,
+          striped: false,
+        },
+      },
+    })
+    .CardProps({ size: 'lg' })
+    .val
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
+function looksLikeDateValue(value: string) {
+  return /^\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?$/.test(value)
+}
+
+function normalizeDetailLeafValue(
+  value: unknown,
+  translate: (key: string) => string,
+  formatDate: (value: string | number | Date, options?: Intl.DateTimeFormatOptions) => string
+) {
+  if (typeof value !== 'string') return value
+
+  const trimmedValue = value.trim()
+  if (!trimmedValue) return value
+
+  if (looksLikeDateValue(trimmedValue)) {
+    return formatDate(
+      trimmedValue,
+      /[ T]\d{2}:\d{2}/.test(trimmedValue) ? dateTimeOptions : dateOptions
+    )
+  }
+
+  return translate(value)
+}
+
+function normalizeDetailPayload(
+  value: unknown,
+  translate: (key: string) => string,
+  formatDate: (value: string | number | Date, options?: Intl.DateTimeFormatOptions) => string
+): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeDetailPayload(item, translate, formatDate))
+  }
+
+  if (isPlainObject(value)) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [
+        key,
+        normalizeDetailPayload(nestedValue, translate, formatDate),
+      ])
+    )
+  }
+
+  return normalizeDetailLeafValue(value, translate, formatDate)
 }
 
 function FullPageDetailInner() {
-  const navigate = useNavigate()
-  const { locale, t } = useTranslation()
+  const { locale, t, formatNumber } = useTranslation()
   const descriptionsProps = useMemo<DescriptionsProps>(
     () => ({
       placement: 'vertical',
-      column: 3,
       labelPlacement: 'left',
-      labelWidth: null,
+      labelWidth: 120,
+      column: 3,
     }),
     []
   )
 
   const groups = useMemo(
-    () => [
-      G(t('基础信息'), 'basicInfo')
-        .Descriptions({
-          fields: [
-            D(t('工单号'), 'ticketNo').val,
-            D(t('工单状态'), 'status').val,
-            D(t('工单类型'), 'ticketType').val,
-            D(t('服务方式'), 'serviceMethod').val,
-            D(t('关联商品'), 'relatedProduct').val,
-            D(t('购买渠道'), 'purchaseChannel').val,
-            D(t('来访原因'), 'visitReason').val,
-          ],
-          props: { descriptionsProps },
-        })
-        .CardProps({ size: 'lg' })
-        .val,
-      G(t('三包信息'), 'warrantyInfo')
-        .Custom({
-          render: () => <WarrantyInfoCards />,
-        })
-        .CardProps({ size: 'lg' })
-        .val,
-      G(t('客户信息'), 'customerInfo')
-        .Descriptions({
-          fields: [
-            D(t('用户姓名'), 'userName').val,
-            D(t('用户标签'), 'userTags').val,
-            D(t('用户电话'), 'userPhone').val,
-          ],
-          props: { descriptionsProps },
-        })
-        .CardProps({ size: 'lg' })
-        .val,
-      G(t('服务信息'), 'serviceInfo')
-        .Descriptions({
-          fields: [
-            D(t('服务机构'), 'serviceOrg').val,
-            D(t('服务工程师'), 'serviceEngineer').val,
-            D(t('受理时间'), 'acceptedAt').val,
-            D(t('问题描述'), 'description').MWP({ colSpan: 3 }).val,
-          ],
-          props: { descriptionsProps },
-        })
-        .CardProps({ size: 'lg' })
-        .val,
-      G(t('服务记录'), 'serviceRecords')
-        .Table({
-          fields: [
-            D(t('服务时间'), 'serviceTime').W(180).val,
-            D(t('服务动作'), 'serviceAction').W(160).val,
-            D(t('状态'), 'status').W(120).val,
-            D(t('详情描述'), 'detailDescription').W(360).val,
-          ],
-          props: {
-            className: styles.serviceRecordTable,
-            tableProps: {
-              bordered: false,
-              striped: false,
-            },
-          },
-        })
-        .CardProps({ size: 'lg' })
-        .val,
-    ],
-    [descriptionsProps, t]
+    () =>
+      detailSectionConfigs.map((section) =>
+        buildDetailGroup(section, descriptionsProps, t, formatNumber)
+      ),
+    [descriptionsProps, formatNumber, t]
   )
 
   return (
-    <ProDetailPage key={locale}>
-      <TypicalPageHeaderPortal>
-        <PageHeader
-          title={t('全页详情')}
-          onBack={() => navigate(-1)}
-          extra={
-            <Button type="default" appearance="line" onClick={() => void 0}>
-              {t('查看流程')}
-            </Button>
+    <div className={styles.detailPageRoot}>
+      <PageHeader
+        className={styles.pageHeader}
+        title={t('全页详情')}
+        onBack={() => {
+          if (typeof window === 'undefined') return
+          if (window.history.length > 1) {
+            window.history.back()
+            return
           }
-        />
-      </TypicalPageHeaderPortal>
+          window.close()
+        }}
+        extra={
+          <Button type="default" appearance="line" onClick={() => void 0}>
+            {t('查看流程')}
+          </Button>
+        }
+      />
 
-      <div className={styles.detailBody}>
-        <GroupMapProvider groups={detailGroupMap}>
-          <SchemaGroup groups={groups} borderedGroups={false} />
-        </GroupMapProvider>
+      <div className={styles.whiteBody}>
+        <ProDetailPage key={locale}>
+          <div className={styles.detailBody}>
+            <GroupMapProvider groups={detailGroupMap}>
+              <SchemaGroup groups={groups} borderedGroups={false} />
+            </GroupMapProvider>
+          </div>
+        </ProDetailPage>
       </div>
-    </ProDetailPage>
+    </div>
   )
 }
 
@@ -171,45 +347,7 @@ export function FullPageDetailPage() {
     () => async () => {
       const response = await getWorkOrderDetail()
 
-      return {
-        basicInfo: {
-          ...response.basicInfo,
-          purchaseChannel: t(response.basicInfo.purchaseChannel),
-          relatedProduct: t(response.basicInfo.relatedProduct),
-          status: t(response.basicInfo.status),
-          ticketNo: response.basicInfo.ticketNo,
-          ticketType: t(response.basicInfo.ticketType),
-          serviceMethod: t(response.basicInfo.serviceMethod),
-          visitReason: t(response.basicInfo.visitReason),
-        },
-        warrantyInfo: response.warrantyInfo.map((item) => ({
-          ...item,
-          endAt: formatDate(item.endAt, dateOptions),
-          startAt: formatDate(item.startAt, dateOptions),
-        })),
-        customerInfo: {
-          ...response.customerInfo,
-          userName: t(response.customerInfo.userName),
-          userTags: response.customerInfo.userTags
-            .split(' / ')
-            .map((item) => t(item))
-            .join(' / '),
-        },
-        serviceInfo: {
-          ...response.serviceInfo,
-          serviceOrg: t(response.serviceInfo.serviceOrg),
-          serviceEngineer: t(response.serviceInfo.serviceEngineer),
-          description: t(response.serviceInfo.description),
-          acceptedAt: formatDate(response.serviceInfo.acceptedAt, dateTimeOptions),
-        },
-        serviceRecords: response.serviceRecords.map((item) => ({
-          ...item,
-          detailDescription: t(item.detailDescription),
-          serviceAction: t(item.serviceAction),
-          serviceTime: formatDate(item.serviceTime, dateTimeOptions),
-          status: t(item.status),
-        })),
-      }
+      return normalizeDetailPayload(response, t, formatDate) as Record<string, unknown>
     },
     [formatDate, t]
   )
@@ -235,3 +373,5 @@ const dateTimeOptions = {
   minute: '2-digit',
   second: '2-digit',
 } as const
+
+export default FullPageDetailPage

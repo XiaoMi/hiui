@@ -52,7 +52,7 @@ function createListPagePrompt({
   }
 
   lines.push(
-    '- QueryFilter 字段基线：`@/typical-page-reuse/query-filter/managed-query-filter-fields` 是唯一默认入口；普通文本筛选字段使用 createManagedQueryTextField（filter-text-input），Select / 日期字段分别使用 createManagedQuerySelectField、createManagedQueryDateRangeField，所有字段共享同一 filled 筛选表面；不得复用第二个 SearchInput，也不得回退成裸 Input。'
+    '- QueryFilter 字段基线：优先沿用 hiui-design 官方母版与页壳已提供的 QueryFilter / searchPlaceholder 链路；普通文本筛选字段保持受管默认样式，Select / 日期字段沿用同一 filled 筛选表面；不得复用第二个 SearchInput，也不得回退成裸 Input。'
   )
 
   lines.push(...extraLines)
@@ -78,6 +78,7 @@ function createFormPagePrompt({
   groups,
   fields,
   footerActions,
+  extraLines = [],
 }: {
   pageType: string
   pageName: string
@@ -88,6 +89,7 @@ function createFormPagePrompt({
   groups?: Array<{ title: string; fields: string[] }>
   fields?: string[]
   footerActions: string[]
+  extraLines?: string[]
 }) {
   const lines = [`基于hiui-design 生成一个${pageType}。`]
 
@@ -115,6 +117,8 @@ function createFormPagePrompt({
   if (fields?.length) {
     lines.push(`- 抽屉表单区字段包含${fields.map((field) => `"${field}"`).join('、')}。`)
   }
+
+  lines.push(...extraLines)
 
   if (footerActions.length > 0) {
     lines.push(`- 底部操作区：包含${footerActions.map((action) => `"${action}"`).join('、')}。`)
@@ -296,6 +300,11 @@ export const typicalExamplePrompts = {
     pageActions: [],
     layout: '三列表单，字段区水平间距 40px，底部操作固定在页面底部',
     groups: workOrderGroups,
+    extraLines: [
+      '- 若业务包含结构化子记录，可在一级分组流中插入一个可选明细表分组；无需求时默认不展示该分组。',
+      '- 可选明细表分组标题示例为"商品信息"；标题右侧可承载"添加商品"一类轻操作，表格仍属于同一表单阅读流，不要拆成第二个页面主体。',
+      '- 明细表支持行内编辑控件；例如"IMEI/SN"使用输入框，"关联订单"使用下拉选择，"三包开始日期 / 三包结束日期"使用日期选择，行尾保留删除操作。',
+    ],
     footerActions: ['取消', '暂存', '提交'],
   }),
   drawerForm: createFormPagePrompt({

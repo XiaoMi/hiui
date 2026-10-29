@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react'
 import { Button, Descriptions, Loading, PageHeader } from '@hi-ui/hiui'
 import type { DescriptionsItemProps } from '@hi-ui/descriptions'
-import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
 import {
   ProDetailPageProvider,
   useProDetailPageContext,
-} from '@hiui-design/typical-page-shells/pro-detail-page'
-import { ProDetailDrawer, ProDetailDrawerBody } from '@hiui-design/typical-page-shells/pro-detail-drawer'
+} from '../components/hiui-design-runtime/pro-detail-page'
+import { ProDetailDrawer, ProDetailDrawerBody } from '../components/hiui-design-runtime/pro-detail-drawer'
 import { getDrawerUserDetail } from './typical-pages.mock'
-import { useTranslation } from '../../translation'
+import { useTranslation } from './page-localization'
 
 const placeholderStyle = {
   minHeight: 'calc(100vh - 60px)',
@@ -41,16 +40,14 @@ function DrawerDetailInner() {
 
   return (
     <>
-      <TypicalPageHeaderPortal>
-        <PageHeader
-          title={t('抽屉详情')}
-          extra={
-            <Button type="primary" onClick={() => setVisible(true)}>
-              {t('打开抽屉')}
-            </Button>
-          }
-        />
-      </TypicalPageHeaderPortal>
+      <PageHeader
+        title={t('抽屉详情')}
+        extra={
+          <Button type="primary" onClick={() => setVisible(true)}>
+            {t('打开抽屉')}
+          </Button>
+        }
+      />
 
       <div style={placeholderStyle}>
         <Button type="primary" onClick={() => setVisible(true)}>
@@ -72,6 +69,7 @@ function DrawerDetailInner() {
             <Descriptions
               placement="vertical"
               labelPlacement="left"
+              labelWidth={114}
               column={2}
               columnGap={16}
               data={descriptionData}
@@ -114,3 +112,5 @@ export function DrawerDetailPage() {
     </ProDetailPageProvider>
   )
 }
+
+export default DrawerDetailPage

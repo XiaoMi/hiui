@@ -3,16 +3,15 @@ import { Button, Message, PageHeader } from '@hi-ui/hiui'
 import { F } from '@hi-ui/schema-core'
 import { SchemaForm } from '@hi-ui/schema-form'
 import type { SchemaFormProps } from '@hi-ui/schema-form'
-import { TypicalPageFieldMapProvider } from '@hiui-design/typical-page-shells'
-import { TypicalPageHeaderPortal } from '@hiui-design/typical-page-shells/host'
-import { ProDrawerFooterActions, ProFormDrawer } from '@hiui-design/typical-page-shells/pro-form-drawer'
+import { TypicalPageFieldMapProvider } from '../components/hiui-design-runtime'
+import { ProDrawerFooterActions, ProFormDrawer } from '../components/hiui-design-runtime/pro-form-drawer'
 import {
   basicUserOrganizationOptions,
   basicUserPositionOptions,
   basicUserRoleOptions,
   basicUserStatusOptions,
 } from './typical-pages.mock'
-import { useTranslation } from '../../translation'
+import { useTranslation } from './page-localization'
 
 type DrawerFormValues = {
   userName?: string
@@ -27,6 +26,8 @@ type DrawerFormValues = {
   remark?: string
 }
 
+type DrawerFormSchemaRef = NonNullable<SchemaFormProps<DrawerFormValues>['formRef']>
+
 const placeholderStyle = {
   minHeight: 'calc(100vh - 60px)',
   padding: 20,
@@ -40,10 +41,43 @@ const dateProps = {
   clearable: true,
 } as const
 
+const drawerSchemaFormProps = {
+  borderedGroups: false,
+  grid: true,
+  column: 2,
+  formProps: { labelPlacement: 'top' },
+  gridProps: {
+    columnCount: 2,
+    gutter: 32,
+    rowGap: 0,
+  },
+} as const
+
+function CertifiedDrawerSchemaForm({
+  formRef,
+  fields,
+}: {
+  formRef: DrawerFormSchemaRef
+  fields: NonNullable<SchemaFormProps<DrawerFormValues>['fields']>
+}) {
+  // Keep this certified subtree intact until pro-form-drawer exposes a public form bridge.
+  return (
+    <SchemaForm<DrawerFormValues>
+      formRef={formRef}
+      fields={fields}
+      borderedGroups={drawerSchemaFormProps.borderedGroups}
+      grid={drawerSchemaFormProps.grid}
+      column={drawerSchemaFormProps.column}
+      formProps={drawerSchemaFormProps.formProps}
+      gridProps={drawerSchemaFormProps.gridProps}
+    />
+  )
+}
+
 export function DrawerFormPage() {
   const { locale, t } = useTranslation()
   const [visible, setVisible] = useState(true)
-  const formRef = useRef(null) as NonNullable<SchemaFormProps<DrawerFormValues>['formRef']>
+  const formRef = useRef(null) as DrawerFormSchemaRef
 
   const fields = useMemo(
     () => [
@@ -86,16 +120,14 @@ export function DrawerFormPage() {
 
   return (
     <>
-      <TypicalPageHeaderPortal>
-        <PageHeader
-          title={t('抽屉表单')}
-          extra={
-            <Button type="primary" onClick={() => setVisible(true)}>
-              {t('打开抽屉')}
-            </Button>
-          }
-        />
-      </TypicalPageHeaderPortal>
+      <PageHeader
+        title={t('抽屉表单')}
+        extra={
+          <Button type="primary" onClick={() => setVisible(true)}>
+            {t('打开抽屉')}
+          </Button>
+        }
+      />
 
       <div style={placeholderStyle}>
         <Button type="primary" onClick={() => setVisible(true)}>
@@ -121,21 +153,11 @@ export function DrawerFormPage() {
         }
       >
         <TypicalPageFieldMapProvider>
-          <SchemaForm<DrawerFormValues>
-            formRef={formRef}
-            fields={fields}
-            borderedGroups={false}
-            grid
-            column={2}
-            formProps={{ labelPlacement: 'top' }}
-            gridProps={{
-              columnCount: 2,
-              gutter: 32,
-              rowGap: 0,
-            }}
-          />
+          <CertifiedDrawerSchemaForm formRef={formRef} fields={fields} />
         </TypicalPageFieldMapProvider>
       </ProFormDrawer>
     </>
   )
 }
+
+export default DrawerFormPage
