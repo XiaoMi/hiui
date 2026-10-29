@@ -5,7 +5,7 @@ UX Walkthrough - 证据门禁判断脚本
 用途：
 - 在模式已经确认后，先做一次结构化证据门禁判断
 - 优先覆盖 URL 登录页、URL 页面不可达、截图不足、代码扫描失败四类高频失败出口
-- 输出结构化 JSON，供外层决定继续走查、等待补充，还是明确失败原因并等待补充
+- 输出结构化 JSON，供外层决定继续走查、等待补充，还是进入统一收口判定
 
 用法：
 - python3 check_evidence_gate.py --source url --login-required true --current-url https://example.com --json
@@ -88,11 +88,20 @@ def _failed_result(
         "failure_preset": failure_preset,
         "failure_reason": failure_reason,
         "failure_stage": failure_stage,
+        "finalize_usage": {
+            "args": {
+                "failure_detail": failure_detail,
+                "failure_preset": failure_preset,
+                "source": source,
+                "status": "failed",
+            },
+            "recommended": True,
+        },
         "message": message,
-        "next_action": "explain_failure",
+        "next_action": "run_closeout_walkthrough",
         "ok": True,
         "should_continue": False,
-        "should_report_completion": True,
+        "should_finalize_usage": True,
         "source": source,
         "status": "failed",
     }
@@ -104,7 +113,7 @@ def _continue_result(*, source: str, message: str, extra: dict | None = None) ->
         "next_action": "continue_walkthrough",
         "ok": True,
         "should_continue": True,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "source": source,
         "status": "continue",
     }
@@ -119,7 +128,7 @@ def _needs_input_result(*, source: str, message: str, extra: dict | None = None)
         "next_action": "request_more_evidence",
         "ok": False,
         "should_continue": False,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "source": source,
         "status": "needs_input",
     }
@@ -142,7 +151,7 @@ def _handle_url(args: argparse.Namespace) -> dict:
             failure_stage="evidence_ready",
             failure_reason="page_unreachable",
             failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
-            message="URL 证据门禁未通过：目标页面不可达，请说明失败原因并等待用户补充。",
+            message="URL 证据门禁未通过：目标页面不可达，建议进入统一收口判定。",
         )
 
     if args.login_required:
@@ -155,7 +164,7 @@ def _handle_url(args: argparse.Namespace) -> dict:
             failure_stage="evidence_ready",
             failure_reason="login_required",
             failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
-            message="URL 证据门禁未通过：当前仍停留在登录或授权页，请说明失败原因并等待用户补充。",
+            message="URL 证据门禁未通过：当前仍停留在登录或授权页，建议进入统一收口判定。",
         )
 
     return _continue_result(
@@ -202,7 +211,7 @@ def _handle_screenshot(args: argparse.Namespace) -> dict:
             failure_stage="evidence_ready",
             failure_reason="evidence_insufficient",
             failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
-            message="截图证据门禁未通过：现有截图不足以支撑完整走查，请说明失败原因并等待用户补充。",
+            message="截图证据门禁未通过：现有截图不足以支撑完整走查，建议进入统一收口判定。",
         )
 
     return _continue_result(
@@ -307,7 +316,7 @@ def _handle_code(args: argparse.Namespace) -> dict:
         failure_stage="evidence_collection",
         failure_reason="scan_failed",
         failure_detail=_explicit_or_fallback(args.detail, fallback_detail),
-        message="代码证据门禁未通过：当前扫描结果不足或扫描失败，请说明失败原因并等待用户补充。",
+        message="代码证据门禁未通过：当前扫描结果不足或扫描失败，建议进入统一收口判定。",
     )
 
 

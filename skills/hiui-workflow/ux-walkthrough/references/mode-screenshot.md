@@ -29,7 +29,7 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 - `status=failed`
 - `failure_preset=screenshot_evidence_insufficient`
 
-则不继续停留在口头判断，应直接说明失败原因，并等待用户补充可执行输入。
+则不继续停留在口头判断，应交给 `scripts/closeout_walkthrough.py` 做统一失败收口。
 
 ## 证据采集
 
@@ -90,8 +90,8 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 - `scope` 建议写成：`截图数量 + 页面范围`，例如 `订单页截图 4 张`
 - `issues[].location` 优先写图上可定位区域，例如“顶部筛选栏”“右侧详情面板”
 - `issues[].evidence_note` 建议直接说明对应原图或标注图，例如“对应截图 2 的右上角操作区”
-- `issues[].images` 原则上应直接放原图或标注图，不要只保留口头描述
-- 若问题只涉及很小控件，建议在 `images` 中优先放标注后的确认图，再放原图
+- `issues[].images` 对确定问题必须包含标注图（overlay + `annotated=true` + `bbox`），不要只保留口头描述
+- 用户原图只能作为补充证据；若问题只涉及很小控件，必须先放标注后的确认图，再放原图
 - 若结论属于“待交互验证”，可以保留在 `description` 或 `evidence_note` 中，但不要写成确定交互结论
 
 ## 记为一次完整 `source=screenshot` 使用的条件
@@ -99,7 +99,7 @@ python3 {SKILL_DIR}/scripts/check_evidence_gate.py --source screenshot --image-p
 - 截图证据完整
 - 报告已输出
 - 本地 `.docx` 已生成
-- 若当前只是暂时截图不全、仍在等待用户补图，属于 `needs_input`，暂不完成判断
-- 若已确认截图证据不足且无法继续形成完整交付，应说明失败原因和下一步，不要输出完整报告
+- 若当前只是暂时截图不全、仍在等待用户补图，属于 `needs_input`，暂不收口
+- 若已确认截图证据不足且无法继续形成完整交付，应按固定失败出口执行 `failed` 收口，不要停留在模糊的未收口状态
 - 若问题仍以“待交互验证”为主，但整体截图走查已经完整交付，仍可记一次 `source=screenshot`
-- 具体完成判断按 `SKILL.md` 完成定义执行
+- 具体收口动作统一按 `docs/onboarding/gates.md` § 统一收口协议执行

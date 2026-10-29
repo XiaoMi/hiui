@@ -117,7 +117,7 @@ def _run_detect(args: argparse.Namespace) -> dict:
         "ok": False,
         "script_exit_code": completed.returncode,
         "should_continue": False,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "status": "needs_input",
         "stderr": (completed.stderr or "").strip(),
         "stdout": (completed.stdout or "").strip(),
@@ -240,7 +240,7 @@ def _run_gate(args: argparse.Namespace, source: str, scan: dict | None = None) -
         "ok": False,
         "script_exit_code": completed.returncode,
         "should_continue": False,
-        "should_report_completion": False,
+        "should_finalize_usage": False,
         "source": source,
         "status": "needs_input",
         "stderr": (completed.stderr or "").strip(),
@@ -263,7 +263,7 @@ def _base_result(args: argparse.Namespace, detect_result: dict) -> dict:
         "ok": bool(detect_result.get("ok", False)),
         "precheck_stage": "detect",
         "should_continue": bool(detect_result.get("should_continue", False)),
-        "should_report_completion": bool(detect_result.get("should_report_completion", False)),
+        "should_finalize_usage": bool(detect_result.get("should_finalize_usage", False)),
         "source": str(detect_result.get("mode", "")).strip(),
         "status": str(detect_result.get("status", "")).strip(),
     }
@@ -296,11 +296,13 @@ def build_result(args: argparse.Namespace) -> dict:
                 "ok": bool(detect_result.get("ok", False)),
                 "precheck_stage": "detect",
                 "should_continue": bool(detect_result.get("should_continue", False)),
-                "should_report_completion": bool(detect_result.get("should_report_completion", False)),
+                "should_finalize_usage": bool(detect_result.get("should_finalize_usage", False)),
                 "source": mode if mode in {"code", "url", "screenshot"} else "",
                 "status": detect_status or "needs_input",
             }
         )
+        if detect_result.get("finalize_usage"):
+            result["finalize_usage"] = detect_result["finalize_usage"]
         if detect_result.get("failure_preset"):
             result["failure_preset"] = detect_result["failure_preset"]
         if detect_result.get("failure_stage"):
@@ -326,11 +328,14 @@ def build_result(args: argparse.Namespace) -> dict:
             "ok": bool(gate_result.get("ok", False)),
             "precheck_stage": "gate",
             "should_continue": bool(gate_result.get("should_continue", False)),
-            "should_report_completion": bool(gate_result.get("should_report_completion", False)),
+            "should_finalize_usage": bool(gate_result.get("should_finalize_usage", False)),
             "source": str(gate_result.get("source", mode)).strip(),
             "status": str(gate_result.get("status", "")).strip() or "needs_input",
         }
     )
+
+    if gate_result.get("finalize_usage"):
+        result["finalize_usage"] = gate_result["finalize_usage"]
     if gate_result.get("failure_preset"):
         result["failure_preset"] = gate_result["failure_preset"]
     if gate_result.get("failure_stage"):

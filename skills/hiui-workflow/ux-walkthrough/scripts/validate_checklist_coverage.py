@@ -17,6 +17,19 @@ CHECKLIST_HEADER_RE = re.compile(r"^### (UX-\d+\.\d+)\s", re.MULTILINE)
 URL_SCREENSHOT_NO_NA_IDS = frozenset({"UX-1.4", "UX-1.5", "UX-1.6"})
 PENDING_TITLE_MARKER = "待交互验证"
 MIN_NOTE_LEN = 8
+STYLE_DIMENSION_GATES = {
+    "信息层级": frozenset({"UX-1.2", "UX-2.5", "UX-3.1"}),
+    "间距与对齐": frozenset({"UX-1.2", "UX-3.1"}),
+    "组件状态一致性": frozenset({"UX-2.5", "UX-3.1"}),
+    "密度与版面稳定性": frozenset({"UX-1.2", "UX-3.1", "UX-3.5"}),
+}
+HIUI_SECTION_GATES = {
+    "全局视觉基线": frozenset({"UX-2.5", "UX-3.1"}),
+    "跨页面共享结构": frozenset({"UX-1.2", "UX-2.5", "UX-3.1"}),
+    "页型规范": frozenset({"UX-1.1", "UX-1.2", "UX-2.5"}),
+    "组件语义": frozenset({"UX-2.5", "UX-3.1"}),
+    "数据可视化专项": frozenset({"UX-1.2", "UX-3.1"}),
+}
 
 
 def _skill_root() -> Path:
@@ -58,21 +71,21 @@ def _normalize_status(raw: object) -> tuple[str | None, str, str]:
     if lowered.startswith("pass:"):
         note = text.split(":", 1)[1].strip()
         if len(note) < MIN_NOTE_LEN:
-            return None, "", f"pass 备注须 >={MIN_NOTE_LEN} 字（pass: ...）"
+            return None, "", f"pass 备注须 ≥{MIN_NOTE_LEN} 字（pass: …）"
         return "pass", note, ""
     if lowered == "pass":
-        return None, "", f"禁止裸 pass；须写 pass: <验证证据，>={MIN_NOTE_LEN} 字>"
+        return None, "", f"禁止裸 pass；须写 pass: <验证证据，≥{MIN_NOTE_LEN} 字>"
     if lowered.startswith("pending:"):
         reason = text.split(":", 1)[1].strip()
         if len(reason) < MIN_NOTE_LEN:
-            return None, "", f"pending 原因须 >={MIN_NOTE_LEN} 字（pending: ...）"
+            return None, "", f"pending 原因须 ≥{MIN_NOTE_LEN} 字（pending: …）"
         return "pending", reason, ""
     if lowered.startswith("n/a:") or lowered.startswith("na:"):
         reason = text.split(":", 1)[1].strip()
         if len(reason) < MIN_NOTE_LEN:
-            return None, "", f"n/a 原因须 >={MIN_NOTE_LEN} 字（n/a: ...）"
+            return None, "", f"n/a 原因须 ≥{MIN_NOTE_LEN} 字（n/a: …）"
         return "n/a", reason, ""
-    return None, "", "无效状态；允许 issue / pass:... / pending:... / n/a:..."
+    return None, "", "无效状态；允许 issue / pass:… / pending:… / n/a:…"
 
 
 def _pending_issue_count(issues: list) -> int:
@@ -86,6 +99,76 @@ def _pending_issue_count(issues: list) -> int:
     return count
 
 
+def _append_style_consistency_errors(report: dict, status_by_id: dict[str, str], errors: list[str]) -> None:
+    style_review = report.get("style_review")
+    if not isinstance(style_review, dict):
+        return
+    framework = _text(style_review.get("framework")).lower()
+    issues = report.get("issues", [])
+    style_issue_titles = set()
+    style_issue_indexes = set()
+    if isinstance(issues, list):
+        for issue in issues:
+            if not isinstance(issue, dict) or _text(issue.get("category")) != "样式问题":
+                continue
+            title = _text(issue.get("title"))
+            if title:
+                style_issue_titles.add(title)
+            index_text = _text(issue.get("index"))
+            if index_text:
+                style_issue_indexes.add(index_text)
+
+    def require_formal_style_issue(path: str, item: dict) -> None:
+        if _text(item.get("status")).lower() != "issue":
+            return
+        linked_index = _text(item.get("linked_issue_index"))
+        linked_title = _text(item.get("linked_issue_title"))
+        if not linked_index and not linked_title:
+            errors.append(f"{path} 已标 issue，必须填写 linked_issue_index 或 linked_issue_title 并落入正式 issues[]")
+            return
+        if linked_index and linked_index not in style_issue_indexes:
+            errors.append(f"{path}.linked_issue_index={linked_index} 未指向 category=样式问题 的正式 issue")
+        if linked_title and linked_title not in style_issue_titles:
+            errors.append(f"{path}.linked_issue_title 未指向 category=样式问题 的正式 issue")
+
+    dimensions = style_review.get("dimensions")
+    if isinstance(dimensions, list):
+        for index, item in enumerate(dimensions):
+            if not isinstance(item, dict):
+                continue
+            require_formal_style_issue(f"style_review.dimensions[{index}]", item)
+            name = _text(item.get("name"))
+            status = _text(item.get("status")).lower()
+            if status != "issue" or name not in STYLE_DIMENSION_GATES:
+                continue
+            related = STYLE_DIMENSION_GATES[name]
+            if not any(status_by_id.get(item_id) == "issue" for item_id in related):
+                errors.append(
+                    f"style_review.dimensions「{name}」已标 issue，但 {' / '.join(sorted(related))} 中没有任何一项标 issue；"
+                    "样式问题不得全部写成 pass"
+                )
+
+    if framework != "hiui-design":
+        return
+
+    hiui_sections = style_review.get("hiui_sections")
+    if isinstance(hiui_sections, list):
+        for index, item in enumerate(hiui_sections):
+            if not isinstance(item, dict):
+                continue
+            require_formal_style_issue(f"style_review.hiui_sections[{index}]", item)
+            name = _text(item.get("name"))
+            status = _text(item.get("status")).lower()
+            if status != "issue" or name not in HIUI_SECTION_GATES:
+                continue
+            related = HIUI_SECTION_GATES[name]
+            if not any(status_by_id.get(item_id) == "issue" for item_id in related):
+                errors.append(
+                    f"style_review.hiui_sections「{name}」已标 issue，但 {' / '.join(sorted(related))} 中没有任何一项标 issue；"
+                    "HiUI 样式结论不得与 checklist 全部 pass 冲突"
+                )
+
+
 def validate_report(report: dict, *, checklist_path: Path | None = None) -> dict:
     source = _text(report.get("source", "")).lower()
     issues = report.get("issues", [])
@@ -94,6 +177,15 @@ def validate_report(report: dict, *, checklist_path: Path | None = None) -> dict
     if not isinstance(issues, list):
         errors.append("issues 必须是数组")
         issues = []
+    for issue_index, issue in enumerate(issues):
+        if not isinstance(issue, dict):
+            continue
+        severity = _text(issue.get("severity")).upper()
+        category = _text(issue.get("category"))
+        if severity and severity not in {"P0", "P1", "P2", "P3"}:
+            errors.append(f"issues[{issue_index}].severity 必须是 P0 / P1 / P2 / P3")
+        if severity == "P3" and category != "样式问题":
+            errors.append("P3 仅允许用于 category=样式问题 的规范偏差类正式 issue")
 
     try:
         required_ids = load_checklist_ids(checklist_path)
@@ -129,9 +221,9 @@ def validate_report(report: dict, *, checklist_path: Path | None = None) -> dict
         if key_text.startswith("_"):
             continue
         if not key_text.startswith("UX-"):
-            errors.append(f"checklist_coverage 含未知键“{key_text}”")
+            errors.append(f"checklist_coverage 含未知键「{key_text}」")
             continue
-        kind, _, err = _normalize_status(raw_status)
+        kind, detail, err = _normalize_status(raw_status)
         if kind is None:
             errors.append(f"{key_text}：{err}")
             continue
@@ -143,7 +235,9 @@ def validate_report(report: dict, *, checklist_path: Path | None = None) -> dict
         elif kind == "pass":
             pass_with_note += 1
         if source in {"url", "screenshot"} and kind == "n/a" and key_text in URL_SCREENSHOT_NO_NA_IDS:
-            errors.append(f"{key_text} 在 {source} 模式下不可标 n/a（须 pass / issue / pending）")
+            errors.append(
+                f"{key_text} 在 {source} 模式下不可标 n/a（须 pass / issue / pending）"
+            )
 
     missing = [item_id for item_id in required_ids if item_id not in status_by_id]
     if missing:
@@ -157,19 +251,24 @@ def validate_report(report: dict, *, checklist_path: Path | None = None) -> dict
 
     if issue_marked > len(issues):
         errors.append(
-            f"标为 issue 的 checklist 有 {issue_marked} 条，但 issues 仅 {len(issues)} 条；请合并问题或修正 coverage"
+            f"标为 issue 的 checklist 有 {issue_marked} 条，但 issues 仅 {len(issues)} 条；"
+            "请合并问题或修正 coverage"
         )
 
     pending_issues = _pending_issue_count(issues)
     if pending_marked > pending_issues:
         errors.append(
-            f"标为 pending 的 checklist 有 {pending_marked} 条，但标题含“{PENDING_TITLE_MARKER}”的 issue 仅 {pending_issues} 条"
+            f"标为 pending 的 checklist 有 {pending_marked} 条，"
+            f"但标题含「{PENDING_TITLE_MARKER}」的 issue 仅 {pending_issues} 条"
         )
 
     if issues and issue_marked + pending_marked == 0:
         errors.append(
-            "issues 非空，但 checklist_coverage 中没有任何 issue 或 pending；请为对应 checklist 条目标记 issue / pending"
+            "issues 非空，但 checklist_coverage 中没有任何 issue 或 pending；"
+            "请为对应 checklist 条目标记 issue / pending"
         )
+
+    _append_style_consistency_errors(report, status_by_id, errors)
 
     return {
         "checklist_ids": required_ids,

@@ -12,7 +12,21 @@ import json
 import re
 from pathlib import Path
 
-SKIP_WALK_DIRS = ("node_modules", ".git", "dist", "build", ".next", ".nuxt")
+SKIP_WALK_DIRS = (
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "test",
+    "tests",
+    "__tests__",
+    "fixtures",
+    "__fixtures__",
+    "__mocks__",
+    "storybook-static",
+)
 
 
 def _prune_walk_dirs(root: str, dirs: list[str], project_path: str) -> None:

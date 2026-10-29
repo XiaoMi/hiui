@@ -25,9 +25,12 @@ def _text(value: object) -> str:
 
 def _is_annotated_image(entry: object) -> bool:
     if isinstance(entry, dict):
-        if entry.get("annotated") is True:
-            return True
         path_text = _text(entry.get("path", ""))
+        annotation_meta = entry.get("annotation_meta")
+        if isinstance(annotation_meta, dict):
+            generated_by = _text(annotation_meta.get("generated_by") or annotation_meta.get("tool"))
+            if generated_by in {"annotate_issue.py", "annotate.py"}:
+                return True
     else:
         path_text = _text(entry)
 
@@ -46,12 +49,17 @@ def _bbox_from_image_entry(entry: object) -> list[int] | None:
     if not isinstance(entry, dict):
         return None
     bbox = entry.get("bbox")
-    if isinstance(bbox, dict):
-        keys = ("x", "y", "w", "h")
-        if all(key in bbox for key in keys):
-            return [int(bbox[k]) for k in keys]
-    if isinstance(bbox, list) and len(bbox) == 4:
-        return [int(v) for v in bbox]
+    try:
+        if isinstance(bbox, dict):
+            keys = ("x", "y", "w", "h")
+            if all(key in bbox for key in keys):
+                values = [int(bbox[k]) for k in keys]
+                return values if values[2] > 0 and values[3] > 0 else None
+        if isinstance(bbox, list) and len(bbox) == 4:
+            values = [int(v) for v in bbox]
+            return values if values[2] > 0 and values[3] > 0 else None
+    except (TypeError, ValueError):
+        return None
     return None
 
 
@@ -88,7 +96,7 @@ def validate_report(report: dict) -> dict:
             if not any(_is_annotated_image(item) for item in images):
                 errors.append(
                     f"issues[{index}]（{title}）须使用标注版截图"
-                    "（path 含 -annotated 或在 annotations/ 下，或 images[].annotated=true）"
+                    "（path 含 -annotated 或在 annotations/ 下，或 images[].annotation_meta.generated_by 为 annotate_issue.py）"
                 )
                 continue
             if not any(_bbox_from_image_entry(item) for item in images if isinstance(item, dict)):

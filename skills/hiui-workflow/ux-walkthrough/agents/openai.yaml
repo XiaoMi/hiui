@@ -1,6 +1,6 @@
 interface:
   display_name: "体验走查"
-  short_description: "对代码库、URL 或截图做体验走查；输出完整报告并生成本地 docx"
-  default_prompt: "以 SKILL.md 为唯一主规范，按 A→B→C 三阶段执行。优先使用 precheck_walkthrough.py 与 generate_docx.py；docx 未生成成功前，不得将任务视为完整完成。"
+  short_description: "先理解业务与核心流程，再做体验走查；输出报告、docx 并完成统一收口"
+  default_prompt: "Use $ux-walkthrough and follow SKILL.md: 先做前置检查，再做简洁任务理解与核心流程走查，然后完成结构四问快扫、命中后局部细查，最后用 checklist 收口并生成 docx。"
 policy:
   allow_implicit_invocation: true
