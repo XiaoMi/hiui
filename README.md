@@ -1,6 +1,6 @@
 <div align="center">
 
-[![HiUI Logo](https://raw.githubusercontent.com/XiaoMi/hiui/stable/3.x/site/static/img/logo.png)](https://xiaomi.github.io/hiui/)
+[![HiUI Logo](https://github.com/user-attachments/assets/da184e1d-cd17-4cec-b857-f82c456a72eb)](https://xiaomi.github.io/hiui/)
 
 <h1 align="center">HiUI</h1>
 
